@@ -26,6 +26,7 @@ import uuid
 
 import pika
 from common import common_config_ini
+from common import common_device_capability
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
@@ -113,16 +114,22 @@ def read(queue_object):
             if json_message['Sub'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
-                    subtitle_command = ' -subtitles ' + json_message['Subtitle'] \
-                                       + ' -subtitles_language ' + \
-                                       json_message['Language']
+                    subtitle_command = ' -subtitles ' + json_message['Subtitle']
                 else:
                     subtitle_command = ''
-                container_command = 'python /mediakraken/stream2chromecast/stream2chromecast.py' \
-                                    + ' -devicename ' + json_message['Target'] \
-                                    + subtitle_command + ' -transcodeopts \'-c:v copy -c:a ac3' \
-                                    + ' -movflags faststart+empty_moov\' -transcode \'' \
-                                    + json_message['Data'] + '\''
+                return_video_container, return_video_codec, return_audio_codec, return_audio_channels \
+                    = common_device_capability.com_device_compat_best_fit(
+                    device_type='Chromecast',
+                    device_model=None,
+                    video_container=None,
+                    video_codec=None,
+                    audio_codec=None,
+                    audio_channels=None)
+                container_command = 'castnow --address ' + json_message['Target'] \
+                                    + ' --myip 192.168.1.8 ' + subtitle_command \
+                                    + ' --ffmpeg \'-c:v copy -c:a ac3' \
+                                    + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
+                                    + ' --tomp4 \'' + json_message['Data'] + '\''
             elif json_message['Sub'] == 'Web':
                 # stream to web
                 container_command = shlex.split("ffmpeg -v fatal {ss_string}"
@@ -182,6 +189,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         self.users = {}  # maps user names to network instances
         self.option_config_json, self.db_connection = common_config_ini.com_config_read()
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for twisted connections!'})
+        for cast_devices in self.db_connection.db_device_list(device_type='cast'):
+            common_global.client_devices.append(('cast', cast_devices))
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

@@ -10,6 +10,7 @@ docker pull mediakraken/mkmumble
 docker pull mediakraken/mknginxrtmp
 docker pull mediakraken/mkopenldap
 docker pull mediakraken/mkslave
+docker pull mediakraken/mkstream
 docker pull mediakraken/mkteamspeak
 docker pull mediakraken/mktransmission
 docker pull mediakraken/mkwireshark

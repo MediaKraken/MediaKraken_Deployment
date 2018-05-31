@@ -22,7 +22,11 @@ import json
 import uuid
 
 from common import common_config_ini
+from common import common_global
+from common import common_logging_elasticsearch
 from common import common_metadata_tmdb
+
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('bulk_themoviedb_netfetch')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -32,18 +36,27 @@ if option_config_json['API']['themoviedb'].strip() != 'None':
     # setup the thmdb class
     TMDB_API_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(
         option_config_json)
-    print("Using key %s", option_config_json['API']['themoviedb'].strip())
+    common_global.es_inst.com_elastic_index('info', {"Using key %s" % option_config_json['API'][
+        'themoviedb'].strip()})
 else:
     TMDB_API_CONNECTION = None
-    print("API not available.")
+    common_global.es_inst.com_elastic_index('critical', {"API not available."})
 
 if TMDB_API_CONNECTION is not None:
     # start up the range fetches for movie
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_id_max()):
+        common_global.es_inst.com_elastic_index('info', {"themoviedb check": str(tmdb_to_fetch)})
         # check to see if we already have it
+        common_global.es_inst.com_elastic_index('info', {"themoviedb count": str(
+            db_connection.db_meta_tmdb_count(tmdb_to_fetch))})
+        common_global.es_inst.com_elastic_index('info', {
+            "themoviedb dl que": db_connection.db_download_que_exists(None, 1, 'themoviedb',
+                                                                      str(tmdb_to_fetch))})
         if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
                 and db_connection.db_download_que_exists(None, 1, 'themoviedb',
                                                          str(tmdb_to_fetch)) is None:
+            common_global.es_inst.com_elastic_index('info', {"themoviedb fetch": str(
+                tmdb_to_fetch)})
             db_connection.db_download_insert('themoviedb', 1, json.dumps({"Status": "Fetch",
                                                                           "ProviderMetaID": str(
                                                                               tmdb_to_fetch),

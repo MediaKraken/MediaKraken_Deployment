@@ -154,6 +154,7 @@ class MediaKrakenApp(App):
             self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
+        self.first_image_demo = True
         self.mpv_process = None
         self.mpv_connection = None
         return root
@@ -217,39 +218,14 @@ class MediaKrakenApp(App):
                                                          'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
-        elif json_message['Type'] == "Media":
-            if json_message['Sub'] == "Detail":
-                self.root.ids.theater_media_video_title.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['title']
-                self.root.ids.theater_media_video_subtitle.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['tagline']
-                # self.root.ids.theater_media_video_rating = row_data[3]['']
-                self.root.ids.theater_media_video_runtime.text \
-                    = str(json_message['Data']['Meta']['themoviedb']['Meta']['runtime'])
-                self.root.ids.theater_media_video_overview.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
-                genres_list = ''
-                for ndx in range(0,
-                                 len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
-                    genres_list += (
-                            json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
-                                'name'] + ', ')
-                self.root.ids.theater_media_video_genres.text = genres_list[:-2]
-                production_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
-                                            'production_companies'])):
-                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
-                                            'production_companies'][ndx]['name'] + ', ')
-                self.root.ids.theater_media_video_production_companies.text = production_list[
-                                                                              :-2]
+
         elif json_message['Type'] == 'Play':  # direct file play
             video_source_dir = json_message['Data']
             share_mapping = (
                 ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
             if share_mapping is not None:
                 for mapping in share_mapping:
-                    video_source_dir = video_source_dir.replace(
-                        mapping[0], mapping[1])
+                    video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
                 self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
                                                      '--ontop', '--no-osc', '--no-osd-bar',
                                                      '--aid=2',
@@ -262,14 +238,22 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Image":
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
             if json_message['Sub2'] == "Demo":
-                self.home_demo_file_name = str(uuid.uuid4())
-                f = open(self.home_demo_file_name, "w")
+                f = open("./image_demo", "w")
                 f.write(base64.b64decode(json_message['Data']))
                 f.close()
                 self.demo_media_id = json_message['UUID']
-                proxy_image_demo = Loader.image(self.home_demo_file_name)
-                proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
+                if self.first_image_demo == False:
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'boom'})
+                    self.root.ids.main_home_demo_image.reload()
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'boom2'})
+                else:
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'wha2'})
+                    proxy_image_demo = Loader.image("./image_demo")
+                    proxy_image_demo.bind(
+                        on_load=self._image_loaded_home_demo)
+                    self.first_image_demo = False
         elif json_message['Type'] == "MPV":
+            # sends the data message direct as a command
             self.mpv_connection.execute(json_message['Data'])
         else:
             common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
@@ -397,8 +381,9 @@ class MediaKrakenApp(App):
         """
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
+        # don't bother now.....as it's always the same name and will be reloaded
         # since it's loaded delete the image
-        os.remove(self.home_demo_file_name)
+        #os.remove('./image_demo')
 
 
 if __name__ == '__main__':

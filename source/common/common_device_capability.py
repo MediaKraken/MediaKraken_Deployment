@@ -26,17 +26,45 @@ DEVICE_COMPATIBILITY = {
         'S805': {},
         'S905': {},
     },
+    # FLAC (up to 96kHz/24-bit)
     'Chromecast': {
-        'V2': {'VidContainer': ['mp4', 'webm'], 'VidCodec': ['x264', 'vp8'],
-               'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus'],
-               'AudioChannel': ['6.1'], 'AudioPass': ['ac3', 'eac3'],
-               'ImageFormat': ['BMP', 'GIF', 'JPEG', 'PNG', 'WEBP'], 'MaxImageRes': '1280x720',
-               'MaxRes': ['720/60', '1080/30']},
-        'Ultra': {'MaxRes': '2160/60'}
+        'V2': {'VidContainer': ['mp4', 'webm'],
+               'VidCodec': ['x264', 'vp8'],
+               'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus', 'wav'],
+               'AudioChannel': ['6.1'],
+               'AudioPass': ['ac3', 'eac3'],
+               'ImageFormat': ['bmp', 'gif', 'jpeg', 'png', 'webp'],
+               'MaxImageRes': '1280x720',
+               'MaxVideoRes': ['720/60', '1080/30']},
+        'Ultra': {'VidContainer': ['mp4', 'webm'],
+               'VidCodec': ['x264', 'x265', 'vp8', 'vp9'],
+               'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus', 'wav'],
+               'AudioChannel': ['6.1'],
+               'AudioPass': ['ac3', 'eac3'],
+               'ImageFormat': ['bmp', 'gif', 'jpeg', 'png', 'webp'],
+               'MaxImageRes': '1280x720',
+               'MaxVideoRes': '2160/60'}
     },
     'Fire': {
         'Stick': {},
         'TV': {},
+    },
+    'HDHomeRun': {
+        'HDHR-US': 2,
+        'HDHR-EU': 2,
+        'HDHR3-US': 2,
+        'HDHR3-DT': 2,
+        'HDHR3-EU': 2,
+        'HDHR3-CC': 3,
+        'HDHR3-4DC': 4,
+        'HDHR4-2US': 2,
+        'HDHR4-2DT': 2,
+        'HDHR4-2IS': 2,
+        'HDTC-2US': 2,
+        'HDHR5-2US': 2,
+        'HDHR5-4US': 4,
+        'HDHR5-2DT': 2,
+        'HDHR5-4DT': 4,
     },
     'OrangePi': {},
     'Raspberry': {
@@ -68,23 +96,22 @@ def com_device_compat_best_fit(device_type, device_model, video_container,
         if device_model in DEVICE_COMPATIBILITY[device_type]:
             # determine container to use
             if video_container in device_model['VidContainer']:
-                pass  # no change
+                return_video_container = video_container  # no change
             else:
                 return_video_container = device_model['VidContainer'][0]
             # determine vid codec to use
             if video_codec in device_model['VidCodec']:
-                pass  # no change
+                return_video_codec = video_codec  # no change
             else:
                 return_video_codec = device_model['VidCodec'][0]
             # determine audio codec to use
             if audio_codec in device_model['AudioCodec']:
-                pass  # no change
+                return_audio_codec = audio_codec  # no change
             else:
                 return_audio_codec = device_model['AudioCodec'][0]
             # determine audio channels to use
             if audio_channels in device_model['AudioChannel']:
-                pass  # no change
+                return_audio_channels = audio_channels  # no change
             else:
                 return_audio_channels = device_model['AudioChannel'][0]
-    return (return_video_container, return_video_codec, return_audio_codec,
-            return_audio_channels)
+    return return_video_container, return_video_codec, return_audio_codec, return_audio_channels

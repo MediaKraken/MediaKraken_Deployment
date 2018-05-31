@@ -5,6 +5,7 @@
         <meta charset="utf-8" />
         <link rel="stylesheet" href="/static/context/jquery.contextmenu.css">
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="/static/css/listnav.css">
     </head>
     {% if media %}
     <!-- this div is needed to show up between pagination correctly -->
@@ -32,6 +33,16 @@
             // Initialize
             var bLazy = new Blazy();
         })();
+    </script>
+    <script src="/static/js/jquery-listnav.min.js"></script>
+    <script>
+        $("#mkmediaList").listnav({
+            includeAll: true,
+            includeOther: true,
+            includeNums: true,
+            flagDisabled: true,
+            removeDisabled: true,
+            showCounts: true,});
     </script>
 </body>
 {% endblock %}

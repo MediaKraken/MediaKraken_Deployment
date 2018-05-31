@@ -6,18 +6,12 @@
         <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="/static/css/listnav.css">
     </head>
-    <form id="SearchForm" class="form form-metamovie" method="POST" action="{{ url_for('user_metadata_movie.metadata_movie_list') }}" role="form">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{form.search_text.label}}
-            {{form.search_text(placeholder="Search string", class_="form-control")}}
-        </div>
-    </form>
     {% if media %}
     {{ pagination.info }}
     {{ pagination.links }}
-    <div id="the-node">
+    <div id="the-tv-node">
         {% for row_data in media %}
         <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 count -->
         <div class="wrapper">
@@ -52,6 +46,5 @@
             var bLazy = new Blazy();
         })();
     </script>
-
 </body>
 {% endblock %}

@@ -1,35 +1,21 @@
-FROM debian:jessie
-MAINTAINER Louis Fradin <louis.fradin@gmail.com>
+### Alpine requires glibc to be present in the system below link to fficial repository
+### https://github.com/sgerrand/alpine-pkg-glibc
+FROM alpine:latest
 
-# Update 
-RUN apt-get update && apt-get upgrade -y
+ENV     TS3_VERSION=3.0.13.8 \
+        GLIBC_VERSION='2.26-r0'
 
-# Requirements installs
-RUN apt-get install wget -y
+RUN \
+    apk --no-cache add ca-certificates wget; \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub; \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk; \
+    apk add glibc-${GLIBC_VERSION}.apk; \
+    apk add --update bzip2; \
+    rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /var/cache/distfiles/* /glibc-${GLIBC_VERSION}.apk; \
+    wget http://dl.4players.de/ts/releases/${TS3_VERSION}/teamspeak3-server_linux_amd64-${TS3_VERSION}.tar.bz2 -O /tmp/teamspeak.tar.bz2
 
-# Install teamspeak
-RUN wget http://dl.4players.de/ts/releases/3.0.11.4/teamspeak3-server_linux-amd64-3.0.11.4.tar.gz -O /tmp/ts.tar.gz
-RUN tar zxf /tmp/ts.tar.gz -C /tmp
-RUN mv /tmp/teamspeak3-server_linux-amd64 /bin/teamspeak-server
-RUN rm -rf /tmp/*
+COPY container-files /
 
-# Copy install script
-COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/bootstrap.sh"]
 
-# Create directories
-RUN mkdir -p /teamspeak/data
-RUN mkdir -p /teamspeak/logs
-
-# Virtual voice server port : 9987
-# Server Query port : 10011
-# File transfer port : 30033
-EXPOSE 9987/udp
-EXPOSE 10011
-EXPOSE 30033
-
-# Volumes
-VOLUME /teamspeak/data
-VOLUME /teamspeak/logs
-
-CMD "/docker-entrypoint.sh"
+EXPOSE 9987/udp 10011 30033

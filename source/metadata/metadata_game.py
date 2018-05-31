@@ -18,6 +18,9 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import json
+
+from common import common_global
 from common import common_metadata_thegamesdb
 
 THEGAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
@@ -36,3 +39,31 @@ def game_system_update():
         print(type(game_sys_detail))
         print(game_sys_detail)
         break
+
+
+def metadata_game_lookup(db_connection, media_file_path, download_que_json, download_que_id):
+    """
+    Lookup game metadata
+    """
+    metadata_uuid = None  # so not found checks verify later
+    common_global.es_inst.com_elastic_index('info', {'game filename': media_file_path})
+    # TODO determine short name/etc
+    for row_data in db_connection.db_meta_game_by_name(media_file_path):
+        # TODO handle more than one match
+        metadata_uuid = row_data['gi_id']
+        break
+    common_global.es_inst.com_elastic_index('info', {"meta game metadata_uuid B": metadata_uuid})
+    if metadata_uuid is not None:
+        # match found by title on local db so purge dl record
+        db_connection.db_download_delete(download_que_id)
+    else:
+        # no matches by name
+        # search giantbomb since not matched above via DB or nfo/xml
+        download_que_json.update({'Status': 'Search'})
+        # save the updated status
+        db_connection.db_download_update(json.dumps(download_que_json),
+                                         download_que_id)
+        # set provider last so it's not picked up by the wrong thread
+        db_connection.db_download_update_provider(
+            'giantbomb', download_que_id)
+    return metadata_uuid

@@ -17,16 +17,17 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
 import base64
 import json
 import sys
+import uuid
 
 sys.path.append("./vault/lib")
-import subprocess
 from twisted.protocols import basic
 import ip2country
+from common import common_docker
 from common import common_global
-from common import common_network
 
 
 class NetworkEvents(basic.LineReceiver):
@@ -59,16 +60,21 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection'})
+        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection', 'ip': ip_addr})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
         """
         Network connection dropped so remove client
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection'})
-        if self.users.has_key(self.user_user_name):
-            del self.users[self.user_user_name]
+        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection',
+                                                         'ip': ip_addr})
+        for user_device_uuid, protocol in self.users.iteritems():
+            if self.users[user_device_uuid].user_ip_addy == ip_addr:
+                del self.users[user_device_uuid]
+                break
 
     def lineReceived(self, data):
         """
@@ -81,6 +87,24 @@ class NetworkEvents(basic.LineReceiver):
 
         if json_message['Type'] == "CPU Usage":
             self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
+
+        elif json_message['Type'] == 'Device Cast List':
+            msg = json.dumps({'Type': 'Device Cast List',
+                              'Data': self.db_connection.db_device_list(device_type='cast')})
+
+        elif json_message['Type'] == 'Device Play List':
+            play_device = []
+            # load cast devices
+            for cast_device in self.db_connection.db_device_list(device_type='cast'):
+                play_device.append((cast_device['mm_device_id'], 'Cast',
+                                    cast_device['mm_device_json']['Name']))
+            # load user clients
+            for user_device_uuid, protocol in self.users.iteritems():
+                play_device.append((user_device_uuid, 'Client',
+                                    self.users[user_device_uuid].user_ip_addy))
+            # TODO ip addy for now on above
+            #                                   self.users[user_device_uuid].user_user_name))
+            msg = json.dumps({'Type': 'Device Play List', 'Data': play_device})
 
         elif json_message['Type'] == "Genre List":
             msg = json.dumps({'Type': 'Genre List',
@@ -96,8 +120,7 @@ class NetworkEvents(basic.LineReceiver):
             self.user_user_name = None
             self.user_platform = json_message['Platform']
             # lookup the country
-            country_data = ip2country.IP2Country(
-                verbose=1).lookup(self.user_ip_addy)
+            country_data = ip2country.IP2Country(verbose=1).lookup(self.user_ip_addy)
             self.user_country_code = country_data[0]
             self.user_country_name = country_data[1]
             self.users[self.user_device_uuid] = self
@@ -138,15 +161,11 @@ class NetworkEvents(basic.LineReceiver):
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
                     = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
-            if metadata_id is not None:
-                if image_json is not None:
-                    image_handle = open(image_json, "rb")
-                    image_data = image_handle.read()
-                    image_data = base64.b64encode(image_data)
-                    image_handle.close()
-                    # im = Image.open(image_json)
-                    # im.convert("RGB", im)
-                    # image_data = base64.b64encode(im)
+            if metadata_id is not None and image_json is not None:
+                image_handle = open(image_json, "rb")
+                image_data = image_handle.read()
+                image_data = base64.b64encode(image_data)
+                image_handle.close()
                 msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
                                   "Sub2": json_message['Sub2'],
                                   "Data": image_data, "UUID": metadata_id})
@@ -156,7 +175,9 @@ class NetworkEvents(basic.LineReceiver):
                 json_message['User'], json_message['Password'])
 
         elif json_message['Type'] == "Media":
-            if json_message['Sub'] == 'Detail':
+            if json_message['Sub'] == 'Controller':
+                pass
+            elif json_message['Sub'] == 'Detail':
                 mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
                     = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
                 msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
@@ -191,20 +212,41 @@ class NetworkEvents(basic.LineReceiver):
                 pass
 
         elif json_message['Type'] == "Play":
-            if json_message['Sub'] == 'Client':
+            # TODO send this to pika so only have to code once and will be in the current running
+            if json_message['Sub'] == 'Cast':
+                for client in common_global.client_devices:
+                    if json_message['Target'] == client[1]:
+                        # to address the 30 char name limit for container
+                        name_container = ((json_message['User'] + '_'
+                                           + str(uuid.uuid4()).replace('-', ''))[-30:])
+                        cast_docker_inst = common_docker.CommonDocker()
+                        cast_docker_inst.com_docker_run_slave(hwaccel=False,
+                                                              name_container=name_container,
+                                                              container_command=("python "
+                                                                                 "./stream2chromecast/stream2chromecast.py -devicename %s -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode %s" % (
+                                                                                     json_message[
+                                                                                         'Target'],
+                                                                                     self.db_connection.db_media_path_by_uuid(
+                                                                                         json_message[
+                                                                                             'UUID']))))
                 # TODO obviously send to the proper client
                 self.send_all_users(json_message)
             else:
-                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])[
-                    0]
+                media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])
+                common_global.es_inst.com_elastic_index('info', {"media_path": media_path})
                 if media_path is not None:
-                    # launch and attach to local running ffserver
-                    http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
-                    self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
-                                                                media_path, http_link], shell=False)
-                    http_link = 'http://' + common_network.mk_network_get_default_ip() + ':' \
-                                + self.server_port_ffmpeg + '/stream.ffm'
-                msg = json.dumps({"Type": 'Play', 'Data': http_link})
+                    if json_message['Sub'] == 'Client':
+                        self.send_single_ip(
+                            json.dumps({'Type': 'Play', 'Data': media_path}),
+                            json_message['Target'])
+                #     # launch and attach to local running ffserver
+                #     # TODO set server port for ffmpeg
+                #     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
+                #     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
+                #                                                 media_path, http_link], shell=False)
+                #     http_link = 'http://' + common_network.mk_network_get_default_ip() + ':' \
+                #                 + self.server_port_ffmpeg + '/stream.ffm'
+                # msg = json.dumps({"Type": 'Play', 'Data': http_link})
 
         elif json_message['Type'] == "MPV":
             self.send_all_users(json_message['Data'])
@@ -213,9 +255,24 @@ class NetworkEvents(basic.LineReceiver):
             common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            common_global.es_inst.com_elastic_index('info', {"should be sending data len": len(
-                msg)})
+            common_global.es_inst.com_elastic_index('info',
+                                                    {"should be sending data len": len(msg)})
             self.sendLine(msg.encode("utf8"))
+
+    def send_single_ip(self, message, ip_addr):
+        """
+        Send message to ip addr
+        """
+        for user_device_uuid, protocol in self.users.iteritems():
+            common_global.es_inst.com_elastic_index('info',
+                                                    {"user_ip_addy": self.users[
+                                                        user_device_uuid].user_ip_addy,
+                                                     'ip': ip_addr})
+            if self.users[user_device_uuid].user_ip_addy == ip_addr:
+                common_global.es_inst.com_elastic_index('info', {'send ip': ip_addr,
+                                                                 'message': message})
+                protocol.sendLine(message.encode("utf8"))
+                break
 
     def send_single_user(self, message):
         """
@@ -224,7 +281,7 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():  # pylint: disable=W0612
             if protocol == self:
                 common_global.es_inst.com_elastic_index('info', {'send single': message})
-                protocol.transport.write(message.encode("utf8"))
+                protocol.sendLine(message.encode("utf8"))
                 break
 
     def send_all_users(self, message):
@@ -234,7 +291,7 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_verified == 1:
                 common_global.es_inst.com_elastic_index('info', {'send all': message})
-                protocol.transport.write(message.encode("utf8"))
+                protocol.sendLine(message.encode("utf8"))
 
     def send_all_links(self, message):
         """
@@ -243,4 +300,4 @@ class NetworkEvents(basic.LineReceiver):
         for user_device_uuid, protocol in self.users.iteritems():
             if self.users[user_device_uuid].user_link:
                 common_global.es_inst.com_elastic_index('info', {'send all links': message})
-                protocol.transport.write(message.encode("utf8"))
+                protocol.sendLine(message.encode("utf8"))

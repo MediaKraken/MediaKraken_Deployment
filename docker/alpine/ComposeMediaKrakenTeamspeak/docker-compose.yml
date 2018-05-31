@@ -1,0 +1,6 @@
+teamspeak:
+  image: polinux/teamspeak
+  ports:
+    - "9987:9987"
+    - "10011:10011"
+    - "30033:30033"

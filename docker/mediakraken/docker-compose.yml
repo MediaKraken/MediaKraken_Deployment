@@ -31,7 +31,6 @@ services:
       - /var/opt/mediakraken/emulation:/mediakraken/emulation
     networks:
       - mediakraken_network
-      - mediakraken_dbnetwork
     restart: unless-stopped
     # to allow mount nfs/cifs
     cap_add:
@@ -61,7 +60,7 @@ services:
     volumes:
       - /var/lib/postgresql:/var/lib/postgresql
     networks:
-      - mediakraken_dbnetwork
+      - mediakraken_network
     restart: unless-stopped
 
   # pgbouncer
@@ -80,7 +79,7 @@ services:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     networks:
-      - mediakraken_dbnetwork
+      - mediakraken_network
     restart: unless-stopped
 
   # runs the server to fetch/process all metadata
@@ -102,9 +101,9 @@ services:
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
       - /var/opt/mediakraken/trailers:/mediakraken/web_app/MediaKraken/static/meta/trailers
       - /var/opt/mediakraken/emulation:/mediakraken/emulation
+      - /var/opt/mediakraken/cache:/mediakraken/cache
     networks:
       - mediakraken_network
-      - mediakraken_dbnetwork
     restart: unless-stopped
 
   # runs the nginx proxy service
@@ -155,7 +154,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken_network
-      - mediakraken_dbnetwork
     restart: unless-stopped
 
   # rabbit
@@ -172,6 +170,25 @@ services:
     restart: unless-stopped
     networks:
       - mediakraken_network
+
+  # runs ffprobe
+  ffprobe:
+    image: mediakraken/mkffprobe:latest
+    environment:
+      - POSTGRES_DB_HOST=${DBHOST}
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkffprobe
+    depends_on:
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python subprogram_ffprobe_metadata.py
+    volumes:
+      - /home/mediakraken:/mediakraken/mnt
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
 
   # runs downloader
   download:
@@ -190,9 +207,6 @@ services:
 
 # Docker private networks
 networks:
-  # Twisted and AMQP communications network
+  # Twisted, Database and AMQP communications network
   mediakraken_network:
-    driver: bridge
-  # Database communications network
-  mediakraken_dbnetwork:
     driver: bridge

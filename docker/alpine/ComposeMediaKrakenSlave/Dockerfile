@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbaseffmpeg
+FROM mediakraken/mkbasenodeffmpeg:latest
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main slave app"
@@ -30,6 +30,7 @@ RUN apk add --update \
   python-dev \
   openrc \
   && pip install -r requirements.txt \
+  && npm install -g castnow \
   && apk del \
   alpine-sdk \
   libffi-dev \
@@ -45,9 +46,11 @@ RUN apk add --update \
   py-setuptools \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/* \
+  && rm -r /root/.npm \
   && rc-update add netmount \
   && rc-update add rpcbind
 
+ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 

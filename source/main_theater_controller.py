@@ -303,8 +303,14 @@ class MediaKrakenApp(App):
                                                          'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
+
         elif json_message['Type'] == "Media":
-            if json_message['Sub'] == "Detail":
+            if json_message['Sub'] == "Controller":
+                # populate the video file list
+                self.root.ids.theater_media_video_spinner.values = map(
+                    str, json_message['Video File List'])
+
+            elif json_message['Sub'] == "Detail":
                 self.root.ids.theater_media_video_title.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['title']
                 self.root.ids.theater_media_video_subtitle.text \
@@ -326,40 +332,12 @@ class MediaKrakenApp(App):
                                             'production_companies'])):
                     production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
                                             'production_companies'][ndx]['name'] + ', ')
-                self.root.ids.theater_media_video_production_companies.text = production_list[
-                                                                              :-2]
-                # go through streams
-                audio_streams = []
-                subtitle_streams = ['None']
-                if json_message['Data2'] is not None and 'FFprobe' in json_message['Data2'] \
-                        and 'streams' in json_message['Data2']['FFprobe'] \
-                        and json_message['Data2']['FFprobe']['streams'] is not None:
-                    for stream_info in json_message['Data2']['FFprobe']['streams']:
-                        common_global.es_inst.com_elastic_index('info', {"info": stream_info})
-                        stream_language = ''
-                        stream_title = ''
-                        stream_codec = ''
-                        try:
-                            stream_language = stream_info['tags']['language'] + ' - '
-                        except:
-                            pass
-                        try:
-                            stream_title = stream_info['tags']['title'] + ' - '
-                        except:
-                            pass
-                        try:
-                            stream_codec \
-                                = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                                  + ' - '
-                        except:
-                            pass
-                        if stream_info['codec_type'] == 'audio':
-                            common_global.es_inst.com_elastic_index('info', {'stuff': 'audio'})
-                            audio_streams.append((stream_codec + stream_language
-                                                  + stream_title)[:-3])
-                        elif stream_info['codec_type'] == 'subtitle':
-                            subtitle_streams.append(stream_language)
-                            common_global.es_inst.com_elastic_index('info', {'stuff': 'sub'})
+                self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
+
+            elif json_message['Sub'] == 'FFprobe Detail':
+                # TODO need to list the actual video files
+                # TODO have the below refresh for the select video file
+                # TODO will need to display SD/HD/UHD and length of video
                 # populate the audio streams to select
                 self.root.ids.theater_media_video_audio_spinner.values = map(
                     str, audio_streams)
@@ -369,29 +347,42 @@ class MediaKrakenApp(App):
                     = map(str, subtitle_streams)
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
             elif json_message['Sub'] == "List":
+                self.send_twisted_message_thread(json.dumps({'Type': 'Device Play List'}))
                 data = []
                 for video_list in json_message['Data']:
                     data.append({'text': video_list[0], 'uuid': video_list[1],
                                  'path': video_list[4]})
                 self.root.ids.theater_media_video_list_scrollview.data = data
                 # self.list_adapter.bind(on_selection_change=self.theater_event_button_video_select)
-        elif json_message['Type'] == 'Play':  # direct file play
-            # AttributeError: 'NoneType' object has no attribute
-            # 'set_volume'  <- means can't find file
-            self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
-            video_source_dir = json_message['Data']
-            share_mapping = (
-                ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
-            if share_mapping is not None:
-                for mapping in share_mapping:
-                    video_source_dir = video_source_dir.replace(
-                        mapping[0], mapping[1])
-            self.root.ids.theater_media_video_videoplayer.source = video_source_dir
-            self.root.ids.theater_media_video_videoplayer.volume = 1
-            self.root.ids.theater_media_video_videoplayer.state = 'play'
+        # elif json_message['Type'] == 'Play':  # direct file play
+        #     # AttributeError: 'NoneType' object has no attribute
+        #     # 'set_volume'  <- means can't find file
+        #     self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
+        #     video_source_dir = json_message['Data']
+        #     share_mapping = (
+        #         ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+        #     if share_mapping is not None:
+        #         for mapping in share_mapping:
+        #             video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+        #     self.root.ids.theater_media_video_videoplayer.source = video_source_dir
+        #     self.root.ids.theater_media_video_videoplayer.volume = 1
+        #     self.root.ids.theater_media_video_videoplayer.state = 'play'
         # after connection receive the list of users to possibly login with
         elif json_message['Type'] == "User":
             pass
+
+        elif json_message['Type'] == "Device Cast List":
+            cast_list = ['This Device']
+            for cast_device in json_message['Data']:
+                cast_list.append(cast_device[2]['Name'])
+            self.root.ids.theater_media_video_play_local_spinner.values = cast_list
+
+        elif json_message['Type'] == "Device Play List":
+            cast_list = ['This Device']
+            for cast_device in json_message['Data']:
+                cast_list.append(cast_device[2]) # name of device
+            self.root.ids.theater_media_video_play_local_spinner.values = cast_list
+
         elif json_message['Type'] == "Genre List":
             common_global.es_inst.com_elastic_index('info', {'stuff': "gen"})
             for genre_list in json_message:

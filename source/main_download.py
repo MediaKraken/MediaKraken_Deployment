@@ -57,15 +57,14 @@ wait_pid.wait()
 parameters = pika.ConnectionParameters('mkrabbitmq',
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
+
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_download_ex",
-                                    exchange_type="direct", durable=True)
+exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
+                                    durable=True)
 queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
-# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
-# channel.start_consuming(inactivity_timeout=1)
 
 while True:
     time.sleep(1)
@@ -76,3 +75,6 @@ while True:
         on_message(channel, method_frame, header_frame, body)
     except:
         pass
+
+# close the pika connection
+connection.cancel()

@@ -30,30 +30,12 @@ from common import common_system
 
 
 class MKConsumer(object):
-    """This is an example consumer that will handle unexpected interactions
-    with RabbitMQ such as channel and connection closures.
-
-    If RabbitMQ closes the connection, it will reopen it. You should
-    look at the output, as there are limited reasons why the connection may
-    be closed, which usually are tied to permission related issues or
-    socket timeouts.
-
-    If the channel is closed, it will indicate a problem with one of the
-    commands that were issued and that should surface in the output as well.
-
-    """
     EXCHANGE = 'mkque_ex'
     EXCHANGE_TYPE = 'direct'
     QUEUE = 'mkque'
     ROUTING_KEY = 'mkque'
 
     def __init__(self, amqp_url):
-        """Create a new instance of the consumer class, passing in the AMQP
-        URL used to connect to RabbitMQ.
-
-        :param str amqp_url: The AMQP url to connect with
-
-        """
         self._connection = None
         self._channel = None
         self._closing = False
@@ -61,35 +43,17 @@ class MKConsumer(object):
         self._url = amqp_url
 
     def connect(self):
-        """This method connects to RabbitMQ, returning the connection handle.
-        When the connection is established, the on_connection_open method
-        will be invoked by pika.
-
-        :rtype: pika.SelectConnection
-
-        """
         common_global.es_inst.com_elastic_index('info', {'Connecting to': self._url})
         return pika.SelectConnection(pika.URLParameters(self._url),
                                      self.on_connection_open,
                                      stop_ioloop_on_close=False)
 
     def on_connection_open(self, unused_connection):
-        """This method is called by pika once the connection to RabbitMQ has
-        been established. It passes the handle to the connection object in
-        case we need it, but in this case, we'll just mark it unused.
-
-        :type unused_connection: pika.SelectConnection
-
-        """
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Connection opened'})
         self.add_on_connection_close_callback()
         self.open_channel()
 
     def add_on_connection_close_callback(self):
-        """This method adds an on close callback that will be invoked by pika
-        when RabbitMQ closes the connection to the publisher unexpectedly.
-
-        """
         common_global.es_inst.com_elastic_index('info',
                                                 {'stuff': 'Adding connection close callback'})
         self._connection.add_on_close_callback(self.on_connection_closed)
@@ -98,11 +62,6 @@ class MKConsumer(object):
         """This method is invoked by pika when the connection to RabbitMQ is
         closed unexpectedly. Since it is unexpected, we will reconnect to
         RabbitMQ if it disconnects.
-
-        :param pika.connection.Connection connection: The closed connection obj
-        :param int reply_code: The server provided reply_code if given
-        :param str reply_text: The server provided reply_text if given
-
         """
         self._channel = None
         if self._closing:
@@ -137,14 +96,6 @@ class MKConsumer(object):
         self._connection.channel(on_open_callback=self.on_channel_open)
 
     def on_channel_open(self, channel):
-        """This method is invoked by pika when the channel has been opened.
-        The channel object is passed in so we can make use of it.
-
-        Since the channel is now open, we'll declare the exchange to use.
-
-        :param pika.channel.Channel channel: The channel object
-
-        """
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Channel opened'})
         self._channel = channel
         self.add_on_channel_close_callback()
@@ -173,34 +124,14 @@ class MKConsumer(object):
         self._connection.close()
 
     def setup_exchange(self, exchange_name):
-        """Setup the exchange on RabbitMQ by invoking the Exchange.Declare RPC
-        command. When it is complete, the on_exchange_declareok method will
-        be invoked by pika.
-
-        :param str|unicode exchange_name: The name of the exchange to declare
-
-        """
         self._channel.exchange_declare(self.on_exchange_declareok,
                                        exchange_name,
                                        self.EXCHANGE_TYPE)
 
     def on_exchange_declareok(self, unused_frame):
-        """Invoked by pika when RabbitMQ has finished the Exchange.Declare RPC
-        command.
-
-        :param pika.Frame.Method unused_frame: Exchange.DeclareOk response frame
-
-        """
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        """Setup the queue on RabbitMQ by invoking the Queue.Declare RPC
-        command. When it is complete, the on_queue_declareok method will
-        be invoked by pika.
-
-        :param str|unicode queue_name: The name of the queue to declare.
-
-        """
         self._channel.queue_declare(self.on_queue_declareok, queue_name)
 
     def on_queue_declareok(self, method_frame):
@@ -287,39 +218,40 @@ class MKConsumer(object):
         msg = None
         if json_message['Type'] == "Play":
             if json_message['Sub'] == 'Cast':
-                if json_message['Command'] == "Chapter Back":
-                    pass
-                elif json_message['Command'] == "Chapter Forward":
-                    pass
-                elif json_message['Command'] == "Fast Forward":
-                    pass
-                elif json_message['Command'] == "Mute":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-mute'), shell=False)
-                elif json_message['Command'] == "Pause":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-pause'), shell=False)
-                elif json_message['Command'] == "Rewind":
-                    pass
-                elif json_message['Command'] == 'Stop':
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-stop'), shell=False)
-                elif json_message['Command'] == "Volume Down":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-voldown'), shell=False)
-                elif json_message['Command'] == "Volume Set":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-setvol', json_message['Data']),
-                        shell=False)
-                elif json_message['Command'] == "Volume Up":
-                    subprocess.Popen(
-                        ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
-                         '-devicename', json_message['Device'], '-volup'), shell=False)
+                pass
+                # if json_message['Command'] == "Chapter Back":
+                #     pass
+                # elif json_message['Command'] == "Chapter Forward":
+                #     pass
+                # elif json_message['Command'] == "Fast Forward":
+                #     pass
+                # elif json_message['Command'] == "Mute":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-mute'), shell=False)
+                # elif json_message['Command'] == "Pause":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-pause'), shell=False)
+                # elif json_message['Command'] == "Rewind":
+                #     pass
+                # elif json_message['Command'] == 'Stop':
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-stop'), shell=False)
+                # elif json_message['Command'] == "Volume Down":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-voldown'), shell=False)
+                # elif json_message['Command'] == "Volume Set":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-setvol', json_message['Data']),
+                #         shell=False)
+                # elif json_message['Command'] == "Volume Up":
+                #     subprocess.Popen(
+                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #          '-devicename', json_message['Device'], '-volup'), shell=False)
             elif json_message['Sub'] == 'HDHomeRun':
                 pass
             elif json_message['Sub'] == 'Slave':
@@ -356,12 +288,6 @@ class MKConsumer(object):
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
-        """Acknowledge the message delivery from RabbitMQ by sending a
-        Basic.Ack RPC method for the delivery tag.
-
-        :param int delivery_tag: The delivery tag from the Basic.Deliver frame
-
-        """
         common_global.es_inst.com_elastic_index('info', {'Acknowledging message': delivery_tag})
         self._channel.basic_ack(delivery_tag)
 
@@ -433,11 +359,11 @@ def main():
         shell=False)
     wait_pid.wait()
 
-    example = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    mkconsume = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:
-        example.run()
+        mkconsume.run()
     except KeyboardInterrupt:
-        example.stop()
+        mkconsume.stop()
 
 
 if __name__ == '__main__':

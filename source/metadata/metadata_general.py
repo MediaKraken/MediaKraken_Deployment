@@ -24,10 +24,12 @@ from common import common_global
 from common import common_metadata_tv_theme
 from guessit import guessit
 
+from . import metadata_anime
 from . import metadata_movie
 from . import metadata_music_video
 from . import metadata_periodicals
 from . import metadata_person
+from . import metadata_sports
 from . import metadata_tv
 
 
@@ -65,11 +67,32 @@ def metadata_search(thread_db, provider_name, download_data):
     set_fetch = False
     lookup_halt = False
     update_provider = None
-    if provider_name == 'imvdb':
+    if provider_name == 'anidb':
+        metadata_uuid = metadata_anime.metadata_anime_lookup(thread_db,
+                                                             download_data[
+                                                                 'mdq_download_json'][
+                                                                 'Path'], download_data,
+                                                             download_data[
+                                                                 'mdq_id'],
+                                                             guessit(download_data['Path'])[
+                                                                 'title'])
+    elif provider_name == 'chart_lyrics':
+        lookup_halt = True
+    elif provider_name == 'comicvine':
+        lookup_halt = True
+    elif provider_name == 'discogs':
+        lookup_halt = True
+    elif provider_name == 'giantbomb':
+        lookup_halt = True
+    elif provider_name == 'imdb':
+        lookup_halt = True
+    elif provider_name == 'imvdb':
         metadata_uuid, match_result = metadata_music_video.metadata_music_video_lookup(thread_db,
                                                                                        download_data[
                                                                                            'mdq_download_json'][
-                                                                                           'Path'])
+                                                                                           'Path'],
+                                                                                       download_data[
+                                                                                           'mdq_id'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'theaudiodb'
@@ -80,8 +103,21 @@ def metadata_search(thread_db, provider_name, download_data):
             thread_db, download_data['mdq_download_json']['ProviderMetaID'])
         if metadata_uuid is None:
             lookup_halt = True
+    elif provider_name == 'lastfm':
+        lookup_halt = True
+    elif provider_name == 'musicbrainz':
+        lookup_halt = True
+    elif provider_name == 'netflixroulette':
+        lookup_halt = True
+    elif provider_name == 'omdb':
+        lookup_halt = True
+    elif provider_name == 'openlibrary':
+        lookup_halt = True
+    elif provider_name == 'pitchfork':
+        lookup_halt = True
     elif provider_name == 'televisiontunes':
         # if download succeeds remove dl
+        # TODO....handle list return for title?
         metadata_uuid = common_metadata_tv_theme.com_tvtheme_download(
             guessit(download_data['Path'])['title'])
         if metadata_uuid is not None:
@@ -90,6 +126,12 @@ def metadata_search(thread_db, provider_name, download_data):
             return  # since it's a search/fetch/insert in one shot
         else:
             lookup_halt = True
+    elif provider_name == 'theaudiodb':
+        lookup_halt = True
+    elif provider_name == 'thegamesdb':
+        lookup_halt = True
+    elif provider_name == 'thelogodb':
+        lookup_halt = True
     elif provider_name == 'themoviedb':
         metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,
                                                                        download_data[
@@ -103,6 +145,12 @@ def metadata_search(thread_db, provider_name, download_data):
         else:
             if metadata_uuid is None:
                 set_fetch = True
+    elif provider_name == 'thesportsdb':
+        metadata_uuid = metadata_sports.metadata_sports_lookup(thread_db,
+                                                               download_data['mdq_download_json'][
+                                                                   'Path'], download_data,
+                                                               download_data[
+                                                                   'mdq_id'])
     elif provider_name == 'thetvdb':
         metadata_uuid, match_result = metadata_tv.tv_search_tvdb(thread_db,
                                                                  download_data['mdq_download_json'][
@@ -112,6 +160,8 @@ def metadata_search(thread_db, provider_name, download_data):
                 lookup_halt = True
             else:
                 set_fetch = True
+    elif provider_name == 'tv_intros':
+        lookup_halt = True
     elif provider_name == 'tvmaze':
         metadata_uuid, match_result = metadata_tv.tv_search_tvmaze(thread_db,
                                                                    download_data[
@@ -121,7 +171,9 @@ def metadata_search(thread_db, provider_name, download_data):
                 update_provider = 'thetvdb'
             else:
                 set_fetch = True
-    elif provider_name == 'omdb':
+    elif provider_name == 'tvshowtime':
+        lookup_halt = True
+    elif provider_name == 'twitch':
         lookup_halt = True
 
     # if search is being updated to new provider
@@ -204,13 +256,13 @@ def metadata_fetch(thread_db, provider_name, download_data):
         #                download_data['mdq_id'])
         else:  # tv
             pass
-    elif provider_name == 'tvmaze':
-        metadata_tv.tv_fetch_save_tvmaze(thread_db,
-                                         download_data['mdq_download_json']['ProviderMetaID'])
-        thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'thetvdb':
         metadata_tv.tv_fetch_save_tvdb(thread_db,
                                        download_data['mdq_download_json']['ProviderMetaID'])
+        thread_db.db_download_delete(download_data['mdq_id'])
+    elif provider_name == 'tvmaze':
+        metadata_tv.tv_fetch_save_tvmaze(thread_db,
+                                         download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
 
 

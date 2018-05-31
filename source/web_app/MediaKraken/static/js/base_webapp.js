@@ -10,7 +10,7 @@ $(function(){
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
 //                        window.location = '/users/movie/All';
-                          window.location = window.location.href
+                                window.location = window.location.href
 		            } else {
 		                alert(result.status);
 		            }
@@ -47,7 +47,7 @@ $(function(){
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
 //		                window.location = '/users/meta_movie_list';
-                        window.location = window.location.href
+                                window.location = window.location.href
 		            } else {
 		                alert(result.status);
 		            }
@@ -82,7 +82,7 @@ $(function(){
 		        success: function(res) {
 		            var result = JSON.parse(res);
 		            if (result.status == 'OK') {
-                        window.location = window.location.href
+                                window.location = window.location.href
 //		                window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
 		            } else {
 		                alert(result.status);
@@ -95,19 +95,19 @@ $(function(){
             window.console && console.log(m) || alert(m);
         },
         items: {
-            "watched": {name: "Set Episode Watched", icon: "/static/images/microscope.png"},
-            "watched_season": {name: "Set Season Watched", icon: "/static/images/microscope.png"},
-            "watched_show": {name: "Set Show Watched", icon: "/static/images/microscope.png"},
+            "watched": {name: "Set Episode Watched", icon: "/static/images/eye.png"},
+            "watched_season": {name: "Set Season Watched", icon: "/static/images/eye.png"},
+            "watched_show": {name: "Set Show Watched", icon: "/static/images/eye.png"},
             "sync": {name: "Sync Episdoe Media", icon: "/static/images/synced.jpg"},
             "sync_season": {name: "Sync Season Media", icon: "/static/images/synced.jpg"},
             "sync_show": {name: "Sync Show Media", icon: "/static/images/synced.jpg"},
             "sep1": "---------",
-            "favorite": {name: "Set Episdoe Favorite", icon: "/static/images/piggy.png"},
-            "favorite_season": {name: "Set Season Favorite", icon: "/static/images/piggy.png"},
-            "favorite_show": {name: "Set Show Favorite", icon: "/static/images/piggy.png"},
-            "poo": {name: "Set Episode Downvote", icon: "/static/images/poo-icon.png"},
-            "poo_season": {name: "Set Season Downvote", icon: "/static/images/poo-icon.png"},
-            "poo_show": {name: "Set Show Downvote", icon: "/static/images/poo-icon.png"},
+            "favorite": {name: "Set Episdoe Favorite", icon: "/static/images/favorite-mark.png"},
+            "favorite_season": {name: "Set Season Favorite", icon: "/static/images/favorite-mark.png"},
+            "favorite_show": {name: "Set Show Favorite", icon: "/static/images/favorite-mark.png"},
+            "poo": {name: "Set Episode Downvote", icon: "/static/images/pile-of-dung.png"},
+            "poo_season": {name: "Set Season Downvote", icon: "/static/images/pile-of-dung.png"},
+            "poo_show": {name: "Set Show Downvote", icon: "/static/images/pile-of-dung.png"},
             "sep2": "---------",
             "mismatch": {name: "Set Episode Mismatch", icon: "/static/images/exclamation-circle-frame.png"},
             "mismatch_season": {name: "Set Season Mismatch", icon: "/static/images/exclamation-circle-frame.png"},
