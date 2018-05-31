@@ -258,5 +258,6 @@ if db_connection.db_version_check() == 19:
 #     db_connection.db_version_update(21)
 #     db_connection.db_commit()
 
+# TODO add mm_metadata_album_image to mm_metadata_album
 # close the database
 db_connection.db_close()

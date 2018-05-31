@@ -260,7 +260,7 @@ if db_connection.db_table_index_check('mm_metadata_musician_idxgin_json') is Non
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_album (mm_metadata_album_guid uuid'
                        ' CONSTRAINT mm_metadata_album_pk PRIMARY KEY, mm_metadata_album_name text,'
                        ' mm_metadata_album_id jsonb, mm_metadata_album_json jsonb,'
-                       ' mm_metadata_album_musician_guid uuid)')
+                       ' mm_metadata_album_musician_guid uuid, mm_metadata_album_image text)')
 if db_connection.db_table_index_check('mm_metadata_album_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_album_idx_name'
                            ' ON mm_metadata_album(mm_metadata_album_name)')
