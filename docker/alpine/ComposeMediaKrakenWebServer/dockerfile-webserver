@@ -20,6 +20,7 @@ RUN apk add --update \
   libxslt-dev \
   linux-headers \
   musl-dev \  
+  nginx \
   openrc \
   py-cffi \
   py-redis \
@@ -29,7 +30,6 @@ RUN apk add --update \
   nfs-utils \
   ca-certificates \
   openssl \
-  nginx \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip install pycurl \
   && pip install -r requirements.txt \
@@ -52,15 +52,10 @@ RUN apk add --update \
   && rc-update add netmount \
   && rc-update add rpcbind
 
+COPY nginx.conf /etc/nginx/nginx.conf
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
-ADD ip2country /mediakraken/ip2country
-RUN cd ip2country \
-  && python setup.py install \
-  && cd .. \
-  && rm -R ./ip2country
-COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 8080
 CMD ["/bin/ash"]
