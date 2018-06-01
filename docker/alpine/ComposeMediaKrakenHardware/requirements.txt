@@ -1,3 +1,7 @@
+arduino-python
+phue
 pika
 pingo
-
+rxv
+python-nest
+onkyo-eiscp
