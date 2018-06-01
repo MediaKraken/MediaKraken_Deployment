@@ -18,11 +18,13 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import json
 import os
 import re
 import socket
 import ssl
 import sys
+import urllib
 import urllib2
 from threading import Thread
 
@@ -173,3 +175,8 @@ def mk_network_stats():
     """
     import psutil
     return psutil.net_if_stats()
+
+
+def mk_network_country_code():
+    response = urllib.urlopen("https://geoip-db.com/json")
+    return json.loads(response.read())
