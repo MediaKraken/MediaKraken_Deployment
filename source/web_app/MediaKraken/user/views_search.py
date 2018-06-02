@@ -102,7 +102,7 @@ def search_media():
 @blueprint.route("/search_nav", methods=["GET", "POST"])
 @blueprint.route("/search_nav/", methods=["GET", "POST"])
 @login_required
-def search_media():
+def search_nav_media():
     """
     determine what search results screen to show
     """
