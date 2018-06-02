@@ -23,22 +23,17 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/meta_music_song_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_music_song_list/', methods=['GET', 'POST'])
+@blueprint.route('/meta_music_song_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def metadata_music_song_list():
     """
     Display metdata music song list
     """
     page, per_page, offset = common_pagination.get_page_items()
-    media = []
-    form = SearchForm(request.form)
     if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_song_list(offset, per_page,
-                                                      request.form['search_text'])
+        mediadata = g.db_connection.db_meta_song_list(offset, per_page, search_text)
     else:
         mediadata = g.db_connection.db_meta_song_list(offset, per_page)
-
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -47,8 +42,8 @@ def metadata_music_song_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_list.html', form=form,
-                           media_person=mediadata,
+    return render_template('users/metadata/meta_music_list.html',
+                           media=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -57,6 +52,7 @@ def metadata_music_song_list():
 
 @blueprint.route('/meta_music_album_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_music_album_list/', methods=['GET', 'POST'])
+@blueprint.route('/meta_music_album_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def metadata_music_album_list():
     """
@@ -64,12 +60,8 @@ def metadata_music_album_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    form = SearchForm(request.form)
     if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_album_list(offset, per_page,
-                                                       request.form['search_text'])
+        mediadata = g.db_connection.db_meta_album_list(offset, per_page, search_text)
     else:
         mediadata = g.db_connection.db_meta_album_list(offset, per_page)
     for album_data in mediadata:
@@ -102,7 +94,7 @@ def metadata_music_album_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_album_list.html', form=form,
+    return render_template('users/metadata/meta_music_album_list.html',
                            media=media,
                            page=page,
                            per_page=per_page,

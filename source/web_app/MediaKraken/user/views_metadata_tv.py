@@ -240,6 +240,7 @@ def metadata_tvshow_episode_detail_page(guid, eps_id):
 
 @blueprint.route('/meta_tvshow_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_tvshow_list/', methods=['GET', 'POST'])
+@blueprint.route('/meta_tvshow_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_list():
     """
@@ -247,12 +248,8 @@ def metadata_tvshow_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
-    form = SearchForm(request.form)
     if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page,
-                                                        request.form['search_text'])
+        mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page, search_text)
     else:
         mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page)
     for row_data in mediadata:
@@ -266,7 +263,7 @@ def metadata_tvshow_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_tvshow_list.html', form=form,
+    return render_template('users/metadata/meta_tvshow_list.html',
                            media_tvshow=media_tvshow,
                            page=page,
                            per_page=per_page,

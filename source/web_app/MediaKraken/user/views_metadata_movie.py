@@ -83,6 +83,7 @@ def metadata_movie_detail(guid):
 
 @blueprint.route('/meta_movie_list', methods=["GET", "POST"])
 @blueprint.route('/meta_movie_list/', methods=["GET", "POST"])
+@blueprint.route('/meta_movie_list/<search_text>/', methods=["GET", "POST"])
 @login_required
 def metadata_movie_list():
     """
@@ -90,12 +91,8 @@ def metadata_movie_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    form = SearchForm(request.form)
     if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page,
-                                                      request.form['search_text'])
+        metadata = g.db_connection.db_meta_movie_list(offset, per_page, search_text)
     else:
         metadata = g.db_connection.db_meta_movie_list(offset, per_page)
     for row_data in metadata:
@@ -143,7 +140,7 @@ def metadata_movie_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_movie_list.html', form=form,
+    return render_template('users/metadata/meta_movie_list.html',
                            media_movie=media,
                            page=page,
                            per_page=per_page,
