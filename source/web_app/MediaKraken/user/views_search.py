@@ -16,6 +16,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -97,6 +98,27 @@ def search_media():
                            media_album=album, media_image=image, media_book=publication,
                            media_game=game, form=form)
 
+
+@blueprint.route("/search_nav", methods=["GET", "POST"])
+@blueprint.route("/search_nav/", methods=["GET", "POST"])
+@login_required
+def search_media():
+    """
+    determine what search results screen to show
+    """
+    common_global.es_inst.com_elastic_index('info', {"search url": request.url_rule})
+    # if request.method == 'POST':
+    #     if request.form['action_type'] == 'Search Local':
+    #         if 'Movie' in json_data:
+    #             for search_item in json_data['Movie']:
+    #                 movie.append(search_item)
+    #     elif request.form['action_type'] == 'Search Metadata Providers':
+    #         pass
+    # return render_template('users/user_search.html', media=movie, media_tvshow=tvshow,
+    #                        media_album=album, media_image=image, media_book=publication,
+    #                        media_game=game, form=form)
+
+
 @blueprint.before_request
 def before_request():
     """
@@ -104,6 +126,7 @@ def before_request():
     """
     g.db_connection = database_base.MKServerDatabase()
     g.db_connection.db_open()
+
 
 @blueprint.teardown_request
 def teardown_request(exception):  # pylint: disable=W0613

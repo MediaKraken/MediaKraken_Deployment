@@ -44,7 +44,8 @@
             <p><span id="timestamp"></span></p>
         </li>
         {% if current_user and current_user.is_authenticated %}
-            <form id="searchForm" method="POST" class="navbar-form form-inline navbar-right" action="/search" role="search">
+            <form id="searchForm" method="POST" class="navbar-form form-inline navbar-right"
+                  action="/search_nav" role="search">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search">
                 </div>
