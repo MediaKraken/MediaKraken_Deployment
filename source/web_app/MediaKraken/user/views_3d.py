@@ -16,7 +16,7 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
+from MediaKraken.public.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -39,7 +39,6 @@ def user_3d_list():
                                                        request.form['search_text'])
     else:
         mediadata = g.db_connection.db_meta_movie_list(offset, per_page)
-
     return render_template("users/user_3d_list.html", form=form)
 
 

@@ -19,7 +19,7 @@ from common import common_global
 from common import common_internationalization
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
+from MediaKraken.public.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
