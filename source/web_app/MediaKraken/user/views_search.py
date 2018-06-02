@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, redirect, url_for
 from flask_login import login_required
 
 blueprint = Blueprint("user_search", __name__,
@@ -117,6 +117,7 @@ def search_nav_media():
     # return render_template('users/user_search.html', media=movie, media_tvshow=tvshow,
     #                        media_album=album, media_image=image, media_book=publication,
     #                        media_game=game, form=form)
+    return redirect(url_for('user_movie_collection.metadata_movie_collection_list'))
 
 
 @blueprint.before_request
