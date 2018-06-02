@@ -91,7 +91,7 @@ def imvdb_lookup(db_connection, file_name):
     return metadata_uuid
 
 
-def metadata_music_video_lookup(db_connection, file_name, download_que_id):
+def metadata_music_video_lookup(db_connection, file_name):
     """
     Music Video lookup
     """
