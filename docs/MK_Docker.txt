@@ -1,0 +1,143 @@
+ComposeMediaKrakenBase34 - Base OS
+	Alpine 3.4
+	Python 2.x
+	PIP
+
+ComposeMediaKrakenBase34Py3 - Base OS
+	Alpine 3.4
+	Python 3.x
+	PIP
+
+ComposeMediaKrakenBase35 - Base OS
+	Alpine 3.5
+	Python 2.x
+	PIP
+
+ComposeMediaKrakenBase35Py3 - Base OS
+	Alpine 3.5
+	Python 3.x
+	PIP
+
+ComposeMediaKrakenBase36 - Base OS
+	Alpine 3.6
+	Python 2.x
+	PIP
+
+ComposeMediaKrakenBase36Py3 - Base OS
+	Alpine 3.6
+	Python 3.x
+	PIP
+
+ComposeMediaKrakenBase37 - Base OS
+	Alpine 3.7
+	Python 2.x
+	PIP
+
+ComposeMediaKrakenBase37Py3 - Base OS
+	Alpine 3.7
+	Python 3.x
+	PIP
+
+ComposeMediaKrakenBaseCuda
+
+ComposeMediaKrakenBaseFFMPEG
+
+ComposeMediaKrakenBaseFFMPEGNvidia
+
+ComposeMediaKrakenBaseFFMPEGNvidiaDebian
+
+ComposeMediaKrakenBaseNodeFFMPEG
+
+ComposeMediaKrakenBaseNvidia
+
+ComposeMediaKrakenBaseNvidiaDebian
+
+ComposeMediaKrakenBasePYPY
+
+ComposeMediaKrakenBroadcast
+
+ComposeMediaKrakenCalibre
+
+ComposeMediaKrakenDatabase - PostgreSQL database server
+	alpine:3.7
+	PG_VERSION 10.4
+
+ComposeMediaKrakenDebug
+
+ComposeMediaKrakenDevicescan
+
+ComposeMediaKrakenDownload
+
+ComposeMediaKrakenELK
+
+ComposeMediaKrakenFFProbe
+
+ComposeMediaKrakenFilebeat
+
+ComposeMediaKrakenHardware
+
+ComposeMediaKrakenMail
+
+ComposeMediaKrakenMetadata
+
+ComposeMediaKrakenMumble - Voice chat
+	alpine:3.6
+	MUMBLE_VERSION=1.2.19
+
+ComposeMediaKrakenMusicBrainz
+
+ComposeMediaKrakenMythTV
+
+ComposeMediaKrakenNginx
+
+ComposeMediaKrakenNginxRTMP
+
+ComposeMediaKrakenNginxRTMPStreamForward
+
+ComposeMediaKrakenOpenLDAP
+
+ComposeMediaKrakenOpenSMTP
+
+ComposeMediaKrakenPGAdmin4
+
+ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
+	alpine:3.7
+
+ComposeMediaKrakenPrefetchTMDB
+
+ComposeMediaKrakenPrefetchTVMaze
+
+ComposeMediaKrakenRabbitMQ
+
+ComposeMediaKrakenRedis
+
+ComposeMediaKrakenRipper
+
+ComposeMediaKrakenServer
+
+ComposeMediaKrakenSlave
+
+ComposeMediaKrakenSlaveNvidia
+
+ComposeMediaKrakenSlaveNvidiaDebian
+
+ComposeMediaKrakenStream
+
+ComposeMediaKrakenStreamVOD
+
+ComposeMediaKrakenTeamspeak - Voice chat
+	alpine:latest
+	TS3_VERSION=3.0.13.8
+
+ComposeMediaKrakenTheater
+
+ComposeMediaKrakenTransmission - Runs transmission daemon
+	alpine:latest
+	transmission
+
+ComposeMediaKrakenWebServer
+
+ComposeMediaKrakenWireshark - For network sniffing
+	debian:stretch-slim
+	install wireshark and xpra to make wirehsark available via websocket
+
