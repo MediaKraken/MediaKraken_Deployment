@@ -7,7 +7,8 @@ This program is still quite alpha.<BR>
 <BR>
 
  <ul style="color:white;">
-        <li><b>mkdev - redid internet speed test, improved chromecast playback, fixed Twitch playback, misc fixes - Current
+        <li><b>mkdev - redid internet speed test, improved chromecast playback, fixed Twitch
+        playback, much improved search, misc fixes, Lightgallery 1.6.11 - Current
         Dev
         branch</b>
         <li><i>castnow - improved Chromecast device discovery, PostgreSQL 10.4, FFMPEG 4.0
