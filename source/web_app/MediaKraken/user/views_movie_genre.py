@@ -105,6 +105,7 @@ def user_movie_page(genre):
     total = g.db_connection.db_web_media_list_count(
         g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True)
+    session['search_page'] = 'media_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=total,
