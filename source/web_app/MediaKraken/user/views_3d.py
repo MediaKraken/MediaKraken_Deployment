@@ -23,17 +23,17 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # 3d
 @blueprint.route('/3D')
 @blueprint.route('/3D/')
-@blueprint.route('/3D/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def user_3d_list():
     """
     Display 3D media page
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_meta_movie_list(offset, per_page, search_text)
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_movie_list(offset, per_page)
+    session['search_page'] = 'media_3d'
     return render_template("users/user_3d_list.html", media=mediadata)
 
 

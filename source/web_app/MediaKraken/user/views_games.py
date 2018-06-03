@@ -22,17 +22,18 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/games', methods=['GET', 'POST'])
 @blueprint.route('/games/', methods=['GET', 'POST'])
-@blueprint.route('/games/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def user_games_list():
     """
     Display games page
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, search_text)
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page,
+                                                             session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_game_system_list(offset, per_page)
+    session['search_page'] = 'media_games'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.
@@ -41,7 +42,6 @@ def user_games_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-
     return render_template("users/user_game_list.html", media=mediadata,
                            page=page,
                            per_page=per_page,
