@@ -7,7 +7,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from fractions import Fraction
 
 from flask import Blueprint, render_template, g, request, \
-    redirect, url_for
+    redirect, url_for, session
 from flask_login import current_user
 from flask_login import login_required
 
