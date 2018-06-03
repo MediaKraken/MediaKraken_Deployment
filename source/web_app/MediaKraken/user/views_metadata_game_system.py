@@ -33,17 +33,17 @@ def metadata_game_system_detail(guid):
 
 @blueprint.route('/meta_game_system_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_game_system_list/', methods=['GET', 'POST'])
-@blueprint.route('/meta_game_system_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def metadata_game_system_list():
     """
     Display list of game system metadata
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, search_text)
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_game_system_list(offset, per_page)
+    session['search_page'] = 'meta_game_system'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_game_system_list_count(),

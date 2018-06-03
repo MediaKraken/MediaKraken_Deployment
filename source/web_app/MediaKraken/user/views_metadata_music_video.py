@@ -22,17 +22,17 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/meta_music_video_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_music_video_list/', methods=['GET', 'POST'])
-@blueprint.route('/meta_music_video_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def metadata_music_video_list():
     """
     Display metadata music video
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_meta_music_video_list(offset, per_page, search_text)
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_music_video_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_music_video_list(offset, per_page)
+    session['search_page'] = 'meta_music_video'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

@@ -23,7 +23,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # list of spoting events
 @blueprint.route("/sports", methods=['GET', 'POST'])
 @blueprint.route("/sports/", methods=['GET', 'POST'])
-@blueprint.route("/sports/<search_text>/", methods=['GET', 'POST'])
 @login_required
 def user_sports_page():
     """
@@ -31,13 +30,14 @@ def user_sports_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_meta_sports_list(offset, per_page, search_text)
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_sports_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
     for row_data in mediadata:
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
+    session['search_page'] = 'media_sports'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),

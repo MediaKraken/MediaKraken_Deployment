@@ -22,7 +22,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/meta_movie_collection_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_movie_collection_list/', methods=['GET', 'POST'])
-@blueprint.route('/meta_movie_collection_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def metadata_movie_collection_list():
     """
@@ -30,8 +29,8 @@ def metadata_movie_collection_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_collection_list(offset, per_page, search_text)
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_collection_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_collection_list(offset, per_page)
     for row_data in mediadata:
@@ -42,6 +41,7 @@ def metadata_movie_collection_list():
         except:
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'], None))
+    session['search_page'] = 'meta_movie_collection'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

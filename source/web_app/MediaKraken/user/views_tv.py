@@ -28,7 +28,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # list of tv shows
 @blueprint.route("/tv", methods=['GET', 'POST'])
 @blueprint.route("/tv/", methods=['GET', 'POST'])
-@blueprint.route("/tv/<search_text>/", methods=['GET', 'POST'])
 @login_required
 def user_tv_page():
     """
@@ -37,8 +36,8 @@ def user_tv_page():
     page, per_page, offset = common_pagination.get_page_items()
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page, search_text)
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page)
     for row_data in mediadata:
@@ -55,11 +54,12 @@ def user_tv_page():
                           row_data['mm_metadata_tvshow_guid'],
                           None, common_internationalization.com_inter_number_format(
                 row_data['mm_count'])))
+    session['search_page'] = 'media_tv'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
                                                       None, None),
-                                                  record_name='media',
+                                                  record_name='tv shows',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
