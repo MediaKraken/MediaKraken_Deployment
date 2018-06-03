@@ -86,11 +86,13 @@ def imvdb_lookup(db_connection, file_name):
                     band_name, song_name)
                 if metadata_uuid == []:
                     metadata_uuid = None
-    # set last values to negate lookups for same song
-    imvdb_lookup.metadata_last_id = metadata_uuid
-    imvdb_lookup.metadata_last_band = band_name
-    imvdb_lookup.metadata_last_song = song_name
-    return metadata_uuid
+        # set last values to negate lookups for same song
+        imvdb_lookup.metadata_last_id = metadata_uuid
+        imvdb_lookup.metadata_last_band = band_name
+        imvdb_lookup.metadata_last_song = song_name
+        return metadata_uuid
+    else:
+        return None
 
 
 def metadata_music_video_lookup(db_connection, file_name):
