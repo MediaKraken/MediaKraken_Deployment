@@ -45,6 +45,7 @@ def imvdb_lookup(db_connection, file_name):
         imvdb_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
         imvdb_lookup.metadata_last_band = None
         imvdb_lookup.metadata_last_song = None
+    common_global.es_inst.com_elastic_index('info', {'mv file': file_name})
     # determine names
     band_name, song_name = os.path.splitext(
         os.path.basename(file_name.lower()))[0].split('-', 1)
