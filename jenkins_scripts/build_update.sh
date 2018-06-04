@@ -95,10 +95,6 @@ docker build -t mediakraken/mkmumble .
 cd ../ComposeMediaKrakenELK
 docker build -t mediakraken/mkelk .
 
-# build the debug
-cd ../ComposeMediaKrakenDebug
-docker build -t mediakraken/mkdebug .
-
 # build the wireshark
 cd ../ComposeMediaKrakenWireshark
 docker build -t mediakraken/mkwireshark .
