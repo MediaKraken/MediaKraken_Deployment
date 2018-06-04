@@ -343,13 +343,13 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
 # poster, backdrop, etc
 def db_meta_tvshow_image_random(self, return_image_type='Poster'):
     """
-    Find random movie image
+    Find random tv show image
     """
     self.db_cursor.execute(
-        'select mm_metadata_tvshow_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        'select mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\''
         + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_tvshow'
                               ' where mm_media_metadata_guid = mm_metadata_guid'
-                              ' and (mm_metadata_tvshow_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                              ' and (mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\''
         + return_image_type + '\'' + ')::text != \'null\' order by random() limit 1')
     try:
         # then if no results.....a None will except which will then pass None, None
