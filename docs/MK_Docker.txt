@@ -54,7 +54,8 @@ ComposeMediaKrakenBaseNvidiaDebian
 
 ComposeMediaKrakenBasePYPY
 
-ComposeMediaKrakenBroadcast
+ComposeMediaKrakenBroadcast - Broadcasts network discovery
+	mediakraken/mkbase37
 
 ComposeMediaKrakenCalibre
 
@@ -62,13 +63,16 @@ ComposeMediaKrakenDatabase - PostgreSQL database server
 	alpine:3.7
 	PG_VERSION 10.4
 
-ComposeMediaKrakenDebug
-
-ComposeMediaKrakenDevicescan
+ComposeMediaKrakenDevicescan - Scans for HDHomerun, Chromecast and Roku
+	mediakraken/mkbase37
+	Uses hdhomerun-config and python hdhomerun 
+	TODO: just install the alpine package and remove the hdhomerun libs
 
 ComposeMediaKrakenDownload
 
-ComposeMediaKrakenELK
+ComposeMediaKrakenELK - Debugging stack
+	phusion/baseimage
+	Elasticsearch, Logstash, Kibana 6.2.3
 
 ComposeMediaKrakenFFProbe
 
@@ -76,7 +80,9 @@ ComposeMediaKrakenFilebeat
 
 ComposeMediaKrakenHardware
 
-ComposeMediaKrakenMail
+ComposeMediaKrakenMail - Email - full stack antivirus/etc
+	ubuntu:16.04
+	Postfix
 
 ComposeMediaKrakenMetadata
 
@@ -84,11 +90,15 @@ ComposeMediaKrakenMumble - Voice chat
 	alpine:3.6
 	MUMBLE_VERSION=1.2.19
 
-ComposeMediaKrakenMusicBrainz
+ComposeMediaKrakenMusicBrainz - Musicbrainz server
+	lsiobase/alpine:3.6
+	BRAINZ_VER="v-2018-05-09"
 
 ComposeMediaKrakenMythTV
 
-ComposeMediaKrakenNginx
+ComposeMediaKrakenNginx - SSL Proxy and block ips
+	alpine:3.5
+	NGINX_VERSION 1.13.6
 
 ComposeMediaKrakenNginxRTMP
 
@@ -96,7 +106,9 @@ ComposeMediaKrakenNginxRTMPStreamForward
 
 ComposeMediaKrakenOpenLDAP
 
-ComposeMediaKrakenOpenSMTP
+ComposeMediaKrakenOpenSMTP - Email - barebones
+	alpine:3.4
+	Postfix
 
 ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
 	alpine:3.7
