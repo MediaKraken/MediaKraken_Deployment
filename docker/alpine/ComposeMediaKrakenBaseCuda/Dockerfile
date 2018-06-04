@@ -1,5 +1,5 @@
 # Start with Alpine base image
-FROM alpine:3.6
+FROM alpine:3.7
 
 # download cuda
 RUN apk update && apk add --update wget alpine-sdk perl && \
@@ -11,7 +11,9 @@ RUN apk update && apk add --update wget alpine-sdk perl && \
            /run_files \
            InstallUtils.pm \
            cuda-installer.pl \
-           uninstall_cuda.pl
+           uninstall_cuda.pl \
+   && apk del wget alpine-sdk perl \
+   && rm -rf /var/cache/apk/*
 
 # Add to path
 ENV PATH=/usr/local/cuda-7.5/bin:$PATH LD_LIBRARY_PATH=/usr/local/cuda-7.5/lib64:$LD_LIBRARY_PATH

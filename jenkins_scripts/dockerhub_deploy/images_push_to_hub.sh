@@ -6,6 +6,7 @@ docker push mediakraken/mkbase36:latest
 docker push mediakraken/mkbase36py3:latest
 docker push mediakraken/mkbase37:latest
 docker push mediakraken/mkbase37py3:latest
+docker push mediakraken/mkbasecuda
 docker push mediakraken/mkbaseffmpeg:latest
 docker push mediakraken/mkbaseffmpegnvidia:latest
 docker push mediakraken/mkbaseffmpegnvidiadebian:latest
@@ -13,7 +14,6 @@ docker push mediakraken/mkbasenodeffmpeg:latest
 docker push mediakraken/mkbasenvidiadebain:latest
 docker push mediakraken/mkbroadcast:latest
 docker push mediakraken/mkdatabase:latest
-docker push mediakraken/mkdebug:latest
 docker push mediakraken/mkdevicescan:latest
 docker push mediakraken/mkdocker:latest
 docker push mediakraken/mkdownload:latest
@@ -25,7 +25,6 @@ docker push mediakraken/mkmusicbrainz:latest
 docker push mediakraken/mknginx:latest
 docker push mediakraken/mknginxrtmp:latest
 docker push mediakraken/mkopenldap:latest
-#docker push mediakraken/mkpgadmin:latest
 docker push mediakraken/mkpgbounce:latest
 docker push mediakraken/mkprefetchtmdb:latest
 docker push mediakraken/mkprefetchtvmaze:latest
