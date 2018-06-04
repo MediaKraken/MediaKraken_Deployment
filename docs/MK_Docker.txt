@@ -1,54 +1,190 @@
+******* Used Containers *****************
+
 ComposeMediaKrakenBase34 - Base OS
     Alpine 3.4
     Python 2.x
     PIP
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase34
 
 ComposeMediaKrakenBase34Py3 - Base OS
     Alpine 3.4
     Python 3.x
-    PIP
+    PIP3
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase34py3
 
 ComposeMediaKrakenBase35 - Base OS
     Alpine 3.5
     Python 2.x
     PIP
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase35
 
 ComposeMediaKrakenBase35Py3 - Base OS
     Alpine 3.5
     Python 3.x
-    PIP
+    PIP3
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase35py3
 
 ComposeMediaKrakenBase36 - Base OS
     Alpine 3.6
     Python 2.x
     PIP
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase36
 
 ComposeMediaKrakenBase36Py3 - Base OS
     Alpine 3.6
     Python 3.x
-    PIP
+    PIP3
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase36py3
 
 ComposeMediaKrakenBase37 - Base OS
     Alpine 3.7
     Python 2.x
     PIP
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase37
 
 ComposeMediaKrakenBase37Py3 - Base OS
     Alpine 3.7
     Python 3.x
-    PIP
+    PIP3
+        creates /mediakraken/
+        pip elasticsearch - ELK logging
+    image: mediakraken/mkbase37py3
+
+ComposeMediaKrakenBaseFFMPEG - Base ffmpeg and ffprobe
+    alpine:3.7 as builder
+        ARG FDKAAC_VERSION=0.1.5
+        ARG X264_VERSION=20180519-2245-stable
+        ARG X265_VERSION=2.7
+        ARG FFMPEG_VERSION="4.0"
+        ARG OPENMPT_VERSION=0.2.8760-beta27
+    image: mediakraken/mkbaseffmpeg
+
+ComposeMediaKrakenBaseNodeFFMPEG - Base ffmpeg with NODE server
+    mediakraken/mkbaseffmpeg:latest
+        NODE_VERSION 10.1.0
+    image: mediakraken/mkbasenodeffmpeg
+
+ComposeMediaKrakenBroadcast - Broadcasts discovery for clients to find MK Server
+    mediakraken/mkbase37
+    pip docker - pull host IP for where the server is run to return to clients
+    image: mediakraken/mkbroadcast
+
+ComposeMediaKrakenDatabase - PostgreSQL database server
+    https://github.com/docker-library/postgres/blob/master/10/alpine/Dockerfile
+    alpine:3.7
+    PG_VERSION 10.4
+        Contains sql dump file for creation of new DB
+        TODO: drop --with-openssl as it'll be docker network encryped
+    image: mediakraken/mkdatabase
+
+ComposeMediaKrakenDevicescan - Scans for HDHomerun, Chromecast and Roku
+    mediakraken/mkbase37
+    Uses hdhomerun-config and python hdhomerun
+    TODO: just install the alpine package and remove the hdhomerun libs
+    TODO: PERHAPS combine with hardware one
+    image: mediakraken/mkdevicescan
+
+ComposeMediaKrakenELK - Debugging stack
+    https://github.com/spujadas/elk-docker
+    phusion/baseimage
+    Elasticsearch, Logstash, Kibana 6.2.3
+    image: mediakraken/mkelk
+
+ComposeMediaKrakenHardware - Control hardware SBC, IR, LCD, audio/video devices, etc
+    mediakraken/mkbase37
+    image:
+
+ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata providers
+    mediakraken/mkbase37
+    image: mediakraken/mkmetadata
+
+ComposeMediaKrakenMumble - Voice chat
+    alpine:3.6
+    MUMBLE_VERSION=1.2.19
+    image: mediakraken/mkmumble
+
+ComposeMediaKrakenMusicBrainz - Musicbrainz server
+    lsiobase/alpine:3.6
+    BRAINZ_VER="v-2018-05-09"
+    image: mediakraken/mkmusicbrainz
+
+ComposeMediaKrakenNginx - SSL Proxy and block ips
+    alpine:3.5
+    NGINX_VERSION 1.13.6
+    TODO: Alpine 3.7 bump
+    image: mediakraken/mknginx
+
+ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
+    https://github.com/brainsam/pgbouncer
+    alpine:3.7
+    TODO: grab new version since multibuild, so, should be smaller
+    image: mediakraken/mkpgbounce
+
+ComposeMediaKrakenPrefetchTMDB - TMDB Preload
+    mediakraken/mkbase37
+    image: mediakraken/mkprefetchtmdb
+
+ComposeMediaKrakenPrefetchTVMaze - TVMaze Preload
+    mediakraken/mkbase37
+    image: mediakraken/mediakraken/mkprefetchtvmaze
+
+ComposeMediaKrakenRabbitMQ - Used for backend messaging for application suite
+    alpine:3.7
+    RABBITMQ_VERSION 3.7.4
+    image: mediakraken/mkrabbitmq
+
+ComposeMediaKrakenRedis - Used for user/password in the webserver Flask application
+    alpine:3.7
+    REDIS_VERSION 4.0.9
+    image: mediakraken/mkredis
+
+ComposeMediaKrakenServer - Main server application
+    mediakraken/mkbase37
+    image: mediakraken/mkserver
+
+ComposeMediaKrakenSlave - Main slave application
+    mediakraken/mkbasenodeffmpeg:latest
+    image: mediakraken/mkslave
+
+ComposeMediaKrakenTeamspeak - Voice chat
+    alpine:latest
+    TS3_VERSION=3.0.13.8
+    image: mediakraken/mkteamspeak
+
+ComposeMediaKrakenTransmission - Runs transmission daemon (torrent server)
+    alpine:latest
+    transmission
+    image: mediakraken/mktransmission
+
+ComposeMediaKrakenWebServer - Main web application
+    mediakraken/mkbase37
+    image: mediakraken/mkwebapp
+
+dpage/pgadmin4 - PGAdmin4 for PostgreSQL
+    https://hub.docker.com/r/dpage/pgadmin4/
+
+portainer/portainer - Docker monitor
+    https://hub.docker.com/r/portainer/portainer/
+
+***************** Organize ***************************
 
 ComposeMediaKrakenBaseCuda - Base Nvidia CUDA compute
     alpine:3.7
     cuda-7.5
-
-ComposeMediaKrakenBaseFFMPEG - Base ffmpeg and ffprobe
-    alpine:3.7 as builder
-    ARG FDKAAC_VERSION=0.1.5
-    ARG X264_VERSION=20180519-2245-stable
-    ARG X265_VERSION=2.7
-    ARG FFMPEG_VERSION="4.0"
-    ARG OPENMPT_VERSION=0.2.8760-beta27
 
 ComposeMediaKrakenBaseFFMPEGNvidia - FFMPEG for Nvidia CUDA
     mediakraken/mkbasenvidia
@@ -58,10 +194,6 @@ ComposeMediaKrakenBaseFFMPEGNvidiaDebian - FFMPEG for Nvidia CUDA on Debian
     mediakraken/mkbasenvidiadebian
     builds FFMPEG
 
-ComposeMediaKrakenBaseNodeFFMPEG - Base ffmpeg with NODE server
-    mediakraken/mkbaseffmpeg:latest
-    NODE_VERSION 10.1.0
-
 ComposeMediaKrakenBaseNvidia - Base Nvidia CUDA (NVidia's Version)
     ubuntu:16.04
     CUDA_VERSION 8.0.61
@@ -69,67 +201,20 @@ ComposeMediaKrakenBaseNvidia - Base Nvidia CUDA (NVidia's Version)
 ComposeMediaKrakenBaseNvidiaDebian - Debian 9 with CUDA Toolkit 8.0
     debian:stretch
 
-ComposeMediaKrakenBasePYPY - Container to build PYPY
-    alpine:3.6
-    pypy2-v5.9.0
-
-ComposeMediaKrakenBroadcast - Broadcasts network discovery
-    mediakraken/mkbase37
-
 ComposeMediaKrakenCalibre - Calibre
     lsiobase/alpine.python:3.6
-
-ComposeMediaKrakenDatabase - PostgreSQL database server
-    alpine:3.7
-    PG_VERSION 10.4
-        Contains sql dump file for creation of new DB
-
-ComposeMediaKrakenDevicescan - Scans for HDHomerun, Chromecast and Roku
-    mediakraken/mkbase37
-    Uses hdhomerun-config and python hdhomerun
-    TODO: just install the alpine package and remove the hdhomerun libs
 
 ComposeMediaKrakenDownload - Media/image/etc downloader
     mediakraken/mkbase37
     youtube-dl
 
-ComposeMediaKrakenELK - Debugging stack
-    phusion/baseimage
-    Elasticsearch, Logstash, Kibana 6.2.3
-
 ComposeMediaKrakenFFProbe - FFprobe media
     mediakraken/mkbaseffmpeg
     apache-libcloud
 
-ComposeMediaKrakenFilebeat - Feeds file logs into ELK
-    debian:jessie
-    FILEBEAT_VERSION=5.6.1
-
-ComposeMediaKrakenHardware - Control hardware SBC, IR, LCD, audio/video devices, etc
-    mediakraken/mkbase37
-
 ComposeMediaKrakenMail - Email - full stack antivirus/etc
     ubuntu:16.04
     Postfix
-
-ComposeMediaKrakenMetadata - Downloads all metadata via limiters
-    mediakraken/mkbase37
-
-ComposeMediaKrakenMumble - Voice chat
-    alpine:3.6
-    MUMBLE_VERSION=1.2.19
-
-ComposeMediaKrakenMusicBrainz - Musicbrainz server
-    lsiobase/alpine:3.6
-    BRAINZ_VER="v-2018-05-09"
-
-ComposeMediaKrakenMythTV - MythTV backend server
-    phusion/baseimage:0.9.16
-    mythtv/mythweb
-
-ComposeMediaKrakenNginx - SSL Proxy and block ips
-    alpine:3.5
-    NGINX_VERSION 1.13.6
 
 ComposeMediaKrakenNginxRTMP - NGINX + RTMP-Module Image for H.264-Processing (e.g. RTMP, HLS)
     datarhei/ffmpeg:3.3
@@ -142,38 +227,8 @@ default settings for HLS live streaming
     ENV NGINX_RTMP_VERSION 1.1.11
     ENV FFMPEG_VERSION 3.3.2
 
-ComposeMediaKrakenOpenLDAP - OpenLDAP
-    gliderlabs/alpine:3.3
-
-ComposeMediaKrakenOpenSMTP - Email - barebones
-    alpine:3.4
-    Postfix
-
-ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
-    alpine:3.7
-
-ComposeMediaKrakenPrefetchTMDB - TMDB Preload
-    mediakraken/mkbase37
-
-ComposeMediaKrakenPrefetchTVMaze - TVMaze Preload
-    mediakraken/mkbase37
-
-ComposeMediaKrakenRabbitMQ - Used for backend messaging for application suite
-    alpine:3.7
-    RABBITMQ_VERSION 3.7.4
-
-ComposeMediaKrakenRedis - Used for user/password in the webserver Flask application
-    alpine:3.7
-    REDIS_VERSION 4.0.9
-
 ComposeMediaKrakenRipper - Used for ripping media
     mediakraken/mkbaseffmpeg
-
-ComposeMediaKrakenServer - Main server application
-    mediakraken/mkbase37
-
-ComposeMediaKrakenSlave - Main slave application
-    mediakraken/mkbasenodeffmpeg:latest
 
 ComposeMediaKrakenSlaveNvidia - Slave app
     mediakraken/mkbaseffmpegnvidia
@@ -191,25 +246,30 @@ ComposeMediaKrakenStreamVOD - Simple RTMP server that stream /dev/video0
     ENV NGINX_VOD_MODULE_VERSION 1.16
     ENV FFMPEG_VERSION 3.3
 
-ComposeMediaKrakenTeamspeak - Voice chat
-    alpine:latest
-    TS3_VERSION=3.0.13.8
-
 ComposeMediaKrakenTheater - Placeholder
     for requirements
 
-ComposeMediaKrakenTransmission - Runs transmission daemon
-    alpine:latest
-    transmission
+******** Not used ***************
 
-ComposeMediaKrakenWebServer - Main web application
-    mediakraken/mkbase37
+ComposeMediaKrakenBasePYPY - Container to build PYPY
+    alpine:3.6
+    pypy2-v5.9.0
+
+ComposeMediaKrakenFilebeat - Feeds file logs into ELK
+    debian:jessie
+    FILEBEAT_VERSION=5.6.1
+
+ComposeMediaKrakenMythTV - MythTV backend server
+    phusion/baseimage:0.9.16
+    mythtv/mythweb
+
+ComposeMediaKrakenOpenLDAP - OpenLDAP
+    gliderlabs/alpine:3.3
+
+ComposeMediaKrakenOpenSMTP - Email - barebones
+    alpine:3.4
+    Postfix
 
 ComposeMediaKrakenWireshark - For network sniffing
     debian:stretch-slim
     install wireshark and xpra to make wirehsark available via websocket
-
-dpage/pgadmin4 - PGAdmin4 for PostgreSQL
-
-portainer/portainer - Docker monitor
-
