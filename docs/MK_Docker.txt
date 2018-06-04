@@ -98,8 +98,6 @@ ComposeMediaKrakenOpenLDAP
 
 ComposeMediaKrakenOpenSMTP
 
-ComposeMediaKrakenPGAdmin4
-
 ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
 	alpine:3.7
 
@@ -140,4 +138,8 @@ ComposeMediaKrakenWebServer
 ComposeMediaKrakenWireshark - For network sniffing
 	debian:stretch-slim
 	install wireshark and xpra to make wirehsark available via websocket
+
+dpage/pgadmin4 - PGAdmin4 for PostgreSQL
+
+portainer/portainer - Docker monitor
 
