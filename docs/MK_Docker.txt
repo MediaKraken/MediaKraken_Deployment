@@ -123,9 +123,8 @@ ComposeMediaKrakenMusicBrainz - Musicbrainz server
     image: mediakraken/mkmusicbrainz
 
 ComposeMediaKrakenNginx - SSL Proxy and block ips
-    alpine:3.5
-    NGINX_VERSION 1.13.6
-    TODO: Alpine 3.7 bump
+    alpine:3.7
+    NGINX_VERSION 1.14.0
     image: mediakraken/mknginx
 
 ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
