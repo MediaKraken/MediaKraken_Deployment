@@ -177,7 +177,7 @@ def db_meta_tvshow_update_image(self, image_json, metadata_uuid):
 
 def db_meta_tvshow_images_to_update(self, image_type):
     """
-    # fetch tvmaze rows to update
+    # fetch tv rows to update
     """
     if image_type == 'tvmaze':
         self.db_cursor.execute("select mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\','\
