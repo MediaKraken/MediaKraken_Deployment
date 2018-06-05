@@ -244,9 +244,6 @@ def admin_server_settings():
             'metadata_source_down_pitchfork']
         settings_json['Metadata']['Source']['imvdb'] = request.form['metadata_source_down_imvdb']
         settings_json['Metadata']['Source']['omdb'] = request.form['metadata_source_down_omdb']
-        settings_json['Metadata']['Source'][''] = request.form[
-            'metadata_source_down_netflixroulette']
-
         settings_json['Docker Instances']['mumble'] = request.form['docker_mumble']
         settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
         settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']

@@ -107,8 +107,6 @@ def metadata_search(thread_db, provider_name, download_data):
         lookup_halt = True
     elif provider_name == 'musicbrainz':
         lookup_halt = True
-    elif provider_name == 'netflixroulette':
-        lookup_halt = True
     elif provider_name == 'omdb':
         lookup_halt = True
     elif provider_name == 'openlibrary':
