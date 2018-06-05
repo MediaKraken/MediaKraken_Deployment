@@ -236,10 +236,54 @@ ComposeMediaKrakenRedis - Used for user/password in the webserver Flask applicat
 ComposeMediaKrakenServer - Main server application
     mediakraken/mkbase37
     image: mediakraken/mkserver
+    PIP
+        TODO apache-libcloud
+        Babel
+        boto
+        docker==2.7
+        TODO dropbox
+        easysnmp
+        fastnumbers
+        TODO feedgen - Generate web feeds in both ATOM and RSS format
+        futures
+        google-api-python-client
+        httplib2
+        ipgetter
+        natsort
+        oauth2client
+        onedrivesdk
+        passwordmeter - Password strength measuring.
+        pika - Interface to RabbitMQ.  Will route client commands to slaves, etc received via Twisted.
+        pillow
+        psutil
+        psycopg2 - PosgreSQL connection
+        pycrypto
+        pylzma
+        pyOpenSSL
+        pysmb
+        TODO python-ldap
+        requests>=2.11.1
+        scandir
+        service_identity
+        setuptools
+        synolopy
+        titlecase
+        twisted - Event-driven networking engine used to communication server and clients.
+        uritemplate
 
 ComposeMediaKrakenSlave - Main slave application
     mediakraken/mkbasenodeffmpeg:latest
     image: mediakraken/mkslave
+    PIP
+        TODO apache-libcloud - To allow access to "cloud" media.
+        docker - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
+        elasticsearch - Logging purposes.  Import here since it's not a defualt in my ffmpeg images.
+        pika - Interface to RabbitMQ.  Used for launching metadata batch updates from "Cron".
+        TODO - move psutils so not everything that imports networking needs it
+        pyopenssl
+        service_identity
+        setuptools
+        streamlink - CLI for extracting streams from various websites
 
 ComposeMediaKrakenTeamspeak - Voice chat
     """
@@ -262,6 +306,72 @@ ComposeMediaKrakenTransmission - Runs transmission daemon (torrent server)
 ComposeMediaKrakenWebServer - Main web application
     mediakraken/mkbase37
     image: mediakraken/mkwebapp
+    PIP
+        apache-libcloud
+        appdirs==1.4.3
+        appnope==0.1.0
+        Babel - Internationalization Library used for proper commas and the like.
+        backports.shutil-get-terminal-size==1.0.0
+        beautifulsoup4
+        cssmin
+        cython
+        decorator==4.0.11
+        docker - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
+        enum34==1.1.6
+        Flask - Micro web framework
+        Flask-Assets - Library for managing the assets of your web application
+        TODO is the bcrypt needed by session/login?
+        Flask-Bcrypt - Provides bcrypt hashing utilities (password hash, etc)
+        Flask-KVSession - Session handling using server-side sessions. Used to interface with Redis.
+        Flask-Login - User session management.
+        Flask-Paginate>=0.5.1 - Pagination for the web pages.
+        flask-pika - Expose a Pika blocking channel inside of Flask
+            Used for chromecast events in web.
+        Flask-SQLAlchemy - Adds support for SQLAlchemy. Used for user register/login.
+        Flask-uWSGI-WebSocket - WebSockets for Flask apps powered by uWSGI.
+        Flask-WTF - Support WTForms, including CSRF, file upload, and reCAPTCHA.
+        gevent
+        google-api-python-client==1.6.2
+        httplib2.ca_certs_locater
+        httplib2==0.10.3
+        incremental>=16.10.1
+        ipgetter - Fetch external IP address from the internet.
+        ipython==5.3.0
+        ipython-genutils==0.2.0
+        natsort - Helps sort lists “naturally". Used for seasons/episodes/etc.
+        oauth2client==4.0.0
+        packaging==16.8
+        passwordmeter - Password strength measuring.
+        pathlib2==2.2.1
+        pdfkit - Convert html to pdf. Used for export of reports.
+        pexpect==4.2.1
+        pickleshare==0.7.4
+        prompt-toolkit==1.0.14
+        TODO - move psutils so not everything that imports networking needs it
+        psycopg2 - PosgreSQL connection
+        ptyprocess==0.5.1
+        pyasn1==0.2.3
+        pyasn1-modules==0.0.8
+        pyexcel
+        pygal
+        Pygments==2.2.0
+        pyparsing==2.2.0
+        # pysmb
+        python-stdnum
+        python-twitch
+        PyVimeo
+        rsa==3.4.2
+        scandir==1.5
+        simplegeneric==0.8.1
+        simplekv>=0.11.2
+        six==1.10.0
+        soundcloud
+        speedtest-cli - Upload/download speed tester
+        traitlets==4.3.2
+        transmissionrpc - Json-rpc client protocol for the bittorent client Transmission.
+        uritemplate==3.0.0
+        uwsgi - Runs Python WSGI applications.
+        wcwidth==0.1.7
 
 dpage/pgadmin4 - PGAdmin4 for PostgreSQL
     """
