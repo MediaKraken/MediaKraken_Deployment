@@ -65,6 +65,9 @@ ComposeMediaKrakenBase37Py3 - Base OS
     image: mediakraken/mkbase37py3
 
 ComposeMediaKrakenBaseFFMPEG - Base ffmpeg and ffprobe
+    """
+    Image that simply has ffmpeg and ffprobe for use by other containers.
+    """
     alpine:3.7 as builder
         ARG FDKAAC_VERSION=0.1.5
         ARG X264_VERSION=20180519-2245-stable
@@ -74,16 +77,26 @@ ComposeMediaKrakenBaseFFMPEG - Base ffmpeg and ffprobe
     image: mediakraken/mkbaseffmpeg
 
 ComposeMediaKrakenBaseNodeFFMPEG - Base ffmpeg with NODE server
+    """
+    Adds NODE to the base ffmpeg and ffprobe.
+        NODE is used by castnow
+    """
     mediakraken/mkbaseffmpeg:latest
         NODE_VERSION 10.1.0
     image: mediakraken/mkbasenodeffmpeg
 
 ComposeMediaKrakenBroadcast - Broadcasts discovery for clients to find MK Server
+    """
+    Standard port 9101 discovery returning the ip/port of the MK Server
+    """
     mediakraken/mkbase37
     pip docker - pull host IP for where the server is run to return to clients
     image: mediakraken/mkbroadcast
 
 ComposeMediaKrakenDatabase - PostgreSQL database server
+    """
+    Standard PostgreSQL server containing all metadata, media local, etc.
+    """
     https://github.com/docker-library/postgres/blob/master/10/alpine/Dockerfile
     alpine:3.7
     PG_VERSION 10.4
@@ -99,6 +112,10 @@ ComposeMediaKrakenDevicescan - Scans for HDHomerun, Chromecast and Roku
     image: mediakraken/mkdevicescan
 
 ComposeMediaKrakenELK - Debugging stack
+    """
+    Standard Elasticsearch, Logstash and Kibana for ease of debugging/logging.
+        Logstash is not enabled to save resources.
+    """
     https://github.com/spujadas/elk-docker
     phusion/baseimage
     Elasticsearch, Logstash, Kibana 6.2.3
@@ -134,10 +151,23 @@ ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
     image: mediakraken/mkpgbounce
 
 ComposeMediaKrakenPrefetchTMDB - TMDB Preload
+    """
+    Program stores download records for themoviedb.
+    Create records from uuid 1 to com_tmdb_metadata_id_max for movies.
+    TODO: Create records from uuid 1 to com_tmdb_metadata_tv_id_max for tv shows - Coded
+    Create records from uuid 1 to com_tmdb_metadata_bio_id_max for people
+        No reason to use this as the movie/tv show downloads will add person download records
+    """
     mediakraken/mkbase37
     image: mediakraken/mkprefetchtmdb
 
 ComposeMediaKrakenPrefetchTVMaze - TVMaze Preload
+    """
+    Program stores download records for tvmaze.
+    Uses the "shows" list pages from 1 to 1000.
+        Each page can list up to 50 shows.
+        Will exit from loop when the returned json is [].
+    """
     mediakraken/mkbase37
     image: mediakraken/mediakraken/mkprefetchtvmaze
 
