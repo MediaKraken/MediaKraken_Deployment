@@ -22,7 +22,6 @@ import json
 import os
 
 import requests
-import tmdbsimple as tmdb
 from tmdbv3api import TMDb
 from tmdbv3api import Movie
 from . import common_global

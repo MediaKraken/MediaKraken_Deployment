@@ -105,6 +105,11 @@ ComposeMediaKrakenDatabase - PostgreSQL database server
     image: mediakraken/mkdatabase
 
 ComposeMediaKrakenDevicescan - Scans for HDHomerun, Chromecast and Roku
+    """
+    When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
+    It will then write a file for the server to pikcup as it's on HOST network I can't
+        use Twisted, Rabbit, etc.
+    """
     mediakraken/mkbase37
     Uses hdhomerun-config and python hdhomerun
     TODO: just install the alpine package and remove the hdhomerun libs
@@ -115,6 +120,7 @@ ComposeMediaKrakenELK - Debugging stack
     """
     Standard Elasticsearch, Logstash and Kibana for ease of debugging/logging.
         Logstash is not enabled to save resources.
+    OPTIONAL
     """
     https://github.com/spujadas/elk-docker
     phusion/baseimage
@@ -126,25 +132,62 @@ ComposeMediaKrakenHardware - Control hardware SBC, IR, LCD, audio/video devices,
     image:
 
 ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata providers
+    """
+    This program searches, downloads, etc metadata from providers.
+    The program will launch a subprogram for each metadata provider specified in
+        the common_metadata_limiter.py file.
+    PIP
+        beautifulsoup4 - Webscraping used to pull tv intro/theme.
+        TODO discogs_client - API wrapper for Discogs
+        guessit - Guesses media name, season, episode, etc from filename.
+        imdbpie - API wrapper to IMDB JSON web service
+        musicbrainzngs - API wrapper for MusicBrainz
+        mutagen - Read/write audio metadata tags on files.
+        omdb - API wrapper around The Open Movie Database
+        pika - Interface to RabbitMQ.  Used for launching metadata batch updates from "Cron".
+        pitchfork - API wrapper around Pitchfork for reviews, cover art, etc of music.
+        TODO - move psutils so not everything that imports networking needs it
+        psutil - Retrieve information on running processes and system utilization
+        psycopg2 - PosgreSQL connection
+        TODO steam
+        tmdbv3api - API wrapper to themoviedb.
+        xmltodict - Converts XML to dict for ease of parsing
+    """
     mediakraken/mkbase37
     image: mediakraken/mkmetadata
 
 ComposeMediaKrakenMumble - Voice chat
+    """
+    Container that runs the Mumble chat server
+    OPTIONAL
+    """
     alpine:3.6
     MUMBLE_VERSION=1.2.19
     image: mediakraken/mkmumble
 
 ComposeMediaKrakenMusicBrainz - Musicbrainz server
+    """
+    Hosts a MusicBrainz server to provide metadata for music.
+    User must provide their own API key for this to work.
+    OPTIONAL
+    """
     lsiobase/alpine:3.6
     BRAINZ_VER="v-2018-05-09"
     image: mediakraken/mkmusicbrainz
 
 ComposeMediaKrakenNginx - SSL Proxy and block ips
+    """
+    Nginx proxy in front of the webserver container.
+    This provides SSL and list of IP's to block.
+    """
     alpine:3.7
     NGINX_VERSION 1.14.0
     image: mediakraken/mknginx
 
 ComposeMediaKrakenPGBouncer - Connection pooler for PostgreSQL
+    """
+    Connection pooler for PostgreSQL.
+    """
     https://github.com/brainsam/pgbouncer
     alpine:3.7
     TODO: grab new version since multibuild, so, should be smaller
@@ -157,6 +200,7 @@ ComposeMediaKrakenPrefetchTMDB - TMDB Preload
     TODO: Create records from uuid 1 to com_tmdb_metadata_tv_id_max for tv shows - Coded
     Create records from uuid 1 to com_tmdb_metadata_bio_id_max for people
         No reason to use this as the movie/tv show downloads will add person download records
+    OPTIONAL
     """
     mediakraken/mkbase37
     image: mediakraken/mkprefetchtmdb
@@ -167,16 +211,24 @@ ComposeMediaKrakenPrefetchTVMaze - TVMaze Preload
     Uses the "shows" list pages from 1 to 1000.
         Each page can list up to 50 shows.
         Will exit from loop when the returned json is [].
+    OPTIONAL
     """
     mediakraken/mkbase37
     image: mediakraken/mediakraken/mkprefetchtvmaze
 
 ComposeMediaKrakenRabbitMQ - Used for backend messaging for application suite
+    """
+    Messaging system that provides intercontainer communication without using Twisted.
+    Also provides specific queues for each type of request.
+    """
     alpine:3.7
     RABBITMQ_VERSION 3.7.4
     image: mediakraken/mkrabbitmq
 
 ComposeMediaKrakenRedis - Used for user/password in the webserver Flask application
+    """
+    Stores the user/password for the webserver Flask application.
+    """
     alpine:3.7
     REDIS_VERSION 4.0.9
     image: mediakraken/mkredis
@@ -190,11 +242,19 @@ ComposeMediaKrakenSlave - Main slave application
     image: mediakraken/mkslave
 
 ComposeMediaKrakenTeamspeak - Voice chat
+    """
+    Container that runs the Teamspeak chat server
+    OPTIONAL
+    """
     alpine:latest
     TS3_VERSION=3.0.13.8
     image: mediakraken/mkteamspeak
 
 ComposeMediaKrakenTransmission - Runs transmission daemon (torrent server)
+    """
+    Runs the transmission server that's accessed via it's api.
+    OPTIONAL
+    """
     alpine:latest
     transmission
     image: mediakraken/mktransmission
@@ -204,9 +264,17 @@ ComposeMediaKrakenWebServer - Main web application
     image: mediakraken/mkwebapp
 
 dpage/pgadmin4 - PGAdmin4 for PostgreSQL
+    """
+    Provides the webgui for PostgreSQL.
+    OPTIONAL
+    """
     https://hub.docker.com/r/dpage/pgadmin4/
 
 portainer/portainer - Docker monitor
+    """
+    Provides a webgui for monitoring of Docker and Docker Swarm.
+    OPTIONAL
+    """
     https://hub.docker.com/r/portainer/portainer/
 
 ***************** Organize ***************************
