@@ -144,8 +144,8 @@ def omdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'omdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
-             / common_metadata_limiter.API_LIMIT['omdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['openlibrary'][0]
+             / common_metadata_limiter.API_LIMIT['openlibrary'][1])
 def openlibrary(thread_db, download_data):
     """
     Rate limiter for openlibrary
