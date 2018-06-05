@@ -34,9 +34,11 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # setup the tvmaze class
 if option_config_json['API']['tvmaze'] is not None:
     TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
-    for page_ndx in range(1, 100):
+    for page_ndx in range(1, 1000):
         result = TVMAZE_CONNECTION.com_meta_tvmaze_show_list(page_ndx)
         show_list_json = json.loads(result)
+        if len(show_list_json) == 0:
+            break
         for show_ndx in range(0, len(show_list_json)):
             tvmaze_id = show_list_json[show_ndx]['id']
             # check to see if already downloaded
