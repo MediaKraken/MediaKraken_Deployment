@@ -125,12 +125,19 @@ def metadata_movie_list():
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['requested']
         except:
             request_status = None
+        # set queue
+        try:
+            queue_status \
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['queue']
+        except:
+            queue_status = None
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
                                                          'rating': rating_status,
-                                                         'request': request_status})
+                                                         'request': request_status,
+                                                         'queue': queue_status})
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
-                      rating_status, request_status))
+                      rating_status, request_status, queue_status))
     session['search_page'] = 'meta_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
