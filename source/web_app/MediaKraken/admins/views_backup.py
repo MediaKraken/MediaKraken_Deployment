@@ -17,7 +17,6 @@ from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import BackupEditForm
 from common import common_config_ini
-from common import common_cloud
 from common import common_file
 from common import common_global
 from common import common_pagination
@@ -25,8 +24,6 @@ from common import common_string
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
 
 
 def flash_errors(form):

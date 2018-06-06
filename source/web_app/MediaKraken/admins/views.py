@@ -26,7 +26,6 @@ from MediaKraken.admins.forms import BookAddForm
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_cloud
 from common import common_docker
 from common import common_global
 from common import common_network
@@ -39,8 +38,6 @@ ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
 
 
 def flash_errors(form):
@@ -249,7 +246,7 @@ def admin_server_settings():
         settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
         settings_json['Docker Instances']['portainer'] = request.form['docker_portainer']
         # TODO fix blank
-        #settings_json['Docker Instances']['smtp'] = request.form['']
+        # settings_json['Docker Instances']['smtp'] = request.form['']
         settings_json['Docker Instances']['teamspeak'] = request.form['docker_teamspeak']
         settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
         settings_json['Docker Instances']['wireshark'] = request.form['docker_wireshark']
