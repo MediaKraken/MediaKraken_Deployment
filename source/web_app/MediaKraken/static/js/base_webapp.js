@@ -3,26 +3,27 @@ $(function(){
         selector: 'div',
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
-		$.ajax({
-		        url: '/users/movie_status/' + $(this).attr('data-id') + '/' + key,
-		        type: 'POST',
-		        success: function(res) {
-		            var result = JSON.parse(res);
-		            if (result.status == 'OK') {
+        $.ajax({
+                url: '/users/movie_status/' + $(this).attr('data-id') + '/' + key,
+                type: 'POST',
+                success: function(res) {
+                    var result = JSON.parse(res);
+                    if (result.status == 'OK') {
 //                        window.location = '/users/movie/All';
                                 window.location = window.location.href
-		            } else {
-		                alert(result.status);
-		            }
-		        },
-		        error: function(error) {
-		            console.log(error);
-		        }
-		    });
+                    } else {
+                        alert(result.status);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         },
         items: {
             "watched": {name: "Set Watched", icon: "/static/images/eye.png"},
             "sync": {name: "Sync Media", icon: "/static/images/synced.jpg"},
+            "towatch": {name: "Add to Watch Queue", icon: "/static/images/rectangles.png"},
             "sep1": "---------",
             "favorite": {name: "Set Favorite", icon: "/static/images/favorite-mark.png"},
             "like": {name: "Set Upvote", icon: "/static/images/thumbs-up.png"},
@@ -40,25 +41,26 @@ $(function(){
         selector: 'div',
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
-		$.ajax({
-		        url: '/users/movie_metadata_status/' + $(this).attr('data-id') + '/' + key,
-		        type: 'POST',
-		        success: function(res) {
-		            var result = JSON.parse(res);
-		            if (result.status == 'OK') {
-//		                window.location = '/users/meta_movie_list';
+        $.ajax({
+                url: '/users/movie_metadata_status/' + $(this).attr('data-id') + '/' + key,
+                type: 'POST',
+                success: function(res) {
+                    var result = JSON.parse(res);
+                    if (result.status == 'OK') {
+//                      window.location = '/users/meta_movie_list';
                                 window.location = window.location.href
-		            } else {
-		                alert(result.status);
-		            }
-		        },
-		        error: function(error) {
-		            console.log(error);
-		        }
-		    });
+                    } else {
+                        alert(result.status);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         },
         items: {
             "watched": {name: "Set Watched", icon: "/static/images/eye.png"},
+            "towatch": {name: "Add to Watch Queue", icon: "/static/images/rectangles.png"},
             "sep1": "---------",
             "favorite": {name: "Set Favorite", icon: "/static/images/favorite-mark.png"},
             "like": {name: "Set Upvote", icon: "/static/images/thumbs-up.png"},
@@ -76,22 +78,22 @@ $(function(){
         selector: 'div',
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
-		$.ajax({
-		        url: '/users/tv_status/' + $(this).attr('data-id') + '/' + key,
-		        type: 'POST',
-		        success: function(res) {
-		            var result = JSON.parse(res);
-		            if (result.status == 'OK') {
+        $.ajax({
+                url: '/users/tv_status/' + $(this).attr('data-id') + '/' + key,
+                type: 'POST',
+                success: function(res) {
+                    var result = JSON.parse(res);
+                    if (result.status == 'OK') {
                                 window.location = window.location.href
-//		                window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
-		            } else {
-		                alert(result.status);
-		            }
-		        },
-		        error: function(error) {
-		            console.log(error);
-		        }
-		    });
+//                      window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
+                    } else {
+                        alert(result.status);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
             window.console && console.log(m) || alert(m);
         },
         items: {
@@ -101,6 +103,9 @@ $(function(){
             "sync": {name: "Sync Episdoe Media", icon: "/static/images/synced.jpg"},
             "sync_season": {name: "Sync Season Media", icon: "/static/images/synced.jpg"},
             "sync_show": {name: "Sync Show Media", icon: "/static/images/synced.jpg"},
+            "towatch": {name: "Add to Watch Queue", icon: "/static/images/rectangles.png"},
+            "towatch_season": {name: "Add Season to Watch Queue", icon: "/static/images/rectangles.png"},
+            "towatch_show": {name: "Add Show to Watch Queue", icon: "/static/images/rectangles.png"},
             "sep1": "---------",
             "favorite": {name: "Set Episdoe Favorite", icon: "/static/images/favorite-mark.png"},
             "favorite_season": {name: "Set Season Favorite", icon: "/static/images/favorite-mark.png"},
