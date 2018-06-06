@@ -148,6 +148,25 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  # Runs the cloud services
+  cloud:
+    build:
+      context: ./ComposeMediaKrakenCloud
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkcloud
+    depends_on:
+      - pgbounce
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_cloud.py 
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
   # Runs the web service for the main server application
   webserver:
     build:

@@ -93,6 +93,20 @@ ComposeMediaKrakenBroadcast - Broadcasts discovery for clients to find MK Server
     pip docker - pull host IP for where the server is run to return to clients
     image: mediakraken/mkbroadcast
 
+ComposeMediaKrakenCloud - Access cloud services.
+    """
+    Access cloud services. Targeting only storage for now.
+    """
+    mediakraken/mkbase37
+    image: mediakraken/mkcloud
+    PIP
+        apache-libcloud - To allow access to "cloud" media.
+        boto - Access Amazon S3
+        docker
+        dropbox - Access Dropbox
+        onedrivesdk
+        pika
+
 ComposeMediaKrakenDatabase - PostgreSQL database server
     """
     Standard PostgreSQL server containing all metadata, media local, etc.
@@ -237,7 +251,6 @@ ComposeMediaKrakenServer - Main server application
     mediakraken/mkbase37
     image: mediakraken/mkserver
     PIP
-        TODO apache-libcloud
         Babel
         boto
         docker==2.7
@@ -275,7 +288,6 @@ ComposeMediaKrakenSlave - Main slave application
     mediakraken/mkbasenodeffmpeg:latest
     image: mediakraken/mkslave
     PIP
-        TODO apache-libcloud - To allow access to "cloud" media.
         docker - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
         elasticsearch - Logging purposes.  Import here since it's not a defualt in my ffmpeg images.
         pika - Interface to RabbitMQ.  Used for launching metadata batch updates from "Cron".
@@ -307,7 +319,6 @@ ComposeMediaKrakenWebServer - Main web application
     mediakraken/mkbase37
     image: mediakraken/mkwebapp
     PIP
-        apache-libcloud
         appdirs==1.4.3
         appnope==0.1.0
         Babel - Internationalization Library used for proper commas and the like.

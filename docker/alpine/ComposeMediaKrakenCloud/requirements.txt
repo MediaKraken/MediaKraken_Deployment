@@ -1,0 +1,6 @@
+docker
+pika
+apache-libcloud
+boto
+dropbox
+onedrivesdk
