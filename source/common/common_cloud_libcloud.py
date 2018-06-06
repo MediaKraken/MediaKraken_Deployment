@@ -17,3 +17,6 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
+
+from libcloud.storage.types import Provider
+from libcloud.storage.providers import get_driver
