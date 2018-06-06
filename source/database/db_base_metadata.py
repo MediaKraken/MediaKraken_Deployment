@@ -312,3 +312,17 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
                                ' where mm_metadata_tvshow_guid = %s', (json.dumps(json_data),
                                                                        row_data[
                                                                            'mm_metadata_tvshow_guid']))
+
+def db_meta_queue_list(self, user_id, offset=None, records=None):
+    if offset is None:
+        self.db_cursor.execute('select mm_media_class_type,mm_media_class_guid,'
+                               'mm_media_class_display from mm_media_class'
+                               ' order by LOWER(mm_media_class_type)')
+    else:
+        self.db_cursor.execute('select mm_media_class_type,mm_media_class_guid,'
+                               'mm_media_class_display from mm_media_class'
+                               ' where mm_media_class_guid'
+                               ' in (select mm_media_class_guid from mm_media_class'
+                               ' order by LOWER(mm_media_class_type) offset %s limit %s)'
+                               ' order by LOWER(mm_media_class_type)', (offset, records))
+    return self.db_cursor.fetchall()

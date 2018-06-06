@@ -34,27 +34,11 @@ def user_queue_page():
     Display queue page
     """
     page, per_page, offset = common_pagination.get_page_items()
-    # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_web_tvmedia_list(offset, per_page)
-    for row_data in mediadata:
-        # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
-        # 3 - mm_metadata_tvshow_localimage_json
-        try:
-            media.append((row_data['mm_metadata_tvshow_name'],
-                          row_data['mm_metadata_tvshow_guid'],
-                          row_data['mm_metadata_tvshow_localimage_json'],
-                          common_internationalization.com_inter_number_format(
-                              row_data['mm_count'])))
-        except:
-            media.append((row_data['mm_metadata_tvshow_name'],
-                          row_data['mm_metadata_tvshow_guid'],
-                          None, common_internationalization.com_inter_number_format(
-                row_data['mm_count'])))
-    session['search_page'] = 'media_tv'
+
+    # TODO union read all four.....then if first "group"....add header in the html
+    media = g.db_connection.db_media_queue_list(offset, per_page)
+
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(

@@ -136,7 +136,8 @@ class MKServerDatabase(object):
         db_meta_fetch_media_id_json, \
         db_meta_fetch_series_media_id_json, \
         db_find_metadata_guid, \
-        db_meta_update_media_id_from_scudlee
+        db_meta_update_media_id_from_scudlee, \
+        db_meta_queue_list
     from database.db_base_metadata_anime import db_meta_anime_title_insert, \
         db_meta_anime_title_search, \
         db_meta_anime_update_meta_id, \
