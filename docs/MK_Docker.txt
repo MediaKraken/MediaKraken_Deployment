@@ -256,7 +256,6 @@ ComposeMediaKrakenServer - Main server application
         docker==2.7
         TODO dropbox
         easysnmp
-        fastnumbers
         TODO feedgen - Generate web feeds in both ATOM and RSS format
         futures
         google-api-python-client

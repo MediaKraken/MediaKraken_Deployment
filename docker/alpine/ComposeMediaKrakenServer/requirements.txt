@@ -3,7 +3,6 @@ boto
 synolopy
 onedrivesdk
 easysnmp
-fastnumbers
 natsort
 passwordmeter
 psycopg2
