@@ -2,6 +2,9 @@
 cp /home/metaman/MediaKraken_Deployment/source/subprogram_broadcast.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenBroadcast/src/.
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenBroadcast/src/.
 
+# cloud
+cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
+
 # debug
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDebug/src/.
 cp /home/metaman/MediaKraken_Deployment/source/main_debug.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDebug/src/.
