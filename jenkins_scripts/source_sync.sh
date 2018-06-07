@@ -4,10 +4,9 @@ cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKrak
 
 # cloud
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
-
-# debug
-cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDebug/src/.
-cp /home/metaman/MediaKraken_Deployment/source/main_debug.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDebug/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/network /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
+cp /home/metaman/MediaKraken_Deployment/source/subprogram*.py  /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
 
 # devicescanner
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
@@ -21,6 +20,12 @@ cp /home/metaman/MediaKraken_Deployment/source/main_download.py /home/metaman/Me
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenFFProbe/src/.
 cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenFFProbe/src/.
 cp /home/metaman/MediaKraken_Deployment/source/subprogram_ffprobe_metadata.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenFFProbe/src/.
+
+# hardware
+cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenHardware/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenHardware/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/network /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenHardware/src/.
+cp /home/metaman/MediaKraken_Deployment/source/main_hardware.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenHardware/src/.
 
 # metadata
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenMetadata/src/.
@@ -59,7 +64,6 @@ cp /home/metaman/MediaKraken_Deployment/source/subprogram*.py  /home/metaman/Med
 
 # slave
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
-cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/stream2chromecast/.
 cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 cp /home/metaman/MediaKraken_Deployment/source/main_server_slave.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenSlave/src/.
 

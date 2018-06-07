@@ -87,10 +87,10 @@ proc = subprocess.Popen(
     ['python', './subprogram_reactor_line.py'], shell=False)
 common_global.es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
 
-# startup the ffprobe here atm
-proc_ffprobe = subprocess.Popen(
-    ['python', './subprogram_ffprobe_metadata.py'], shell=False)
-common_global.es_inst.com_elastic_index('info', {'FFprobe PID': proc_ffprobe.pid})
+# # startup the ffprobe here atm
+# proc_ffprobe = subprocess.Popen(
+#     ['python', './subprogram_ffprobe_metadata.py'], shell=False)
+# common_global.es_inst.com_elastic_index('info', {'FFprobe PID': proc_ffprobe.pid})
 
 # fire up cron service
 proc_cron = subprocess.Popen(
@@ -130,7 +130,7 @@ if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
 
 # hold here
-# this will key off the twisted reactor...only reason is so watchdog doesn't shut down
+# this will key off the twisted reactor...only reason is so doesn't shut down
 proc.wait()
 
 # commit

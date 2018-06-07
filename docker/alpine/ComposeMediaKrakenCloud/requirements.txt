@@ -2,5 +2,7 @@ docker
 pika
 apache-libcloud
 boto
+pysmb
 dropbox
 onedrivesdk
+scandir

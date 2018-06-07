@@ -102,10 +102,12 @@ ComposeMediaKrakenCloud - Access cloud services.
     PIP
         apache-libcloud - To allow access to "cloud" media.
         boto - Access Amazon S3
-        docker
+        docker - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
         dropbox - Access Dropbox
-        onedrivesdk
-        pika
+        onedrivesdk - Interact with the OneDrive API
+        pika - Interface to RabbitMQ.
+        pysmb - Client-side SMB/CIFS protocol (SMB1 and SMB2). Used for file scan.
+        scandir - Directory iteration function. Used for file scan and os.walk.
 
 ComposeMediaKrakenDatabase - PostgreSQL database server
     """
@@ -127,7 +129,7 @@ ComposeMediaKrakenDevicescan - Scans for HDHomerun, Chromecast and Roku
     mediakraken/mkbase37
     Uses hdhomerun-config and python hdhomerun
     TODO: just install the alpine package and remove the hdhomerun libs
-    TODO: PERHAPS combine with hardware one
+    Can't combine with mkhardware as needs HOST network to scan for devices.
     image: mediakraken/mkdevicescan
 
 ComposeMediaKrakenELK - Debugging stack
@@ -143,7 +145,15 @@ ComposeMediaKrakenELK - Debugging stack
 
 ComposeMediaKrakenHardware - Control hardware SBC, IR, LCD, audio/video devices, etc
     mediakraken/mkbase37
-    image:
+    image: mediakraken/mkhardware
+    PIP
+        arduino-python
+        onkyo-eiscp - Control Onkyo A/V receivers over the network.
+        phue - Library for the Philips Hue system. Control lightbulbs.
+        pika - Interface to RabbitMQ.
+        pingo - Generic API for controlling boards with programmable IO pins.
+        python-nest - Python API and command line tool for talking to the Nest Thermostat
+        rxv - Automation Library for Yamaha equipment.
 
 ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata providers
     """
@@ -164,7 +174,8 @@ ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata pro
         psutil - Retrieve information on running processes and system utilization
         psycopg2 - PosgreSQL connection
         TODO steam
-        tmdbv3api - API wrapper to themoviedb.
+        tmdbsimple - API wrapper to themoviedb. Both are used.
+        tmdbv3api - API wrapper to themoviedb. Both are used.
         xmltodict - Converts XML to dict for ease of parsing
     """
     mediakraken/mkbase37
@@ -251,35 +262,27 @@ ComposeMediaKrakenServer - Main server application
     mediakraken/mkbase37
     image: mediakraken/mkserver
     PIP
-        Babel
-        boto
-        docker==2.7
-        TODO dropbox
-        easysnmp
+        # Babel
+        docker==2.7 - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
         TODO feedgen - Generate web feeds in both ATOM and RSS format
         futures
-        google-api-python-client
         httplib2
         ipgetter
         natsort
         oauth2client
-        onedrivesdk
         passwordmeter - Password strength measuring.
         pika - Interface to RabbitMQ.  Will route client commands to slaves, etc received via Twisted.
-        pillow
         psutil
         psycopg2 - PosgreSQL connection
-        pycrypto
-        pylzma
+        # pycrypto
+        # pylzma
         pyOpenSSL
-        pysmb
         TODO python-ldap
         requests>=2.11.1
-        scandir
         service_identity
         setuptools
-        synolopy
-        titlecase
+        # synolopy
+        # titlecase
         twisted - Event-driven networking engine used to communication server and clients.
         uritemplate
 
