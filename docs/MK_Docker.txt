@@ -366,7 +366,7 @@ ComposeMediaKrakenWebServer - Main web application
         pygal
         Pygments==2.2.0
         pyparsing==2.2.0
-        # pysmb
+        pysmb - Client-side SMB/CIFS protocol (SMB1 and SMB2). Used to verify media paths.
         python-stdnum
         python-twitch
         PyVimeo
