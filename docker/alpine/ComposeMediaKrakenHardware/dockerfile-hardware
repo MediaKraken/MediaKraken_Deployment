@@ -10,13 +10,15 @@ WORKDIR /mediakraken
 
 RUN apk add --update \
   gcc \
+  python-dev \
   && pip install -r requirements.txt \
   && apk del \
   py-pip \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt \
   && apk del \
-  gcc
+  gcc \
+  python-dev
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
