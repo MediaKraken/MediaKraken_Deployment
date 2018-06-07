@@ -10,6 +10,7 @@ WORKDIR /mediakraken
 
 RUN apk add --update \
   gcc \
+  linux-headers \
   python-dev \
   && pip install -r requirements.txt \
   && apk del \
@@ -18,6 +19,7 @@ RUN apk add --update \
   && rm requirements.txt \
   && apk del \
   gcc \
+  linux-headers \
   python-dev
 
 ADD wait-for-it-ash.sh /mediakraken
