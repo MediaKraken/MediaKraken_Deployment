@@ -333,6 +333,21 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
+  
+  # runs hardware
+  hardware:
+    build:
+      context: ./ComposeMediaKrakenHardware
+      dockerfile: dockerfile-hardware
+    environment:
+      - DEBUG=${DEBUG}
+    container_name: mkhardware
+    depends_on:
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_hardware.py
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
 
 #  # runs filebeat
 #  filebeat:

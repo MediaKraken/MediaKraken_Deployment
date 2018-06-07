@@ -205,6 +205,19 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  # runs hardware
+  hardware:
+    image: mediakraken/mkhardware:latest
+    environment:
+      - DEBUG=${DEBUG}
+    container_name: mkhardware
+    depends_on:
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_hardware.py
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
   # Runs the cloud services
   cloud:
     image: mediakraken/mkcloud:latest
