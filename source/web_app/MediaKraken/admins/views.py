@@ -197,24 +197,6 @@ def admin_books_add():
     return render_template("admin/admin_books_add.html", form=form)
 
 
-@blueprint.route("/server_stat")
-@blueprint.route("/server_stat/")
-@login_required
-@admin_required
-def admin_server_stat():
-    """
-    Display server stats via psutils
-    """
-    return render_template("admin/admin_server_stats.html",
-                           data_disk=common_system.com_system_disk_usage_all(
-                               True),
-                           data_cpu_usage=common_system.com_system_cpu_usage(
-                               True),
-                           data_mem_usage=common_system.com_system_virtual_memory(
-                               None),
-                           data_network_io=common_network.mk_network_io_counter())
-
-
 @blueprint.route("/settings", methods=['GET', 'POST'])
 @blueprint.route("/settings/", methods=['GET', 'POST'])
 @login_required
