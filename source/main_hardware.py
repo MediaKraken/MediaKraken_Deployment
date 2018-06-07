@@ -42,9 +42,11 @@ def on_message(channel, method_frame, header_frame, body):
         if json_message['Type'] == 'Lights':
             hardware_hue = common_hardware_hue.CommonHardwareHue(json_message['Target'])
             if json_message['Sub'] == 'OnOff':
-                hardware_hue.com_hardware_hue_light_set((1, 2, 3), 'on', json_message['Data'])
+                hardware_hue.com_hardware_hue_light_set(json_message['LightList'], 'on',
+                                                        json_message['Data'])
             elif json_message['Sub'] == 'Bright':
-                hardware_hue.com_hardware_hue_light_set((1, 2, 3), 'bri', json_message['Data'])
+                hardware_hue.com_hardware_hue_light_set(json_message['LightList'], 'bri',
+                                                        json_message['Data'])
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
