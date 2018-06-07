@@ -30,6 +30,7 @@ RUN apk add --update \
   nfs-utils \
   ca-certificates \
   openssl \
+  py2-numpy \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip install pycurl \
   && pip install -r requirements.txt \
