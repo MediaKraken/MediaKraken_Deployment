@@ -24,6 +24,7 @@ import os
 import requests
 from tmdbv3api import TMDb
 from tmdbv3api import Movie
+import tmdbsimple as tmdb
 from . import common_global
 from . import common_metadata
 from . import common_network
@@ -38,6 +39,7 @@ class CommonMetadataTMDB(object):
         self.API_KEY = option_config_json['API']['themoviedb']
         self.tmdbv3 = TMDb()
         self.tmdbv3.api_key = self.API_KEY
+        tmdb.API_KEY = self.API_KEY
         self.movie = Movie()
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):

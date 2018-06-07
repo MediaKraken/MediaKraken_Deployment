@@ -7,6 +7,7 @@ omdb
 pitchfork
 psycopg2
 tmdbv3api
+tmdbsimple
 xmltodict
 pika
 psutil
