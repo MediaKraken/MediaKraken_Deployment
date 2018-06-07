@@ -23,7 +23,6 @@ import subprocess
 import time
 
 import pika
-from common import common_config_ini
 from common import common_global
 from common import common_hardware_hue
 from common import common_logging_elasticsearch
@@ -49,9 +48,6 @@ def on_message(channel, method_frame, header_frame, body):
                                                         json_message['Data'])
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
-
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 # fire off wait for it script to allow rabbitmq connection
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
@@ -83,9 +79,3 @@ while True:
 
 # close the pika connection
 connection.cancel()
-
-# commit
-db_connection.db_commit()
-
-# close the database
-db_connection.db_close()
