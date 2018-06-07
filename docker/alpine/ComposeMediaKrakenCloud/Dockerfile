@@ -15,6 +15,8 @@ RUN apk add --update \
   python-dev \
   && rm -rf /var/cache/apk/*
 
+ADD wait-for-it-ash.sh /mediakraken
+
 # Copy the source files for the app
 ADD src /mediakraken
 
