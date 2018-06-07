@@ -26,6 +26,7 @@ psycopg2
 psutil
 cssmin
 incremental>=16.10.1
+pysmb
 python-stdnum
 Babel
 docker
