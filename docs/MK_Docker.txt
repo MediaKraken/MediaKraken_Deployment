@@ -147,7 +147,7 @@ ComposeMediaKrakenHardware - Control hardware SBC, IR, LCD, audio/video devices,
     mediakraken/mkbase37
     image: mediakraken/mkhardware
     PIP
-        arduino-python
+        arduino-python - Serial bridge for communicating with Arduino microcontroller boards
         onkyo-eiscp - Control Onkyo A/V receivers over the network.
         phue - Library for the Philips Hue system. Control lightbulbs.
         pika - Interface to RabbitMQ.
@@ -170,8 +170,6 @@ ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata pro
         omdb - API wrapper around The Open Movie Database
         pika - Interface to RabbitMQ.  Used for launching metadata batch updates from "Cron".
         pitchfork - API wrapper around Pitchfork for reviews, cover art, etc of music.
-        TODO - move psutils so not everything that imports networking needs it
-        psutil - Retrieve information on running processes and system utilization
         psycopg2 - PosgreSQL connection
         TODO steam
         tmdbsimple - API wrapper to themoviedb. Both are used.
@@ -267,12 +265,10 @@ ComposeMediaKrakenServer - Main server application
         TODO feedgen - Generate web feeds in both ATOM and RSS format
         futures
         httplib2
-        ipgetter
+        ipgetter - Fetch external IP address from the internet.
         natsort
-        oauth2client
         passwordmeter - Password strength measuring.
         pika - Interface to RabbitMQ.  Will route client commands to slaves, etc received via Twisted.
-        psutil
         psycopg2 - PosgreSQL connection
         # pycrypto
         # pylzma
@@ -293,7 +289,6 @@ ComposeMediaKrakenSlave - Main slave application
         docker - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
         elasticsearch - Logging purposes.  Import here since it's not a defualt in my ffmpeg images.
         pika - Interface to RabbitMQ.  Used for launching metadata batch updates from "Cron".
-        TODO - move psutils so not everything that imports networking needs it
         pyopenssl
         service_identity
         setuptools

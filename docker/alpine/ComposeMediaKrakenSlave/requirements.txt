@@ -5,4 +5,3 @@ streamlink
 docker
 pika
 elasticsearch
-psutil

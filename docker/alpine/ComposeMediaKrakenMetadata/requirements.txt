@@ -10,5 +10,4 @@ tmdbv3api
 tmdbsimple
 xmltodict
 pika
-psutil
 mutagen

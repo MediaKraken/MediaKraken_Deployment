@@ -5,10 +5,8 @@ service_identity
 requests>=2.11.1
 pyOpenSSL
 httplib2
-oauth2client
 uritemplate
 futures
-psutil
 twisted
 setuptools
 ipgetter
