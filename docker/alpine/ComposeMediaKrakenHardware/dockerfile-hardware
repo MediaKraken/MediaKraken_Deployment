@@ -14,7 +14,7 @@ RUN apk add --update \
   && apk del \
   py-pip \
   && rm -rf /var/cache/apk/* \
-  && rm requirements.txt
+  && rm requirements.txt \
   && apk del \
   gcc
 
