@@ -11,10 +11,12 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --update \
   alpine-sdk \
+  postgresql-client \
   py-setuptools \
   python-dev \
   && pip install -r requirements.txt \
   && apk del alpine-sdk \
+  postgresql-client \
   python-dev \
   && rm -rf /var/cache/apk/*
 

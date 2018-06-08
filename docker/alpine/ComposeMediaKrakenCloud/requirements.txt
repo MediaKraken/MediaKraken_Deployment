@@ -6,3 +6,4 @@ pysmb
 dropbox
 onedrivesdk
 scandir
+psycopg2
