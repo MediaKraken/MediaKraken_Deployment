@@ -1,68 +1,5 @@
 ******* Used Containers *****************
 
-ComposeMediaKrakenBase34 - Base OS
-    Alpine 3.4
-    Python 2.x
-    PIP
-    creates /mediakraken/
-    image: mediakraken/mkbase34
-    PIP
-        elasticsearch - ELK logging
-
-ComposeMediaKrakenBase34Py3 - Base OS
-    Alpine 3.4
-    Python 3.x
-    PIP3
-    creates /mediakraken/
-    image: mediakraken/mkbase34py3
-    PIP
-        elasticsearch - ELK logging
-
-ComposeMediaKrakenBase35 - Base OS
-    Alpine 3.5
-    Python 2.x
-    PIP
-    creates /mediakraken/
-    image: mediakraken/mkbase35
-    PIP
-        elasticsearch - ELK logging
-
-ComposeMediaKrakenBase35Py3 - Base OS
-    Alpine 3.5
-    Python 3.x
-    PIP3
-    creates /mediakraken/
-    image: mediakraken/mkbase35py3
-    PIP
-        elasticsearch - ELK logging
-
-ComposeMediaKrakenBase36 - Base OS
-    Alpine 3.6
-    Python 2.x
-    PIP
-    creates /mediakraken/
-    image: mediakraken/mkbase36
-    PIP
-        elasticsearch - ELK logging
-
-ComposeMediaKrakenBase36Py3 - Base OS
-    Alpine 3.6
-    Python 3.x
-    PIP3
-    creates /mediakraken/
-    image: mediakraken/mkbase36py3
-    PIP
-        elasticsearch - ELK logging
-
-ComposeMediaKrakenBase37 - Base OS
-    Alpine 3.7
-    Python 2.x
-    PIP
-    creates /mediakraken/
-    image: mediakraken/mkbase37
-    PIP
-        elasticsearch - ELK logging
-
 ComposeMediaKrakenBase37Py3 - Base OS
     Alpine 3.7
     Python 3.x
@@ -71,36 +8,6 @@ ComposeMediaKrakenBase37Py3 - Base OS
     image: mediakraken/mkbase37py3
     PIP
         elasticsearch - ELK logging
-
-ComposeMediaKrakenBaseFFMPEG - Base ffmpeg and ffprobe
-    """
-    Image that simply has ffmpeg and ffprobe for use by other containers.
-    """
-    alpine:3.7 as builder
-        ARG FDKAAC_VERSION=0.1.5
-        ARG X264_VERSION=20180519-2245-stable
-        ARG X265_VERSION=2.7
-        ARG FFMPEG_VERSION="4.0"
-        ARG OPENMPT_VERSION=0.2.8760-beta27
-    image: mediakraken/mkbaseffmpeg
-
-ComposeMediaKrakenBaseNodeFFMPEG - Base ffmpeg with NODE server
-    """
-    Adds NODE to the base ffmpeg and ffprobe.
-        NODE is used by castnow
-    """
-    mediakraken/mkbaseffmpeg:latest
-        NODE_VERSION 10.1.0
-    image: mediakraken/mkbasenodeffmpeg
-
-ComposeMediaKrakenBroadcast - Broadcasts discovery for clients to find MK Server
-    """
-    Standard port 9101 discovery returning the ip/port of the MK Server
-    """
-    mediakraken/mkbase37
-    image: mediakraken/mkbroadcast
-    PIP
-        docker - Pull host IP for where the server is run to return to clients
 
 ComposeMediaKrakenCloud - Access cloud services.
     """
@@ -117,52 +24,6 @@ ComposeMediaKrakenCloud - Access cloud services.
         pika - Interface to RabbitMQ.
         pysmb - Client-side SMB/CIFS protocol (SMB1 and SMB2). Used for file scan.
         scandir - Directory iteration function. Used for file scan and os.walk.
-
-ComposeMediaKrakenDatabase - PostgreSQL database server
-    """
-    Standard PostgreSQL server containing all metadata, media local, etc.
-    """
-    https://github.com/docker-library/postgres/blob/master/10/alpine/Dockerfile
-    alpine:3.7
-    PG_VERSION 10.4
-        Contains sql dump file for creation of new DB
-        TODO: drop --with-openssl as it'll be docker network encryped
-    image: mediakraken/mkdatabase
-
-ComposeMediaKrakenDevicescan - Scans for HDHomerun, Chromecast and Roku
-    """
-    When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
-    It will then write a file for the server to pikcup as it's on HOST network I can't
-        use Twisted, Rabbit, etc.
-    """
-    mediakraken/mkbase37
-    Uses hdhomerun-config and python hdhomerun
-    TODO: just install the alpine package and remove the hdhomerun libs
-    Can't combine with mkhardware as needs HOST network to scan for devices.
-    image: mediakraken/mkdevicescan
-
-ComposeMediaKrakenELK - Debugging stack
-    """
-    Standard Elasticsearch, Logstash and Kibana for ease of debugging/logging.
-        Logstash is not enabled to save resources.
-    OPTIONAL
-    """
-    https://github.com/spujadas/elk-docker
-    phusion/baseimage
-    Elasticsearch, Logstash, Kibana 6.2.3
-    image: mediakraken/mkelk
-
-ComposeMediaKrakenHardware - Control hardware SBC, IR, LCD, audio/video devices, etc
-    mediakraken/mkbase37
-    image: mediakraken/mkhardware
-    PIP
-        arduino-python - Serial bridge for communicating with Arduino microcontroller boards
-        onkyo-eiscp - Control Onkyo A/V receivers over the network.
-        phue - Library for the Philips Hue system. Control lightbulbs.
-        pika - Interface to RabbitMQ.
-        pingo - Generic API for controlling boards with programmable IO pins.
-        python-nest - Python API and command line tool for talking to the Nest Thermostat
-        rxv - Automation Library for Yamaha equipment.
 
 ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata providers
     """
@@ -188,25 +49,6 @@ ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata pro
     """
     mediakraken/mkbase37
     image: mediakraken/mkmetadata
-
-ComposeMediaKrakenMumble - Voice chat
-    """
-    Container that runs the Mumble chat server
-    OPTIONAL
-    """
-    alpine:3.6
-    MUMBLE_VERSION=1.2.19
-    image: mediakraken/mkmumble
-
-ComposeMediaKrakenMusicBrainz - Musicbrainz server
-    """
-    Hosts a MusicBrainz server to provide metadata for music.
-    User must provide their own API key for this to work.
-    OPTIONAL
-    """
-    lsiobase/alpine:3.6
-    BRAINZ_VER="v-2018-05-09"
-    image: mediakraken/mkmusicbrainz
 
 ComposeMediaKrakenNginx - SSL Proxy and block ips
     """
@@ -249,23 +91,6 @@ ComposeMediaKrakenPrefetchTVMaze - TVMaze Preload
     mediakraken/mkbase37
     image: mediakraken/mediakraken/mkprefetchtvmaze
 
-ComposeMediaKrakenRabbitMQ - Used for backend messaging for application suite
-    """
-    Messaging system that provides intercontainer communication without using Twisted.
-    Also provides specific queues for each type of request.
-    """
-    alpine:3.7
-    RABBITMQ_VERSION 3.7.4
-    image: mediakraken/mkrabbitmq
-
-ComposeMediaKrakenRedis - Used for user/password in the webserver Flask application
-    """
-    Stores the user/password for the webserver Flask application.
-    """
-    alpine:3.7
-    REDIS_VERSION 4.0.9
-    image: mediakraken/mkredis
-
 ComposeMediaKrakenServer - Main server application
     mediakraken/mkbase37
     image: mediakraken/mkserver
@@ -303,24 +128,6 @@ ComposeMediaKrakenSlave - Main slave application
         service_identity
         setuptools
         streamlink - CLI for extracting streams from various websites
-
-ComposeMediaKrakenTeamspeak - Voice chat
-    """
-    Container that runs the Teamspeak chat server
-    OPTIONAL
-    """
-    alpine:latest
-    TS3_VERSION=3.0.13.8
-    image: mediakraken/mkteamspeak
-
-ComposeMediaKrakenTransmission - Runs transmission daemon (torrent server)
-    """
-    Runs the transmission server that's accessed via it's api.
-    OPTIONAL
-    """
-    alpine:latest
-    transmission
-    image: mediakraken/mktransmission
 
 ComposeMediaKrakenWebServer - Main web application
     mediakraken/mkbase37
@@ -390,20 +197,6 @@ ComposeMediaKrakenWebServer - Main web application
         uritemplate==3.0.0
         uwsgi - Runs Python WSGI applications.
         wcwidth==0.1.7
-
-dpage/pgadmin4 - PGAdmin4 for PostgreSQL
-    """
-    Provides the webgui for PostgreSQL.
-    OPTIONAL
-    """
-    https://hub.docker.com/r/dpage/pgadmin4/
-
-portainer/portainer - Docker monitor
-    """
-    Provides a webgui for monitoring of Docker and Docker Swarm.
-    OPTIONAL
-    """
-    https://hub.docker.com/r/portainer/portainer/
 
 ***************** Organize ***************************
 
