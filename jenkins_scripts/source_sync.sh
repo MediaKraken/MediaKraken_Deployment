@@ -7,7 +7,7 @@ cp /home/metaman/MediaKraken_Deployment/source/common/common_logging_elasticsear
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
 cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
 cp -R /home/metaman/MediaKraken_Deployment/source/network /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
-cp /home/metaman/MediaKraken_Deployment/source/subprogram*.py  /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
+cp /home/metaman/MediaKraken_Deployment/source/main_cloud.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
 
 # devicescanner
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
