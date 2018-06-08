@@ -4,65 +4,73 @@ ComposeMediaKrakenBase34 - Base OS
     Alpine 3.4
     Python 2.x
     PIP
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase34
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBase34Py3 - Base OS
     Alpine 3.4
     Python 3.x
     PIP3
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase34py3
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBase35 - Base OS
     Alpine 3.5
     Python 2.x
     PIP
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase35
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBase35Py3 - Base OS
     Alpine 3.5
     Python 3.x
     PIP3
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase35py3
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBase36 - Base OS
     Alpine 3.6
     Python 2.x
     PIP
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase36
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBase36Py3 - Base OS
     Alpine 3.6
     Python 3.x
     PIP3
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase36py3
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBase37 - Base OS
     Alpine 3.7
     Python 2.x
     PIP
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase37
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBase37Py3 - Base OS
     Alpine 3.7
     Python 3.x
     PIP3
-        creates /mediakraken/
-        pip elasticsearch - ELK logging
+    creates /mediakraken/
     image: mediakraken/mkbase37py3
+    PIP
+        elasticsearch - ELK logging
 
 ComposeMediaKrakenBaseFFMPEG - Base ffmpeg and ffprobe
     """
@@ -90,8 +98,9 @@ ComposeMediaKrakenBroadcast - Broadcasts discovery for clients to find MK Server
     Standard port 9101 discovery returning the ip/port of the MK Server
     """
     mediakraken/mkbase37
-    pip docker - pull host IP for where the server is run to return to clients
     image: mediakraken/mkbroadcast
+    PIP
+        docker - Pull host IP for where the server is run to return to clients
 
 ComposeMediaKrakenCloud - Access cloud services.
     """
