@@ -11,6 +11,7 @@ RUN apk add --update \
   alpine-sdk \
   py-setuptools \
   python-dev \
+  && pip install -r requirements.txt \
   && apk del alpine-sdk \
   python-dev \
   && rm -rf /var/cache/apk/*
