@@ -4,6 +4,8 @@ FROM mediakraken/mkbase37
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image houses all the cloud access"
 
+# copy PIP requirements
+ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
