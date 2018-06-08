@@ -11,3 +11,4 @@ tmdbsimple
 xmltodict
 pika
 mutagen
+pytvdbapi

@@ -171,6 +171,7 @@ ComposeMediaKrakenMetadata - Downloads all metadata via limiters to metadata pro
         pika - Interface to RabbitMQ.  Used for launching metadata batch updates from "Cron".
         pitchfork - API wrapper around Pitchfork for reviews, cover art, etc of music.
         psycopg2 - PosgreSQL connection
+        pytvdbapi - Used in metadata tv lookup common code.
         TODO steam
         tmdbsimple - API wrapper to themoviedb. Both are used.
         tmdbv3api - API wrapper to themoviedb. Both are used.
