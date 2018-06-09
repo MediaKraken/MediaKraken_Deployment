@@ -356,6 +356,6 @@ def db_meta_queue_list(self, user_id, offset=None, records=None):
                                ' from mm_metadata_music_video '
                                ' where mm_metadata_music_video_user_json->UserStats->%s->>queue is True'
                                ' order by LOWER(mm_media_music_video_band))'
-                               ' offset %s limit %s)',
+                               ' offset %s limit %s',
                                (user_id, user_id, user_id, user_id, offset, records))
     return self.db_cursor.fetchall()
