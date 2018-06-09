@@ -17,6 +17,9 @@
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
+        <a href="{{ url_for('user_queue.user_queue_page') }}">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/rectangles_black.png" alt="Queue" height="200" width="200">
+        </a>
         <a href="{{ url_for('user_movie_genre.user_movie_page', genre='All') }}">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/movie_ticket.png" alt="Movie Ticket" height="200" width="200">
         </a>
@@ -61,9 +64,6 @@
         </a>
         <a href="{{ url_for('user_search.search_media') }}">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/magnifying-glass.png" alt="Search" height="200" width="200">
-        </a>
-        <a href="{{ url_for('user_queue.user_queue_page') }}">
-        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/rectangles_black.png" alt="Queue" height="200" width="200">
         </a>
         {% if data_resume_media %}
         <p>
