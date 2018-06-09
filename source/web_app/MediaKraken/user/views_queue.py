@@ -36,13 +36,13 @@ def user_queue_page():
     media = []
 
     # TODO union read all four.....then if first "group"....add header in the html
-    media = g.db_connection.db_media_queue_list(current_user.get_id(), offset, per_page)
+    media = g.db_connection.db_meta_queue_list(current_user.get_id(), offset, per_page)
 
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
                                                       None, None),
-                                                  record_name='tv shows',
+                                                  record_name='queue',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
