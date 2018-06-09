@@ -14,10 +14,12 @@ RUN apk add --update \
   postgresql-client \
   py-setuptools \
   python-dev \
+  postgresql-dev \
   && pip install -r requirements.txt \
   && apk del alpine-sdk \
   postgresql-client \
   python-dev \
+  postgresql-dev \
   && rm -rf /var/cache/apk/*
 
 ADD wait-for-it-ash.sh /mediakraken
