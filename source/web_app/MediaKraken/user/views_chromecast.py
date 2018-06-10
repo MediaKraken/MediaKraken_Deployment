@@ -53,7 +53,7 @@ def user_cast(action, guid):
                                           'User': current_user.get_id(),
                                           'Data': g.db_connection.db_read_media(guid)[
                                               'mm_media_path'],
-                                          'Target': '10.0.0.244'}))
+                                          'Target': '10.0.0.220'}))
         fpika.return_channel(ch)
     elif action == 'pause':
         ch = fpika.channel()

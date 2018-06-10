@@ -126,7 +126,7 @@ def read(queue_object):
                     audio_codec=None,
                     audio_channels=None)
                 container_command = 'castnow --address ' + json_message['Target'] \
-                                    + ' --myip 192.168.1.8 ' + subtitle_command \
+                                    + ' --myip 10.0.0.198 ' + subtitle_command \
                                     + ' --ffmpeg \'-c:v copy -c:a ac3' \
                                     + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
                                     + ' --tomp4 \'' + json_message['Data'] + '\''
