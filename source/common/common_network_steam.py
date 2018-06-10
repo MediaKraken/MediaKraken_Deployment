@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -17,5 +17,18 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-# from steam import SteamID
-# from steam import WebAPI
+
+from steam import SteamID
+
+
+class CommonNetworkSteam(object):
+    """
+    Class for interfacing with Valve Steam
+    """
+
+    def __init__(self, access_token):
+        pass
+
+
+def com_net_steam_id_from_user(user_name):
+    return SteamID.from_url('https://steamcommunity.com/id/%s', (user_name,))
