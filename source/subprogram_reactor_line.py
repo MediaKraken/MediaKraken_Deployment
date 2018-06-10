@@ -155,7 +155,7 @@ def read(queue_object):
                 common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
             common_global.es_inst.com_elastic_index('info',
                                                     {'container_command': container_command})
-            hwaccel = True
+            hwaccel = False
             docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                              name_container=name_container,
                                              container_command=container_command)
@@ -172,7 +172,7 @@ def read(queue_object):
             name_container = ((json_message['User'] + '_'
                                + str(uuid.uuid4()).replace('-', ''))[-30:])
             common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
-            hwaccel = True
+            hwaccel = False
             docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                              name_container=name_container,
                                              container_command=(
