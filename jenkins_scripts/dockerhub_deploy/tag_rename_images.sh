@@ -3,7 +3,6 @@ docker tag mk_appserver:latest mediakraken/mkserver:latest
 docker tag mk_broadcast:latest mediakraken/mkbroadcast:latest
 docker tag mk_cloud:latest mediakraken/mkcloud:latest
 docker tag mk_database:latest mediakraken/mkdatabase:latest
-docker tag mk_download mediakraken/mkdownload:latest
 #docker tag mk_devicescan:latest mediakraken/mkdevicescan:latest
 #docker tag mk_elk:latest mediakraken/mkelk:latest
 docker tag mk_ffprobe mediakraken/mkffprobe:latest
