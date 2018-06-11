@@ -216,6 +216,12 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkopenldap',
                                        ports={"389": 389, "636": 636},
+                                       volumes={'/var/opt/mediakraken/openldap/conf':
+                                                    {'bind': '/etc/openldap',
+                                                     'mode': 'rw'},
+                                                '/var/opt/mediakraken/openldap/data': {
+                                                    'bind': '/var/lib/openldap/openldap-data',
+                                                    'mode': 'rw'}},
                                        network='mk_mediakraken_network')
 
     def com_docker_run_pgadmin(self, user_email, user_password):
@@ -277,7 +283,8 @@ class CommonDocker(object):
         return self.cli.containers.run(image='mediakraken/mktransmission',
                                        network='mk_mediakraken_network',
                                        detach=True,
-                                       ports={"9091": 9091, "51413/tcp": 51413, "51413/udp": 51413},
+                                       ports={"9091": 9091, "51413/tcp": 51413,
+                                              "51413/udp": 51413},
                                        command='/start-transmission.sh',
                                        volumes={'/var/opt/mediakraken/transmission/downloads':
                                                     {'bind': '/transmission/downloads',
