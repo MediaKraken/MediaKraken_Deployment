@@ -132,19 +132,6 @@ def musicbrainz(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'musicbrainz', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['netflixroulette'][0]
-             / common_metadata_limiter.API_LIMIT['netflixroulette'][1])
-def netflixroulette(thread_db, download_data):
-    """
-    Rate limiter for NetflixRoulette
-    """
-    common_global.es_inst.com_elastic_index('info', {"here i am in netflixroulette rate":
-        datetime.datetime.now().strftime(
-            "%H:%M:%S.%f")})
-    metadata_general.metadata_process(
-        thread_db, 'netflixroulette', download_data)
-
-
 @ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
              / common_metadata_limiter.API_LIMIT['omdb'][1])
 def omdb(thread_db, download_data):
@@ -157,8 +144,8 @@ def omdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'omdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
-             / common_metadata_limiter.API_LIMIT['omdb'][1])
+@ratelimited(common_metadata_limiter.API_LIMIT['openlibrary'][0]
+             / common_metadata_limiter.API_LIMIT['openlibrary'][1])
 def openlibrary(thread_db, download_data):
     """
     Rate limiter for openlibrary
@@ -384,8 +371,6 @@ while True:
             imvdb(thread_db, row_data)
         elif content_providers == 'isbndb':
             isbndb(thread_db, row_data)
-        elif content_providers == 'netflixroulette':
-            netflixroulette(thread_db, row_data)
         elif content_providers == 'omdb':
             omdb(thread_db, row_data)
         elif content_providers == 'pitchfork':

@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_periodical", __name__, url_prefix='/users',
@@ -17,13 +17,12 @@ from common import common_config_ini
 from common import common_global
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_periodical_list')
-@blueprint.route('/meta_periodical_list/')
+@blueprint.route('/meta_periodical_list', methods=['GET', 'POST'])
+@blueprint.route('/meta_periodical_list/', methods=['GET', 'POST'])
 @login_required
 def metadata_periodical_list():
     """
@@ -31,12 +30,8 @@ def metadata_periodical_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     item_list = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_book_list(offset, per_page,
-                                                      request.form['search_text'])
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_book_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_book_list(offset, per_page)
     for item_data in mediadata:
@@ -44,6 +39,7 @@ def metadata_periodical_list():
         item_image = "/static/images/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
+    session['search_page'] = 'meta_periodical'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -52,7 +48,7 @@ def metadata_periodical_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_periodical_list.html', form=form,
+    return render_template('users/metadata/meta_periodical_list.html',
                            media_person=item_list,
                            page=page,
                            per_page=per_page,

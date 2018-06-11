@@ -26,7 +26,6 @@ from MediaKraken.admins.forms import BookAddForm
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_cloud
 from common import common_docker
 from common import common_global
 from common import common_network
@@ -39,8 +38,6 @@ ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
 
 
 def flash_errors(form):
@@ -200,24 +197,6 @@ def admin_books_add():
     return render_template("admin/admin_books_add.html", form=form)
 
 
-@blueprint.route("/server_stat")
-@blueprint.route("/server_stat/")
-@login_required
-@admin_required
-def admin_server_stat():
-    """
-    Display server stats via psutils
-    """
-    return render_template("admin/admin_server_stats.html",
-                           data_disk=common_system.com_system_disk_usage_all(
-                               True),
-                           data_cpu_usage=common_system.com_system_cpu_usage(
-                               True),
-                           data_mem_usage=common_system.com_system_virtual_memory(
-                               None),
-                           data_network_io=common_network.mk_network_io_counter())
-
-
 @blueprint.route("/settings", methods=['GET', 'POST'])
 @blueprint.route("/settings/", methods=['GET', 'POST'])
 @login_required
@@ -244,15 +223,12 @@ def admin_server_settings():
             'metadata_source_down_pitchfork']
         settings_json['Metadata']['Source']['imvdb'] = request.form['metadata_source_down_imvdb']
         settings_json['Metadata']['Source']['omdb'] = request.form['metadata_source_down_omdb']
-        settings_json['Metadata']['Source'][''] = request.form[
-            'metadata_source_down_netflixroulette']
-
         settings_json['Docker Instances']['mumble'] = request.form['docker_mumble']
         settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
         settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
         settings_json['Docker Instances']['portainer'] = request.form['docker_portainer']
         # TODO fix blank
-        #settings_json['Docker Instances']['smtp'] = request.form['']
+        # settings_json['Docker Instances']['smtp'] = request.form['']
         settings_json['Docker Instances']['teamspeak'] = request.form['docker_teamspeak']
         settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
         settings_json['Docker Instances']['wireshark'] = request.form['docker_wireshark']

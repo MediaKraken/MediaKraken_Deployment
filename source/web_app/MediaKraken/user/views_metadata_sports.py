@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_sports", __name__, url_prefix='/users',
@@ -16,7 +16,6 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -29,16 +28,11 @@ def metadata_sports_list():
     Display sports metadata list
     """
     page, per_page, offset = common_pagination.get_page_items()
-    media = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_sports_list(offset, per_page,
-                                                        request.form['search_text'])
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_sports_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
-
+    session['search_page'] = 'meta_sports'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),
@@ -46,7 +40,7 @@ def metadata_sports_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_sports_list.html', form=form,
+    return render_template('users/metadata/meta_sports_list.html',
                            media_sports_list=mediadata,
                            page=page,
                            per_page=per_page,

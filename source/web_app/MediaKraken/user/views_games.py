@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_games", __name__,
@@ -16,7 +16,6 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -29,17 +28,12 @@ def user_games_list():
     Display games page
     """
     page, per_page, offset = common_pagination.get_page_items()
-
-    media = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
+    if session['search_text'] is not None:
         mediadata = g.db_connection.db_meta_game_system_list(offset, per_page,
-                                                             request.form['search_text'])
+                                                             session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_game_system_list(offset, per_page)
-
+    session['search_page'] = 'media_games'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.
@@ -48,8 +42,7 @@ def user_games_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-
-    return render_template("users/user_game_list.html", form=form,
+    return render_template("users/user_game_list.html", media=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -81,18 +74,15 @@ def metadata_game_detail(guid):
 
 @blueprint.route('/meta_game_system_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_game_system_list/', methods=['GET', 'POST'])
+@blueprint.route('/meta_game_system_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 def metadata_game_system_list():
     """
     Display game system metadata
     """
     page, per_page, offset = common_pagination.get_page_items()
-    form = SearchForm(request.form)
     if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page,
-                                                                  request.form['search_text'])
+        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, search_text)
     else:
         mediadata = g.db_connection.db_meta_game_system_list(
             offset, per_page)
@@ -104,7 +94,7 @@ def metadata_game_system_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_game_system_list.html', form=form,
+    return render_template('users/metadata/meta_game_system_list.html',
                            media_game_system=mediadata,
                            page=page,
                            per_page=per_page,

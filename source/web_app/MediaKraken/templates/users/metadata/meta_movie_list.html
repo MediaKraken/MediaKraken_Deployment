@@ -9,13 +9,6 @@
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="/static/css/listnav.css">
     </head>
-    <form id="SearchForm" class="form form-metamovie" method="POST" action="{{ url_for('user_metadata_movie.metadata_movie_list') }}" role="form">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{form.search_text.label}}
-            {{form.search_text(placeholder="Search string", class_="form-control")}}
-        </div>
-    </form>
     {% if media_movie %}
     {{ pagination.info }}
     {{ pagination.links }}
@@ -35,6 +28,9 @@
                     {% if row_data[6] != None %}
                     <img class="request_icon" src="/static/images/add-button.png" height="20" width="20">
                     {% endif %}
+                    {% if row_data[7] != None %}
+                    <img class="queue_icon" src="/static/images/rectangles.png" height="20" width="20">
+                    {% endif %}
                     </a>
                     {% if row_data[2] == "" %}
                         <div class="description">
@@ -53,6 +49,12 @@
                     {% endif %}
                     {% if row_data[5] != None %}
                     <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] != None %}
+                    <img class="request_icon" src="/static/images/add-button.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[7] != None %}
+                    <img class="queue_icon" src="/static/images/rectangles.png" height="20" width="20">
                     {% endif %}
                     </a>
                     <div class="description">
@@ -76,16 +78,6 @@
             // Initialize
             var bLazy = new Blazy();
         })();
-    </script>
-    <script src="/static/js/jquery-listnav.min.js"></script>
-    <script>
-        $("#mkmediaList").listnav({
-            includeAll: true,
-            includeOther: true,
-            includeNums: true,
-            flagDisabled: true,
-            removeDisabled: true,
-            showCounts: true,});
     </script>
 </body>
 {% endblock %}

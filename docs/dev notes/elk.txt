@@ -1,6 +1,0 @@
-# need to run from alpine host when Docker
-sysctl -w kernel.pax.softmode=1
-sysctl -w vm.max_map_count=262144
-
-# needs to run from debian when Docker
-sysctl -w vm.max_map_count=262144

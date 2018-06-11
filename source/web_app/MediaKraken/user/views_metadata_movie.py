@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import current_user
 from flask_login import login_required
 
@@ -19,7 +19,6 @@ from common import common_global
 from common import common_internationalization
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -91,12 +90,8 @@ def metadata_movie_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page,
-                                                      request.form['search_text'])
+    if session['search_text'] is not None:
+        metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
     else:
         metadata = g.db_connection.db_meta_movie_list(offset, per_page)
     for row_data in metadata:
@@ -130,12 +125,20 @@ def metadata_movie_list():
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['requested']
         except:
             request_status = None
+        # set queue
+        try:
+            queue_status \
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['queue']
+        except:
+            queue_status = None
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
                                                          'rating': rating_status,
-                                                         'request': request_status})
+                                                         'request': request_status,
+                                                         'queue': queue_status})
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
-                      rating_status, request_status))
+                      rating_status, request_status, queue_status))
+    session['search_page'] = 'meta_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -144,7 +147,7 @@ def metadata_movie_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_movie_list.html', form=form,
+    return render_template('users/metadata/meta_movie_list.html',
                            media_movie=media,
                            page=page,
                            per_page=per_page,

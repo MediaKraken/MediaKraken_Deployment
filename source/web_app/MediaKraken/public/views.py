@@ -11,8 +11,7 @@ from MediaKraken.public.forms import LoginForm
 from MediaKraken.user.forms import RegisterForm
 from MediaKraken.user.models import User
 from MediaKraken.utils import flash_errors
-from flask import (Blueprint, request, render_template,
-                   flash, url_for, redirect, session)
+from flask import Blueprint, request, render_template, flash, url_for, redirect, session
 from flask_login import current_user
 from flask_login import login_user, login_required, logout_user
 
@@ -31,6 +30,10 @@ def home():
     """
     Display home page
     """
+    if 'search_text' in session:
+        pass
+    else:
+        session['search_text'] = None
     form = LoginForm(request.form)
     # Handle logging in
     if request.method == 'POST':

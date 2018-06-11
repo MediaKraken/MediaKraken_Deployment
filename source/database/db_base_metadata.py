@@ -312,3 +312,58 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
                                ' where mm_metadata_tvshow_guid = %s', (json.dumps(json_data),
                                                                        row_data[
                                                                            'mm_metadata_tvshow_guid']))
+
+
+def db_meta_queue_list(self, user_id, offset=None, records=None):
+    if offset is None:
+        self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'
+                               ' from mm_metadata_movie'
+                               ' where mm_metadata_user_json->\'UserStats\'->%s->>\'queue\' is True'
+                               ' order by LOWER(mm_media_name))'
+                               ' UNION ALL '
+                               '(select mm_metadata_tvshow_guid, mm_metadata_tvshow_name'
+                               ' from mm_metadata_tvshow '
+                               ' where mm_metadata_tvshow_user_json->\'UserStats\'->%s->>\'queue\' '
+                               'is True'
+                               ' order by LOWER(mm_metadata_tvshow_name))'
+                               ' UNION ALL '
+                               '(select mm_metadata_music_guid, mm_metadata_music_name'
+                               ' from mm_metadata_music '
+                               ' where mm_metadata_music_user_json->\'UserStats\'->%s->>\'queue\' '
+                               'is True'
+                               ' order by LOWER(mm_metadata_music_name))'
+                               ' UNION ALL '
+                               '(select mm_metadata_music_video_guid, mm_media_music_video_band'
+                               ' from mm_metadata_music_video '
+                               ' where '
+                               'mm_metadata_music_video_user_json->\'UserStats\'->%s->>\'queue\' '
+                               'is True'
+                               ' order by LOWER(mm_media_music_video_band))',
+                               (user_id, user_id, user_id, user_id,))
+    else:
+        self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'
+                               ' from mm_metadata_movie '
+                               ' where mm_metadata_user_json->\'UserStats\'->%s->>\'queue\' is True'
+                               ' order by LOWER(mm_media_name))'
+                               ' UNION ALL '
+                               '(select mm_metadata_tvshow_guid, mm_metadata_tvshow_name'
+                               ' from mm_metadata_tvshow '
+                               ' where mm_metadata_tvshow_user_json->\'UserStats\'->%s->>\'queue\' '
+                               'is True'
+                               ' order by LOWER(mm_metadata_tvshow_name))'
+                               ' UNION ALL '
+                               '(select mm_metadata_music_guid, mm_metadata_music_name'
+                               ' from mm_metadata_music '
+                               ' where mm_metadata_music_user_json->\'UserStats\'->%s->>\'queue\' '
+                               'is True'
+                               ' order by LOWER(mm_metadata_music_name))'
+                               ' UNION ALL '
+                               '(select mm_metadata_music_video_guid, mm_media_music_video_band'
+                               ' from mm_metadata_music_video '
+                               ' where '
+                               'mm_metadata_music_video_user_json->\'UserStats\'->%s->>\'queue\' '
+                               'is True'
+                               ' order by LOWER(mm_media_music_video_band))'
+                               ' offset %s limit %s',
+                               (user_id, user_id, user_id, user_id, offset, records))
+    return self.db_cursor.fetchall()

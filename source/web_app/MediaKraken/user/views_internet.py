@@ -22,7 +22,6 @@ from common import common_network_twitch
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -138,7 +137,7 @@ def user_internet_twitch_stream_detail(stream_name):
     """
     # twitch_api = common_network_Twitch.com_Twitch_API()
     # media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
-    # common_global.es_inst.com_elastic_index('info', {'stuff':"str detail: %s", media)
+    common_global.es_inst.com_elastic_index('info', {'twitch stream_name': stream_name})
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
 
 

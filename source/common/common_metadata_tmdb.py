@@ -22,9 +22,9 @@ import json
 import os
 
 import requests
-import tmdbsimple as tmdb
-from tmdbv3api import TMDb
+from tmdbv3api import TMDb, TV
 from tmdbv3api import Movie
+import tmdbsimple as tmdb
 from . import common_global
 from . import common_metadata
 from . import common_network
@@ -39,7 +39,39 @@ class CommonMetadataTMDB(object):
         self.API_KEY = option_config_json['API']['themoviedb']
         self.tmdbv3 = TMDb()
         self.tmdbv3.api_key = self.API_KEY
+        tmdb.API_KEY = self.API_KEY
         self.movie = Movie()
+        self.tv = TV()
+
+    def com_tmdb_search_tv(self, tv_title, tv_year=None, id_only=False):
+        """
+        Search for tv show via title and year
+        """
+        common_global.es_inst.com_elastic_index('info', {"tmdb tv search": tv_title,
+                                                         'year': tv_year})
+        try:
+            search = self.tv.search(tv_title.replace('\u25ba', ''))
+        except:
+            search = self.tv.search(tv_title.encode('utf-8'))
+        common_global.es_inst.com_elastic_index('info', {'search': str(search)})
+        if type(search) != list:
+            for res in search:
+                common_global.es_inst.com_elastic_index('info', {"result": res.title, 'id': res.id,
+                                                                 'date':
+                                                                     res.release_date.split('-', 1)[
+                                                                         0]})
+                if tv_year is not None and (str(tv_year) == res.release_date.split('-', 1)[0]
+                                               or str(int(tv_year) - 1) ==
+                                               res.release_date.split('-', 1)[0]
+                                               or str(int(tv_year) + 1) ==
+                                               res.release_date.split('-', 1)[0]):
+                    if not id_only:
+                        return 'info', self.com_tmdb_metadata_tv_by_id(res.id)
+                    else:
+                        return 'idonly', res.id  # , s['title']
+            return 're', search.results
+        else:
+            return None, None
 
     def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):
         """
@@ -69,39 +101,26 @@ class CommonMetadataTMDB(object):
                                                or str(int(movie_year) + 1) ==
                                                res.release_date.split('-', 1)[0]):
                     if not id_only:
-                        return 'info', self.com_tmdb_meta_by_id(res.id)
+                        return 'info', self.com_tmdb_metadata_by_id(res.id)
                     else:
                         return 'idonly', res.id  # , s['title']
             return 're', search.results
         else:
             return None, None
 
-        # search = tmdb.Search()
-        # common_global.es_inst.com_elastic_index('info', {'search': search})
-        # response = search.movie(query=movie_title)
-        # common_global.es_inst.com_elastic_index('info', {'response': response})
-        # common_global.es_inst.com_elastic_index('info', {'search results': search})
-        # for s in search.results:
-        #     common_global.es_inst.com_elastic_index('info', {"result": s['title'], 'id': s['id'],
-        #                                                      'date':
-        #                                                          s['release_date'].split('-', 1)[
-        #                                                              0]})
-        #     if movie_year is not None and (str(movie_year) == s['release_date'].split('-', 1)[0]
-        #                                    or str(int(movie_year) - 1) ==
-        #                                    s['release_date'].split('-', 1)[0]
-        #                                    or str(int(movie_year) + 1) ==
-        #                                    s['release_date'].split('-', 1)[0]):
-        #         if not id_only:
-        #             return 'info', self.com_tmdb_meta_by_id(s['id'])
-        #         else:
-        #             return 'idonly', s['id']  # , s['title']
-        # return 're', search.results
-
     def com_tmdb_metadata_by_id(self, tmdb_id):
         """
         Fetch all metadata by id to reduce calls
         """
         return requests.get('https://api.themoviedb.org/3/movie/%s'
+                            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
+                            (tmdb_id, self.API_KEY))
+
+    def com_tmdb_metadata_tv_by_id(self, tmdb_id):
+        """
+        Fetch all metadata by id to reduce calls
+        """
+        return requests.get('https://api.themoviedb.org/3/tv/%s'
                             '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                             (tmdb_id, self.API_KEY))
 

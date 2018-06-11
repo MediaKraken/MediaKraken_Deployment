@@ -8,11 +8,21 @@ LABEL Description="This image holds the hardware app"
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN pip install -r requirements.txt \
+RUN apk add --update \
+  gcc \
+  linux-headers \
+  musl-dev \
+  python-dev \
+  && pip install -r requirements.txt \
   && apk del \
   py-pip \
   && rm -rf /var/cache/apk/* \
-  && rm requirements.txt
+  && rm requirements.txt \
+  && apk del \
+  gcc \
+  linux-headers \
+  musl-dev \
+  python-dev
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app

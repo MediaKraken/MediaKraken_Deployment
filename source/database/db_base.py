@@ -17,14 +17,13 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-
+import multiprocessing
 import os
 import sys
 
 import psycopg2
 import psycopg2.extras
 from common import common_global
-from common import common_system
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
 
 
@@ -50,7 +49,7 @@ def db_open(self, db_prod=True):
         cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
-                           common_system.com_system_cpu_count())
+                           multiprocessing.cpu_count())
     # do here since the db cursor is created now
     if db_prod == True:
         # verify the trigram extension is enabled for the database

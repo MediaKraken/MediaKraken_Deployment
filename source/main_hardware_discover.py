@@ -19,15 +19,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from common import common_file
-from common import common_global
+# from common import common_global
 from common import common_hardware_chromecast
 from common import common_hardware_hdhomerun
 from common import common_hardware_roku_network
-from common import common_logging_elasticsearch
+# from common import common_logging_elasticsearch
 from common import common_string
 
-# start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
+# start logging - REMOVED SINCE RUNS AS HOST NETWORK
+#common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
 
 media_devices = []
 
@@ -35,8 +35,8 @@ media_devices = []
 tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
-    common_global.es_inst.com_elastic_index('info', {
-        'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
+    # common_global.es_inst.com_elastic_index('info', {
+    #     'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
     media_devices.append({'HDHomeRun': {'Model': row_tuner.get_var(item='/sys/model'),
                                         'HWModel': row_tuner.get_var(item='/sys/hwmodel'),
                                         'Name': row_tuner.get_name(),
@@ -49,14 +49,14 @@ for row_tuner in tuner_api.com_hdhomerun_list():
 
 # chromecast discover
 for chromecast_ip, data_value in common_hardware_chromecast.com_hard_chrome_discover():
-    common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
+    # common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
     media_devices.append({'Chromecast': {'Chrome IP': chromecast_ip,
                                          'Chrome Model': data_value[0],
                                          'Chrome Name': data_value[1]}})
 
 # roku discover
 for roku in common_hardware_roku_network.com_roku_network_discovery():
-    common_global.es_inst.com_elastic_index('info', {'roku out': roku})
+    # common_global.es_inst.com_elastic_index('info', {'roku out': roku})
     media_devices.append({'Roku': roku})
 
 common_file.com_file_save_data('/mediakraken/devices/device_scan.txt',

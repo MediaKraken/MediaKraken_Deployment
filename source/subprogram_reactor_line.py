@@ -126,7 +126,7 @@ def read(queue_object):
                     audio_codec=None,
                     audio_channels=None)
                 container_command = 'castnow --address ' + json_message['Target'] \
-                                    + ' --myip 192.168.1.8 ' + subtitle_command \
+                                    + ' --myip 10.0.0.198 ' + subtitle_command \
                                     + ' --ffmpeg \'-c:v copy -c:a ac3' \
                                     + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
                                     + ' --tomp4 \'' + json_message['Data'] + '\''
@@ -154,8 +154,9 @@ def read(queue_object):
             else:
                 common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
             common_global.es_inst.com_elastic_index('info',
-                                                    {'container_command': container_command})
-            hwaccel = True
+                                                    {'container_command': container_command,
+                                                     'name': name_container})
+            hwaccel = False
             docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                              name_container=name_container,
                                              container_command=container_command)
@@ -172,7 +173,7 @@ def read(queue_object):
             name_container = ((json_message['User'] + '_'
                                + str(uuid.uuid4()).replace('-', ''))[-30:])
             common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
-            hwaccel = True
+            hwaccel = False
             docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                              name_container=name_container,
                                              container_command=(

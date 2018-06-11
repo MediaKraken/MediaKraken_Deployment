@@ -50,19 +50,6 @@ docker build -t mediakraken/mkbasecuda .
 cd ../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
 
-# Build the base Nvidia Cuda
-cd ../ComposeMediaKrakenBaseNvidia
-#docker build -t mediakraken/mkbasenvidia .
-
-cd ../ComposeMediaKrakenBaseNvidiaDebian
-#docker build -t mediakraken/mkbasenvidiadebian .
-
-cd ../ComposeMediaKrakenBaseFFMPEGNvidia
-#docker build -t mediakraken/mkbaseffmpegnvidia .
-
-cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
-#docker build -t mediakraken/mkbaseffmpegnvidiadebian .
-
 # Build the nginx RTMP
 cd ../ComposeMediaKrakenNginxRTMP
 docker build -t mediakraken/mknginxrtmp .
@@ -95,10 +82,6 @@ docker build -t mediakraken/mkmumble .
 cd ../ComposeMediaKrakenELK
 docker build -t mediakraken/mkelk .
 
-# build the debug
-cd ../ComposeMediaKrakenDebug
-docker build -t mediakraken/mkdebug .
-
 # build the wireshark
 cd ../ComposeMediaKrakenWireshark
 docker build -t mediakraken/mkwireshark .
@@ -128,6 +111,19 @@ cd ../ComposeMediaKrakenSlaveNvidiaDebian
 # build the stream container
 cd ../ComposeMediaKrakenStream
 docker build -t mediakraken/mkstream .
+
+# Build the base Nvidia Cuda
+cd ../ComposeMediaKrakenBaseNvidia
+#docker build -t mediakraken/mkbasenvidia .
+
+cd ../ComposeMediaKrakenBaseNvidiaDebian
+#docker build -t mediakraken/mkbasenvidiadebian .
+
+cd ../ComposeMediaKrakenBaseFFMPEGNvidia
+#docker build -t mediakraken/mkbaseffmpegnvidia .
+
+cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
+#docker build -t mediakraken/mkbaseffmpegnvidiadebian .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

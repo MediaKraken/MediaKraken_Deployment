@@ -26,6 +26,8 @@ import docker
 from . import common_global
 
 
+# https://docker-py.readthedocs.io/en/stable/
+
 class CommonDocker(object):
     """
     Class for interfacing with docker
@@ -191,6 +193,7 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkmusicbrainz',
                                        network='mk_mediakraken_network',
+                                       ports={"5000": 5000},
                                        environment={'BRAINZCODE': brainzcode},
                                        volumes={'/mediakraken/mbrainz/config':
                                                     {'bind': '/config', 'mode': 'rw'},
@@ -213,6 +216,12 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkopenldap',
                                        ports={"389": 389, "636": 636},
+                                       volumes={'/var/opt/mediakraken/openldap/conf':
+                                                    {'bind': '/etc/openldap',
+                                                     'mode': 'rw'},
+                                                '/var/opt/mediakraken/openldap/data': {
+                                                    'bind': '/var/lib/openldap/openldap-data',
+                                                    'mode': 'rw'}},
                                        network='mk_mediakraken_network')
 
     def com_docker_run_pgadmin(self, user_email, user_password):
@@ -235,32 +244,34 @@ class CommonDocker(object):
                                                 '/var/opt/mediakraken/data':
                                                     {'bind': '/ data', 'mode': 'rw'}})
 
-    def com_docker_run_slave(self, hwaccel, name_container, container_command):
+    def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command):
         """
         Launch container for slave play
         """
         if hwaccel:
-            image_name = 'mediakraken/mkslavenvidiadebian:latest'
+            image_name = 'mediakraken/mkslavenvidiadebian'
         else:
-            image_name = 'mediakraken/mkslave:latest'
-        return self.cli.containers.run(container_image_name=image_name,
-                                       container_name=name_container,
-                                       container_command=container_command,
+            image_name = 'mediakraken/mkslave'
+        return self.cli.containers.run(image=image_name,
+                                       ports=port_mapping,
+                                       network='mk_mediakraken_network',
+                                       command=container_command,
+                                       detach=True,
                                        volumes={'/var/run/docker.sock':
                                                     {'bind': '/var/run/docker.sock',
                                                      'mode': 'ro'},
                                                 '/mediakraken/nfsmount':
                                                     {'bind': '/mediakraken/mnt',
-                                                     'mode': 'ro'}}
-                                       )
+                                                     'mode': 'ro'}
+                                                },
+                                       name=name_container)
 
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
-                                       detach=True,
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
                                        volumes={'/var/opt/mediakraken/teamspeak/data':
-                                                    {'bind': 'ts3-data',
+                                                    {'bind': '/opt/teamspeak',
                                                      'mode': 'rw'},
                                                 },
                                        name='mkteamspeak')
@@ -272,7 +283,8 @@ class CommonDocker(object):
         return self.cli.containers.run(image='mediakraken/mktransmission',
                                        network='mk_mediakraken_network',
                                        detach=True,
-                                       ports={"9091": 9091, "51413/tcp": 51413, "51413/udp": 51413},
+                                       ports={"9091": 9091, "51413/tcp": 51413,
+                                              "51413/udp": 51413},
                                        command='/start-transmission.sh',
                                        volumes={'/var/opt/mediakraken/transmission/downloads':
                                                     {'bind': '/transmission/downloads',

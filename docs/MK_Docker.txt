@@ -1,0 +1,139 @@
+******* Used Containers *****************
+
+ComposeMediaKrakenBase37Py3 - Base OS
+    Alpine 3.7
+    Python 3.x
+    PIP3
+    creates /mediakraken/
+    image: mediakraken/mkbase37py3
+    PIP
+        elasticsearch - ELK logging
+
+ComposeMediaKrakenCloud - Access cloud services.
+    """
+    Access cloud services. Targeting only storage for now.
+    """
+    mediakraken/mkbase37
+    image: mediakraken/mkcloud
+    PIP
+        apache-libcloud - To allow access to "cloud" media.
+        boto - Access Amazon S3
+        docker - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
+        dropbox - Access Dropbox
+        onedrivesdk - Interact with the OneDrive API
+        pika - Interface to RabbitMQ.
+        pysmb - Client-side SMB/CIFS protocol (SMB1 and SMB2). Used for file scan.
+        scandir - Directory iteration function. Used for file scan and os.walk.
+
+ComposeMediaKrakenPrefetchTMDB - TMDB Preload
+    """
+    Program stores download records for themoviedb.
+    Create records from uuid 1 to com_tmdb_metadata_id_max for movies.
+    TODO: Create records from uuid 1 to com_tmdb_metadata_tv_id_max for tv shows - Coded
+    Create records from uuid 1 to com_tmdb_metadata_bio_id_max for people
+        No reason to use this as the movie/tv show downloads will add person download records
+    OPTIONAL
+    """
+    mediakraken/mkbase37
+    image: mediakraken/mkprefetchtmdb
+
+ComposeMediaKrakenPrefetchTVMaze - TVMaze Preload
+    """
+    Program stores download records for tvmaze.
+    Uses the "shows" list pages from 1 to 1000.
+        Each page can list up to 50 shows.
+        Will exit from loop when the returned json is [].
+    OPTIONAL
+    """
+    mediakraken/mkbase37
+    image: mediakraken/mediakraken/mkprefetchtvmaze
+
+***************** Organize ***************************
+
+ComposeMediaKrakenBaseCuda - Base Nvidia CUDA compute
+    alpine:3.7
+    cuda-7.5
+
+ComposeMediaKrakenBaseFFMPEGNvidia - FFMPEG for Nvidia CUDA
+    mediakraken/mkbasenvidia
+    builds FFMPEG
+
+ComposeMediaKrakenBaseFFMPEGNvidiaDebian - FFMPEG for Nvidia CUDA on Debian
+    mediakraken/mkbasenvidiadebian
+    builds FFMPEG
+
+ComposeMediaKrakenBaseNvidia - Base Nvidia CUDA (NVidia's Version)
+    ubuntu:16.04
+    CUDA_VERSION 8.0.61
+
+ComposeMediaKrakenBaseNvidiaDebian - Debian 9 with CUDA Toolkit 8.0
+    debian:stretch
+
+ComposeMediaKrakenCalibre - Calibre
+    lsiobase/alpine.python:3.6
+
+ComposeMediaKrakenDownload - Media/image/etc downloader
+    mediakraken/mkbase37
+    youtube-dl
+
+ComposeMediaKrakenFFProbe - FFprobe media
+    mediakraken/mkbaseffmpeg
+    apache-libcloud
+
+ComposeMediaKrakenMail - Email - full stack antivirus/etc
+    ubuntu:16.04
+    Postfix
+
+ComposeMediaKrakenNginxRTMP - NGINX + RTMP-Module Image for H.264-Processing (e.g. RTMP, HLS)
+    datarhei/ffmpeg:3.3
+    ffmpeg and ffprobe
+
+ComposeMediaKrakenNginxRTMPStreamForward - NGINX, nginx-rtmp-module and FFmpeg from source with
+default settings for HLS live streaming
+    alpine:3.3
+    ENV NGINX_VERSION 1.12.0
+    ENV NGINX_RTMP_VERSION 1.1.11
+    ENV FFMPEG_VERSION 3.3.2
+
+ComposeMediaKrakenRipper - Used for ripping media
+    mediakraken/mkbaseffmpeg
+
+ComposeMediaKrakenSlaveNvidia - Slave app
+    mediakraken/mkbaseffmpegnvidia
+
+ComposeMediaKrakenSlaveNvidiaDebian - Slave app
+    mediakraken/mkbaseffmpegnvidiadebian
+
+ComposeMediaKrakenStream - take existing streams (e.g.: rtsp streams from your security cameras) and use FFMPEG to convert it into HLS streams and drop them in a folder that Nginx is serving
+    alpine:3.7
+
+ComposeMediaKrakenStreamVOD - Simple RTMP server that stream /dev/video0
+    buildpack-deps:xenial-scm
+    ENV NGINX_VERSION nginx-1.13.0
+    ENV NGINX_RTMP_MODULE_VERSION 1.1.11
+    ENV NGINX_VOD_MODULE_VERSION 1.16
+    ENV FFMPEG_VERSION 3.3
+
+ComposeMediaKrakenTheater - Placeholder
+    for requirements
+
+******** Not used ***************
+
+ComposeMediaKrakenBasePYPY - Container to build PYPY
+    alpine:3.6
+    pypy2-v5.9.0
+
+ComposeMediaKrakenFilebeat - Feeds file logs into ELK
+    debian:jessie
+    FILEBEAT_VERSION=5.6.1
+
+ComposeMediaKrakenMythTV - MythTV backend server
+    phusion/baseimage:0.9.16
+    mythtv/mythweb
+
+ComposeMediaKrakenOpenLDAP - OpenLDAP
+    gliderlabs/alpine:3.3
+
+ComposeMediaKrakenOpenSMTP - Email - barebones
+    alpine:3.4
+    Postfix

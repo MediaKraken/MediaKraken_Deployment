@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_album", __name__, url_prefix='/users',
@@ -14,9 +14,9 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -29,16 +29,11 @@ def metadata_music_song_list():
     Display metdata music song list
     """
     page, per_page, offset = common_pagination.get_page_items()
-    media = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_song_list(offset, per_page,
-                                                      request.form['search_text'])
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_song_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_song_list(offset, per_page)
-
+    session['search_page'] = 'meta_music_song'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -47,8 +42,8 @@ def metadata_music_song_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_list.html', form=form,
-                           media_person=mediadata,
+    return render_template('users/metadata/meta_music_list.html',
+                           media=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -64,15 +59,33 @@ def metadata_music_album_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_album_list(offset, per_page,
-                                                       request.form['search_text'])
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_album_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_album_list(offset, per_page)
-
+    for album_data in mediadata:
+        common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
+                                                         'id': album_data['mm_metadata_album_guid'],
+                                                         'name': album_data[
+                                                             'mm_metadata_album_name'],
+                                                         'json': album_data[
+                                                             'mm_metadata_album_json']})
+        if album_data['mmp_person_image'] is not None:
+            if 'musicbrainz' in album_data['mm_metadata_album_image']['Images']:
+                try:
+                    album_image = album_data['mm_metadata_album_image']['Images'][
+                        'musicbrainz'].replace(
+                        '/mediakraken/web_app/MediaKraken', '')
+                except:
+                    album_image = "/static/images/music_album_missing.png"
+            else:
+                album_image = "/static/images/music_album_missing.png"
+        else:
+            album_image = "/static/images/music_album_missing.png"
+            media.append(
+                (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
+                 album_image))
+    session['search_page'] = 'meta_album'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -81,9 +94,8 @@ def metadata_music_album_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_album_list.html', form=form,
-                           media_person=g.db_connection.db_meta_music_album_list(
-                               offset, per_page),
+    return render_template('users/metadata/meta_music_album_list.html',
+                           media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

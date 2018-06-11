@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_movie_collection", __name__, url_prefix='/users',
@@ -16,13 +16,12 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_movie_collection_list')
-@blueprint.route('/meta_movie_collection_list/')
+@blueprint.route('/meta_movie_collection_list', methods=['GET', 'POST'])
+@blueprint.route('/meta_movie_collection_list/', methods=['GET', 'POST'])
 @login_required
 def metadata_movie_collection_list():
     """
@@ -30,12 +29,8 @@ def metadata_movie_collection_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_collection_list(offset, per_page,
-                                                       request.form['search_text'])
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_collection_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_collection_list(offset, per_page)
     for row_data in mediadata:
@@ -46,6 +41,7 @@ def metadata_movie_collection_list():
         except:
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'], None))
+    session['search_page'] = 'meta_movie_collection'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -54,7 +50,7 @@ def metadata_movie_collection_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_movie_collection_list.html', form=form,
+    return render_template('users/metadata/meta_movie_collection_list.html',
                            media=media,
                            page=page,
                            per_page=per_page,

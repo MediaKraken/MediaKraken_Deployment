@@ -258,5 +258,14 @@ if db_connection.db_version_check() == 19:
 #     db_connection.db_version_update(21)
 #     db_connection.db_commit()
 
+# TODO add mm_metadata_album_image to mm_metadata_album
+
+# TODO add mm_metadata_tvshow_user_json to mm_metadata_tvshow
+# and index
+# TODO add mm_metadata_music_user_json to mm_metadata_music
+# and index
+# TODO add mm_metadata_music_video_user_json to mm_metadata_music_video
+# and index
+
 # close the database
 db_connection.db_close()

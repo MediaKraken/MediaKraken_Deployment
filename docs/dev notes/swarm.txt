@@ -1,7 +1,3 @@
-The following ports must be opened:
-    2377 (TCP) - Cluster management
-    7946 (TCP and UDP) - Nodes communication
-    4789 (UDP) - Overlay network traffic
 
 
 swarm create

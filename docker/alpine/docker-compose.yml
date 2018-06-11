@@ -148,6 +148,25 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  # Runs the cloud services
+  cloud:
+    build:
+      context: ./ComposeMediaKrakenCloud
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkcloud
+    depends_on:
+      - pgbounce
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_cloud.py 
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
   # Runs the web service for the main server application
   webserver:
     build:
@@ -311,6 +330,21 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_download.py
     volumes:
       - /var/opt/mediakraken/downloads:/mediakraken/downloads
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+  
+  # runs hardware
+  hardware:
+    build:
+      context: ./ComposeMediaKrakenHardware
+      dockerfile: dockerfile-hardware
+    environment:
+      - DEBUG=${DEBUG}
+    container_name: mkhardware
+    depends_on:
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_hardware.py
     networks:
       - mediakraken_network
     restart: unless-stopped

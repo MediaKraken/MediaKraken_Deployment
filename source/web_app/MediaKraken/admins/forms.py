@@ -190,7 +190,6 @@ class AdminSettingsForm(Form):
     metadata_source_down_pitchfork = BooleanField('pitchfork')
     metadata_source_down_imvdb = BooleanField('imvdb')
     metadata_source_down_omdb = BooleanField('omdb')
-    metadata_source_down_netflixroulette = BooleanField('netflixroulette')
     metadata_sync_path = TextField('Metadata Sync Path',
                                    validators=[DataRequired(), Length(min=1, max=250)])
     docker_musicbrainz = BooleanField(

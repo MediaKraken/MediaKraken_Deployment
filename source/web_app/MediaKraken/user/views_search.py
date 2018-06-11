@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, redirect, url_for, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_search", __name__,
@@ -16,6 +16,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -97,6 +98,55 @@ def search_media():
                            media_album=album, media_image=image, media_book=publication,
                            media_game=game, form=form)
 
+
+@blueprint.route("/search_nav", methods=["GET", "POST"])
+@blueprint.route("/search_nav/", methods=["GET", "POST"])
+@login_required
+def search_nav_media():
+    """
+    determine what search results screen to show
+    """
+    common_global.es_inst.com_elastic_index('info', {"search session": session['search_page']})
+    session['search_text'] = request.form.get('nav_search')
+    if session['search_page'] == 'media_3d':
+        return redirect(url_for('user_3d.user_3d_list'))
+    elif session['search_page'] == 'media_album':
+        return redirect(url_for('user_music.user_album_list_page'))
+    elif session['search_page'] == 'media_games':
+        return redirect(url_for('user_games.user_games_list'))
+    elif session['search_page'] == 'media_movie':
+        return redirect(url_for('user_movie_genre.user_movie_page', genre='All'))
+    elif session['search_page'] == 'media_music_video':
+        return redirect(url_for('user_music_video.user_music_video_list'))
+    elif session['search_page'] == 'media_periodicals':
+        return redirect(url_for('user_periodicals.user_books_list'))
+    elif session['search_page'] == 'media_sports':
+        return redirect(url_for('user_sports.user_sports_page'))
+    elif session['search_page'] == 'media_tv':
+        return redirect(url_for('user_tv.user_tv_page'))
+    # begin metadata section
+    elif session['search_page'] == 'meta_album':
+        return redirect(url_for('user_metadata_album.metadata_music_album_list'))
+    elif session['search_page'] == 'meta_game':
+        return redirect(url_for('user_metadata_game.metadata_game_list'))
+    elif session['search_page'] == 'meta_game_system':
+        return redirect(url_for('user_metadata_game_system.metadata_game_system_list'))
+    elif session['search_page'] == 'meta_movie':
+        return redirect(url_for('user_metadata_movie.metadata_movie_list'))
+    elif session['search_page'] == 'meta_movie_collection':
+        return redirect(url_for('user_movie_collection.metadata_movie_collection_list'))
+    elif session['search_page'] == 'meta_music_video':
+        return redirect(url_for('user_metadata_music_video.metadata_music_video_list'))
+    elif session['search_page'] == 'meta_people':
+        return redirect(url_for('user_metadata_people.metadata_person_list'))
+    elif session['search_page'] == 'meta_periodical':
+        return redirect(url_for('user_metadata_periodical.metadata_periodical_list'))
+    elif session['search_page'] == 'meta_sports':
+        return redirect(url_for('user_metadata_sports.metadata_sports_list'))
+    elif session['search_page'] == 'meta_tv':
+        return redirect(url_for('user_metadata_tv.metadata_tvshow_list'))
+
+
 @blueprint.before_request
 def before_request():
     """
@@ -104,6 +154,7 @@ def before_request():
     """
     g.db_connection = database_base.MKServerDatabase()
     g.db_connection.db_open()
+
 
 @blueprint.teardown_request
 def teardown_request(exception):  # pylint: disable=W0613

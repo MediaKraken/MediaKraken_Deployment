@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_music_video", __name__, url_prefix='/users',
@@ -16,7 +16,6 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -29,14 +28,11 @@ def metadata_music_video_list():
     Display metadata music video
     """
     page, per_page, offset = common_pagination.get_page_items()
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
-        mediadata = g.db_connection.db_meta_music_video_list(offset, per_page,
-                                                             request.form['search_text'])
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_music_video_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_music_video_list(offset, per_page)
+    session['search_page'] = 'meta_music_video'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -45,8 +41,8 @@ def metadata_music_video_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_video_list.html', form=form,
-                           media_person=mediadata,
+    return render_template('users/metadata/meta_music_video_list.html',
+                           media=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

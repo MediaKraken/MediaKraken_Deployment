@@ -145,9 +145,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
         pass
     elif class_text == "Music Video":
         metadata_uuid = metadata_music_video.metadata_music_video_lookup(db_connection,
-                                                                         download_que_json['Path'],
-                                                                         download_que_json,
-                                                                         download_que_id)
+                                                                         download_que_json['Path'])
     elif class_text == "Picture":
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Sports":

@@ -22,8 +22,6 @@ from common import common_config_ini
 from common import common_global
 from common import common_pagination
 import database as database_base
-from MediaKraken.user.forms import SearchForm
-from MediaKraken.user.forms import SearchEditForm
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -66,8 +64,9 @@ def members():
 
 
 # home media
-@blueprint.route('/home_media')
-@blueprint.route('/home_media/')
+@blueprint.route('/home_media', methods=['GET', 'POST'])
+@blueprint.route('/home_media/', methods=['GET', 'POST'])
+@blueprint.route('/home_media/<search_text>', methods=['GET', 'POST'])
 @login_required
 def user_home_media_list():
     """
@@ -75,16 +74,12 @@ def user_home_media_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    form = SearchForm(request.form)
     if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
         # TODO wrong movie query
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page,
-                                                      request.form['search_text'])
+        metadata = g.db_connection.db_meta_movie_list(offset, per_page, search_text)
     else:
         metadata = g.db_connection.db_meta_movie_list(offset, per_page)
-    return render_template("users/user_home_media_list.html", form=form)
+    return render_template("users/user_home_media_list.html", media=media)
 
 
 @blueprint.route('/playvideo/<guid>/')
@@ -172,16 +167,6 @@ def user_album_player(guid):
                            data_desc=g.db_connection.db_meta_album_by_guid(
                                guid),
                            data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
-
-
-@blueprint.route('/media')
-@blueprint.route('/media/')
-@login_required
-def user_media_list():
-    """
-    Display main media page
-    """
-    return render_template("users/user_media_list.html")
 
 
 @blueprint.route('/movie_status/<guid>/<event_type>/', methods=['GET', 'POST'])

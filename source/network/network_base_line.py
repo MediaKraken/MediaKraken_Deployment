@@ -20,14 +20,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import base64
 import json
-import sys
 import uuid
 
-sys.path.append("./vault/lib")
-from twisted.protocols import basic
-import ip2country
 from common import common_docker
 from common import common_global
+from common import common_network
+from twisted.protocols import basic
 
 
 class NetworkEvents(basic.LineReceiver):
@@ -120,9 +118,9 @@ class NetworkEvents(basic.LineReceiver):
             self.user_user_name = None
             self.user_platform = json_message['Platform']
             # lookup the country
-            country_data = ip2country.IP2Country(verbose=1).lookup(self.user_ip_addy)
-            self.user_country_code = country_data[0]
-            self.user_country_name = country_data[1]
+            country_data = common_network.mk_network_country_code()
+            self.user_country_code = country_data['country_code']
+            self.user_country_name = country_data['country_name']
             self.users[self.user_device_uuid] = self
             common_global.es_inst.com_elastic_index('info', {"user": self.user_device_uuid,
                                                              'ip': self.user_ip_addy})

@@ -21,21 +21,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import urllib
 
 import requests
-import youtube_dl
 from bs4 import BeautifulSoup
 
 from . import common_google
 from . import youtubeapi
-
-
-def com_net_yt_fetch_video_by_url(url_location, file_name):
-    """
-    # fetch video via youtube-dl
-    """
-    ydl_opts = {}
-    ydl_opts["outtmpl"] = file_name
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url_location])
 
 
 def com_net_yt_fetch_video_list(search_string, max_files):
