@@ -43,7 +43,7 @@ class CommonMetadataTMDB(object):
         self.movie = Movie()
         self.tv = TV()
 
-    def com_tmdb_searchtv(self, tv_title, tv_year=None, id_only=False):
+    def com_tmdb_search_tv(self, tv_title, tv_year=None, id_only=False):
         """
         Search for tv show via title and year
         """
@@ -66,7 +66,7 @@ class CommonMetadataTMDB(object):
                                                or str(int(tv_year) + 1) ==
                                                res.release_date.split('-', 1)[0]):
                     if not id_only:
-                        return 'info', self.com_tmdb_meta_by_id(res.id)
+                        return 'info', self.com_tmdb_metadata_tv_by_id(res.id)
                     else:
                         return 'idonly', res.id  # , s['title']
             return 're', search.results
@@ -101,7 +101,7 @@ class CommonMetadataTMDB(object):
                                                or str(int(movie_year) + 1) ==
                                                res.release_date.split('-', 1)[0]):
                     if not id_only:
-                        return 'info', self.com_tmdb_metadata_tv_by_id(res.id)
+                        return 'info', self.com_tmdb_metadata_by_id(res.id)
                     else:
                         return 'idonly', res.id  # , s['title']
             return 're', search.results
