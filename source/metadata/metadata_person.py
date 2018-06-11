@@ -59,3 +59,4 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
             thread_db.db_download_delete(download_data['mdq_id'])
         elif result_json.status_code == 502:
             time.sleep(60)
+            metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
