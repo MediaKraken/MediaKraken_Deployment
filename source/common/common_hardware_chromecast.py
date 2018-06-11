@@ -53,7 +53,8 @@ def com_hard_chrome_discover(timeout=5, retries=1):
         while True:
             try:
                 response = ssdp_sock.recv(1024)
-                common_global.es_inst.com_elastic_index('info', {'response body': response})
+                if common_global.es_inst != None:
+                    common_global.es_inst.com_elastic_index('info', {'response body': response})
                 for line in response.split("\r\n"):
                     if line.find('LOCATION') == 0:
                         # pull out the ip
@@ -66,7 +67,8 @@ def com_hard_chrome_discover(timeout=5, retries=1):
                             chrome_info['root']['device']['modelName'],
                             chrome_info['root']['device']['friendlyName'])
             except socket.timeout:
-                common_global.es_inst.com_elastic_index('error', {'socket timeout'})
+                if common_global.es_inst != None:
+                    common_global.es_inst.com_elastic_index('error', {'socket timeout'})
                 break
         ssdp_sock.close()
     return devices_found
@@ -81,7 +83,8 @@ def com_hard_chrome_info(ip_addr):
     http_resp = http_conn.getresponse()
     if http_resp.status == 200:
         status_doc = http_resp.read()
-        common_global.es_inst.com_elastic_index('info', {'name data': status_doc})
+        if common_global.es_inst != None:
+            common_global.es_inst.com_elastic_index('info', {'name data': status_doc})
         return xmltodict.parse(status_doc)
     else:
         return None
@@ -91,10 +94,12 @@ def com_hard_chrome_play_youtube(youtube_video_guid, ip_addr, port=8008):
     response = requests.post(('http://%s:%s/apps/YouTube' % (ip_addr, port)),
                              data={'v': youtube_video_guid})
     if response.status_code != 200:
-        common_global.es_inst.com_elastic_index('info', {'yt play guid': youtube_video_guid})
+        if common_global.es_inst != None:
+            common_global.es_inst.com_elastic_index('info', {'yt play guid': youtube_video_guid})
 
 
 def com_hard_chrome_youtube_stop(ip_addr, port=8008):
     response = requests.delete('http://%s:%s/apps/YouTube' % (ip_addr, port))
     if response.status_code != 200:
-        common_global.es_inst.com_elastic_index('info', {'yt stop ip_addr': ip_addr})
+        if common_global.es_inst != None:
+            common_global.es_inst.com_elastic_index('info', {'yt stop ip_addr': ip_addr})
