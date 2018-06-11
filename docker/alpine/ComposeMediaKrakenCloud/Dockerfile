@@ -17,7 +17,6 @@ RUN apk add --update \
   postgresql-dev \
   && pip install -r requirements.txt \
   && apk del alpine-sdk \
-  postgresql-client \
   python-dev \
   postgresql-dev \
   && rm -rf /var/cache/apk/*
