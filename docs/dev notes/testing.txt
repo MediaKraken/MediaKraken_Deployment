@@ -9,4 +9,12 @@ potainer works
 
 slave starts now
 
+musicbrainz - runs but no web
+
+openldap - config not copied in docker file
+
+wireshark - launches
+
 mumble bombs about ini file that's copied
+
+devicescan - missing requests

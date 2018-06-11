@@ -14,6 +14,7 @@ ADD libhdhomerun_python /mediakraken/libhdhomerun_python
 # Update repository and install packages
 RUN apk add --update \
   alpine-sdk \
+  py-requests \
   py-setuptools \
   python-dev \
   && cd libhdhomerun \
