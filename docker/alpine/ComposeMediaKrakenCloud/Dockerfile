@@ -23,7 +23,7 @@ RUN apk add --update \
 
 ADD wait-for-it-ash.sh /mediakraken
 RUN mkdir /mediakraken/cloud
-ADD archive.txt /mediakraken/cloud
+ADD archive.txt /mediakraken/cloud/
 
 # Copy the source files for the app
 ADD src /mediakraken
