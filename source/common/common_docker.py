@@ -26,6 +26,8 @@ import docker
 from . import common_global
 
 
+# https://docker-py.readthedocs.io/en/stable/
+
 class CommonDocker(object):
     """
     Class for interfacing with docker
@@ -240,27 +242,28 @@ class CommonDocker(object):
         Launch container for slave play
         """
         if hwaccel:
-            image_name = 'mediakraken/mkslavenvidiadebian:latest'
+            image_name = 'mediakraken/mkslavenvidiadebian'
         else:
-            image_name = 'mediakraken/mkslave:latest'
-        return self.cli.containers.run(container_image_name=image_name,
-                                       container_name=name_container,
-                                       container_command=container_command,
+            image_name = 'mediakraken/mkslave'
+        return self.cli.containers.run(image=image_name,
+                                       network='mk_mediakraken_network',
+                                       command=container_command,
+                                       detach=True,
                                        volumes={'/var/run/docker.sock':
                                                     {'bind': '/var/run/docker.sock',
                                                      'mode': 'ro'},
                                                 '/mediakraken/nfsmount':
                                                     {'bind': '/mediakraken/mnt',
-                                                     'mode': 'ro'}}
-                                       )
+                                                     'mode': 'ro'}
+                                                },
+                                       name=name_container)
 
     def com_docker_run_teamspeak(self):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
-                                       detach=True,
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
                                        volumes={'/var/opt/mediakraken/teamspeak/data':
-                                                    {'bind': 'ts3-data',
+                                                    {'bind': '/opt/teamspeak',
                                                      'mode': 'rw'},
                                                 },
                                        name='mkteamspeak')
