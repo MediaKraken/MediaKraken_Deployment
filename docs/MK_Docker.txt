@@ -137,7 +137,3 @@ ComposeMediaKrakenOpenLDAP - OpenLDAP
 ComposeMediaKrakenOpenSMTP - Email - barebones
     alpine:3.4
     Postfix
-
-ComposeMediaKrakenWireshark - For network sniffing
-    debian:stretch-slim
-    install wireshark and xpra to make wirehsark available via websocket
