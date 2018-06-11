@@ -193,6 +193,7 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkmusicbrainz',
                                        network='mk_mediakraken_network',
+                                       ports={"5000": 5000},
                                        environment={'BRAINZCODE': brainzcode},
                                        volumes={'/mediakraken/mbrainz/config':
                                                     {'bind': '/config', 'mode': 'rw'},
