@@ -238,7 +238,7 @@ class CommonDocker(object):
                                                 '/var/opt/mediakraken/data':
                                                     {'bind': '/ data', 'mode': 'rw'}})
 
-    def com_docker_run_slave(self, hwaccel, name_container, container_command):
+    def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command):
         """
         Launch container for slave play
         """
@@ -247,6 +247,7 @@ class CommonDocker(object):
         else:
             image_name = 'mediakraken/mkslave'
         return self.cli.containers.run(image=image_name,
+                                       ports=port_mapping,
                                        network='mk_mediakraken_network',
                                        command=container_command,
                                        detach=True,
