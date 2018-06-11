@@ -60,5 +60,5 @@ def com_meta_mutagen_update_easy(file_name, attr_name, attr_desc):
     audio.save()
 
 
-print(EasyID3.valid_keys.keys())
+#print(EasyID3.valid_keys.keys())
 # print(com_meta_mutagen_file_type('/home/spoot/test.flac'))

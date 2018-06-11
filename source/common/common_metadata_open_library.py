@@ -26,7 +26,7 @@ class CommonMetadataOpenLibrary(object):
     Class for interfacing with OpenLibrary
     """
 
-    def __init__(self, option_config_json):
+    def __init__(self):
         pass
 
     def com_meta_openlibrary_fetch_cover(self, isbn_id, image_path):
