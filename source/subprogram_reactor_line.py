@@ -154,7 +154,8 @@ def read(queue_object):
             else:
                 common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
             common_global.es_inst.com_elastic_index('info',
-                                                    {'container_command': container_command})
+                                                    {'container_command': container_command,
+                                                     'name': name_container})
             hwaccel = False
             docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                              name_container=name_container,
