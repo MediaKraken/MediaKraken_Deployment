@@ -1,1 +1,12 @@
 python -m pytest --capture=no testing/test_common/test_common_network_youtube.py
+
+
+
+# launching docker containers from app
+transmission works
+
+potainer works
+
+slave starts now
+
+mumble bombs about ini file that's copied
