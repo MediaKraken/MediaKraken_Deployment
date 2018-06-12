@@ -53,14 +53,12 @@ RUN buildDeps="autoconf \
     apk update && \
     apk upgrade && \
     apk add --update ${buildDeps} libgcc libstdc++ ca-certificates libssl1.0 && \
-    
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
     make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
-
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
@@ -68,7 +66,6 @@ RUN buildDeps="autoconf \
     cmake -G "Unix Makefiles" ../../source && \
     make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
-
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://github.com/mstorsjo/fdk-aac/archive/v${FDKAAC_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
@@ -76,19 +73,16 @@ RUN buildDeps="autoconf \
     ./configure --prefix="${SRC}" --disable-static --datadir="${DIR}" && \
     make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
-
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-${OPENMPT_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     make EXAMPLES=0 && \
     make install && \
-
     mkdir /mediakraken/install && \
     chmod +x /mediakraken/*.sh && \
     /mediakraken/kvazaar.sh && \
     /mediakraken/openh264.sh && \
     /mediakraken/vidstab.sh && \
-
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
