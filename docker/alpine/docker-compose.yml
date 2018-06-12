@@ -164,7 +164,7 @@ services:
       - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_cloud.py 
     volumes:
-      - /var/opt/mediakraken/cloud:/mediakraken/cloud
+      - /var/opt/mediakraken/cloud:/mediakraken
     networks:
       - mediakraken_network
     restart: unless-stopped
