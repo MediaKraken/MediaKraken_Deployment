@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main server app"
@@ -30,8 +30,8 @@ RUN apk add --update \
   python-dev \
   openrc \
   && export PYCURL_SSL_LIBRARY=openssl \
-  && pip install pycurl \
-  && pip install -r requirements.txt \
+  && pip3 install pycurl \
+  && pip3 install -r requirements.txt \
   && apk del \
   alpine-sdk \
   libxml2-dev \
@@ -40,7 +40,6 @@ RUN apk add --update \
   musl-dev \
   net-snmp-dev \
   postgresql-dev \
-  py-pip \
   python-dev \
   && apk add \
   py-setuptools \

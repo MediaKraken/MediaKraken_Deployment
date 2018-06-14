@@ -4,7 +4,6 @@ Vacuum tables
 # based on code from
 # http://rendykstan.github.io/blog/2013/04/04/postgresql-vacuum-and-analyze-maintenance-and-performance/
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 from common import common_config_ini
 from common import common_global

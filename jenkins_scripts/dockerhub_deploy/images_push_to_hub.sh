@@ -1,9 +1,3 @@
-#docker push mediakraken/mkbase34:latest
-#docker push mediakraken/mkbase34py3:latest
-#docker push mediakraken/mkbase35:latest
-#docker push mediakraken/mkbase35py3:latest
-#docker push mediakraken/mkbase36:latest
-#docker push mediakraken/mkbase36py3:latest
 docker push mediakraken/mkbase37:latest
 docker push mediakraken/mkbase37py3:latest
 #docker push mediakraken/mkbasecuda

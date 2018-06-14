@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 import subprocess
@@ -28,7 +26,6 @@ from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_metadata
-from concurrent import futures
 
 # set before everything else
 total_images_created = 0

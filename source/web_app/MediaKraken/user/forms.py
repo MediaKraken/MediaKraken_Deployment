@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, \
@@ -124,14 +123,14 @@ class SearchEditForm(Form):
                                                            ('game', 'Game')])
     # TODO populate from all lang found on media?
     search_primary_language = SelectField("Language", choices=[('any', 'Any'),
-                                                           ('sd', 'SD'),
-                                                           ('hd', 'HD'),
-                                                           ('uhd', 'UHD')])
+                                                               ('sd', 'SD'),
+                                                               ('hd', 'HD'),
+                                                               ('uhd', 'UHD')])
     # TODO populate from all subtitle lang found on media?
     search_secondary_language = SelectField("Subtitle", choices=[('any', 'Any'),
-                                                           ('sd', 'SD'),
-                                                           ('hd', 'HD'),
-                                                           ('uhd', 'UHD')])
+                                                                 ('sd', 'SD'),
+                                                                 ('hd', 'HD'),
+                                                                 ('uhd', 'UHD')])
     search_resolution = SelectField("Resolution", choices=[('any', 'Any'),
                                                            ('sd', 'SD'),
                                                            ('hd', 'HD'),

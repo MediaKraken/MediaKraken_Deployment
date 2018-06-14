@@ -16,25 +16,24 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+import base64
+import json
+import logging  # pylint: disable=W0611
+import os
+import platform
+import sys
+import uuid
+
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_signal
 from common import common_theater
-import platform
-import os
-import sys
-import json
-import uuid
-import base64
-import subprocess
-import logging  # pylint: disable=W0611
 
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
 
-from crochet import wait_for, run_in_reactor, setup
+from crochet import wait_for, setup
 
 setup()
 
@@ -49,7 +48,6 @@ from kivy.app import App
 
 kivy.require('1.10.0')
 from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
@@ -62,19 +60,7 @@ from kivy.uix.settings import SettingsWithSidebar
 from kivy.clock import Clock
 from kivy.loader import Loader
 from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import BooleanProperty, StringProperty, ObjectProperty
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.dropdown import DropDown
-from kivy.uix.widget import Widget
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.filechooser import FileChooserListView
-from kivy.network.urlrequest import UrlRequest
-from kivy.cache import Cache
-from kivy.animation import Animation
-from kivy.graphics import *
-from kivy.graphics.opengl import *
-from kivy.graphics import *
+from kivy.properties import BooleanProperty, ObjectProperty
 from theater import MediaKrakenSettings
 
 twisted_connection = None
@@ -380,7 +366,7 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Device Play List":
             cast_list = ['This Device']
             for cast_device in json_message['Data']:
-                cast_list.append(cast_device[2]) # name of device
+                cast_list.append(cast_device[2])  # name of device
             self.root.ids.theater_media_video_play_local_spinner.values = cast_list
 
         elif json_message['Type'] == "Genre List":

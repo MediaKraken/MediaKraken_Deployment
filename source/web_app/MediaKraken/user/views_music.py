@@ -2,9 +2,8 @@
 User view in webapp
 """
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("user_music", __name__,

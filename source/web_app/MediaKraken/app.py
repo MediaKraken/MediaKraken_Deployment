@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import redis
+
 from MediaKraken import public, user, admins
 from MediaKraken.assets import assets
 from MediaKraken.extensions import (

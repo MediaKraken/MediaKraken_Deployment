@@ -16,11 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 
 import psycopg2
+
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -426,7 +425,6 @@ if db_connection.db_table_index_check('mm_metadata_idxgin_music_video_media_id_i
 if db_connection.db_table_index_check('mm_metadata_music_video_idxgin_user_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_music_video_idxgin_user_json'
                            ' ON mm_metadata_music_video USING gin (mm_metadata_music_video_user_json)')
-
 
 # create table for metadata for book
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_book (mm_metadata_book_guid uuid'

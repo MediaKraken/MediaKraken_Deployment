@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import shlex
 import subprocess
@@ -25,15 +23,16 @@ import time
 import uuid
 
 import pika
+from pika.adapters import twisted_connection
+from twisted.internet import reactor, protocol, defer, task
+from twisted.internet import ssl
+
 from common import common_config_ini
 from common import common_device_capability
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 from network import network_base_line as network_base
-from pika.adapters import twisted_connection
-from twisted.internet import reactor, protocol, defer, task
-from twisted.internet import ssl
 
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()

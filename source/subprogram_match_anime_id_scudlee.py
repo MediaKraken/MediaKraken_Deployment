@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch

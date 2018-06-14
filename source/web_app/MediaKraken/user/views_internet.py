@@ -2,7 +2,6 @@
 User view in webapp
 """
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 from flask import Blueprint, render_template, g, request
 from flask_login import login_required

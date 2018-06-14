@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import copy
 import hashlib
 import multiprocessing
@@ -26,7 +24,6 @@ import sys
 import threading
 import time
 import zipfile
-from Queue import Queue
 from threading import Thread
 
 SHA1 = hashlib.sha1()

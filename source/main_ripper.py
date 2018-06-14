@@ -16,15 +16,14 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import time
+
+from twisted.internet import reactor, protocol
 
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
 from network import network_base_line_ripper as network_base
-from twisted.internet import reactor, protocol
 
 
 class MediaKrakenServerApp(protocol.ServerFactory):
