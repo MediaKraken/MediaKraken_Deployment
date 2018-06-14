@@ -18,14 +18,14 @@ RUN apk add --update \
   linux-headers \
   musl-dev \
   postgresql-dev \
-  python-dev \
+  python3-dev \
   libffi-dev \
   python \
   openrc \
   && pip3 install pytest-runner \
   && pip3 install -r requirements.txt \
   && pip3 uninstall -y pytest_runner \
-  && apk del gcc linux-headers musl-dev postgresql-dev python-dev \
+  && apk del gcc linux-headers musl-dev postgresql-dev python3-dev \
   && rm requirements.txt \
   && apk add \
   py-setuptools \
