@@ -24,7 +24,7 @@ RUN apk add --update \
   openrc \
   py3-cffi \
   py3-redis \
-  python-dev \
+  python3-dev \
   postgresql-dev \
   cifs-utils \
   nfs-utils \
@@ -40,7 +40,7 @@ RUN apk add --update \
   git \
   musl-dev \
   linux-headers \
-  python-dev \
+  python3-dev \
   postgresql-dev \
   && rm requirements.txt \
   && apk add \

@@ -41,7 +41,7 @@ RUN buildDeps="autoconf \
         nasm \
         openjpeg-dev \
         opus-dev \
-        python-dev \
+        python3-dev \
         samba-dev \
         speex-dev \
         soxr-dev \
