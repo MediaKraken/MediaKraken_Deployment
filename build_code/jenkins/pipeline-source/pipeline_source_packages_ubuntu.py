@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 PACKAGES_BASE_UBUNTU_1604 = [
     'autoconf',
     'automake',

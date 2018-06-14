@@ -16,17 +16,15 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import hashlib
 import os
 import struct
-import sys
 import zipfile
 import zlib
 
 from . import common_global
 from . import common_hash_c_code
+
 
 # import compression mods
 

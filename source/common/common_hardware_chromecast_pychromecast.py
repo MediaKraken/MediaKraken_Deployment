@@ -19,7 +19,6 @@
 # supported formats list
 # https://developers.google.com/cast/docs/media#subtitles--closed-captions
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pychromecast
 import pychromecast.controllers.youtube as youtube

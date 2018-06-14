@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 from phue import Bridge
 
 
@@ -49,7 +47,6 @@ class CommonHardwareHue(object):
         # 'on' on/off via bool
         # 'bri' 1-100 value for brightness
         self.hue_inst.set_light(light_list, function_type, var_value)
-
 
 # test = CommonHardwareHue('10.0.0.225')
 # print(test.com_hardware_hue_get_api())

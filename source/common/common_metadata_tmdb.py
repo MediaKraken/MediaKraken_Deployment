@@ -16,15 +16,14 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 
 import requests
-from tmdbv3api import TMDb, TV
-from tmdbv3api import Movie
 import tmdbsimple as tmdb
+from tmdbv3api import Movie
+from tmdbv3api import TMDb, TV
+
 from . import common_global
 from . import common_metadata
 from . import common_network
@@ -61,10 +60,10 @@ class CommonMetadataTMDB(object):
                                                                      res.release_date.split('-', 1)[
                                                                          0]})
                 if tv_year is not None and (str(tv_year) == res.release_date.split('-', 1)[0]
-                                               or str(int(tv_year) - 1) ==
-                                               res.release_date.split('-', 1)[0]
-                                               or str(int(tv_year) + 1) ==
-                                               res.release_date.split('-', 1)[0]):
+                                            or str(int(tv_year) - 1) ==
+                                            res.release_date.split('-', 1)[0]
+                                            or str(int(tv_year) + 1) ==
+                                            res.release_date.split('-', 1)[0]):
                     if not id_only:
                         return 'info', self.com_tmdb_metadata_tv_by_id(res.id)
                     else:

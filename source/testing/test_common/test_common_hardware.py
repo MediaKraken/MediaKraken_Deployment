@@ -16,12 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 vibration_pattern = '0.5,0.5,1,2,0.1,0.1,0.1,0.1,0.1,0.1'
 
-import pytest  # pylint: disable=W0611
 import sys
+
+import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 from common import common_hardware

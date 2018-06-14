@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import re
 from socket import inet_ntoa
 
@@ -116,6 +114,7 @@ def com_string_unc_to_addr_path(unc_path):
                 '\\'.join(unc_path.split('\\', 5)[4:]))
     except:
         return None, None, None
+
 
 def com_string_guessit_list(guessit_list):
     """

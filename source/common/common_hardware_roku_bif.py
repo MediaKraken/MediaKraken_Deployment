@@ -13,7 +13,6 @@ NOTE: The jpg image sizes are set to the values posted by bbefilms in the Roku
       development forums. They may or may not be correct for your video aspect ratio.
       They don't look right for me when I set the video height to 480
 """
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import array
 import os

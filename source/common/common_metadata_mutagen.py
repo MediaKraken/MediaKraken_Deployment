@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import mutagen
 from mutagen.easyid3 import EasyID3
 from mutagen.flac import FLAC
@@ -59,6 +57,5 @@ def com_meta_mutagen_update_easy(file_name, attr_name, attr_desc):
         audio[attr_name] = attr_desc
     audio.save()
 
-
-#print(EasyID3.valid_keys.keys())
+# print(EasyID3.valid_keys.keys())
 # print(com_meta_mutagen_file_type('/home/spoot/test.flac'))

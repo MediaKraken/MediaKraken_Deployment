@@ -16,12 +16,12 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import json
 import subprocess
-from twisted.protocols import basic
+
 from common import common_discid
 from common import common_global
+from twisted.protocols import basic
 
 
 class NetworkEvents(basic.LineReceiver):
