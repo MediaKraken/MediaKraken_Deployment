@@ -26,6 +26,7 @@ import pika
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_network
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_cloud')
@@ -38,8 +39,15 @@ def on_message(channel, method_frame, header_frame, body):
     if body is not None:
         json_message = json.loads(body)
         common_global.es_inst.es_index('info', {'cloud': json_message})
-
-
+        if json_message['Type'] == 'download':
+            if json_message['Sub'] == 'image':
+                common_network.mk_network_fetch_from_url(json_message['URL'],
+                                                         json_message['Local'])
+            elif json_message['Sub'] == 'youtube':
+                dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',
+                                           '/mediakraken/archive.txt', json_message['Data']],
+                                          shell=False)
+                dl_pid.wait() # TODO - do I really need to wait for finish?
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
