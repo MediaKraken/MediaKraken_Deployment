@@ -226,7 +226,7 @@ class CommonDocker(object):
         return self.cli.containers.run(image='dpage/pgadmin4',
                                        detach=True,
                                        name='mkpgadmin',
-                                       ports={"12345": 80},
+                                       ports={"80": 12345},
                                        network='mk_mediakraken_dbnetwork',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
