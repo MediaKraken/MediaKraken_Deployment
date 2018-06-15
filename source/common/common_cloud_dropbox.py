@@ -42,7 +42,7 @@ class CommonCloudDropbox(object):
         print(('1. Go to: %s', authorize_url))
         print('2. Click "Allow" (you might have to log in first)')
         print('3. Copy the authorization code.')
-        code = raw_input("Enter the authorization code here: ").strip()
+        code = input("Enter the authorization code here: ").strip()
         # This will fail if the user enters an invalid authorization code
         access_token, user_id = self.flow.finish(code)  # pylint: disable=W0612
         self.client = dropbox.client.DropboxClient(access_token)

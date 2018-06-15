@@ -36,7 +36,7 @@ class CommonHardwareMarantz(object):
         for r in range(resp_cnt):
             # Strip the trailing \r
             resp.append(self.device.read_until('\r', 1)[:-1])
-        print("Response: ", resp)
+        print(("Response: ", resp))
         return resp
 
     def com_hardware_marantz_close(self):
@@ -679,7 +679,7 @@ class CommonHardwareMarantz(object):
 # connect test
 teststuff = CommonHardwareMarantz('10.0.0.209')
 
-print(teststuff.com_hardware_marantz_picture_mode_status())
+print((teststuff.com_hardware_marantz_picture_mode_status()))
 
 # connect close
 teststuff.com_hardware_marantz_close()

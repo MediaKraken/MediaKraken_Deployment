@@ -67,5 +67,5 @@ class CommonHardwareBeatifulHue(object):
 stuff = CommonHardwareBeatifulHue(
     '10.0.0.225', '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m')
 # stuff.com_hardware_beatifulhue_config()
-print(stuff.com_hardware_beatifulhue_info())
-print(stuff.com_hardware_beatifulhue_get_light('all'))
+print((stuff.com_hardware_beatifulhue_info()))
+print((stuff.com_hardware_beatifulhue_get_light('all')))

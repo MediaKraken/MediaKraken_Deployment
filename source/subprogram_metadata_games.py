@@ -115,9 +115,9 @@ if False:
                 if ext == ".xml":
                     # could be no games in list
                     if 'software' in json_data['softwarelist']:
-                        print(json_data['softwarelist']['software'])
+                        print((json_data['softwarelist']['software']))
                         # TODO this fails if only one game
-                        print(len(json_data['softwarelist']['software']))
+                        print((len(json_data['softwarelist']['software'])))
                         if '@name' in json_data['softwarelist']['software']:
                             # TODO check to see if exists....if so, update
                             db_connection.db_meta_game_insert(game_short_name_guid,
@@ -213,7 +213,7 @@ if True:
                         total_software += 1
                     else:
                         game_data['gi_game_info_json']['overview'] = game_desc
-                        print(game_data['gi_id'])
+                        print((game_data['gi_id']))
                         db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
                                                                   json.dumps(game_data[
                                                                                  'gi_game_info_json']))

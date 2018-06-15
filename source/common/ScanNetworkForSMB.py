@@ -54,7 +54,7 @@ class NonBlockingNetBIOS(base.NBNS):
         self.pending_count += 1
 
     def queryResult(self, ip, results):
-        results = filter(lambda s: s and s[0] in string.printable, results)
+        results = [s for s in results if s and s[0] in string.printable]
         if results:
             print((ip.rjust(16), '-->', ' '.join(results)))
 
@@ -77,8 +77,8 @@ class NonBlockingNetBIOS(base.NBNS):
                     self.queryResult(ip, set(ret))
                 except KeyError:
                     pass
-            except select.error, ex:
-                if type(ex) is types.TupleType:
+            except select.error as ex:
+                if type(ex) is tuple:
                     if ex[0] != errno.EINTR and ex[0] != errno.EAGAIN:
                         raise ex
                 else:
@@ -125,8 +125,8 @@ def main():
 
     if ns.pending_count > 0:
         ns.poll(10)
-        print('Query timeout. No replies from %d IP addresses' %
-              ns.pending_count)
+        print(('Query timeout. No replies from %d IP addresses' %
+              ns.pending_count))
 
 
 if __name__ == '__main__':

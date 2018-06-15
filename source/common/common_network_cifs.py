@@ -17,7 +17,7 @@
 '''
 
 import os
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from smb.SMBConnection import SMBConnection
 from smb.SMBHandler import SMBHandler
@@ -37,7 +37,7 @@ class CommonNetworkCIFSShareURL(object):
         """
         Create director for CIFS management
         """
-        self.director = urllib2.build_opener(SMBHandler)
+        self.director = urllib.request.build_opener(SMBHandler)
 
     def com_cifs_url_download(self, connect_string):
         """

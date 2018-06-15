@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-import httplib
+import http.client
 import socket
 
 import requests
@@ -76,7 +76,7 @@ def com_hard_chrome_info(ip_addr):
     """
     get info of chromecast
     """
-    http_conn = httplib.HTTPConnection(ip_addr + ":8008")
+    http_conn = http.client.HTTPConnection(ip_addr + ":8008")
     http_conn.request("GET", "/ssdp/device-desc.xml")
     http_resp = http_conn.getresponse()
     if http_resp.status == 200:

@@ -22,8 +22,8 @@ import re
 import socket
 import ssl
 import sys
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 from threading import Thread
 
 from . import common_file
@@ -38,9 +38,9 @@ def mk_network_fetch_from_url(url, directory=None):
     common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
     try:
         if sys.version_info < (2, 9, 0):
-            datafile = urllib2.urlopen(url)
+            datafile = urllib.request.urlopen(url)
         else:
-            datafile = urllib2.urlopen(
+            datafile = urllib.request.urlopen(
                 url, context=ssl._create_unverified_context())
         if directory is not None:
             try:
@@ -52,7 +52,7 @@ def mk_network_fetch_from_url(url, directory=None):
             localfile.write(datafile.read())
             datafile.close()
             localfile.close()
-    except urllib2.URLError, err_code:
+    except urllib.error.URLError as err_code:
         common_global.es_inst.com_elastic_index('error', {'you got an error with the code':
                                                               err_code})
         return None
@@ -176,5 +176,5 @@ def mk_network_stats():
 
 
 def mk_network_country_code():
-    response = urllib.urlopen("https://geoip-db.com/json")
+    response = urllib.request.urlopen("https://geoip-db.com/json")
     return json.loads(response.read())

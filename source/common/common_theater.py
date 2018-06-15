@@ -91,7 +91,7 @@ def main_remote_control_event_process(self, action_type_list):
                                                          json_data,
                                                          action_type_list))
         else:
-            print("Unhandled Protocol Method %s",
-                  json_data["Protocol"]["Method"])
+            print(("Unhandled Protocol Method %s",
+                  json_data["Protocol"]["Method"]))
     except:
         pass

@@ -24,7 +24,7 @@ class LoggingCursor(psycopg2.extensions.cursor):
         logger.info(self.mogrify(sql, args))
         try:
             psycopg2.extensions.cursor.execute(self, sql, args)
-        except Exception, exc:
+        except Exception as exc:
             logger.error("%s: %s", exc.__class__.__name__, exc)
             raise
 

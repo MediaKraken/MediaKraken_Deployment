@@ -100,7 +100,7 @@ def on_location(self, **kwargs):
     """
     gps location
     """
-    return '\n'.join(['{}={}'.format(k, v) for k, v in kwargs.items()])
+    return '\n'.join(['{}={}'.format(k, v) for k, v in list(kwargs.items())])
 
 
 def on_status(self, stype, status):

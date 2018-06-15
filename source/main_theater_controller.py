@@ -293,8 +293,8 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Media":
             if json_message['Sub'] == "Controller":
                 # populate the video file list
-                self.root.ids.theater_media_video_spinner.values = map(
-                    str, json_message['Video File List'])
+                self.root.ids.theater_media_video_spinner.values = list(map(
+                    str, json_message['Video File List']))
 
             elif json_message['Sub'] == "Detail":
                 self.root.ids.theater_media_video_title.text \
@@ -325,12 +325,12 @@ class MediaKrakenApp(App):
                 # TODO have the below refresh for the select video file
                 # TODO will need to display SD/HD/UHD and length of video
                 # populate the audio streams to select
-                self.root.ids.theater_media_video_audio_spinner.values = map(
-                    str, audio_streams)
+                self.root.ids.theater_media_video_audio_spinner.values = list(map(
+                    str, audio_streams))
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
                 self.root.ids.theater_media_video_subtitle_spinner.values \
-                    = map(str, subtitle_streams)
+                    = list(map(str, subtitle_streams))
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
             elif json_message['Sub'] == "List":
                 self.send_twisted_message_thread(json.dumps({'Type': 'Device Play List'}))

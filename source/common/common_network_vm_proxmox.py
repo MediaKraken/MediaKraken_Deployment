@@ -690,9 +690,9 @@ def com_net_prox_create_start_container(PROX_CONNECTION, JENKINS_BUILD_VIM, imag
     else:
         # create the container
         print('create JENKINS_BUILD_VIM')
-        print(PROX_CONNECTION.com_net_prox_node_lxc_create('pve', JENKINS_BUILD_VIM, 4096,
+        print((PROX_CONNECTION.com_net_prox_node_lxc_create('pve', JENKINS_BUILD_VIM, 4096,
                                                            image_path,
-                                                           'ZFS_VM', 'alpine', 8, 'metaman'))
+                                                           'ZFS_VM', 'alpine', 8, 'metaman')))
         # keep an eye on task and see when its completed
         # while node.tasks(taskid).status()['status'] == 'running':
         #        time.sleep(1)

@@ -39,8 +39,8 @@ def com_meta_mutagen_update(file_name, attr_name, attr_desc):
 
 def com_meta_mutagen_lenbit(file_name):
     audio = MP3(file_name)
-    print(audio.info.length)
-    print(audio.info.bitrate)
+    print((audio.info.length))
+    print((audio.info.bitrate))
 
 
 def com_meta_mutagen_remove_id(file_name):
@@ -51,7 +51,7 @@ def com_meta_mutagen_remove_id(file_name):
 def com_meta_mutagen_update_easy(file_name, attr_name, attr_desc):
     audio = EasyID3(file_name)
     if type(attr_name) == dict:
-        for dict_item in attr_desc.keys():
+        for dict_item in list(attr_desc.keys()):
             audio[dict_item] = attr_desc[dict_item]
     else:
         audio[attr_name] = attr_desc

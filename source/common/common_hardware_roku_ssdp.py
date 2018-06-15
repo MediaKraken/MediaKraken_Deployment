@@ -13,8 +13,8 @@
 #   limitations under the License.
 
 
-import StringIO
-import httplib
+import io
+import http.client
 import socket
 
 
@@ -23,12 +23,12 @@ class SSDPResponse(object):
     Class for interfacing via SSDP
     """
 
-    class _FakeSocket(StringIO.StringIO):
+    class _FakeSocket(io.StringIO):
         def makefile(self, *args, **kw):
             return self
 
     def __init__(self, response):
-        ssdp_response = httplib.HTTPResponse(self._FakeSocket(response))
+        ssdp_response = http.client.HTTPResponse(self._FakeSocket(response))
         ssdp_response.begin()
         self.location = ssdp_response.getheader("location")
         self.usn = ssdp_response.getheader("usn")
@@ -63,4 +63,4 @@ def roku_discover(service, timeout=2, retries=1):
                 responses[response.location] = response
             except socket.timeout:
                 break
-    return responses.values()
+    return list(responses.values())

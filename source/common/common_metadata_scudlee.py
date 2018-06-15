@@ -56,7 +56,7 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     file_handle.close()
     for anime_data in itemlist['anime-list']['anime']:
         common_global.es_inst.com_elastic_index('info', {'data': anime_data})
-        common_global.es_inst.com_elastic_index('info', {'key': anime_data.keys()})
+        common_global.es_inst.com_elastic_index('info', {'key': list(anime_data.keys())})
         try:
             # to make sure not web, etc
             tvdbid = str(int(anime_data['@tvdbid']))

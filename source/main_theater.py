@@ -351,12 +351,12 @@ class MediaKrakenApp(App):
                             subtitle_streams.append(stream_language)
                             common_global.es_inst.com_elastic_index('info', {'stuff': 'sub'})
                 # populate the audio streams to select
-                self.root.ids.theater_media_video_audio_spinner.values = map(
-                    str, audio_streams)
+                self.root.ids.theater_media_video_audio_spinner.values = list(map(
+                    str, audio_streams))
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
-                self.root.ids.theater_media_video_subtitle_spinner.values = map(str,
-                                                                                subtitle_streams)
+                self.root.ids.theater_media_video_subtitle_spinner.values = list(map(str,
+                                                                                subtitle_streams))
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
                 #            # populate the chapter grid
                 #            for chapter_info in json_message['FFprobe']['chapters']:

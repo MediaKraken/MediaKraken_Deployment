@@ -49,7 +49,7 @@ class CommonMetadataTMDB(object):
         common_global.es_inst.com_elastic_index('info', {"tmdb tv search": tv_title,
                                                          'year': tv_year})
         try:
-            search = self.tv.search(tv_title.replace('\u25ba', ''))
+            search = self.tv.search(tv_title.replace('\\u25ba', ''))
         except:
             search = self.tv.search(tv_title.encode('utf-8'))
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
@@ -79,7 +79,7 @@ class CommonMetadataTMDB(object):
         common_global.es_inst.com_elastic_index('info', {"tmdb search": movie_title,
                                                          'year': movie_year})
         try:
-            search = self.movie.search(movie_title.replace('\u25ba', ''))
+            search = self.movie.search(movie_title.replace('\\u25ba', ''))
         except:
             search = self.movie.search(movie_title.encode('utf-8'))
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})

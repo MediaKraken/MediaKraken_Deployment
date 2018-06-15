@@ -24,6 +24,7 @@ import zlib
 
 from . import common_global
 from . import common_hash_c_code
+from functools import reduce
 
 
 # import compression mods
@@ -51,7 +52,7 @@ def com_hash_sha1_by_filename(file_name):
         zip_handle.close()
         if len(hash_dict) > 0:
             if len(hash_dict) == 1:
-                fileHASHListSingle.append(hash_dict.values()[0])
+                fileHASHListSingle.append(list(hash_dict.values())[0])
                 fileHASHNameListSingle.append(os.path.normpath(file_name))
             else:
                 fileHASHList.append(hash_dict)
@@ -76,7 +77,7 @@ def com_hash_sha1_by_filename(file_name):
             file_handle.close()
             if len(hash_dict) > 0:
                 if len(hash_dict) == 1:
-                    fileHASHListSingle.append(hash_dict.values()[0])
+                    fileHASHListSingle.append(list(hash_dict.values())[0])
                     fileHASHNameListSingle.append(os.path.normpath(file_name))
                 else:
                     fileHASHList.append(hash_dict)

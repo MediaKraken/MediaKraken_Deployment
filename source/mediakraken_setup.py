@@ -51,10 +51,10 @@ compose_text = "version: '2'\n" \
 env_text = ""
 
 if py3:
-    response = input(
-        "Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): ")
+    response = eval(input(
+        "Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): "))
 else:
-    response = raw_input(
+    response = input(
         "Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): ")
 if response == 'None' or len(response) == 0:
     # builtin
@@ -76,17 +76,17 @@ if response == 'None' or len(response) == 0:
                     "    restart: unless - stopped\n"
 else:
     if py3:
+        db_database = eval(input("Please enter database name: "))
+    else:
         db_database = input("Please enter database name: ")
-    else:
-        db_database = raw_input("Please enter database name: ")
     if py3:
+        db_user = eval(input("Please enter database user: "))
+    else:
         db_user = input("Please enter database user: ")
-    else:
-        db_user = raw_input("Please enter database user: ")
     if py3:
-        db_pass = input("Please enter database password: ")
+        db_pass = eval(input("Please enter database password: "))
     else:
-        db_pass = raw_input("Please enter database password: ")
+        db_pass = input("Please enter database password: ")
     env_text = ("DBHOST=%s\nDBDATABASE=%s\nDBUSER=%s\nDBPASS=%s", (response, db_database,
                                                                    db_user, db_pass))
 
@@ -261,10 +261,10 @@ compose_text += "\n\n  # rabbit\n" \
 # after this point is optional stuff
 
 if py3:
-    response = input(
-        "Run Portainer? (See Docker container usage - default no): ")
+    response = eval(input(
+        "Run Portainer? (See Docker container usage - default no): "))
 else:
-    response = raw_input(
+    response = input(
         "Run Portainer? (See Docker container usage - default no): ")
 if response.lower() == 'y':
     # runs portainer
@@ -279,17 +279,17 @@ if response.lower() == 'y':
                     "      restart: unless - stopped\n"
 
 if py3:
-    response = input(
-        "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
+    response = eval(input(
+        "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): "))
 else:
-    response = raw_input(
+    response = input(
         "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
 
 if py3:
-    response = input("Please enter your Transmission instance IP/Hostname"
-                     " (None for builtin server - default builtin: ")
+    response = eval(input("Please enter your Transmission instance IP/Hostname"
+                     " (None for builtin server - default builtin: "))
 else:
-    response = raw_input("Please enter your Transmission instance IP/Hostname"
+    response = input("Please enter your Transmission instance IP/Hostname"
                          " (None for builtin server - default builtin: ")
 if response == 'None' or len(response) == 0:
     # builtin
