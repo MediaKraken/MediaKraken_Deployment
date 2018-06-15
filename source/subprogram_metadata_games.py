@@ -96,19 +96,19 @@ if False:
     zip_handle = zipfile.ZipFile(
         '/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
-        print('zip: %s', zippedfile)
+        print(('zip: %s', zippedfile))
         if zippedfile[0:5] == 'hash/' and zippedfile != 'hash/':
-            print("fname: %s", zippedfile)
+            print(("fname: %s", zippedfile))
             # find system id from mess
             file_name, ext = os.path.splitext(zippedfile)
-            print('fil,etx %s %s' % (file_name, ext))
+            print(('fil,etx %s %s' % (file_name, ext)))
             if ext == ".xml" or ext == ".hsi":
                 json_data = xmltodict.parse(zip_handle.read(zippedfile))
-                print('sys: %s', file_name.split('/', 1)[1])
+                print(('sys: %s', file_name.split('/', 1)[1]))
                 game_short_name_guid \
                     = db_connection.db_meta_games_system_guid_by_short_name(
                     file_name.split('/', 1)[1])
-                print('wh %s', game_short_name_guid)
+                print(('wh %s', game_short_name_guid))
                 if game_short_name_guid is None:
                     game_short_name_guid = db_connection.db_meta_games_system_insert(
                         None, file_name.split('/', 1)[1], None, None)
@@ -128,7 +128,7 @@ if False:
                                                               json_data['softwarelist']['software'])
                         else:
                             for json_game in json_data['softwarelist']['software']:
-                                print('xml: %s', json_game)
+                                print(('xml: %s', json_game))
                                 # json_game = json.loads(json_game)
                                 # TODO check to see if exists....if so, update
                                 # build args and insert the record
@@ -149,7 +149,7 @@ if False:
                                                               json_data['hashfile']['hash'])
                         else:
                             for json_game in json_data['hashfile']['hash']:
-                                print('hsi: %s', json_game)
+                                print(('hsi: %s', json_game))
                                 # TODO check to see if exists....if so, update
                                 # build args and insert the record
                                 db_connection.db_meta_game_insert(game_short_name_guid,
@@ -201,10 +201,10 @@ if True:
             elif line.find("$end") == 0:  # goes by position if found
                 add_to_desc = False
                 for game in game_titles:
-                    print('game: %s' % game)
+                    print(('game: %s' % game))
                     game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[
                         0]
-                    print('data: %s', game_data)
+                    print(('data: %s', game_data))
                     if game_data is None:
                         db_connection.db_meta_game_insert(
                             db_connection.db_meta_games_system_guid_by_short_name(

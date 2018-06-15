@@ -44,13 +44,13 @@ class CommonHardwareHDHomeRun(object):
         """
         Detail on specified device
         """
-        print('Model: %s', self.devices[ndx].get_var(item='/sys/model'))
-        print('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel'))
-        print('Name: %s', self.devices[ndx].get_name())
-        print('Device ID: %08X' % self.devices[ndx].get_device_id())
-        print('Device IP: %08X' % self.devices[ndx].get_device_ip())
-        print('Stream info: %s' % self.devices[ndx].get_tuner_streaminfo())
-        print('Versions: %s %d' % self.devices[ndx].get_version())
+        print(('Model: %s', self.devices[ndx].get_var(item='/sys/model')))
+        print(('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel')))
+        print(('Name: %s', self.devices[ndx].get_name()))
+        print(('Device ID: %08X' % self.devices[ndx].get_device_id()))
+        print(('Device IP: %08X' % self.devices[ndx].get_device_ip()))
+        print(('Stream info: %s' % self.devices[ndx].get_tuner_streaminfo()))
+        print(('Versions: %s %d' % self.devices[ndx].get_version()))
 
     def com_hdhomerun_upgrade(self, ndx, firmware_file):
         """

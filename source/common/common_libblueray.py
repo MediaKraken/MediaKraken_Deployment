@@ -28,8 +28,8 @@ def com_bray_read_titles(drive_name):
     track_data = []
     with bluread.Bluray(drive_name) as b:
         b.Open()
-        print("Volume ID: %s" % b.VolumeId)
-        print("Org ID: %s" % b.OrgId)
+        print(("Volume ID: %s" % b.VolumeId))
+        print(("Org ID: %s" % b.OrgId))
         for i in range(b.NumberOfTitles):
             t = b.GetTitle(i)
             track_data.append((i, t.NumberOfAngles, t.NumberOfChapters,

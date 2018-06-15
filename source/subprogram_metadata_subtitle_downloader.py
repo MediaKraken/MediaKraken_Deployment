@@ -48,4 +48,4 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
         common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
 
 # TODO put in the notifications
-print('Total subtitle download attempts: %s' % total_download_attempts)
+print(('Total subtitle download attempts: %s' % total_download_attempts))

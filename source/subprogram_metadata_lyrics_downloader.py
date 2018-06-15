@@ -37,7 +37,7 @@ sub_lang = "en"
 for media_row in common_file.com_file_dir_list():
     common_global.es_inst.com_elastic_index('info', {'media': media_row})
 
-print('Total lyrics download attempts: %s' % total_download_attempts)
+print(('Total lyrics download attempts: %s' % total_download_attempts))
 # send notifications
 if total_download_attempts > 0:
     db_connection.db_notification_insert(

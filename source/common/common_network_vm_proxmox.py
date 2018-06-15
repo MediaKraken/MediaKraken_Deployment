@@ -266,7 +266,7 @@ class CommonNetworkProxMox(object):
                      # 'rootfs': '32',
                      # 'rootfs': 'vm-118-disk-1a, size=32G',
                      }
-        print('post %s' % post_data)
+        print(('post %s' % post_data))
         return self.com_net_prox_api_call('post', 'nodes/%s/lxc' % node_name, post_data)
 
     def com_net_prox_node_lxc_status(self, node_name, vm_id):
@@ -677,16 +677,16 @@ def com_net_prox_create_start_container(PROX_CONNECTION, JENKINS_BUILD_VIM, imag
     lxc_dict = {}
     for lxc_server in PROX_CONNECTION.com_net_prox_node_lxc_list('pve')['data']:
         lxc_dict[lxc_server['name']] = (lxc_server['vmid'], lxc_server['status'])
-    print('lxc: %s' % lxc_dict)
+    print(('lxc: %s' % lxc_dict))
     if JENKINS_BUILD_VIM in lxc_dict:
         # container exists, make sure it's running
-        print('status: %s' % str(lxc_dict[JENKINS_BUILD_VIM][1]))
+        print(('status: %s' % str(lxc_dict[JENKINS_BUILD_VIM][1])))
         # make sure it's started
         if lxc_dict[JENKINS_BUILD_VIM] != 'running':
             # start up the vm
-            print('start vim: %s' % lxc_dict[JENKINS_BUILD_VIM][0])
-            print(PROX_CONNECTION.com_net_prox_node_lxc_start(
-                'pve', lxc_dict[JENKINS_BUILD_VIM][0]))
+            print(('start vim: %s' % lxc_dict[JENKINS_BUILD_VIM][0]))
+            print((PROX_CONNECTION.com_net_prox_node_lxc_start(
+                'pve', lxc_dict[JENKINS_BUILD_VIM][0])))
     else:
         # create the container
         print('create JENKINS_BUILD_VIM')

@@ -54,7 +54,7 @@ class CommonNetMPVSocat(object):
         self.sub_output = subprocess.Popen('echo \'' + command + '\' | socat - ' + self.sockfile,
                                            stdout=subprocess.PIPE, stderr=None, shell=True)
         output = self.sub_output.communicate()
-        print('subout: ', output)
+        print(('subout: ', output))
 
     def close(self):
         os.remove(self.sockfile)

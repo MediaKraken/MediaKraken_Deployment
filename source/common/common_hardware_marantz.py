@@ -29,7 +29,7 @@ class CommonHardwareMarantz(object):
 
     def com_hardware_marantz_command(self, command_string, resp_cnt):
         command_string = command_string.encode("ascii")
-        print("Sending cmd %s" % command_string)
+        print(("Sending cmd %s" % command_string))
         self.device.read_very_eager()  # clear any old stuff
         self.device.write(command_string)
         resp = []

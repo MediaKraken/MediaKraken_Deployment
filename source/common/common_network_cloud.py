@@ -53,7 +53,7 @@ class CommonLibCloud(object):
                                      object_name=obj.name)
         filename = os.path.basename(obj.name)
         path = os.path.join(os.path.expanduser('~/Downloads'), filename)
-        print('Downloading: %s to %s' % (obj.name, path))
+        print(('Downloading: %s to %s' % (obj.name, path)))
         obj.download(destination_path=path)
 
 # containers = self.driver.list_containers()

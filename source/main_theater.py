@@ -97,7 +97,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            print("selection changed to {0}".format(rv.data[index]))
+            print(("selection changed to {0}".format(rv.data[index])))
             MKFactory.protocol.sendline_data(twisted_connection,
                                              json.dumps({'Type': 'Media', 'Sub': 'Detail',
                                                          'UUID': rv.data[index]['uuid']}))
