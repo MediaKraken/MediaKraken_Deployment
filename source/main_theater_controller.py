@@ -61,6 +61,8 @@ from kivy.clock import Clock
 from kivy.loader import Loader
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import BooleanProperty, ObjectProperty
+from kivy.uix.slider import Slider
+from kivy.uix.colorpicker import ColorWheel
 from theater import MediaKrakenSettings
 
 twisted_connection = None
@@ -579,6 +581,15 @@ class MediaKrakenApp(App):
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
                                               'UUID': MediaKrakenApp.media_uuid,
                                               'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
+
+    # hue lights
+    def hue_lights_on(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Hardware', 'Sub': 'PHue',
+                                              'Target': "FAKE", 'Data': True}))
+
+    def hue_lights_off(self, *args):
+        self.send_twisted_message(json.dumps({'Type': 'Hardware', 'Sub': 'PHue',
+                                              'Target': "FAKE", 'Data': False}))
 
     # navigation select
     def main_remote_event_button_commands_left(self, *args):
