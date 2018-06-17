@@ -104,7 +104,8 @@ compose_text += "\n\n  # Main app server which controls the show\n" \
                 "    depends_on:\n" \
                 "      - pgbounce\n" \
                 "      - rabbit\n" \
-                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py\n" \
+                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 " \
+                "main_server.py\n" \
                 "    ports:\n" \
                 "      - \"8903:8903\"\n" \
                 "    volumes:\n" \
@@ -159,7 +160,8 @@ compose_text += "\n\n  # runs the server to fetch/process all metadata\n" \
                 "    container_name: mkmetadata\n" \
                 "    depends_on:\n" \
                 "      - pgbounce\n" \
-                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py\n" \
+                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 " \
+                "main_server_metadata_api.py\n" \
                 "    volumes:\n" \
                 "      - /var/log/mediakraken:/mediakraken/log\n" \
                 "      - /home/mediakraken:/mediakraken/mnt\n" \
@@ -227,7 +229,7 @@ compose_text += "\n\n  # start broadcast server (so clients can find server)\n" 
                 "  broadcast:\n" \
                 "    image: mediakraken/mkbroadcast:latest\n" \
                 "    container_name: mkbroadcast\n" \
-                "    entrypoint: python subprogram_broadcast.py\n" \
+                "    entrypoint: python3 subprogram_broadcast.py\n" \
                 "    ports:\n" \
                 "      - \"9101:9101\"\n" \
                 "    volumes:\n" \
@@ -240,7 +242,7 @@ compose_text += "\n\n  # scan for new hardware devices\n" \
                 "  devicescan:\n" \
                 "    image: mediakraken/mkdevicescan:latest\n" \
                 "    container_name: mkdevicescan\n" \
-                "    entrypoint: python main_hardware_discover.py\n" \
+                "    entrypoint: python3 main_hardware_discover.py\n" \
                 "    volumes:\n" \
                 "      - /var/log/mediakraken:/mediakraken/log\n" \
                 "      - /var/opt/mediakraken/devices:/mediakraken/devices\n" \

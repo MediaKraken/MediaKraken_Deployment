@@ -166,7 +166,7 @@ class CommonDocker(object):
     def com_docker_run_device_scan(self):
         return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                        detach=True,
-                                       command='python main_hardware_discover.py',
+                                       command='python3 main_hardware_discover.py',
                                        name='mkdevicescan',
                                        network_mode='host')
 

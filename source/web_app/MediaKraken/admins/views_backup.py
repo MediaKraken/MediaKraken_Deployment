@@ -83,7 +83,7 @@ def admin_backup():
             if request.form['backup'] == 'Update':
                 pass
             elif request.form['backup'] == 'Start Backup':
-                g.db_connection.db_trigger_insert(('python',
+                g.db_connection.db_trigger_insert(('python3',
                                                    './subprogram_postgresql_backup.py'))  # this commits
                 flash("Postgresql Database Backup Task Submitted.")
         else:

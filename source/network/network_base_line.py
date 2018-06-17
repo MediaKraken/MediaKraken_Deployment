@@ -218,7 +218,7 @@ class NetworkEvents(basic.LineReceiver):
                         cast_docker_inst = common_docker.CommonDocker()
                         cast_docker_inst.com_docker_run_slave(hwaccel=False,
                                                               name_container=name_container,
-                                                              container_command=("python "
+                                                              container_command=("python3 "
                                                                                  "./stream2chromecast/stream2chromecast.py -devicename %s -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode %s" % (
                                                                                      json_message[
                                                                                          'Target'],

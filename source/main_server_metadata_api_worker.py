@@ -295,20 +295,20 @@ def on_message(channel, method_frame, header_frame, body):
         json_message = json.loads(body)
         if json_message['Type'] == 'update':
             if content_providers == 'themoviedb':
-                subprocess.Popen(['python',
+                subprocess.Popen(['python3',
                                   '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
             elif content_providers == 'thetvdb':
-                subprocess.Popen(['python',
+                subprocess.Popen(['python3',
                                   '/mediakraken/subprogram_metadata_thetvdb_updates.py'],
                                  shell=False)
             elif content_providers == 'tvmaze':
-                subprocess.Popen(['python',
+                subprocess.Popen(['python3',
                                   '/mediakraken/subprogram_metadata_tvmaze_updates.py'],
                                  shell=False)
         elif json_message['Type'] == 'collection':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
-                subprocess.Popen(['python',
+                subprocess.Popen(['python3',
                                   '/mediakraken/subprogram_metadata_update_create_collections.py'],
                                  shell=False)
         # TODO add record for activity/etc for the user who ran this

@@ -39,7 +39,7 @@ class TestSubprogramBroadcast(object):
     @classmethod
     def setup_class(self):
         # fire up broadcast server
-        self.proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'],
+        self.proc_broadcast = subprocess.Popen(['python3', './subprogram_broadcast.py'],
                                                shell=False)
         common_global.es_inst.com_elastic_index('info',
                                                 {'stuff': "PID: %s", self.proc_broadcast.pid)

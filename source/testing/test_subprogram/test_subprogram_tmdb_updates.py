@@ -29,6 +29,6 @@ class TestSubprogramTMDBUpdates(object):
         Test function
         """
         proc_info = subprocess.Popen(
-            ['python', './subprogram_tmdb_updates.py'], shell=False)
+            ['python3', './subprogram_tmdb_updates.py'], shell=False)
         common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s", proc_info.pid)
         proc_info.wait()
