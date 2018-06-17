@@ -16,7 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-import logging  # pylint: disable=W0611
 import platform
 import subprocess
 import sys
@@ -56,11 +55,11 @@ elif platform.system() != 'Linux':
 # check minimum linux versions
 print('Checking linux version...')
 print(('I see you\'re running', platform.dist()
-      [0], 'version', platform.dist()[1]))
+[0], 'version', platform.dist()[1]))
 try:
     if float(platform.dist()[1]) < LINUX_VERSIONS[platform.dist()[0].lower()][0]:
         print(('minimum required version is',
-              LINUX_VERSIONS[platform.dist()[0].lower()][0]))
+               LINUX_VERSIONS[platform.dist()[0].lower()][0]))
 except KeyError:
     print('Unsupported linux distribution. Exiting...')
     sys.exit(0)

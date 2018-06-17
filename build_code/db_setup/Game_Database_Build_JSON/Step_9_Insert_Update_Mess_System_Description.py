@@ -17,6 +17,7 @@
 '''
 
 import uuid
+
 import psycopg2
 
 # setup for unicode
@@ -119,8 +120,8 @@ while 1:
                 sys_graphics = Status_Lookup_Add(sys_graphics[:-1])
                 # build query
                 sql_args = str(uuid.uuid4()), sys_short_name[:-1], sys_longname, sys_desc, \
-                    sys_year[:-1], sys_manufacturer, sys_emulation, sys_color, sys_sound, \
-                    sys_graphics, sys_save_state
+                           sys_year[:-1], sys_manufacturer, sys_emulation, sys_color, sys_sound, \
+                           sys_graphics, sys_save_state
                 print(sql_args)
                 quick_sql_args = sys_short_name[:-1],
                 curs.execute('select count(*) from mm_game_systems_info'
