@@ -18,7 +18,9 @@
 
 import gzip
 import json
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
 
 from . import common_network
 
@@ -37,7 +39,7 @@ class CommonMetadataOpenweatherMap(object):
         """
         return json.load(
             urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?id=%s&appid=%s'
-                            % (city, self.api_key)))
+                                   % (city, self.api_key)))
 
     def com_openweathermap_fetch_city(self):
         """

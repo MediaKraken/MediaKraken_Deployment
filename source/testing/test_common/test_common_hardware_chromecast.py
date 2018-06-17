@@ -16,7 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-import pytest
 import sys
 
 sys.path.append('.')

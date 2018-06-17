@@ -17,8 +17,6 @@
 '''
 
 import subprocess
-import logging
-import pytest  # pylint: disable=W0611
 
 
 class TestSubprogramZFSCheck(object):
@@ -32,5 +30,5 @@ class TestSubprogramZFSCheck(object):
         """
         proc_info = subprocess.Popen(
             ['python', './subprogram_zfs_check.py'], shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", proc_info.pid)
+        common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s", proc_info.pid)
         proc_info.wait()

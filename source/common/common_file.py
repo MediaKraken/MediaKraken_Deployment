@@ -16,8 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-import pickle
 import os
+import pickle
 import time
 from os import walk  # pylint: disable=C0412
 

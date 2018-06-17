@@ -22,8 +22,9 @@ import re
 import socket
 import ssl
 import sys
-import urllib.request, urllib.parse, urllib.error
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
 from threading import Thread
 
 from . import common_file

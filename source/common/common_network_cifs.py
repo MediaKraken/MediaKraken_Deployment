@@ -17,7 +17,9 @@
 '''
 
 import os
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
 
 from smb.SMBConnection import SMBConnection
 from smb.SMBHandler import SMBHandler

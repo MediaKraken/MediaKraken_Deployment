@@ -16,11 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_watchdog
 
 # class MK_Watchdog_Handler(FileSystemEventHandler):
 #     def on_modified(self, event):

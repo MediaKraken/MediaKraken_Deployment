@@ -16,7 +16,3 @@
   MA 02110-1301, USA.
 '''
 
-import pytest  # pylint: disable=W0611
-from .test_webserver_base import *
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys

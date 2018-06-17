@@ -287,10 +287,10 @@ else:
 
 if py3:
     response = eval(input("Please enter your Transmission instance IP/Hostname"
-                     " (None for builtin server - default builtin: "))
+                          " (None for builtin server - default builtin: "))
 else:
     response = input("Please enter your Transmission instance IP/Hostname"
-                         " (None for builtin server - default builtin: ")
+                     " (None for builtin server - default builtin: ")
 if response == 'None' or len(response) == 0:
     # builtin
     pass

@@ -356,7 +356,7 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
                 self.root.ids.theater_media_video_subtitle_spinner.values = list(map(str,
-                                                                                subtitle_streams))
+                                                                                     subtitle_streams))
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
                 #            # populate the chapter grid
                 #            for chapter_info in json_message['FFprobe']['chapters']:

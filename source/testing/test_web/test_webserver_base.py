@@ -17,9 +17,9 @@
 '''
 
 import os
+
 import pytest  # pylint: disable=W0611
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 
 TEST_TARGET = 'http://10.0.0.179:8080'
 

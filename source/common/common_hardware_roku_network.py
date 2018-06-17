@@ -21,7 +21,9 @@
 
 
 import time
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
 
 from . import common_hardware_roku_ssdp
 
@@ -76,4 +78,4 @@ def com_roku_network_touch(roku_addr, roku_port, x_pos, y_pos):
     'Click' screen
     """
     return urllib.request.urlopen(roku_addr + ':' + roku_port + '/input?touch.0.x=' + str(x_pos)
-                           + '.0&touch.0.y=' + str(y_pos) + '.0&touch.0.op=down')
+                                  + '.0&touch.0.y=' + str(y_pos) + '.0&touch.0.op=down')

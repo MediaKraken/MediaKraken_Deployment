@@ -16,8 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import pytest  # pylint: disable=W0611
 import sys
+
+import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 import database as database_base
@@ -38,8 +39,8 @@ class TestDatabaseActivity(object):
                               "activity_short_overview", "activity_type", "activity_itemid",
                               "activity_userid",
                               "activity_log_severity"), [
-        ('TestMediaKraken_Trigger Start', None, 'System: Trigger Start',
-         'ServerTriggerStart', None, None, 'SystemTest')])
+                                 ('TestMediaKraken_Trigger Start', None, 'System: Trigger Start',
+                                  'ServerTriggerStart', None, None, 'SystemTest')])
     def test_db_activity_insert(self, activity_name, activity_overview,
                                 activity_short_overview, activity_type, activity_itemid,
                                 activity_userid,

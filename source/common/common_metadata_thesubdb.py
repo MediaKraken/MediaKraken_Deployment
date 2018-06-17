@@ -16,7 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import urllib.request, urllib.parse, urllib.error
+import urllib.error
+import urllib.parse
+import urllib.request
 
 import requests
 from common import common_hash
@@ -43,8 +45,8 @@ class CommonMetadataTheSubDB(object):
             if lang in langs:
                 sublink = '%s?%s' % (self.url,
                                      urllib.parse.urlencode({'action': 'download',
-                                                       'hash': filehash,
-                                                       'language': lang}))
+                                                             'hash': filehash,
+                                                             'language': lang}))
                 subtitles.append({'lang': lang, 'link': sublink})
         return subtitles
 

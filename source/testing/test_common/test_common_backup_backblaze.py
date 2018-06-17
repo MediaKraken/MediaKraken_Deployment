@@ -17,8 +17,9 @@
 '''
 
 import os
-import pytest
 import sys
+
+import pytest
 
 sys.path.append('.')
 from common import common_backup_backblaze

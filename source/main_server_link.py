@@ -19,14 +19,13 @@
 import platform
 import sys
 
+from common import common_config_ini
+from common import common_global
+from common import common_logging_elasticsearch
 from twisted.internet import reactor, ssl
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory
 from twisted.protocols.basic import Int32StringReceiver
-
-from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
 
 networkProtocol = None
 metaapp = None

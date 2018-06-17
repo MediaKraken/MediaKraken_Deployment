@@ -21,10 +21,10 @@ import os
 import struct
 import zipfile
 import zlib
+from functools import reduce
 
 from . import common_global
 from . import common_hash_c_code
-from functools import reduce
 
 
 # import compression mods

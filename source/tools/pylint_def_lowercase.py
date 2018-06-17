@@ -34,7 +34,7 @@ for file_name in common_file.com_file_dir_list(
                         and file_name.find('_Tizen') == -1:
                     print(('File: %s' % file_name))
                     print(("Upper char found: %s" %
-                          file_line.split(' ')[1].split('(')[0]))
+                           file_line.split(' ')[1].split('(')[0]))
                     command_string = 'find . -type f -name "*.py" -exec sed -i \'s/' \
                                      + file_line.split(' ')[1].split('(')[0] + '/' \
                                      + file_line.split(' ')[1].split('(')[0].lower() + '/g\' {} +'

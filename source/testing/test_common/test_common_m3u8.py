@@ -16,11 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_m3u8
 
 # write out m3u from list
 # def com_M3U_Write(playlist_data, m3u_file_name):

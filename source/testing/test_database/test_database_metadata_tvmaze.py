@@ -18,6 +18,7 @@
 
 import json
 import sys
+
 import pytest  # pylint: disable=W0611
 
 sys.path.append('.')

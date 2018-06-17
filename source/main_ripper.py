@@ -18,12 +18,11 @@
 
 import time
 
-from twisted.internet import reactor, protocol
-
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
 from network import network_base_line_ripper as network_base
+from twisted.internet import reactor, protocol
 
 
 class MediaKrakenServerApp(protocol.ServerFactory):

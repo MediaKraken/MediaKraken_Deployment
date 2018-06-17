@@ -16,9 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-from libdiscid import read
-
 import discid
+from libdiscid import read
 
 from . import common_global
 

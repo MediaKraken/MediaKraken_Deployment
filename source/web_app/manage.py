@@ -4,13 +4,12 @@
 
 import os
 
-from flask_script import Manager, Shell, Server
-from flask_script.commands import Clean, ShowUrls
-
 from MediaKraken.app import create_app
 from MediaKraken.database import db
 from MediaKraken.settings import ProdConfig
 from MediaKraken.user.models import User
+from flask_script import Manager, Shell, Server
+from flask_script.commands import Clean, ShowUrls
 
 app = create_app(ProdConfig)
 

@@ -19,7 +19,6 @@
 import json
 
 import db_base_brainz as database_base_brainz
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch

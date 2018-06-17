@@ -19,7 +19,6 @@
 import sys
 
 sys.path.append('.')
-import pytest  # pylint: disable=W0611
 import database as database_base
 
 

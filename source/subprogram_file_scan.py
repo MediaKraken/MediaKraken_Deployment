@@ -24,7 +24,6 @@ import uuid
 from datetime import datetime  # to handle threading
 
 import pika
-
 from common import common_config_ini
 from common import common_file
 from common import common_file_extentions

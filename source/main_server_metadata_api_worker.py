@@ -22,14 +22,13 @@ import subprocess
 import sys
 
 import pika
-from guessit import guessit
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
 from common import common_string
 from common.common_metadata_limiter import *
+from guessit import guessit
 from metadata import metadata_general
 from metadata import metadata_identification
 

@@ -17,8 +17,9 @@
 '''
 
 import os
-import pytest  # pylint: disable=W0611
 import sys
+
+import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 from common import common_cloud_aws_s3

@@ -17,8 +17,6 @@
 '''
 
 import subprocess
-import logging
-import pytest  # pylint: disable=W0611
 
 
 class TestSubprogramMusicBrainzSync(object):
@@ -32,5 +30,5 @@ class TestSubprogramMusicBrainzSync(object):
         """
         proc_info = subprocess.Popen(
             ['python', './subprogram_musicbrainz_sync.py'], shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", proc_info.pid)
+        common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s", proc_info.pid)
         proc_info.wait()

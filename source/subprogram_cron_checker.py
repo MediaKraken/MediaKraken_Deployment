@@ -21,7 +21,6 @@ import subprocess
 import time
 
 import psutil
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
