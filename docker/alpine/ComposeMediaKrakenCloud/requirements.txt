@@ -7,4 +7,5 @@ dropbox
 onedrivesdk
 scandir
 psycopg2
+dosage
 youtube-dl
