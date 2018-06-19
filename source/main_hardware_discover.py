@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 from common import common_file
 # from common import common_global
 from common import common_hardware_chromecast
@@ -27,7 +25,7 @@ from common import common_hardware_roku_network
 from common import common_string
 
 # start logging - REMOVED SINCE RUNS AS HOST NETWORK
-#common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
+# common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
 
 media_devices = []
 

@@ -110,7 +110,7 @@ class Remote(object):
     def sendKeys(self, keys):
         safeKeys = True
         if not isinstance(keys, (list, tuple)):
-            print 'Please supply arguments in list or tuple'
+            print('Please supply arguments in list or tuple')
             return False
         else:
             for key in keys:
@@ -144,7 +144,7 @@ class Remote(object):
                 sock.close()
                 time.sleep(0.3)
         else:
-            print 'Not supported key sent'
+            print('Not supported key sent')
 
         # if __name__=='__main__':
 #     remote = Remote('192.168.254.4', 'LE32C650')

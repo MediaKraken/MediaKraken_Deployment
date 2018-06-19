@@ -2,9 +2,8 @@
 User view in webapp
 """
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
 
-from flask import Blueprint, render_template, g, request, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_music_video", __name__, url_prefix='/users',
@@ -29,7 +28,8 @@ def metadata_music_video_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_music_video_list(offset, per_page, session['search_text'])
+        mediadata = g.db_connection.db_meta_music_video_list(offset, per_page,
+                                                             session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_music_video_list(offset, per_page)
     session['search_page'] = 'meta_music_video'

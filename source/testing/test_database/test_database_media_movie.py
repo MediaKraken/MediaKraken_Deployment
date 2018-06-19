@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
 import sys
+
+import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 import database as database_base
@@ -54,26 +54,26 @@ class TestDatabaseMediaMovie(object):
 
     @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "group_collection",
                               "include_remote"), [
-        (
-            '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', False,
-            False),
-        # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d39',
-         None, 'All', False, True),
-        # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d39',
-         None, 'All', True, True),
-        # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False,
-         False),  # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False,
-         True),  # exists
-        (
-            '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama',
-            True, True),
-        # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', False,
-         False)])  # no exist
+                                 (
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', False,
+                                         False),
+                                 # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39',
+                                  None, 'All', False, True),
+                                 # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39',
+                                  None, 'All', True, True),
+                                 # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False,
+                                  False),  # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', False,
+                                  True),  # exists
+                                 (
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama',
+                                         True, True),
+                                 # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', False,
+                                  False)])  # no exist
     def test_db_web_media_list_count(self, class_guid, list_type, list_genre,
                                      group_collection, include_remote):
         """
@@ -85,24 +85,24 @@ class TestDatabaseMediaMovie(object):
 
     @pytest.mark.parametrize(("class_guid", "list_type", "list_genre", "list_limit",
                               "group_collection", "offset", "include_remote"), [
-        ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, False, 0,
-         False),  # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, False, 0,
-         True),  # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, True, 0,
-         True),  # exists
-        (
-            '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0,
-            False, 0,
-            False),  # exists
-        (
-            '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0,
-            False, 0,
-            True),  # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, True, 0,
-         True),  # exists
-        ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', 0, False, 0,
-         False)])  # no exist
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, False, 0,
+                                  False),  # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, False, 0,
+                                  True),  # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'All', 0, True, 0,
+                                  True),  # exists
+                                 (
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0,
+                                         False, 0,
+                                         False),  # exists
+                                 (
+                                         '928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0,
+                                         False, 0,
+                                         True),  # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d39', None, 'Drama', 0, True, 0,
+                                  True),  # exists
+                                 ('928c56c3-253d-4e30-924e-5698be6d3d30', None, 'All', 0, False, 0,
+                                  False)])  # no exist
     def test_db_web_media_list(self, class_guid, list_type, list_genre,
                                list_limit, group_collection, offset, include_remote):
         """

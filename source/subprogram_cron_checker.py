@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import datetime
 import subprocess
 import time
@@ -60,7 +58,7 @@ while 1:
         if row_data['mm_cron_last_run'] < date_check:
             if not psutil.pid_exists(pid_dict[row_data['mm_cron_name']]):
                 if row_data['mm_cron_file_path'][-3:] == '.py':
-                    proc = subprocess.Popen(['python', row_data['mm_cron_file_path']],
+                    proc = subprocess.Popen(['python3', row_data['mm_cron_file_path']],
                                             shell=False)
                 else:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],

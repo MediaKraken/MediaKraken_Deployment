@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import requests
 
 from . import common_global
@@ -39,7 +37,7 @@ class CommonMetadataTheTVDBv2(object):
         self.base_api_url = 'https://api.thetvdb.com/'
 
     def com_meta_thetvdbv2_login(self):
-        print('header %s', self.headers)
+        print(('header %s', self.headers))
         resp = requests.post(self.base_api_url + "login", headers=self.headers)
         common_global.es_inst.com_elastic_index('info', {"thetvdbv2_login Info Status":
                                                              resp.status_code, 'json': resp.json()})

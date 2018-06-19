@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 import socket
@@ -56,7 +54,7 @@ class CommonNetMPVSocat(object):
         self.sub_output = subprocess.Popen('echo \'' + command + '\' | socat - ' + self.sockfile,
                                            stdout=subprocess.PIPE, stderr=None, shell=True)
         output = self.sub_output.communicate()
-        print('subout: ', output)
+        print(('subout: ', output))
 
     def close(self):
         os.remove(self.sockfile)

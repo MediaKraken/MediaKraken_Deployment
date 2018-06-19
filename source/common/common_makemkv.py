@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import subprocess
 
 
@@ -25,7 +23,7 @@ def com_makemkv_drive_list():
     makemkv_pid = subprocess.Popen(['makemkvcon', '-r', '--cache=1', 'info', 'disc:9999'],
                                    stdout=subprocess.PIPE, bufsize=1)
     for line in iter(makemkv_pid.stdout.readline, b''):
-        print(line, )
+        print(line)
         makemkv_pid.communicate()
 
 
@@ -36,5 +34,5 @@ def com_makemkv_rip_disc(file_location, cache_size=1024, disc=0, track='all', mi
                                     ('disc:%s' % disc), track, file_location],
                                    stdout=subprocess.PIPE, bufsize=1)
     for line in iter(makemkv_pid.stdout.readline, b''):
-        print(line, )
+        print(line)
         makemkv_pid.communicate()

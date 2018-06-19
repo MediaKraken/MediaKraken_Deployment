@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import telnetlib
 
 
@@ -31,14 +29,14 @@ class CommonHardwareMarantz(object):
 
     def com_hardware_marantz_command(self, command_string, resp_cnt):
         command_string = command_string.encode("ascii")
-        print("Sending cmd %s" % command_string)
+        print(("Sending cmd %s" % command_string))
         self.device.read_very_eager()  # clear any old stuff
         self.device.write(command_string)
         resp = []
         for r in range(resp_cnt):
             # Strip the trailing \r
             resp.append(self.device.read_until('\r', 1)[:-1])
-        print("Response: ", resp)
+        print(("Response: ", resp))
         return resp
 
     def com_hardware_marantz_close(self):
@@ -681,7 +679,7 @@ class CommonHardwareMarantz(object):
 # connect test
 teststuff = CommonHardwareMarantz('10.0.0.209')
 
-print(teststuff.com_hardware_marantz_picture_mode_status())
+print((teststuff.com_hardware_marantz_picture_mode_status()))
 
 # connect close
 teststuff.com_hardware_marantz_close()

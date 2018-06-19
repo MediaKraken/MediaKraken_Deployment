@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
 import sys
+
+import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 from common import common_network_gmail
@@ -27,9 +27,9 @@ from common import common_network_gmail
 # send email
 @pytest.mark.parametrize(("user_name", "user_password", "email_receipient", "email_subject",
                           "email_body"), [
-    ('', '', 'spootdevfake@gmail.com', "test1", "body"),
-    ('', '', 'spootdev@gmail.com', "test2", "body"),
-    ('', '', 'spootdev@fakegmail.com', "test3", "body")])
+                             ('', '', 'spootdevfake@gmail.com', "test1", "body"),
+                             ('', '', 'spootdev@gmail.com', "test2", "body"),
+                             ('', '', 'spootdev@fakegmail.com', "test3", "body")])
 def test_com_net_send_email(user_name, user_password, email_receipient,
                             email_subject, email_body):
     """

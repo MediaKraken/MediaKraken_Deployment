@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import uuid
 
@@ -39,7 +37,7 @@ result = tvmaze.com_meta_tvmaze_show_updated()
 common_global.es_inst.com_elastic_index('info', {'result': result})
 # for show_list_json in result:
 result = json.loads(result)
-for tvmaze_id, tvmaze_time in result.items():
+for tvmaze_id, tvmaze_time in list(result.items()):
     common_global.es_inst.com_elastic_index('info', {'id': tvmaze_id, 'time': tvmaze_time})
     # check to see if already downloaded
     results = db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id))

@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 import sys
@@ -28,7 +26,6 @@ from common import common_global
 from common import common_hardware_arduino_usb_serial
 from common import common_logging_elasticsearch
 from common import common_signal
-from concurrent import futures
 from crochet import wait_for, setup
 
 setup()
@@ -47,9 +44,6 @@ from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
-from kivy.graphics import *
-from kivy.graphics.opengl import *
-from kivy.graphics import *
 
 twisted_connection = None
 mk_app = None

@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 
 def db_web_tvmedia_list(self, genre_type=None, list_limit=None,
                         group_collection=False, offset=None, search_value=None):

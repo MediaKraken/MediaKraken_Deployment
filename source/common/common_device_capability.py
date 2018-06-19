@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 # put the "preferred" item first in the array, as it will default to that on no match
 DEVICE_COMPATIBILITY = {
     'ATV': {
@@ -37,13 +35,13 @@ DEVICE_COMPATIBILITY = {
                'MaxImageRes': '1280x720',
                'MaxVideoRes': ['720/60', '1080/30']},
         'Ultra': {'VidContainer': ['mp4', 'webm'],
-               'VidCodec': ['x264', 'x265', 'vp8', 'vp9'],
-               'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus', 'wav'],
-               'AudioChannel': ['6.1'],
-               'AudioPass': ['ac3', 'eac3'],
-               'ImageFormat': ['bmp', 'gif', 'jpeg', 'png', 'webp'],
-               'MaxImageRes': '1280x720',
-               'MaxVideoRes': '2160/60'}
+                  'VidCodec': ['x264', 'x265', 'vp8', 'vp9'],
+                  'AudioCodec': ['aac', 'flac', 'mp3', 'ogg', 'opus', 'wav'],
+                  'AudioChannel': ['6.1'],
+                  'AudioPass': ['ac3', 'eac3'],
+                  'ImageFormat': ['bmp', 'gif', 'jpeg', 'png', 'webp'],
+                  'MaxImageRes': '1280x720',
+                  'MaxVideoRes': '2160/60'}
     },
     'Fire': {
         'Stick': {},

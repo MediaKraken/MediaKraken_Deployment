@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 import subprocess
@@ -34,7 +32,6 @@ from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_cifs
 from common import common_string
-from concurrent import futures
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')

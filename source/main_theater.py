@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import base64
 import json
 import logging  # pylint: disable=W0611
@@ -99,7 +97,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            print("selection changed to {0}".format(rv.data[index]))
+            print(("selection changed to {0}".format(rv.data[index])))
             MKFactory.protocol.sendline_data(twisted_connection,
                                              json.dumps({'Type': 'Media', 'Sub': 'Detail',
                                                          'UUID': rv.data[index]['uuid']}))
@@ -353,12 +351,12 @@ class MediaKrakenApp(App):
                             subtitle_streams.append(stream_language)
                             common_global.es_inst.com_elastic_index('info', {'stuff': 'sub'})
                 # populate the audio streams to select
-                self.root.ids.theater_media_video_audio_spinner.values = map(
-                    str, audio_streams)
+                self.root.ids.theater_media_video_audio_spinner.values = list(map(
+                    str, audio_streams))
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
-                self.root.ids.theater_media_video_subtitle_spinner.values = map(str,
-                                                                                subtitle_streams)
+                self.root.ids.theater_media_video_subtitle_spinner.values = list(map(str,
+                                                                                     subtitle_streams))
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
                 #            # populate the chapter grid
                 #            for chapter_info in json_message['FFprobe']['chapters']:
@@ -743,7 +741,7 @@ def on_config_change(self, config, section, key, value):
         if proxyImage.image.texture:
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
         # since it's loaded delete the image
-        #os.remove(self.home_demo_file_name)
+        # os.remove(self.home_demo_file_name)
 
     def _image_loaded_home_movie(self, proxyImage):
         """
@@ -752,7 +750,7 @@ def on_config_change(self, config, section, key, value):
         if proxyImage.image.texture:
             self.root.ids.main_home_movie_image.texture = proxyImage.image.texture
         # since it's loaded delete the image
-        #os.remove(self.home_movie_file_name)
+        # os.remove(self.home_movie_file_name)
 
     def _image_loaded_home_new_movie(self, proxyImage):
         """
@@ -761,7 +759,7 @@ def on_config_change(self, config, section, key, value):
         if proxyImage.image.texture:
             self.root.ids.main_home_new_movie_image.texture = proxyImage.image.texture
         # since it's loaded delete the image
-        #os.remove(self.home_movie_new_file_name)
+        # os.remove(self.home_movie_new_file_name)
 
     def _image_loaded_home_prog_movie(self, proxyImage):
         """
@@ -770,7 +768,7 @@ def on_config_change(self, config, section, key, value):
         if proxyImage.image.texture:
             self.root.ids.main_home_progress_movie_image.texture = proxyImage.image.texture
         # since it's loaded delete the image
-        #os.remove(self.home_movie_inprogress_file_name)
+        # os.remove(self.home_movie_inprogress_file_name)
 
     if __name__ == '__main__':
         # for windows exe support

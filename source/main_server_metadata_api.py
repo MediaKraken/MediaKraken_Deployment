@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import os
 import subprocess
 
@@ -51,8 +49,8 @@ wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
 wait_pid.wait()
 
 # fire up the workers for each provider
-for meta_provider in common_metadata_limiter.API_LIMIT.keys():
+for meta_provider in list(common_metadata_limiter.API_LIMIT.keys()):
     common_global.es_inst.com_elastic_index('info', {'meta_provider': meta_provider})
-    proc_api_fetch = subprocess.Popen(['python', './main_server_metadata_api_worker.py',
+    proc_api_fetch = subprocess.Popen(['python3', './main_server_metadata_api_worker.py',
                                        meta_provider], shell=False)
 proc_api_fetch.wait()  # so this doesn't end which will cause docker to restart

@@ -60,9 +60,6 @@ class MKServerDatabase(object):
     from database.db_base_hardware import db_hardware_json_read, \
         db_hardware_insert, \
         db_hardware_delete
-    from database.db_base_iradio import db_iradio_insert, \
-        db_iradio_list_count, \
-        db_iradio_list
     from database.db_base_link import db_link_list_count, \
         db_link_list, \
         db_link_insert, \
@@ -113,8 +110,6 @@ class MKServerDatabase(object):
         db_media_random, \
         db_read_media_metadata_movie_both, \
         db_read_media_list_by_uuid
-    from database.db_base_media_music import db_media_album_count, \
-        db_media_album_list
     from database.db_base_media_music_video import db_music_video_list
     from database.db_base_media_remote import db_insert_remote_media, \
         db_read_remote_media, \
@@ -166,32 +161,11 @@ class MKServerDatabase(object):
         db_meta_movie_status_update, \
         db_meta_movie_json_update, \
         db_meta_movie_image_random
-    from database.db_base_metadata_music import db_music_lookup, \
-        db_meta_musician_by_guid, \
-        db_meta_musician_add, \
-        db_meta_album_by_guid, \
-        db_meta_album_add, \
-        db_meta_song_by_guid, \
-        db_meta_song_add, \
-        db_meta_songs_by_album_guid, \
-        db_meta_song_list, \
-        db_meta_album_list, \
-        db_meta_muscian_list, \
-        db_meta_album_image_random
     from database.db_base_metadata_music_video import db_meta_music_video_lookup, \
         db_meta_music_video_add, \
         db_meta_music_video_detail_uuid, \
         db_meta_music_video_count, \
         db_meta_music_video_list
-    from database.db_base_metadata_people import db_meta_person_list_count, \
-        db_meta_person_list, \
-        db_meta_person_by_guid, \
-        db_meta_person_by_name, \
-        db_meta_person_insert_cast_crew, \
-        db_meta_person_insert, \
-        db_meta_person_update, \
-        db_meta_person_id_count, \
-        db_meta_person_as_seen_in
     from database.db_base_metadata_sports import db_meta_sports_guid_by_thesportsdb, \
         db_meta_sports_list_count, \
         db_meta_sports_list, \
@@ -230,12 +204,6 @@ class MKServerDatabase(object):
         db_opt_status_update_scan, \
         db_opt_status_update_scan_rec, \
         db_opt_status_insert
-    from database.db_base_postgresql import db_pgsql_table_sizes, \
-        db_pgsql_row_count, \
-        db_pgsql_vacuum_stat_by_day, \
-        db_pgsql_vacuum_table, \
-        db_pgsql_set_iso_level, \
-        db_pgsql_table_exits
     from database.db_base_review import db_review_count, \
         db_review_list_by_tmdb_guid, \
         db_review_insert

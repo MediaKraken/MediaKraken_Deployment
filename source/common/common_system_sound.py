@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 from kivy.core.audio import SoundLoader
 from plyer import tts
 
@@ -41,7 +39,7 @@ def com_sound_play_file(file_name):
     try:
         sound_data = SoundLoader.load(file_name)
     except GstPlayerException:
-        pass
+        sound_data = False
     if sound_data:
         common_global.es_inst.com_elastic_index('info', {"Sound found at": sound_data.source})
         common_global.es_inst.com_elastic_index('info', {"Sound is %.3f seconds" %

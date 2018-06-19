@@ -16,15 +16,14 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 
 import requests
-from tmdbv3api import TMDb, TV
-from tmdbv3api import Movie
 import tmdbsimple as tmdb
+from tmdbv3api import Movie
+from tmdbv3api import TMDb, TV
+
 from . import common_global
 from . import common_metadata
 from . import common_network
@@ -50,7 +49,7 @@ class CommonMetadataTMDB(object):
         common_global.es_inst.com_elastic_index('info', {"tmdb tv search": tv_title,
                                                          'year': tv_year})
         try:
-            search = self.tv.search(tv_title.replace('\u25ba', ''))
+            search = self.tv.search(tv_title.replace('\\u25ba', ''))
         except:
             search = self.tv.search(tv_title.encode('utf-8'))
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
@@ -61,10 +60,10 @@ class CommonMetadataTMDB(object):
                                                                      res.release_date.split('-', 1)[
                                                                          0]})
                 if tv_year is not None and (str(tv_year) == res.release_date.split('-', 1)[0]
-                                               or str(int(tv_year) - 1) ==
-                                               res.release_date.split('-', 1)[0]
-                                               or str(int(tv_year) + 1) ==
-                                               res.release_date.split('-', 1)[0]):
+                                            or str(int(tv_year) - 1) ==
+                                            res.release_date.split('-', 1)[0]
+                                            or str(int(tv_year) + 1) ==
+                                            res.release_date.split('-', 1)[0]):
                     if not id_only:
                         return 'info', self.com_tmdb_metadata_tv_by_id(res.id)
                     else:
@@ -80,7 +79,7 @@ class CommonMetadataTMDB(object):
         common_global.es_inst.com_elastic_index('info', {"tmdb search": movie_title,
                                                          'year': movie_year})
         try:
-            search = self.movie.search(movie_title.replace('\u25ba', ''))
+            search = self.movie.search(movie_title.replace('\\u25ba', ''))
         except:
             search = self.movie.search(movie_title.encode('utf-8'))
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})

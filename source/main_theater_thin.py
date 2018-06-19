@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import base64
 import json
 import logging  # pylint: disable=W0611
@@ -57,9 +55,6 @@ from kivy.clock import Clock
 from kivy.loader import Loader
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
-from kivy.graphics import *
-from kivy.graphics.opengl import *
-from kivy.graphics import *
 from theater import MediaKrakenSettings
 
 twisted_connection = None
@@ -383,7 +378,7 @@ class MediaKrakenApp(App):
             self.root.ids.main_home_demo_image.texture = proxyImage.image.texture
         # don't bother now.....as it's always the same name and will be reloaded
         # since it's loaded delete the image
-        #os.remove('./image_demo')
+        # os.remove('./image_demo')
 
 
 if __name__ == '__main__':

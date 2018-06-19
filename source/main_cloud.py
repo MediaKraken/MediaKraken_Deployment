@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import subprocess
 import time
@@ -47,7 +45,7 @@ def on_message(channel, method_frame, header_frame, body):
                 dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',
                                            '/mediakraken/archive.txt', json_message['Data']],
                                           shell=False)
-                dl_pid.wait() # TODO - do I really need to wait for finish?
+                dl_pid.wait()  # TODO - do I really need to wait for finish?
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 

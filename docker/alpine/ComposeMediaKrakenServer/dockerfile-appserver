@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main server app"
@@ -27,11 +27,11 @@ RUN apk add --update \
   openldap-dev \
   portaudio-dev \
   postgresql-dev \
-  python-dev \
+  python3-dev \
   openrc \
   && export PYCURL_SSL_LIBRARY=openssl \
-  && pip install pycurl \
-  && pip install -r requirements.txt \
+  && pip3 install pycurl \
+  && pip3 install -r requirements.txt \
   && apk del \
   alpine-sdk \
   libxml2-dev \
@@ -40,8 +40,7 @@ RUN apk add --update \
   musl-dev \
   net-snmp-dev \
   postgresql-dev \
-  py-pip \
-  python-dev \
+  python3-dev \
   && apk add \
   py-setuptools \
   && rm -rf /var/cache/apk/* \
@@ -52,7 +51,7 @@ RUN apk add --update \
 ADD wait-for-it-ash.sh /mediakraken
 ADD np_inline-0.3 /mediakraken/np_inline
 RUN cd /mediakraken/np_inline \
-  && python setup.py install \
+  && python3 setup.py install \
   && cd .. \
   && rm -R ./np_inline
 # Copy the source files for the app

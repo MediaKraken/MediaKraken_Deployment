@@ -3,7 +3,6 @@ Postgresql extensions
 """
 # from psycopg2 documentation
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
 import logging  # pylint: disable=W0611
@@ -25,7 +24,7 @@ class LoggingCursor(psycopg2.extensions.cursor):
         logger.info(self.mogrify(sql, args))
         try:
             psycopg2.extensions.cursor.execute(self, sql, args)
-        except Exception, exc:
+        except Exception as exc:
             logger.error("%s: %s", exc.__class__.__name__, exc)
             raise
 

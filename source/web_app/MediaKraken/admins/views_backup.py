@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
 import os
@@ -84,7 +83,7 @@ def admin_backup():
             if request.form['backup'] == 'Update':
                 pass
             elif request.form['backup'] == 'Start Backup':
-                g.db_connection.db_trigger_insert(('python',
+                g.db_connection.db_trigger_insert(('python3',
                                                    './subprogram_postgresql_backup.py'))  # this commits
                 flash("Postgresql Database Backup Task Submitted.")
         else:

@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import uuid
 
 
@@ -32,12 +30,12 @@ def db_hardware_json_read(self, manufacturer, model_name):
     return self.db_cursor.fetchone()[0]
 
 
-def db_hardware_insert(self,  manufacturer, model_name, json_data):
+def db_hardware_insert(self, manufacturer, model_name, json_data):
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_hardware_json (mm_hardware_id,'
                            ' mm_hardware_manufacturer, mm_hardware_model,'
                            ' mm_hardware_json) values (%s, %s, %s, %s)',
-                           (new_guid,  manufacturer, model_name, json_data))
+                           (new_guid, manufacturer, model_name, json_data))
     self.db_commit()
     return new_guid
 

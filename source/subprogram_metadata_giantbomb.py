@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 from common import common_config_ini
 from common import common_internationalization
 
@@ -35,7 +33,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    print('bomb game info download attempts: %s' % total_download_attempts)
+    print(('bomb game info download attempts: %s' % total_download_attempts))
     # send notifications
     if total_download_attempts > 0:
         db_connection.db_notification_insert(

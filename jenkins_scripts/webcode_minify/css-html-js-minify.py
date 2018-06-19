@@ -7,7 +7,6 @@
 StandAlone Async single-file cross-platform no-dependency Minifier for the Web.
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import gzip
 import itertools
 import logging as log

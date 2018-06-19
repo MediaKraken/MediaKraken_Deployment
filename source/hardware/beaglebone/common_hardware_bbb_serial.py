@@ -47,12 +47,12 @@ def com_hardware_bbb_data_check():
             # delay a little to give the next byte time to arrive:
             data += Serial2.read()
             delay(5)
-        print("Data received:\n  '%s'" % data)
+        print(("Data received:\n  '%s'" % data))
 
 
 def com_hardware_bbb_data_write(data_string):
     """
     Write data to connected device
     """
-    print("Data write:\n  '%s'" % data_string)
+    print(("Data write:\n  '%s'" % data_string))
     Serial2.write(data_string)

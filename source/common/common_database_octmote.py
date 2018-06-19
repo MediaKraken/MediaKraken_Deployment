@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 import sqlite3
@@ -47,7 +45,7 @@ class CommonDatabaseOctmote(object):
         else:
             self.sql3_conn = sqlite3.connect(db_file)
         self.db_cursor = self.sql3_conn.cursor()
-        self.sql3_conn.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+        self.sql3_conn.text_factory = lambda x: str(x, "utf-8", "ignore")
         if create_db:
             # create the tables since they don't exist
             self.db_cursor.execute('CREATE TABLE octmote_server_settings (server_host text,'

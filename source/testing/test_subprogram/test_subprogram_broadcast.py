@@ -16,12 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
-import subprocess
-import logging
 import os
 import signal
+import subprocess
 import sys
 
 sys.path.append('.')
@@ -42,11 +39,13 @@ class TestSubprogramBroadcast(object):
     @classmethod
     def setup_class(self):
         # fire up broadcast server
-        self.proc_broadcast = subprocess.Popen(['python', './subprogram_broadcast.py'],
+        self.proc_broadcast = subprocess.Popen(['python3', './subprogram_broadcast.py'],
                                                shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", self.proc_broadcast.pid)
+        common_global.es_inst.com_elastic_index('info',
+                                                {'stuff': "PID: %s", self.proc_broadcast.pid)
 
-    @classmethod
+        @ classmethod
+
     def teardown_class(self):
         os.kill(self.proc_broadcast.pid, signal.SIGTERM)
 

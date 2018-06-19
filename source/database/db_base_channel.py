@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 
 def db_channel_insert(self, channel_id, channel_name, channel_language,
                       channel_country, channel_logo_id):

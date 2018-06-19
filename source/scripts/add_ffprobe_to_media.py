@@ -16,11 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import json
-import pika
 import subprocess
+
+import pika
 from common import common_config_ini
 
 # fire off wait for it script to allow rabbitmq connection
@@ -46,7 +45,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # loop through all media
 for media in db_connection.db_read_media():
-    print('media: %s' % media)
+    print(('media: %s' % media))
     if media['mm_media_ffprobe_json'] is None:
         # Send a message so ffprobe runs
         channel.basic_publish(exchange='mkque_ex',

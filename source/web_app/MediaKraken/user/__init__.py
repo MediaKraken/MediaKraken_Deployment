@@ -8,9 +8,6 @@ from . import views_class
 from . import views_games
 from . import views_images
 from . import views_internet
-from . import views_movie
-from . import views_movie_collection
-from . import views_movie_genre
 from . import views_metadata_album
 from . import views_metadata_game
 from . import views_metadata_game_system
@@ -20,6 +17,9 @@ from . import views_metadata_people
 from . import views_metadata_periodical
 from . import views_metadata_sports
 from . import views_metadata_tv
+from . import views_movie
+from . import views_movie_collection
+from . import views_movie_genre
 from . import views_music
 from . import views_music_video
 from . import views_periodicals

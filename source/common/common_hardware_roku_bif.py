@@ -13,7 +13,6 @@ NOTE: The jpg image sizes are set to the values posted by bbefilms in the Roku
       development forums. They may or may not be correct for your video aspect ratio.
       They don't look right for me when I set the video height to 480
 """
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import array
 import os
@@ -95,7 +94,7 @@ def makebif(filename, directory, interval):
     file_handle.write(struct.pack("<I1", version))
     file_handle.write(struct.pack("<I1", len(images)))
     file_handle.write(struct.pack("<I1", 1000 * interval))
-    array.array('B', [0x00 for ndx in xrange(20, 64)]).tofile(
+    array.array('B', [0x00 for ndx in range(20, 64)]).tofile(
         file_handle)  # pylint: disable=W0612
 
     biftablesize = 8 + (8 * len(images))

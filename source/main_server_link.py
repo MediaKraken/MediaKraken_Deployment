@@ -16,21 +16,15 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import platform
-
-try:
-    import cPickle as pickle
-except:
-    import pickle
 import sys
+
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
+from twisted.internet import reactor, ssl
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory
-from twisted.internet import reactor, ssl
 from twisted.protocols.basic import Int32StringReceiver
 
 networkProtocol = None

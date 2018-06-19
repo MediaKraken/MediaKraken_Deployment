@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the hardware app"
@@ -12,17 +12,15 @@ RUN apk add --update \
   gcc \
   linux-headers \
   musl-dev \
-  python-dev \
-  && pip install -r requirements.txt \
-  && apk del \
-  py-pip \
-  && rm -rf /var/cache/apk/* \
+  python3-dev \
+  && pip3 install -r requirements.txt \
   && rm requirements.txt \
   && apk del \
   gcc \
   linux-headers \
   musl-dev \
-  python-dev
+  python3-dev \
+  && rm -rf /var/cache/apk/*
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app

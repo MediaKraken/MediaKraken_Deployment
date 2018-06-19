@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import base64
 import json
 import uuid
@@ -69,7 +67,7 @@ class NetworkEvents(basic.LineReceiver):
         ip_addr = str(self.transport.getPeer()).split('\'')[1]
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection',
                                                          'ip': ip_addr})
-        for user_device_uuid, protocol in self.users.iteritems():
+        for user_device_uuid, protocol in self.users.items():
             if self.users[user_device_uuid].user_ip_addy == ip_addr:
                 del self.users[user_device_uuid]
                 break
@@ -97,7 +95,7 @@ class NetworkEvents(basic.LineReceiver):
                 play_device.append((cast_device['mm_device_id'], 'Cast',
                                     cast_device['mm_device_json']['Name']))
             # load user clients
-            for user_device_uuid, protocol in self.users.iteritems():
+            for user_device_uuid, protocol in self.users.items():
                 play_device.append((user_device_uuid, 'Client',
                                     self.users[user_device_uuid].user_ip_addy))
             # TODO ip addy for now on above
@@ -220,7 +218,7 @@ class NetworkEvents(basic.LineReceiver):
                         cast_docker_inst = common_docker.CommonDocker()
                         cast_docker_inst.com_docker_run_slave(hwaccel=False,
                                                               name_container=name_container,
-                                                              container_command=("python "
+                                                              container_command=("python3 "
                                                                                  "./stream2chromecast/stream2chromecast.py -devicename %s -transcodeopts '-vcodec libx264 -acodec aac -movflags frag_keyframe+empty_moov' -transcode %s" % (
                                                                                      json_message[
                                                                                          'Target'],
@@ -261,7 +259,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Send message to ip addr
         """
-        for user_device_uuid, protocol in self.users.iteritems():
+        for user_device_uuid, protocol in self.users.items():
             common_global.es_inst.com_elastic_index('info',
                                                     {"user_ip_addy": self.users[
                                                         user_device_uuid].user_ip_addy,
@@ -276,7 +274,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Send message to single user
         """
-        for user_device_uuid, protocol in self.users.iteritems():  # pylint: disable=W0612
+        for user_device_uuid, protocol in self.users.items():  # pylint: disable=W0612
             if protocol == self:
                 common_global.es_inst.com_elastic_index('info', {'send single': message})
                 protocol.sendLine(message.encode("utf8"))
@@ -286,7 +284,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Send message to all users
         """
-        for user_device_uuid, protocol in self.users.iteritems():
+        for user_device_uuid, protocol in self.users.items():
             if self.users[user_device_uuid].user_verified == 1:
                 common_global.es_inst.com_elastic_index('info', {'send all': message})
                 protocol.sendLine(message.encode("utf8"))
@@ -295,7 +293,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Send to all linked servers
         """
-        for user_device_uuid, protocol in self.users.iteritems():
+        for user_device_uuid, protocol in self.users.items():
             if self.users[user_device_uuid].user_link:
                 common_global.es_inst.com_elastic_index('info', {'send all links': message})
                 protocol.sendLine(message.encode("utf8"))

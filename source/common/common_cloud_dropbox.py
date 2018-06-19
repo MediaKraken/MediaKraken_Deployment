@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import dropbox
 
 
@@ -41,14 +39,14 @@ class CommonCloudDropbox(object):
         Have the user sign in and authorize this token
         """
         authorize_url = self.flow.start()
-        print('1. Go to: %s', authorize_url)
+        print(('1. Go to: %s', authorize_url))
         print('2. Click "Allow" (you might have to log in first)')
         print('3. Copy the authorization code.')
-        code = raw_input("Enter the authorization code here: ").strip()
+        code = input("Enter the authorization code here: ").strip()
         # This will fail if the user enters an invalid authorization code
         access_token, user_id = self.flow.finish(code)  # pylint: disable=W0612
         self.client = dropbox.client.DropboxClient(access_token)
-        print('linked account: %s', self.client.account_info())
+        print(('linked account: %s', self.client.account_info()))
 
     def com_cloud_dropbox_upload(self, file_name, file_save_name):
         """
@@ -56,14 +54,14 @@ class CommonCloudDropbox(object):
         """
         file_handle = open(file_name, 'rb')
         response = self.client.put_file(file_save_name, file_handle)
-        print('uploaded: %s', response)
+        print(('uploaded: %s', response))
 
     def com_cloud_dropbox_list(self, dir_name='/'):
         """
         List files in folder
         """
         folder_metadata = self.client.metadata(dir_name)
-        print('metadata: %s', folder_metadata)
+        print(('metadata: %s', folder_metadata))
 
     def com_cloud_dropbox_download(self, file_name, file_save_name):
         """

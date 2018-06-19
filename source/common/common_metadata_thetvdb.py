@@ -16,9 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-import StringIO
+import io
 import zipfile
 
 import requests
@@ -45,7 +43,7 @@ class CommonMetadataTheTVDB(object):
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
         """
-        updates_xml_zip = zipfile.ZipFile(StringIO.StringIO(common_network
+        updates_xml_zip = zipfile.ZipFile(io.StringIO(common_network
             .mk_network_fetch_from_url(
             'http://thetvdb.com/api/' + self.thetvdb_connection
             + '/updates/updates_' + frequency + '.zip', None)))
@@ -68,7 +66,7 @@ class CommonMetadataTheTVDB(object):
         show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection
                                  + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
         if show_data.status_code == 200:
-            show_zip = zipfile.ZipFile(StringIO.StringIO(show_data.content))
+            show_zip = zipfile.ZipFile(io.StringIO(show_data.content))
         else:
             return (None, None, None)
         #        try:

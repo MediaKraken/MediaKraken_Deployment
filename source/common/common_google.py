@@ -2,7 +2,6 @@
 # https://developers.google.com/youtube/v3/code_samples/python#upload_a_video
 # https://github.com/youtube/api-samples/tree/master/python
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 # import google api modules
 import httplib2

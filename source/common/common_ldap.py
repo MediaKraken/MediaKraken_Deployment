@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import ldap
 
 from . import common_global
@@ -32,10 +30,10 @@ class CommonLDAP(object):
         # Initialize connection
         try:
             self.con = ldap.initialize('ldap://%s', ldap_server)
-        except ldap.LDAPError, err_code:
-            print(err_code.message['info'])
-            if isinstance(err_code.message, dict) and err_code.message.has_key('desc'):
-                print(err_code.message['desc'])
+        except ldap.LDAPError as err_code:
+            print((err_code.message['info']))
+            if isinstance(err_code.message, dict) and 'desc' in err_code.message:
+                print((err_code.message['desc']))
             else:
                 print(err_code)
         # Bind to the server (ie. actually connect) - not needed as simple_bind for check
@@ -51,12 +49,12 @@ class CommonLDAP(object):
         try:
             dn_name = "sAMAccountName=" + user_name + ",dc=" + self.dc_name + ",dc=local"
             self.con.simple_bind_s(dn_name, user_password)
-        except ldap.INVALID_CREDENTIALS, err_code:
+        except ldap.INVALID_CREDENTIALS as err_code:
             return "INVALID_LOGIN"
-        except ldap.LDAPError, err_code:
-            print(err_code.message['info'])
-            if isinstance(err_code.message, dict) and err_code.message.has_key('desc'):
-                print(err_code.message['desc'])
+        except ldap.LDAPError as err_code:
+            print((err_code.message['info']))
+            if isinstance(err_code.message, dict) and 'desc' in err_code.message:
+                print((err_code.message['desc']))
             else:
                 print(err_code)
 

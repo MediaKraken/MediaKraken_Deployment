@@ -16,10 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import subprocess
-import logging
-import pytest  # pylint: disable=W0611
 
 
 class TestSubprogramUpdateCreateCollections(object):
@@ -31,7 +28,7 @@ class TestSubprogramUpdateCreateCollections(object):
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python', './subprogram_update_create_collections.py'],
+        proc_info = subprocess.Popen(['python3', './subprogram_update_create_collections.py'],
                                      shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", proc_info.pid)
+        common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s", proc_info.pid)
         proc_info.wait()

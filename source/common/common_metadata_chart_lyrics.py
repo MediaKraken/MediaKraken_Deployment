@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-import urllib
+import urllib.error
+import urllib.parse
+import urllib.request
 
 from . import common_global
 
@@ -27,8 +27,8 @@ def com_meta_chart_lyrics(artist_name, song_name):
     """
     Generate url link and fetch lyrics
     """
-    lyric_text = urllib.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s'
-                                % urllib.urlencode(
+    lyric_text = urllib.request.urlopen('http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?%s'
+                                        % urllib.parse.urlencode(
         {'artist': artist_name, 'song': song_name})).read()
     common_global.es_inst.com_elastic_index('info', {'stuff': lyric_text})
     return lyric_text

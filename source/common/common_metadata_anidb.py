@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import gzip
 import json
 import sys
@@ -27,7 +25,7 @@ from . import common_file
 from . import common_global
 from . import common_network
 
-sys.path.append("./vault/lib")
+sys.path.append(".")
 import adba
 
 
@@ -113,7 +111,7 @@ class CommonMetadataANIdb(object):
         self.adba_connection = adba.Connection(log=True)
         try:
             self.adba_connection.auth(user_name, user_password)
-        except Exception, err_code:
+        except Exception as err_code:
             common_global.es_inst.com_elastic_index('error', {"exception msg":
                                                                   err_code})
         return self.adba_connection

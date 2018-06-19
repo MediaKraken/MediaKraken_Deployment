@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
 import json
 import sys
+
+import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 import database as database_base

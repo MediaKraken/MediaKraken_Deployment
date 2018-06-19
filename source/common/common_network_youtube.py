@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-import urllib
+import urllib.error
+import urllib.parse
+import urllib.request
 
 import requests
 from bs4 import BeautifulSoup
@@ -36,7 +36,7 @@ def com_net_yt_fetch_video_list(search_string, max_files):
 
 def com_net_yt_trending(country_code='US'):
     link_list = []
-    source = BeautifulSoup(urllib.urlopen(
+    source = BeautifulSoup(urllib.request.urlopen(
         "https://www.youtube.com/feed/trending?gl=%s" % country_code).read(), 'html.parser')
     links_set = source.find_all('a', href=True)
     for i in range(len(links_set)):

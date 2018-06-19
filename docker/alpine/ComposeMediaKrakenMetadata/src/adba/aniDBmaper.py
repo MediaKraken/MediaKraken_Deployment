@@ -56,7 +56,7 @@ class AniDBMaper:
                 bit = bit ^ (1<<len(map)-index-1)
                 
         bit = str(hex(bit)).lstrip("0x").rstrip("L")
-        bit = ''.join(["0" for unused in xrange(len(map)/4 - len(bit))])+bit
+        bit = ''.join(["0" for unused in range(len(map)/4 - len(bit))])+bit
         return bit
     
     def _getCodes(self,map,bitChain):
@@ -65,7 +65,7 @@ class AniDBMaper:
         codeList=[]
         bitChain = int(bitChain,16)
         mapLength = len(map)
-        for i in reversed(range(mapLength)):
+        for i in reversed(list(range(mapLength))):
             if bitChain&(2**i):
                 codeList.append(map[mapLength-i-1])
         return codeList 
@@ -103,10 +103,10 @@ class AniDBMaper:
 
     def checkMapping(self,verbos=False):
         
-        print "------"
-        print "File F: "+ str(self.checkMapFileF(verbos))
-        print "------"
-        print "File A: "+ str(self.checkMapFileA(verbos))
+        print("------")
+        print("File F: "+ str(self.checkMapFileF(verbos)))
+        print("------")
+        print("File A: "+ str(self.checkMapFileA(verbos)))
         
     
     def checkMapFileF(self,verbos=False):
@@ -129,10 +129,10 @@ class AniDBMaper:
         mask_re = getCodes(bits)
         bits_re = getBits(mask_re)
         if verbos:
-            print mask
-            print mask_re
-            print bits
-            print bits_re
-            print "bits are:"+ str((bits_re == bits))
-            print "map is :"+ str((sorted(mask_re) == sorted(mask)))
+            print(mask)
+            print(mask_re)
+            print(bits)
+            print(bits_re)
+            print("bits are:"+ str((bits_re == bits)))
+            print("map is :"+ str((sorted(mask_re) == sorted(mask))))
         return (bits_re == bits) and sorted(mask_re) == sorted(mask)

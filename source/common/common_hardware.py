@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 # from kivy.lang import Builder
 from kivy.clock import Clock
 from plyer import accelerometer
@@ -102,7 +100,7 @@ def on_location(self, **kwargs):
     """
     gps location
     """
-    return '\n'.join(['{}={}'.format(k, v) for k, v in kwargs.items()])
+    return '\n'.join(['{}={}'.format(k, v) for k, v in list(kwargs.items())])
 
 
 def on_status(self, stype, status):

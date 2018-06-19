@@ -16,7 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 from common import common_file
 
 for file_name in common_file.com_file_dir_list(
@@ -33,10 +32,10 @@ for file_name in common_file.com_file_dir_list(
                         and file_name.find('_Kodi') == -1 \
                         and file_name.find('_Roku') == -1 \
                         and file_name.find('_Tizen') == -1:
-                    print('File: %s' % file_name)
-                    print("Upper char found: %s" %
-                          file_line.split(' ')[1].split('(')[0])
+                    print(('File: %s' % file_name))
+                    print(("Upper char found: %s" %
+                           file_line.split(' ')[1].split('(')[0]))
                     command_string = 'find . -type f -name "*.py" -exec sed -i \'s/' \
                                      + file_line.split(' ')[1].split('(')[0] + '/' \
                                      + file_line.split(' ')[1].split('(')[0].lower() + '/g\' {} +'
-                    print("command: %s" % command_string)
+                    print(("command: %s" % command_string))
