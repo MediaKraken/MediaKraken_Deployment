@@ -16,7 +16,7 @@
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
 from types import FunctionType
-from aniDBmaper import AniDBMaper
+from .aniDBmaper import AniDBMaper
 
 class ResponseResolver:
 	def __init__(self,data):
@@ -63,29 +63,29 @@ class Response:
 		
 		m=0
 		for line in self.datalines:
-			for k,v in line.iteritems():
+			for k,v in line.items():
 				if len(k)>m:
 					m=len(k)
 		
 		for line in self.datalines:
 			tmp+="  Line:\n"
-			for k,v in line.iteritems():
+			for k,v in line.items():
 				tmp+="    %s:%s %s\n"%(k,(m-len(k))*' ',v)
 		return tmp
 
 	def parse(self):
 		tmp=self.resstr.split(' ',len(self.codehead))
-		self.attrs=dict(zip(self.codehead,tmp[:-1]))
+		self.attrs=dict(list(zip(self.codehead,tmp[:-1])))
 		self.resstr=tmp[-1]
 		
 		self.datalines=[]
 		for rawline in self.rawlines:
-			normal=dict(zip(self.codetail,rawline))
+			normal=dict(list(zip(self.codetail,rawline)))
 			rawline=rawline[len(self.codetail):]
 			rep=[]
 			if len(self.coderep):
 				while rawline:
-					tmp=dict(zip(self.coderep,rawline))
+					tmp=dict(list(zip(self.coderep,rawline)))
 					rawline=rawline[len(self.coderep):]
 					rep.append(tmp)
 			#normal['rep']=rep

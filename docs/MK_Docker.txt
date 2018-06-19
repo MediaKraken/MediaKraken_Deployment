@@ -19,6 +19,7 @@ ComposeMediaKrakenCloud - Access cloud services.
         apache-libcloud - To allow access to "cloud" media.
         boto - Access Amazon S3
         docker - Interface to Docker and it's socket.  To get usage, HOST ip, port, etc.
+	dosage - Comic strip downloader and archiver
         dropbox - Access Dropbox
         onedrivesdk - Interact with the OneDrive API
         pika - Interface to RabbitMQ.

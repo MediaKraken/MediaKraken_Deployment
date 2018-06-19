@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import functools
 import traceback
 
@@ -35,7 +33,7 @@ def reraise_with_stack(func):
             return func(*args, **kwargs)
         except Exception as e:
             traceback_str = traceback.format_exc(e)
-            raise StandardError(
+            raise Exception(
                 "Error occurred. Original traceback is\n%s\n" % traceback_str)
 
     return wrapped

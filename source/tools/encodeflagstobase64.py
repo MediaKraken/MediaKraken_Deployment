@@ -17,7 +17,6 @@
 '''
 
 # import modules
-from __future__ import absolute_import, division, print_function, unicode_literals
 import base64
 import os
 
@@ -46,6 +45,6 @@ for fname in dirList:
     icondata = iconfile.read()
     icondata = base64.b64encode(icondata)
     fin.write("\"controller_" + fname.split(".")
-              [0] + "\": \"" + icondata + "\",")
+    [0] + "\": \"" + icondata + "\",")
 fin.write("}")
 fin.close()

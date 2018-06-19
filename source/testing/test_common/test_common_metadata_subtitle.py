@@ -16,12 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_metadata_subtitle
 
 # fetch subtitles
 # def com_meta_Fetch_Subtitle(file_name, sub_lang="en"):

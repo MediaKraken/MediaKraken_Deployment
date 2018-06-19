@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image downloads and maintains all metadata"
@@ -18,21 +18,21 @@ RUN apk add --update \
   linux-headers \
   musl-dev \
   postgresql-dev \
-  python-dev \
+  python3-dev \
   libffi-dev \
   python \
   openrc \
-  && pip install pytest-runner \
-  && pip install -r requirements.txt \
-  && pip uninstall -y pytest_runner \
-  && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip \
+  && pip3 install pytest-runner \
+  && pip3 install -r requirements.txt \
+  && pip3 uninstall -y pytest_runner \
+  && apk del gcc linux-headers musl-dev postgresql-dev python3-dev \
   && rm requirements.txt \
   && apk add \
   py-setuptools \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind
-#  && pip install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
+#  && pip3 install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
 
 RUN mkdir /mediakraken/cache
 ADD wait-for-it-ash.sh /mediakraken

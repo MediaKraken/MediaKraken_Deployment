@@ -18,10 +18,10 @@ import threading
 from time import time, sleep, strftime, localtime
 from types import *
 
-from aniDBlink import AniDBLink
-from aniDBcommands import *
-from aniDBerrors import *
-from aniDBAbstracter import Anime, Episode
+from .aniDBlink import AniDBLink
+from .aniDBcommands import *
+from .aniDBerrors import *
+from .aniDBAbstracter import Anime, Episode
 
 version = 100
 
@@ -65,7 +65,7 @@ class Connection(threading.Thread):
         self.counterAge = 0
 
     def print_log(self, data):
-        print(strftime("%Y-%m-%d %H:%M:%S", localtime(time())) + ": " + str(data))
+        print((strftime("%Y-%m-%d %H:%M:%S", localtime(time())) + ": " + str(data)))
 
     def print_log_dummy(self, data):
         pass
@@ -121,7 +121,7 @@ class Connection(threading.Thread):
                 command.resp
             except:
                 self.lock.release()
-                raise AniDBCommandTimeoutError, "Command has timed out"
+                raise AniDBCommandTimeoutError("Command has timed out")
 
             self.handle_response(command.resp)
             self.lock.release()
@@ -747,7 +747,7 @@ class Connection(threading.Thread):
         it's better that way, let it go as utf8 to databases etc. because then you've the real data stored
         
         """
-        raise AniDBStupidUserError, "pylibanidb sets the encoding to utf8 as default and it's stupid to use any other encoding. you WILL lose some data if you use other encodings, and now you've been warned. you will need to modify the code yourself if you want to do something as stupid as changing the encoding"
+        raise AniDBStupidUserError("pylibanidb sets the encoding to utf8 as default and it's stupid to use any other encoding. you WILL lose some data if you use other encodings, and now you've been warned. you will need to modify the code yourself if you want to do something as stupid as changing the encoding")
         return self.handle(EncodingCommand(name), callback)
 
     def sendmsg(self, to, title, body, callback=None):

@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import copy
 import hashlib
 import multiprocessing
@@ -26,7 +24,6 @@ import sys
 import threading
 import time
 import zipfile
-from Queue import Queue
 from threading import Thread
 
 SHA1 = hashlib.sha1()
@@ -81,7 +78,7 @@ class HashGenerate(Thread):
                 zip.close()
                 if len(hash_dict) > 0:
                     if len(hash_dict) == 1:
-                        fileHASHListSingle.append(hash_dict.values()[0])
+                        fileHASHListSingle.append(list(hash_dict.values())[0])
                         fileHASHNameListSingle.append(
                             os.path.normpath(self.file_name))
                     else:
@@ -118,7 +115,7 @@ class HashGenerate(Thread):
                         lock.release()
                 if len(hash_dict) > 0:
                     if len(hash_dict) == 1:
-                        fileHASHListSingle.append(hash_dict.values()[0])
+                        fileHASHListSingle.append(list(hash_dict.values())[0])
                         fileHASHNameListSingle.append(
                             os.path.normpath(self.file_name))
                     else:
@@ -146,14 +143,14 @@ class HashGenerate(Thread):
                     hash_dict = {}
                     hash_dict[os.path.basename(
                         self.file_name)] = sha1_hash_data
-                    print("single: %s", self.file_name, sha1_hash_data)
+                    print(("single: %s", self.file_name, sha1_hash_data))
                 except:
                     lock.acquire()
                     Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)
                                                            + "|Error on SHA1 of file")
                     lock.release()
                 if len(hash_dict) > 0:
-                    fileHASHListSingle.append(hash_dict.values()[0])
+                    fileHASHListSingle.append(list(hash_dict.values())[0])
                     fileHASHNameListSingle.append(
                         os.path.normpath(self.file_name))
                 file_pointer.close()
@@ -242,7 +239,7 @@ class ROMFileParser(object):
         curs_player = conn_player.cursor()
         conn_game = connect('db/game_database.db')
         curs_game = conn_game.cursor()
-        conn_game.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+        conn_game.text_factory = lambda x: str(x, "utf-8", "ignore")
         # parse for multi roms archives and files
         curs_game.execute('select gir_gi_id,gir_rom_name,gir_sha1,gir_merged_rom_name from'
                           ' game_info,game_info_roms where gi_id = gir_gi_id and gi_id'
@@ -315,14 +312,14 @@ class ROMFileParser(object):
 
     def rom_diff(self, first, second):
         # Check all keys in first dict
-        for key in first.keys():
-            if not second.has_key(key):
+        for key in list(first.keys()):
+            if key not in second:
                 return False
             elif first[key] != second[key]:
                 return False
         # Check all keys in second dict to find missing
-        for key in second.keys():
-            if not first.has_key(key):
+        for key in list(second.keys()):
+            if key not in first:
                 return False
         return True
 
@@ -360,7 +357,7 @@ class GameAuditer(threading.Thread):
         # read all the audited games
         conn_game = connect('db/game_database.db')
         curs_game = conn_game.cursor()
-        conn_game.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+        conn_game.text_factory = lambda x: str(x, "utf-8", "ignore")
         curs_game.execute("attach database 'db/hubcade_gui.db' as gui_db")
         curs_game.execute('select gs_system_long_name,gi_short_name,gi_long_name,gi_id,'
                           '(select gm_rotate from game_monitor where gm_id = gi_monitor_id),gi_players,'
@@ -373,7 +370,7 @@ class GameAuditer(threading.Thread):
         # for the times/time played
         conn_game_info = connect('db/hubcade_gui.db')
         curs_game_info = conn_game_info.cursor()
-        conn_game_info.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+        conn_game_info.text_factory = lambda x: str(x, "utf-8", "ignore")
         # begin parse of data
         Client_GlobalData.audited_games = 0
         Client_GlobalData.audit_gameList = {}
@@ -414,7 +411,7 @@ class GameAuditer(threading.Thread):
             if old_system_long_name != sql_row[0]:
                 if len(game_info) > 0:
                     Client_GlobalData.audit_gameList[old_system_long_name] \
-                        = copy.deepcopy(game_info.items())
+                        = copy.deepcopy(list(game_info.items()))
                     Client_GlobalData.audit_gameList[old_system_long_name].sort(
                     )
                 old_system_long_name = sql_row[0]
@@ -424,7 +421,7 @@ class GameAuditer(threading.Thread):
         # catch last data from db
         if old_system_long_name is not None and len(game_info) > 0:
             Client_GlobalData.audit_gameList[old_system_long_name] \
-                = copy.deepcopy(game_info.items())
+                = copy.deepcopy(list(game_info.items()))
             Client_GlobalData.audit_gameList[old_system_long_name].sort()
         curs_game_info.close()
         conn_game_info.close()
@@ -443,7 +440,7 @@ class GameAuditer(threading.Thread):
         gameList = {}
         old_system_long_name = None
         first_record = True
-        for gameSystem in Client_GlobalData.audit_gameList.iteritems():
+        for gameSystem in list(Client_GlobalData.audit_gameList.items()):
             # need to break down gameSystem as technically it's
             # all the systems and data underneath it
             for gameData in gameSystem[1]:
@@ -470,13 +467,13 @@ class GameAuditer(threading.Thread):
                     if old_system_long_name != gameSystem[0]:
                         if len(game_info) > 0:
                             gameList[old_system_long_name] = copy.deepcopy(
-                                game_info.items())
+                                list(game_info.items()))
                             gameList[old_system_long_name].sort()
                         old_system_long_name = gameSystem[0]
                         game_info = {}
         # catch last data from db
         if old_system_long_name is not None and len(game_info) > 0:
-            gameList[old_system_long_name] = copy.deepcopy(game_info.items())
+            gameList[old_system_long_name] = copy.deepcopy(list(game_info.items()))
             gameList[old_system_long_name].sort()
         return gameList
 

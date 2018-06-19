@@ -16,20 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import os
+import pickle
 import time
+from os import walk  # pylint: disable=C0412
 
-# built into 3.5 so try first then fallback to py2.x lib
-try:
-    from os import walk  # pylint: disable=C0412
-except ImportError:
-    from scandir import walk
-try:
-    import cPickle as pickle
-except:
-    import pickle
 from . import common_string
 
 JUNK_FILES = [

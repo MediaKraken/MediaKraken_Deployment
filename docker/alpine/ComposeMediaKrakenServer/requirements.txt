@@ -12,3 +12,4 @@ setuptools
 ipgetter
 pika
 docker==2.7
+psutil

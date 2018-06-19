@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import sys
+from common import common_docker
 
-sys.path.append('.')
-
-# write out m3u from list
-# def com_M3U_Write(playlist_data, m3u_file_name):
+docker_inst = common_docker.CommonDocker()
+docker_inst.com_docker_run_elk()
+docker_inst.com_docker_run_pgadmin()
+docker_inst.com_docker_run_portainer()

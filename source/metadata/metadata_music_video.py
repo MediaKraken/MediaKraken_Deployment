@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 
@@ -80,7 +78,8 @@ def imvdb_lookup(db_connection, file_name):
                                                               video_data['song_slug'], json.dumps(
                                 {'imvdb': str(video_data['id'])}),
                                                               json.dumps(video_data),
-                                                              json.dumps({'Images': {'imvdb': None}}))
+                                                              json.dumps(
+                                                                  {'Images': {'imvdb': None}}))
                 # try after inserting new records
                 metadata_uuid = db_connection.db_meta_music_video_lookup(
                     band_name, song_name)

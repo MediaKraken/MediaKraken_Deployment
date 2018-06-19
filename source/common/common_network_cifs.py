@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function  # , unicode_literals
-
 import os
-import urllib2
+import urllib.error
+import urllib.parse
+import urllib.request
 
 from smb.SMBConnection import SMBConnection
 from smb.SMBHandler import SMBHandler
@@ -39,7 +39,7 @@ class CommonNetworkCIFSShareURL(object):
         """
         Create director for CIFS management
         """
-        self.director = urllib2.build_opener(SMBHandler)
+        self.director = urllib.request.build_opener(SMBHandler)
 
     def com_cifs_url_download(self, connect_string):
         """

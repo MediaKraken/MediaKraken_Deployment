@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image houses all the cloud access"
@@ -13,11 +13,11 @@ RUN apk add --update \
   alpine-sdk \
   postgresql-client \
   py-setuptools \
-  python-dev \
+  python3-dev \
   postgresql-dev \
-  && pip install -r requirements.txt \
+  && pip3 install -r requirements.txt \
   && apk del alpine-sdk \
-  python-dev \
+  python3-dev \
   postgresql-dev \
   && rm -rf /var/cache/apk/*
 

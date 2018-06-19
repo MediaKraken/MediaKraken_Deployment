@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the broadcast server"
@@ -9,8 +9,7 @@ ADD requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
-RUN pip install -r requirements.txt \
-  && apk del py-pip \
+RUN pip3 install -r requirements.txt \
   && rm -rf /var/cache/apk/*
 
 # Copy the source files for the app

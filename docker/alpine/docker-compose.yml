@@ -1,9 +1,23 @@
-version: '2'
+version: '3'
 # MediaKraken
 
 # Volumes are HOST directory and then CONTAINER directory
 
 services:
+  # start broadcast server (so clients can find server)
+  broadcast:
+    build:
+      context: ./ComposeMediaKrakenBroadcast
+      dockerfile: dockerfile-broadcast
+    container_name: mkbroadcast
+    entrypoint: python3 subprogram_broadcast.py
+    ports:
+      - "9101:9101"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: host
+    restart: unless-stopped
+
   # Main app server which controls the show
   appserver:
     build:
@@ -20,7 +34,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server.py
     ports:
       - "8903:8903"
     volumes:
@@ -38,20 +52,6 @@ services:
     cap_add:
       - SYS_ADMIN
       - DAC_READ_SEARCH
-
-  # start broadcast server (so clients can find server)
-  broadcast:
-    build:
-      context: ./ComposeMediaKrakenBroadcast
-      dockerfile: dockerfile-broadcast
-    container_name: mkbroadcast
-    entrypoint: python subprogram_broadcast.py
-    ports:
-      - "9101:9101"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    network_mode: host
-    restart: unless-stopped
 
   # Postgresql server
   database:
@@ -104,7 +104,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
@@ -162,7 +162,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_cloud.py 
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_cloud.py 
     volumes:
       - /var/opt/mediakraken/cloud:/mediakraken
     networks:
@@ -312,7 +312,7 @@ services:
     container_name: mkffprobe
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python3 subprogram_ffprobe_metadata.py
     volumes:
       - /home/mediakraken:/mediakraken/mnt
     networks:
@@ -329,7 +329,7 @@ services:
     container_name: mkhardware
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python main_hardware.py
+    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python3 main_hardware.py
     networks:
       - mediakraken_network
     restart: unless-stopped

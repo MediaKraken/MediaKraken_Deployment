@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 #
 # Author: Matthew Ingersoll <matth@mtingers.com>
 #
@@ -11,7 +9,7 @@ from __future__ import absolute_import
 #
 #
 
-import Queue
+import queue
 import base64
 import hashlib
 import json
@@ -22,7 +20,7 @@ import sys
 import tempfile
 import threading
 import time
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from Crypto import Random
 from Crypto.Cipher import AES
@@ -141,22 +139,22 @@ class BackBlazeB2(object):
         self.upload_authorization_token = None
         self.valid_duration = valid_duration
         self.queue_size = mt_queue_size
-        self.upload_queue = Queue.Queue(maxsize=mt_queue_size)
+        self.upload_queue = queue.Queue(maxsize=mt_queue_size)
 
     def authorize_account(self):
         id_and_key = self.account_id + ':' + self.app_key
         basic_auth_string = 'Basic ' + base64.b64encode(id_and_key)
         headers = {'Authorization': basic_auth_string}
         try:
-            request = urllib2.Request(
+            request = urllib.request.Request(
                 'https://api.backblaze.com/b2api/v1/b2_authorize_account',
                 headers=headers
             )
-            response = urllib2.urlopen(request)
+            response = urllib.request.urlopen(request)
             response_data = json.loads(response.read())
             response.close()
-        except urllib2.HTTPError, error:
-            print("ERROR: %s" % error.read())
+        except urllib.error.HTTPError as error:
+            print(("ERROR: %s" % error.read()))
             raise
 
         self.authorization_token = response_data['authorizationToken']
@@ -295,7 +293,7 @@ class BackBlazeB2(object):
         filename = re.sub('^/', '', filename)
         filename = re.sub('//', '/', filename)
         # TODO: Figure out URL encoding issue
-        filename = unicode(filename, "utf-8")
+        filename = str(filename, "utf-8")
         headers = {
             'Authorization': cur_upload_authorization_token,
             'X-Bz-File-Name': filename,
@@ -305,14 +303,14 @@ class BackBlazeB2(object):
         }
         try:
             if password:
-                request = urllib2.Request(cur_upload_url, fp, headers)
+                request = urllib.request.Request(cur_upload_url, fp, headers)
             else:
-                request = urllib2.Request(
+                request = urllib.request.Request(
                     cur_upload_url, mm_file_data, headers)
-            response = urllib2.urlopen(request)
+            response = urllib.request.urlopen(request)
             response_data = json.loads(response.read())
-        except urllib2.HTTPError, error:
-            print("ERROR: %s" % error.read())
+        except urllib.error.HTTPError as error:
+            print(("ERROR: %s" % error.read()))
             raise
 
         response.close()
@@ -383,9 +381,9 @@ class BackBlazeB2(object):
             raise Exception(
                 "Destination file exists. Refusing to overwrite. "
                 "Set force=True if you wish to do so.")
-        request = urllib2.Request(
+        request = urllib.request.Request(
             url, None, {})
-        response = urllib2.urlopen(request)
+        response = urllib.request.urlopen(request)
 
         return BackBlazeB2.write_file(response, dst_file_name, password)
 
@@ -407,9 +405,9 @@ class BackBlazeB2(object):
             'Authorization': self.authorization_token
         }
 
-        request = urllib2.Request(
+        request = urllib.request.Request(
             url, None, headers)
-        response = urllib2.urlopen(request)
+        response = urllib.request.urlopen(request)
 
         return BackBlazeB2.write_file(response, dst_file_name, password)
 
@@ -422,9 +420,9 @@ class BackBlazeB2(object):
 
         self._authorize_account()
         url = self.download_url + '/b2api/v1/b2_download_file_by_id?fileId=' + file_id
-        request = urllib2.Request(url, None,
+        request = urllib.request.Request(url, None,
                                   {'Authorization': self.authorization_token})
-        resp = urllib2.urlopen(request)
+        resp = urllib.request.urlopen(request)
         return BackBlazeB2.write_file(resp, dst_file_name, password)
 
     def _upload_worker(self, password, bucket_id, bucket_name):
@@ -453,10 +451,10 @@ class BackBlazeB2(object):
                                      thread_upload_url=thread_upload_url,
                                      thread_upload_authorization_token=thread_upload_authorization_token)
                     break
-                except Exception, e:
-                    print(
+                except Exception as e:
+                    print((
                         "WARNING: Error processing file '%s'\n%s\nTrying again." % (
-                            path, e))
+                            path, e)))
                     time.sleep(1)
 
     def recursive_upload(self, path, bucket_id=None, bucket_name=None,
@@ -493,7 +491,7 @@ class BackBlazeB2(object):
                             root + '/' + f):
                                 continue
                     if multithread:
-                        print("UPLOAD: %s" % root + '/' + f)
+                        print(("UPLOAD: %s" % root + '/' + f))
                         self.upload_queue.put(root + '/' + f)
                     else:
                         self.upload_file(root + '/' + f, password=password,
@@ -513,7 +511,7 @@ class BackBlazeB2(object):
                 if include_regex and include_regex.match(path):
                     nfiles += 1
             if nfiles > 0:
-                print("UPLOAD: %s" % path)
+                print(("UPLOAD: %s" % path))
                 self.upload_file(path, password=password, bucket_id=bucket_id,
                                  bucket_name=bucket_name)
                 return 1
@@ -523,8 +521,8 @@ class BackBlazeB2(object):
 
     def _api_request(self, url, data, headers):
         self._authorize_account()
-        request = urllib2.Request(url, json.dumps(data), headers)
-        response = urllib2.urlopen(request)
+        request = urllib.request.Request(url, json.dumps(data), headers)
+        response = urllib.request.urlopen(request)
         response_data = json.loads(response.read())
         response.close()
         return response_data
@@ -555,7 +553,7 @@ class BackBlazeB2(object):
 # Example command line utility
 if __name__ == "__main__":
     import argparse
-    import ConfigParser
+    import configparser
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', required=True, dest='config_path',
@@ -591,7 +589,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Consume config
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read(args.config_path)
     account_id = config.get('auth', 'account_id')
     app_key = config.get('auth', 'app_key')
@@ -609,17 +607,17 @@ if __name__ == "__main__":
     # Upload an entire directory concurrently, encrypt with a password
     if args.upload_path:
         for path in args.upload_path:
-            print("recursive_upload: %s" % path)
+            print(("recursive_upload: %s" % path))
             response = b2.recursive_upload(path, bucket_name=args.bucket_name,
                                            bucket_id=args.bucket_id,
                                            multithread=args.mt,
                                            password=enc_pass)
-            print("Uploaded %d files" % (response))
+            print(("Uploaded %d files" % (response)))
 
     # Download
     if args.download:
         download_src, download_dst = args.download
-        print("download_file_by_name: %s to %s" % (download_src, download_dst))
+        print(("download_file_by_name: %s to %s" % (download_src, download_dst)))
         response = b2.download_file_by_name(download_src, download_dst,
                                             bucket_name=args.bucket_name,
                                             bucket_id=args.bucket_id,
@@ -637,15 +635,15 @@ if __name__ == "__main__":
     if args.list_buckets:
         buckets = b2.list_buckets()
         for bucket in buckets['buckets']:
-            print("%s %s %s" % (
-                bucket['bucketType'], bucket['bucketId'], bucket['bucketName']))
+            print(("%s %s %s" % (
+                bucket['bucketType'], bucket['bucketId'], bucket['bucketName'])))
 
     # List files in bucket
     if args.list_files:
-        print("list_files: %s %s" % (args.bucket_name, args.bucket_id))
+        print(("list_files: %s %s" % (args.bucket_name, args.bucket_id)))
         files = b2.list_file_names(bucket_name=args.bucket_name,
                                    bucket_id=args.bucket_id)
         print("contentSha1 size uploadTimestamp fileName")
         for f in files['files']:
-            print("%s %s %s %s" % (
-                f['contentSha1'], f['size'], f['uploadTimestamp'], f['fileName']))
+            print(("%s %s %s %s" % (
+                f['contentSha1'], f['size'], f['uploadTimestamp'], f['fileName'])))

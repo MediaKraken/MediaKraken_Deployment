@@ -16,11 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import trakt
 from trakt.calendar import PremiereCalendar
-from trakt.movies import (trending_movies, Movie, dismiss_recommendation, get_recommended_movies,
-                          Translation)
+from trakt.movies import (Movie, dismiss_recommendation)
 
 
 class CommonNetworkTrakt(object):

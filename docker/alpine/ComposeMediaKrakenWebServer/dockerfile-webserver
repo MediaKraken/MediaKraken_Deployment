@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the image for the web server app"
@@ -22,33 +22,32 @@ RUN apk add --update \
   musl-dev \  
   nginx \
   openrc \
-  py-cffi \
-  py-redis \
-  python-dev \
+  py3-cffi \
+  py3-redis \
+  python3-dev \
   postgresql-dev \
   cifs-utils \
   nfs-utils \
   ca-certificates \
   openssl \
-  py2-numpy \
+  py3-numpy \
   && export PYCURL_SSL_LIBRARY=openssl \
-  && pip install pycurl \
-  && pip install -r requirements.txt \
-  && pip install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
+  && pip3 install pycurl \
+  && pip3 install -r requirements.txt \
+  && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \
   gcc \
   git \
   musl-dev \
   linux-headers \
-  py-pip \
-  python-dev \
+  python3-dev \
   postgresql-dev \
   && rm requirements.txt \
   && apk add \
-  uwsgi-python \
+  uwsgi-python3 \
   uwsgi-router_uwsgi \
   py-setuptools \
-  && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/. \
+  && cp /usr/lib/uwsgi/python3_plugin.so /mediakraken/. \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind

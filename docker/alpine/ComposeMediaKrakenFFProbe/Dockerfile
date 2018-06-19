@@ -12,7 +12,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
-  python \
+  python3 \
   cifs-utils \
   nfs-utils \
   bash \
@@ -26,10 +26,9 @@ RUN apk add --update \
   net-snmp \
   net-snmp-dev \
   postgresql-dev \
-  py-pip \
-  python-dev \
+  python3-dev \
   openrc \
-  && pip install -r requirements.txt \
+  && pip3 install -r requirements.txt \
   && apk del \
   alpine-sdk \
   libffi-dev \
@@ -39,8 +38,7 @@ RUN apk add --update \
   musl-dev \
   net-snmp-dev \
   postgresql-dev \
-  py-pip \
-  python-dev \
+  python3-dev \
   && apk add \
   py-setuptools \
   && rm requirements.txt \

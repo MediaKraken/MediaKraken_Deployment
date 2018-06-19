@@ -16,10 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import subprocess
-import logging
-import pytest  # pylint: disable=W0611
 
 
 class TestSubprogramFFMPEG(object):
@@ -32,6 +29,6 @@ class TestSubprogramFFMPEG(object):
         Test function
         """
         proc_info = subprocess.Popen(
-            ['python', './subprogram_ffmpeg_process.py'], shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff':"PID: %s", proc_info.pid)
+            ['python3', './subprogram_ffmpeg_process.py'], shell=False)
+        common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s", proc_info.pid)
         proc_info.wait()

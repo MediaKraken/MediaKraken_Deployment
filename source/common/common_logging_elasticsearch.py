@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import os
 from datetime import datetime
@@ -49,7 +47,7 @@ class CommonElasticsearch(object):
                                    body={"text": {"type": log_type, "data": json.dumps(body_data),
                                                   "timestamp": datetime.now()}})
             except:
-                print(log_type, body_data)
+                print((log_type, body_data))
 
     def com_elastic_get(self, id):
         self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)

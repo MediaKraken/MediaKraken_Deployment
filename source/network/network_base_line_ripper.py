@@ -16,12 +16,12 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import json
 import subprocess
-from twisted.protocols import basic
+
 from common import common_discid
 from common import common_global
+from twisted.protocols import basic
 
 
 class NetworkEvents(basic.LineReceiver):
@@ -50,7 +50,7 @@ class NetworkEvents(basic.LineReceiver):
         Network connection dropped so remove client
         """
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection'})
-        if self.users.has_key(self.user_user_name):
+        if self.user_user_name in self.users:
             del self.users[self.user_user_name]
 
     def lineReceived(self, data):
@@ -116,6 +116,6 @@ class NetworkEvents(basic.LineReceiver):
         """
         Send message to all users
         """
-        for user_device_uuid, protocol in self.users.iteritems():
+        for user_device_uuid, protocol in self.users.items():
             common_global.es_inst.com_elastic_index('info', {'send all': message})
             protocol.transport.write(message.encode("utf8"))

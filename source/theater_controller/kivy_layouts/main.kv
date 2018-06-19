@@ -950,3 +950,24 @@
                                 id: setup_cancel
                                 text: 'Cancel'
                                 on_press: _screen_manager.current = 'Main_Theater'
+            Screen:
+                name: 'Hue_Lights'
+                BoxLayout:
+                    orientation: 'vertical'
+		    Slider:
+		        size_hint_x: None
+		        width: '48dp'
+		        orientation: 'vertical'
+		        value: s1.value
+		        on_value: s1.value = self.value
+                    BoxLayout:
+                        Button:
+                            text: 'On'
+                            on_press: app.hue_lights_on()
+                        Button:
+                            text: 'Off'
+                            on_press: app.hue_lights_off()
+                BoxLayout:
+	            ColorPicker:
+			id: hue_colorpicker
+			size_hint: 1.0, 1.0

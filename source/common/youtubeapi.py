@@ -10,9 +10,11 @@
 # ---------------------------------------------------------------------------
 
 import json
-from urlparse import urlparse
-import urllib
-import urllib2
+
+import urllib.error
+import urllib.parse
+import urllib.request
+from urllib.parse import urlparse
 
 
 class YoutubeAPI:
@@ -55,7 +57,7 @@ class YoutubeAPI:
     def get_videos_info(self, video_ids):
 
         ids = video_ids
-        if not isinstance(video_ids, basestring):
+        if not isinstance(video_ids, str):
             ids = video_ids.join(',')
 
         api_url = self.get_api('videos.list')
@@ -240,7 +242,7 @@ class YoutubeAPI:
         res_obj = json.loads(api_data)
         if 'error' in res_obj:
             msg = "Error " + res_obj['error']['code'] + \
-                " " + res_obj['error']['message']
+                  " " + res_obj['error']['message']
             if res_obj['error']['errors'][0]:
                 msg = msg + " : " + res_obj['error']['errors'][0]['reason']
             raise Exception(msg)
@@ -256,7 +258,7 @@ class YoutubeAPI:
         res_obj = json.loads(api_data)
         if 'error' in res_obj:
             msg = "Error " + res_obj['error']['code'] + \
-                " " + res_obj['error']['message']
+                  " " + res_obj['error']['message']
             if res_obj['error']['errors'][0]:
                 msg = msg + " : " + res_obj['error']['errors'][0]['reason']
             raise Exception(msg)
@@ -284,7 +286,7 @@ class YoutubeAPI:
 
         params['key'] = self.youtube_key
 
-        f = urllib2.urlopen(url + "?" + urllib.urlencode(params))
+        f = urllib.request.urlopen(url + "?" + urllib.parse.urlencode(params))
         data = f.read()
         f.close()
 

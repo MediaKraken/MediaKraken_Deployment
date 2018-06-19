@@ -2,8 +2,6 @@
 Threads for transfering files
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import socket
 import struct
 import threading
@@ -41,19 +39,19 @@ class FileSenderThread(threading.Thread):
             clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             clientsocket.settimeout(60.0)
             clientsocket.connect((self.host, self.port))
-            for fileindex in xrange(0, len(self.filenames)):
+            for fileindex in range(0, len(self.filenames)):
                 data = open(self.filelocations[fileindex], 'rb').read()
                 common_global.es_inst.com_elastic_index('info', {"fn": self.filenames[fileindex],
                                                                  'types': type(
                                                                      self.filenames[fileindex])})
                 clientsocket.sendall("FILE" + struct.pack("<i256s", len(data),
                                                           str(self.filenames[fileindex])))
-                for ndx in xrange(0, (len(data) + 1023) / 1024):
+                for ndx in range(0, (len(data) + 1023) / 1024):
                     clientsocket.sendall(data[ndx * 1024:(ndx + 1) * 1024])
                     time.sleep(0.05)
             clientsocket.sendall('FEND')
             clientsocket.close()
-        except socket.error, msg:
+        except socket.error as msg:
             common_global.es_inst.com_elastic_index('error', {'Sending files failed.':
                                                                   str(msg)})
 

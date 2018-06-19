@@ -16,11 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import gzip
 import json
-import urllib2
+import urllib.error
+import urllib.parse
+import urllib.request
 
 from . import common_network
 
@@ -38,8 +38,8 @@ class CommonMetadataOpenweatherMap(object):
         Grab the weather for city
         """
         return json.load(
-            urllib2.urlopen('http://api.openweathermap.org/data/2.5/weather?id=%s&appid=%s'
-                            % (city, self.api_key)))
+            urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?id=%s&appid=%s'
+                                   % (city, self.api_key)))
 
     def com_openweathermap_fetch_city(self):
         """

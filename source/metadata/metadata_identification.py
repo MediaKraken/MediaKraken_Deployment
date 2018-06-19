@@ -16,15 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import os
-import sys
 import uuid
 
 from common import common_global
 from common import common_hash
-from common import common_string
 
 from . import metadata_anime
 from . import metadata_game
@@ -220,8 +216,8 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                            guessit_file_name)
     elif class_text == "Video Game":
         metadata_uuid = metadata_game.metadata_game_lookup(db_connection,
-                                                             download_que_json['Path'],
-                                                             download_que_json, download_que_id)
+                                                           download_que_json['Path'],
+                                                           download_que_json, download_que_id)
     elif class_text == "Video Game Intro":
         pass
     elif class_text == "Video Game Speedrun":

@@ -16,12 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_metadata
 
 # determine "weight" of file to download for trailer
 # def com_meta_Calc_Trailer_Weight(trailer_file_list, title_name, title_year):

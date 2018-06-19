@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import subprocess
 import sys
 import uuid
@@ -53,10 +51,10 @@ compose_text = "version: '2'\n" \
 env_text = ""
 
 if py3:
-    response = input(
-        "Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): ")
+    response = eval(input(
+        "Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): "))
 else:
-    response = raw_input(
+    response = input(
         "Please enter your PostgreSQL instance IP/Hostname (None for builtin database - default builtin): ")
 if response == 'None' or len(response) == 0:
     # builtin
@@ -78,17 +76,17 @@ if response == 'None' or len(response) == 0:
                     "    restart: unless - stopped\n"
 else:
     if py3:
+        db_database = eval(input("Please enter database name: "))
+    else:
         db_database = input("Please enter database name: ")
-    else:
-        db_database = raw_input("Please enter database name: ")
     if py3:
+        db_user = eval(input("Please enter database user: "))
+    else:
         db_user = input("Please enter database user: ")
-    else:
-        db_user = raw_input("Please enter database user: ")
     if py3:
-        db_pass = input("Please enter database password: ")
+        db_pass = eval(input("Please enter database password: "))
     else:
-        db_pass = raw_input("Please enter database password: ")
+        db_pass = input("Please enter database password: ")
     env_text = ("DBHOST=%s\nDBDATABASE=%s\nDBUSER=%s\nDBPASS=%s", (response, db_database,
                                                                    db_user, db_pass))
 
@@ -106,7 +104,8 @@ compose_text += "\n\n  # Main app server which controls the show\n" \
                 "    depends_on:\n" \
                 "      - pgbounce\n" \
                 "      - rabbit\n" \
-                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server.py\n" \
+                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 " \
+                "main_server.py\n" \
                 "    ports:\n" \
                 "      - \"8903:8903\"\n" \
                 "    volumes:\n" \
@@ -161,7 +160,8 @@ compose_text += "\n\n  # runs the server to fetch/process all metadata\n" \
                 "    container_name: mkmetadata\n" \
                 "    depends_on:\n" \
                 "      - pgbounce\n" \
-                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python main_server_metadata_api.py\n" \
+                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 " \
+                "main_server_metadata_api.py\n" \
                 "    volumes:\n" \
                 "      - /var/log/mediakraken:/mediakraken/log\n" \
                 "      - /home/mediakraken:/mediakraken/mnt\n" \
@@ -229,7 +229,7 @@ compose_text += "\n\n  # start broadcast server (so clients can find server)\n" 
                 "  broadcast:\n" \
                 "    image: mediakraken/mkbroadcast:latest\n" \
                 "    container_name: mkbroadcast\n" \
-                "    entrypoint: python subprogram_broadcast.py\n" \
+                "    entrypoint: python3 subprogram_broadcast.py\n" \
                 "    ports:\n" \
                 "      - \"9101:9101\"\n" \
                 "    volumes:\n" \
@@ -242,7 +242,7 @@ compose_text += "\n\n  # scan for new hardware devices\n" \
                 "  devicescan:\n" \
                 "    image: mediakraken/mkdevicescan:latest\n" \
                 "    container_name: mkdevicescan\n" \
-                "    entrypoint: python main_hardware_discover.py\n" \
+                "    entrypoint: python3 main_hardware_discover.py\n" \
                 "    volumes:\n" \
                 "      - /var/log/mediakraken:/mediakraken/log\n" \
                 "      - /var/opt/mediakraken/devices:/mediakraken/devices\n" \
@@ -263,10 +263,10 @@ compose_text += "\n\n  # rabbit\n" \
 # after this point is optional stuff
 
 if py3:
-    response = input(
-        "Run Portainer? (See Docker container usage - default no): ")
+    response = eval(input(
+        "Run Portainer? (See Docker container usage - default no): "))
 else:
-    response = raw_input(
+    response = input(
         "Run Portainer? (See Docker container usage - default no): ")
 if response.lower() == 'y':
     # runs portainer
@@ -281,18 +281,18 @@ if response.lower() == 'y':
                     "      restart: unless - stopped\n"
 
 if py3:
-    response = input(
-        "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
+    response = eval(input(
+        "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): "))
 else:
-    response = raw_input(
+    response = input(
         "Host MusicBrainz Mirror? (If yes, enter Brainzcode - default no): ")
 
 if py3:
+    response = eval(input("Please enter your Transmission instance IP/Hostname"
+                          " (None for builtin server - default builtin: "))
+else:
     response = input("Please enter your Transmission instance IP/Hostname"
                      " (None for builtin server - default builtin: ")
-else:
-    response = raw_input("Please enter your Transmission instance IP/Hostname"
-                         " (None for builtin server - default builtin: ")
 if response == 'None' or len(response) == 0:
     # builtin
     pass

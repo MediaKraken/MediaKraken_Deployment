@@ -16,13 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
 import sys
 
 sys.path.append('.')
-from common import common_zfs
-
 
 # # check for ZFS compat
 # def test_com_zfs_available():

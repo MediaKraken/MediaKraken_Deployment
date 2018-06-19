@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import os
 
 import httplib2
@@ -78,7 +76,7 @@ class CommonCloudGoogleDrive(object):
                 credentials = tools.run_flow(flow, store, flags)
             else:  # Needed only for compatability with Python 2.6
                 credentials = tools.run(flow, store)
-            print('Storing credentials to %s', credential_path)
+            print(('Storing credentials to %s', credential_path))
         return credentials
 
     def main():
@@ -96,7 +94,7 @@ class CommonCloudGoogleDrive(object):
             common_global.es_inst.com_elastic_index('error', {'stuff': 'No files found.'})
         else:
             for item in items:
-                print('{0} ({1})'.format(item['title'], item['id']))
+                print(('{0} ({1})'.format(item['title'], item['id'])))
 
     if __name__ == '__main__':
         main()

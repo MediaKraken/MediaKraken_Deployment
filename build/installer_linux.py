@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-import logging  # pylint: disable=W0611
 import platform
 import subprocess
 import sys
@@ -28,17 +26,17 @@ LINUX_VERSIONS = {
     'redhat': (7.1, 'yum install'),
     'ubuntu': (17.04, 'apt_get -y install')}
 
-print('1:', platform.platform())
-print('2:', platform.system())
-print('3:', platform.release())
-print('4:', platform.version())
-print('5:', platform.dist())
-print('6:', platform.system())
-print('7:', platform.machine())
-print('8:', platform.platform())
-print('9:', platform.uname())
-print('10:', platform.version())
-print('11:', platform.mac_ver())
+print(('1:', platform.platform()))
+print(('2:', platform.system()))
+print(('3:', platform.release()))
+print(('4:', platform.version()))
+print(('5:', platform.dist()))
+print(('6:', platform.system()))
+print(('7:', platform.machine()))
+print(('8:', platform.platform()))
+print(('9:', platform.uname()))
+print(('10:', platform.version()))
+print(('11:', platform.mac_ver()))
 
 
 def wget_wait(wget_addr):
@@ -56,12 +54,12 @@ elif platform.system() != 'Linux':
 
 # check minimum linux versions
 print('Checking linux version...')
-print('I see you\'re running', platform.dist()
-      [0], 'version', platform.dist()[1])
+print(('I see you\'re running', platform.dist()
+[0], 'version', platform.dist()[1]))
 try:
     if float(platform.dist()[1]) < LINUX_VERSIONS[platform.dist()[0].lower()][0]:
-        print('minimum required version is',
-              LINUX_VERSIONS[platform.dist()[0].lower()][0])
+        print(('minimum required version is',
+               LINUX_VERSIONS[platform.dist()[0].lower()][0]))
 except KeyError:
     print('Unsupported linux distribution. Exiting...')
     sys.exit(0)

@@ -16,13 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import os
 import socket
 
 import docker
-
 from . import common_global
 
 
@@ -169,7 +166,7 @@ class CommonDocker(object):
     def com_docker_run_device_scan(self):
         return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                        detach=True,
-                                       command='python main_hardware_discover.py',
+                                       command='python3 main_hardware_discover.py',
                                        name='mkdevicescan',
                                        network_mode='host')
 
@@ -224,11 +221,11 @@ class CommonDocker(object):
                                                     'mode': 'rw'}},
                                        network='mk_mediakraken_network')
 
-    def com_docker_run_pgadmin(self, user_email, user_password):
+    def com_docker_run_pgadmin(self, user_email='spootdev@gmail.org', user_password='metaman'):
         return self.cli.containers.run(image='dpage/pgadmin4',
                                        detach=True,
                                        name='mkpgadmin',
-                                       ports={"12345": 80},
+                                       ports={"80": 12345},
                                        network='mk_mediakraken_dbnetwork',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})

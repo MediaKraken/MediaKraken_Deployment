@@ -17,7 +17,7 @@
 
 import os
 import xml.etree.cElementTree as etree
-import aniDBfileInfo as fileInfo
+from . import aniDBfileInfo as fileInfo
 
 
 
@@ -40,7 +40,7 @@ class TvDBMap():
             try:
                 if anime.get(x,False) == xValue:
                     return int(anime.get(y,0))
-            except ValueError, e:
+            except ValueError as e:
                 continue
         return 0
             

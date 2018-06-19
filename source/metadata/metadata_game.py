@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 
 from common import common_global
@@ -29,14 +27,14 @@ THEGAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 def game_system_update():
     data = THEGAMESDB_CONNECTION.com_meta_gamesdb_platform_list()[
         'Data']['Platforms']['Platform']
-    print(type(data))
+    print((type(data)))
     print(data)
     for game_system in data:
         print(game_system)
         game_sys_detail = \
             THEGAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(game_system['id'])['Data'][
                 'Platform']
-        print(type(game_sys_detail))
+        print((type(game_sys_detail)))
         print(game_sys_detail)
         break
 

@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 
 from common import common_config_ini
@@ -35,7 +33,9 @@ GAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
 
 # grab and insert all platforms
 for platform \
-        in GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items()[0]:
+        in list(GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items(
+
+))[0]:
     if platform != 'Platform':
         for game_systems in platform:
             print(game_systems)

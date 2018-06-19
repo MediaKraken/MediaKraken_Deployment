@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import socket
 import sys
 import time
@@ -51,7 +49,7 @@ def com_net_mediakraken_find_server(server_seconds=1):
             common_global.es_inst.com_elastic_index('info', {'Server reply': server_reply})
             if server_reply not in server_hosts_found:
                 server_hosts_found.append(server_reply)
-        except socket.error, msg:
+        except socket.error as msg:
             common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server Error '
                                                                  'Code': str(msg[0])
                                                                          + ' Message ' + msg[1]})

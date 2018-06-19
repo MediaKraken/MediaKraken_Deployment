@@ -16,12 +16,12 @@
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
 from time import time, sleep
-import aniDBfileInfo as fileInfo
+from . import aniDBfileInfo as fileInfo
 import xml.etree.cElementTree as etree
 import os, re, string
-from aniDBmaper import AniDBMaper
-from aniDBtvDBmaper import TvDBMap
-from aniDBerrors import *
+from .aniDBmaper import AniDBMaper
+from .aniDBtvDBmaper import TvDBMap
+from .aniDBerrors import *
 
 
 
@@ -53,7 +53,7 @@ class aniDBabstractObject(object):
                         try:
                             newList.append(int(i))
                         except:
-                            newList.append(unicode(i, "utf-8"))
+                            newList.append(str(i, "utf-8"))
                     self.__dict__[key] = newList
                     continue
             except:
@@ -61,7 +61,7 @@ class aniDBabstractObject(object):
             try:
                 self.__dict__[key] = int(dataline[key])
             except:
-                self.__dict__[key] = unicode(dataline[key], "utf-8")
+                self.__dict__[key] = str(dataline[key], "utf-8")
             key = property(lambda x: dataline[key])
 
     def __getattr__(self, name):
@@ -83,7 +83,7 @@ class aniDBabstractObject(object):
         if item:
             if isinstance(item, list):
                 initialList.extend(item)
-            elif isinstance(item, basestring):
+            elif isinstance(item, str):
                 initialList.append(item)
 
         return initialList
@@ -157,7 +157,7 @@ class Anime(aniDBabstractObject):
         self.rawData = self.aniDB.groupstatus(aid=self.aid)
         self.release_groups = []
         for line in self.rawData.datalines:
-            self.release_groups.append({"name":unicode(line["name"], "utf-8"),
+            self.release_groups.append({"name":str(line["name"], "utf-8"),
                                         "rating":line["rating"],
                                         "range":line["episode_range"]
                                         })
@@ -276,11 +276,11 @@ class Episode(aniDBabstractObject):
 
         try:
             self.aniDB.mylistadd(size=self.size, ed2k=self.ed2k, state=status)
-        except Exception, e :
-            self.log(u"exception msg: " + str(e))
+        except Exception as e :
+            self.log("exception msg: " + str(e))
         else:
             # TODO: add the name or something
-            self.log(u"Added the episode to anidb")
+            self.log("Added the episode to anidb")
 
 
     def _calculate_file_stuff(self, filePath):

@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import os
 import subprocess
 import sys
@@ -38,7 +36,7 @@ common_global.es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})
 if not os.path.isfile('./key/cacert.pem'):
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Cert not found, generating.'})
     proc_ssl = subprocess.Popen(
-        ['python', './subprogram_ssl_keygen.py'], shell=False)
+        ['python3', './subprogram_ssl_keygen.py'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
@@ -54,7 +52,7 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
     common_global.es_inst.com_elastic_index('info',
                                             {'stuff': 'Database upgrade in progress...'})
     db_create_pid = subprocess.Popen(
-        ['python', './db_update_version.py'], shell=False)
+        ['python3', './db_update_version.py'], shell=False)
     db_create_pid.wait()
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Database upgrade complete.'})
 
@@ -84,23 +82,23 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 
 # startup the other reactor via popen as it's non-blocking
 proc = subprocess.Popen(
-    ['python', './subprogram_reactor_line.py'], shell=False)
+    ['python3', './subprogram_reactor_line.py'], shell=False)
 common_global.es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
 
 # # startup the ffprobe here atm
 # proc_ffprobe = subprocess.Popen(
-#     ['python', './subprogram_ffprobe_metadata.py'], shell=False)
+#     ['python3', './subprogram_ffprobe_metadata.py'], shell=False)
 # common_global.es_inst.com_elastic_index('info', {'FFprobe PID': proc_ffprobe.pid})
 
 # fire up cron service
 proc_cron = subprocess.Popen(
-    ['python', './subprogram_cron_checker.py'], shell=False)
+    ['python3', './subprogram_cron_checker.py'], shell=False)
 common_global.es_inst.com_elastic_index('info', {'Cron PID': proc_cron.pid})
 
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
-    proc_link = subprocess.Popen(['python', './main_server_link.py', link_data[2]['IP'],
+    proc_link = subprocess.Popen(['python3', './main_server_link.py', link_data[2]['IP'],
                                   str(link_data[2]['Port'])], shell=False)
     common_global.es_inst.com_elastic_index('info', {'Link PID': proc_link.pid})
     link_pid[link_data[0]] = proc_link.pid

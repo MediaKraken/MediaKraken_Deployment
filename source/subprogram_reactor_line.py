@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 import json
 import shlex
 import subprocess
@@ -84,9 +82,9 @@ def read(queue_object):
         json_message = json.loads(body)
         common_global.es_inst.com_elastic_index('info', {'json body': json_message})
         if json_message['Type'] == 'Cron Run':
-            cron_pid = subprocess.Popen(['python', json_message['Data']])
+            cron_pid = subprocess.Popen(['python3', json_message['Data']])
         elif json_message['Type'] == 'Library Scan':
-            scan_pid = subprocess.Popen(['python', './subprogram_file_scan.py'])
+            scan_pid = subprocess.Popen(['python3', './subprogram_file_scan.py'])
         elif json_message['Type'] == 'Pause':
             if json_message['Sub'] == 'Cast':
                 pass
@@ -177,7 +175,7 @@ def read(queue_object):
             docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                              name_container=name_container,
                                              container_command=(
-                                                     'python subprogram_ffprobe_metadata.py %s' %
+                                                     'python3 subprogram_ffprobe_metadata.py %s' %
                                                      json_message['Data']))
             common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
