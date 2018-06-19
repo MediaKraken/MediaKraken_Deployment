@@ -15,10 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import with_statement
+
 import hashlib
 import os
 import xml.etree.cElementTree as etree
+from functools import reduce
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
