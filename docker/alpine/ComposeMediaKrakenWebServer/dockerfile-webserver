@@ -44,7 +44,7 @@ RUN apk add --update \
   postgresql-dev \
   && rm requirements.txt \
   && apk add \
-  uwsgi-python \
+  uwsgi-python3 \
   uwsgi-router_uwsgi \
   py-setuptools \
   && cp /usr/lib/uwsgi/python_plugin.so /mediakraken/. \
