@@ -25,7 +25,7 @@ from . import common_file
 from . import common_global
 from . import common_network
 
-sys.path.append("./vault/lib")
+sys.path.append(".")
 import adba
 
 
