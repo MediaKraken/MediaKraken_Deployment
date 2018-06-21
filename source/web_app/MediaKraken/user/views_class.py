@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g
+from quart import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("user_class", __name__,
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/class')
 @blueprint.route('/class/')
 @login_required
-def class_display_all():
+async def class_display_all():
     """
     Display class list page
     """
@@ -34,7 +34,7 @@ def class_display_all():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/user_media_class_list.html',
+    return await render_template('users/user_media_class_list.html',
                            media_class=g.db_connection.db_media_class_list(
                                offset, per_page),
                            page=page,

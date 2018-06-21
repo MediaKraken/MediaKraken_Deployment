@@ -5,13 +5,13 @@ import os
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash
+from quart import Blueprint, render_template, g, request, flash
 from flask_login import login_required
 
 blueprint = Blueprint("admins_backup", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import flask
+import quart
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import BackupEditForm
@@ -48,7 +48,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return flask.abort(403)  # access denied
+            return quart.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -57,11 +57,11 @@ def admin_required(fn):
 @blueprint.route('/backup_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_backup_delete_page():
+async def admin_backup_delete_page():
     """
     Delete backup file action 'page'
     """
-    file_path, file_type = request.form['id'].split('|')
+    file_path, file_type = await await request.form['id'].split('|')
     if file_type == "Local":
         os.remove(file_path)
     elif file_type == "AWS" or file_type == "AWS S3":
@@ -73,16 +73,16 @@ def admin_backup_delete_page():
 @blueprint.route("/backup/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_backup():
+async def admin_backup():
     """
     List backups from local fs and cloud
     """
-    form = BackupEditForm(request.form)
+    form = BackupEditForm(await request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
-            if request.form['backup'] == 'Update':
+            if await await request.form['backup'] == 'Update':
                 pass
-            elif request.form['backup'] == 'Start Backup':
+            elif await await request.form['backup'] == 'Start Backup':
                 g.db_connection.db_trigger_insert(('python3',
                                                    './subprogram_postgresql_backup.py'))  # this commits
                 flash("Postgresql Database Backup Task Submitted.")
@@ -108,7 +108,7 @@ def admin_backup():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template("admin/admin_backup.html", form=form,
+    return await render_template("admin/admin_backup.html", form=form,
                            backup_list=sorted(backup_files, reverse=True),
                            data_interval=('Hours', 'Days', 'Weekly'),
                            data_class=common_cloud.CLOUD_BACKUP_CLASS,

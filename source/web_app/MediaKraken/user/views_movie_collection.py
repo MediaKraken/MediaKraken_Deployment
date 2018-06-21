@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_movie_collection", __name__, url_prefix='/users',
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/meta_movie_collection_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_movie_collection_list/', methods=['GET', 'POST'])
 @login_required
-def metadata_movie_collection_list():
+async def metadata_movie_collection_list():
     """
     Display movie collection metadata
     """
@@ -49,7 +49,7 @@ def metadata_movie_collection_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_movie_collection_list.html',
+    return await render_template('users/metadata/meta_movie_collection_list.html',
                            media=media,
                            page=page,
                            per_page=per_page,
@@ -60,7 +60,7 @@ def metadata_movie_collection_list():
 @blueprint.route('/meta_movie_collection_detail/<guid>/')
 @blueprint.route('/meta_movie_collection_detail/<guid>')
 @login_required
-def metadata_movie_collection_detail(guid):
+async def metadata_movie_collection_detail(guid):
     """
     Display movie collection metadata detail
     """
@@ -83,7 +83,7 @@ def metadata_movie_collection_detail(guid):
             data_background_image = None
     except:
         data_background_image = None
-    return render_template('users/metadata/meta_movie_collection_detail.html',
+    return await render_template('users/metadata/meta_movie_collection_detail.html',
                            data_name=json_metadata['name'],
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
