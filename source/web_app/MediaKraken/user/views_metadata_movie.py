@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import current_user
 from flask_login import login_required
 
@@ -25,7 +25,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/meta_movie_detail/<guid>/')
 @blueprint.route('/meta_movie_detail/<guid>')
 @login_required
-def metadata_movie_detail(guid):
+async def metadata_movie_detail(guid):
     """
     Display metadata movie detail
     """
@@ -65,7 +65,7 @@ def metadata_movie_detail(guid):
         data_background_image = None
     # grab reviews
     #    review = g.db_connection.db_Review_List(data[1])
-    return render_template('users/metadata/meta_movie_detail.html',
+    return await render_template('users/metadata/meta_movie_detail.html',
                            # data_media_ids=data[1],
                            data_name=data[2],
                            json_metadata=json_metadata,
@@ -83,7 +83,7 @@ def metadata_movie_detail(guid):
 @blueprint.route('/meta_movie_list', methods=["GET", "POST"])
 @blueprint.route('/meta_movie_list/', methods=["GET", "POST"])
 @login_required
-def metadata_movie_list():
+async def metadata_movie_list():
     """
     Display list of movie metadata
     """
@@ -146,7 +146,7 @@ def metadata_movie_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_movie_list.html',
+    return await render_template('users/metadata/meta_movie_list.html',
                            media_movie=media,
                            page=page,
                            per_page=per_page,

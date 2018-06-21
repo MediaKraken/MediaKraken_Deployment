@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g
+from quart import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("user_tv_live", __name__,
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route("/livetv/<schedule_date>/<schedule_time>")
 @blueprint.route("/livetv/<schedule_date>/<schedule_time>/")
 @login_required
-def user_livetv_page(schedule_date, schedule_time):
+async def user_livetv_page(schedule_date, schedule_time):
     """
     Display livetv page
     """
@@ -127,18 +127,18 @@ def user_livetv_page(schedule_date, schedule_time):
             md_used += next_md
     # populate last row
     grid_data += '<tr><td>' + last_station + '</td>' + channel_data + '</tr>'
-    return render_template("users/user_livetv_page.html", media=grid_data)
+    return await render_template("users/user_livetv_page.html", media=grid_data)
 
 
 # livetv list detail
 @blueprint.route("/livetv_detail/<guid>/")
 @blueprint.route("/livetv_detail/<guid>")
 @login_required
-def user_livetv_detail_page(guid):
+async def user_livetv_detail_page(guid):
     """
     Display live tv detail page
     """
-    return render_template("users/user_livetv_page.html")
+    return await render_template("users/user_livetv_page.html")
 
 
 @blueprint.before_request

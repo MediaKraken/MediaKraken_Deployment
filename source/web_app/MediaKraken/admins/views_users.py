@@ -4,13 +4,13 @@ import json
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash
+from quart import Blueprint, render_template, g, request, flash
 from flask_login import login_required
 
 blueprint = Blueprint("admins_users", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import flask
+import quart
 from flask_login import current_user
 from functools import wraps
 
@@ -45,7 +45,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return flask.abort(403)  # access denied
+            return quart.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -55,7 +55,7 @@ def admin_required(fn):
 @blueprint.route("/users/")
 @login_required
 @admin_required
-def admin_users():
+async def admin_users():
     """
     Display user list
     """
@@ -67,7 +67,7 @@ def admin_users():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('admin/admin_users.html',
+    return await render_template('admin/admin_users.html',
                            users=g.db_connection.db_user_list_name(
                                offset, per_page),
                            page=page,
@@ -80,22 +80,22 @@ def admin_users():
 @blueprint.route("/user_detail/<guid>")
 @login_required
 @admin_required
-def admin_user_detail(guid):
+async def admin_user_detail(guid):
     """
     Display user details
     """
-    return render_template('admin/admin_user_detail.html',
+    return await render_template('admin/admin_user_detail.html',
                            data_user=g.db_connection.db_user_detail(guid))
 
 
 @blueprint.route('/user_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_user_delete_page():
+async def admin_user_delete_page():
     """
     Delete user action 'page'
     """
-    g.db_connection.db_user_delete(request.form['id'])
+    g.db_connection.db_user_delete(await await request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

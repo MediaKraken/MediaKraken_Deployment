@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_tv", __name__, url_prefix='/users',
@@ -24,7 +24,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/meta_tvshow_detail/<guid>/')
 @blueprint.route('/meta_tvshow_detail/<guid>')
 @login_required
-def metadata_tvshow_detail(guid):
+async def metadata_tvshow_detail(guid):
     """
     Display metadata of tvshow
     """
@@ -96,7 +96,7 @@ def metadata_tvshow_detail(guid):
     #    production_list = ''
     #    for ndx in range(0,len(json_metadata['production_companies'])):
     #        production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
-    return render_template('users/metadata/meta_tvshow_detail.html',
+    return await render_template('users/metadata/meta_tvshow_detail.html',
                            data_title=data_metadata['mm_metadata_tvshow_name'],
                            data_runtime=data_runtime,
                            data_guid=guid,
@@ -116,7 +116,7 @@ def metadata_tvshow_detail(guid):
 @blueprint.route("/meta_tvshow_season_detail/<guid>/<season>", methods=['GET', 'POST'])
 @blueprint.route("/meta_tvshow_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
-def metadata_tvshow_season_detail_page(guid, season):
+async def metadata_tvshow_season_detail_page(guid, season):
     """
     Display metadata of tvshow season detail
     """
@@ -189,7 +189,7 @@ def metadata_tvshow_season_detail_page(guid, season):
             data_background_image = None
     except:
         data_background_image = None
-    return render_template("users/metadata/meta_tvshow_season_detail.html",
+    return await render_template("users/metadata/meta_tvshow_season_detail.html",
                            data=data_metadata['mm_metadata_tvshow_name'],
                            data_guid=guid,
                            data_season=season,
@@ -208,7 +208,7 @@ def metadata_tvshow_season_detail_page(guid, season):
 @blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>", methods=['GET', 'POST'])
 @blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>/", methods=['GET', 'POST'])
 @login_required
-def metadata_tvshow_episode_detail_page(guid, eps_id):
+async def metadata_tvshow_episode_detail_page(guid, eps_id):
     """
     Display tvshow episode metadata detail
     """
@@ -226,7 +226,7 @@ def metadata_tvshow_episode_detail_page(guid, eps_id):
             data_background_image = None
     except:
         data_background_image = None
-    return render_template("users/metadata/meta_tvshow_episode_detail.html", data=data_metadata[0],
+    return await render_template("users/metadata/meta_tvshow_episode_detail.html", data=data_metadata[0],
                            data_guid=guid,
                            data_title=data_metadata['eps_name'],
                            data_runtime=data_metadata['eps_runtime'],
@@ -240,7 +240,7 @@ def metadata_tvshow_episode_detail_page(guid, eps_id):
 @blueprint.route('/meta_tvshow_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_tvshow_list/', methods=['GET', 'POST'])
 @login_required
-def metadata_tvshow_list():
+async def metadata_tvshow_list():
     """
     Display tvshow metadata list
     """
@@ -262,7 +262,7 @@ def metadata_tvshow_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_tvshow_list.html',
+    return await render_template('users/metadata/meta_tvshow_list.html',
                            media_tvshow=media_tvshow,
                            page=page,
                            per_page=per_page,

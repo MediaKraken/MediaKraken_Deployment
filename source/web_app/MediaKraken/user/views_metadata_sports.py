@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_sports", __name__, url_prefix='/users',
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/meta_sports_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_sports_list/', methods=['GET', 'POST'])
 @login_required
-def metadata_sports_list():
+async def metadata_sports_list():
     """
     Display sports metadata list
     """
@@ -39,7 +39,7 @@ def metadata_sports_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_sports_list.html',
+    return await render_template('users/metadata/meta_sports_list.html',
                            media_sports_list=mediadata,
                            page=page,
                            per_page=per_page,
@@ -50,11 +50,11 @@ def metadata_sports_list():
 @blueprint.route('/meta_sports_detail/<guid>/')
 @blueprint.route('/meta_sports_detail/<guid>')
 @login_required
-def metadata_sports_detail(guid):
+async def metadata_sports_detail(guid):
     """
     Display sports detail metadata
     """
-    return render_template('users/metadata/meta_sports_detail.html', guid=guid,
+    return await render_template('users/metadata/meta_sports_detail.html', guid=guid,
                            data=g.db_connection.db_meta_sports_by_guid(guid))
 
 

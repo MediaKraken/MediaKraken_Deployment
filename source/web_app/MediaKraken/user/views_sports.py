@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_sports", __name__,
@@ -23,7 +23,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route("/sports", methods=['GET', 'POST'])
 @blueprint.route("/sports/", methods=['GET', 'POST'])
 @login_required
-def user_sports_page():
+async def user_sports_page():
     """
     Display sporting events page
     """
@@ -44,7 +44,7 @@ def user_sports_page():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/user_sports_page.html', media=media,
+    return await render_template('users/user_sports_page.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -54,7 +54,7 @@ def user_sports_page():
 @blueprint.route("/sports_detail/<guid>/", methods=['GET', 'POST'])
 @blueprint.route("/sports_detail/<guid>", methods=['GET', 'POST'])
 @login_required
-def user_sports_detail_page(guid):
+async def user_sports_detail_page(guid):
     """
     Display sports detail page
     """
@@ -74,7 +74,7 @@ def user_sports_detail_page(guid):
             data_background_image = None
     except:
         data_background_image = None
-    return render_template("users/user_sports_detail.html",
+    return await render_template("users/user_sports_detail.html",
                            data=g.db_connection.db_metathesportsdb_select_guid(
                                guid),
                            data_poster_image=data_poster_image,

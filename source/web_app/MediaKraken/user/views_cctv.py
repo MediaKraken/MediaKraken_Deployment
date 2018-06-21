@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g
+from quart import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("user_cctv", __name__,
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/cctv')
 @blueprint.route('/cctv/')
 @login_required
-def cctv():
+async def cctv():
     """
     Display cctv page
     """
@@ -34,7 +34,7 @@ def cctv():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/user_cctv.html',
+    return await render_template('users/user_cctv.html',
                            media_sync=g.db_connection.db_sync_list(
                                offset, per_page),
                            page=page,

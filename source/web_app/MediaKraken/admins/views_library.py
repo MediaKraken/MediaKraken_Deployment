@@ -5,14 +5,14 @@ import os
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash, \
+from quart import Blueprint, render_template, g, request, flash, \
     url_for, redirect
 from flask_login import login_required
 
 blueprint = Blueprint("admins_library", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import flask
+import quart
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.extensions import (
@@ -53,7 +53,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return flask.abort(403)  # access denied
+            return quart.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -63,7 +63,7 @@ def admin_required(fn):
 @blueprint.route("/library/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_library():
+async def admin_library():
     """
     List all media libraries
     """
@@ -84,7 +84,7 @@ def admin_library():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template("admin/admin_library.html",
+    return await render_template("admin/admin_library.html",
                            media_dir=g.db_connection.db_audit_paths(
                                offset, per_page),
                            page=page,
@@ -97,18 +97,18 @@ def admin_library():
 @blueprint.route("/library_edit/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_library_edit_page():
+async def admin_library_edit_page():
     """
     allow user to edit lib
     """
-    form = LibraryAddEditForm(request.form)
+    form = LibraryAddEditForm(await request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
-            if request.form['action_type'] == 'Add':
+            if await request.form['action_type'] == 'Add':
                 # check for UNC
-                if request.form['library_path'][:1] == "\\":
+                if await request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
-                        request.form['library_path'])
+                        await request.form['library_path'])
                     common_global.es_inst.com_elastic_index('info',
                                                             {'smb info': addr, 'share': share,
                                                              'path': path})
@@ -123,7 +123,7 @@ def admin_library_edit_page():
                         return redirect(url_for('admins_library.admin_library_edit_page'))
                     smb_stuff.com_cifs_close()
                 # smb/cifs mounts
-                elif request.form['library_path'][0:3] == "smb":
+                elif await request.form['library_path'][0:3] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(
@@ -132,29 +132,29 @@ def admin_library_edit_page():
                         share_name, dir_path)
                     smb_stuff.com_cifs_close()
                 # nfs mount
-                elif request.form['library_path'][0:3] == "nfs":
+                elif await request.form['library_path'][0:3] == "nfs":
                     # TODO
                     pass
-                elif not os.path.isdir(request.form['library_path']):
+                elif not os.path.isdir(await request.form['library_path']):
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add
-                if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
+                if g.db_connection.db_audit_path_check(await request.form['library_path']) == 0:
                     try:
-                        lib_share = request.form['Lib_Share']
+                        lib_share = await request.form['Lib_Share']
                     except:
                         lib_share = None
-                    g.db_connection.db_audit_path_add(request.form['library_path'],
-                                                      request.form['Lib_Class'], lib_share)
+                    g.db_connection.db_audit_path_add(await request.form['library_path'],
+                                                      await request.form['Lib_Class'], lib_share)
                     g.db_connection.db_commit()
                     return redirect(url_for('admins_library.admin_library'))
                 else:
                     flash("Path already in library.", 'error')
                     return redirect(url_for('admins_library.admin_library_edit_page'))
-            elif request.form['action_type'] == 'Browse...':  # popup browse form
+            elif await request.form['action_type'] == 'Browse...':  # popup browse form
                 pass
             # popup browse form for synology
-            elif request.form['action_type'] == 'Synology':
+            elif await request.form['action_type'] == 'Synology':
                 pass
         else:
             flash_errors(form)
@@ -169,7 +169,7 @@ def admin_library_edit_page():
                      ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
 
-    return render_template("admin/admin_library_edit.html", form=form,
+    return await render_template("admin/admin_library_edit.html", form=form,
                            data_class=class_list,
                            data_share=share_list)
 
@@ -177,11 +177,11 @@ def admin_library_edit_page():
 @blueprint.route('/library_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_library_delete_page():
+async def admin_library_delete_page():
     """
     Delete library action 'page'
     """
-    g.db_connection.db_audit_path_delete(request.form['id'])
+    g.db_connection.db_audit_path_delete(await request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
@@ -189,8 +189,8 @@ def admin_library_delete_page():
 @blueprint.route('/getLibraryById', methods=['POST'])
 @login_required
 @admin_required
-def getLibraryById():
-    result = g.db_connection.db_audit_path_by_uuid(request.form['id'])
+async def getLibraryById():
+    result = g.db_connection.db_audit_path_by_uuid(await request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
                        'Media Class': result['mm_media_dir_class_type']})
@@ -199,9 +199,9 @@ def getLibraryById():
 @blueprint.route('/updateLibrary', methods=['POST'])
 @login_required
 @admin_required
-def updateLibrary():
-    g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
-                                                 request.form['new_class'], request.form['id'])
+async def updateLibrary():
+    g.db_connection.db_audit_path_update_by_uuid(await request.form['new_path'],
+                                                 await request.form['new_class'], await request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

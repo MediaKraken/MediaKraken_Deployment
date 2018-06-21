@@ -12,14 +12,14 @@ from MediaKraken.extensions import (
     fpika,
 )
 from MediaKraken.settings import ProdConfig
-from flask import Flask, render_template
+from quart import Quart, render_template
 from flask_kvsession import KVSessionExtension
 from flask_uwsgi_websocket import GeventWebSocket
 from simplekv.memory.redisstore import RedisStore
 
 
 def create_app(config_object=ProdConfig):
-    app = Flask(__name__)
+    app = Quart(__name__)
     KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
     app.config.from_object(config_object)
     app.config['UPLOAD_FOLDER'] = '/mediakraken/uploads'
