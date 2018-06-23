@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_periodicals", __name__, url_prefix='/users',
@@ -23,7 +23,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/books', methods=['GET', 'POST'])
 @blueprint.route('/books/', methods=['GET', 'POST'])
 @login_required
-def user_books_list():
+async def user_books_list():
     """
     Display books page
     """
@@ -41,7 +41,7 @@ def user_books_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template("users/user_books_list.html", media=mediadata,
+    return await render_template("users/user_books_list.html", media=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

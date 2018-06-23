@@ -4,14 +4,14 @@ import json
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash, \
+from quart import Blueprint, render_template, g, request, flash, \
     url_for, redirect
 from flask_login import login_required
 
 blueprint = Blueprint("admins_chromecasts", __name__, url_prefix='/admin',
                       static_folder="../static")
 # need the following three items for admin check
-import flask
+import quart
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import ChromecastEditForm
@@ -47,7 +47,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return flask.abort(403)  # access denied
+            return quart.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -57,7 +57,7 @@ def admin_required(fn):
 @blueprint.route("/chromecasts/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_chromecast():
+async def admin_chromecast():
     """
     List chromecasts
     """
@@ -70,28 +70,28 @@ def admin_chromecast():
         device_list.append((row_data['mm_device_id'], row_data['mm_device_json']['Name'],
                             row_data['mm_device_json']['Model'],
                             row_data['mm_device_json']['IP'], True))
-    return render_template("admin/admin_chromecasts.html", data_chromecast=device_list)
+    return await render_template("admin/admin_chromecasts.html", data_chromecast=device_list)
 
 
 @blueprint.route("/chromecast_edit", methods=["GET", "POST"])
 @blueprint.route("/chromecast_edit/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_chromecast_edit_page():
+async def admin_chromecast_edit_page():
     """
     allow user to edit chromecast
     """
-    form = ChromecastEditForm(request.form)
+    form = ChromecastEditForm(await request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
-            if request.form['action_type'] == 'Add':
+            if await request.form['action_type'] == 'Add':
                 # verify it doesn't exit and add
-                if g.db_connection.db_device_check(request.form['name'],
-                                                   request.form['ipaddr']) == 0:
+                if g.db_connection.db_device_check(await request.form['name'],
+                                                   await request.form['ipaddr']) == 0:
                     g.db_connection.db_device_insert('cast',
-                                                     json.dumps({'Name': request.form['name'],
+                                                     json.dumps({'Name': await request.form['name'],
                                                                  'Model': "NA",
-                                                                 'IP': request.form['ipaddr']}))
+                                                                 'IP': await request.form['ipaddr']}))
                     g.db_connection.db_commit()
                     return redirect(url_for('admins_chromecasts.admin_chromecast'))
                 else:
@@ -99,17 +99,17 @@ def admin_chromecast_edit_page():
                     return redirect(url_for('admins_chromecasts.admin_chromecast_edit_page'))
         else:
             flash_errors(form)
-    return render_template("admin/admin_chromecast_edit.html", form=form)
+    return await render_template("admin/admin_chromecast_edit.html", form=form)
 
 
 @blueprint.route('/chromecast_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_chromecast_delete_page():
+async def admin_chromecast_delete_page():
     """
     Delete action 'page'
     """
-    g.db_connection.db_device_delete(request.form['id'])
+    g.db_connection.db_device_delete(await request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
@@ -117,8 +117,8 @@ def admin_chromecast_delete_page():
 @blueprint.route('/getChromecastById', methods=['POST'])
 @login_required
 @admin_required
-def getChromecastById():
-    result = g.db_connection.db_device_by_uuid(request.form['id'])
+async def getChromecastById():
+    result = g.db_connection.db_device_by_uuid(await request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
                        'Name': result['mm_device_json']['Name'],
                        'IP': result['mm_device_json']['IP']})
@@ -127,9 +127,9 @@ def getChromecastById():
 @blueprint.route('/updateChromecast', methods=['POST'])
 @login_required
 @admin_required
-def updateChromecast():
-    g.db_connection.db_device_update_by_uuid(request.form['name'],
-                                             request.form['ipaddr'], request.form['id'])
+async def updateChromecast():
+    g.db_connection.db_device_update_by_uuid(await request.form['name'],
+                                             await request.form['ipaddr'], await request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

@@ -8,14 +8,14 @@ import uuid
 import pygal
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash, \
+from quart import Blueprint, render_template, g, request, flash, \
     url_for, redirect, abort
 from flask_login import login_required
 
 blueprint = Blueprint("admins", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import flask
+import quart
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 from functools import wraps
@@ -62,7 +62,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return flask.abort(403)  # access denied
+            return quart.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -71,7 +71,7 @@ def admin_required(fn):
 @blueprint.route("/")
 @login_required
 @admin_required
-def admins():
+async def admins():
     """
     Display main server page
     """
@@ -84,7 +84,7 @@ def admins():
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
-    for key, value in common_network.mk_network_ip_addr().iteritems():
+    for key, value in iter(common_network.mk_network_ip_addr()):
         nic_data.append(key + ' ' + value[0][1])
     data_alerts_dismissable = []
     data_alerts = []
@@ -109,7 +109,7 @@ def admins():
     for dir_path in g.db_connection.db_audit_path_status():
         data_scan_info.append(
             (dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
-    return render_template("admin/admins.html",
+    return await render_template("admin/admins.html",
                            data_user_count=common_internationalization.com_inter_number_format(
                                g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
@@ -146,37 +146,37 @@ def admins():
 @blueprint.route("/messages/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_messages():
+async def admin_messages():
     """
     List all NAS devices
     """
     messages = []
-    return render_template("admin/admin_messages.html", data_messages=messages)
+    return await render_template("admin/admin_messages.html", data_messages=messages)
 
 
 @blueprint.route("/nas", methods=["GET", "POST"])
 @blueprint.route("/nas/", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_nas():
+async def admin_nas():
     """
     List all NAS devices
     """
     nas_devices = []
-    return render_template("admin/admin_nas.html", data_nas=nas_devices)
+    return await render_template("admin/admin_nas.html", data_nas=nas_devices)
 
 
 @blueprint.route('/books_add', methods=['GET', 'POST'])
 @blueprint.route('/books_add/', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_books_add():
+async def admin_books_add():
     """
     Display books add page
     """
     if request.method == 'POST':
         class_uuid = g.db_connection.db_media_uuid_by_class('Book')
-        for book_item in request.form['book_list'].split('\r'):
+        for book_item in await await request.form['book_list'].split('\r'):
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())
                 g.db_connection.db_insert_media(media_id, None, class_uuid,
@@ -190,47 +190,47 @@ def admin_books_add():
                                                                        'ProviderMetaID': book_item.strip()}))
         g.db_connection.db_commit()
         return redirect(url_for('admins.admin_books_add'))
-    form = BookAddForm(request.form, csrf_enabled=False)
+    form = BookAddForm(await request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
-    return render_template("admin/admin_books_add.html", form=form)
+    return await render_template("admin/admin_books_add.html", form=form)
 
 
 @blueprint.route("/settings", methods=['GET', 'POST'])
 @blueprint.route("/settings/", methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_server_settings():
+async def admin_server_settings():
     """
     Display server settings page
     """
     settings_json = g.db_connection.db_opt_status_read()[0]
     if request.method == 'POST':
-        settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
-        settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
+        settings_json['MediaKrakenServer']['Server Name'] = await request.form['servername']
+        settings_json['MediaKrakenServer']['MOTD'] = await request.form['servermotd']
 
-        settings_json['Metadata']['Source']['tvmaze'] = request.form['metadata_source_down_tvmaze']
-        settings_json['Metadata']['Source']['tmdb'] = request.form['metadata_source_down_tmdb']
-        settings_json['Metadata']['Source']['tvdb'] = request.form['metadata_source_down_tvdb']
-        settings_json['Metadata']['Source']['musicbrainz'] = request.form[
+        settings_json['Metadata']['Source']['tvmaze'] = await request.form['metadata_source_down_tvmaze']
+        settings_json['Metadata']['Source']['tmdb'] = await request.form['metadata_source_down_tmdb']
+        settings_json['Metadata']['Source']['tvdb'] = await request.form['metadata_source_down_tvdb']
+        settings_json['Metadata']['Source']['musicbrainz'] = await request.form[
             'metadata_source_down_mbrainz']
-        settings_json['Metadata']['Source']['anidb'] = request.form['metadata_source_down_anidb']
-        settings_json['Metadata']['Source']['chartlyrics'] = request.form[
+        settings_json['Metadata']['Source']['anidb'] = await request.form['metadata_source_down_anidb']
+        settings_json['Metadata']['Source']['chartlyrics'] = await request.form[
             'metadata_source_down_chartlyrics']
-        settings_json['Metadata']['Source'][''] = request.form['metadata_source_down_opensub']
-        settings_json['Metadata']['Source']['pitchfork'] = request.form[
+        settings_json['Metadata']['Source'][''] = await request.form['metadata_source_down_opensub']
+        settings_json['Metadata']['Source']['pitchfork'] = await request.form[
             'metadata_source_down_pitchfork']
-        settings_json['Metadata']['Source']['imvdb'] = request.form['metadata_source_down_imvdb']
-        settings_json['Metadata']['Source']['omdb'] = request.form['metadata_source_down_omdb']
-        settings_json['Docker Instances']['mumble'] = request.form['docker_mumble']
-        settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
-        settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
-        settings_json['Docker Instances']['portainer'] = request.form['docker_portainer']
+        settings_json['Metadata']['Source']['imvdb'] = await request.form['metadata_source_down_imvdb']
+        settings_json['Metadata']['Source']['omdb'] = await request.form['metadata_source_down_omdb']
+        settings_json['Docker Instances']['mumble'] = await request.form['docker_mumble']
+        settings_json['Docker Instances']['musicbrainz'] = await request.form['docker_musicbrainz']
+        settings_json['Docker Instances']['pgadmin'] = await request.form['docker_pgadmin']
+        settings_json['Docker Instances']['portainer'] = await request.form['docker_portainer']
         # TODO fix blank
-        # settings_json['Docker Instances']['smtp'] = request.form['']
-        settings_json['Docker Instances']['teamspeak'] = request.form['docker_teamspeak']
-        settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
-        settings_json['Docker Instances']['wireshark'] = request.form['docker_wireshark']
+        # settings_json['Docker Instances']['smtp'] = await request.form['']
+        settings_json['Docker Instances']['teamspeak'] = await request.form['docker_teamspeak']
+        settings_json['Docker Instances']['transmission'] = await request.form['docker_transmission']
+        settings_json['Docker Instances']['wireshark'] = await request.form['docker_wireshark']
 
         g.db_connection.db_opt_update(settings_json)
 
@@ -273,8 +273,8 @@ def admin_server_settings():
 
 '''
 
-    return render_template("admin/admin_server_settings.html",
-                           form=AdminSettingsForm(request.form),
+    return await render_template("admin/admin_server_settings.html",
+                           form=AdminSettingsForm(await request.form),
                            settings_json=settings_json)
 
 
@@ -282,11 +282,11 @@ def admin_server_settings():
 @blueprint.route("/zfs/")
 @login_required
 @admin_required
-def admin_server_zfs():
+async def admin_server_zfs():
     """
     Display zfs admin page
     """
-    return render_template("admin/admin_server_zfs.html",
+    return await render_template("admin/admin_server_zfs.html",
                            data_zpool=common_zfs.com_zfs_zpool_list())
 
 
@@ -294,51 +294,51 @@ def admin_server_zfs():
 @blueprint.route("/cloud_google_drive/")
 @login_required
 @admin_required
-def admin_cloud_google_drive():
+async def admin_cloud_google_drive():
     """
     browse google drive
     """
-    return render_template("admin/cloud/cloud_google_drive.html")
+    return await render_template("admin/cloud/cloud_google_drive.html")
 
 
 @blueprint.route("/cloud_onedrive")
 @blueprint.route("/cloud_onedrive/")
 @login_required
 @admin_required
-def admin_cloud_onedrive():
+async def admin_cloud_onedrive():
     """
     browse onedrive
     """
-    return render_template("admin/cloud/cloud_onedrive.html")
+    return await render_template("admin/cloud/cloud_onedrive.html")
 
 
 @blueprint.route("/cloud_aws_s3")
 @blueprint.route("/cloud_aws_s3/")
 @login_required
 @admin_required
-def admin_cloud_aws_s3():
+async def admin_cloud_aws_s3():
     """
     browse aws
     """
-    return render_template("admin/cloud/cloud_aws_s3.html")
+    return await render_template("admin/cloud/cloud_aws_s3.html")
 
 
 @blueprint.route("/cloud_dropbox")
 @blueprint.route("/cloud_dropbox/")
 @login_required
 @admin_required
-def admin_cloud_dropbox():
+async def admin_cloud_dropbox():
     """
     browse dropbox
     """
-    return render_template("admin/cloud/cloud_dropbox.html")
+    return await render_template("admin/cloud/cloud_dropbox.html")
 
 
 @blueprint.route("/chart_browser")
 @blueprint.route("/chart_browser/")
 @login_required
 @admin_required
-def admin_chart_browser():
+async def admin_chart_browser():
     line_chart = pygal.Line()
     line_chart.title = 'Browser usage'
     line_chart.x_labels = map(str, range(2002, 2013))
@@ -351,14 +351,14 @@ def admin_chart_browser():
     line_chart.add('Others', [14.2, 15.4, 15.3, 8.9,
                               9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
     line_chart = line_chart.render(is_unicode=True)
-    return render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
+    return await render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
 
 
 @blueprint.route("/chart_client_usage")
 @blueprint.route("/chart_client_usage/")
 @login_required
 @admin_required
-def admin_chart_client_usage():
+async def admin_chart_client_usage():
     line_chart = pygal.Line()
     line_chart.title = 'Client usage'
     line_chart.x_labels = map(str, range(2002, 2013))
@@ -375,14 +375,14 @@ def admin_chart_client_usage():
     line_chart.add('Tizen', [14.2, 15.4, 15.3, 8.9,
                              9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
     line_chart = line_chart.render(is_unicode=True)
-    return render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
+    return await render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
 
 
 @blueprint.route("/database")
 @blueprint.route("/database/")
 @login_required
 @admin_required
-def admin_database_statistics():
+async def admin_database_statistics():
     """
     Display database statistics page
     """
@@ -390,7 +390,7 @@ def admin_database_statistics():
     for row_data in g.db_connection.db_pgsql_row_count():
         db_stats_count.append((row_data[1],
                                common_internationalization.com_inter_number_format(row_data[2])))
-    return render_template("admin/admin_server_database_stats.html",
+    return await render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db_connection.db_pgsql_table_sizes(),
                            data_db_count=db_stats_count,
                            data_workers=db_connection.db_parallel_workers())
@@ -400,7 +400,7 @@ def admin_database_statistics():
 @blueprint.route('/<path:path>/list')
 @login_required
 @admin_required
-def admin_listdir(path):
+async def admin_listdir(path):
     """
     Local file browser
     """
@@ -424,7 +424,7 @@ def admin_listdir(path):
         files.sort(key=lambda i: (
                                          i['type'] == 'file' and '1' or '0') + i[
                                      'filename'].lower())
-        return render_template('admin/admin_fs_browse.html',
+        return await render_template('admin/admin_fs_browse.html',
                                files=files,
                                parent=os.path.dirname(path),
                                path=path)
@@ -440,7 +440,7 @@ def allowed_file(filename):
 @blueprint.route('/upload', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def upload_file():
+async def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:

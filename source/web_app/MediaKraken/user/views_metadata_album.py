@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_album", __name__, url_prefix='/users',
@@ -23,7 +23,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/meta_music_song_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_music_song_list/', methods=['GET', 'POST'])
 @login_required
-def metadata_music_song_list():
+async def metadata_music_song_list():
     """
     Display metdata music song list
     """
@@ -41,7 +41,7 @@ def metadata_music_song_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_list.html',
+    return await render_template('users/metadata/meta_music_list.html',
                            media=mediadata,
                            page=page,
                            per_page=per_page,
@@ -52,7 +52,7 @@ def metadata_music_song_list():
 @blueprint.route('/meta_music_album_list', methods=['GET', 'POST'])
 @blueprint.route('/meta_music_album_list/', methods=['GET', 'POST'])
 @login_required
-def metadata_music_album_list():
+async def metadata_music_album_list():
     """
     Display metadata of album list
     """
@@ -93,7 +93,7 @@ def metadata_music_album_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_album_list.html',
+    return await render_template('users/metadata/meta_music_album_list.html',
                            media=media,
                            page=page,
                            per_page=per_page,

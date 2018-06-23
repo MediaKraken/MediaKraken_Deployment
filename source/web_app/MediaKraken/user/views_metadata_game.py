@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from quart import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_game", __name__, url_prefix='/users',
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/meta_game_list', methods=["GET", "POST"])
 @blueprint.route('/meta_game_list/', methods=["GET", "POST"])
 @login_required
-def metadata_game_list():
+async def metadata_game_list():
     """
     Display game list metadata
     """
@@ -40,7 +40,7 @@ def metadata_game_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_game_list.html',
+    return await render_template('users/metadata/meta_game_list.html',
                            media_game=mediadata,
                            page=page,
                            per_page=per_page,
@@ -51,11 +51,11 @@ def metadata_game_list():
 @blueprint.route('/meta_game_detail/<guid>/')
 @blueprint.route('/meta_game_detail/<guid>')
 @login_required
-def metadata_game_detail(guid):
+async def metadata_game_detail(guid):
     """
     Display metadata game detail
     """
-    return render_template('users/metadata/meta_game_detail.html',
+    return await render_template('users/metadata/meta_game_detail.html',
                            )
 
 
