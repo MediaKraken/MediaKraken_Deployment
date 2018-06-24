@@ -1,4 +1,5 @@
 kivy
 crochet
 elasticsearch
+pip3 install service_identity --force --upgrade
 
