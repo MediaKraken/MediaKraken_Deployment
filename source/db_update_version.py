@@ -261,5 +261,11 @@ if db_connection.db_version_check() == 19:
 # TODO add mm_metadata_music_video_user_json to mm_metadata_music_video
 # and index
 
+# ("Comic", "Publication", True),
+# ("Comic Strip", "Publication", True),
+#db_connection.db_media_class_insert(
+#            media_class[0], media_class[1], media_class[2])
+
+
 # close the database
 db_connection.db_close()

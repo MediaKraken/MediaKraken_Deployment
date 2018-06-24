@@ -30,6 +30,8 @@ base_media_classes = (
     ("Anime", "Video", True),
     ("Book", "Publication", True),
     ("Boxset", None, False),
+    ("Comic", "Publication", True),
+    ("Comic Strip", "Publication", True),
     ("Game CHD", None, False),
     ("Game ISO", None, False),
     ("Game ROM", None, False),
