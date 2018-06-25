@@ -34,5 +34,6 @@ docker push mediakraken/mkslave:latest
 docker push mediakraken/mkstream:latest
 docker push mediakraken/mkteamspeak:latest
 docker push mediakraken/mktransmission:latest
+docker push mediakraken/mktvheadend:latest
 docker push mediakraken/mkwebapp:latest
 docker push mediakraken/mkwireshark:latest
