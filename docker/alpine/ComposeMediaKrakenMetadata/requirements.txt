@@ -12,3 +12,4 @@ xmltodict
 pika
 mutagen
 pytvdbapi
+dosage
