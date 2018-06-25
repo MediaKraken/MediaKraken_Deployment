@@ -266,6 +266,12 @@ if db_connection.db_version_check() == 19:
 #db_connection.db_media_class_insert(
 #            media_class[0], media_class[1], media_class[2])
 
+'''
+'LastFM': {'api_key': None,
+           'api_secret': None,
+           'username': None,
+           'password': None},
+'''
 
 # close the database
 db_connection.db_close()
