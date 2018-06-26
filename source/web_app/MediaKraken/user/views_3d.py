@@ -21,7 +21,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # 3d
 @blueprint.route('/3D')
-@blueprint.route('/3D/')
 @login_required
 async def user_3d_list():
     """

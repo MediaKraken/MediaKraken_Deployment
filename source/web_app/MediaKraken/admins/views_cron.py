@@ -56,7 +56,6 @@ def admin_required(fn):
 
 
 @blueprint.route('/cron')
-@blueprint.route('/cron/')
 @login_required
 @admin_required
 async def admin_cron_display_all():
@@ -82,7 +81,6 @@ async def admin_cron_display_all():
 
 
 @blueprint.route('/cron_run/<guid>', methods=['GET', 'POST'])
-@blueprint.route('/cron_run/<guid>/', methods=['GET', 'POST'])
 @login_required
 @admin_required
 async def admin_cron_run(guid):
@@ -140,7 +138,6 @@ async def admin_cron_run(guid):
     return await render_template('admin/admin_cron.html')
 
 
-@blueprint.route('/cron_edit/<guid>/', methods=['GET', 'POST'])
 @blueprint.route('/cron_edit/<guid>', methods=['GET', 'POST'])
 @login_required
 @admin_required

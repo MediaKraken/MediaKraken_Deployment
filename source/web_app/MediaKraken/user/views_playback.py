@@ -20,7 +20,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/playvideo/<guid>/')
 @blueprint.route('/playvideo/<guid>')
 @login_required
 async def user_video_player(guid):
@@ -41,7 +40,6 @@ async def user_video_player(guid):
     return await render_template("users/user_playback.html", data_desc=('Movie title'))
 
 
-@blueprint.route('/playback/<vid_type>/<guid>/')
 @blueprint.route('/playback/<vid_type>/<guid>')
 @login_required
 async def user_playback(vid_type, guid):
@@ -55,7 +53,6 @@ async def user_playback(vid_type, guid):
                            data_uuid=guid)
 
 
-@blueprint.route('/playalbum/<guid>/')
 @blueprint.route('/playalbum/<guid>')
 @login_required
 async def user_album_player(guid):
@@ -68,7 +65,6 @@ async def user_album_player(guid):
                            data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
 
 
-@blueprint.route('/playvideo_videojs/<mtype>/<guid>/')
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>')
 @login_required
 async def user_video_player_videojs(mtype, guid):

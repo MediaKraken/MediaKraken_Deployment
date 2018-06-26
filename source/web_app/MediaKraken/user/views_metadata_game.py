@@ -20,7 +20,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/meta_game_list', methods=["GET", "POST"])
-@blueprint.route('/meta_game_list/', methods=["GET", "POST"])
 @login_required
 async def metadata_game_list():
     """
@@ -48,7 +47,6 @@ async def metadata_game_list():
                            )
 
 
-@blueprint.route('/meta_game_detail/<guid>/')
 @blueprint.route('/meta_game_detail/<guid>')
 @login_required
 async def metadata_game_detail(guid):

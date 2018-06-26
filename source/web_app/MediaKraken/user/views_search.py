@@ -22,7 +22,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/search", methods=["GET", "POST"])
-@blueprint.route("/search/", methods=["GET", "POST"])
 @login_required
 async def search_media():
     """
@@ -99,7 +98,6 @@ async def search_media():
 
 
 @blueprint.route("/search_nav", methods=["GET", "POST"])
-@blueprint.route("/search_nav/", methods=["GET", "POST"])
 @login_required
 async def search_nav_media():
     """

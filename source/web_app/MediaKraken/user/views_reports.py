@@ -23,7 +23,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/report_duplicate')
-@blueprint.route('/report_duplicate/')
 @login_required
 async def report_display_all_duplicates():
     """
@@ -46,7 +45,6 @@ async def report_display_all_duplicates():
                            )
 
 
-@blueprint.route('/report_duplicate_detail/<guid>/')
 @blueprint.route('/report_duplicate_detail/<guid>')
 @login_required
 async def report_display_all_duplicates_detail(guid):
@@ -82,7 +80,6 @@ async def report_display_all_duplicates_detail(guid):
 
 
 @blueprint.route('/report_all')
-@blueprint.route('/report_all/')
 @login_required
 async def report_display_all_media():
     """
@@ -109,7 +106,6 @@ async def report_display_all_media():
 
 
 @blueprint.route('/report_known_video')
-@blueprint.route('/report_known_video/')
 @login_required
 async def report_display_all_media_known_video():
     """
@@ -136,7 +132,6 @@ async def report_display_all_media_known_video():
 
 
 @blueprint.route('/report_top10/<mtype>')
-@blueprint.route('/report_top10/<mtype>/')
 @login_required
 async def report_top10(mtype):
     """

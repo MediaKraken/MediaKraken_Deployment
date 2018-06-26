@@ -24,7 +24,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/cast/<action>/<guid>/')
 @blueprint.route('/cast/<action>/<guid>')
 @login_required
 async def user_cast(action, guid):

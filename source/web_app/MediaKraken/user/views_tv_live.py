@@ -20,7 +20,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # livetv list
 @blueprint.route("/livetv/<schedule_date>/<schedule_time>")
-@blueprint.route("/livetv/<schedule_date>/<schedule_time>/")
 @login_required
 async def user_livetv_page(schedule_date, schedule_time):
     """
@@ -131,7 +130,6 @@ async def user_livetv_page(schedule_date, schedule_time):
 
 
 # livetv list detail
-@blueprint.route("/livetv_detail/<guid>/")
 @blueprint.route("/livetv_detail/<guid>")
 @login_required
 async def user_livetv_detail_page(guid):

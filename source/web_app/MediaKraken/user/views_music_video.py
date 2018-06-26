@@ -20,7 +20,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/music_video_list', methods=['GET', 'POST'])
-@blueprint.route('/music_video_list/', methods=['GET', 'POST'])
 @login_required
 async def user_music_video_list():
     """

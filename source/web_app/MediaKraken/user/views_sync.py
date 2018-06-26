@@ -23,7 +23,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/sync')
-@blueprint.route('/sync/')
 @login_required
 async def sync_display_all():
     """
@@ -47,7 +46,6 @@ async def sync_display_all():
                            )
 
 
-@blueprint.route('/sync_edit/<guid>/', methods=['GET', 'POST'])
 @blueprint.route('/sync_edit/<guid>', methods=['GET', 'POST'])
 @login_required
 async def sync_edit(guid):

@@ -57,7 +57,6 @@ def admin_required(fn):
 
 
 @blueprint.route('/task')
-@blueprint.route('/task/')
 @login_required
 @admin_required
 async def admin_task_display_all():
@@ -83,7 +82,6 @@ async def admin_task_display_all():
 
 
 @blueprint.route('/task_run/<guid>', methods=['GET', 'POST'])
-@blueprint.route('/task_run/<guid>/', methods=['GET', 'POST'])
 @login_required
 @admin_required
 async def admin_task_run(guid):
@@ -103,7 +101,6 @@ async def admin_task_run(guid):
     return redirect(url_for('admins_task.admin_task_display_all'))
 
 
-@blueprint.route('/task_edit/<guid>/', methods=['GET', 'POST'])
 @blueprint.route('/task_edit/<guid>', methods=['GET', 'POST'])
 @login_required
 @admin_required

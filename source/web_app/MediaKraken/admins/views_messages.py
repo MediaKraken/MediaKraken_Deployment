@@ -52,7 +52,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/messages", methods=["GET", "POST"])
-@blueprint.route("/messages/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_messages():

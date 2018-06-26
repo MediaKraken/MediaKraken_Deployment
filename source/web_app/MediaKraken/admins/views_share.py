@@ -56,7 +56,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/share", methods=["GET", "POST"])
-@blueprint.route("/share/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_share():
@@ -82,7 +81,6 @@ async def admin_share():
 
 
 @blueprint.route("/share_edit", methods=["GET", "POST"])
-@blueprint.route("/share_edit/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_share_edit_page():

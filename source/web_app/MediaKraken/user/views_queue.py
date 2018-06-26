@@ -21,7 +21,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/queue", methods=['GET', 'POST'])
-@blueprint.route("/queue/", methods=['GET', 'POST'])
 @login_required
 async def user_queue_page():
     """

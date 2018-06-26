@@ -53,7 +53,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/link_server")
-@blueprint.route("/link_server/")
 @login_required
 @admin_required
 async def admin_server_link_server():
@@ -76,7 +75,6 @@ async def admin_server_link_server():
 
 
 @blueprint.route("/link_edit", methods=["GET", "POST"])
-@blueprint.route("/link_edit/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_link_edit_page():

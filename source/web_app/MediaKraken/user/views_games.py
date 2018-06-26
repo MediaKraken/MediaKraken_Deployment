@@ -20,7 +20,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/games', methods=['GET', 'POST'])
-@blueprint.route('/games/', methods=['GET', 'POST'])
 @login_required
 async def user_games_list():
     """
@@ -48,7 +47,6 @@ async def user_games_list():
                            )
 
 
-@blueprint.route('/games_detail/<guid>/', methods=['GET', 'POST'])
 @blueprint.route('/games_detail/<guid>', methods=['GET', 'POST'])
 @login_required
 async def user_games_detail(guid):
@@ -58,7 +56,6 @@ async def user_games_detail(guid):
     return await render_template("users/user_game_detail.html")
 
 
-@blueprint.route('/meta_game_detail/<guid>/')
 @blueprint.route('/meta_game_detail/<guid>')
 @login_required
 async def metadata_game_detail(guid):
@@ -72,16 +69,14 @@ async def metadata_game_detail(guid):
 
 
 @blueprint.route('/meta_game_system_list', methods=['GET', 'POST'])
-@blueprint.route('/meta_game_system_list/', methods=['GET', 'POST'])
-@blueprint.route('/meta_game_system_list/<search_text>/', methods=['GET', 'POST'])
 @login_required
 async def metadata_game_system_list():
     """
     Display game system metadata
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if request.method == 'POST':
-        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, search_text)
+    if session['search_text']:
+        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, session['search_text'])
     else:
         mediadata = g.db_connection.db_meta_game_system_list(
             offset, per_page)
@@ -101,7 +96,6 @@ async def metadata_game_system_list():
                            )
 
 
-@blueprint.route('/meta_game_system_detail/<guid>/')
 @blueprint.route('/meta_game_system_detail/<guid>')
 @login_required
 async def metadata_game_system_detail(guid):

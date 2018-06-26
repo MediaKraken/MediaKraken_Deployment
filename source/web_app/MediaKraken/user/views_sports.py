@@ -21,7 +21,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # list of spoting events
 @blueprint.route("/sports", methods=['GET', 'POST'])
-@blueprint.route("/sports/", methods=['GET', 'POST'])
 @login_required
 async def user_sports_page():
     """
@@ -51,7 +50,6 @@ async def user_sports_page():
                            )
 
 
-@blueprint.route("/sports_detail/<guid>/", methods=['GET', 'POST'])
 @blueprint.route("/sports_detail/<guid>", methods=['GET', 'POST'])
 @login_required
 async def user_sports_detail_page(guid):

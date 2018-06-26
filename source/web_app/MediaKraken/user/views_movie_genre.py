@@ -23,7 +23,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/movie_genre", methods=['GET', 'POST'])
-@blueprint.route("/movie_genre/", methods=['GET', 'POST'])
 @login_required
 async def user_movie_genre_page():
     """
@@ -40,7 +39,6 @@ async def user_movie_genre_page():
 
 
 @blueprint.route("/movie/<genre>", methods=['GET', 'POST'])
-@blueprint.route("/movie/<genre>/", methods=['GET', 'POST'])
 @login_required
 async def user_movie_page(genre):
     """

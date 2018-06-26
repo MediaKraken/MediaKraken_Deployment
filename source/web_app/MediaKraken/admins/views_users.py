@@ -52,7 +52,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/users")
-@blueprint.route("/users/")
 @login_required
 @admin_required
 async def admin_users():
@@ -76,7 +75,6 @@ async def admin_users():
                            )
 
 
-@blueprint.route("/user_detail/<guid>/")
 @blueprint.route("/user_detail/<guid>")
 @login_required
 @admin_required

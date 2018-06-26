@@ -143,7 +143,6 @@ async def admins():
 
 
 @blueprint.route("/messages", methods=["GET", "POST"])
-@blueprint.route("/messages/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_messages():
@@ -155,7 +154,6 @@ async def admin_messages():
 
 
 @blueprint.route("/nas", methods=["GET", "POST"])
-@blueprint.route("/nas/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_nas():
@@ -167,7 +165,6 @@ async def admin_nas():
 
 
 @blueprint.route('/books_add', methods=['GET', 'POST'])
-@blueprint.route('/books_add/', methods=['GET', 'POST'])
 @login_required
 @admin_required
 async def admin_books_add():
@@ -197,7 +194,6 @@ async def admin_books_add():
 
 
 @blueprint.route("/settings", methods=['GET', 'POST'])
-@blueprint.route("/settings/", methods=['GET', 'POST'])
 @login_required
 @admin_required
 async def admin_server_settings():
@@ -279,7 +275,6 @@ async def admin_server_settings():
 
 
 @blueprint.route("/zfs")
-@blueprint.route("/zfs/")
 @login_required
 @admin_required
 async def admin_server_zfs():
@@ -291,7 +286,6 @@ async def admin_server_zfs():
 
 
 @blueprint.route("/cloud_google_drive")
-@blueprint.route("/cloud_google_drive/")
 @login_required
 @admin_required
 async def admin_cloud_google_drive():
@@ -302,7 +296,6 @@ async def admin_cloud_google_drive():
 
 
 @blueprint.route("/cloud_onedrive")
-@blueprint.route("/cloud_onedrive/")
 @login_required
 @admin_required
 async def admin_cloud_onedrive():
@@ -313,7 +306,6 @@ async def admin_cloud_onedrive():
 
 
 @blueprint.route("/cloud_aws_s3")
-@blueprint.route("/cloud_aws_s3/")
 @login_required
 @admin_required
 async def admin_cloud_aws_s3():
@@ -324,7 +316,6 @@ async def admin_cloud_aws_s3():
 
 
 @blueprint.route("/cloud_dropbox")
-@blueprint.route("/cloud_dropbox/")
 @login_required
 @admin_required
 async def admin_cloud_dropbox():
@@ -335,7 +326,6 @@ async def admin_cloud_dropbox():
 
 
 @blueprint.route("/chart_browser")
-@blueprint.route("/chart_browser/")
 @login_required
 @admin_required
 async def admin_chart_browser():
@@ -355,7 +345,6 @@ async def admin_chart_browser():
 
 
 @blueprint.route("/chart_client_usage")
-@blueprint.route("/chart_client_usage/")
 @login_required
 @admin_required
 async def admin_chart_client_usage():
@@ -379,7 +368,6 @@ async def admin_chart_client_usage():
 
 
 @blueprint.route("/database")
-@blueprint.route("/database/")
 @login_required
 @admin_required
 async def admin_database_statistics():

@@ -20,7 +20,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/class')
-@blueprint.route('/class/')
 @login_required
 async def class_display_all():
     """

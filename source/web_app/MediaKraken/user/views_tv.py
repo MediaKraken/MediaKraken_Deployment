@@ -26,7 +26,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # list of tv shows
 @blueprint.route("/tv", methods=['GET', 'POST'])
-@blueprint.route("/tv/", methods=['GET', 'POST'])
 @login_required
 async def user_tv_page():
     """
@@ -71,7 +70,6 @@ async def user_tv_page():
 
 # tv show detail
 @blueprint.route("/tv_show_detail/<guid>", methods=['GET', 'POST'])
-@blueprint.route("/tv_show_detail/<guid>/", methods=['GET', 'POST'])
 @login_required
 async def user_tv_show_detail_page(guid):
     """
@@ -197,7 +195,6 @@ async def user_tv_show_detail_page(guid):
 
 # tv show season detail - show guid then season #
 @blueprint.route("/tv_season_detail/<guid>/<season>", methods=['GET', 'POST'])
-@blueprint.route("/tv_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 async def user_tv_season_detail_page(guid, season):
     """
@@ -287,7 +284,6 @@ async def user_tv_season_detail_page(guid, season):
 
 # tv show episode detail
 @blueprint.route("/tv_episode_detail/<guid>/<season>/<episode>", methods=['GET', 'POST'])
-@blueprint.route("/tv_episode_detail/<guid>/<season>/<episode>/", methods=['GET', 'POST'])
 @login_required
 async def user_tv_episode_detail_page(guid, season, episode):
     """

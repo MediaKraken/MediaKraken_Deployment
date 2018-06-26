@@ -21,7 +21,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_tvshow_detail/<guid>/')
 @blueprint.route('/meta_tvshow_detail/<guid>')
 @login_required
 async def metadata_tvshow_detail(guid):
@@ -114,7 +113,6 @@ async def metadata_tvshow_detail(guid):
 
 # tv show season detail - show guid then season #
 @blueprint.route("/meta_tvshow_season_detail/<guid>/<season>", methods=['GET', 'POST'])
-@blueprint.route("/meta_tvshow_season_detail/<guid>/<season>/", methods=['GET', 'POST'])
 @login_required
 async def metadata_tvshow_season_detail_page(guid, season):
     """
@@ -206,7 +204,6 @@ async def metadata_tvshow_season_detail_page(guid, season):
 
 # tv show season detail - show guid then season #
 @blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>", methods=['GET', 'POST'])
-@blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>/", methods=['GET', 'POST'])
 @login_required
 async def metadata_tvshow_episode_detail_page(guid, eps_id):
     """
@@ -238,7 +235,6 @@ async def metadata_tvshow_episode_detail_page(guid, eps_id):
 
 
 @blueprint.route('/meta_tvshow_list', methods=['GET', 'POST'])
-@blueprint.route('/meta_tvshow_list/', methods=['GET', 'POST'])
 @login_required
 async def metadata_tvshow_list():
     """

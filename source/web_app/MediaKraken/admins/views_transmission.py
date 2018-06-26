@@ -53,7 +53,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/transmission")
-@blueprint.route("/transmission/")
 @login_required
 @admin_required
 async def admin_transmission():

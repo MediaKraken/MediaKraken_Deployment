@@ -51,7 +51,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/docker_stat")
-@blueprint.route("/docker_stat/")
 @login_required
 @admin_required
 async def docker_stat():

@@ -29,7 +29,6 @@ google_instance = common_google.CommonGoogle(option_config_json)
 
 # internet sites
 @blueprint.route('/internet')
-@blueprint.route('/internet/')
 @login_required
 async def user_internet():
     """
@@ -40,7 +39,6 @@ async def user_internet():
 
 # youtube
 @blueprint.route('/internet/internet_youtube', methods=["GET", "POST"])
-@blueprint.route('/internet/internet_youtube/', methods=["GET", "POST"])
 @login_required
 async def user_internet_youtube():
     """
@@ -70,7 +68,6 @@ async def user_internet_youtube():
 
 # youtube detail
 @blueprint.route('/internet/youtube_detail/<uuid>')
-@blueprint.route('/internet/youtube_detail/<uuid>/')
 @login_required
 async def user_internet_youtube_detail(uuid):
     """
@@ -85,7 +82,6 @@ async def user_internet_youtube_detail(uuid):
 
 # vimeo
 @blueprint.route('/internet/internet_vimeo')
-@blueprint.route('/internet/internet_vimeo/')
 @login_required
 async def user_internet_vimeo():
     """
@@ -96,7 +92,6 @@ async def user_internet_vimeo():
 
 # twitch tv
 @blueprint.route('/internet/internet_twitch')
-@blueprint.route('/internet/internet_twitch/')
 @login_required
 async def user_internet_twitch():
     """
@@ -128,7 +123,6 @@ async def user_internet_twitch():
 
 # twitch tv detail on stream
 @blueprint.route('/internet/internet_twitch_stream_detail/<stream_name>')
-@blueprint.route('/internet/internet_twitch_stream_detail/<stream_name>/')
 @login_required
 async def user_internet_twitch_stream_detail(stream_name):
     """
@@ -142,7 +136,6 @@ async def user_internet_twitch_stream_detail(stream_name):
 
 # flickr
 @blueprint.route('/internet/internet_flickr')
-@blueprint.route('/internet/internet_flickr/')
 @login_required
 async def user_internet_flickr():
     """
@@ -153,7 +146,6 @@ async def user_internet_flickr():
 
 # iradio
 @blueprint.route('/iradio', methods=['GET', 'POST'])
-@blueprint.route('/iradio/', methods=['GET', 'POST'])
 @login_required
 async def user_iradio_list():
     """

@@ -60,7 +60,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/library", methods=["GET", "POST"])
-@blueprint.route("/library/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_library():
@@ -94,7 +93,6 @@ async def admin_library():
 
 
 @blueprint.route("/library_edit", methods=["GET", "POST"])
-@blueprint.route("/library_edit/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_library_edit_page():

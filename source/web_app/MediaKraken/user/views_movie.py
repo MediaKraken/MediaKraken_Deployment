@@ -27,7 +27,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/movie_detail/<guid>/', methods=['GET', 'POST'])
 @blueprint.route('/movie_detail/<guid>', methods=['GET', 'POST'])
 @login_required
 async def movie_detail(guid):

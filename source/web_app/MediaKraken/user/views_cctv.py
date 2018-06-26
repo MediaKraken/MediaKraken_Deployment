@@ -20,7 +20,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/cctv')
-@blueprint.route('/cctv/')
 @login_required
 async def cctv():
     """

@@ -104,6 +104,5 @@ async def geo_location():
 
 
 @blueprint.route("/save")
-@blueprint.route("/save/")
 async def screen_save():
     return url_for('static', filename='canvas_hyperspace.html')

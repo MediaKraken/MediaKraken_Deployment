@@ -20,7 +20,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/album_list")
-@blueprint.route("/album_list/")
 @login_required
 async def user_album_list_page():
     """

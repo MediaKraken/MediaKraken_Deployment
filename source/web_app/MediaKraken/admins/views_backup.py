@@ -70,7 +70,6 @@ async def admin_backup_delete_page():
 
 
 @blueprint.route("/backup", methods=["GET", "POST"])
-@blueprint.route("/backup/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_backup():

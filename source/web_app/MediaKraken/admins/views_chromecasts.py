@@ -54,7 +54,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/chromecasts", methods=["GET", "POST"])
-@blueprint.route("/chromecasts/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_chromecast():
@@ -74,7 +73,6 @@ async def admin_chromecast():
 
 
 @blueprint.route("/chromecast_edit", methods=["GET", "POST"])
-@blueprint.route("/chromecast_edit/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_chromecast_edit_page():

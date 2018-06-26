@@ -53,7 +53,6 @@ def admin_required(fn):
 
 
 @blueprint.route("/tvtuners", methods=["GET", "POST"])
-@blueprint.route("/tvtuners/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_tvtuners():
@@ -72,7 +71,6 @@ async def admin_tvtuners():
 
 
 @blueprint.route("/tvtuner_edit", methods=["GET", "POST"])
-@blueprint.route("/tvtuner_edit/", methods=["GET", "POST"])
 @login_required
 @admin_required
 async def admin_tvtuner_edit_page():

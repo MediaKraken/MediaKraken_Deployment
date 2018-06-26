@@ -20,7 +20,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_person_detail/<guid>/')
 @blueprint.route('/meta_person_detail/<guid>')
 @login_required
 async def metadata_person_detail(guid):
@@ -50,7 +49,6 @@ async def metadata_person_detail(guid):
 
 
 @blueprint.route('/meta_person_list', methods=['GET', 'POST'])
-@blueprint.route('/meta_person_list/', methods=['GET', 'POST'])
 @login_required
 async def metadata_person_list():
     """
