@@ -37,22 +37,22 @@ async def movie_detail(guid):
     if request.method == 'POST':
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
-        if await await request.form['status'] == 'Watched':
+        if await request.form['status'] == 'Watched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), False)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
-        elif await await request.form['status'] == 'Unwatched':
+        elif await request.form['status'] == 'Unwatched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), True)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
-        elif await await request.form['status'] == 'Sync':
+        elif await request.form['status'] == 'Sync':
             return redirect(url_for('user_sync.sync_edit', guid=guid))
-        elif await await request.form['status'] == 'Cast':
+        elif await request.form['status'] == 'Cast':
             # grab the guid from the comboindex
-            media_guid_index = await await request.form["Video_Track"]
+            media_guid_index = await request.form["Video_Track"]
             # call ffpmeg with the play_data
-            audio_track_index = await await request.form["Video_Play_Audio_Track"]
-            subtitle_track_index = await await request.form["Video_Play_Subtitles"]
+            audio_track_index = await request.form["Video_Play_Audio_Track"]
+            subtitle_track_index = await request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
             proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
                                               g.db_connection.db_media_path_by_uuid(

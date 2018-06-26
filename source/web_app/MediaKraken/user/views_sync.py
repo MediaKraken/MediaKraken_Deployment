@@ -55,7 +55,7 @@ async def sync_edit(guid):
     Allow user to edit sync page
     """
     if request.method == 'POST':
-        sync_json = {'Type': await await request.form['target_type'],
+        sync_json = {'Type': await request.form['target_type'],
                      'Media GUID': guid,
                      'Options': {'VContainer': await request.form['target_container'],
                                  'VCodec': await request.form['target_codec'],
@@ -66,8 +66,8 @@ async def sync_edit(guid):
                      'Priority': await request.form['target_priority'],
                      'Status': 'Scheduled',
                      'Progress': 0}
-        g.db_connection.db_sync_insert(await await request.form['name'],
-                                       await await request.form['target_output_path'], json.dumps(sync_json))
+        g.db_connection.db_sync_insert(await request.form['name'],
+                                       await request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
         return redirect(url_for('user.movie_detail', guid=guid))
     form = SyncEditForm(await request.form, csrf_enabled=False)
@@ -82,7 +82,7 @@ async def admin_sync_delete_page():
     """
     Display sync delete action 'page'
     """
-    g.db_connection.db_sync_delete(await await request.form['id'])
+    g.db_connection.db_sync_delete(await request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

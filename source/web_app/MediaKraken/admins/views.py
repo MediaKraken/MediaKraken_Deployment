@@ -176,7 +176,7 @@ async def admin_books_add():
     """
     if request.method == 'POST':
         class_uuid = g.db_connection.db_media_uuid_by_class('Book')
-        for book_item in await await request.form['book_list'].split('\r'):
+        for book_item in await request.form['book_list'].split('\r'):
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())
                 g.db_connection.db_insert_media(media_id, None, class_uuid,

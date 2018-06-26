@@ -95,7 +95,7 @@ async def admin_user_delete_page():
     """
     Delete user action 'page'
     """
-    g.db_connection.db_user_delete(await await request.form['id'])
+    g.db_connection.db_user_delete(await request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

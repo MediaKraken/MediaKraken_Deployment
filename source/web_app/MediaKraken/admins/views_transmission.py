@@ -82,7 +82,7 @@ async def admin_transmission_delete_page():
     """
     Delete torrent from transmission
     """
-    # g.db_connection.db_Audit_Path_Delete(await await request.form['id'])
+    # g.db_connection.db_Audit_Path_Delete(await request.form['id'])
     # g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
@@ -94,7 +94,7 @@ async def admin_transmission_edit_page():
     """
     Edit a torrent from transmission
     """
-    # g.db_connection.db_Audit_Path_Delete(await await request.form['id'])
+    # g.db_connection.db_Audit_Path_Delete(await request.form['id'])
     # g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

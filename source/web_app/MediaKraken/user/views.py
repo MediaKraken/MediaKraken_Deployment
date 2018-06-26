@@ -89,10 +89,10 @@ async def user_video_player(guid):
     Obsolete?
     """
     # grab the guid from the comboindex
-    media_guid_index = await await request.form["Video_Track"]
+    media_guid_index = await request.form["Video_Track"]
     # call ffpmeg with the play_data
-    audio_track_index = await await request.form["Video_Play_Audio_Track"]
-    subtitle_track_index = await await request.form["Video_Play_Subtitles"]
+    audio_track_index = await request.form["Video_Play_Audio_Track"]
+    subtitle_track_index = await request.form["Video_Play_Subtitles"]
     # launch ffmpeg to ffserver procecss
     proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
                                       g.db_connection.db_media_path_by_uuid(
@@ -113,18 +113,18 @@ async def user_video_player_videojs(mtype, guid):
     # grab the guid from the comboindex
     # use try since people can go here "by-hand"
     try:
-        media_guid_index = await await request.form["Video_Track"]
+        media_guid_index = await request.form["Video_Track"]
     except:
         abort(404)
     media_path = g.db_connection.db_media_path_by_uuid(media_guid_index)[0]
     if media_path is None:
         abort(404)
     # set ffpmeg options with the play_data
-    audio_track_index = await await request.form["Video_Play_Audio_Track"]
+    audio_track_index = await request.form["Video_Play_Audio_Track"]
     common_global.es_inst.com_elastic_index('info', {"aud": audio_track_index})
     # 0:0 as example # pylint: disable=C0326
     atracks = ['-map ' + audio_track_index]
-    subtitle_track_index = await await request.form["Video_Play_Subtitles"]
+    subtitle_track_index = await request.form["Video_Play_Subtitles"]
     common_global.es_inst.com_elastic_index('info', {"sub": subtitle_track_index})
     if subtitle_track_index is not None:
         subtracks = ['subtitles=' + media_path,

@@ -80,11 +80,11 @@ async def user_tv_show_detail_page(guid):
     if request.method == 'POST':
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
-        if await await request.form['status'] == 'Watched':
+        if await request.form['status'] == 'Watched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), False)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
-        elif await await request.form['status'] == 'Unwatched':
+        elif await request.form['status'] == 'Unwatched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), True)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))

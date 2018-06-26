@@ -52,7 +52,7 @@ async def user_internet_youtube():
         if form.validate_on_submit():
             pass
         videos, channels, playlists = google_instance.com_google_youtube_search(
-            await await request.form['search_text'])
+            await request.form['search_text'])
         for url_link in videos:
             common_global.es_inst.com_elastic_index('info', {'searchurllink': url_link})
             youtube_videos.append(
@@ -166,7 +166,7 @@ async def user_iradio_list():
         if form.validate_on_submit():
             pass
         mediadata = g.db_connection.db_iradio_list(offset, per_page,
-                                                   search_value=await await request.form['search_text'])
+                                                   search_value=await request.form['search_text'])
     else:
         mediadata = g.db_connection.db_iradio_list(offset, per_page)
 

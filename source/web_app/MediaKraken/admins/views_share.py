@@ -94,13 +94,13 @@ async def admin_share_edit_page():
     if request.method == 'POST':
         common_global.es_inst.com_elastic_index('info', {'stuff': 'herepost'})
         if form.validate_on_submit():
-            common_global.es_inst.com_elastic_index('info', {'action': await await request.form[
+            common_global.es_inst.com_elastic_index('info', {'action': await request.form[
                 'action_type']})
-            if await await request.form['action_type'] == 'Add':
-                common_global.es_inst.com_elastic_index('info', {'type': await await request.form[
+            if await request.form['action_type'] == 'Add':
+                common_global.es_inst.com_elastic_index('info', {'type': await request.form[
                     'storage_mount_type']})
                 # check for UNC
-                if await await request.form['storage_mount_type'] == "unc":
+                if await request.form['storage_mount_type'] == "unc":
                     #                    addr, share, path = common_string.com_string_unc_to_addr_path(\
                     #                        await await request.form['storage_mount_path'])
                     #                    if addr is None: # total junk path for UNC
@@ -108,46 +108,46 @@ async def admin_share_edit_page():
                     #                        return redirect(url_for('admins_share.admin_share_edit_page'))
                     #                    common_global.es_inst.com_elastic_index('info', {'stuff':'unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(await await request.form['storage_mount_server'],
-                                               user_name=await await request.form['storage_mount_user'],
-                                               user_password=await await request.form['storage_mount_password'])
+                    smb_stuff.com_cifs_connect(await request.form['storage_mount_server'],
+                                               user_name=await request.form['storage_mount_user'],
+                                               user_password=await request.form['storage_mount_password'])
                     #                    if not smb_stuff.com_cifs_share_directory_check(\
-                    #                            await await request.form['storage_mount_server'], \
-                    #                            await await request.form['storage_mount_path']):
+                    #                            await request.form['storage_mount_server'], \
+                    #                            await request.form['storage_mount_path']):
                     #                        smb_stuff.com_cifs_close()
                     #                        flash("Invalid UNC path.", 'error')
                     #                        return redirect(url_for('admins_share.admin_share_edit_page'))
                     smb_stuff.com_cifs_close()
                 # smb/cifs mounts
-                elif await await request.form['storage_mount_type'] == "smb":
+                elif await request.form['storage_mount_type'] == "smb":
                     # TODO
                     smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(await await request.form['storage_mount_server'],
-                                               user_name=await await request.form['storage_mount_user'],
-                                               user_password=await await request.form['storage_mount_password'])
+                    smb_stuff.com_cifs_connect(await request.form['storage_mount_server'],
+                                               user_name=await request.form['storage_mount_user'],
+                                               user_password=await request.form['storage_mount_password'])
                     smb_stuff.com_cifs_share_directory_check(share_name,
-                                                             await await request.form['storage_mount_path'])
+                                                             await request.form['storage_mount_path'])
                     smb_stuff.com_cifs_close()
                 # nfs mount
-                elif await await request.form['storage_mount_type'] == "nfs":
+                elif await request.form['storage_mount_type'] == "nfs":
                     # TODO
                     pass
-                elif not os.path.isdir(await await request.form['storage_mount_path']):
+                elif not os.path.isdir(await request.form['storage_mount_path']):
                     flash("Invalid share path.", 'error')
                     return redirect(url_for('admins_share.admin_share_edit_page'))
                 # verify it doesn't exit and add
-                if g.db_connection.db_audit_share_check(await await request.form['storage_mount_path']) == 0:
-                    g.db_connection.db_audit_share_add(await await request.form['storage_mount_type'],
-                                                       await await request.form['storage_mount_user'],
-                                                       await await request.form['storage_mount_password'],
-                                                       await await request.form['storage_mount_server'],
-                                                       await await request.form['storage_mount_path'])
+                if g.db_connection.db_audit_share_check(await request.form['storage_mount_path']) == 0:
+                    g.db_connection.db_audit_share_add(await request.form['storage_mount_type'],
+                                                       await request.form['storage_mount_user'],
+                                                       await request.form['storage_mount_password'],
+                                                       await request.form['storage_mount_server'],
+                                                       await request.form['storage_mount_path'])
                     g.db_connection.db_commit()
                     return redirect(url_for('admins_share.admin_share'))
                 else:
                     flash("Share already mapped.", 'error')
                     return redirect(url_for('admins_share.admin_share_edit_page'))
-            elif await await request.form['action_type'] == 'Browse':
+            elif await request.form['action_type'] == 'Browse':
                 # browse for smb shares on the host network
                 pass
         else:
@@ -162,7 +162,7 @@ async def admin_share_delete_page():
     """
     Delete share action 'page'
     """
-    g.db_connection.db_audit_share_delete(await await request.form['id'])
+    g.db_connection.db_audit_share_delete(await request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
@@ -171,7 +171,7 @@ async def admin_share_delete_page():
 @login_required
 @admin_required
 async def getShareById():
-    result = g.db_connection.db_audit_share_by_uuid(await await request.form['id'])
+    result = g.db_connection.db_audit_share_by_uuid(await request.form['id'])
     return json.dumps({'Id': result['mm_share_dir_guid'],
                        'Path': result['mm_share_dir_path']})
 
@@ -180,12 +180,12 @@ async def getShareById():
 @login_required
 @admin_required
 async def updateShare():
-    g.db_connection.db_audit_share_update_by_uuid(await await request.form['new_share_type'],
-                                                  await await request.form['new_share_user'],
-                                                  await await request.form['new_share_password'],
-                                                  await await request.form['new_share_server'],
-                                                  await await request.form['new_share_path'],
-                                                  await await request.form['id'])
+    g.db_connection.db_audit_share_update_by_uuid(await request.form['new_share_type'],
+                                                  await request.form['new_share_user'],
+                                                  await request.form['new_share_password'],
+                                                  await request.form['new_share_server'],
+                                                  await request.form['new_share_path'],
+                                                  await request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

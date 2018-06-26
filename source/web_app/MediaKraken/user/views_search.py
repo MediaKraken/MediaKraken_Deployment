@@ -42,27 +42,27 @@ async def search_media():
     publication_search = False
     game_search = False
     if request.method == 'POST':
-        if await await request.form['action_type'] == 'Search Local':
-            if await await request.form['search_media_type'] == 'any':
+        if await request.form['action_type'] == 'Search Local':
+            if await request.form['search_media_type'] == 'any':
                 movie_search = True
                 tvshow_search = True
                 album_search = True
                 image_search = True
                 publication_search = True
                 game_search = True
-            elif await await request.form['search_media_type'] == 'video':
+            elif await request.form['search_media_type'] == 'video':
                 movie_search = True
                 tvshow_search = True
-            elif await await request.form['search_media_type'] == 'audio':
+            elif await request.form['search_media_type'] == 'audio':
                 album_search = True
-            elif await await request.form['search_media_type'] == 'image':
+            elif await request.form['search_media_type'] == 'image':
                 image_search = True
-            elif await await request.form['search_media_type'] == 'publication':
+            elif await request.form['search_media_type'] == 'publication':
                 publication_search = True
-            elif await await request.form['search_media_type'] == 'game':
+            elif await request.form['search_media_type'] == 'game':
                 game_search = True
             json_data = json.loads(
-                db_connection.db_search(await await request.form['search_string'], search_type='Local',
+                db_connection.db_search(await request.form['search_string'], search_type='Local',
                                         search_movie=movie_search, search_tvshow=tvshow_search,
                                         search_album=album_search, search_image=image_search,
                                         search_publication=publication_search,
@@ -85,7 +85,7 @@ async def search_media():
             if 'Game' in json_data:
                 for search_item in json_data['Game']:
                     game.append(search_item)
-        elif await await request.form['action_type'] == 'Search Metadata Providers':
+        elif await request.form['action_type'] == 'Search Metadata Providers':
             pass
         # TODO
         # search_primary_language
@@ -106,7 +106,7 @@ async def search_nav_media():
     determine what search results screen to show
     """
     common_global.es_inst.com_elastic_index('info', {"search session": session['search_page']})
-    session['search_text'] = await await request.form.get('nav_search')
+    session['search_text'] = await request.form.get('nav_search')
     if session['search_page'] == 'media_3d':
         return redirect(url_for('user_3d.user_3d_list'))
     elif session['search_page'] == 'media_album':

@@ -61,7 +61,7 @@ async def admin_backup_delete_page():
     """
     Delete backup file action 'page'
     """
-    file_path, file_type = await await request.form['id'].split('|')
+    file_path, file_type = await request.form['id'].split('|')
     if file_type == "Local":
         os.remove(file_path)
     elif file_type == "AWS" or file_type == "AWS S3":
@@ -80,9 +80,9 @@ async def admin_backup():
     form = BackupEditForm(await request.form)
     if request.method == 'POST':
         if form.validate_on_submit():
-            if await await request.form['backup'] == 'Update':
+            if await request.form['backup'] == 'Update':
                 pass
-            elif await await request.form['backup'] == 'Start Backup':
+            elif await request.form['backup'] == 'Start Backup':
                 g.db_connection.db_trigger_insert(('python3',
                                                    './subprogram_postgresql_backup.py'))  # this commits
                 flash("Postgresql Database Backup Task Submitted.")

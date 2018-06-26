@@ -84,7 +84,7 @@ async def admin_messages_delete_page():
     """
     Delete messages action 'page'
     """
-    g.db_connection.db_message_delete(await await request.form['id'])
+    g.db_connection.db_message_delete(await request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

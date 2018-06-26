@@ -114,12 +114,12 @@ async def admin_task_edit(guid):
     form = TaskEditForm(await request.form, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate_on_submit():
-            # await await request.form['name']
-            # await await request.form['description']
-            # await await request.form['enabled']
-            # await await request.form['interval']
-            # await await request.form['time']
-            # await await request.form['script_path']
+            # await request.form['name']
+            # await request.form['description']
+            # await request.form['enabled']
+            # await request.form['interval']
+            # await request.form['time']
+            # await request.form['script_path']
             # common_global.es_inst.com_elastic_index('info', {'stuff':'task edit info: %s %s %s', (addr, share, path))
             pass
     return await render_template('admin/admin_task_edit.html', guid=guid, form=form)
