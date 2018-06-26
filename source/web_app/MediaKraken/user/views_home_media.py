@@ -23,7 +23,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @blueprint.route('/home_media', methods=['GET', 'POST'])
 @blueprint.route('/home_media/', methods=['GET', 'POST'])
 @login_required
-async def user_home_media_list():
+async def home_media_list():
     """
     Display mage page for home media
     """
