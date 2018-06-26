@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 
 from quart import Blueprint, render_template, g, request, \
-    redirect, url_for, abort, flash
+    redirect, url_for, abort, flash, session
 from flask_login import current_user
 from flask_login import login_required
 
@@ -65,7 +65,6 @@ async def members():
 # home media
 @blueprint.route('/home_media', methods=['GET', 'POST'])
 @blueprint.route('/home_media/', methods=['GET', 'POST'])
-@blueprint.route('/home_media/<search_text>', methods=['GET', 'POST'])
 @login_required
 async def user_home_media_list():
     """
@@ -73,7 +72,7 @@ async def user_home_media_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if request.method == 'POST':
+    if session['search_text'] is not None:
         # TODO wrong movie query
         metadata = g.db_connection.db_meta_movie_list(offset, per_page, search_text)
     else:
