@@ -50,6 +50,7 @@ def register_blueprints(app):
     app.register_blueprint(user.views_chromecast.blueprint)
     app.register_blueprint(user.views_class.blueprint)
     app.register_blueprint(user.views_games.blueprint)
+    app.register_blueprint(user.views_home_media.blueprint)
     app.register_blueprint(user.views_images.blueprint)
     app.register_blueprint(user.views_internet.blueprint)
     app.register_blueprint(user.views_metadata_album.blueprint)

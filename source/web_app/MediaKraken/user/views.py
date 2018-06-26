@@ -62,24 +62,6 @@ async def members():
                            )
 
 
-# home media
-@blueprint.route('/home_media', methods=['GET', 'POST'])
-@blueprint.route('/home_media/', methods=['GET', 'POST'])
-@login_required
-async def user_home_media_list():
-    """
-    Display mage page for home media
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    media = []
-    if session['search_text'] is not None:
-        # TODO wrong movie query
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page, search_text)
-    else:
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page)
-    return await render_template("users/user_home_media_list.html", media=media)
-
-
 @blueprint.route('/playvideo/<guid>/')
 @blueprint.route('/playvideo/<guid>')
 @login_required
