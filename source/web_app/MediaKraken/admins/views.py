@@ -384,8 +384,8 @@ async def admin_database_statistics():
                            data_workers=db_connection.db_parallel_workers())
 
 
-@blueprint.route('/', defaults={'path': ''})
-@blueprint.route('/<path:path>/list')
+@blueprint.route('/', defaults={'path': ''}, endpoint='listdir')
+@blueprint.route('/<path:path>/list', endpoint='listdirpath')
 @login_required
 @admin_required
 async def admin_listdir(path):
