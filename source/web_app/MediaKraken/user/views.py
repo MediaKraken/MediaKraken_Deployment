@@ -62,7 +62,6 @@ async def members():
                            )
 
 
-@blueprint.route('/movie_status/<guid>/<event_type>/', methods=['GET', 'POST'])
 @blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
 async def movie_status(guid, event_type):
@@ -78,7 +77,6 @@ async def movie_status(guid, event_type):
         return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/movie_metadata_status/<guid>/<event_type>/', methods=['GET', 'POST'])
 @blueprint.route('/movie_metadata_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
 async def movie_metadata_status(guid, event_type):
@@ -92,7 +90,6 @@ async def movie_metadata_status(guid, event_type):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/tv_status/<guid>/<event_type>/', methods=['GET', 'POST'])
 @blueprint.route('/tv_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
 async def tv_status(guid, event_type):
