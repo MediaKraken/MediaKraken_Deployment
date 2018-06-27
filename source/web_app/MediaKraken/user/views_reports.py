@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("user_reports", __name__,
@@ -24,7 +24,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/report_duplicate')
 @login_required
-async def report_display_all_duplicates():
+def report_display_all_duplicates():
     """
     Display media duplication report page
     """
@@ -36,7 +36,7 @@ async def report_display_all_duplicates():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/reports/report_all_duplicate_media.html',
+    return render_template('users/reports/report_all_duplicate_media.html',
                            media=g.db_connection.db_media_duplicate(
                                offset, per_page),
                            page=page,
@@ -47,7 +47,7 @@ async def report_display_all_duplicates():
 
 @blueprint.route('/report_duplicate_detail/<guid>')
 @login_required
-async def report_display_all_duplicates_detail(guid):
+def report_display_all_duplicates_detail(guid):
     """
     Display detail of duplicate list
     """
@@ -72,7 +72,7 @@ async def report_display_all_duplicates_detail(guid):
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/reports/report_all_duplicate_media_detail.html', media=media,
+    return render_template('users/reports/report_all_duplicate_media_detail.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -81,7 +81,7 @@ async def report_display_all_duplicates_detail(guid):
 
 @blueprint.route('/report_all')
 @login_required
-async def report_display_all_media():
+def report_display_all_media():
     """
     Display all media list
     """
@@ -98,7 +98,7 @@ async def report_display_all_media():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/reports/report_all_media.html', media=media_data,
+    return render_template('users/reports/report_all_media.html', media=media_data,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -107,7 +107,7 @@ async def report_display_all_media():
 
 @blueprint.route('/report_known_video')
 @login_required
-async def report_display_all_media_known_video():
+def report_display_all_media_known_video():
     """
     Display list of all matched video
     """
@@ -121,7 +121,7 @@ async def report_display_all_media_known_video():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/reports/report_all_known_media_video.html',
+    return render_template('users/reports/report_all_known_media_video.html',
                            media=g.db_connection.db_web_media_list(
                                g.db_connection.db_media_uuid_by_class('Movie'),
                                offset=offset, list_limit=per_page),
@@ -133,7 +133,7 @@ async def report_display_all_media_known_video():
 
 @blueprint.route('/report_top10/<mtype>')
 @login_required
-async def report_top10(mtype):
+def report_top10(mtype):
     """
     Display top10 pages
     """
@@ -146,7 +146,7 @@ async def report_top10(mtype):
         top10_data = g.db_connection.db_usage_top10_tv_show()
     elif mtype == '4':  # tv episode
         top10_data = g.db_connection.db_usage_top10_tv_episode()
-    return await render_template('users/reports/report_top10_base.html', media=top10_data)
+    return render_template('users/reports/report_top10_base.html', media=top10_data)
 
 
 @blueprint.before_request

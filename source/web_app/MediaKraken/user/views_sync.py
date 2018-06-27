@@ -4,7 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 
 from MediaKraken.user.forms import SyncEditForm
-from quart import Blueprint, render_template, g, request, \
+from flask import Blueprint, render_template, g, request, \
     redirect, url_for
 from flask_login import login_required
 
@@ -24,7 +24,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/sync')
 @login_required
-async def sync_display_all():
+def sync_display_all():
     """
     Display sync page
     """
@@ -37,7 +37,7 @@ async def sync_display_all():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/user_sync.html',
+    return render_template('users/user_sync.html',
                            media_sync=g.db_connection.db_sync_list(
                                offset, per_page),
                            page=page,
@@ -48,39 +48,39 @@ async def sync_display_all():
 
 @blueprint.route('/sync_edit/<guid>', methods=['GET', 'POST'])
 @login_required
-async def sync_edit(guid):
+def sync_edit(guid):
     """
     Allow user to edit sync page
     """
     if request.method == 'POST':
-        sync_json = {'Type': await request.form['target_type'],
+        sync_json = {'Type': request.form['target_type'],
                      'Media GUID': guid,
-                     'Options': {'VContainer': await request.form['target_container'],
-                                 'VCodec': await request.form['target_codec'],
-                                 'Size': await request.form['target_file_size'],
-                                 'AudioChannels': await request.form['target_audio_channels'],
-                                 'ACodec': await request.form['target_audio_codec'],
-                                 'ASRate': await request.form['target_sample_rate']},
-                     'Priority': await request.form['target_priority'],
+                     'Options': {'VContainer': request.form['target_container'],
+                                 'VCodec': request.form['target_codec'],
+                                 'Size': request.form['target_file_size'],
+                                 'AudioChannels': request.form['target_audio_channels'],
+                                 'ACodec': request.form['target_audio_codec'],
+                                 'ASRate': request.form['target_sample_rate']},
+                     'Priority': request.form['target_priority'],
                      'Status': 'Scheduled',
                      'Progress': 0}
-        g.db_connection.db_sync_insert(await request.form['name'],
-                                       await request.form['target_output_path'], json.dumps(sync_json))
+        g.db_connection.db_sync_insert(request.form['name'],
+                                       request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
         return redirect(url_for('user.movie_detail', guid=guid))
-    form = SyncEditForm(await request.form, csrf_enabled=False)
+    form = SyncEditForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
-    return await render_template('users/user_sync_edit.html', guid=guid, form=form)
+    return render_template('users/user_sync_edit.html', guid=guid, form=form)
 
 
 @blueprint.route('/sync_delete', methods=["POST"])
 @login_required
-async def admin_sync_delete_page():
+def admin_sync_delete_page():
     """
     Display sync delete action 'page'
     """
-    g.db_connection.db_sync_delete(await request.form['id'])
+    g.db_connection.db_sync_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

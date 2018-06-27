@@ -4,13 +4,13 @@ import json
 import sys
 
 sys.path.append('..')
-from quart import Blueprint, render_template, g, request, flash
+from flask import Blueprint, render_template, g, request, flash
 from flask_login import login_required
 
 blueprint = Blueprint("admins_messages", __name__, url_prefix='/admin',
                       static_folder="../static")
 # need the following three items for admin check
-import quart
+import flask
 from flask_login import current_user
 from functools import wraps
 
@@ -45,7 +45,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return quart.abort(403)  # access denied
+            return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -54,7 +54,7 @@ def admin_required(fn):
 @blueprint.route("/messages", methods=["GET", "POST"])
 @login_required
 @admin_required
-async def admin_messages():
+def admin_messages():
     """
     List all messages
     """
@@ -67,7 +67,7 @@ async def admin_messages():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template("admin/admin_messages.html",
+    return render_template("admin/admin_messages.html",
                            media_dir=g.db_connection.db_message_list(
                                offset, per_page),
                            page=page,
@@ -79,11 +79,11 @@ async def admin_messages():
 @blueprint.route('/message_delete', methods=["POST"])
 @login_required
 @admin_required
-async def admin_messages_delete_page():
+def admin_messages_delete_page():
     """
     Delete messages action 'page'
     """
-    g.db_connection.db_message_delete(await request.form['id'])
+    g.db_connection.db_message_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

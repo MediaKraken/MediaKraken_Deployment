@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, request, \
+from flask import Blueprint, render_template, g, request, \
     redirect, url_for, session
 from flask_login import current_user
 from flask_login import login_required
@@ -27,7 +27,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # list of tv shows
 @blueprint.route("/tv", methods=['GET', 'POST'])
 @login_required
-async def user_tv_page():
+def user_tv_page():
     """
     Display tv shows page
     """
@@ -61,7 +61,7 @@ async def user_tv_page():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/user_tv_page.html', media=media,
+    return render_template('users/user_tv_page.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -71,18 +71,18 @@ async def user_tv_page():
 # tv show detail
 @blueprint.route("/tv_show_detail/<guid>", methods=['GET', 'POST'])
 @login_required
-async def user_tv_show_detail_page(guid):
+def user_tv_show_detail_page(guid):
     """
     Display tv show detail page
     """
     if request.method == 'POST':
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
-        if await request.form['status'] == 'Watched':
+        if request.form['status'] == 'Watched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), False)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
-        elif await request.form['status'] == 'Unwatched':
+        elif request.form['status'] == 'Unwatched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), True)
             return redirect(url_for('user.user_tv_show_detail_page', guid=guid))
@@ -173,7 +173,7 @@ async def user_tv_show_detail_page(guid):
             watched_status = json_metadata['UserStats'][current_user.get_id()]
         except:
             watched_status = False
-        return await render_template('users/user_tv_show_detail.html', data=data_metadata[0],
+        return render_template('users/user_tv_show_detail.html', data=data_metadata[0],
                                json_metadata=json_metadata,
                                data_genres=data_genres_list[:-2],
                                data_production=production_list[:-2],
@@ -196,7 +196,7 @@ async def user_tv_show_detail_page(guid):
 # tv show season detail - show guid then season #
 @blueprint.route("/tv_season_detail/<guid>/<season>", methods=['GET', 'POST'])
 @login_required
-async def user_tv_season_detail_page(guid, season):
+def user_tv_season_detail_page(guid, season):
     """
     Display tv season detail page
     """
@@ -268,7 +268,7 @@ async def user_tv_season_detail_page(guid, season):
             data_background_image = None
     except:
         data_background_image = None
-    return await render_template("users/user_tv_season_detail.html", data=data_metadata[0],
+    return render_template("users/user_tv_season_detail.html", data=data_metadata[0],
                            data_guid=guid,
                            data_season=season,
                            data_overview=data_overview,
@@ -285,7 +285,7 @@ async def user_tv_season_detail_page(guid, season):
 # tv show episode detail
 @blueprint.route("/tv_episode_detail/<guid>/<season>/<episode>", methods=['GET', 'POST'])
 @login_required
-async def user_tv_episode_detail_page(guid, season, episode):
+def user_tv_episode_detail_page(guid, season, episode):
     """
     Display tv episode detail page
     """
@@ -304,7 +304,7 @@ async def user_tv_episode_detail_page(guid, season, episode):
             data_background_image = None
     except:
         data_background_image = None
-    return await render_template("users/user_tv_episode_detail.html", data=data_episode_detail,
+    return render_template("users/user_tv_episode_detail.html", data=data_episode_detail,
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image
                            )

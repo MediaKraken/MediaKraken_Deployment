@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_people", __name__, url_prefix='/users',
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/meta_person_detail/<guid>')
 @login_required
-async def metadata_person_detail(guid):
+def metadata_person_detail(guid):
     """
     Display person detail page
     """
@@ -41,7 +41,7 @@ async def metadata_person_detail(guid):
         person_image = "/static/images/person_missing.png"
     # also appears in
     meta_also_media = g.db_connection.db_meta_person_as_seen_in(meta_data[0])
-    return await render_template('users/metadata/meta_people_detail.html',
+    return render_template('users/metadata/meta_people_detail.html',
                            json_metadata=json_metadata,
                            data_person_image=person_image,
                            data_also_media=meta_also_media,
@@ -50,7 +50,7 @@ async def metadata_person_detail(guid):
 
 @blueprint.route('/meta_person_list', methods=['GET', 'POST'])
 @login_required
-async def metadata_person_list():
+def metadata_person_list():
     """
     Display person list page
     """
@@ -85,7 +85,7 @@ async def metadata_person_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/metadata/meta_people_list.html',
+    return render_template('users/metadata/meta_people_list.html',
                            media_person=person_list,
                            page=page,
                            per_page=per_page,

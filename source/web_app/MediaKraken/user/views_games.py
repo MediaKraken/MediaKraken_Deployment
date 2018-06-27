@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, request, session
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_games", __name__,
@@ -21,7 +21,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/games', methods=['GET', 'POST'])
 @login_required
-async def user_games_list():
+def user_games_list():
     """
     Display games page
     """
@@ -40,7 +40,7 @@ async def user_games_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template("users/user_game_list.html", media=mediadata,
+    return render_template("users/user_game_list.html", media=mediadata,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -49,20 +49,20 @@ async def user_games_list():
 
 @blueprint.route('/games_detail/<guid>', methods=['GET', 'POST'])
 @login_required
-async def user_games_detail(guid):
+def user_games_detail(guid):
     """
     Display game detail page
     """
-    return await render_template("users/user_game_detail.html")
+    return render_template("users/user_game_detail.html")
 
 
 @blueprint.route('/meta_game_detail/<guid>')
 @login_required
-async def metadata_game_detail(guid):
+def metadata_game_detail(guid):
     """
     Display game metadata detail
     """
-    return await render_template('users/metadata/meta_game_detail.html', guid=guid,
+    return render_template('users/metadata/meta_game_detail.html', guid=guid,
                            data=g.db_connection.db_meta_game_by_guid(
                                guid)['gi_game_info_json'],
                            data_review=None)
@@ -70,7 +70,7 @@ async def metadata_game_detail(guid):
 
 @blueprint.route('/meta_game_system_list', methods=['GET', 'POST'])
 @login_required
-async def metadata_game_system_list():
+def metadata_game_system_list():
     """
     Display game system metadata
     """
@@ -88,7 +88,7 @@ async def metadata_game_system_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/metadata/meta_game_system_list.html',
+    return render_template('users/metadata/meta_game_system_list.html',
                            media_game_system=mediadata,
                            page=page,
                            per_page=per_page,
@@ -98,11 +98,11 @@ async def metadata_game_system_list():
 
 @blueprint.route('/meta_game_system_detail/<guid>')
 @login_required
-async def metadata_game_system_detail(guid):
+def metadata_game_system_detail(guid):
     """
     Display game system detail metadata
     """
-    return await render_template('users/metadata/meta_game_system_detail.html', guid=guid,
+    return render_template('users/metadata/meta_game_system_detail.html', guid=guid,
                            data=g.db_connection.db_meta_game_system_by_guid(guid))
 
 

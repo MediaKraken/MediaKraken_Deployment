@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, g
+from flask import Blueprint, g
 
 blueprint = Blueprint("user_person", __name__,
                       url_prefix='/users', static_folder="../static")

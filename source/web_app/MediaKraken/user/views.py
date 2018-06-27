@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, request, \
+from flask import Blueprint, render_template, g, request, \
     redirect, url_for, abort, flash, session
 from flask_login import current_user
 from flask_login import login_required
@@ -39,7 +39,7 @@ def flash_errors(form):
 
 @blueprint.route("/")
 @login_required
-async def members():
+def members():
     """
     Display main members page
     """
@@ -53,7 +53,7 @@ async def members():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template("users/members.html", data_resume_media=resume_list,
+    return render_template("users/members.html", data_resume_media=resume_list,
                            data_new_media=g.db_connection.db_read_media_new(
                                7, offset, per_page),
                            page=page,
@@ -64,7 +64,7 @@ async def members():
 
 @blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-async def movie_status(guid, event_type):
+def movie_status(guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -79,7 +79,7 @@ async def movie_status(guid, event_type):
 
 @blueprint.route('/movie_metadata_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-async def movie_metadata_status(guid, event_type):
+def movie_metadata_status(guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -92,7 +92,7 @@ async def movie_metadata_status(guid, event_type):
 
 @blueprint.route('/tv_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-async def tv_status(guid, event_type):
+def tv_status(guid, event_type):
     """
     Set media status for specified media, user
     """

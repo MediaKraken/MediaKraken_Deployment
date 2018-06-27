@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_movie_collection", __name__, url_prefix='/users',
@@ -21,7 +21,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/meta_movie_collection_list', methods=['GET', 'POST'])
 @login_required
-async def metadata_movie_collection_list():
+def metadata_movie_collection_list():
     """
     Display movie collection metadata
     """
@@ -48,7 +48,7 @@ async def metadata_movie_collection_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/metadata/meta_movie_collection_list.html',
+    return render_template('users/metadata/meta_movie_collection_list.html',
                            media=media,
                            page=page,
                            per_page=per_page,
@@ -58,7 +58,7 @@ async def metadata_movie_collection_list():
 
 @blueprint.route('/meta_movie_collection_detail/<guid>')
 @login_required
-async def metadata_movie_collection_detail(guid):
+def metadata_movie_collection_detail(guid):
     """
     Display movie collection metadata detail
     """
@@ -81,7 +81,7 @@ async def metadata_movie_collection_detail(guid):
             data_background_image = None
     except:
         data_background_image = None
-    return await render_template('users/metadata/meta_movie_collection_detail.html',
+    return render_template('users/metadata/meta_movie_collection_detail.html',
                            data_name=json_metadata['name'],
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,

@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g
+from flask import Blueprint, render_template, g
 from flask_login import current_user
 from flask_login import login_required
 
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route("/queue", methods=['GET', 'POST'])
 @login_required
-async def user_queue_page():
+def user_queue_page():
     """
     Display queue page
     """
@@ -40,7 +40,7 @@ async def user_queue_page():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/user_tv_page.html', media=media,
+    return render_template('users/user_tv_page.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

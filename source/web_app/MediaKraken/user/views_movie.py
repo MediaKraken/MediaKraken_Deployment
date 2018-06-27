@@ -5,7 +5,7 @@ User view in webapp
 
 from fractions import Fraction
 
-from quart import Blueprint, render_template, g, request, \
+from flask import Blueprint, render_template, g, request, \
     redirect, url_for
 from flask_login import current_user
 from flask_login import login_required
@@ -29,29 +29,29 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/movie_detail/<guid>', methods=['GET', 'POST'])
 @login_required
-async def movie_detail(guid):
+def movie_detail(guid):
     """
     Display move detail page
     """
     if request.method == 'POST':
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
-        if await request.form['status'] == 'Watched':
+        if request.form['status'] == 'Watched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), False)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
-        elif await request.form['status'] == 'Unwatched':
+        elif request.form['status'] == 'Unwatched':
             g.db_connection.db_media_watched_status_update(
                 guid, current_user.get_id(), True)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
-        elif await request.form['status'] == 'Sync':
+        elif request.form['status'] == 'Sync':
             return redirect(url_for('user_sync.sync_edit', guid=guid))
-        elif await request.form['status'] == 'Cast':
+        elif request.form['status'] == 'Cast':
             # grab the guid from the comboindex
-            media_guid_index = await request.form["Video_Track"]
+            media_guid_index = request.form["Video_Track"]
             # call ffpmeg with the play_data
-            audio_track_index = await request.form["Video_Play_Audio_Track"]
-            subtitle_track_index = await request.form["Video_Play_Subtitles"]
+            audio_track_index = request.form["Video_Play_Audio_Track"]
+            subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
             proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
                                               g.db_connection.db_media_path_by_uuid(
@@ -204,7 +204,7 @@ async def movie_detail(guid):
             sync_status = json_media['Synced']
         except:
             sync_status = False
-        return await render_template('users/user_movie_detail.html', data=data[0],
+        return render_template('users/user_movie_detail.html', data=data[0],
                                json_ffmpeg=json_ffmpeg,
                                json_media=json_media,
                                json_metadata=json_metadata,

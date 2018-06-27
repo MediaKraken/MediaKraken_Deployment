@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_periodical", __name__, url_prefix='/users',
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 @blueprint.route('/meta_periodical_list', methods=['GET', 'POST'])
 @login_required
-async def metadata_periodical_list():
+def metadata_periodical_list():
     """
     Display periodical list page
     """
@@ -46,7 +46,7 @@ async def metadata_periodical_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/metadata/meta_periodical_list.html',
+    return render_template('users/metadata/meta_periodical_list.html',
                            media_person=item_list,
                            page=page,
                            per_page=per_page,
@@ -56,7 +56,7 @@ async def metadata_periodical_list():
 
 @blueprint.route('/meta_periodical_detail/<guid>')
 @login_required
-async def metadata_periodical_detail(guid):
+def metadata_periodical_detail(guid):
     """
     Display periodical detail page
     """
@@ -86,7 +86,7 @@ async def metadata_periodical_detail(guid):
         data_pages = json_metadata['mm_metadata_book_json']['physical_description_text']
     except:
         data_pages = 'NA'
-    return await render_template('users/metadata/meta_periodical_detail.html',
+    return render_template('users/metadata/meta_periodical_detail.html',
                            data_name=data_name,
                            data_isbn=data_isbn,
                            data_overview=data_overview,

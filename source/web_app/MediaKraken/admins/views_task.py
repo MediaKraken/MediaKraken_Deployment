@@ -4,14 +4,14 @@ import json
 import sys
 
 sys.path.append('..')
-from quart import Blueprint, render_template, g, request, flash, \
+from flask import Blueprint, render_template, g, request, flash, \
     url_for, redirect
 from flask_login import login_required
 
 blueprint = Blueprint("admins_task", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import quart
+import flask
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.extensions import (
@@ -50,7 +50,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return quart.abort(403)  # access denied
+            return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -59,7 +59,7 @@ def admin_required(fn):
 @blueprint.route('/task')
 @login_required
 @admin_required
-async def admin_task_display_all():
+def admin_task_display_all():
     """
     Display task jobs
     """
@@ -72,7 +72,7 @@ async def admin_task_display_all():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('admin/admin_task.html',
+    return render_template('admin/admin_task.html',
                            media_task=g.db_connection.db_task_list(
                                False, offset, per_page),
                            page=page,
@@ -84,7 +84,7 @@ async def admin_task_display_all():
 @blueprint.route('/task_run/<guid>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-async def admin_task_run(guid):
+def admin_task_run(guid):
     """
     Run task jobs
     """
@@ -104,22 +104,22 @@ async def admin_task_run(guid):
 @blueprint.route('/task_edit/<guid>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-async def admin_task_edit(guid):
+def admin_task_edit(guid):
     """
     Edit task job page
     """
-    form = TaskEditForm(await request.form, csrf_enabled=False)
+    form = TaskEditForm(request.form, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate_on_submit():
-            # await request.form['name']
-            # await request.form['description']
-            # await request.form['enabled']
-            # await request.form['interval']
-            # await request.form['time']
-            # await request.form['script_path']
+            # request.form['name']
+            # request.form['description']
+            # request.form['enabled']
+            # request.form['interval']
+            # request.form['time']
+            # request.form['script_path']
             # common_global.es_inst.com_elastic_index('info', {'stuff':'task edit info: %s %s %s', (addr, share, path))
             pass
-    return await render_template('admin/admin_task_edit.html', guid=guid, form=form)
+    return render_template('admin/admin_task_edit.html', guid=guid, form=form)
 
 
 @blueprint.before_request

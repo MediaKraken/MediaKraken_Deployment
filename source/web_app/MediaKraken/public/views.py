@@ -10,7 +10,7 @@ from MediaKraken.public.forms import LoginForm
 from MediaKraken.user.forms import RegisterForm
 from MediaKraken.user.models import User
 from MediaKraken.utils import flash_errors
-from quart import Blueprint, request, render_template, flash, url_for, redirect, session
+from flask import Blueprint, request, render_template, flash, url_for, redirect, session
 from flask_login import current_user
 from flask_login import login_user, login_required, logout_user
 
@@ -25,7 +25,7 @@ def load_user(id):
 
 
 @blueprint.route("/", methods=["GET", "POST"])
-async def home():
+def home():
     """
     Display home page
     """
@@ -33,7 +33,7 @@ async def home():
         pass
     else:
         session['search_text'] = None
-    form = LoginForm(await request.form)
+    form = LoginForm(request.form)
     # Handle logging in
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -43,12 +43,12 @@ async def home():
             return redirect(redirect_url)
         else:
             flash_errors(form)
-    return await render_template("public/home.html", form=form, user=current_user)
+    return render_template("public/home.html", form=form, user=current_user)
 
 
 @blueprint.route('/logout/')
 @login_required
-async def logout():
+def logout():
     """
     Logout user and clear their session
     """
@@ -59,11 +59,11 @@ async def logout():
 
 
 @blueprint.route("/register/", methods=['GET', 'POST'])
-async def register():
+def register():
     """
     Display registration form
     """
-    form = RegisterForm(await request.form, csrf_enabled=False)
+    form = RegisterForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         admin_user = False
         # if first user set it as administrator
@@ -82,27 +82,27 @@ async def register():
         return redirect(url_for('public.home'))
     else:
         flash_errors(form)
-    return await render_template('public/register.html', form=form)
+    return render_template('public/register.html', form=form)
 
 
 @blueprint.route("/about/")
-async def about():
+def about():
     """
     Display about page
     """
-    return await render_template("public/about.html")
+    return render_template("public/about.html")
 
 
 @blueprint.route("/weather/")
-async def weather():
-    return await render_template("public/weather.html")
+def weather():
+    return render_template("public/weather.html")
 
 
 @blueprint.route("/location/")
-async def geo_location():
-    return await render_template("public/geolocation.html")
+def geo_location():
+    return render_template("public/geolocation.html")
 
 
 @blueprint.route("/save")
-async def screen_save():
+def screen_save():
     return url_for('static', filename='canvas_hyperspace.html')

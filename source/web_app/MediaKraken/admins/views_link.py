@@ -4,13 +4,13 @@ import json
 import sys
 
 sys.path.append('..')
-from quart import Blueprint, render_template, g, request, flash
+from flask import Blueprint, render_template, g, request, flash
 from flask_login import login_required
 
 blueprint = Blueprint("admins_link", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import quart
+import flask
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import LinkAddEditForm
@@ -46,7 +46,7 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return quart.abort(403)  # access denied
+            return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
@@ -55,7 +55,7 @@ def admin_required(fn):
 @blueprint.route("/link_server")
 @login_required
 @admin_required
-async def admin_server_link_server():
+def admin_server_link_server():
     """
     Display page for linking server
     """
@@ -67,7 +67,7 @@ async def admin_server_link_server():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template("admin/admin_link.html",
+    return render_template("admin/admin_link.html",
                            data=g.db_connection.db_link_list(offset, per_page),
                            page=page,
                            per_page=per_page,
@@ -77,12 +77,12 @@ async def admin_server_link_server():
 @blueprint.route("/link_edit", methods=["GET", "POST"])
 @login_required
 @admin_required
-async def admin_link_edit_page():
+def admin_link_edit_page():
     """
     allow user to edit link
     """
-    form = LinkAddEditForm(await request.form)
-    return await render_template("admin/admin_link_edit.html", form=form,
+    form = LinkAddEditForm(request.form)
+    return render_template("admin/admin_link_edit.html", form=form,
                            data_class=None,
                            data_share=None)
 
@@ -90,11 +90,11 @@ async def admin_link_edit_page():
 @blueprint.route('/link_delete', methods=["POST"])
 @login_required
 @admin_required
-async def admin_link_delete_page():
+def admin_link_delete_page():
     """
     Delete linked server action 'page'
     """
-    g.db_connection.db_link_delete(await request.form['id'])
+    g.db_connection.db_link_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

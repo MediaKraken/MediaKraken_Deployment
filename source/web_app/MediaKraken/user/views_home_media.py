@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_home", __name__,
@@ -22,7 +22,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # home media
 @blueprint.route('/home_media', methods=['GET', 'POST'])
 @login_required
-async def home_media_list():
+def home_media_list():
     """
     Display mage page for home media
     """
@@ -33,7 +33,7 @@ async def home_media_list():
         metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
     else:
         metadata = g.db_connection.db_meta_movie_list(offset, per_page)
-    return await render_template("users/user_home_media_list.html", media=media)
+    return render_template("users/user_home_media_list.html", media=media)
 
 
 
