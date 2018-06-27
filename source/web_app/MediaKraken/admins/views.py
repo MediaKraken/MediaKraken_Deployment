@@ -84,7 +84,7 @@ def admins():
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
-    for key, value in iter(common_network.mk_network_ip_addr()):
+    for key, value in common_network.mk_network_ip_addr().items():
         nic_data.append(key + ' ' + value[0][1])
     data_alerts_dismissable = []
     data_alerts = []
