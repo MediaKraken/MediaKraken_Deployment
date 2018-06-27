@@ -198,6 +198,12 @@ class MKServerDatabase(object):
     from database.db_base_notification import db_notification_insert, \
         db_notification_read, \
         db_notification_delete
+    from database.db_base_postgresql import db_pgsql_table_sizes, \
+        db_pgsql_row_count, \
+        db_pgsql_vacuum_stat_by_day, \
+        db_pgsql_vacuum_table, \
+        db_pgsql_set_iso_level, \
+        db_pgsql_table_exits
     from database.db_base_option_status import db_opt_status_read, \
         db_opt_update, \
         db_opt_status_update, \
