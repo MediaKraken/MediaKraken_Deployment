@@ -110,6 +110,8 @@ class MKServerDatabase(object):
         db_media_random, \
         db_read_media_metadata_movie_both, \
         db_read_media_list_by_uuid
+    from database.db_base_media_music import db_media_album_count, \
+        db_media_album_list
     from database.db_base_media_music_video import db_music_video_list
     from database.db_base_media_remote import db_insert_remote_media, \
         db_read_remote_media, \
