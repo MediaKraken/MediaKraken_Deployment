@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_internet", __name__, url_prefix='/users',
@@ -45,12 +45,9 @@ def user_internet_youtube():
     Display youtube page
     """
     youtube_videos = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
+    if session['search_text'] is not None:
         videos, channels, playlists = google_instance.com_google_youtube_search(
-            request.form['search_text'])
+            session['search_text'])
         for url_link in videos:
             common_global.es_inst.com_elastic_index('info', {'searchurllink': url_link})
             youtube_videos.append(
@@ -62,7 +59,7 @@ def user_internet_youtube():
             youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link,
                                                                                      'snippet')))
     common_global.es_inst.com_elastic_index('info', {'temphold': youtube_videos})
-    return render_template("users/user_internet_youtube.html", form=form,
+    return render_template("users/user_internet_youtube.html",
                            media=youtube_videos)
 
 
@@ -73,8 +70,7 @@ def user_internet_youtube_detail(uuid):
     """
     Display youtube details page
     """
-    form = SearchForm(request.form)
-    return render_template("users/user_internet_youtube_detail.html", form=form,
+    return render_template("users/user_internet_youtube_detail.html",
                            media=json.loads(
                                google_instance.com_google_youtube_info(uuid)),
                            data_guid=uuid)
@@ -153,16 +149,12 @@ def user_iradio_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    form = SearchForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            pass
+    if session['search_text'] is not None:
         mediadata = g.db_connection.db_iradio_list(offset, per_page,
-                                                   search_value=request.form['search_text'])
+                                                   search_value=session['search_text'])
     else:
         mediadata = g.db_connection.db_iradio_list(offset, per_page)
-
-    return render_template("users/user_iradio_list.html", form=form)
+    return render_template("users/user_iradio_list.html")
 
 
 @blueprint.before_request

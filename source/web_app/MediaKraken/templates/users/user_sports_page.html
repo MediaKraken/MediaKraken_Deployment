@@ -7,13 +7,6 @@
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="/static/css/listnav.css">
     </head>
-    <form id="SearchForm" class="form form-metamovie" method="POST" action="{{ url_for('user_metadata_movie.metadata_movie_list') }}" role="form">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{form.search_text.label}}
-            {{form.search_text(placeholder="Search string", class_="form-control")}}
-        </div>
-    </form>
     {% if media %}
     {{ pagination.info }}
     {{ pagination.links }}
