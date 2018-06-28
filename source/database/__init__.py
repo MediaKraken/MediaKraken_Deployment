@@ -60,6 +60,9 @@ class MKServerDatabase(object):
     from database.db_base_hardware import db_hardware_json_read, \
         db_hardware_insert, \
         db_hardware_delete
+    from database.db_base_iradio import db_iradio_insert, \
+        db_iradio_list_count, \
+        db_iradio_list
     from database.db_base_link import db_link_list_count, \
         db_link_list, \
         db_link_insert, \
