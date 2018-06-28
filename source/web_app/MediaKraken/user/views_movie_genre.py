@@ -106,7 +106,7 @@ def user_movie_page(genre):
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=total,
-                                                  record_name='media',
+                                                  record_name='movie(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

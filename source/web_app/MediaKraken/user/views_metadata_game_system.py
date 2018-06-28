@@ -45,7 +45,7 @@ def metadata_game_system_list():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_game_system_list_count(),
-                                                  record_name='game systems',
+                                                  record_name='game system(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   media_game_system=mediadata

@@ -35,7 +35,7 @@ def metadata_game_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_game_software_info'),
-                                                  record_name='Games',
+                                                  record_name='game(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

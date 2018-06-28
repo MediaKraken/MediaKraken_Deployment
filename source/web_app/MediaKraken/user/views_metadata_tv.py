@@ -254,7 +254,7 @@ def metadata_tvshow_list():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_tvshow_list_count(),
-                                                  record_name='TV Shows',
+                                                  record_name='TV show(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

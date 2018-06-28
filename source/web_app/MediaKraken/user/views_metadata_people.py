@@ -81,7 +81,7 @@ def metadata_person_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_person'),
-                                                  record_name='People',
+                                                  record_name='person',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

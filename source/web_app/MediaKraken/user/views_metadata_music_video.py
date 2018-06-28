@@ -36,7 +36,7 @@ def metadata_music_video_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_music_video'),
-                                                  record_name='music video',
+                                                  record_name='music video(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

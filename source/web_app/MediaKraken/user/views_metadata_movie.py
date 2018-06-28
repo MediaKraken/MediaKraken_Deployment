@@ -140,7 +140,7 @@ def metadata_movie_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_movie'),
-                                                  record_name='Movies',
+                                                  record_name='movie(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

@@ -36,7 +36,7 @@ def user_books_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_movie'),
-                                                  record_name='Periodicals',
+                                                  record_name='periodical(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

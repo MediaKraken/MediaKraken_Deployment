@@ -42,7 +42,7 @@ def metadata_periodical_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_book'),
-                                                  record_name='Periodical',
+                                                  record_name='periodical(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

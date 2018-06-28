@@ -57,7 +57,7 @@ def user_tv_page():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
                                                       None, None),
-                                                  record_name='tv shows',
+                                                  record_name='TV show(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

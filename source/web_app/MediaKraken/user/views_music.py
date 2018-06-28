@@ -37,7 +37,7 @@ def user_album_list_page():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_media_album_count(),
-                                                  record_name='music albums',
+                                                  record_name='music album(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

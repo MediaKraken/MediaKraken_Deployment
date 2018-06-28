@@ -32,7 +32,7 @@ def report_display_all_duplicates():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_media_duplicate_count(),
-                                                  record_name='All Duplicate Media',
+                                                  record_name='duplicate media',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
@@ -94,7 +94,7 @@ def report_display_all_media():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_known_media_count(),
-                                                  record_name='All Media',
+                                                  record_name='all media',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
@@ -117,7 +117,7 @@ def report_display_all_media_known_video():
                                                   total=g.db_connection.db_web_media_list_count(
                                                       g.db_connection.db_media_uuid_by_class(
                                                           'Movie')),
-                                                  record_name='Known Videos',
+                                                  record_name='known video(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

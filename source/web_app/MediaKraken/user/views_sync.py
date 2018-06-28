@@ -33,7 +33,7 @@ def sync_display_all():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_sync_list_count(),
-                                                  record_name='Sync Jobs',
+                                                  record_name='sync job(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )

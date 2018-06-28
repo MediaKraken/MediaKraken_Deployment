@@ -39,7 +39,7 @@ def user_sports_page():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),
-                                                  record_name='sporting events',
+                                                  record_name='sporting event(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
