@@ -15,126 +15,11 @@
         <link href="/static/css/style.min.css" rel="stylesheet">
         <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
-        <style>
-            /* Fixed sidenav, full height */
-            .sidenav {
-              height: 100%;
-              width: 200px;
-              position: fixed;
-              z-index: 1;
-              top: 0;
-              left: 0;
-              background-color: #111;
-              overflow-x: hidden;
-              padding-top: 20px;
-            }
-
-            /* Style the sidenav links and the dropdown button */
-            .sidenav a, .dropdown-btn {
-              padding: 6px 8px 6px 16px;
-              text-decoration: none;
-              font-size: 20px;
-              color: #818181;
-              display: block;
-              border: none;
-              background: none;
-              width:100%;
-              text-align: left;
-              cursor: pointer;
-              outline: none;
-            }
-
-            /* On mouse-over */
-            .sidenav a:hover, .dropdown-btn:hover {
-              color: #f1f1f1;
-            }
-
-            /* Main content */
-            .main {
-              margin-left: 200px; /* Same as the width of the sidenav */
-              font-size: 20px; /* Increased text to enable scrolling */
-              padding: 0px 10px;
-            }
-
-            /* Add an active class to the active dropdown button */
-            .active {
-              background-color: green;
-              color: white;
-            }
-
-            /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-            .dropdown-container {
-              display: none;
-              background-color: #262626;
-              padding-left: 8px;
-            }
-
-            /* Optional: Style the caret down icon */
-            .fa-caret-down {
-              float: right;
-              padding-right: 8px;
-            }
-        </style>
     </head>
     <body id="data_background">
+        <div id="admin_sidenav"></div>
         <!-- Main -->
             <div class="row row-offcanvas row-offcanvas-left">
-                <div class="sidenav">
-                    <a href="{{ url_for('admins_backup.admin_backup') }}"><i class="glyphicon glyphicon-hdd"></i>Backup</a>
-                    <a href="{{ url_for('admins.admin_books_add') }}"><i class="glyphicon glyphicon-book"></i> Book (add) <span class="badge badge-info"></span></a>
-                    <a href="{{ url_for('admins_cron.admin_cron_display_all') }}"><i class="glyphicon glyphicon-tasks"></i>Cron</a>
-
-                    <button class="dropdown-btn">Cloud
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container">
-                        <a href="{{ url_for('admins.admin_cloud_aws_s3') }}">AWS S3</a>
-                        <a href="{{ url_for('admins.admin_cloud_google_drive') }}">Google Drive</a>
-                        <a href="{{ url_for('admins.admin_cloud_dropbox') }}">Dropbox</a>
-                        <a href="{{ url_for('admins.admin_cloud_onedrive') }}">OneDrive</a>
-                    </div>
-
-                    <a href="{{ url_for('admins.admin_database_statistics') }}"><i class="fa fa-database"></i> DB Statistics</a>
-                    <a href="{{ url_for('admins_docker.docker_stat') }}"><i class="fa fa-anchor"></i> Docker Statistics</a>
-
-                    <button class="dropdown-btn">Hardware
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container">
-                        <a href="{{ url_for('admins_chromecasts.admin_chromecast') }}"><i class="fa fa-sun-o"></i> Chromecasts</a>
-                        <a href="{{ url_for('admins_tvtuners.admin_tvtuners') }}"><i class="glyphicon glyphicon-facetime-video"></i> TV Tuners</a>
-                    </div>
-
-                    <a href="{{ url_for('admins_library.admin_library') }}"><i class="glyphicon glyphicon-film"></i>Library <span class="badge badge-info"> {{ data_library }}</span></a>
-                    <a href="{{ url_for('admins.admin_messages') }}"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a>
-
-                    <button class="dropdown-btn">Reports
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container">
-                        <a href="{{ url_for('admins.admin_chart_browser') }}">Browser</a>
-                        <a href="{{ url_for('admins.admin_chart_client_usage') }}">Client</a>
-                        <a href="{{ url_for('user_reports.report_display_all_duplicates') }}">Duplicate Media</a>
-                        <a href="{{ url_for('user_reports.report_display_all_media') }}">Known Media</a>
-                        <a href="{{ url_for('user_reports.report_display_all_media_known_video') }}">Matched Media</a>
-                        <a href="{{ url_for('user_reports.report_top10', mtype=1) }}">Top 10 All Time</a>
-                        <a href="{{ url_for('user_reports.report_top10', mtype=2) }}">Top 10 Movie</a>
-                        <a href="{{ url_for('user_reports.report_top10', mtype=3) }}">Top 10 TV Show</a>
-                        <a href="{{ url_for('user_reports.report_top10', mtype=4) }}">Top 10 TV Episodes</a>
-                    </div>
-
-                    <a href="{{ url_for('admins.admin_server_settings') }}"><i class="glyphicon glyphicon-cog"></i> Server</a>
-                    <a href="{{ url_for('admins_link.admin_server_link_server') }}"><i class="glyphicon glyphicon-link"></i>Server Links</a>
-                    <a href="{{ url_for('admins_share.admin_share') }}"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a>
-                    <a href="{{ url_for('admins_task.admin_task_display_all') }}"><i class="glyphicon glyphicon-tasks"></i>Task</a>
-
-                    {% if data_transmission_active %}
-                    <a href="{{ url_for('admins_transmission.admin_transmission') }}"><i class="glyphicon glyphicon-globe"></i>Transmission</a>
-                    {% endif %}
-                    <a href="{{ url_for('admins_users.admin_users') }}"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
-                    <a href="{{ url_for('admins.admin_server_zfs') }}"><i class="fa fa-database"></i>ZFS</a>
-
-                </div>
                 <!-- /col-3 -->
                 <div class="col-sm-9">
                     <!-- column 2 -->
@@ -293,19 +178,7 @@
         <script src="/static/bootstrap/js/bootstrap.min.js"></script>
         <script src="/static/js/scripts.js"></script>
         <script>
-            var dropdown = document.getElementsByClassName("dropdown-btn");
-            var i;
-            for (i = 0; i < dropdown.length; i++) {
-              dropdown[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                  dropdownContent.style.display = "none";
-                } else {
-                  dropdownContent.style.display = "block";
-                }
-              });
-            }
+            $("#admin_sidenav").load("admin_sidenav.html");
         </script>
     </body>
 </html>
