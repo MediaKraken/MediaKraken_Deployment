@@ -24,6 +24,7 @@ transmissionrpc
 passwordmeter
 psycopg2
 psutil
+boto
 cssmin
 incremental>=16.10.1
 pysmb
