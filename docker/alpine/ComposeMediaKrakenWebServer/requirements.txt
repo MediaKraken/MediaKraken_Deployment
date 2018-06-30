@@ -25,6 +25,8 @@ passwordmeter
 psycopg2
 psutil
 boto
+dropbox
+onedrivesdk
 cssmin
 incremental>=16.10.1
 pysmb
