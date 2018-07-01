@@ -17,7 +17,7 @@
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
-        {% with data_library={{data_library}}, data_messages={{data_messages}}, data_share={{data_share}}, data_user_count={{data_user_count}} %}
+        {% with data_library=data_library, data_messages=data_messages, data_share=data_share, data_user_count=data_user_count %}
             {% include "/mediakraken/web_app/MediaKraken/templates/admin/admin_sidenav.html" %}
         {% endwith %}
         {{ maps|safe }}
