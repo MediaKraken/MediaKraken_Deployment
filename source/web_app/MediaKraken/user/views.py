@@ -3,16 +3,13 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, request, \
-    redirect, url_for, abort, flash, session
+from flask import Blueprint, render_template, g, redirect, url_for, flash
 from flask_login import current_user
 from flask_login import login_required
 
 blueprint = Blueprint("user", __name__, url_prefix='/users',
                       static_folder="../static")
-import uuid
 import json
-import subprocess
 import sys
 
 sys.path.append('..')
