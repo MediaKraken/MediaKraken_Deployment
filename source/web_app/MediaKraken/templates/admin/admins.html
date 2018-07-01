@@ -18,7 +18,7 @@
     </head>
     <body id="data_background">
         {% with data_library=data_library, data_messages=data_messages, data_share=data_share, data_user_count=data_user_count %}
-            {% include "/mediakraken/web_app/MediaKraken/templates/admin/admin_sidenav.html" %}
+            {% include "{{url_for('admin.admin_sidenav')}}" %}
         {% endwith %}
         {{ maps|safe }}
         <!-- Main -->

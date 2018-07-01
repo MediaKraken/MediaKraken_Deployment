@@ -143,6 +143,13 @@ def admins():
                            )
 
 
+@blueprint.route("/admin_sidenav")
+@login_required
+@admin_required
+def admin_sidenav():
+    return render_template("admin/admin_sidenav.html")
+
+
 @blueprint.route("/messages", methods=["GET", "POST"])
 @login_required
 @admin_required
