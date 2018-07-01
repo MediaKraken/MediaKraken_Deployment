@@ -170,8 +170,8 @@ def com_system_uptime():
     uptime_proc = subprocess.Popen(['uptime'], stdout=subprocess.PIPE)
     out, err = uptime_proc.communicate()
     uptime_proc.wait()
-    out = out.split(' up ', 1)[1].split(',', 2)[
-              0] + out.split(' up ', 1)[1].split(',', 2)[1]
+    out = str(out).split(' up ', 1)[1].split(',', 2)[
+              0] + str(out).split(' up ', 1)[1].split(',', 2)[1]
     return out
 
 

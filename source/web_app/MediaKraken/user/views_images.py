@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("user_images", __name__,
@@ -19,13 +19,12 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/imagegallery')
-@blueprint.route('/imagegallery/')
 @login_required
-async def user_image_gallery():
+def user_image_gallery():
     """
     Display image gallery page
     """
-    return await render_template("users/user_image_gallery_view.html",
+    return render_template("users/user_image_gallery_view.html",
                            image_data=g.db_connection.db_media_images_list())
 
 

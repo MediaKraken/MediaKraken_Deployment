@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_sports", __name__,
@@ -21,9 +21,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # list of spoting events
 @blueprint.route("/sports", methods=['GET', 'POST'])
-@blueprint.route("/sports/", methods=['GET', 'POST'])
 @login_required
-async def user_sports_page():
+def user_sports_page():
     """
     Display sporting events page
     """
@@ -40,21 +39,20 @@ async def user_sports_page():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),
-                                                  record_name='sporting events',
+                                                  record_name='sporting event(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/user_sports_page.html', media=media,
+    return render_template('users/user_sports_page.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
                            )
 
 
-@blueprint.route("/sports_detail/<guid>/", methods=['GET', 'POST'])
 @blueprint.route("/sports_detail/<guid>", methods=['GET', 'POST'])
 @login_required
-async def user_sports_detail_page(guid):
+def user_sports_detail_page(guid):
     """
     Display sports detail page
     """
@@ -74,7 +72,7 @@ async def user_sports_detail_page(guid):
             data_background_image = None
     except:
         data_background_image = None
-    return await render_template("users/user_sports_detail.html",
+    return render_template("users/user_sports_detail.html",
                            data=g.db_connection.db_metathesportsdb_select_guid(
                                guid),
                            data_poster_image=data_poster_image,

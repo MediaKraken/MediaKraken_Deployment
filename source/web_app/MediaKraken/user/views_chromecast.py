@@ -6,7 +6,7 @@ User view in webapp
 from MediaKraken.extensions import (
     fpika,
 )
-from quart import Blueprint, render_template, g
+from flask import Blueprint, render_template, g
 from flask_login import current_user
 from flask_login import login_required
 
@@ -24,10 +24,9 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/cast/<action>/<guid>/')
 @blueprint.route('/cast/<action>/<guid>')
 @login_required
-async def user_cast(action, guid):
+def user_cast(action, guid):
     """
     Display chromecast actions page
     """
@@ -82,7 +81,7 @@ async def user_cast(action, guid):
                          body=json.dumps({'Type': 'Volume Down', 'Sub': 'Cast',
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
-    return await render_template("users/user_playback_cast.html", data_uuid=guid,
+    return render_template("users/user_playback_cast.html", data_uuid=guid,
                            data_chromecast=db_connection.db_device_list('cast'))
 
 

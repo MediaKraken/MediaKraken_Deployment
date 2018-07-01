@@ -3,8 +3,8 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, request, \
-    redirect, url_for, abort, flash
+from flask import Blueprint, render_template, g, request, \
+    redirect, url_for, abort, flash, session
 from flask_login import current_user
 from flask_login import login_required
 
@@ -39,7 +39,7 @@ def flash_errors(form):
 
 @blueprint.route("/")
 @login_required
-async def members():
+def members():
     """
     Display main members page
     """
@@ -53,7 +53,7 @@ async def members():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template("users/members.html", data_resume_media=resume_list,
+    return render_template("users/members.html", data_resume_media=resume_list,
                            data_new_media=g.db_connection.db_read_media_new(
                                7, offset, per_page),
                            page=page,
@@ -62,116 +62,9 @@ async def members():
                            )
 
 
-# home media
-@blueprint.route('/home_media', methods=['GET', 'POST'])
-@blueprint.route('/home_media/', methods=['GET', 'POST'])
-@blueprint.route('/home_media/<search_text>', methods=['GET', 'POST'])
-@login_required
-async def user_home_media_list():
-    """
-    Display mage page for home media
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    media = []
-    if request.method == 'POST':
-        # TODO wrong movie query
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page, search_text)
-    else:
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page)
-    return await render_template("users/user_home_media_list.html", media=media)
-
-
-@blueprint.route('/playvideo/<guid>/')
-@blueprint.route('/playvideo/<guid>')
-@login_required
-async def user_video_player(guid):
-    """
-    Obsolete?
-    """
-    # grab the guid from the comboindex
-    media_guid_index = await await request.form["Video_Track"]
-    # call ffpmeg with the play_data
-    audio_track_index = await await request.form["Video_Play_Audio_Track"]
-    subtitle_track_index = await await request.form["Video_Play_Subtitles"]
-    # launch ffmpeg to ffserver procecss
-    proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
-                                      g.db_connection.db_media_path_by_uuid(
-                                          media_guid_index)[0],
-                                      'http://localhost/stream.ffm'], shell=False)
-    common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
-    return await render_template("users/user_playback.html", data_desc=('Movie title'))
-
-
-@blueprint.route('/playvideo_videojs/<mtype>/<guid>/')
-@blueprint.route('/playvideo_videojs/<mtype>/<guid>')
-@login_required
-async def user_video_player_videojs(mtype, guid):
-    """
-    Display video playback page
-    """
-    common_global.es_inst.com_elastic_index('info', {"videojs": mtype, 'guid': guid})
-    # grab the guid from the comboindex
-    # use try since people can go here "by-hand"
-    try:
-        media_guid_index = await await request.form["Video_Track"]
-    except:
-        abort(404)
-    media_path = g.db_connection.db_media_path_by_uuid(media_guid_index)[0]
-    if media_path is None:
-        abort(404)
-    # set ffpmeg options with the play_data
-    audio_track_index = await await request.form["Video_Play_Audio_Track"]
-    common_global.es_inst.com_elastic_index('info', {"aud": audio_track_index})
-    # 0:0 as example # pylint: disable=C0326
-    atracks = ['-map ' + audio_track_index]
-    subtitle_track_index = await await request.form["Video_Play_Subtitles"]
-    common_global.es_inst.com_elastic_index('info', {"sub": subtitle_track_index})
-    if subtitle_track_index is not None:
-        subtracks = ['subtitles=' + media_path,
-                     'language=' + subtitle_track_index]
-    else:
-        # TODO example from file
-        subtracks = ['subtitles=subtitle.srt']
-    # fire up ffmpeg process
-    if mtype == "hls":
-        vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
-        acodecs = ['aac', '-ac:a:0', '2', '-vbr', '5']  # pylint: disable=C0326
-        proc = subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",
-                                 "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks
-                                + ["-vf"] + subtracks
-                                + ["yadif=0:0:0", vid_name], shell=False)
-        common_global.es_inst.com_elastic_index('info', {"FFMPEG Pid": proc.pid})
-
-        # ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360
-        # -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
-
-        pass_guid = 'http://10.0.0.179' + '/user/static/cache/' + vid_name
-        # pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
-    else:
-        pass_guid = guid
-    common_global.es_inst.com_elastic_index('info', {"hls path": pass_guid})
-    return await render_template("users/user_playback_videojs.html", data_desc=('Movie title'),
-                           data_guid=pass_guid,
-                           data_mtype=mtype)
-
-
-@blueprint.route('/playalbum/<guid>/')
-@blueprint.route('/playalbum/<guid>')
-@login_required
-async def user_album_player(guid):
-    """
-    Obsolete?
-    """
-    return await render_template("users/user_album_playback.html",
-                           data_desc=g.db_connection.db_meta_album_by_guid(
-                               guid),
-                           data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
-
-
-@blueprint.route('/movie_status/<guid>/<event_type>/', methods=['GET', 'POST'])
 @blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-async def movie_status(guid, event_type):
+def movie_status(guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -184,10 +77,9 @@ async def movie_status(guid, event_type):
         return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/movie_metadata_status/<guid>/<event_type>/', methods=['GET', 'POST'])
 @blueprint.route('/movie_metadata_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-async def movie_metadata_status(guid, event_type):
+def movie_metadata_status(guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -198,10 +90,9 @@ async def movie_metadata_status(guid, event_type):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/tv_status/<guid>/<event_type>/', methods=['GET', 'POST'])
 @blueprint.route('/tv_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-async def tv_status(guid, event_type):
+def tv_status(guid, event_type):
     """
     Set media status for specified media, user
     """

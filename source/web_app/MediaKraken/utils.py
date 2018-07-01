@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Helper utilities and decorators."""
 
-from quart import flash
+from flask import flash
 
 
 def flash_errors(form, category="warning"):

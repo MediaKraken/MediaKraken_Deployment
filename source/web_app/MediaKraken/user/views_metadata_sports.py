@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_sports", __name__, url_prefix='/users',
@@ -20,9 +20,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/meta_sports_list', methods=['GET', 'POST'])
-@blueprint.route('/meta_sports_list/', methods=['GET', 'POST'])
 @login_required
-async def metadata_sports_list():
+def metadata_sports_list():
     """
     Display sports metadata list
     """
@@ -35,11 +34,11 @@ async def metadata_sports_list():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),
-                                                  record_name='sporting events',
+                                                  record_name='sporting event(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/metadata/meta_sports_list.html',
+    return render_template('users/metadata/meta_sports_list.html',
                            media_sports_list=mediadata,
                            page=page,
                            per_page=per_page,
@@ -47,14 +46,13 @@ async def metadata_sports_list():
                            )
 
 
-@blueprint.route('/meta_sports_detail/<guid>/')
 @blueprint.route('/meta_sports_detail/<guid>')
 @login_required
-async def metadata_sports_detail(guid):
+def metadata_sports_detail(guid):
     """
     Display sports detail metadata
     """
-    return await render_template('users/metadata/meta_sports_detail.html', guid=guid,
+    return render_template('users/metadata/meta_sports_detail.html', guid=guid,
                            data=g.db_connection.db_meta_sports_by_guid(guid))
 
 

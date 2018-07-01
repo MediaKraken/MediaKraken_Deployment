@@ -16,7 +16,8 @@
   MA 02110-1301, USA.
 '''
 
-import pylirc as lirc
+# https://github.com/MediaKraken-Dependancies/python-lirc
+import lirc
 
 
 class CommonLIRC(object):
@@ -25,28 +26,10 @@ class CommonLIRC(object):
     """
 
     def __init__(self, option_config_json):
-        pass
-
-    def com_lirc_init(self, app_string="./conf"):
-        """
-        Initialize LIRC
-        """
-        return lirc.init("MediaKraken", app_string, False)
-
-    def com_lirc_load_config(self, config_file):
-        """
-        Load config file for LIRC
-        """
-        lirc.load_config_file(config_file)
-
-    def com_lirc_nextcode(self):
-        """
-        grab returend code
-        """
-        return lirc.nextcode()
+        sockid = lirc.init("MediaKraken")
 
     def com_lirc_close(self):
-        """
-        Shutdown LIRC
-        """
-        lirc.exit()
+        lirc.deinit()
+
+    def com_lirc_config(self, file_name):
+        lirc.load_config_file(file_name)

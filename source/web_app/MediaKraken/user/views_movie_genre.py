@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import current_user
 from flask_login import login_required
 
@@ -23,9 +23,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/movie_genre", methods=['GET', 'POST'])
-@blueprint.route("/movie_genre/", methods=['GET', 'POST'])
 @login_required
-async def user_movie_genre_page():
+def user_movie_genre_page():
     """
     Display movies split up by genre
     """
@@ -36,13 +35,12 @@ async def user_movie_genre_page():
                       common_internationalization.com_inter_number_format(
                           row_data[1]),
                       row_data[0]['name'] + ".png"))
-    return await render_template('users/user_movie_genre_page.html', media=sorted(media))
+    return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
 
 @blueprint.route("/movie/<genre>", methods=['GET', 'POST'])
-@blueprint.route("/movie/<genre>/", methods=['GET', 'POST'])
 @login_required
-async def user_movie_page(genre):
+def user_movie_page(genre):
     """
     Display movie page
     """
@@ -108,11 +106,11 @@ async def user_movie_page(genre):
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=total,
-                                                  record_name='media',
+                                                  record_name='movie(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/user_movie_page.html', media=media,
+    return render_template('users/user_movie_page.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

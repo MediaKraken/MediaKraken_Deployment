@@ -4,13 +4,13 @@ import json
 import sys
 
 sys.path.append('..')
-from quart import Blueprint, render_template, g, request, flash
+from flask import Blueprint, render_template, g, request, flash
 from flask_login import login_required
 
 blueprint = Blueprint("admins_cron", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import quart
+import flask
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.extensions import (
@@ -49,17 +49,16 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return quart.abort(403)  # access denied
+            return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
 
 
 @blueprint.route('/cron')
-@blueprint.route('/cron/')
 @login_required
 @admin_required
-async def admin_cron_display_all():
+def admin_cron_display_all():
     """
     Display cron jobs
     """
@@ -72,7 +71,7 @@ async def admin_cron_display_all():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('admin/admin_cron.html',
+    return render_template('admin/admin_cron.html',
                            media_cron=g.db_connection.db_cron_list(
                                False, offset, per_page),
                            page=page,
@@ -82,10 +81,9 @@ async def admin_cron_display_all():
 
 
 @blueprint.route('/cron_run/<guid>', methods=['GET', 'POST'])
-@blueprint.route('/cron_run/<guid>/', methods=['GET', 'POST'])
 @login_required
 @admin_required
-async def admin_cron_run(guid):
+def admin_cron_run(guid):
     """
     Run cron jobs
     """
@@ -137,39 +135,38 @@ async def admin_cron_run(guid):
                           'Data': cron_file_path,
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
-    return await render_template('admin/admin_cron.html')
+    return render_template('admin/admin_cron.html')
 
 
-@blueprint.route('/cron_edit/<guid>/', methods=['GET', 'POST'])
 @blueprint.route('/cron_edit/<guid>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-async def admin_cron_edit(guid):
+def admin_cron_edit(guid):
     """
     Edit cron job page
     """
-    form = CronEditForm(await request.form, csrf_enabled=False)
+    form = CronEditForm(request.form, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate_on_submit():
-            # await request.form['name']
-            # await request.form['description']
-            # await request.form['enabled']
-            # await request.form['interval']
-            # await request.form['time']
-            # await request.form['script_path']
+            # request.form['name']
+            # request.form['description']
+            # request.form['enabled']
+            # request.form['interval']
+            # request.form['time']
+            # request.form['script_path']
             # common_global.es_inst.com_elastic_index('info', {'stuff':'cron edit info: %s %s %s', (addr, share, path))
             pass
-    return await render_template('admin/admin_cron_edit.html', guid=guid, form=form)
+    return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 
 
 @blueprint.route('/cron_delete', methods=["POST"])
 @login_required
 @admin_required
-async def admin_cron_delete_page():
+def admin_cron_delete_page():
     """
     Delete action 'page'
     """
-    g.db_connection.db_cron_delete(await request.form['id'])
+    g.db_connection.db_cron_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 

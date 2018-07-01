@@ -3,13 +3,13 @@
 import sys
 
 sys.path.append('..')
-from quart import Blueprint, render_template, g, flash
+from flask import Blueprint, render_template, g, flash
 from flask_login import login_required
 
 blueprint = Blueprint("admins_docker", __name__,
                       url_prefix='/admin', static_folder="../static")
 # need the following three items for admin check
-import quart
+import flask
 from flask_login import current_user
 from functools import wraps
 
@@ -44,17 +44,16 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return quart.abort(403)  # access denied
+            return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
 
 
 @blueprint.route("/docker_stat")
-@blueprint.route("/docker_stat/")
 @login_required
 @admin_required
-async def docker_stat():
+def docker_stat():
     """
     Docker statistics including swarm
     """
@@ -67,7 +66,7 @@ async def docker_stat():
     else:
         docker_swarm = docker_inst.com_docker_swarm_inspect()[
             'JoinTokens']['Worker']
-    return await render_template("admin/admin_docker.html",
+    return render_template("admin/admin_docker.html",
                            data_host=docker_info,
                            data_swam=docker_swarm
                            )

@@ -17,66 +17,11 @@
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
+        {% with data_library=data_library, data_messages=data_messages, data_share=data_share, data_user_count=data_user_count %}
+            {% include "admin/admin_sidenav.html" %}
+        {% endwith %}
         <!-- Main -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-3">
-                    <!-- Left column -->
-                    <p><strong><i class="glyphicon glyphicon-wrench"></i> Tools</strong></p>
-                    <hr>
-                    <ul class="nav nav-stacked">
-                        <li class="nav-header">
-                            <a href="#" data-toggle="collapse" data-target="#userMenu">Settings <i class="glyphicon glyphicon-chevron-down"></i></a>
-                            <ul class="nav nav-stacked collapse in" id="userMenu">
-                                <li><a href="{{ url_for('admins.admin_messages') }}"><i class="glyphicon glyphicon-envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a></li>
-                                <li><a href="{{ url_for('admins.admin_server_settings') }}"><i class="glyphicon glyphicon-cog"></i> Settings</a></li>
-                                <li><a href="{{ url_for('admins_task.admin_task_display_all') }}"><i class="glyphicon glyphicon-tasks"></i> Task</a></li>
-                                <li><a href="{{ url_for('admins_cron.admin_cron_display_all') }}"><i class="glyphicon glyphicon-tasks"></i> Cron</a></li>
-                                <li><a href="{{ url_for('admins_share.admin_share') }}"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a></li>
-                                <li><a href="{{ url_for('admins_library.admin_library') }}"><i class="glyphicon glyphicon-film"></i> Library <span class="badge badge-info"> {{ data_library }}</span></a></li>
-                                <li><a href="{{ url_for('admins.admin_books_add') }}"><i class="glyphicon glyphicon-book"></i> Book (add) <span class="badge badge-info"></span></a></li>
-                                <li><a href="{{ url_for('admins_backup.admin_backup') }}"><i class="glyphicon glyphicon-hdd"></i> Backup</a></li>
-                                <li><a href="{{ url_for('admins_users.admin_users') }}"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a></li>
-                                <li><a href="{{ url_for('admins_chromecasts.admin_chromecast') }}"><i class="fa fa-sun-o"></i> Chromecasts</a></li>
-                                <li><a href="{{ url_for('admins_tvtuners.admin_tvtuners') }}"><i class="glyphicon glyphicon-facetime-video"></i> TV Tuners</a></li>
-                                <li><a href="{{ url_for('admins.admin_database_statistics') }}"><i class="fa fa-database"></i> DB Statistics</a></li>
-                                <li><a href="{{ url_for('admins_docker.docker_stat') }}"><i class="fa fa-anchor"></i> Docker Statistics</a></li>
-                                {% if data_transmission_active %}
-                                <li><a href="{{ url_for('admins_transmission.admin_transmission') }}"><i class="glyphicon glyphicon-globe"></i> Transmission</a></li>
-                                {% endif %}
-                                <li><a href="{{ url_for('admins.admin_server_zfs') }}"><i class="fa fa-database"></i> ZFS</a></li>
-                                <li><a href="{{ url_for('admins_link.admin_server_link_server') }}"><i class="glyphicon glyphicon-link"></i> Server Links</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#menu4"> Usage Views<i class="glyphicon glyphicon-chevron-right"></i></a></li>
-                        <ul class="nav nav-stacked collapse" id="menu4">
-                            <li><a href="{{ url_for('admins.admin_chart_browser') }}">Browser</a></li>
-                            <li><a href="{{ url_for('admins.admin_chart_client_usage') }}">Client</a></li>
-
-                            <li><a href="{{ url_for('user_reports.report_top10', mtype=1) }}">Top 10 All Time</a></li>
-                            <li><a href="{{ url_for('user_reports.report_top10', mtype=2) }}">Top 10 Movie</a></li>
-                            <li><a href="{{ url_for('user_reports.report_top10', mtype=3) }}">Top 10 TV Show</a></li>
-                            <li><a href="{{ url_for('user_reports.report_top10', mtype=4) }}">Top 10 TV Episodes</a></li>
-
-                        </ul>
-
-                        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#menu3"> Cloud Setup<i class="glyphicon glyphicon-chevron-right"></i></a></li>
-                        <ul class="nav nav-stacked collapse" id="menu3">
-                            <li><a href="{{ url_for('admins.admin_cloud_aws_s3') }}">AWS S3</a></li>
-                            <li><a href="{{ url_for('admins.admin_cloud_google_drive') }}">Google Drive</a></li>
-                            <li><a href="{{ url_for('admins.admin_cloud_dropbox') }}">Dropbox</a></li>
-                            <li><a href="{{ url_for('admins.admin_cloud_onedrive') }}">OneDrive</a></li>
-                        </ul>
-
-                        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#menu2"> Reports <i class="glyphicon glyphicon-chevron-right"></i></a></li>
-                        <ul class="nav nav-stacked collapse" id="menu2">
-                            <li><a href="{{ url_for('user_reports.report_display_all_duplicates') }}">Duplicates</a></li>
-                            <li><a href="{{ url_for('user_reports.report_display_all_media') }}">Known Media</a></li>
-                            <li><a href="{{ url_for('user_reports.report_display_all_media_known_video') }}">Matched Media</a></li>
-                        </ul>
-                    </ul>
-                </div>
+            <div class="row row-offcanvas row-offcanvas-left">
                 <!-- /col-3 -->
                 <div class="col-sm-9">
                     <!-- column 2 -->
@@ -95,9 +40,10 @@
                                         <small>
                                             <b>Docker IP Internal:</b>
                                             {% for nic_data in data_server_info_server_ip %}
-                                    <p class="tab">{{ nic_data }}</p>
-                                    {% endfor %}
-                                    </small></p>
+                                            <p class="tab">{{ nic_data }}</p>
+                                            {% endfor %}
+                                        </small>
+                                    </p>
                                     <p><small><b>Port:</b> {{ data_server_info_server_port }}</small></p>
                                     <p><small><b>IP External:</b> {{ data_server_info_server_ip_external }}</small></p>
                                     <p><small><b>Version:</b> {{ data_server_info_server_version }}</small></p>
@@ -230,10 +176,8 @@
         </div>
         <!--/col-span-9-->
         </div>
-        </div>
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/static/js/scripts.js"></script>
     </body>
 </html>
 {% endblock %}

@@ -1,7 +1,7 @@
 gevent
 simplekv>=0.11.2
 cython
-Quart
+Flask
 Flask-Login
 Flask-Bcrypt
 Flask-WTF
@@ -24,6 +24,9 @@ transmissionrpc
 passwordmeter
 psycopg2
 psutil
+boto
+dropbox
+onedrivesdk
 cssmin
 incremental>=16.10.1
 pysmb

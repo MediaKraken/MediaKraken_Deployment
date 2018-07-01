@@ -116,5 +116,9 @@ docker build -t mediakraken/mktransmission .
 cd ../ComposeMediaKrakenWireshark
 docker build -t mediakraken/mkwireshark .
 
+# build the tvheadend
+cd ../ComposeMediaKrakenTvheadend
+docker build -t mediakraken/mktvheadend .
+
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

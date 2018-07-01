@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_music_video", __name__, url_prefix='/users',
@@ -20,9 +20,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/music_video_list', methods=['GET', 'POST'])
-@blueprint.route('/music_video_list/', methods=['GET', 'POST'])
 @login_required
-async def user_music_video_list():
+def user_music_video_list():
     """
     Display music video page
     """
@@ -36,11 +35,11 @@ async def user_music_video_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_music_video'),
-                                                  record_name='music video',
+                                                  record_name='music video(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/user_music_video_list.html',
+    return render_template('users/user_music_video_list.html',
                            media_person=mediadata,
                            page=page,
                            per_page=per_page,

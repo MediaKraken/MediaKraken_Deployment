@@ -101,3 +101,8 @@ def com_hard_chrome_youtube_stop(ip_addr, port=8008):
     if response.status_code != 200:
         if common_global.es_inst != None:
             common_global.es_inst.com_elastic_index('info', {'yt stop ip_addr': ip_addr})
+
+
+# TODO http://CHROMECAST_IP:8008/ssdp/device-desc.xml
+# TODO http://CHROMECAST_IP:8008/apps/ChromeCast
+# TODO http://CHROMECAST_IP:8008/apps/

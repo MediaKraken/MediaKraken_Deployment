@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from quart import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g, session
 from flask_login import current_user
 from flask_login import login_required
 
@@ -22,10 +22,9 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/meta_movie_detail/<guid>/')
 @blueprint.route('/meta_movie_detail/<guid>')
 @login_required
-async def metadata_movie_detail(guid):
+def metadata_movie_detail(guid):
     """
     Display metadata movie detail
     """
@@ -65,7 +64,7 @@ async def metadata_movie_detail(guid):
         data_background_image = None
     # grab reviews
     #    review = g.db_connection.db_Review_List(data[1])
-    return await render_template('users/metadata/meta_movie_detail.html',
+    return render_template('users/metadata/meta_movie_detail.html',
                            # data_media_ids=data[1],
                            data_name=data[2],
                            json_metadata=json_metadata,
@@ -81,9 +80,8 @@ async def metadata_movie_detail(guid):
 
 
 @blueprint.route('/meta_movie_list', methods=["GET", "POST"])
-@blueprint.route('/meta_movie_list/', methods=["GET", "POST"])
 @login_required
-async def metadata_movie_list():
+def metadata_movie_list():
     """
     Display list of movie metadata
     """
@@ -142,11 +140,11 @@ async def metadata_movie_list():
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_movie'),
-                                                  record_name='Movies',
+                                                  record_name='movie(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return await render_template('users/metadata/meta_movie_list.html',
+    return render_template('users/metadata/meta_movie_list.html',
                            media_movie=media,
                            page=page,
                            per_page=per_page,

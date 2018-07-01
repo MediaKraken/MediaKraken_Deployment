@@ -4,13 +4,13 @@ import json
 import sys
 
 sys.path.append('..')
-from quart import Blueprint, render_template, g, flash
+from flask import Blueprint, render_template, g, flash
 from flask_login import login_required
 
 blueprint = Blueprint("admins_transmission", __name__, url_prefix='/admin',
                       static_folder="../static")
 # need the following three items for admin check
-import quart
+import flask
 from flask_login import current_user
 from functools import wraps
 
@@ -46,17 +46,16 @@ def admin_required(fn):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
                                                              current_user.get_id()})
         if not current_user.is_admin:
-            return quart.abort(403)  # access denied
+            return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
 
     return decorated_view
 
 
 @blueprint.route("/transmission")
-@blueprint.route("/transmission/")
 @login_required
 @admin_required
-async def admin_transmission():
+def admin_transmission():
     """
     Display transmission page
     """
@@ -71,18 +70,18 @@ async def admin_transmission():
                  torrent.name, torrent.hashString, torrent.status,
                  torrent.progress, torrent.ratio))
             torrent_no += 1
-    return await render_template("admin/admin_transmission.html",
+    return render_template("admin/admin_transmission.html",
                            data_transmission=transmission_data)
 
 
 @blueprint.route('/transmission_delete', methods=["POST"])
 @login_required
 @admin_required
-async def admin_transmission_delete_page():
+def admin_transmission_delete_page():
     """
     Delete torrent from transmission
     """
-    # g.db_connection.db_Audit_Path_Delete(await await request.form['id'])
+    # g.db_connection.db_Audit_Path_Delete(request.form['id'])
     # g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
@@ -90,11 +89,11 @@ async def admin_transmission_delete_page():
 @blueprint.route('/transmission_edit', methods=["POST"])
 @login_required
 @admin_required
-async def admin_transmission_edit_page():
+def admin_transmission_edit_page():
     """
     Edit a torrent from transmission
     """
-    # g.db_connection.db_Audit_Path_Delete(await await request.form['id'])
+    # g.db_connection.db_Audit_Path_Delete(request.form['id'])
     # g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
