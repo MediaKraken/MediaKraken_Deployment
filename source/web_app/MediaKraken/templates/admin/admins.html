@@ -18,7 +18,7 @@
     </head>
     <body id="data_background">
         {% with data_library=data_library, data_messages=data_messages, data_share=data_share, data_user_count=data_user_count %}
-            {% include {{url_for('admin.admin_sidenav')}} %}
+            {% include "admin/admin_sidenav.html" %}
         {% endwith %}
         {{ maps|safe }}
         <!-- Main -->
