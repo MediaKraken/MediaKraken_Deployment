@@ -109,7 +109,7 @@ def admins():
     for dir_path in g.db_connection.db_audit_path_status():
         data_scan_info.append(
             (dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
-    return render_template("admin/admins.html", maps=open('admin/admin_sidenav.html').read(),
+    return render_template("admin/admins.html", maps=open('admin_sidenav.html').read(),
                            data_user_count=common_internationalization.com_inter_number_format(
                                g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
