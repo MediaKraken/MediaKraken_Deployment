@@ -65,7 +65,7 @@ def user_album_player(guid):
                            data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
 
 
-@blueprint.route('/playvideo_videojs/<mtype>/<guid>')
+@blueprint.route('/playvideo_videojs/<mtype>/<guid>', methods=['GET', 'POST'])
 @login_required
 def user_video_player_videojs(mtype, guid):
     """
