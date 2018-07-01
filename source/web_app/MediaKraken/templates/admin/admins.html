@@ -17,11 +17,11 @@
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
-        {% with data_library=data_library, data_messages=data_messages, data_share=data_share, data_user_count=data_user_count %}
-            {% include "admin/admin_sidenav.html" %}
-        {% endwith %}
         <!-- Main -->
             <div class="row row-offcanvas row-offcanvas-left">
+                {% with data_library=data_library, data_messages=data_messages, data_share=data_share, data_user_count=data_user_count %}
+                    {% include "admin/admin_sidenav.html" %}
+                {% endwith %}
                 <!-- /col-3 -->
                 <div class="col-sm-9">
                     <!-- column 2 -->
