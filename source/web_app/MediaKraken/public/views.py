@@ -101,8 +101,3 @@ def weather():
 @blueprint.route("/location/")
 def geo_location():
     return render_template("public/geolocation.html")
-
-
-@blueprint.route("/save")
-def screen_save():
-    return url_for('static', filename='canvas_hyperspace.html')
