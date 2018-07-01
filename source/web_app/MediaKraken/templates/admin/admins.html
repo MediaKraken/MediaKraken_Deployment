@@ -17,7 +17,7 @@
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
-        <iframe src="{{url_for('admins.admin_sidenav')}}"></iframe>
+        {{ maps|safe }}
         <!-- Main -->
             <div class="row row-offcanvas row-offcanvas-left">
                 <!-- /col-3 -->
