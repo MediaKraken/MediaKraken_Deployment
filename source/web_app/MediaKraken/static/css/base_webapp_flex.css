@@ -1,0 +1,35 @@
+.flexContainer {
+    display: flex;
+}
+.flexItem {
+    flex: 1;
+}
+.flexColumn {
+    flex-direction: column;
+}
+.fullHeight {
+    height: 100vh;
+}
+.whiteBackground {
+    background: white;
+}
+.blueBackground {
+    background: lightskyblue;
+}
+.main{
+    order: 2;
+    padding: 20px;
+    border-left: 1px solid #777777;
+    border-right: 1px solid #777777;
+}
+.sidebar {
+    width: 20%;
+    background: white;
+    padding: 20px;
+}
+.sidebarLeft{
+    order: 1;
+}
+.sidebarRight{
+    order: 3;
+}
