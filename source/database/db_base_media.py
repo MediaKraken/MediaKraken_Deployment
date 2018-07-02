@@ -255,13 +255,14 @@ def db_known_media_chapter_scan(self):
     return self.db_cursor.fetchall()
 
 
-def db_media_by_metadata_guid(self, metadata_guid):
+def db_media_by_metadata_guid(self, metadata_guid, media_class_type):
     """
     # fetch all media with METADATA match
     """
     self.db_cursor.execute('select mm_media_name,mm_media_guid from mm_media,'
                            'mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
-                           ' and mm_media_metadata_guid = %s', (metadata_guid,))
+                           ' and mm_media_metadata_guid = %s',
+                            (metadata_guid, media_class_type))
     return self.db_cursor.fetchall()
 
 
