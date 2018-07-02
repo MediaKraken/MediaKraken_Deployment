@@ -19,12 +19,12 @@
 </head>
 <body id="data_background">
 <div class="flexContainer flexItem">
-    <aside class="sidebar sidebarLeft">
+    <div class="sidebar sidebarLeft">
         {% with data_library=data_library, data_messages=data_messages, data_share=data_share,
         data_user_count=data_user_count %}
         {% include "admin/admin_sidenav.html" %}
         {% endwith %}
-    </aside>
+    </div>
     <div class="flexItem main">
         <div class="flexContainer flexSpaceAround">
             <div class="col">
