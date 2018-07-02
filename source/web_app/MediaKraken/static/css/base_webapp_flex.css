@@ -21,9 +21,6 @@
 }
 .main{
     order: 2;
-    padding: 20px;
-    border-left: 1px solid #777777;
-    border-right: 1px solid #777777;
 }
 .sidebar {
     width: 20%;
