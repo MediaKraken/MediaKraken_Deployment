@@ -226,7 +226,7 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkpgadmin',
                                        ports={"80": 12345},
-                                       network='mk_mediakraken_dbnetwork',
+                                       network='mk_mediakraken_network',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
 
