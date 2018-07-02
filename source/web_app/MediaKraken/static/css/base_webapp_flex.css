@@ -1,6 +1,9 @@
 .flexContainer {
     display: flex;
 }
+.flexSpaceAround {
+    justify-content: space-around;
+}
 .flexItem {
     flex: 1;
 }
@@ -25,7 +28,6 @@
 .sidebar {
     width: 20%;
     background: white;
-    padding: 20px;
 }
 .sidebarLeft{
     order: 1;
