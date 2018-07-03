@@ -31,9 +31,6 @@ import os.path
 from common import common_config_ini
 from common import common_signal
 
-if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    from py7zlib import Archive7z
-
 lock = threading.Lock()
 
 # store files, zippped and hash globally
