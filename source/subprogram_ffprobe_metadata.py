@@ -117,11 +117,11 @@ class FFMPEGConsumer(object):
                 # check image save option whether to save this in media folder or metadata folder
                 if option_config_json['MetadataImageLocal'] == False:
                     image_file_path = os.path.join(
-                        common_metadata.com_meta_image_file_path(media_path,
+                        common_metadata.com_meta_image_file_path(json_message['Media Path'],
                                                                  'chapter'),
                         (str(uuid.uuid4()) + '.png'))
                 else:
-                    image_file_path = os.path.join(os.path.dirname(media_path),
+                    image_file_path = os.path.join(os.path.dirname(json_message['Media Path']),
                                                    'chapters')
                     # have this bool so I don't hit the os looking for path each time
                     if first_image == True and not os.path.isdir(image_file_path):
@@ -137,7 +137,7 @@ class FFMPEGConsumer(object):
                 hours, minutes = divmod(minutes, 60)
                 command_list.append("%02d:%02d:%02f" % (hours, minutes, seconds))
                 command_list.append('-i')
-                command_list.append(media_path)
+                command_list.append(json_message['Media Path'])
                 command_list.append('-vframes')
                 command_list.append('1')
                 command_list.append(image_file_path)
@@ -146,10 +146,9 @@ class FFMPEGConsumer(object):
                 # as the worker might see it as finished if allowed to continue
                 chapter_image_list[chapter_data['tags']['title']] = image_file_path
                 first_image = False
-            db_connection.db_update_media_json(json_id,
+            db_connection.db_update_media_json(json_message['Media UUID'],
                                                json.dumps({'ChapterImages': chapter_image_list}))
-
-            db_connection.db_media_ffmeg_update(json_message['Data'],
+            db_connection.db_media_ffmeg_update(json_message['Media UUID'],
                                                 json.dumps(ffprobe_data))
         self.acknowledge_message(basic_deliver.delivery_tag)
 
