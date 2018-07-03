@@ -1,3 +1,5 @@
+pika
+youtube-dl
 docker
 pika
 apache-libcloud
@@ -8,4 +10,3 @@ onedrivesdk
 scandir
 psycopg2
 dosage
-youtube-dl
