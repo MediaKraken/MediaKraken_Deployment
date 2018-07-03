@@ -42,14 +42,15 @@ def on_message(channel, method_frame, header_frame, body):
             # file, image, etc
             if json_message['Subtype'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
-                                                         json_message['Local'])
+                                                         json_message['Local Save Path'])
             elif json_message['Subtype'] == 'Youtube':
                 dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',
                                            '/mediakraken/yt_dl_archive.txt',
-                                           json_message['YT URL']],
+                                           json_message['URL']],
                                           shell=False)
-                dl_pid.wait()  # TODO - do I really need to wait for finish?
+                dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+
 
 # fire off wait for it script to allow rabbitmq connection
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
