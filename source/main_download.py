@@ -80,5 +80,6 @@ while True:
     except:
         pass
 
+channel.cancel()
 # close the pika connection
-connection.cancel()
+connection.close()
