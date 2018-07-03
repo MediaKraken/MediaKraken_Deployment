@@ -75,5 +75,7 @@ while True:
     except:
         pass
 
+# Cancel the consumer and return any pending messages
+channel.cancel()
 # close the pika connection
 connection.close()

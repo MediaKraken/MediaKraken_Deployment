@@ -473,5 +473,7 @@ while True:
         on_message(channel, method_frame, header_frame, body)
     except:
         pass
+# Cancel the consumer and return any pending messages
+channel.cancel()
 connection.close()
 thread_db.db_close()
