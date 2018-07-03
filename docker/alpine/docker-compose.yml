@@ -156,7 +156,7 @@ services:
     container_name: mkdatabase
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_download.py 
+    entrypoint: python3 main_download.py 
     volumes:
       - /var/opt/mediakraken/download:/mediakraken
     networks:
