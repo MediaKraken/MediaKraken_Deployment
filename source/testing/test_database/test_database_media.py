@@ -181,14 +181,14 @@ class TestDatabaseMedia(object):
         self.db_connection.db_known_media_chapter_scan()
 
     @pytest.mark.parametrize(("metadata_guid"), [
-        ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4d'),  # exists
-        ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4e')])  # not found
-    def test_db_media_by_metadata_guid(self, metadata_guid):
+        ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4d', 'Movie'),  # exists
+        ('8d5ef41c-25b4-45e5-aada-b0ac9c7f6b4e', 'Book')])  # not found
+    def test_db_media_by_metadata_guid(self, metadata_guid, class_guid):
         """
         # fetch all media with METADATA match
         """
         self.db_connection.db_rollback()
-        self.db_connection.db_media_by_metadata_guid(metadata_guid)
+        self.db_connection.db_media_by_metadata_guid(metadata_guid, class_guid)
 
     @pytest.mark.parametrize(("media_guid"), [
         ('04442b10-3fb5-4d87-95a6-b50dbd072630'),  # exists
