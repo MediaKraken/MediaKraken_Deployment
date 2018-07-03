@@ -148,23 +148,17 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # Runs the cloud services
-  cloud:
+  # Runs the download services
+  download:
     build:
-      context: ./ComposeMediaKrakenCloud
-      dockerfile: Dockerfile
-    environment:
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
-    container_name: mkcloud
+      context: ./ComposeMediaKrakenDownload
+      dockerfile: dockerfile-download
+    container_name: mkdatabase
     depends_on:
-      - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_cloud.py 
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_download.py 
     volumes:
-      - /var/opt/mediakraken/cloud:/mediakraken
+      - /var/opt/mediakraken/download:/mediakraken
     networks:
       - mediakraken_network
     restart: unless-stopped

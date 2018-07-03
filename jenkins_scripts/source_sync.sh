@@ -3,15 +3,15 @@ cp /home/metaman/MediaKraken_Deployment/source/subprogram_broadcast.py /home/met
 cp /home/metaman/MediaKraken_Deployment/source/common/common_global.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenBroadcast/src/.
 cp /home/metaman/MediaKraken_Deployment/source/common/common_logging_elasticsearch.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenBroadcast/src/.
 
-# cloud
-cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
-cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
-cp -R /home/metaman/MediaKraken_Deployment/source/network /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
-cp /home/metaman/MediaKraken_Deployment/source/main_cloud.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCloud/src/.
-
 # devicescanner
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
 cp /home/metaman/MediaKraken_Deployment/source/main_hardware_discover.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDevicescan/src/.
+
+# download
+cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDownload/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDownload/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/network /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDownload/src/.
+cp /home/metaman/MediaKraken_Deployment/source/main_download.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenDownload/src/.
 
 # ffprobe
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenFFProbe/src/.

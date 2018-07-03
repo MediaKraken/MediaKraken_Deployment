@@ -7,10 +7,11 @@ docker push mediakraken/mkbaseffmpeg:latest
 docker push mediakraken/mkbasenodeffmpeg:latest
 #docker push mediakraken/mkbasenvidiadebain:latest
 docker push mediakraken/mkbroadcast:latest
-docker push mediakraken/mkcloud:latest
+#docker push mediakraken/mkcloud:latest
 docker push mediakraken/mkdatabase:latest
 docker push mediakraken/mkdevicescan:latest
 #docker push mediakraken/mkdocker:latest
+docker push mediakraken/mkdownload:latest
 docker push mediakraken/mkelk:latest
 docker push mediakraken/mkffprobe:latest
 docker push mediakraken/mkhardware:latest
