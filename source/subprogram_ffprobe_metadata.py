@@ -18,7 +18,7 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subpro
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-class FFMPEGConsumer(object):
+class MKConsumer(object):
     EXCHANGE = 'mkque_ffmpeg_ex'
     EXCHANGE_TYPE = 'direct'
     QUEUE = 'mkffmpeg'
@@ -183,7 +183,7 @@ def main():
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                                  'mkrabbitmq', '-p', ' 5672'], shell=False)
     wait_pid.wait()
-    mk_rabbit = FFMPEGConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:
