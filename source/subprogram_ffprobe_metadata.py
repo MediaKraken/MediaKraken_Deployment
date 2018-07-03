@@ -1,9 +1,9 @@
 import json
+import os
 import subprocess
+import uuid
 
 import pika
-import os
-import uuid
 
 from common import common_config_ini
 from common import common_ffmpeg
@@ -105,8 +105,8 @@ class FFMPEGConsumer(object):
             json_message = json.loads(body)
             common_global.es_inst.es_index('info', {'ffprobe': json_message})
             ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(
-                                                    db_connection.db_read_media(
-                                                        json_message['Data'])['mm_media_path'])
+                db_connection.db_read_media(
+                    json_message['Data'])['mm_media_path'])
             # begin image generation
             chapter_image_list = {}
             chapter_count = 0
@@ -146,12 +146,8 @@ class FFMPEGConsumer(object):
                 # as the worker might see it as finished if allowed to continue
                 chapter_image_list[chapter_data['tags']['title']] = image_file_path
                 first_image = False
-            if json_data is None:
-                json_data = json.dumps(
-                    {'ChapterImages': chapter_image_list})
-            else:
-                json_data['ChapterImages'] = chapter_image_list
-            db_connection.db_update_media_json(json_id, json.dumps(json_data))
+            db_connection.db_update_media_json(json_id,
+                                               json.dumps({'ChapterImages': chapter_image_list}))
 
             db_connection.db_media_ffmeg_update(json_message['Data'],
                                                 json.dumps(ffprobe_data))
@@ -188,7 +184,7 @@ def main():
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                                  'mkrabbitmq', '-p', ' 5672'], shell=False)
     wait_pid.wait()
-    mk_rabbit = FFMPEGConsumer('amqp://guest:guest@localhost:5672/%2F')
+    mk_rabbit = FFMPEGConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:
