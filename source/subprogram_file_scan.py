@@ -159,8 +159,7 @@ def worker(audit_directory):
                     # common_ffmpeg.com_ffmpeg_media_attr(file_name)
                     media_ffprobe_json = None
                 # create media_json data
-                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),
-                                         'ChapterScan': True})
+                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name,
                                           new_class_type_uuid, None, media_ffprobe_json, media_json)

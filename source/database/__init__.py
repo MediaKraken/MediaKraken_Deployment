@@ -81,7 +81,6 @@ class MKServerDatabase(object):
         db_media_path_by_uuid, \
         db_update_media_id, \
         db_update_media_json, \
-        db_known_media_chapter_scan, \
         db_media_by_metadata_guid, \
         db_media_image_path, \
         db_read_media_metadata_both, \
