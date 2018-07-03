@@ -171,45 +171,45 @@ class NetworkEvents(basic.LineReceiver):
                 json_message['User'], json_message['Password'])
 
         elif json_message['Type'] == "Media":
-            if json_message['Sub'] == 'Controller':
+            if json_message['Subtype'] == 'Controller':
                 pass
-            elif json_message['Sub'] == 'Detail':
+            elif json_message['Subtype'] == 'Detail':
                 mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
                     = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
                 msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
                                   'Data': mm_metadata_json, 'Data2': mm_media_ffprobe_json,
                                   'Data3': mm_metadata_localimage_json})
-            elif json_message['Sub'] == 'List':
+            elif json_message['Subtype'] == 'List':
                 # (Offset, Limit)
                 if json_message['Data'] == 'Movie':
                     if 'Offset' in json_message:
-                        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data':
+                        msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data':
                             self.db_connection.db_web_media_list(
                                 self.db_connection.db_media_uuid_by_class(
                                     json_message['Data']),
                                 json_message['Type'], offset=json_message['Offset'],
                                 list_limit=json_message['Limit'])})
                     else:
-                        msg = json.dumps({'Type': 'Media', 'Sub': 'List',
+                        msg = json.dumps({'Type': 'Media', 'Subtype': 'List',
                                           'Data': self.db_connection.db_web_media_list(
                                               self.db_connection.db_media_uuid_by_class(
                                                   json_message['Data']),
                                               json_message['Type'])})
-            elif json_message['Sub'] == 'In Progress':
+            elif json_message['Subtype'] == 'In Progress':
                 # (Offset, Limit)
                 pass
-            elif json_message['Sub'] == 'New':
+            elif json_message['Subtype'] == 'New':
                 msg = json.dumps({'Type': 'Media', 'Sub': 'New',
                                   'Data': self.db_connection.db_read_media_new(
                                       json_message['Offset'],
                                       json_message['Limit'])})
-            elif json_message['Sub'] == 'Update':
+            elif json_message['Subtype'] == 'Update':
                 # (playback, love, hate, etc)
                 pass
 
         elif json_message['Type'] == "Play":
             # TODO send this to pika so only have to code once and will be in the current running
-            if json_message['Sub'] == 'Cast':
+            if json_message['Subtype'] == 'Cast':
                 for client in common_global.client_devices:
                     if json_message['Target'] == client[1]:
                         # to address the 30 char name limit for container
@@ -231,7 +231,7 @@ class NetworkEvents(basic.LineReceiver):
                 media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])
                 common_global.es_inst.com_elastic_index('info', {"media_path": media_path})
                 if media_path is not None:
-                    if json_message['Sub'] == 'Client':
+                    if json_message['Subtype'] == 'Client':
                         self.send_single_ip(
                             json.dumps({'Type': 'Play', 'Data': media_path}),
                             json_message['Target'])

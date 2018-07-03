@@ -170,7 +170,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                             channel.basic_publish(exchange='mkque_cloud_ex',
                                                   routing_key='mkcloud',
                                                   body=json.dumps(
-                                                      {'Type': 'download', 'sub': 'image',
+                                                      {'Type': 'download', 'Subtype': 'image',
                                                        'url': 'https://thetvdb.com/banners/'
                                                               + episode_info['filename'],
                                                        'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
@@ -184,7 +184,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                         channel.basic_publish(exchange='mkque_cloud_ex',
                                               routing_key='mkcloud',
                                               body=json.dumps(
-                                                  {'Type': 'download', 'sub': 'image',
+                                                  {'Type': 'download', 'Subtype': 'image',
                                                    'url': 'https://thetvdb.com/banners/'
                                                           + xml_show_data['Data']['Episode'][
                                                               'filename'],
@@ -200,7 +200,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                     channel.basic_publish(exchange='mkque_cloud_ex',
                                           routing_key='mkcloud',
                                           body=json.dumps(
-                                              {'Type': 'download', 'sub': 'image',
+                                              {'Type': 'download', 'Subtype': 'image',
                                                'url': 'https://thetvdb.com/banners/'
                                                       + xml_show_data['Data'][
                                                           'Episode']['filename'],
@@ -271,7 +271,7 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
                 channel.basic_publish(exchange='mkque_cloud_ex',
                                       routing_key='mkcloud',
                                       body=json.dumps(
-                                          {'Type': 'download', 'sub': 'image',
+                                          {'Type': 'download', 'Subtype': 'image',
                                            'url': episode_info['image']['original'],
                                            'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
                                                     + str(episode_info['id']) + '.jpg'}),

@@ -86,7 +86,7 @@ def read(queue_object):
         elif json_message['Type'] == 'Library Scan':
             scan_pid = subprocess.Popen(['python3', './subprogram_file_scan.py'])
         elif json_message['Type'] == 'Pause':
-            if json_message['Sub'] == 'Cast':
+            if json_message['Subtype'] == 'Cast':
                 pass
         elif json_message['Type'] == 'Play':
             # to address the 30 char name limit for container
@@ -109,7 +109,7 @@ def read(queue_object):
                 # "double list" so each one is it's own instance
                 mk_containers[json_message['User']] = (define_new_container)
             common_global.es_inst.com_elastic_index('info', {'dict': mk_containers})
-            if json_message['Sub'] == 'Cast':
+            if json_message['Subtype'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
                     subtitle_command = ' -subtitles ' + json_message['Subtitle']
@@ -128,7 +128,7 @@ def read(queue_object):
                                     + ' --ffmpeg \'-c:v copy -c:a ac3' \
                                     + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
                                     + ' --tomp4 \'' + json_message['Data'] + '\''
-            elif json_message['Sub'] == 'Web':
+            elif json_message['Subtype'] == 'Web':
                 # stream to web
                 container_command = shlex.split("ffmpeg -v fatal {ss_string}"
                                                 " -i ".format(**locals())) \
@@ -141,7 +141,7 @@ def read(queue_object):
                                                   " -shortest -f mpegts"
                                                   " -output_ts_offset {output_ts_offset:.6f}"
                                                   " -t {t:.6f} pipe:%d.ts".format(**locals()))
-            elif json_message['Sub'] == 'HDHomerun':
+            elif json_message['Subtype'] == 'HDHomerun':
                 # stream from homerun
                 container_command = "ffmpeg -i http://" + json_message['IP'] \
                                     + ":5004/auto/v" + json_message['Channel'] \

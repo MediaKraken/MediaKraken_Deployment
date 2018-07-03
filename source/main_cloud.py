@@ -21,6 +21,7 @@ import subprocess
 import time
 
 import pika
+
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -38,12 +39,13 @@ def on_message(channel, method_frame, header_frame, body):
         json_message = json.loads(body)
         common_global.es_inst.es_index('info', {'cloud': json_message})
         if json_message['Type'] == 'Download':
-            if json_message['Sub'] == 'File':
+            if json_message['Subtype'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local'])
-            elif json_message['Sub'] == 'Youtube':
+            elif json_message['Subtype'] == 'Youtube':
                 dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',
-                                           '/mediakraken/archive.txt', json_message['Data']],
+                                           '/mediakraken/yt_dl_archive.txt',
+                                           json_message['YT URL']],
                                           shell=False)
                 dl_pid.wait()  # TODO - do I really need to wait for finish?
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
