@@ -37,11 +37,11 @@ def on_message(channel, method_frame, header_frame, body):
     if body is not None:
         json_message = json.loads(body)
         common_global.es_inst.es_index('info', {'cloud': json_message})
-        if json_message['Type'] == 'download':
-            if json_message['Sub'] == 'image':
+        if json_message['Type'] == 'Download':
+            if json_message['Sub'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local'])
-            elif json_message['Sub'] == 'youtube':
+            elif json_message['Sub'] == 'Youtube':
                 dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',
                                            '/mediakraken/archive.txt', json_message['Data']],
                                           shell=False)
