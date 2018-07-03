@@ -7,6 +7,4 @@ boto
 pysmb
 dropbox
 onedrivesdk
-scandir
-psycopg2
 dosage
