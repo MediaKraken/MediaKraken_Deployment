@@ -11,6 +11,7 @@ WORKDIR /mediakraken
 RUN apk add --update \
   gcc \
   linux-headers \
+  libffi-dev \
   musl-dev \
   python3-dev \
   && pip3 install -r requirements.txt \
