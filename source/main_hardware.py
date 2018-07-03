@@ -76,4 +76,4 @@ while True:
         pass
 
 # close the pika connection
-connection.cancel()
+connection.close()

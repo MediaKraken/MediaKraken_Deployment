@@ -473,5 +473,5 @@ while True:
         on_message(channel, method_frame, header_frame, body)
     except:
         pass
-connection.cancel()
+connection.close()
 thread_db.db_close()

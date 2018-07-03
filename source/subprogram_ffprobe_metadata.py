@@ -76,7 +76,7 @@ while True:
         pass
 
 # close the pika connection
-connection.cancel()
+connection.close()
 
 # commit
 db_connection.db_commit()
