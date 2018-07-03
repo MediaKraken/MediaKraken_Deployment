@@ -21,6 +21,8 @@ import os
 import subprocess
 import uuid
 
+from concurrent.futures import ThreadPoolExecutor
+
 from common import common_config_ini
 from common import common_global
 from common import common_internationalization
@@ -107,7 +109,7 @@ for row_data in db_connection.db_known_media_chapter_scan():
 
 # start processing the files
 if len(file_list) > 0:
-    with futures.ThreadPoolExecutor(len(file_list)) as executor:
+    with ThreadPoolExecutor(len(file_list)) as executor:
         futures = [executor.submit(worker, n) for n in file_list]
         for future in futures:
             common_global.es_inst.es_index('info', {'data': future.result()})

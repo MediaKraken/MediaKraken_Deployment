@@ -24,6 +24,8 @@ import uuid
 from datetime import datetime  # to handle threading
 
 import pika
+from concurrent.futures import ThreadPoolExecutor
+
 from common import common_config_ini
 from common import common_file
 from common import common_file_extentions
@@ -286,7 +288,7 @@ db_connection.db_commit()
 # start processing the directories
 if len(audit_directories) > 0:
     # switched to this since tracebacks work this method
-    with futures.ThreadPoolExecutor(len(audit_directories)) as executor:
+    with ThreadPoolExecutor(len(audit_directories)) as executor:
         futures = [executor.submit(worker, n) for n in audit_directories]
         for future in futures:
             pass
