@@ -10,6 +10,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN pip3 install -r requirements.txt \
+  && rm requirements.txt \
   && rm -rf /var/cache/apk/*
 
 # Copy the source files for the app
