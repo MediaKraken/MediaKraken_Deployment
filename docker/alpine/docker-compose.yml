@@ -10,7 +10,7 @@ services:
       context: ./ComposeMediaKrakenBroadcast
       dockerfile: dockerfile-broadcast
     container_name: mkbroadcast
-    entrypoint: python3 subprogram_broadcast.py
+    entrypoint: python3 /mediakraken/subprogram_broadcast.py
     ports:
       - "9101:9101"
     volumes:
@@ -34,7 +34,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 /mediakraken/main_server.py
     ports:
       - "8903:8903"
     volumes:
@@ -104,7 +104,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 /mediakraken/main_server_metadata_api.py
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /home/mediakraken:/mediakraken/mnt
@@ -156,7 +156,7 @@ services:
     container_name: mkdatabase
     depends_on:
       - rabbit
-    entrypoint: python3 main_download.py 
+    entrypoint: python3 /mediakraken/main_download.py 
     volumes:
       - /var/opt/mediakraken/download:/mediakraken
     networks:
@@ -306,7 +306,7 @@ services:
     container_name: mkffprobe
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 /mediakraken/subprogram_ffprobe_metadata.py
     volumes:
       - /home/mediakraken:/mediakraken/mnt
     networks:
@@ -323,7 +323,7 @@ services:
     container_name: mkhardware
     depends_on:
       - rabbit
-    entrypoint: python3 main_hardware.py
+    entrypoint: python3 /mediakraken/main_hardware.py
     networks:
       - mediakraken_network
     restart: unless-stopped
