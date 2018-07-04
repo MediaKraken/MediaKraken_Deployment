@@ -158,7 +158,7 @@ services:
       - rabbit
     entrypoint: python3 main_download.py
     volumes:
-      - /var/opt/mediakraken/download:/mediakraken
+      - /var/opt/mediakraken/download:/mediakraken/download
     networks:
       - mediakraken_network
     restart: unless-stopped
