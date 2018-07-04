@@ -191,17 +191,6 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-#  nginxrtmp:
-#    build:
-#      context: ./ComposeMediaKrakenNginxRTMP
-#      dockerfile: Dockerfile
-#    container_name: mknginxrtmp
-#    ports:
-#      - "1935:1935"
-#    volumes:
-#      - /home/mediakraken:/mediakraken/mnt
-#    restart: unless-stopped
-
 #  nginxrtmpforward:
 #    build:
 #      context: ./ComposeMediaKrakenNginxRTMPStreamForward

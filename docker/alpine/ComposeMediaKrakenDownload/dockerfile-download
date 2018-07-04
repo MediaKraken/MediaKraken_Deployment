@@ -2,7 +2,7 @@
 FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the downloader app"
+LABEL Description="This image holds the downloader app which also does cloud"
 
 # create work dir
 RUN mkdir /mediakraken/downloads
