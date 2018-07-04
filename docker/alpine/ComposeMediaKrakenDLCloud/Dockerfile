@@ -2,12 +2,10 @@
 FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the downloader app"
+LABEL Description="This image hold the downloader app"
 
-# create work dir
 RUN mkdir /mediakraken/downloads
 
-# copy PIP requirements
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
@@ -16,7 +14,6 @@ RUN pip3 install -r requirements.txt \
   && rm requirements.txt
 
 ADD wait-for-it-ash.sh /mediakraken
-# Copy the source files for the app
 ADD src /mediakraken
 
 CMD ["/bin/ash"]

@@ -149,11 +149,11 @@ services:
     restart: unless-stopped
 
   # Runs the download services
-  download:
+  dlcloud:
     build:
-      context: ./ComposeMediaKrakenDownload
-      dockerfile: dockerfile-download
-    container_name: mkdownload
+      context: ./ComposeMediaKrakenDLCloud
+      dockerfile: Dockerfile
+    container_name: mkdlcloud
     depends_on:
       - rabbit
     entrypoint: python3 main_download.py 
