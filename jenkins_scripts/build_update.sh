@@ -33,6 +33,11 @@ docker build -t mediakraken/mkbase37py3 .
 cd ../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
 
+# build the base node
+# Adds NODE to the base ffmpeg and ffprobe.
+cd ../ComposeMediaKrakenBaseNodeFFMPEG
+docker build -t mediakraken/mkbasenodeffmpeg .
+
 # Build the nginx RTMP
 #cd ../ComposeMediaKrakenNginxRTMP
 #docker build -t mediakraken/mknginxrtmp .
@@ -53,11 +58,6 @@ docker build -t mediakraken/mkprefetchtmdb .
 # build the tvamze prefetch
 cd ../ComposeMediaKrakenPrefetchTVMaze
 docker build -t mediakraken/mkprefetchtvmaze .
-
-# build the base node
-# Adds NODE to the base ffmpeg and ffprobe.
-cd ../ComposeMediaKrakenBaseNodeFFMPEG
-docker build -t mediakraken/mkbasenodeffmpeg .
 
 # Build the base slave images from other base images (basenodeffmpeg)
 cd ../ComposeMediaKrakenSlave
