@@ -183,7 +183,7 @@ services:
     container_name: mkffprobe
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_ffprobe_metadata.py
     volumes:
       - /home/mediakraken:/mediakraken/mnt
     networks:
@@ -198,7 +198,7 @@ services:
     container_name: mkhardware
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python3 main_hardware.py
+    entrypoint: python3 main_hardware.py
     networks:
       - mediakraken_network
     restart: unless-stopped
