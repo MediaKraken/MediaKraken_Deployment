@@ -26,6 +26,7 @@ RUN apk add --update \
   net-snmp \
   net-snmp-dev \
   postgresql-dev \
+  python3 \
   python3-dev \
   openrc \
   && pip3 install -r requirements.txt \
