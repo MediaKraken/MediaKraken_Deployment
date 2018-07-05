@@ -21,6 +21,7 @@ RUN apk add --update \
   musl-dev \  
   nginx \
   openrc \
+  openssl-dev \
   py3-cffi \
   py3-redis \
   python3-dev \
