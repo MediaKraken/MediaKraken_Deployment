@@ -9,7 +9,10 @@ ARG X265_VERSION=2.8
 ARG FFMPEG_VERSION="4.0.1"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
-ADD scripts /mediakraken
+RUN mkdir /mediakraken/install
+
+COPY scripts /mediakraken
+COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
 
 RUN buildDeps="autoconf \
         automake \
@@ -78,7 +81,6 @@ RUN buildDeps="autoconf \
     tar -zx --strip-components=1 && \
     make EXAMPLES=0 && \
     make install && \
-    mkdir /mediakraken/install && \
     chmod +x /mediakraken/*.sh && \
     /mediakraken/kvazaar.sh && \
     /mediakraken/openh264.sh && \
