@@ -1,7 +1,6 @@
 pika
 youtube-dl
 docker
-apache-libcloud
 boto
 pysmb
 dropbox

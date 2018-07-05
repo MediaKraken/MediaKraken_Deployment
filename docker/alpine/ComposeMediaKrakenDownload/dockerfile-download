@@ -12,6 +12,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  py3-libcloud \
   py3-psycopg2 \
   && pip3 install -r requirements.txt \
   && rm -rf /var/cache/apk/* \

@@ -25,6 +25,7 @@ RUN apk add --update \
   net-snmp \
   net-snmp-dev \
   python3-dev \
+  py3-libcloud \
   py3-psycopg2 \
   openrc \
   && pip3 install -r requirements.txt \
