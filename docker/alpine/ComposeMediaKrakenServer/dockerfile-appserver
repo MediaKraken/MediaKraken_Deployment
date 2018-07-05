@@ -12,7 +12,6 @@ RUN apk add --update \
   cifs-utils \
   curl-dev \
   nfs-utils \
-  postgresql-client \
   openssl \
   alpine-sdk \
   libffi-dev \
@@ -26,8 +25,8 @@ RUN apk add --update \
   net-snmp-dev \
   openldap-dev \
   portaudio-dev \
-  postgresql-dev \
   python3-dev \
+  py3-psycopg2 \
   openrc \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install pycurl \
@@ -39,7 +38,6 @@ RUN apk add --update \
   linux-headers \
   musl-dev \
   net-snmp-dev \
-  postgresql-dev \
   python3-dev \
   && apk add \
   py-setuptools \

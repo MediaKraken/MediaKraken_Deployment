@@ -6,4 +6,3 @@ pika
 apache-libcloud
 elasticsearch
 psutil
-psycopg2
