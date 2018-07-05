@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Template</title>
+    
+    <link rel="stylesheet" href="./static/css/jquery.mobile.min.css"/>
+    <link rel="stylesheet" href="./static/css/jqm-docs.css"/>
+    <script type="text/javascript" src="./static/js/jquery.min.js"></script>
+    <script src="js/jqm-docs.js"></script>
+    <script type="text/javascript" src="./static/js/jquery.mobile.min.js"></script>
+	<script type="text/javascript" src="./static/js/TVKeyValue.js"></script>
+    <script src="./static/js/main.js"></script>
+    <link rel="stylesheet" href="./static/css/style.css"/>
+
+</head>
+<body>
+<div data-role="page" id="two" class="type-interior" >
+    <div data-role="header" data-position="fixed" data-tap-toggle="false" >
+        <h1>Master-detail application</h1>
+        <a href="index.html" data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home">Home</a>
+    </div><!-- /header -->
+
+    <div data-role="content" >
+        <div class="content-primary">
+            <h2>Section 1</h2>
+
+            <p>This is Section 1.</p>
+        </div><!--/content-primary -->
+
+        <div class="content-secondary">
+            <div data-role="collapsible" data-collapsed="true" >
+                <h3>More in this section</h3>
+                <ul data-role="listview" >
+                    <li data-role="list-divider">Details</li>
+                    <li><a href="../index.html">Introduction</a></li>
+                    <li><a href="./section1.html">Section 1</a></li>
+                </ul>
+            </div>
+        </div>
+    </div><!-- /content -->
+
+    <div data-role="footer" class="footer-docs" data-position="fixed" data-tap-toggle="false" >
+        <p></p>
+    </div>
+</div><!-- /page -->
+</body>
+</html>
