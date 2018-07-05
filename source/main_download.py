@@ -2,7 +2,9 @@ import json
 import subprocess
 
 import pika
+import xmltodict
 
+from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
@@ -10,6 +12,8 @@ from common import common_network
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
+# open the database
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 class MKConsumer(object):
     EXCHANGE = 'mkque_download_ex'
@@ -108,6 +112,33 @@ class MKConsumer(object):
                                                json_message['URL']],
                                               shell=False)
                     dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
+                elif json_message['Subtype'] == 'HDTrailers':
+                    data = xmltodict.parse(common_network.mk_network_fetch_from_url(
+                        "http://feeds.hd-trailers.net/hd-trailers", None))
+                    if data is not None:
+                        for item in data['item']:
+                            common_global.es_inst.com_elastic_index('info', {'item': item})
+                            download_link = None
+                            if ('(Trailer' in data['item']['title']
+                                and option_config_json['Trailer']['Trailer'] is True) \
+                                    or ('(Behind' in data['item']['title']
+                                        and option_config_json['Trailer']['Behind'] is True) \
+                                    or ('(Clip' in data['item']['title']
+                                        and option_config_json['Trailer']['Clip'] is True) \
+                                    or ('(Featurette' in data['item']['title']
+                                        and option_config_json['Trailer']['Featurette'] is True) \
+                                    or ('(Carpool' in data['item']['title']
+                                        and option_config_json['Trailer']['Carpool'] is True):
+                                for trailer_url in data['item']['enclosure url']:
+                                    if '1080p' in trailer_url:
+                                        download_link = data['item']['enclosure url']
+                                        break
+                            if download_link is not None:
+                                # TODO let the metadata fetch program grab these
+                                # TODO verify this trailer has not been downloaded before
+                                # TODO so only insert db dl records
+                                common_network.mk_network_fetch_from_url(
+                                    download_link, '/static/meta/trailer')
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
