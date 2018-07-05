@@ -4,8 +4,6 @@ FROM mediakraken/mkbase37py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image sets up tvmaze preload"
 
-# copy PIP requirements
-ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
