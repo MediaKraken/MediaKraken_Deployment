@@ -1,3 +1,2 @@
 tmdbv3api
 tmdbsimple
-psutil

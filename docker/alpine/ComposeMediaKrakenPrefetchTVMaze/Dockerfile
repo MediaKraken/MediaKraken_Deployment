@@ -11,16 +11,9 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --update \
   ca-certificates \
-  gcc \
-  linux-headers \
-  musl-dev \
-  python3-dev \
-  libffi-dev \
   openrc \
   py3-psycopg2 \
-  && pip3 install -r requirements.txt \
-  && apk del gcc linux-headers musl-dev python3-dev \
-  && rm requirements.txt \
+  py3-psutil \
   && apk add \
   py-setuptools \
   && rm -rf /var/cache/apk/*

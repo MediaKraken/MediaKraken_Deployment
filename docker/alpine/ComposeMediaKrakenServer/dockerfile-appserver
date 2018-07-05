@@ -27,6 +27,7 @@ RUN apk add --update \
   portaudio-dev \
   python3-dev \
   py3-psycopg2 \
+  py3-psutil \
   openrc \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install pycurl \

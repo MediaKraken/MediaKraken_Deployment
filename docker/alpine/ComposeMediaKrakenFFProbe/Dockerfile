@@ -27,6 +27,7 @@ RUN apk add --update \
   python3-dev \
   py3-libcloud \
   py3-psycopg2 \
+  py3-psutil \
   openrc \
   && pip3 install -r requirements.txt \
   && apk del \

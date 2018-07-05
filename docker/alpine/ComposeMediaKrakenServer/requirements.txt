@@ -11,4 +11,3 @@ setuptools
 ipgetter
 pika
 docker
-psutil
