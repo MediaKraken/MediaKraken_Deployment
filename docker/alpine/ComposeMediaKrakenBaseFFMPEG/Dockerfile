@@ -130,8 +130,7 @@ RUN buildDeps="autoconf \
         --disable-debug \
         --disable-doc \
         --disable-static \
-        --disable-ffplay \
-        --disable-ffserver && \
+        --disable-ffplay && \
     make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
     hash -r
