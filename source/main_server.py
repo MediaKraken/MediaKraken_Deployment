@@ -85,11 +85,6 @@ proc = subprocess.Popen(
     ['python3', './subprogram_reactor_line.py'], shell=False)
 common_global.es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
 
-# # startup the ffprobe here atm
-# proc_ffprobe = subprocess.Popen(
-#     ['python3', './subprogram_ffprobe_metadata.py'], shell=False)
-# common_global.es_inst.com_elastic_index('info', {'FFprobe PID': proc_ffprobe.pid})
-
 # fire up cron service
 proc_cron = subprocess.Popen(
     ['python3', './subprogram_cron_checker.py'], shell=False)
@@ -114,8 +109,8 @@ if option_config_json['Docker Instances']['musicbrainz']:
 if option_config_json['Docker Instances']['portainer']:
     docker_inst.com_docker_run_portainer()
 
-if option_config_json['Docker Instances']['smtp']:
-    docker_inst.com_docker_run_container()
+# if option_config_json['Docker Instances']['smtp']:
+#     docker_inst.com_docker_run_container()
 
 if option_config_json['Docker Instances']['teamspeak']:
     docker_inst.com_docker_run_teamspeak()
