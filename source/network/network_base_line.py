@@ -132,6 +132,7 @@ class NetworkEvents(basic.LineReceiver):
                 msg = json.dumps({'Type': 'User', 'Data': user_data})
         elif json_message['Type'] == "Image":
             metadata_id = None
+            image_json = None
             if json_message['Sub'] == 'Album':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id = self.db_connection.db_meta_album_image_random()
