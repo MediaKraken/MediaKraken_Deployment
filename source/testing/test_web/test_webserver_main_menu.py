@@ -111,19 +111,6 @@ def test_main_menu_metadata_tv_shows(driver):
     assert 'MediaKraken' in driver.title
 
 
-# def test_main_menu_metadata_music(driver):
-#     """
-#     Click metadata music on nav menu
-#     """
-#     driver.get(TEST_TARGET)
-#     hov = ActionChains(driver).move_to_element(driver.find_element_by_id('menu_metadata'))
-#     hov.perform()
-#     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
-#         "menu_metadata_music")))
-#     element.click()
-#     assert 'MediaKraken' in driver.title
-
-
 def test_main_menu_metadata_music_albums(driver):
     """
     Click metadata music albums on nav menu
@@ -204,6 +191,20 @@ def test_main_menu_metadata_people(driver):
     hov.perform()
     element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
                                                                           "menu_metadata_people")))
+    element.click()
+    assert 'MediaKraken' in driver.title
+
+
+def test_main_menu_metadata_periodical(driver):
+    """
+    Click metadata people on nav menu
+    """
+    driver.get(TEST_TARGET)
+    hov = ActionChains(driver).move_to_element(
+        driver.find_element_by_id('menu_metadata'))
+    hov.perform()
+    element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID,
+                                                                          "menu_metadata_periodical")))
     element.click()
     assert 'MediaKraken' in driver.title
 
