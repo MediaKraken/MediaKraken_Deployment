@@ -23,7 +23,7 @@
                 {% for row_data in media %}
                 <tr>
                     <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td><a href = {{"../report_duplicate_detail/" + row_data[0]}}>{{ row_data[1] }}</a></td>
+                    <td><a href =" {{ url_for('admins_report.report_duplicate_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
                     <td>{{ row_data[2] }}</td>
                 </tr>
                 {% endfor %}

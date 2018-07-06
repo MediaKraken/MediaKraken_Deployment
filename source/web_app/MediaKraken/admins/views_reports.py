@@ -6,8 +6,8 @@ User view in webapp
 from flask import Blueprint, render_template, g
 from flask_login import login_required
 
-blueprint = Blueprint("user_reports", __name__,
-                      url_prefix='/users', static_folder="../static")
+blueprint = Blueprint("admins_report", __name__,
+                      url_prefix='/admin', static_folder="../static")
 import os
 import sys
 
