@@ -16,3 +16,18 @@
   MA 02110-1301, USA.
 '''
 
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from .test_webserver_base import *
+
+
+def test_main_menu(driver):
+    """
+    Click home page link
+    """
+    driver.get(TEST_TARGET)
+    driver.find_element_by_id('menu_home').click()
+    assert 'MediaKraken' in driver.title
