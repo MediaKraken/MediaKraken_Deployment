@@ -27,7 +27,6 @@ from . import views_periodicals
 from . import views_person
 from . import views_playback
 from . import views_queue
-from . import views_reports
 from . import views_search
 from . import views_sports
 from . import views_sync
