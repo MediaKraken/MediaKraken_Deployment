@@ -132,12 +132,12 @@ class HashGenerate(Thread):
                 file_pointer = open(self.file_name, 'rb')
                 # calculate sha1 hash
                 file_pointer.seek(0, 0)
+                hash_dict = {}
                 try:
                     SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
                     for chunk in iter(lambda: file_pointer.read(128 * SHA1.block_size), ''):
                         SHA1.update(chunk)
                     sha1_hash_data = SHA1.hexdigest()
-                    hash_dict = {}
                     hash_dict[os.path.basename(
                         self.file_name)] = sha1_hash_data
                     print(("single: %s", self.file_name, sha1_hash_data))
