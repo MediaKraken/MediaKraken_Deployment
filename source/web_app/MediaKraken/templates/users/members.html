@@ -17,90 +17,62 @@
         <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
-        <a href="{{ url_for('user_queue.user_queue_page') }}">
+        <a href="{{ url_for('user_queue.user_queue_page') }}" id="user_queue_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/rectangles_black.png" alt="Queue" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_movie_genre.user_movie_page', genre='All') }}">
+        <a href="{{ url_for('user_movie_genre.user_movie_page', genre='All') }}" id="user_movie_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/movie_ticket.png" alt="Movie Ticket" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_music.user_album_list_page') }}">
+        <a href="{{ url_for('user_music.user_album_list_page') }}" id="user_music_album_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/headphone.png" alt="Music" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_tv.user_tv_page') }}">
+        <a href="{{ url_for('user_tv.user_tv_page') }}" id="user_tv_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/television.png" alt="TV" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_sports.user_sports_page') }}">
+        <a href="{{ url_for('user_sports.user_sports_page') }}" id="user_sports_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/stadium.png" alt="Sports" height="200" width="200">
         </a>
         <a href="{{ url_for('user_tv_live.user_livetv_page', schedule_date='20170716', schedule_time='213500') }}">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/television_live.png" alt="Live TV" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_images.user_image_gallery') }}">
+        <a href="{{ url_for('user_images.user_image_gallery') }}" id="user_image_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/photo.png" alt="Image Gallery" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_games.user_games_list') }}">
+        <a href="{{ url_for('user_games.user_games_list') }}" id="user_game_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/vid_game.png" alt="Games" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_periodicals.user_books_list') }}">
+        <a href="{{ url_for('user_periodicals.user_books_list') }}" id="user_book_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/books.png" alt="Books" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_internet.user_iradio_list') }}">
+        <a href="{{ url_for('user_internet.user_iradio_list') }}" id="user_iradio_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/radio.png" alt="iRadio" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_home.home_media_list') }}">
+        <a href="{{ url_for('user_home.home_media_list') }}" id="user_home_media_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/vid_camera.png" alt="Home Movie" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_3d.user_3d_list') }}">
+        <a href="{{ url_for('user_3d.user_3d_list') }}" id="user_3d_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/3D.png" alt="3D" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_internet.user_internet') }}">
+        <a href="{{ url_for('user_internet.user_internet') }}" id="user_internet_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/planet-earth.png" alt="Internet" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_music_video.user_music_video_list') }}">
+        <a href="{{ url_for('user_music_video.user_music_video_list') }}" id="user_music_video_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/listening-music-video-clip-with-auricular.png" alt="Music Video" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_cctv.cctv') }}">
+        <a href="{{ url_for('user_cctv.cctv') }}" id="user_cctv_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/surveillance-cctv-symbol-in-rounded-triangle.png" alt="CCTV" height="200" width="200">
         </a>
-        <a href="{{ url_for('user_search.search_media') }}">
+        <a href="{{ url_for('user_search.search_media') }}" id="user_search_page">
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/magnifying-glass.png" alt="Search" height="200" width="200">
         </a>
-        {% if data_resume_media %}
-        <p>
-        <h2 class="neon" data-neon-text="Resume">Resume</h2>
-        {% for row_data in data_resume_media %}
-        {% endfor %}
-        </p>
-        {% endif %}
-        {% if data_new_media %}
-        <p>
-        {{ pagination.info }}
-        {{ pagination.links }}
-        <h2 class="burning">New and Hot</h2>
-        {% for row_data in data_new_media %}
-            {% if row_data[2] == "Movie" %}
-                <a href="{{ url_for('user_movie.movie_detail', guid=row_data[1]) }}" ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p></a>
-            {% else %}
-                {% if row_data[2] == "TV Show" %}
-                    <a href="{{ url_for('user_tv.user_tv_show_detail_page', guid=row_data[1]) }}" ><p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p></a>
-                {% else %}
-                    <p class="burning"> {{ row_data[0] + ": " + row_data[2] }}</p>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-        {{ pagination.links }}
-        </p>
-    {% endif %}
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/jquery.burn.min.js"></script>
-    <script src="/static/js/scripts_burn.js"></script>
-    <script src="/static/js/blazy.min.js"></script>
-    <script>
-        ;(function() {
-            // Initialize
-            var bLazy = new Blazy();
-        })();
-    </script>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/blazy.min.js"></script>
+        <script>
+            ;(function() {
+                // Initialize
+                var bLazy = new Blazy();
+            })();
+        </script>
     </body>
 </html>
 {% endblock %}
