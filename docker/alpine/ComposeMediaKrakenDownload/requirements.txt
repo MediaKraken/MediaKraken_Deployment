@@ -6,4 +6,4 @@ pysmb
 dropbox
 onedrivesdk
 dosage
-xml2dict
+xmltodict
