@@ -109,6 +109,7 @@ def read(queue_object):
                 # "double list" so each one is it's own instance
                 mk_containers[json_message['User']] = (define_new_container)
             common_global.es_inst.com_elastic_index('info', {'dict': mk_containers})
+            container_command = None
             if json_message['Subtype'] == 'Cast':
                 # should only need to check for subs on initial play command
                 if 'Subtitle' in json_message:
@@ -151,14 +152,15 @@ def read(queue_object):
                 container_command = shlex.split(container_command)
             else:
                 common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
-            common_global.es_inst.com_elastic_index('info',
-                                                    {'container_command': container_command,
-                                                     'name': name_container})
-            hwaccel = False
-            docker_inst.com_docker_run_slave(hwaccel=hwaccel,
-                                             name_container=name_container,
-                                             container_command=container_command)
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
+            if container_command is not None:
+                common_global.es_inst.com_elastic_index('info',
+                                                        {'container_command': container_command,
+                                                         'name': name_container})
+                hwaccel = False
+                docker_inst.com_docker_run_slave(hwaccel=hwaccel,
+                                                 name_container=name_container,
+                                                 container_command=container_command)
+                common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
             common_global.es_inst.com_elastic_index('info', {'user stop':
