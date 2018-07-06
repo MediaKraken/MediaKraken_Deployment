@@ -26,7 +26,8 @@ class CommonHardwareController(object):
     Class for interfacing with hardware from json specifications
     """
 
-    def __init__(self, device_manufacturer, device_json, device_communication, device_ip):
+    def __init__(self, device_manufacturer, device_json, device_communication, device_ip,
+                 device_port):
         self.device_inst = None
         self.device_manufacturer = device_manufacturer
         self.device_json = device_json
@@ -36,7 +37,7 @@ class CommonHardwareController(object):
                     device_ip=device_ip)
             elif device_manufacturer == 'pioneer':
                 self.device_inst = common_hardware_pioneer.CommonHardwarePioneer(
-                    device_ip=device_ip, device_port=nn)
+                    device_ip=device_ip, device_port=device_port)
             elif device_manufacturer == 'samsung':
                 self.device_inst = common_hardware_samsung.CommonHardwareSamsung(
                     device_ip=device_ip)
