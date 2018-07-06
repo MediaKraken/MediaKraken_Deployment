@@ -153,6 +153,10 @@ services:
     build:
       context: ./ComposeMediaKrakenDownload
       dockerfile: dockerfile-download
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdownload
     depends_on:
       - rabbit

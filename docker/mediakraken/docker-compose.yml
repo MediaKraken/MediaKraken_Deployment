@@ -207,6 +207,10 @@ services:
   download:
     image: mediakraken/mkdownload:latest
     container_name: mkdownload
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
     depends_on:
       - rabbit
     entrypoint: python3 main_download.py
