@@ -42,9 +42,9 @@ def user_video_player(guid):
     return render_template("users/user_playback.html", data_desc=('Movie title'))
 
 
-@blueprint.route('/playback/<vid_type>/<guid>')
+@blueprint.route('/playback/<vid_type>/<guid>/<chapter>')
 @login_required
-def user_playback(vid_type, guid):
+def user_playback(vid_type, guid, chapter):
     """
     Display playback actions page
     """

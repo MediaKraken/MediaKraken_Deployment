@@ -47,6 +47,15 @@ def user_books_list():
                            )
 
 
+@blueprint.route('/book_detail/<guid>')
+@login_required
+def user_books_detail(guid):
+    """
+    Display books page
+    """
+    pass
+
+
 @blueprint.before_request
 def before_request():
     """

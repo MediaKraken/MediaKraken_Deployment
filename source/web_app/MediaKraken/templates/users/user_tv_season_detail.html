@@ -3,10 +3,10 @@
 <body id="data_background">
   <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="..//static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="..//static/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="..//static/css/star-rating.min.css" media="all" type="text/css"/>
-    <link rel="stylesheet" href="..//static/css/base_webapp_layout.css" media="all" type="text/css"/>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/star-rating.min.css" media="all" type="text/css"/>
+    <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
   </head>
 {% if data %}
   <div id="movie_detail">
@@ -63,7 +63,7 @@
             {% for episode_info in data_episode_keys %}
                 <div class="col-1-4">
                     <div class="wrapper">
-                      <a href= {{ "../../../tv_episode_detail/" + data_guid + "/" + data_episode_count[episode_info][2] }} >
+                      <a href= "{{ url_for('user_tv.user_tv_episode_detail_page', guid=data_guid, season=None, episode=data_episode_count[episode_info][2] ) }}" >
                       {% if data_episode_count[episode_info][1] == "missing_icon.jpg" %}
                           <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/meta/images/missing_icon.jpg" }} height="200" width="300">
                       {% else %}

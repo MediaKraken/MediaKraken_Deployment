@@ -15,7 +15,7 @@
         <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 count -->
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[1]}}>
-                <a href= {{ "../tv_show_detail/" + row_data[1] }} >
+                <a href= "{{ url_for('user_tv.user_tv_show_detail_page', guid=row_data[1]) }}" >
                 {% if row_data[2] == None %}
                 <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "/static/images/missing_icon.jpg" height="300" width="200">
                 </a>

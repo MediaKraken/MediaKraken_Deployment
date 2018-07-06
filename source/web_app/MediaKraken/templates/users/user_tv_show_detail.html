@@ -82,7 +82,7 @@
         <div id="the-node">
             {% for season_info in data_season_count %}
             <div class="main_photo">
-                <a href= {{ "../../tv_season_detail/" + data_guid + "/" + season_info|string }} >
+                <a href= "{{ url_for('user_tv.user_tv_season_detail_page', guid=data_guid, season=season_info|string ) }}" >
                 <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/images/missing_icon.jpg" }} alt= {{ "/static/images/missing_icon.jpg" }} height="300" width="200">
                 </a>
                 <div class="description">

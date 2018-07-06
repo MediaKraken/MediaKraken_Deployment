@@ -47,6 +47,15 @@ def user_music_video_list():
                            )
 
 
+@blueprint.route('/music_video_detail/<guid>')
+@login_required
+def user_music_video_detail(guid):
+    """
+    Display music video page
+    """
+    pass
+
+
 @blueprint.before_request
 def before_request():
     """

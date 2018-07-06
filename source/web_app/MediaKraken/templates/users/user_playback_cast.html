@@ -18,25 +18,25 @@
         <p>No known current chromecast.</p>
         {% endif %}
         <div>
-            <a href= {{"../../cast/back/" + data_uuid}} id="cast_back_button">
+            <a href= "{{ url_for('user_chromecast.user_cast', action='back', guid=data_guid) }}" id="cast_back_button">
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/arrow_left.png" height="50" width="50">
             </a>
-            <a href= {{"../../cast/rewind/" + data_uuid}} id="cast_rewind_button">
+            <a href= "{{ url_for('user_chromecast.user_cast', action='rewind', guid=data_guid) }}" id="cast_rewind_button">
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/rewind.png" height="50" width="50">
             </a>
-            <a href= {{"../../cast/stop/" + data_uuid}} id="cast_stop_button">
+            <a href= "{{ url_for('user_chromecast.user_cast', action='stop', guid=data_guid) }}" id="cast_stop_button">
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/stop.png" height="50" width="50">
             </a>
-            <a href= {{"../../cast/play/" + data_uuid}} id="cast_play_button">
+            <a href= "{{ url_for('user_chromecast.user_cast', action='play', guid=data_guid) }}" id="cast_play_button">
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/play.png" height="50" width="50">
             </a>
-            <a href= {{"../../cast/pause/" + data_uuid}} id="cast_pause_button">
+            <a href= "{{ url_for('user_chromecast.user_cast', action='pause', guid=data_guid) }}" id="cast_pause_button">
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/pause.png" height="50" width="50">
             </a>
-            <a href= {{"../../cast/ff/" + data_uuid}} id="cast_ff_button">
+            <a href= "{{ url_for('user_chromecast.user_cast', action='ff', guid=data_guid) }}" id="cast_ff_button">
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/forward.png" height="50" width="50">
             </a>
-            <a href= {{"../../cast/forward/" + data_uuid}} id="cast_forward_button">
+            <a href= "{{ url_for('user_chromecast.user_cast', action='forward', guid=data_guid) }}" id="cast_forward_button">
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/navigation/arrow_right.png" height="50" width="50">
             </a>
         </div>

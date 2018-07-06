@@ -13,9 +13,9 @@
     <div id="container">
         {% for row_data in media %}
         {% if row_data[2] == None %}
-        <a href= {{ "../sports_detail/" + row_data[0] }} > {{row_data[1]}}</a>
+        <a href= "{{ url_for('user_sports.user_sports_detail_page', guid=row_data[0]) }}" > {{row_data[1]}}</a>
         {% else %}
-        <a href= {{ "../sports_detail/" + row_data[0] }} >
+        <a href= "{{ url_for('user_sports.user_sports_detail_page', guid=row_data[0]) }}" >
         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="200" width="132">
         </a>
         {% endif %}
