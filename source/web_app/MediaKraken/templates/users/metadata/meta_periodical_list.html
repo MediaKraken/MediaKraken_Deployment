@@ -8,11 +8,11 @@
         <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
         <link rel="stylesheet" href="/static/css/listnav.css">
     </head>
-    {% if media_person %}
+    {% if media_periodical %}
     {{ pagination.info }}
     {{ pagination.links }}
     <div id="the-node">
-        {% for row_data in media_person %}
+        {% for row_data in media_periodical %}
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href = "{{ url_for('user_metadata_periodical.metadata_periodical_detail', guid=row_data[0]) }}">
