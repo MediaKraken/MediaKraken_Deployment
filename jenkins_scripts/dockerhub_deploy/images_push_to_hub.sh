@@ -1,5 +1,6 @@
 docker push mediakraken/mkbase37:latest
 docker push mediakraken/mkbase37py3:latest
+docker push mediakraken/mkbase38py3:latest
 #docker push mediakraken/mkbasecuda
 docker push mediakraken/mkbaseffmpeg:latest
 #docker push mediakraken/mkbaseffmpegnvidia:latest

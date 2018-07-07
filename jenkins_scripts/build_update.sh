@@ -24,6 +24,10 @@ docker build -t mediakraken/mkbase37 .
 cd ../ComposeMediaKrakenBase37Py3
 docker build -t mediakraken/mkbase37py3 .
 
+# base python 3 images
+cd ../ComposeMediaKrakenBase38Py3
+docker build -t mediakraken/mkbase38py3 .
+
 # Build the base cuda from alpine
 #cd ../ComposeMediaKrakenBaseCuda
 #docker build -t mediakraken/mkbasecuda .
