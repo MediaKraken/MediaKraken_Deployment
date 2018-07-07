@@ -41,7 +41,7 @@ def members():
     Display main members page
     """
     return render_template("users/members.html",
-                           data_new_media=g.db_connection.db_read_media_new(7))
+                           data_new_media=g.db_connection.db_read_media_new_count(7))
 
 
 @blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
