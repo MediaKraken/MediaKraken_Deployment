@@ -84,13 +84,13 @@
         <div class="dropdown-container">
             <a href="{{ url_for('admins.admin_chart_browser') }}" id="admin_navmenu_chart_browser">Browser</a>
             <a href="{{ url_for('admins.admin_chart_client_usage') }}" id="admin_navmenu_client_usage">Client</a>
-            <a href="{{ url_for('user_reports.report_display_all_duplicates') }}" id="admin_navmenu_all_dup">Duplicate Media</a>
-            <a href="{{ url_for('user_reports.report_display_all_media') }}" id="admin_navmenu_all_media">Known Media</a>
-            <a href="{{ url_for('user_reports.report_display_all_media_known_video') }}" id="admin_navmenu_all_matched">Matched Media</a>
-            <a href="{{ url_for('user_reports.report_top10', mtype=1) }}" id="admin_navmenu_top10_all_time">Top 10 All Time</a>
-            <a href="{{ url_for('user_reports.report_top10', mtype=2) }}" id="admin_navmenu_top10_movie">Top 10 Movie</a>
-            <a href="{{ url_for('user_reports.report_top10', mtype=3) }}" id="admin_navmenu_top10_tvshow">Top 10 TV Show</a>
-            <a href="{{ url_for('user_reports.report_top10', mtype=4) }}" id="admin_navmenu_top10_tveps">Top 10 TV Episodes</a>
+            <a href="{{ url_for('admins_report.report_display_all_duplicates') }}" id="admin_navmenu_all_dup">Duplicate Media</a>
+            <a href="{{ url_for('admins_report.report_display_all_media') }}" id="admin_navmenu_all_media">Known Media</a>
+            <a href="{{ url_for('admins_report.report_display_all_media_known_video') }}" id="admin_navmenu_all_matched">Matched Media</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=1) }}" id="admin_navmenu_top10_all_time">Top 10 All Time</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=2) }}" id="admin_navmenu_top10_movie">Top 10 Movie</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=3) }}" id="admin_navmenu_top10_tvshow">Top 10 TV Show</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=4) }}" id="admin_navmenu_top10_tveps">Top 10 TV Episodes</a>
         </div>
 
         <a href="{{ url_for('admins.admin_server_settings') }}" id="admin_navmenu_server_settings"><i class="glyphicon glyphicon-cog"></i> Server</a>
