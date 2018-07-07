@@ -66,7 +66,9 @@ def admin_library():
     """
     List all media libraries
     """
+    common_global.es_inst.com_elastic_index('info', {'lib': request.method})
     if request.method == 'POST':
+        common_global.es_inst.com_elastic_index('info', {'lib': request.form})
         if "scan" in request.form:
             # submit the message
             ch = fpika.channel()
