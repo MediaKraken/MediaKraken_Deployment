@@ -40,23 +40,8 @@ def members():
     """
     Display main members page
     """
-    resume_list = []
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_read_media_new_count(
-                                                      7),
-                                                  record_name='new and hot',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
-    return render_template("users/members.html", data_resume_media=resume_list,
-                           data_new_media=g.db_connection.db_read_media_new(
-                               7, offset, per_page),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
+    return render_template("users/members.html",
+                           data_new_media=g.db_connection.db_read_media_new(7))
 
 
 @blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
