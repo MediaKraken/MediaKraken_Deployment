@@ -28,6 +28,7 @@ RUN apk add --update \
   python3-dev \
   py3-psycopg2 \
   py3-psutil \
+  py3-babel \
   openrc \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install pycurl \
