@@ -11,3 +11,4 @@ setuptools
 ipgetter
 pika
 docker
+pysmb
