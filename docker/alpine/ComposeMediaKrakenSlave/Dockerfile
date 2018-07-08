@@ -21,12 +21,15 @@ RUN apk add --update \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
+  libressl \
   musl-dev \
   net-snmp \
   net-snmp-dev \
   python3 \
   python3-dev \
   openrc \
+  py3-service_identity \
+  py3-setuptools \
   && pip3 install -r requirements.txt \
   && npm install -g castnow \
   && apk del \
