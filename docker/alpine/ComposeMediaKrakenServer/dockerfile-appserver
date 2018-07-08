@@ -9,10 +9,11 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  libressl-dev \
+  libressl \
   cifs-utils \
   curl-dev \
   nfs-utils \
-  openssl \
   alpine-sdk \
   libffi-dev \
   openldap-dev \
@@ -38,6 +39,7 @@ RUN apk add --update \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
+  libressl-dev \
   musl-dev \
   net-snmp-dev \
   python3-dev \
