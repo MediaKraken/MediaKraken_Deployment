@@ -70,7 +70,7 @@ class MKConsumer(object):
     def setup_exchange(self, exchange_name):
         self._channel.exchange_declare(self.on_exchange_declareok,
                                        exchange_name,
-                                       self.EXCHANGE_TYPE)
+                                       self.EXCHANGE_TYPE, durable=True)
 
     def on_exchange_declareok(self, unused_frame):
         self.setup_queue(self.QUEUE)
