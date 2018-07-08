@@ -1,12 +1,7 @@
 natsort
 passwordmeter
-service_identity
-requests
-httplib2
-uritemplate
 futures
 twisted
-setuptools
 ipgetter
 pika
 docker
