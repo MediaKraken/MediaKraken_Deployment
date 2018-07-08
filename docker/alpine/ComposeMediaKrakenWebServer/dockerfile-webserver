@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37py3
+FROM mediakraken/mkbase38py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the image for the web server app"
@@ -21,14 +21,14 @@ RUN apk add --update \
   musl-dev \  
   nginx \
   openrc \
-  openssl-dev \
+  libressl-dev \
   py3-cffi \
   py3-redis \
   python3-dev \
   cifs-utils \
   nfs-utils \
   ca-certificates \
-  openssl \
+  libressl \
   py3-numpy \
   py3-psycopg2 \
   py3-psutil \
@@ -42,6 +42,7 @@ RUN apk add --update \
   musl-dev \
   linux-headers \
   python3-dev \
+  libressl-dev \
   && rm requirements.txt \
   && apk add \
   uwsgi-python3 \

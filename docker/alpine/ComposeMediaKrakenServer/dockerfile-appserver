@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37py3
+FROM mediakraken/mkbase38py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main server app"
@@ -9,11 +9,15 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apk add --update \
+  alpine-sdk \
+  python3-dev \
+  && pip3 install -r requirements.txt \
+  && apk add \
+  libressl-dev \
+  libressl \
   cifs-utils \
   curl-dev \
   nfs-utils \
-  openssl \
-  alpine-sdk \
   libffi-dev \
   openldap-dev \
   jpeg-dev \
@@ -25,24 +29,25 @@ RUN apk add --update \
   net-snmp-dev \
   openldap-dev \
   portaudio-dev \
-  python3-dev \
   py3-psycopg2 \
   py3-psutil \
   py3-babel \
+  py3-service_identity \
+  py3-requests \
+  py3-uritemplate \
+  py3-httplib2 \
+  py3-setuptools \
+  py3-curl \
+  py3-natsort \
   openrc \
-  && export PYCURL_SSL_LIBRARY=openssl \
-  && pip3 install pycurl \
-  && pip3 install -r requirements.txt \
   && apk del \
   alpine-sdk \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
+  libressl-dev \
   musl-dev \
   net-snmp-dev \
-  python3-dev \
-  && apk add \
-  py-setuptools \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt \
   && rc-update add netmount \

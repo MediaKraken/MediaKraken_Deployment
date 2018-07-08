@@ -1,5 +1,5 @@
 # Start with Alpine base image
-FROM alpine:3.7
+FROM alpine:3.8
 
 # download cuda
 RUN apk update && apk add --update wget alpine-sdk perl && \

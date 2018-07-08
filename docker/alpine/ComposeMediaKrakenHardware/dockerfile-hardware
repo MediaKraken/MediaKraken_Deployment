@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37py3
+FROM mediakraken/mkbase38py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the hardware app"
@@ -14,6 +14,7 @@ RUN apk add --update \
   libffi-dev \
   musl-dev \
   openssl-dev \
+  python \
   python3-dev \
   && pip3 install -r requirements.txt \
   && rm requirements.txt \

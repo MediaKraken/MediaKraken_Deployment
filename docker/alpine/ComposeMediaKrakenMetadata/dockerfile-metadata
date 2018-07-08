@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase37py3
+FROM mediakraken/mkbase38py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image downloads and maintains all metadata"
@@ -19,16 +19,14 @@ RUN apk add --update \
   python3-dev \
   py3-psycopg2 \
   libffi-dev \
-  python \
   openrc \
   libressl-dev \
-  && pip3 install pytest-runner \
   && pip3 install -r requirements.txt \
-  && pip3 uninstall -y pytest_runner \
   && apk del gcc linux-headers musl-dev python3-dev \
   && rm requirements.txt \
   && apk add \
-  py-setuptools \
+  py3-setuptools \
+  py3-service_identity \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind

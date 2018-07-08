@@ -1,13 +1,6 @@
-natsort
 passwordmeter
-service_identity
-requests
-pyOpenSSL
-httplib2
-uritemplate
 futures
 twisted
-setuptools
 ipgetter
 pika
 docker
