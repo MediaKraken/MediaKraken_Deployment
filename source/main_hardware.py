@@ -89,7 +89,7 @@ class MKConsumer(object):
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        self._channel.queue_declare(self.on_queue_declareok, queue_name)
+        self._channel.queue_declare(self.on_queue_declareok, queue_name, durable=True)
 
     def on_queue_declareok(self, method_frame):
         self._channel.queue_bind(self.on_bindok, self.QUEUE,
