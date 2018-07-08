@@ -13,19 +13,19 @@ RUN apk add --update \
   ca-certificates \
   cifs-utils \
   nfs-utils \
-  postgresql-client \
   gcc \
   linux-headers \
   musl-dev \
-  postgresql-dev \
   python3-dev \
+  py3-psycopg2 \
   libffi-dev \
   python \
   openrc \
+  libressl-dev \
   && pip3 install pytest-runner \
   && pip3 install -r requirements.txt \
   && pip3 uninstall -y pytest_runner \
-  && apk del gcc linux-headers musl-dev postgresql-dev python3-dev \
+  && apk del gcc linux-headers musl-dev python3-dev \
   && rm requirements.txt \
   && apk add \
   py-setuptools \

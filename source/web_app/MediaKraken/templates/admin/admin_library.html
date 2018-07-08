@@ -102,9 +102,9 @@
     <p>No library data found.</p>
     {% endif %}
     <p><a href="{{ url_for('admins_library.admin_library_edit_page') }}" class="btn btn-primary btn-large">Add New Directory</a>
-    <form name="form_lib_scan" action="." method="post">
-        <input class="btn btn-default btn-submit" type="submit" name="scan" value="Library Scan">
-    </form>
+        <form method="post">
+            <input class="btn btn-large" type="submit" name="scan" value="Library Scan">
+        </form>
     </p>
     <script type="text/javascript" src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/jquery.min.js"></script>

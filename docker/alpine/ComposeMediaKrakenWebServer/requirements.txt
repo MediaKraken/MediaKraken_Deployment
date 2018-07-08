@@ -22,8 +22,6 @@ PyVimeo
 python-twitch
 transmissionrpc
 passwordmeter
-psycopg2
-psutil
 boto
 dropbox
 onedrivesdk

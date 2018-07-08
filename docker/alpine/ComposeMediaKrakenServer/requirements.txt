@@ -1,8 +1,7 @@
 natsort
 passwordmeter
-psycopg2
 service_identity
-requests>=2.11.1
+requests
 pyOpenSSL
 httplib2
 uritemplate
@@ -11,5 +10,5 @@ twisted
 setuptools
 ipgetter
 pika
-docker==2.7
-psutil
+docker
+pysmb

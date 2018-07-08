@@ -201,7 +201,7 @@ class MediaKrakenApp(App):
                 common_global.es_inst.com_elastic_index('info', {"Got Message": server_msg})
             else:
                 common_global.es_inst.com_elastic_index('info', {"Got Image Message":
-                                                                     json_message['Sub'], 'uuid':
+                                                                     json_message['Subtype'], 'uuid':
                                                                      json_message['UUID']})
         except:
             common_global.es_inst.com_elastic_index('info', {"full record": server_msg})
@@ -334,7 +334,7 @@ class MediaKrakenApp(App):
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_home(self, *args):
-        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
+        msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
         common_global.es_inst.com_elastic_index('info', {"home press": args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
                 or args[0] == 'Movie' or args[0] == 'video':
@@ -367,8 +367,8 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
-                                                  'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
+                                                  'Image Media Type': 'Demo', 'Image Type': 'Backdrop'}))
 
     def _image_loaded_home_demo(self, proxyImage):
         """

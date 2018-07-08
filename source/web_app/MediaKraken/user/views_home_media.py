@@ -36,6 +36,13 @@ def home_media_list():
     return render_template("users/user_home_media_list.html", media=media)
 
 
+@blueprint.route('/home_media_detail/<guid>')
+@login_required
+def home_media_detail(guid):
+    """
+    Display mage page for home media
+    """
+    pass
 
 @blueprint.before_request
 def before_request():

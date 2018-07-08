@@ -3,7 +3,4 @@ pyopenssl
 setuptools
 docker
 pika
-apache-libcloud
 elasticsearch
-psutil
-psycopg2

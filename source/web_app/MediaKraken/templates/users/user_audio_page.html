@@ -17,13 +17,13 @@
                 <tr>
                     {% if row_data[3] == None %}
                     <td>
-                        <a href= {{ "./audio_detail/" + row_data[1] }} >
+                        <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1])) }}" >
                         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ row_data[0] }} alt= {{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
                         </a>
                     </td>
                     {% else %}
                     <td>
-                        <a href= {{ "./audio_detail/" + row_data[1] }} >
+                        <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1])) }}" >
                         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ row_data[2] }} alt= {{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
                         </a>
                     </td>

@@ -1,0 +1,7 @@
+Ubuntu 17.04 x64 to 64GB disk and with lvm
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install git openssh-server
+sudo reboot
+
+sudo ./theater_os_build_x64_pi_(ubuntu).sh
+# wait.........

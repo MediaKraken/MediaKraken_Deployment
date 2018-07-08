@@ -22,11 +22,13 @@ import sys
 import time
 import uuid
 
+from concurrent.futures import ThreadPoolExecutor
+from crochet import wait_for, setup
+
 from common import common_global
 from common import common_hardware_arduino_usb_serial
 from common import common_logging_elasticsearch
 from common import common_signal
-from crochet import wait_for, setup
 
 setup()
 
@@ -286,7 +288,7 @@ class MediaKrakenApp(App):
     def main_mediakraken_event_button_start(self, *args):
         global thread_status
         common_global.es_inst.com_elastic_index('info', {"start select": args})
-        with futures.ThreadPoolExecutor(max_workers=1) as executor:
+        with ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(self.worker, self.root.ids.spinner_one.text,
                                      self.root.ids.spinner_two.text,
                                      self.root.ids.spinner_three.text,

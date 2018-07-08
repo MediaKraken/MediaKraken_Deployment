@@ -148,23 +148,21 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # Runs the cloud services
-  cloud:
+  # Runs the download services
+  download:
     build:
-      context: ./ComposeMediaKrakenCloud
-      dockerfile: Dockerfile
+      context: ./ComposeMediaKrakenDownload
+      dockerfile: dockerfile-download
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
-    container_name: mkcloud
+    container_name: mkdownload
     depends_on:
-      - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_cloud.py 
+    entrypoint: python3 main_download.py
     volumes:
-      - /var/opt/mediakraken/cloud:/mediakraken
+      - /var/opt/mediakraken/download:/mediakraken/download
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -196,17 +194,6 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-#  nginxrtmp:
-#    build:
-#      context: ./ComposeMediaKrakenNginxRTMP
-#      dockerfile: Dockerfile
-#    container_name: mknginxrtmp
-#    ports:
-#      - "1935:1935"
-#    volumes:
-#      - /home/mediakraken:/mediakraken/mnt
-#    restart: unless-stopped
 
 #  nginxrtmpforward:
 #    build:
@@ -312,7 +299,7 @@ services:
     container_name: mkffprobe
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_ffprobe_metadata.py
     volumes:
       - /home/mediakraken:/mediakraken/mnt
     networks:
@@ -329,7 +316,7 @@ services:
     container_name: mkhardware
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h rabbit -p 5672 -t 30 -- python3 main_hardware.py
+    entrypoint: python3 main_hardware.py
     networks:
       - mediakraken_network
     restart: unless-stopped

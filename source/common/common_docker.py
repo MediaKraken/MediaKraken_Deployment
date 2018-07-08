@@ -221,12 +221,12 @@ class CommonDocker(object):
                                                     'mode': 'rw'}},
                                        network='mk_mediakraken_network')
 
-    def com_docker_run_pgadmin(self, user_email='spootdev@gmail.org', user_password='metaman'):
+    def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
         return self.cli.containers.run(image='dpage/pgadmin4',
                                        detach=True,
                                        name='mkpgadmin',
                                        ports={"80": 12345},
-                                       network='mk_mediakraken_dbnetwork',
+                                       network='mk_mediakraken_network',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
 

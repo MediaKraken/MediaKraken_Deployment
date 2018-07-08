@@ -42,6 +42,15 @@ def cctv():
                            )
 
 
+@blueprint.route('/cctv_detail/<guid>')
+@login_required
+def cctv_detail(guid):
+    """
+    Display cctv detail
+    """
+    pass
+
+
 @blueprint.before_request
 def before_request():
     """

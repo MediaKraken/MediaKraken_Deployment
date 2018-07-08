@@ -1,28 +1,17 @@
 # Download base image
-FROM mediakraken/mkbase37
+FROM mediakraken/mkbase37py3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image sets up tvmaze preload"
 
-# copy PIP requirements
-ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
   ca-certificates \
-  postgresql-client \
-  gcc \
-  linux-headers \
-  musl-dev \
-  postgresql-dev \
-  python-dev \
-  libffi-dev \
-  python \
   openrc \
-  && pip install -r requirements.txt \
-  && apk del gcc linux-headers musl-dev postgresql-dev python-dev py-pip \
-  && rm requirements.txt \
+  py3-psycopg2 \
+  py3-psutil \
   && apk add \
   py-setuptools \
   && rm -rf /var/cache/apk/*

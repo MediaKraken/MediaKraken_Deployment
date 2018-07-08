@@ -1,0 +1,9 @@
+pika
+youtube-dl
+docker
+boto
+pysmb
+dropbox
+onedrivesdk
+dosage
+xmltodict

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/jQueryMasterDetailApplication" version="1.0.0" viewmodes="maximized">
+    <tizen:application id="mNKNr1Y21c.jQueryMasterDetailApplication" package="mNKNr1Y21c" required_version="2.3"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+    <icon src="icon.png"/>
+    <name>MediaKraken.Tizen</name>
+    <tizen:profile name="tv"/>
+</widget>

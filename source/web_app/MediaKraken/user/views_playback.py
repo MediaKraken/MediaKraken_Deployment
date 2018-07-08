@@ -3,12 +3,14 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g
+from flask import Blueprint, render_template, g, request, abort
 from flask_login import current_user
 from flask_login import login_required
 
 blueprint = Blueprint("user_playback", __name__,
                       url_prefix='/users', static_folder="../static")
+import uuid
+import subprocess
 import sys
 
 sys.path.append('..')
@@ -40,9 +42,9 @@ def user_video_player(guid):
     return render_template("users/user_playback.html", data_desc=('Movie title'))
 
 
-@blueprint.route('/playback/<vid_type>/<guid>')
+@blueprint.route('/playback/<vid_type>/<guid>/<chapter>')
 @login_required
-def user_playback(vid_type, guid):
+def user_playback(vid_type, guid, chapter):
     """
     Display playback actions page
     """
@@ -65,7 +67,7 @@ def user_album_player(guid):
                            data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
 
 
-@blueprint.route('/playvideo_videojs/<mtype>/<guid>')
+@blueprint.route('/playvideo_videojs/<mtype>/<guid>', methods=['GET', 'POST'])
 @login_required
 def user_video_player_videojs(mtype, guid):
     """

@@ -77,7 +77,7 @@
                         <input class="btn btn-default btn-submit" type="submit" name="status" value="Sync">
                         {% endif %}
                         {% if data_cast == True %}
-                        <a href= {{ "../cast/base/" + data_guid }} >
+                        <a href= "{{ url_for('user_chromecast.user_cast', action='base', guid=data_guid) }}" >
                         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/chromecast.png">
                         </a>
                         {% endif %}
@@ -169,7 +169,7 @@
                 <div class="grid">
                     {% for chapter_info in data_json_media_chapters %}
                     <div class="col-1-4">
-                        <a href= {{ "../playback/hls/" + data_guid + "/" + chapter_info[0].replace(' ','%20') }} >
+                        <a href= "{{ url_for('user_playback.user_playback', vid_type='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20')) }}" >
                         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + chapter_info[1] }} alt= {{ "/static/meta/images/" + chapter_info[1] }} height="150" width="150">
                         </a>
                         <p>{{chapter_info[0]}}</p>

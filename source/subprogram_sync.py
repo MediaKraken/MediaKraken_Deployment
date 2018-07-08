@@ -19,6 +19,8 @@
 import subprocess
 from datetime import timedelta
 
+from concurrent.futures import ThreadPoolExecutor
+
 from common import common_cloud
 from common import common_config_ini
 from common import common_global
@@ -112,7 +114,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # switched to this since tracebacks work this method
 sync_data = db_connection.db_sync_list()
-with futures.ThreadPoolExecutor(len(sync_data)) as executor:
+with ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
         common_global.es_inst.com_elastic_index('info', {'future': future.result()})

@@ -6,3 +6,4 @@ rxv
 python-nest
 onkyo-eiscp
 soco
+pyatv

@@ -24,6 +24,8 @@ import uuid
 from datetime import datetime  # to handle threading
 
 import pika
+from concurrent.futures import ThreadPoolExecutor
+
 from common import common_config_ini
 from common import common_file
 from common import common_file_extentions
@@ -157,8 +159,7 @@ def worker(audit_directory):
                     # common_ffmpeg.com_ffmpeg_media_attr(file_name)
                     media_ffprobe_json = None
                 # create media_json data
-                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d"),
-                                         'ChapterScan': True})
+                media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name,
                                           new_class_type_uuid, None, media_ffprobe_json, media_json)
@@ -166,7 +167,8 @@ def worker(audit_directory):
                 channel.basic_publish(exchange='mkque_ffmpeg_ex',
                                       routing_key='mkffmpeg',
                                       body=json.dumps(
-                                          {'Type': 'FFProbe', 'Data': media_id}),
+                                          {'Type': 'FFProbe', 'Media UUID': media_id,
+                                           'Media Path': file_name}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=1))
                 if save_dl_record:
@@ -286,7 +288,7 @@ db_connection.db_commit()
 # start processing the directories
 if len(audit_directories) > 0:
     # switched to this since tracebacks work this method
-    with futures.ThreadPoolExecutor(len(audit_directories)) as executor:
+    with ThreadPoolExecutor(len(audit_directories)) as executor:
         futures = [executor.submit(worker, n) for n in audit_directories]
         for future in futures:
             pass
@@ -301,6 +303,11 @@ db_connection.db_commit()
 # vaccum tables that had records added
 db_connection.db_pgsql_vacuum_table('mm_media')
 db_connection.db_pgsql_vacuum_table('mm_download_que')
+
+# Cancel the consumer and return any pending messages
+channel.cancel()
+# close pika
+channel.close()
 
 # close the database
 db_connection.db_close()

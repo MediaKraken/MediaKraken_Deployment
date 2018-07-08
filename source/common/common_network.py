@@ -38,11 +38,8 @@ def mk_network_fetch_from_url(url, directory=None):
     """
     common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
     try:
-        if sys.version_info < (2, 9, 0):
-            datafile = urllib.request.urlopen(url)
-        else:
-            datafile = urllib.request.urlopen(
-                url, context=ssl._create_unverified_context())
+        datafile = urllib.request.urlopen(
+            url, context=ssl._create_unverified_context())
         if directory is not None:
             try:
                 localfile = open(directory, 'wb')

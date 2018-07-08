@@ -16,7 +16,6 @@ RUN apk add --update \
   cifs-utils \
   nfs-utils \
   bash \
-  postgresql-client \
   alpine-sdk \
   libffi-dev \
   libxml2-dev \
@@ -25,8 +24,10 @@ RUN apk add --update \
   musl-dev \
   net-snmp \
   net-snmp-dev \
-  postgresql-dev \
   python3-dev \
+  py3-libcloud \
+  py3-psycopg2 \
+  py3-psutil \
   openrc \
   && pip3 install -r requirements.txt \
   && apk del \
@@ -37,7 +38,6 @@ RUN apk add --update \
   linux-headers \
   musl-dev \
   net-snmp-dev \
-  postgresql-dev \
   python3-dev \
   && apk add \
   py-setuptools \

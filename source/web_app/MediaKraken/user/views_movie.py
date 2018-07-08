@@ -131,8 +131,9 @@ def movie_detail(guid):
             data_codec = json_ffmpeg['streams'][0]['codec_name']
             data_file = json_ffmpeg['format']['filename']
         # check to see if there are other version of this video file (dvd, hddvd, etc)
-        vid_versions = g.db_connection.db_media_by_metadata_guid(
-            data[1])  # metadata guid
+        vid_versions = g.db_connection.db_media_by_metadata_guid(data[1],
+                                                                 g.db_connection.db_media_uuid_by_class(
+                                                                     'Movie'))
         # audio and sub sreams
         audio_streams = []
         subtitle_streams = [(0, 'None')]

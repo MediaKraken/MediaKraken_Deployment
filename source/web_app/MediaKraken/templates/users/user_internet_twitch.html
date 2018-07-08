@@ -11,7 +11,7 @@
     <div>
         {% for row_data in media %}
         <div class="main_photo">
-            <a href= {{ "../internet_twitch_stream_detail/" + row_data[0] }} >
+            <a href= "{{ url_for('user_internet.user_internet_twitch_stream_detail', stream_name=row_data[0]) }}" }} >
             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="180" width="320">
             </a>
             <div class="description">

@@ -10,7 +10,6 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN apk add --update \
-  postgresql-client \
   ack \
   curl-dev \
   git \
@@ -22,15 +21,17 @@ RUN apk add --update \
   musl-dev \  
   nginx \
   openrc \
+  openssl-dev \
   py3-cffi \
   py3-redis \
   python3-dev \
-  postgresql-dev \
   cifs-utils \
   nfs-utils \
   ca-certificates \
   openssl \
   py3-numpy \
+  py3-psycopg2 \
+  py3-psutil \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install pycurl \
   && pip3 install -r requirements.txt \
@@ -41,7 +42,6 @@ RUN apk add --update \
   musl-dev \
   linux-headers \
   python3-dev \
-  postgresql-dev \
   && rm requirements.txt \
   && apk add \
   uwsgi-python3 \

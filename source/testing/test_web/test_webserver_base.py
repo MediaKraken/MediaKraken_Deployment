@@ -21,7 +21,7 @@ import os
 import pytest  # pylint: disable=W0611
 from selenium import webdriver
 
-TEST_TARGET = 'http://10.0.0.179:8080'
+TEST_TARGET = 'http://th-mkdev-1:8080'
 
 browsers = {
     'chrome': webdriver.Chrome,

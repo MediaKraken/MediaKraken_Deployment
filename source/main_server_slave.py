@@ -209,13 +209,13 @@ class MKConsumer(object):
         common_global.es_inst.com_elastic_index('info', {'message': basic_deliver.delivery_tag,
                                                          'from': properties.app_id})
         json_message = json.loads(body)
-        if json_message['Type'] != "IMAGE":
+        if json_message['Type'] != "Image":
             common_global.es_inst.com_elastic_index('info', {'Got Message': body})
         common_global.es_inst.com_elastic_index('info', {'len total': len(body)})
 
         msg = None
         if json_message['Type'] == "Play":
-            if json_message['Sub'] == 'Cast':
+            if json_message['Device Type'] == 'Cast':
                 pass
                 # if json_message['Command'] == "Chapter Back":
                 #     pass
@@ -250,9 +250,9 @@ class MKConsumer(object):
                 #     subprocess.Popen(
                 #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
                 #          '-devicename', json_message['Device'], '-volup'), shell=False)
-            elif json_message['Sub'] == 'HDHomeRun':
+            elif json_message['Device Type'] == 'HDHomeRun':
                 pass
-            elif json_message['Sub'] == 'Slave':
+            elif json_message['Device Type'] == 'Slave':
                 if json_message['Command'] == "Chapter Back":
                     pass
                 elif json_message['Command'] == "Chapter Forward":
@@ -269,17 +269,17 @@ class MKConsumer(object):
                 elif json_message['Command'] == 'Stop':
                     os.killpg(self.proc_ffmpeg_stream.pid, signal.SIGTERM)
         elif json_message['Type'] == "System":
-            if json_message['Sub'] == 'CPU':
+            if json_message['Subtype'] == 'CPU':
                 msg = json.dumps({'Type': 'System', 'Sub': 'CPU',
                                   'Data': common_system.com_system_cpu_usage(False)})
-            elif json_message['Sub'] == "Disk":
+            elif json_message['Subtype'] == "Disk":
                 msg = json.dumps({'Type': 'System', 'Sub': 'Disk',
                                   'Data': common_system.com_system_disk_usage_all(True)})
-            elif json_message['Sub'] == "MEM":
+            elif json_message['Subtype'] == "MEM":
                 msg = json.dumps({'Type': 'System', 'Sub': 'MEM',
                                   'Data': common_system.com_system_virtual_memory(False)})
-            elif json_message['Sub'] == "SYS":
-                msg = json.dumps({'Type': 'System', 'Sub': 'SYS',
+            elif json_message['Subtype'] == "SYS":
+                msg = json.dumps({'Type': 'System', 'Action': 'SYS',
                                   'Data': common_system.com_system_cpu_usage(True),
                                   'Data2': common_system.com_system_disk_usage_all(True),
                                   'Data3': common_system.com_system_virtual_memory(False)})

@@ -47,6 +47,13 @@ def user_album_list_page():
                            pagination=pagination,
                            )
 
+@blueprint.route("/album_detail/<guid>")
+@login_required
+def user_album_detail_page(guid):
+    """
+    Display album page
+    """
+    pass
 
 @blueprint.before_request
 def before_request():

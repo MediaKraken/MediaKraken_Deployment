@@ -8,6 +8,7 @@ from . import views_docker
 from . import views_library
 from . import views_link
 from . import views_messages
+from . import views_reports
 from . import views_share
 from . import views_task
 from . import views_transmission

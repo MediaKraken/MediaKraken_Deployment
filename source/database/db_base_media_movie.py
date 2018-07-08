@@ -619,5 +619,5 @@ def db_read_media_list_by_uuid(self, media_guid):
                                           + stream_title)[:-3])
                 elif stream_info['codec_type'] == 'subtitle':
                     subtitle_streams.append(stream_language)
-                    common_global.es_inst.com_elastic_index('info', {'stuff': 'sub'})
+                    common_global.es_inst.com_elastic_index('info', {'stuff': 'subtitle'})
     return video_data

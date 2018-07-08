@@ -85,6 +85,13 @@ def user_internet_vimeo():
     """
     return render_template("users/user_internet_vimeo.html")
 
+@blueprint.route('/internet/internet_vimeo_detail/<guid>')
+@login_required
+def user_internet_vimeo_detail(guid):
+    """
+    Display vimeo page
+    """
+    pass
 
 # twitch tv
 @blueprint.route('/internet/internet_twitch')
@@ -140,6 +147,15 @@ def user_internet_flickr():
     return render_template("users/user_internet_flickr.html")
 
 
+@blueprint.route('/internet/internet_flickr_detail/<guid>')
+@login_required
+def user_internet_flickr_detail(guid):
+    """
+    Display main page for flickr
+    """
+    pass
+
+
 # iradio
 @blueprint.route('/iradio', methods=['GET', 'POST'])
 @login_required
@@ -156,6 +172,13 @@ def user_iradio_list():
         mediadata = g.db_connection.db_iradio_list(offset, per_page)
     return render_template("users/user_iradio_list.html")
 
+@blueprint.route('/iradio_detail/<guid>')
+@login_required
+def user_iradio_detail(guid):
+    """
+    Display main page for internet radio
+    """
+    pass
 
 @blueprint.before_request
 def before_request():

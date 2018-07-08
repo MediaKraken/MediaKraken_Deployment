@@ -66,14 +66,17 @@ def admin_library():
     """
     List all media libraries
     """
+    common_global.es_inst.com_elastic_index('info', {'lib': request.method})
     if request.method == 'POST':
-        # submit the message
-        ch = fpika.channel()
-        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Library Scan'}))
-        fpika.return_channel(ch)
-        flash("Scheduled media scan.")
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
+        common_global.es_inst.com_elastic_index('info', {'lib': request.form})
+        if "scan" in request.form:
+            # submit the message
+            ch = fpika.channel()
+            ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                             body=json.dumps({'Type': 'Library Scan'}))
+            fpika.return_channel(ch)
+            flash("Scheduled media scan.")
+            common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

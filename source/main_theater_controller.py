@@ -99,7 +99,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         if is_selected:
             print(("selection changed to {0}".format(rv.data[index])))
             MKFactory.protocol.sendline_data(twisted_connection,
-                                             json.dumps({'Type': 'Media', 'Sub': 'Detail',
+                                             json.dumps({'Type': 'Media', 'Subtype': 'Detail',
                                                          'UUID': rv.data[index]['uuid']}))
             common_global.es_inst.com_elastic_index('info', {'stuff': rv.data[index]['path']})
             MediaKrakenApp.media_path = rv.data[index]['path']
@@ -293,12 +293,12 @@ class MediaKrakenApp(App):
             Clock.schedule_interval(self.main_image_refresh, 5.0)
 
         elif json_message['Type'] == "Media":
-            if json_message['Sub'] == "Controller":
+            if json_message['Subtype'] == "Controller":
                 # populate the video file list
                 self.root.ids.theater_media_video_spinner.values = list(map(
                     str, json_message['Video File List']))
 
-            elif json_message['Sub'] == "Detail":
+            elif json_message['Subtype'] == "Detail":
                 self.root.ids.theater_media_video_title.text \
                     = json_message['Data']['Meta']['themoviedb']['Meta']['title']
                 self.root.ids.theater_media_video_subtitle.text \
@@ -322,7 +322,7 @@ class MediaKrakenApp(App):
                                             'production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
 
-            elif json_message['Sub'] == 'FFprobe Detail':
+            elif json_message['Subtype'] == 'FFprobe Detail':
                 # TODO need to list the actual video files
                 # TODO have the below refresh for the select video file
                 # TODO will need to display SD/HD/UHD and length of video
@@ -334,7 +334,7 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_subtitle_spinner.values \
                     = list(map(str, subtitle_streams))
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
-            elif json_message['Sub'] == "List":
+            elif json_message['Subtype'] == "List":
                 self.send_twisted_message_thread(json.dumps({'Type': 'Device Play List'}))
                 data = []
                 for video_list in json_message['Data']:
@@ -385,9 +385,9 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(
                     btn1)
         elif json_message['Type'] == "Image":
-            if json_message['Sub'] == "Movie":
+            if json_message['Subtype'] == "Movie":
                 common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
-                if json_message['Sub2'] == "Demo":
+                if json_message['Image Media Type'] == "Demo":
                     f = open("./image_demo", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
@@ -402,21 +402,21 @@ class MediaKrakenApp(App):
                         proxy_image_demo.bind(
                             on_load=self._image_loaded_home_demo)
                         self.first_image_demo = False
-                elif json_message['Sub2'] == "Movie":
+                elif json_message['Image Media Type'] == "Movie":
                     f = open("./image_movie", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     proxy_image_movie = Loader.image("./image_movie")
                     proxy_image_movie.bind(
                         on_load=self._image_loaded_home_movie)
-                elif json_message['Sub2'] == "New Movie":
+                elif json_message['Image Media Type'] == "New Movie":
                     f = open("./image_new_movie", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     proxy_image_new_movie = Loader.image("./image_new_movie")
                     proxy_image_new_movie.bind(
                         on_load=self._image_loaded_home_new_movie)
-                elif json_message['Sub2'] == "In Progress":
+                elif json_message['Image Media Type'] == "In Progress":
                     f = open("./image_in_progress", "w")
                     f.write(base64.b64decode(json_message['Data']))
                     f.close()
@@ -578,141 +578,141 @@ class MediaKrakenApp(App):
 
     def theater_play_server(self):
         # the server will have the target device....to know if cast/stream/etc
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'UUID': MediaKrakenApp.media_uuid,
                                               'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
     # hue lights
     def hue_lights_on(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Hardware', 'Sub': 'PHue',
+        self.send_twisted_message(json.dumps({'Type': 'Hardware', 'Subtype': 'PHue',
                                               'Target': "FAKE", 'Data': True}))
 
     def hue_lights_off(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Hardware', 'Sub': 'PHue',
+        self.send_twisted_message(json.dumps({'Type': 'Hardware', 'Subtype': 'PHue',
                                               'Target': "FAKE", 'Data': False}))
 
     # navigation select
     def main_remote_event_button_commands_left(self, *args):
         if self.play_status == 'paused':
-            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Subtype': 'Client',
                                                   'Data': {"command": 'frame-back-step'}}))
         else:
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                                   'Target': "Left"}))
 
     def main_remote_event_button_commands_right(self, *args):
         if self.play_status == 'paused':
-            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Subtype': 'Client',
                                                   'Data': {"command": 'frame-step'}}))
         else:
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                                   'Target': "Right"}))
 
     def main_remote_event_button_commands_up(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Up"}))
 
     def main_remote_event_button_commands_down(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Down"}))
 
     def main_remote_event_button_commands_one(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "One"}))
 
     def main_remote_event_button_commands_two(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Two"}))
 
     def main_remote_event_button_commands_three(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Three"}))
 
     def main_remote_event_button_commands_four(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Four"}))
 
     def main_remote_event_button_commands_five(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Five"}))
 
     def main_remote_event_button_commands_six(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Six"}))
 
     def main_remote_event_button_commands_seven(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Seven"}))
 
     def main_remote_event_button_commands_eight(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Eight"}))
 
     def main_remote_event_button_commands_nine(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Nine"}))
 
     def main_remote_event_button_commands_fast_rewind(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "FR"}))
 
     def main_remote_event_button_commands_chapter_rewind(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "CR"}))
 
     def main_remote_event_button_commands_fast_forward(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "FF"}))
 
     def main_remote_event_button_commands_chapter_forward(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "CF"}))
 
     def main_remote_event_button_commands_sound_mute(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Mute"}))
 
     def main_remote_event_button_commands_play(self, *args):
         if self.play_status == 'paused':
-            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Subtype': 'Client',
                                                   'Data': {"command": ["set_property", "pause",
                                                                        'false']}}))
             self.play_status = 'playing'
         else:
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                                   'Target': "Play"}))
 
     def main_remote_event_button_commands_pause(self, *args):
         if False:
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                                   'Target': "Pause"}))
         else:
             if self.play_status != 'paused':
-                self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                self.send_twisted_message(json.dumps({'Type': 'MPV', 'Subtype': 'Client',
                                                       'Data': {"command": ["set_property", "pause",
                                                                            'true']}}))
                 self.play_status = 'paused'
             else:
-                self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+                self.send_twisted_message(json.dumps({'Type': 'MPV', 'Subtype': 'Client',
                                                       'Data': {"command": ["set_property", "pause",
                                                                            'false']}}))
                 self.play_status = 'playing'
 
     def main_remote_event_button_commands_stop(self, *args):
         if False:
-            self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                                   'Target': "Stop"}))
         else:
-            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Sub': 'Client',
+            self.send_twisted_message(json.dumps({'Type': 'MPV', 'Subtype': 'Client',
                                                   'Data': {"command": 'quit-watch-later'}}))
         self.play_status = 'stopped'
 
     def main_remote_event_button_commands_info(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Info"}))
 
     def main_remote_event_button_commands_record(self, *args):
-        self.send_twisted_message(json.dumps({'Type': 'Play', 'Sub': 'Client',
+        self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
                                               'Target': "Record"}))
 
     # genre select
@@ -738,7 +738,7 @@ class MediaKrakenApp(App):
         self.send_twisted_message(msg)
 
     def main_mediakraken_event_button_home(self, *args):
-        msg = json.dumps({'Type': 'Media', 'Sub': 'List', 'Data': args[0]})
+        msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
         common_global.es_inst.com_elastic_index('info', {"home press": args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
                 or args[0] == 'Movie' or args[0] == 'video':
@@ -788,43 +788,43 @@ class MediaKrakenApp(App):
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshs for movie stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
-                                                  'Sub2': 'Demo', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
+                                                  'Image Media Type': 'Demo', 'Image Type': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
-                                                  'Sub2': 'Movie', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
+                                                  'Image Media Type': 'Movie', 'Image Type': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
-                                                  'Sub2': 'New Movie', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
+                                                  'Image Media Type': 'New Movie', 'Image Type': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Movie',
-                                                  'Sub2': 'In Progress', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
+                                                  'Image Media Type': 'In Progress', 'Image Type': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV',
-                                                  'Sub2': 'TV', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
+                                                  'Image Media Type': 'TV', 'Image Type': 'Backdrop'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'TV',
-                                                  'Sub2': 'Live TV', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
+                                                  'Image Media Type': 'Live TV', 'Image Type': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Game',
-                                                  'Sub2': 'Game', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Game',
+                                                  'Image Media Type': 'Game', 'Image Type': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Book',
-                                                  'Sub2': 'Book', 'Sub3': 'Cover'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Book',
+                                                  'Image Media Type': 'Book', 'Image Type': 'Cover'}))
             # refresh music stuff
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music',
-                                                  'Sub2': 'Album', 'Sub3': 'Cover'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
+                                                  'Image Media Type': 'Album', 'Image Type': 'Cover'}))
             # request main screen background refresh
-            self.send_twisted_message(json.dumps({'Type': 'Image', 'Sub': 'Music',
-                                                  'Sub2': 'Video', 'Sub3': 'Backdrop'}))
+            self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
+                                                  'Image Media Type': 'Video', 'Image Type': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
             # self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
-            # self.send_twisted_message({'Type': 'Image', 'Sub': 'Game', 'Data': 'Game', 'Data2': 'Backdrop'})
+            # self.send_twisted_message({'Type': 'Image', 'Subtype': 'Game', 'Image Media Type': 'Game', 'Image Type': 'Backdrop'})
 
     def _image_loaded_detail_movie(self, proxyImage):
         """

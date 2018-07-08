@@ -55,6 +55,10 @@ for media in db_connection.db_read_media():
                               properties=pika.BasicProperties(content_type='text/plain',
                                                               delivery_mode=1))
 
+# Cancel the consumer and return any pending messages
+channel.cancel()
+connection.close()
+
 # commit all changes
 db_connection.db_commit()
 

@@ -1,4 +1,2 @@
-psycopg2
 tmdbv3api
 tmdbsimple
-psutil

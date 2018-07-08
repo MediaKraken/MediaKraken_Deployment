@@ -24,6 +24,10 @@ docker build -t mediakraken/mkbase37 .
 cd ../ComposeMediaKrakenBase37Py3
 docker build -t mediakraken/mkbase37py3 .
 
+# base python 3 images
+cd ../ComposeMediaKrakenBase38Py3
+docker build -t mediakraken/mkbase38py3 .
+
 # Build the base cuda from alpine
 #cd ../ComposeMediaKrakenBaseCuda
 #docker build -t mediakraken/mkbasecuda .
@@ -32,6 +36,11 @@ docker build -t mediakraken/mkbase37py3 .
 # Image that simply has ffmpeg and ffprobe for use by other containers.
 cd ../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg .
+
+# build the base node
+# Adds NODE to the base ffmpeg and ffprobe.
+cd ../ComposeMediaKrakenBaseNodeFFMPEG
+docker build -t mediakraken/mkbasenodeffmpeg .
 
 # Build the nginx RTMP
 #cd ../ComposeMediaKrakenNginxRTMP
@@ -53,11 +62,6 @@ docker build -t mediakraken/mkprefetchtmdb .
 # build the tvamze prefetch
 cd ../ComposeMediaKrakenPrefetchTVMaze
 docker build -t mediakraken/mkprefetchtvmaze .
-
-# build the base node
-# Adds NODE to the base ffmpeg and ffprobe.
-cd ../ComposeMediaKrakenBaseNodeFFMPEG
-docker build -t mediakraken/mkbasenodeffmpeg .
 
 # Build the base slave images from other base images (basenodeffmpeg)
 cd ../ComposeMediaKrakenSlave
