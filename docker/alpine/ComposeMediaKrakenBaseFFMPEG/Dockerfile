@@ -1,4 +1,4 @@
-FROM alpine:3.7 as builder
+FROM alpine:3.8 as builder
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
