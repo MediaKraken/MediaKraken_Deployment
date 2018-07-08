@@ -103,7 +103,7 @@ class MKConsumer(object):
     def on_message(self, unused_channel, basic_deliver, properties, body):
         if body is not None:
             json_message = json.loads(body)
-            common_global.es_inst.es_index('info', {'ffprobe': json_message})
+            common_global.es_inst.com_elastic_index('info', {'ffprobe': json_message})
             ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(
                 db_connection.db_read_media(
                     json_message['Data'])['mm_media_path'])
