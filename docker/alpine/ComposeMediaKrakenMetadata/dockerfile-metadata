@@ -19,7 +19,6 @@ RUN apk add --update \
   python3-dev \
   py3-psycopg2 \
   libffi-dev \
-  python \
   openrc \
   libressl-dev \
   && pip3 install pytest-runner \
