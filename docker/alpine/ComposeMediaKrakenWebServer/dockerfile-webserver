@@ -21,18 +21,18 @@ RUN apk add --update \
   musl-dev \  
   nginx \
   openrc \
-  openssl-dev \
+  libressl-dev \
   py3-cffi \
   py3-redis \
   python3-dev \
   cifs-utils \
   nfs-utils \
   ca-certificates \
-  openssl \
+  libressl \
   py3-numpy \
   py3-psycopg2 \
   py3-psutil \
-  && export PYCURL_SSL_LIBRARY=openssl \
+  && export PYCURL_SSL_LIBRARY=libressl \
   && pip3 install pycurl \
   && pip3 install -r requirements.txt \
   && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
@@ -42,6 +42,7 @@ RUN apk add --update \
   musl-dev \
   linux-headers \
   python3-dev \
+  libressl-dev \
   && rm requirements.txt \
   && apk add \
   uwsgi-python3 \
