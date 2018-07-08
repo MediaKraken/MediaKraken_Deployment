@@ -105,6 +105,7 @@ class MKConsumer(object):
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'ffprobe': json_message})
             ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
+            common_global.es_inst.com_elastic_index('info', {'ffprobe_data': ffprobe_data})
             # begin image generation
             chapter_image_list = {}
             chapter_count = 0
