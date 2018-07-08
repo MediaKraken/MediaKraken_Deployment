@@ -35,9 +35,8 @@ RUN apk add --update \
   py3-uritemplate \
   py3-httplib2 \
   py3-setuptools \
+  py3-curl \
   openrc \
-  && export PYCURL_SSL_LIBRARY=openssl \
-  && pip3 install pycurl \
   && pip3 install -r requirements.txt \
   && apk del \
   alpine-sdk \
