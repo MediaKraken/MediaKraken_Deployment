@@ -27,7 +27,7 @@ class CommonNetworkFeedgen(object):
     def __init__(self):
         self.feedgen_connection = FeedGenerator()
         self.feedgen_connection.id('http://lernfunk.de/media/654321')
-        self.feedgen_connection.title('Metaman Notification Feed')
+        self.feedgen_connection.title('MediaKraken Notification Feed')
         self.feedgen_connection.author(
             {'name': 'John Doe', 'email': 'john@example.de'})
         self.feedgen_connection.link(
