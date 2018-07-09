@@ -28,6 +28,7 @@ def com_makemkv_drive_list():
 
 
 def com_makemkv_rip_disc(file_location, cache_size=1024, disc=0, track='all', min_seconds=120):
+    # TODO shelex to negate little bobby tables
     makemkv_pid = subprocess.Popen(['makemkvcon', '--noscan', '-r',
                                     ('--minlength=%s' % min_seconds),
                                     ('--cache=%s' % cache_size),
