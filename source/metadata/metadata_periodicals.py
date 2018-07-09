@@ -21,6 +21,7 @@ import os
 
 from common import common_config_ini
 from common import common_global
+from common import common_metadata
 from common import common_metadata_isbndb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
