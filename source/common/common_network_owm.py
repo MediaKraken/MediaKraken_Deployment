@@ -20,6 +20,8 @@
 import pyowm
 
 
+# TODO.......retire......common_metadata_openweathermap exists and doesn't have deps
+
 class CommonNetOWM(object):
     def __init__(self, api_key):
         self.owm_inst = pyowm.OWM(api_key)
