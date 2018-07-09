@@ -2,9 +2,9 @@ import json
 import os
 import subprocess
 import uuid
+from shlex import split
 
 import pika
-
 from common import common_config_ini
 from common import common_ffmpeg
 from common import common_global
@@ -128,7 +128,6 @@ class MKConsumer(object):
                             os.makedirs(image_file_path)
                         image_file_path = os.path.join(
                             image_file_path, (str(chapter_count) + '.png'))
-                    # TODO shlex so can't file path injection
                     command_list = []
                     command_list.append('./bin/ffmpeg')
                     # if ss is before the input it seeks and doesn't convert every frame like after input
@@ -138,19 +137,19 @@ class MKConsumer(object):
                     hours, minutes = divmod(minutes, 60)
                     command_list.append("%02d:%02d:%02f" % (hours, minutes, seconds))
                     command_list.append('-i')
-                    # TODO will I have to put in " the path?
-                    command_list.append(json_message['Media Path'])
+                    command_list.append('\"' + json_message['Media Path'] + '\"')
                     command_list.append('-vframes')
                     command_list.append('1')
-                    command_list.append(image_file_path)
-                    ffmpeg_proc = subprocess.Popen(command_list, shell=False)
+                    command_list.append('\"' + image_file_path + '\"')
+                    ffmpeg_proc = subprocess.Popen(split(command_list))
                     ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
 
                     # as the worker might see it as finished if allowed to continue
                     chapter_image_list[chapter_data['tags']['title']] = image_file_path
                     first_image = False
                 db_connection.db_update_media_json(json_message['Media UUID'],
-                                                   json.dumps({'ChapterImages': chapter_image_list}))
+                                                   json.dumps(
+                                                       {'ChapterImages': chapter_image_list}))
                 db_connection.db_media_ffmeg_update(json_message['Media UUID'],
                                                     json.dumps(ffprobe_data))
             else:

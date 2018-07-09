@@ -16,11 +16,15 @@ docker_inst = common_docker.CommonDocker()
 # it returns a dict, not a json
 mediakraken_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 
+# grab container list
+container_list = docker_inst.com_docker_container_list()
+# grab ports for server
+docker_port = str(docker_inst.com_docker_port(container_list['mediakraken/mkserver'], 8903))
+
 # begin loop to respond to all broadcast messages
 while True:
     recv_data, addr = server_socket.recvfrom(2048)
     if recv_data == "who is MediaKrakenServer?":
         common_global.es_inst.com_elastic_index('info', {'addr': str(addr),
                                                          'data': str(recv_data)})
-        # TODO should anounce the correct port
-        server_socket.sendto(mediakraken_ip + ":" + '8903', addr)
+        server_socket.sendto(mediakraken_ip + ":" + docker_port, addr)

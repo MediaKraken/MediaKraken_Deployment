@@ -34,7 +34,6 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - " \
            + (info['stream']).get("channel").get("status") + ".flv"
 filename = format_filename(filename)
-# TODO shelix for little bobby tables
 subprocess.call(split('./bin/streamlink twitch.tv/' + user + quality, '-o \"' + filename + '\"'))
 
 # commit all changes
