@@ -238,6 +238,7 @@ class NetworkEvents(basic.LineReceiver):
                             json_message['Target'])
                 #     # launch and attach to local running ffserver
                 #     # TODO set server port for ffmpeg
+                # TODO shelix for little bobby tables
                 #     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
                 #     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
                 #                                                 media_path, http_link], shell=False)

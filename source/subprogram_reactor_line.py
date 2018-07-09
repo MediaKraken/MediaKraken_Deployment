@@ -82,6 +82,7 @@ def read(queue_object):
         json_message = json.loads(body)
         common_global.es_inst.com_elastic_index('info', {'json body': json_message})
         if json_message['Type'] == 'Cron Run':
+            # TODO shelix for little bobby tables
             cron_pid = subprocess.Popen(['python3', json_message['Data']])
         elif json_message['Type'] == 'Library Scan':
             scan_pid = subprocess.Popen(['python3', './subprogram_file_scan.py'])

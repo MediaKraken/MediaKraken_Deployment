@@ -594,6 +594,7 @@ def on_config_change(self, config, section, key, value):
         common_global.es_inst.com_elastic_index('info', {'stuff': MediaKrakenApp.media_path})
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
             if os.path.isfile(MediaKrakenApp.media_path):
+                # TODO shelix for little bobby tables
                 self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
                                                      '--ontop', '--no-osc', '--no-osd-bar',
                                                      '--aid=2',

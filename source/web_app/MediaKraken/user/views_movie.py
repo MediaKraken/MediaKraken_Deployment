@@ -53,6 +53,7 @@ def movie_detail(guid):
             audio_track_index = request.form["Video_Play_Audio_Track"]
             subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
+            # TODO shelix for little bobby tables
             proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
                                               g.db_connection.db_media_path_by_uuid(
                                                   media_guid_index)[0],

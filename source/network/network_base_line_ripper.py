@@ -74,25 +74,30 @@ class NetworkEvents(basic.LineReceiver):
                     pass
                 else:
                     # call waits until done
+                    # TODO shelix for little bobby tables
                     subprocess.call(['abcde', '-d', json_message['Target']])
             elif json_message['Data'] == "DVD":
                 # TODO id disc
                 # TODO see if in db already
+                # TODO shelix for little bobby tables
                 subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
                                  'all', json_message['Location']])
             elif json_message['Data'] == "Bray":
                 # TODO id disc
                 # TODO see if in db already
+                # TODO shelix for little bobby tables
                 subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
                                  'all', json_message['Location']])
             elif json_message['Data'] == "UHD":
                 # TODO id disc
                 # TODO see if in db already
+                # TODO shelix for little bobby tables
                 subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
                                  'all', json_message['Location']])
             elif json_message['Data'] == "HDVD":
                 # TODO id disc
                 # TODO see if in db already
+                # TODO shelix for little bobby tables
                 subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
                                  'all', json_message['Location']])
             else:

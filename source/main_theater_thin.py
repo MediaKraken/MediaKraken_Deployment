@@ -221,6 +221,7 @@ class MediaKrakenApp(App):
             if share_mapping is not None:
                 for mapping in share_mapping:
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+                # TODO shelix for little bobby tables
                 self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
                                                      '--ontop', '--no-osc', '--no-osd-bar',
                                                      '--aid=2',

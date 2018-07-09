@@ -81,5 +81,6 @@ file_name = 'MediaKraken_' + current_version + '.tar.bz2'
 wget_wait('http://www.mediakraken.org/%s' % file_name)
 
 # untar to home directory
+# TODO shelix for little bobby tables
 tar_pid = subprocess.Popen(['tar', 'xvjf', file_name, '-C' '~'])
 tar_pid.wait()

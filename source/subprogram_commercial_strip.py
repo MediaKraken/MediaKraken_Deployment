@@ -72,6 +72,7 @@ def main(argv):
         elif opt in ("-o", "--ofile"):
             outputfile = arg
     # kick off ffmpeg process
+    # TODO shelix for little bobby tables
     proc = subprocess.Popen(['./bin/ffmpeg', subproccess_args], shell=False)
     common_global.es_inst.com_elastic_index('info', {"pid": proc.pid,
                                                      "input": inputfile, "output": outputfile})

@@ -21,6 +21,7 @@ import sys
 sys.path.append('.')
 # from common import common_network_mpv
 #
+# TODO shelix for little bobby tables
 # mpv_pid = subprocess.Popen(['mpv', '--hwdec=auto', '--input-ipc-server', './mk_mpv.sock',
 #                             '/home/spoot/mnt/HTPC_MediaBrowser/BluRay_Dir_Cut/Underworld (2003)/Underworld (2003).mkv'])
 # # mpv_ipc = common_network_mpv.CommonNetMPV()
