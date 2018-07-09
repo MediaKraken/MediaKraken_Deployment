@@ -139,18 +139,3 @@ class CommonGoogle(object):
             part="snippet",
             body=comment
         ).execute()
-
-    def com_google_youtube_add_subscription(self, channel_id):
-        """
-        Add subscription to channel
-        """
-        add_subscription_response = self.youtube.subscriptions().insert(
-            part='snippet',
-            body=dict(
-                snippet=dict(
-                    resourceId=dict(
-                        channelId=channel_id
-                    )
-                )
-            )).execute()
-        return add_subscription_response["snippet"]["title"]
