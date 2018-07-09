@@ -4,7 +4,6 @@ User view in webapp
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, render_template, g, request, abort
-from flask_login import current_user
 from flask_login import login_required
 
 blueprint = Blueprint("user_playback", __name__,
@@ -22,39 +21,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-@blueprint.route('/playvideo/<guid>')
-@login_required
-def user_video_player(guid):
-    """
-    Obsolete?
-    """
-    # grab the guid from the comboindex
-    media_guid_index = request.form["Video_Track"]
-    # call ffpmeg with the play_data
-    audio_track_index = request.form["Video_Play_Audio_Track"]
-    subtitle_track_index = request.form["Video_Play_Subtitles"]
-    # launch ffmpeg to ffserver procecss
-    proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
-                                      g.db_connection.db_media_path_by_uuid(
-                                          media_guid_index)[0],
-                                      'http://localhost/stream.ffm'], shell=False)
-    common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
-    return render_template("users/user_playback.html", data_desc=('Movie title'))
-
-
-@blueprint.route('/playback/<vid_type>/<guid>/<chapter>')
-@login_required
-def user_playback(vid_type, guid, chapter):
-    """
-    Display playback actions page
-    """
-    common_global.es_inst.com_elastic_index('info', {'playback action': vid_type})
-    common_global.es_inst.com_elastic_index('info', {'playback user': current_user.get_id()})
-    return render_template("users/user_playback_videojs.html",
-                           data_mtype=vid_type,
-                           data_uuid=guid)
-
-
 @blueprint.route('/playalbum/<guid>')
 @login_required
 def user_album_player(guid):
@@ -67,12 +33,13 @@ def user_album_player(guid):
                            data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
 
 
-@blueprint.route('/playvideo_videojs/<mtype>/<guid>', methods=['GET', 'POST'])
+@blueprint.route('/playvideo_videojs/<mtype>/<guid>/<chapter>', methods=['GET', 'POST'])
 @login_required
-def user_video_player_videojs(mtype, guid):
+def user_video_player_videojs(mtype, guid, chapter):
     """
     Display video playback page
     """
+    # TODO will need start time/etc for resume function
     common_global.es_inst.com_elastic_index('info', {"videojs": mtype, 'guid': guid})
     # grab the guid from the comboindex
     # use try since people can go here "by-hand"
@@ -100,6 +67,7 @@ def user_video_player_videojs(mtype, guid):
     if mtype == "hls":
         vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
         acodecs = ['aac', '-ac:a:0', '2', '-vbr', '5']  # pylint: disable=C0326
+        # TODO shelix for little bobby tables
         proc = subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",
                                  "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks
                                 + ["-vf"] + subtracks
