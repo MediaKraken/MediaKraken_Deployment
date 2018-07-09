@@ -48,6 +48,7 @@ def com_net_yt_trending(country_code='US'):
 
 
 def com_net_yt_top_tracks(playlist_type):
+    yt_link = None
     if playlist_type == 'all':
         yt_link = 'https://www.youtube.com/playlist?list=PLFgquLnL59amLh5g4ZZoSl1Wf9e0_rco7'
     elif playlist_type == 'pop':
@@ -66,23 +67,26 @@ def com_net_yt_top_tracks(playlist_type):
         yt_link = 'https://www.youtube.com/playlist?list=PLhd1HyMTk3f5PzRjJzmzH7kkxjfdVoPPj'
     elif playlist_type == 'alt rock':
         yt_link = 'https://www.youtube.com/playlist?list=PL47oRh0-pTouthHPv6AbALWPvPJHlKiF7'
-    req_results = requests.get(yt_link)
-    data = req_results.text
-    soup = BeautifulSoup(data)
-    images = soup.select(".yt-thumb-clip")
-    imagelinks = []
-    for image in images[9:len(images)]:  # First few images are useless
-        imagelinks.append(image.img["data-thumb"])
-    # Titles and Videolinks
-    links = soup.find_all("a",
-                          class_="pl-video-title-link yt-uix-tile-link yt-uix-sessionlink  spf-link ",
-                          limit=10)
-    titles = []
-    videolinks = []
-    for link in links:
-        titles.append(link.string.strip())
-        videolinks.append("https://youtube.com" + link["href"])
-    return imagelinks, titles, videolinks
+    if yt_link is not None:
+        req_results = requests.get(yt_link)
+        data = req_results.text
+        soup = BeautifulSoup(data)
+        images = soup.select(".yt-thumb-clip")
+        imagelinks = []
+        for image in images[9:len(images)]:  # First few images are useless
+            imagelinks.append(image.img["data-thumb"])
+        # Titles and Videolinks
+        links = soup.find_all("a",
+                              class_="pl-video-title-link yt-uix-tile-link yt-uix-sessionlink  spf-link ",
+                              limit=10)
+        titles = []
+        videolinks = []
+        for link in links:
+            titles.append(link.string.strip())
+            videolinks.append("https://youtube.com" + link["href"])
+        return imagelinks, titles, videolinks
+    else:
+        return None, None, None
 
 
 class CommonNetworkYoutube(object):
