@@ -24,6 +24,7 @@ import platform
 import subprocess
 import sys
 import uuid
+from shlex import split
 
 from common import common_global
 from common import common_logging_elasticsearch
@@ -201,7 +202,8 @@ class MediaKrakenApp(App):
                 common_global.es_inst.com_elastic_index('info', {"Got Message": server_msg})
             else:
                 common_global.es_inst.com_elastic_index('info', {"Got Image Message":
-                                                                     json_message['Subtype'], 'uuid':
+                                                                     json_message['Subtype'],
+                                                                 'uuid':
                                                                      json_message['UUID']})
         except:
             common_global.es_inst.com_elastic_index('info', {"full record": server_msg})
@@ -221,15 +223,11 @@ class MediaKrakenApp(App):
             if share_mapping is not None:
                 for mapping in share_mapping:
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
-                # TODO shelix for little bobby tables
-                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
-                                                     '--ontop', '--no-osc', '--no-osd-bar',
-                                                     '--aid=2',
-                                                     '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
-                                                     '--audio-device=pulse', '--hwdec=auto',
-                                                     '--input-ipc-server', './mk_mpv.sock',
-                                                     '%s' % video_source_dir],
-                                                    shell=False)
+                self.mpv_process = subprocess.Popen(
+                    split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
+                          '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
+                          '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
+                          + video_source_dir + '\"'))
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
@@ -369,7 +367,8 @@ class MediaKrakenApp(App):
             # refreshs for movie stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'Demo', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Demo',
+                                                  'Image Type': 'Backdrop'}))
 
     def _image_loaded_home_demo(self, proxyImage):
         """

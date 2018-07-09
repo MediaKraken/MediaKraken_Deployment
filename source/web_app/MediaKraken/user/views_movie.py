@@ -4,6 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 
 from fractions import Fraction
+from shlex import split
 
 from flask import Blueprint, render_template, g, request, \
     redirect, url_for
@@ -53,11 +54,10 @@ def movie_detail(guid):
             audio_track_index = request.form["Video_Play_Audio_Track"]
             subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
-            # TODO shelix for little bobby tables
-            proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
-                                              g.db_connection.db_media_path_by_uuid(
-                                                  media_guid_index)[0],
-                                              'http://localhost/stream.ffm'], shell=False)
+            proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
+                                                   g.db_connection.db_media_path_by_uuid(
+                                                       media_guid_index)[
+                                                       0] + '\" http://localhost/stream.ffm'))
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:

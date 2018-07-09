@@ -1,9 +1,9 @@
 import json
 import subprocess
+from shlex import split
 
 import pika
 import xmltodict
-
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -14,6 +14,7 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_d
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
+
 
 class MKConsumer(object):
     EXCHANGE = 'mkque_download_ex'
@@ -107,11 +108,9 @@ class MKConsumer(object):
                     common_network.mk_network_fetch_from_url(json_message['URL'],
                                                              json_message['Local Save Path'])
                 elif json_message['Subtype'] == 'Youtube':
-                    # TODO shelix for little bobby tables
-                    dl_pid = subprocess.Popen(['youtube-dl', '-i', '--download-archive',
-                                               '/mediakraken/yt_dl_archive.txt',
-                                               json_message['URL']],
-                                              shell=False)
+                    dl_pid = subprocess.Popen(split(
+                        'youtube-dl -i --download-archive /mediakraken/yt_dl_archive.txt ' +
+                        json_message['URL']))
                     dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
                 elif json_message['Subtype'] == 'HDTrailers':
                     data = xmltodict.parse(common_network.mk_network_fetch_from_url(
