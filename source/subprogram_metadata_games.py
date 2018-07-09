@@ -20,6 +20,7 @@ import json
 import os
 import zipfile
 
+import xmltodict
 from common import common_config_ini
 from common import common_global
 from common import common_internationalization
@@ -40,14 +41,14 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subpro
 # to ease search and other filters by game/system
 
 # create mame game list
-if False:
-    file_name = ('/mediakraken/emulation/mame0%slx.zip' %
-                 common_version.MAME_VERSION)
-    if not os.path.exists(file_name):
-        common_network.mk_network_fetch_from_url(
-            ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%slx.zip'
-             % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
-            file_name)
+file_name = ('/mediakraken/emulation/mame0%slx.zip' %
+             common_version.MAME_VERSION)
+# only do the parse/import if not processed before
+if not os.path.exists(file_name):
+    common_network.mk_network_fetch_from_url(
+        ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%slx.zip'
+         % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
+        file_name)
     zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
     update_game = 0
     insert_game = 0
@@ -80,14 +81,14 @@ if False:
             + " games(s) metadata added from MAME XML", True)
 
 # load games from hash files
-if False:
-    file_name = ('/mediakraken/emulation/mame0%ss.zip' %
-                 common_version.MAME_VERSION)
-    if not os.path.exists(file_name):
-        common_network.mk_network_fetch_from_url(
-            ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%ss.zip'
-             % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
-            file_name)
+file_name = ('/mediakraken/emulation/mame0%ss.zip' %
+             common_version.MAME_VERSION)
+# only do the parse/import if not processed before
+if not os.path.exists(file_name):
+    common_network.mk_network_fetch_from_url(
+        ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%ss.zip'
+         % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
+        file_name)
     total_software = 0
     total_software_update = 0
     # do this all the time, since could be a new one
@@ -171,18 +172,19 @@ if False:
 # update mame game descriptions from history dat
 file_name = ('/mediakraken/emulation/history%s.zip' %
              common_version.MAME_VERSION)
+# only do the parse/import if not processed before
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
         ('https://www.arcade-history.com/dats/history%s.zip' %
          common_version.MAME_VERSION),
         file_name)
-if True:
     game_titles = []
     game_desc = ""
     add_to_desc = False
     new_title = None
     total_software = 0
     total_software_update = 0
+    system_name = None
     # do this all the time, since could be a new one
     with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('history.dat', '/mediakraken/emulation/')
