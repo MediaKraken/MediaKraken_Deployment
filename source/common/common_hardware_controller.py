@@ -31,17 +31,17 @@ class CommonHardwareController(object):
         self.device_inst = None
         self.device_manufacturer = device_manufacturer
         self.device_json = device_json
-        if device_communication == 'network':
-            if device_manufacturer == 'marantz':
+        if device_communication == 'Network':
+            if device_manufacturer == 'Marantz':
                 self.device_inst = common_hardware_marantz.CommonHardwareMarantz(
                     device_ip=device_ip)
-            elif device_manufacturer == 'pioneer':
+            elif device_manufacturer == 'Pioneer':
                 self.device_inst = common_hardware_pioneer.CommonHardwarePioneer(
                     device_ip=device_ip, device_port=device_port)
-            elif device_manufacturer == 'samsung':
+            elif device_manufacturer == 'Samsung':
                 self.device_inst = common_hardware_samsung.CommonHardwareSamsung(
                     device_ip=device_ip)
-        elif device_communication == 'ir remote':
+        elif device_communication == 'IR Remote':
             pass
 
     def com_hardware_command(self, command_type, command_value):
