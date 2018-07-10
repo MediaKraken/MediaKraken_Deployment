@@ -21,6 +21,7 @@ import shlex
 import subprocess
 import time
 import uuid
+from shlex import split
 
 import pika
 from common import common_config_ini
@@ -32,7 +33,7 @@ from network import network_base_line as network_base
 from pika.adapters import twisted_connection
 from twisted.internet import reactor, protocol, defer, task
 from twisted.internet import ssl
-from shlex import split
+
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()
 
@@ -124,24 +125,33 @@ def read(queue_object):
                     video_codec=None,
                     audio_codec=None,
                     audio_channels=None)
-                container_command = 'castnow --address ' + json_message['Target'] \
+                container_command = 'castnow --address ' \
+                                    + json_message['Target'] \
                                     + ' --myip 10.0.0.198 ' + subtitle_command \
                                     + ' --ffmpeg \'-c:v copy -c:a ac3' \
                                     + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
                                     + ' --tomp4 \'' + json_message['Data'] + '\''
+            elif json_message['Subtype'] == 'HLS':
+                # stream to hls
+                container_command = 'ffmpeg -i \"' + json_message['Input File'] \
+                                  + '\" -vcodec libx264 -preset veryfast' \
+                                  + ' -acodec aac -ac:a:0 2 -vbr 5 ' \
+                                  + json_message['Audio Track'] \
+                                  + '-vf ' + json_message['Subtitle Track'] + ' yadif=0:0:0 ' \
+                                  + json_message['Target UUID']
             elif json_message['Subtype'] == 'Web':
                 # stream to web
-                container_command = shlex.split("ffmpeg -v fatal {ss_string}"
-                                                " -i ".format(**locals())) \
+                container_command = "ffmpeg -v fatal {ss_string}" \
+                                    + " -i ".format(**locals()) \
                                     + json_message['Data'] \
-                                    + shlex.split("-c:a aac -strict experimental -ac 2 -b:a 64k"
-                                                  " -c:v libx264 -pix_fmt yuv420p"
-                                                  " -profile:v high -level 4.0"
-                                                  " -preset ultrafast -trellis 0"
-                                                  " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480"
-                                                  " -shortest -f mpegts"
-                                                  " -output_ts_offset {output_ts_offset:.6f}"
-                                                  " -t {t:.6f} pipe:%d.ts".format(**locals()))
+                                    + "-c:a aac -strict experimental -ac 2 -b:a 64k" \
+                                      " -c:v libx264 -pix_fmt yuv420p" \
+                                      " -profile:v high -level 4.0" \
+                                      " -preset ultrafast -trellis 0" \
+                                      " -crf 31 -vf scale=w=trunc(oh*a/2)*2:h=480" \
+                                      " -shortest -f mpegts" \
+                                      " -output_ts_offset {output_ts_offset:.6f}" \
+                                      " -t {t:.6f} pipe:%d.ts".format(**locals())
             elif json_message['Subtype'] == 'HDHomerun':
                 # stream from homerun
                 container_command = "ffmpeg -i http://" + json_message['IP'] \
@@ -149,7 +159,6 @@ def read(queue_object):
                                     + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
                                     + "./static/streams/" + \
                                     json_message['Channel'] + ".m3u8"
-                container_command = shlex.split(container_command)
             else:
                 common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
             if container_command is not None:
@@ -159,7 +168,7 @@ def read(queue_object):
                 hwaccel = False
                 docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                                  name_container=name_container,
-                                                 container_command=container_command)
+                                                 container_command=shlex.split(container_command))
                 common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
@@ -168,18 +177,18 @@ def read(queue_object):
                                                                      json_message['User']]})
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
-        elif json_message['Type'] == 'FFMPEG':
-            # to address the 30 char name limit for container
-            name_container = ((json_message['User'] + '_'
-                               + str(uuid.uuid4()).replace('-', ''))[-30:])
-            common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
-            hwaccel = False
-            docker_inst.com_docker_run_slave(hwaccel=hwaccel,
-                                             name_container=name_container,
-                                             container_command=(
-                                                     'python3 subprogram_ffprobe_metadata.py %s' %
-                                                     json_message['Data']))
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
+        # elif json_message['Type'] == 'FFMPEG':
+        #     # to address the 30 char name limit for container
+        #     name_container = ((json_message['User'] + '_'
+        #                        + str(uuid.uuid4()).replace('-', ''))[-30:])
+        #     common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
+        #     hwaccel = False
+        #     docker_inst.com_docker_run_slave(hwaccel=hwaccel,
+        #                                      name_container=name_container,
+        #                                      container_command=(
+        #                                              'python3 subprogram_ffprobe_metadata.py %s' %
+        #                                              json_message['Data']))
+        #     common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

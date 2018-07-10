@@ -2,14 +2,16 @@
 User view in webapp
 """
 # -*- coding: utf-8 -*-
-
-from flask import Blueprint, render_template, g, request, abort
+from MediaKraken.extensions import (
+    fpika,
+)
+from flask import Blueprint, render_template, g, request, abort, current_user
 from flask_login import login_required
 
 blueprint = Blueprint("user_playback", __name__,
                       url_prefix='/users', static_folder="../static")
 import uuid
-import subprocess
+import json
 import sys
 
 sys.path.append('..')
@@ -61,23 +63,28 @@ def user_video_player_videojs(mtype, guid, chapter):
         subtracks = ['subtitles=' + media_path,
                      'language=' + subtitle_track_index]
     else:
-        # TODO example from file
-        subtracks = ['subtitles=subtitle.srt']
+        subtracks = ''
     # fire up ffmpeg process
     if mtype == "hls":
-        vid_name = "./static/cache/" + str(uuid.uuid4()) + ".m3u8"
-        acodecs = ['aac', '-ac:a:0', '2', '-vbr', '5']  # pylint: disable=C0326
-        # TODO shelix for little bobby tables
-        proc = subprocess.Popen(["ffmpeg", "-i", media_path, "-vcodec",
-                                 "libx264", "-preset", "veryfast", "-acodec"] + acodecs + atracks
-                                + ["-vf"] + subtracks
-                                + ["yadif=0:0:0", vid_name], shell=False)
-        common_global.es_inst.com_elastic_index('info', {"FFMPEG Pid": proc.pid})
+        # must be done here so can send commands for the right stream
+        target_uuid = str(uuid.uuid4())
+        vid_name = "./static/cache/" + target_uuid + ".m3u8"
 
         # ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360
         # -start_number 0 -hls_time 10 -hls_list_size 0 -f hls index.m3u8
 
-        pass_guid = 'http://10.0.0.179' + '/user/static/cache/' + vid_name
+        ch = fpika.channel()
+        ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+                         body=json.dumps({'Type': 'Play', 'Subtype': 'HLS',
+                                          'Input File': media_path,
+                                          'Audio Track': atracks,
+                                          'Subtitle Track': subtracks,
+                                          'Target UUID': target_uuid,
+                                          'User': current_user.get_id()}))
+        fpika.return_channel(ch)
+
+        # TODO how to know what to return here.....slave could be anywhere on swarm
+        pass_guid = 'https://th-mediakraken-1' + '/' + vid_name
         # pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
     else:
         pass_guid = guid
