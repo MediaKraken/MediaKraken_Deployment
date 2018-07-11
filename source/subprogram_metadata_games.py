@@ -32,7 +32,7 @@ from common import common_version
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_mame_xml')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_metadata_games')
 
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does

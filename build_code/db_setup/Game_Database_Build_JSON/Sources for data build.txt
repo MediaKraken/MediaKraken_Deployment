@@ -3,42 +3,11 @@ http://mameinfo.mameworld.info/
 # Mameinfo dir can go away
 copy the MAMEUI-inifiles
 
-
-
-
 # get messinfo.dat - includes softwarelist now
 http://www.progettosnaps.net/messinfo/
 
-# game hashs for mame.....are in hash dir in mame source in /vault/lib
+# game hashs for mame.....are in hash dir in mame source
 
 # mame history - mame game descriptions and such
 https://www.arcade-history.com/dats/history189.7z
 
-
-
-Run the following to build the metadata
-Step 2 - insert mame json data - about 38k rows
-Step 6 - insert "mess" hashes -
-
-***************
-mv MAME 0.169 EXTRAs/* to arcade/.
-mv MAME 0.170 ROMs/* to aracde/roms/.
-mv MAME 0.170 CHDs/* to arcade/roms/.
-
-eh, maybe should combine these........
-
-# arcade stuff
-arcade
-	roms
-	dir = chd
-	extras
-
-mv MAME 0.170 Software List ROMs/* to roms/.
-mv MAME 0.169 Software List CHDs/* to roms/.
-then CP -R
-
-# mess stuff
-roms
-	dir = system
-	dir-dir = system/chd
-extras
