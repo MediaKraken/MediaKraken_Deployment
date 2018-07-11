@@ -18,6 +18,7 @@
 
 import json
 import os
+import xmltodict
 import zipfile
 
 import xmltodict
@@ -69,12 +70,10 @@ if not os.path.exists(file_name):
                     None, child_of_root['@name'], child_of_root['description'], child_of_root)
                 insert_game += 1
     zip_handle.close()
-
     if update_game > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(update_game)
             + " games(s) metadata updated from MAME XML", True)
-
     if insert_game > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(insert_game)
@@ -92,7 +91,7 @@ if not os.path.exists(file_name):
     total_software = 0
     total_software_update = 0
     # do this all the time, since could be a new one
-    with zipfile.ZipFile(file_name, 'r') as zf:
+    with zipfile.ZipFile(file_name, 'rb') as zf:
         zf.extract('mame.zip', '/mediakraken/emulation/')
     zip_handle = zipfile.ZipFile(
         '/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
@@ -157,12 +156,10 @@ if not os.path.exists(file_name):
                                                                   json_game['@name'],
                                                                   json_game['@name'], json_game)
                         total_software += 1
-
     if total_software > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_software)
             + " games(s) metadata added from MAME hash", True)
-
     if total_software_update > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(
@@ -235,12 +232,10 @@ if not os.path.exists(file_name):
             if add_to_desc:
                 game_desc += line
     history_file.close()
-
     if total_software > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_software)
             + " games(s) metadata added from MAME hash", True)
-
     if total_software_update > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(
