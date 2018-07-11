@@ -1,0 +1,17 @@
+BTS7960 43A High Power Motor Driver Module for Arduino Intelligent Vehicle Robot
+ 
+Features:
+Operating Voltage 5.5 to 27V (B+)
+Path resistance of typ. 16 m Ohm at 25°C
+Low quiescent current of typ. 7 uA at 25°C
+PWM capability of up to 25 kHz combined with active freewheeling
+Switched mode current limitation for reduced power dissipation in overcurrent
+Current limitation level of 43 A typ.
+Status flag diagnosis with current sense capability
+Over temperature shut down with latch behaviour
+Overvoltage lock out
+Undervoltage shut down
+Driver circuit with logic level inputs
+Adjustable slew rates for optimized EMI
+74AHC244 Schmitt-trigger Octal buffer/ line driver for ESD protection (Inputs accepts voltages higher than VCC
+
