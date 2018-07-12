@@ -35,6 +35,7 @@ DEVICE_ITEM_TYPES = [
     "Projector",
     "Receiver",
     "SACD",
+    "Satellite Receiver",
     "Screen",
     "Tape Deck",
     "Television",
@@ -45,6 +46,7 @@ DEVICE_ITEM_TYPES = [
     "VCR - VHS",
     "VCR - Super Beta",
     "VCR - Beta",
+    "Video Processor",
     "Video Switcher",
 ]
 
