@@ -1,301 +1,69 @@
 {
 "Manufacturer": "Base",
-"Item Type": "Stream",
+"Item Type": "PC",
 "Protocol":
-	{
-	"Method:": "Kodi",
-	"Baud Rate": "9600",
-	"Data Length": "8",
-	"Parity Bit": "None",
-	"Start Bit": "Null",
-	"Stop Bit": "1",
-	"Flow Control": "None",
-	"Emulation": "Null",
-	"Transmission Method": "Null",
-	"Hardware Port": "Null",
-	"Host IP": "10.1.0.20",
-	"Host Port": "9090",
-	"User": "Null",
-	"Password": "Null"
-	},
+    {
+    "Method:": "Kodi",
+    "Baud Rate": "9600",
+    "Data Length": "8",
+    "Parity Bit": "None",
+    "Start Bit": None,
+    "Stop Bit": "1",
+    "Flow Control": "None",
+    "Emulation": None,
+    "Transmission Method": None,
+    "Hardware Port": None,
+    "Host IP": None,
+    "Host Port": "9090",
+    "User": None,
+    "Password": None
+    },
 "Model Support":
-	{
-	"Kodi": "Kodi Multimedia Client"
-	},
-"Calibration":
-	{
-	"Black Level": "Null",
-	"Brightness": "Null",
-	"Brightness Up": "Null",
-	"Brightness Down": "Null",
-	"Color": "Null",
-	"Color Temperature": "Null",
-	"Color Temp R": "Null",
-	"Color Temp G": "Null",
-	"Color Temp B": "Null",
-	"Color Balance R": "Null",
-	"Color Balance G": "Null",
-	"Color Balance B": "Null",
-	"Color Density Up": "Null",
-	"Color Density Down": "Null",
-	"Contrast": "Null",
-	"Contrast Up": "Null",
-	"Contrast Down": "Null",
-	"Convergance":
-		{
-		"Blanking": "Null",
-		"Blanking On": "Null",
-		"Blanking Off": "Null",
-		"Bow": "Null",
-		"Dynamic": "Null",
-		"Edge Linearity": "Null",
-		"Keystone": "Null",
-		"Keystone Up": "Null",
-		"Keystone Down": "Null",
-		"Keystone Left": "Null",
-		"Keystone Right": "Null",
-		"Linearity": "Null",
-		"Overscan On": "Null",
-		"Overscan Off": "Null",
-		"Phase": "Null",
-		"Pincushion": "Null",
-		"Shift": "Null",
-		"Size": "Null",
-		"Skew": "Null",
-		"Static": "Null",
-		"Quandrant Top Left": "Null",
-		"Quandrant Top": "Null",
-		"Quandrant Top Right": "Null",
-		"Quandrant Right": "Null",
-		"Quandrant Left": "Null",
-		"Quandrant Bottom Left": "Null",
-		"Quandrant Bottom Right": "Null",
-		"Quandrant Bottom": "Null",
-		"Veritcal Center": "Null",
-		"Vertical Size": "Null"
-		},
-	"Detail": "Null",
-	"Detail Up": "Null",
-	"Detail Down": "Null",
-	"Gamma": "Null",
-	"Gamma Up": "Null",
-	"Gamma Down": "Null",
-	"Hue": "Null",
-	"Hue Up": "Null",
-	"Hue Down": "Null",
-	"Tint": "Null",
-	"Tint Up": "Null",
-	"Tint Down": "Null",
-	"Sharpness": "Null",
-	"Sharpness Up": "Null",
-	"Sharpness Down": "Null"
-	},
-"Commands":
-	{
-	"Application":
-		{
-		"Amazon Instant Video": "Null",
-		"Emby": "Null",
-		"HBO Go": "Null",
-		"Hulu Plus": "Null",
-		"Kodi": "Null",
-		"Netflix": "Null",
-		"Pandora": "Null",
-		"Plex": "Null",
-		"SiriusXM": "Null",
-		"sling TV": "Null",
-		"Vudu": "Null"
-		},
-	"Aspect Ratio":
-		{
-		"Next Ratio": "Null",
-		"Auto": "Null",
-		"Native": "Null",
-		"Letterbox": "Null",
-		"Real": "Null",
-		"4:3": "Null",
-		"1:1": "Null",
-		"1.85": "Null",
-		"2.35": "Null",
-		"16:9": "Null",
-		"16:10": "Null"
-		},
-	"Hardware":
-		{
-		"Channel": "Null",
-		"CRT Blue": "Null",
-		"CRT Green": "Null",
-		"CRT Red": "Null",
-		"Cut-Off": "Null",
-		"Lamp Hour Reset": "Null",
-		"Luminance": "Null",
-		"Optical Zoom Shift": "Null",
-		"Optical Focus Shift": "Null",
-		"Projection Mode": "Null",
-		"Reset": "Null",
-		"Shutter On": "Null",
-		"Shutter Off": "Null",
-		"Unit": "Null",
-		"Whisper Mode": "Null"
-		},
-	"Misc":
-		{
-		"Background": "Null",
-		"Closed Caption Display": "Null",
-		"Film Mode": "Null",
-		"Freeze": "Null",
-		"Freeze On": "Null",
-		"Freeze Off": "Null",
-		"Language": "Null",
-		"OSD": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.ShowOSD\"}",
-		"OSD On": "Null",
-		"OSD Off": "Null",
-		"Startup Image Yes": "Null",
-		"Startup Image No": "Null"
-		},
-	"Navigation":
-		{
-		"Up": "False|{\"jsonrp\": \"2.0\", \"method\":\"Input.U\"}",
-		"Down": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Down\"}",
-		"Right": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Right\"}",
-		"Left": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Left\"}",
-		"Back": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Back\"}",
-		"Fast Rewind": "Null",
-		"Chapter Rewind": "Null",
-		"Fast Forward": "Null",
-		"Chapter Forward": "Null",
-		"Exit": "Null",
-		"Escape": "Null",
-		"Return": "Null",
-		"Home": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Home\"}",
-		"Show Context": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.ContextMenu\"}",
-		"Step": "Null",
-		"Step Forward": "Null",
-		"Step Rewind": "Null",
-		"Help": "Null",
-		"Test": "Null",
-		"Menu": "Null",
-		"Enter/Ok": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Select\"}",
-		"Play": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Player.PlayPause\", \"params\": { \"playerid\": 1 , \"play\": true}, \"id\": 1}",
-		"Pause": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Player.PlayPause\", \"params\": { \"playerid\": 1 , \"play\": false}, \"id\": 1}"
-		},
-	"Numeric":
-		{
-		"One": "Null",
-		"Two": "Null",
-		"Three": "Null",
-		"Four": "Null",
-		"Five": "Null",
-		"Six": "Null",
-		"Seven": "Null",
-		"Eight": "Null",
-		"Nine": "Null",
-		"Ten": "Null",
-		"Zero": "Null"
-		},
-	"Power":
-		{
-		"On": "Null",
-		"Off": "Null",
-		"Standby": "Null"
-		},
-	"Sound":
-		{
-		"Mute": "False|{\"jsonrpc\":\"2.0\",\"method\":\"Application.SetMute\",\"params\":{\"mute\":\"toggle\"}}",
-		"UnMute": "Null",
-		"Volume Up": "Null",
-		"Volume Down": "Null"
-		},
-	"Zoom":
-		{
-		"Zoom": "Null",
-		"Zoom Up": "Null",
-		"Zoom Down": "Null"
-		}
-	},
-"Error Codes":
-	{
-	"Not Supported": "Null"
-	},
+    {
+    "Kodi": "Kodi Multimedia Client"
+    },
+"Misc":
+    {
+    "OSD": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.ShowOSD\"}",
+    },
+"Navigation":
+    {
+    "Up": "False|{\"jsonrp\": \"2.0\", \"method\":\"Input.U\"}",
+    "Down": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Down\"}",
+    "Right": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Right\"}",
+    "Left": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Left\"}",
+    "Back": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Back\"}",
+    "Home": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Home\"}",
+    "Show Context": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.ContextMenu\"}",
+    "Enter/Ok": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Select\"}",
+    "Play": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Player.PlayPause\", \"params\": { \"playerid\": 1 , \"play\": true}, \"id\": 1}",
+    "Pause": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Player.PlayPause\", \"params\": { \"playerid\": 1 , \"play\": false}, \"id\": 1}"
+    },
+"Sound":
+    {
+    "Mute": "False|{\"jsonrpc\":\"2.0\",\"method\":\"Application.SetMute\",\"params\":{\"mute\":\"toggle\"}}",
+    },
 "Query":
-	{
-	"Library":
-		{
-		"Media":
-			{
-			"Albums": "True|{\"jsonrpc\": \"2.0\", \"method\": \"AudioLibrary.GetAlbums\", \"params\": { \"limits\": { \"start\" : 0, \"end\": 50 }, \"properties\": [\"playcount\", \"artist\", \"genre\", \"rating\", \"thumbnail\", \"year\", \"mood\", \"style\"], \"sort\": { \"order\": \"ascending\", \"method\": \"album\", \"ignorearticle\": true } }, \"id\": \"libAlbums\"}",
-			"Artists": "True|{\"jsonrpc\": \"2.0\", \"method\": \"AudioLibrary.GetArtists\", \"params\": { \"limits\": { \"start\" : 0, \"end\": 75 }, \"properties\": [ \"thumbnail\", \"fanart\", \"born\", \"formed\", \"died\", \"disbanded\", \"yearsactive\", \"mood\", \"style\", \"genre\" ], \"sort\": { \"order\": \"ascending\", \"method\": \"artist\", \"ignorearticle\": true } }, \"id\": 1}",
-			"Movies": "True|{\"jsonrpc\": \"2.0\", \"method\": \"VideoLibrary.GetMovies\", \"params\": { \"filter\": {\"field\": \"playcount\", \"operator\": \"is\", \"value\": \"0\"}, \"limits\": { \"start\" : 0, \"end\": 75 }, \"properties\" : [\"art\", \"rating\", \"thumbnail\", \"playcount\", \"file\"], \"sort\": { \"order\": \"ascending\", \"method\": \"label\", \"ignorearticle\": true } }, \"id\": \"libMovies\"}",
-			"Music Videos": "True|{\"jsonrpc\": \"2.0\", \"method\": \"VideoLibrary.GetMusicVideos\", \"params\": { \"properties\": [ \"title\", \"thumbnail\", \"artist\", \"album\", \"genre\", \"lastplayed\", \"year\", \"runtime\", \"fanart\", \"file\", \"streamdetails\" ], \"sort\": { \"order\": \"ascending\", \"method\": \"artist\", \"ignorearticle\": true } }, \"id\": \"libMusicVideos\"}",
-			"Songs": "True|{\"jsonrpc\": \"2.0\", \"method\": \"AudioLibrary.GetSongs\", \"params\": { \"limits\": { \"start\" : 0, \"end\": 25 }, \"properties\": [ \"artist\", \"duration\", \"album\", \"track\" ], \"sort\": { \"order\": \"ascending\", \"method\": \"track\", \"ignorearticle\": true } }, \"id\": \"libSongs\"}",
-			"TV Shows": "True|{\"jsonrpc\": \"2.0\", \"method\": \"VideoLibrary.GetTVShows\", \"params\": { \"filter\": {\"field\": \"playcount\", \"operator\": \"is\", \"value\": \"0\"}, \"limits\": { \"start\" : 0, \"end\": 75 }, \"properties\": [\"art\", \"genre\", \"plot\", \"title\", \"originaltitle\", \"year\", \"rating\", \"thumbnail\", \"playcount\", \"file\", \"fanart\"], \"sort\": { \"order\": \"ascending\", \"method\": \"label\" } }, \"id\": \"libTvShows\"}"
-			},
-		"Playlist":
-			{
-			"Audio": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Playlist.GetItems\", \"params\": { \"properties\": [\"title\", \"album\", \"artist\", \"duration\"], \"playlistid\": 0 }, \"id\": 1}",
-			"Video": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Playlist.GetItems\", \"params\": { \"properties\": [ \"runtime\", \"showtitle\", \"season\", \"title\", \"artist\" ], \"playlistid\": 1}, \"id\": 1}"
-			}
-		},
-	"API Commands": "True|{\"jsonrpc\": \"2.0\", \"method\": \"JSONRPC.Introspect\", \"params\": { \"filter\": { \"id\": \"AudioLibrary.GetAlbums\", \"type\": \"method\" } }, \"id\": 1 }",
-	"Aspect Ratio": "Null",
-	"Blank Status": "Null",
-	"Brightness": "Null",
-	"Codec (Playing Media)": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.ShowCodec\"}",
-	"Color (Video)": "Null",
-	"Color Mode": "Null",
-	"Color Temp": "Null",
-	"Company Name": "Null",
-	"Contrast": "Null",
-	"Density": "Null",
-	"Error Status": "Null",
-	"Filter Time": "Null",
-	"Gain Green": "Null",
-	"Gain Blue": "Null",
-	"Gain Red": "Null",
-	"Info (Playing Media)": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Info\"}",
-	"Input Selected": "Null",
-	"Lamp Hours": "Null",
-	"Lamp Off": "Null",
-	"Lamp On": "Null",
-	"Lamp On/Off": "Null",
-	"Model Name": "Null",
-	"Mute Status": "Null",
-	"Native Resolution": "Null",
-	"Overscan Ratio": "Null",
-	"Power State": "Null",
-	"Projection Mode": "Null",
-	"Serial Number": "Null",
-	"Sharpness": "Null",
-	"Status": "Null",
-	"Tint (Video)": "Null",
-	"Volume": "Null"
-	},
-"Source":
-	{
-	"AUX1": "Null",
-	"AUX2": "Null",
-	"BluRay": "Null",
-	"Cable/TV": "Null",
-	"Composite": "Null",
-	"Component": "Null",
-	"DVD": "Null",
-	"Game": "Null",
-	"HDMI1": "Null",
-	"HDMI2": "Null",
-	"HDMI3": "Null",
-	"HDMI4": "Null",
-	"HDMI5": "Null",
-	"HDMI6": "Null",
-	"HDMI7": "Null",
-	"HDMI8": "Null",
-	"Input": "Null",
-	"LaserDisc": "Null",
-	"Net/USB": "Null",
-	"Phono": "Null",
-	"RGB1": "Null",
-	"RGB2": "Null",
-	"Satellite": "Null",
-	"S-Video": "Null",
-	"USB": "Null"
-	}
+    {
+    "Library":
+        {
+        "Media":
+            {
+            "Albums": "True|{\"jsonrpc\": \"2.0\", \"method\": \"AudioLibrary.GetAlbums\", \"params\": { \"limits\": { \"start\" : 0, \"end\": 50 }, \"properties\": [\"playcount\", \"artist\", \"genre\", \"rating\", \"thumbnail\", \"year\", \"mood\", \"style\"], \"sort\": { \"order\": \"ascending\", \"method\": \"album\", \"ignorearticle\": true } }, \"id\": \"libAlbums\"}",
+            "Artists": "True|{\"jsonrpc\": \"2.0\", \"method\": \"AudioLibrary.GetArtists\", \"params\": { \"limits\": { \"start\" : 0, \"end\": 75 }, \"properties\": [ \"thumbnail\", \"fanart\", \"born\", \"formed\", \"died\", \"disbanded\", \"yearsactive\", \"mood\", \"style\", \"genre\" ], \"sort\": { \"order\": \"ascending\", \"method\": \"artist\", \"ignorearticle\": true } }, \"id\": 1}",
+            "Movies": "True|{\"jsonrpc\": \"2.0\", \"method\": \"VideoLibrary.GetMovies\", \"params\": { \"filter\": {\"field\": \"playcount\", \"operator\": \"is\", \"value\": \"0\"}, \"limits\": { \"start\" : 0, \"end\": 75 }, \"properties\" : [\"art\", \"rating\", \"thumbnail\", \"playcount\", \"file\"], \"sort\": { \"order\": \"ascending\", \"method\": \"label\", \"ignorearticle\": true } }, \"id\": \"libMovies\"}",
+            "Music Videos": "True|{\"jsonrpc\": \"2.0\", \"method\": \"VideoLibrary.GetMusicVideos\", \"params\": { \"properties\": [ \"title\", \"thumbnail\", \"artist\", \"album\", \"genre\", \"lastplayed\", \"year\", \"runtime\", \"fanart\", \"file\", \"streamdetails\" ], \"sort\": { \"order\": \"ascending\", \"method\": \"artist\", \"ignorearticle\": true } }, \"id\": \"libMusicVideos\"}",
+            "Songs": "True|{\"jsonrpc\": \"2.0\", \"method\": \"AudioLibrary.GetSongs\", \"params\": { \"limits\": { \"start\" : 0, \"end\": 25 }, \"properties\": [ \"artist\", \"duration\", \"album\", \"track\" ], \"sort\": { \"order\": \"ascending\", \"method\": \"track\", \"ignorearticle\": true } }, \"id\": \"libSongs\"}",
+            "TV Shows": "True|{\"jsonrpc\": \"2.0\", \"method\": \"VideoLibrary.GetTVShows\", \"params\": { \"filter\": {\"field\": \"playcount\", \"operator\": \"is\", \"value\": \"0\"}, \"limits\": { \"start\" : 0, \"end\": 75 }, \"properties\": [\"art\", \"genre\", \"plot\", \"title\", \"originaltitle\", \"year\", \"rating\", \"thumbnail\", \"playcount\", \"file\", \"fanart\"], \"sort\": { \"order\": \"ascending\", \"method\": \"label\" } }, \"id\": \"libTvShows\"}"
+            },
+        "Playlist":
+            {
+            "Audio": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Playlist.GetItems\", \"params\": { \"properties\": [\"title\", \"album\", \"artist\", \"duration\"], \"playlistid\": 0 }, \"id\": 1}",
+            "Video": "True|{\"jsonrpc\": \"2.0\", \"method\": \"Playlist.GetItems\", \"params\": { \"properties\": [ \"runtime\", \"showtitle\", \"season\", \"title\", \"artist\" ], \"playlistid\": 1}, \"id\": 1}"
+            }
+        },
+    "API Commands": "True|{\"jsonrpc\": \"2.0\", \"method\": \"JSONRPC.Introspect\", \"params\": { \"filter\": { \"id\": \"AudioLibrary.GetAlbums\", \"type\": \"method\" } }, \"id\": 1 }",
+    "Codec (Playing Media)": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.ShowCodec\"}",
+    "Info (Playing Media)": "False|{\"jsonrpc\": \"2.0\", \"method\": \"Input.Info\"}",
+    },
 }

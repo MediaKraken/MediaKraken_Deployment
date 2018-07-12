@@ -1,340 +1,75 @@
 {
 "Manufacturer": "Epson",
 "Item Type": "Projector",
-"Protocol":
-	{
-	"Method:": "RS232",
-	"Baud Rate": "9600",
-	"Data Length": "8",
-	"Parity Bit": "None",
-	"Start Bit": "Null",
-	"Stop Bit": "1",
-	"Flow Control": "None",
-	"Emulation": "Null",
-	"Transmission Method": "Null",
-	"Hardware Port": "Null",
-	"Host IP": "Null",
-	"Host Port": "Null",
-	"User": "Null",
-	"Password": "Null"
-	},
 "Model Support":
-	{
-	"5030UB": "PowerLite Home Cinema 5030 Ultra Black",
-	"4030": "ProCinema 4030"
-	},
-"Calibration":
-	{
-	"Black Level": "Null",
-	"Brightness": "Null",
-	"Brightness Up": "Null",
-	"Brightness Down": "Null",
-	"Color": "Null",
-	"Color Temperature": "Null",
-	"Color Temp R": "Null",
-	"Color Temp G": "Null",
-	"Color Temp B": "Null",
-	"Color Balance R": "Null",
-	"Color Balance G": "Null",
-	"Color Balance B": "Null",
-	"Color Density Up": "Null",
-	"Color Density Down": "Null",
-	"Contrast": "Null",
-	"Contrast Up": "Null",
-	"Contrast Down": "Null",
-	"Convergance":
-		{
-		"Blanking": "Null",
-		"Blanking On": "Null",
-		"Blanking Off": "Null",
-		"Bow": "Null",
-		"Dynamic": "Null",
-		"Edge Linearity": "Null",
-		"Keystone": "Null",
-		"Keystone Up": "Null",
-		"Keystone Down": "Null",
-		"Keystone Left": "Null",
-		"Keystone Right": "Null",
-		"Linearity": "Null",
-		"Overscan On": "Null",
-		"Overscan Off": "Null",
-		"Phase": "Null",
-		"Pincushion": "Null",
-		"Shift": "Null",
-		"Size": "Null",
-		"Skew": "Null",
-		"Static": "Null",
-		"Quandrant Top Left": "Null",
-		"Quandrant Top": "Null",
-		"Quandrant Top Right": "Null",
-		"Quandrant Right": "Null",
-		"Quandrant Left": "Null",
-		"Quandrant Bottom Left": "Null",
-		"Quandrant Bottom Right": "Null",
-		"Quandrant Bottom": "Null",
-		"Veritcal Center": "Null",
-		"Vertical Size": "Null"
-		},
-	"Detail": "Null",
-	"Detail Up": "Null",
-	"Detail Down": "Null",
-	"Gamma": "Null",
-	"Gamma Up": "Null",
-	"Gamma Down": "Null",
-	"Hue": "Null",
-	"Hue Up": "Null",
-	"Hue Down": "Null",
-	"Tint": "Null",
-	"Tint Up": "Null",
-	"Tint Down": "Null",
-	"Sharpness": "Null",
-	"Sharpness Up": "Null",
-	"Sharpness Down": "Null"
-	},
-"Commands":
-	{
-	"Application":
-		{
-		"Amazon Instant Video": "Null",
-		"Emby": "Null",
-		"HBO Go": "Null",
-		"Hulu Plus": "Null",
-		"Kodi": "Null",
-		"Netflix": "Null",
-		"Pandora": "Null",
-		"Plex": "Null",
-		"SiriusXM": "Null",
-		"sling TV": "Null",
-		"Vudu": "Null"
-		},
-	"Aspect Ratio":
-		{
-		"Next Ratio": "Null",
-		"Auto": "Null",
-		"Native": "Null",
-		"Letterbox": "Null",
-		"Real": "Null",
-		"4:3": "Null",
-		"1:1": "Null",
-		"1.85": "Null",
-		"2.35": "Null",
-		"16:9": "Null",
-		"16:10": "Null"
-		},
-	"Hardware":
-		{
-		"Channel": "Null",
-		"CRT Blue": "Null",
-		"CRT Green": "Null",
-		"CRT Red": "Null",
-		"Cut-Off": "Null",
-		"Lamp Hour Reset": "Null",
-		"Luminance": "Null",
-		"Optical Zoom Shift": "Null",
-		"Optical Focus Shift": "Null",
-		"Projection Mode": "Null",
-		"Reset": "Null",
-		"Shutter On": "Null",
-		"Shutter Off": "Null",
-		"Unit": "Null",
-		"Whisper Mode": "Null"
-		},
-	"Misc":
-		{
-		"Background": "Null",
-		"Closed Caption Display": "Null",
-		"Film Mode": "Null",
-		"Freeze": "Null",
-		"Freeze On": "Null",
-		"Freeze Off": "Null",
-		"Language": "Null",
-		"OSD": "Null",
-		"OSD On": "Null",
-		"OSD Off": "Null",
-		"Startup Image Yes": "Null",
-		"Startup Image No": "Null"
-		},
-	"Navigation":
-		{
-		"Up": "Null",
-		"Down": "Null",
-		"Right": "Null",
-		"Left": "Null",
-		"Back": "Null",
-		"Fast Rewind": "Null",
-		"Chapter Rewind": "Null",
-		"Fast Forward": "Null",
-		"Chapter Forward": "Null",
-		"Exit": "Null",
-		"Escape": "Null",
-		"Return": "Null",
-		"Home": "Null",
-		"Show Context": "Null",
-		"Step": "Null",
-		"Step Forward": "Null",
-		"Step Rewind": "Null",
-		"Help": "Null",
-		"Test": "Null",
-		"Menu": "Null",
-		"Enter/Ok": "Null",
-		"Play": "Null",
-		"Pause": "Null"
-		},
-	"Numeric":
-		{
-		"One": "Null",
-		"Two": "Null",
-		"Three": "Null",
-		"Four": "Null",
-		"Five": "Null",
-		"Six": "Null",
-		"Seven": "Null",
-		"Eight": "Null",
-		"Nine": "Null",
-		"Ten": "Null",
-		"Zero": "Null"
-		},
-	"Power":
-		{
-		"On": "PWR ON",
-		"Off": "PWR OFF",
-		"Standby": "Null"
-		},
-	"Sound":
-		{
-		"Mute": "Null",
-		"UnMute": "Null",
-		"Volume Up": "Null",
-		"Volume Down": "Null"
-		},
-	"Zoom":
-		{
-		"Zoom": "Null",
-		"Zoom Up": "Null",
-		"Zoom Down": "Null"
-		}
-	},
-"Error Codes":
-	{
-	"Not Supported": "Null"
-	},
+    {
+    "5030": "PowerLite Home Cinema 5030",
+    "5030UB": "PowerLite Home Cinema 5030 Ultra Black",
+    "4030": "ProCinema 4030"
+    },
+"Protocol":
+    {
+        "Method:": "LAN",
+"Power":
+    {
+    "On": "PWR ON",
+    "Off": "PWR OFF",
+    },
 "Query":
-	{
-	"Library":
-		{
-		"Media":
-			{
-			"Albums": "Null",
-			"Artists": "Null",
-			"Movies": "Null",
-			"Music Videos": "Null",
-			"Songs": "Null",
-			"TV Shows": "Null"
-			},
-		"Playlist":
-			{
-			"Audio": "Null",
-			"Video": "Null"
-			}
-		},
-	"API Commands": "Null",
-	"Aspect Ratio": "ASPECT?",
-	"Aspect Ratio-Result":
-		{
-		"00": "Normal",
-		"30": "Auto",
-		"40": "Full",
-		"50": "Zoom"
-		},
-	"Blank Status": "Null",
-	"Brightness": "BRIGHT?",
-	"Codec (Playing Media)": "Null",
-	"Color (Video)": "Null",
-	"Color Mode": "CMODE?",
-	"Color Mode-Result":
-		{
-		"06": "Dynamic",
-		"07": "Natural",
-		"0C": "Living",
-		"13": "THX",
-		"15": "Cinema",
-		"17": "3D Cinema",
-		"18": "3D Dynamic",
-		"19": "3D THX",
-		"20": "B&W Cinema",
-		"INIT": "Setting Only"
-		},
-	"Color Temp": "CTEMP?",
-	"Company Name": "Null",
-	"Contrast": "CONTRAST?",
-	"Density": "DENSITY?",
-	"Error Status": "Null",
-	"Filter Time": "Null",
-	"Gain Green": "GAING?",
-	"Gain Blue": "GAINB?",
-	"Gain Red": "GAINR?",
-	"Input Selected": "Null",
-	"Lamp Hours": "LAMP?",
-	"Lamp Off": "Null",
-	"Lamp On": "Null",
-	"Lamp On/Off": "Null",
-	"Model Name": "Null",
-	"Mute Status": "Null",
-	"Native Resolution": "Null",
-	"Overscan Ratio": "OVSCAN?",
-	"Overscan Ratio-Response":
-		{
-		"00": "Off",
-		"01": "2%",
-		"02": "4%",
-		"03": "6%",
-		"04": "8%",
-		"A0": "Auto",
-		"INIT": "Setting Only"
-		},
-	"Power State": "PWR?",
-	"Power State-Results":
-		{
-		"00": "Standby Mode (Network OFF)",
-		"01": "Lamp ON",
-		"02": "Warmup",
-		"03": "Cooldown",
-		"05": "Abnormality Standby",
-		"07": "WirelessHD Standby"
-		},
-	"Projection Mode": "Null",
-	"Serial Number": "SNO?",
-	"Sharpness": "Null",
-	"Status": "Null",
-	"Tint (Video)": "TINT?",
-	"Volume": "Null"
-	},
-"Source":
-	{
-	"AUX1": "Null",
-	"AUX2": "Null",
-	"BluRay": "Null",
-	"Cable/TV": "Null",
-	"Composite": "Null",
-	"Component": "Null",
-	"DVD": "Null",
-	"Game": "Null",
-	"HDMI1": "Null",
-	"HDMI2": "Null",
-	"HDMI3": "Null",
-	"HDMI4": "Null",
-	"HDMI5": "Null",
-	"HDMI6": "Null",
-	"HDMI7": "Null",
-	"HDMI8": "Null",
-	"Input": "Null",
-	"LaserDisc": "Null",
-	"Net/USB": "Null",
-	"Phono": "Null",
-	"RGB1": "Null",
-	"RGB2": "Null",
-	"Satellite": "Null",
-	"S-Video": "Null",
-	"USB": "Null"
-	}
+    {
+    "Aspect Ratio": "ASPECT?",
+    "Aspect Ratio-Result":
+        {
+        "00": "Normal",
+        "30": "Auto",
+        "40": "Full",
+        "50": "Zoom"
+        },
+    "Brightness": "BRIGHT?",
+    "Color Mode": "CMODE?",
+    "Color Mode-Result":
+        {
+        "06": "Dynamic",
+        "07": "Natural",
+        "0C": "Living",
+        "13": "THX",
+        "15": "Cinema",
+        "17": "3D Cinema",
+        "18": "3D Dynamic",
+        "19": "3D THX",
+        "20": "B&W Cinema",
+        "INIT": "Setting Only"
+        },
+    "Color Temp": "CTEMP?",
+    "Contrast": "CONTRAST?",
+    "Density": "DENSITY?",
+    "Gain Green": "GAING?",
+    "Gain Blue": "GAINB?",
+    "Gain Red": "GAINR?",
+    "Lamp Hours": "LAMP?",
+    "Overscan Ratio": "OVSCAN?",
+    "Overscan Ratio-Response":
+        {
+        "00": "Off",
+        "01": "2%",
+        "02": "4%",
+        "03": "6%",
+        "04": "8%",
+        "A0": "Auto",
+        "INIT": "Setting Only"
+        },
+    "Power State": "PWR?",
+    "Power State-Results":
+        {
+        "00": "Standby Mode (Network OFF)",
+        "01": "Lamp ON",
+        "02": "Warmup",
+        "03": "Cooldown",
+        "05": "Abnormality Standby",
+        "07": "WirelessHD Standby"
+        },
+    "Serial Number": "SNO?",
+    "Sharpness": "Null",
+    "Tint (Video)": "TINT?",
+    },
 }
