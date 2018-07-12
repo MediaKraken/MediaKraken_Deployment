@@ -19,6 +19,7 @@
 DEVICE_ITEM_TYPES = [
     "Amplifier",
     "Blu-ray Player",
+    "Blu-ray Ultra HD Player",
     "Cable Box",
     "CD Player",
     "DAC",
@@ -41,7 +42,6 @@ DEVICE_ITEM_TYPES = [
     "Television",
     "Tuner",
     "Turntable",
-    "Ultra HD Blu-ray",
     "VCR - SVHS",
     "VCR - VHS",
     "VCR - Super Beta",
@@ -60,6 +60,7 @@ DEVICE_COMMANDS = {
 
     "Protocol":
         {
+            "//": "EISCP, IR, Kodi, LAN, RS232, Serial, Telnet",
             "Method:": "RS232",
             "Baud Rate": "9600",
             "Data Length": "8",
@@ -628,6 +629,7 @@ DEVICE_COMMANDS = {
             "Sharpness": None,
             "Status": None,
             "Tint (Video)": None,
+            "Volume": None,
         },
 
     "Sound":
@@ -715,6 +717,7 @@ DEVICE_COMMANDS = {
             "AUX2": None,
             "AUX3": None,
             "BluRay": None,
+            "BluRay UHD": None,
             "Cable/TV": None,
             "Coax1": None,
             "Coax2": None,
