@@ -49,3 +49,6 @@ class CommonNetworkTelnet(object):
         Send data to telnet device
         """
         self.telnet_device.write(telnet_message + NEWLINE)
+
+    def com_net_telnet_close(self):
+        self.telnet_device.close()

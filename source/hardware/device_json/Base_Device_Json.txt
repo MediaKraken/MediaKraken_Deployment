@@ -3,7 +3,7 @@
 "Item Type": "Base",
 "Protocol":
 	{
-	"//": "RS232, IR, LAN",
+	"//": "EISCP, IR, Kodi, LAN, RS232, Serial, Telnet",
 	"Method:": "RS232",
 	"Baud Rate": "9600",
 	"Data Length": "8",

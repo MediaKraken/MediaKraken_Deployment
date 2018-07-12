@@ -27,7 +27,7 @@ class CommonHardwareMarantz(object):
     def __init__(self, device_ip):
         self.device = telnetlib.Telnet(device_ip)
 
-    def com_hardware_marantz_command(self, command_string, resp_cnt):
+    def com_hardware_command(self, command_string, resp_cnt):
         command_string = command_string.encode("ascii")
         print(("Sending cmd %s" % command_string))
         self.device.read_very_eager()  # clear any old stuff
@@ -39,7 +39,7 @@ class CommonHardwareMarantz(object):
         print(("Response: ", resp))
         return resp
 
-    def com_hardware_marantz_close(self):
+    def com_hardware_close(self):
         self.device.close()
 
     """
