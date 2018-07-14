@@ -19,7 +19,7 @@ mediakraken_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 # grab container list
 for container_json in docker_inst.com_docker_container_list():
     # grab ports for server
-    if container_json[0]['Names'][0] == '/mkbroadcast':
+    if container_json['Names'][0] == '/mkbroadcast':
         docker_port = str(docker_inst.com_docker_port(container_json[0]['Id'], 8903))
         break
 
