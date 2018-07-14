@@ -10,6 +10,8 @@ services:
       context: ./ComposeMediaKrakenBroadcast
       dockerfile: dockerfile-broadcast
     container_name: mkbroadcast
+    depends_on:
+      - appserver
     entrypoint: python3 subprogram_broadcast.py
     ports:
       - "9101:9101"

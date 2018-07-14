@@ -17,9 +17,11 @@ docker_inst = common_docker.CommonDocker()
 mediakraken_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 
 # grab container list
-container_list = docker_inst.com_docker_container_list()
-# grab ports for server
-docker_port = str(docker_inst.com_docker_port(container_list['mediakraken/mkserver'], 8903))
+for container_json in docker_inst.com_docker_container_list():
+    # grab ports for server
+    if container_json[0]['Names'][0] == '/mkbroadcast':
+        docker_port = str(docker_inst.com_docker_port(container_json[0]['Id'], 8903))
+        break
 
 # begin loop to respond to all broadcast messages
 while True:

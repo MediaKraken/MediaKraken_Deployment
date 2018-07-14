@@ -38,7 +38,7 @@ class CommonDocker(object):
         """
         List containers on host
         """
-        return self.cli.containers()
+        return self.cli_api.containers()
 
     def com_docker_info(self):
         """
