@@ -5,8 +5,8 @@ User view in webapp
 from MediaKraken.extensions import (
     fpika,
 )
-from flask import Blueprint, render_template, g, request, abort, current_user
-from flask_login import login_required
+from flask import Blueprint, render_template, g, request, abort
+from flask_login import login_required, current_user
 
 blueprint = Blueprint("user_playback", __name__,
                       url_prefix='/users', static_folder="../static")
