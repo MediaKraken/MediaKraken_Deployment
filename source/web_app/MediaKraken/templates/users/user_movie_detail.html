@@ -107,29 +107,19 @@
                         <div class="col-md-3">
                             <p>Audio track(s):</p>
                             <p>
-                                {% if data_audio_track|length < 2 %}
-                                <select disabled="disabled" name="Video_Play_Audio_Track", id="video_play_audio_track">
-                                </select>
-                                {%else%}
                                 <select name="Video_Play_Audio_Track", id="video_play_audio_track">
                                     {% for audio_data in data_audio_track %}
                                     <option value={{audio_data[0]}}>{{audio_data[1]}}</option>
                                     {% endfor %}
                                 </select>
-                                {% endif %}
                             </p>
                             <p>
                                 Subtitle(s):
-                                {% if data_sub_track|length < 2 %}
-                                <select disabled="disabled" name="Video_Play_Subtitles", id="video_play_subtitles">
-                                </select>
-                                {%else%}
                                 <select name="Video_Play_Subtitles", id="video_play_subtitles">
                                     {% for sub_data in data_sub_track %}
                                     <option value={{sub_data[0]}}>{{sub_data[1]}}</option>
                                     {% endfor %}
                                 </select>
-                                {% endif %}
                             </p>
                         </div>
                     </div>
