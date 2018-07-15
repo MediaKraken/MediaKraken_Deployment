@@ -168,7 +168,7 @@ class CommonDocker(object):
         return self.cli.networks.prune()
 
     def com_docker_run_device_scan(self):
-        self.com_docker_delete_container('mediakraken/mkdevicescan')
+        self.com_docker_delete_container('mkdevicescan')
         return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                        detach=True,
                                        command='python3 main_hardware_discover.py',
@@ -176,7 +176,7 @@ class CommonDocker(object):
                                        network_mode='host')
 
     def com_docker_run_elk(self):
-        self.com_docker_delete_container('mediakraken/mkelk')
+        self.com_docker_delete_container('mkelk')
         return self.cli.containers.run(image='mediakraken/mkelk',
                                        detach=True,
                                        ports={"5044": 5044, "5601": 5601, "9200": 9200},
@@ -192,7 +192,7 @@ class CommonDocker(object):
                                        )
 
     def com_docker_run_musicbrainz(self, brainzcode):
-        self.com_docker_delete_container('mediakraken/mkmusicbrainz')
+        self.com_docker_delete_container('mkmusicbrainz')
         return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
                                        detach=True,
                                        name='mkmusicbrainz',
@@ -205,7 +205,7 @@ class CommonDocker(object):
                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self):
-        self.com_docker_delete_container('mediakraken/mkmumble')
+        self.com_docker_delete_container('mkmumble')
         return self.cli.containers.run(image='mediakraken/mkmumble',
                                        detach=True,
                                        ports={"64738": 64738},
@@ -217,7 +217,7 @@ class CommonDocker(object):
                                        )
 
     def com_docker_run_openldap(self):
-        self.com_docker_delete_container('mediakraken/mkopenldap')
+        self.com_docker_delete_container('mkopenldap')
         return self.cli.containers.run(image='mediakraken/mkopenldap',
                                        detach=True,
                                        name='mkopenldap',
@@ -260,7 +260,7 @@ class CommonDocker(object):
             image_name = 'mediakraken/mkslavenvidiadebian'
         else:
             image_name = 'mediakraken/mkslave'
-        self.com_docker_delete_container(image_name)
+        self.com_docker_delete_container(image_name.replace('mediakraken/', ''))
         return self.cli.containers.run(image=image_name,
                                        ports=port_mapping,
                                        network='mk_mediakraken_network',
@@ -276,7 +276,7 @@ class CommonDocker(object):
                                        name=name_container)
 
     def com_docker_run_teamspeak(self):
-        self.com_docker_delete_container('mediakraken/mkteamspeak')
+        self.com_docker_delete_container('mkteamspeak')
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
@@ -290,7 +290,7 @@ class CommonDocker(object):
         """
         run transmission daemon
         """
-        self.com_docker_delete_container('mediakraken/mktransmission')
+        self.com_docker_delete_container('mktransmission')
         return self.cli.containers.run(image='mediakraken/mktransmission',
                                        network='mk_mediakraken_network',
                                        detach=True,
@@ -312,7 +312,7 @@ class CommonDocker(object):
         """
         run wireshark
         """
-        self.com_docker_delete_container('mediakraken/mkwireshark')
+        self.com_docker_delete_container('mkwireshark')
         return self.cli.containers.run(image='mediakraken/mkwireshark',
                                        detach=True,
                                        name='mkwireshark',
