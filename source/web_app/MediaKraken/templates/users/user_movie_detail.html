@@ -107,7 +107,13 @@
                                 </select>
                                 {% endif %}
                             </p>
-                            <button type="submit" value="user_playback_videojs">Play Media</button>
+                            <p><a href="{{ url_for('user_playback.user_video_player_videojs', vid_type='hls', guid=data_guid, chapter=1) }}" class="btn btn-primary btn-large">Play Media</a>
+                                <form method="post">
+                                    <input class="btn btn-large" type="submit" name="play"
+                                           value="user_playback_videojs">
+                                </form>
+                            </p>
+
                         </div>
                         <div class="col-md-3">
                             <p>Audio track(s):</p>
