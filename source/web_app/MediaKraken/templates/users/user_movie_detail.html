@@ -96,16 +96,11 @@
                         <div class="col-md-3">
                             <p>Version(s):</p>
                             <p>
-                                {% if data_vid_versions|length < 2 %}
-                                <select disabled="disabled" name="Video_Track", id="video_track">
-                                </select>
-                                {%else%}
                                 <select name="Video_Track", id="video_track">
                                     {% for video_data in data_vid_versions %}
                                     <option value={{video_data[1]}}>{{video_data[0]}}</option>
                                     {% endfor %}
                                 </select>
-                                {% endif %}
                             </p>
                             <p><a href="{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=1) }}" class="btn btn-primary btn-large">Play Media</a></p>
                         </div>
