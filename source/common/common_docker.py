@@ -231,7 +231,7 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network')
 
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
-        self.com_docker_delete_container('dpage/pgadmin4')
+        self.com_docker_delete_container('mkpgadmin')
         return self.cli.containers.run(image='dpage/pgadmin4',
                                        detach=True,
                                        name='mkpgadmin',
@@ -241,7 +241,7 @@ class CommonDocker(object):
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
 
     def com_docker_run_portainer(self):
-        self.com_docker_delete_container('portainer/portainer')
+        self.com_docker_delete_container('mkportainer')
         return self.cli.containers.run(image='portainer/portainer',
                                        detach=True,
                                        name='mkportainer',
