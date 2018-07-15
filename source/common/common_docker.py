@@ -154,7 +154,7 @@ class CommonDocker(object):
         """
         return self.cli_api.unpause(container=container_image_name)
 
-    def com_docker_network_create(self, network_name):
+    def com_docker_network_create(self, network_name='mk_mediakraken_network'):
         """
         create network
         """
