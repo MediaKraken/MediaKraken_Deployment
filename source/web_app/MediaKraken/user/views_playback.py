@@ -48,10 +48,10 @@ def user_video_player_videojs(mtype, guid, chapter):
     try:
         media_guid_index = request.form["Video_Track"]
     except:
-        abort(404)
+        abort(500)
     media_path = g.db_connection.db_media_path_by_uuid(media_guid_index)[0]
     if media_path is None:
-        abort(404)
+        abort(500)
     # set ffpmeg options with the play_data
     audio_track_index = request.form["Video_Play_Audio_Track"]
     common_global.es_inst.com_elastic_index('info', {"aud": audio_track_index})
