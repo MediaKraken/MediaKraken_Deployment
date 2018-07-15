@@ -35,31 +35,23 @@ def user_album_player(guid):
                            data_song_list=g.db_connection.db_meta_songs_by_album_guid(guid))
 
 
-@blueprint.route('/playvideo_videojs/<mtype>/<guid>/<chapter>', methods=['GET', 'POST'])
+@blueprint.route('/playvideo_videojs/<mtype>/<guid>/<chapter>/<audio>/<sub>', methods=['GET',
+                                                                                      'POST'])
 @login_required
-def user_video_player_videojs(mtype, guid, chapter):
+def user_video_player_videojs(mtype, guid, chapter, audio, sub):
     """
     Display video playback page
     """
     # TODO will need start time/etc for resume function
     common_global.es_inst.com_elastic_index('info',
-                                            {"videojs": mtype, 'guid': guid, 'chapter': chapter})
-    common_global.es_inst.com_elastic_index('info',
-                                            {"track": request.values.get("Video_Track")})
+                                            {"videojs": mtype, 'guid': guid, 'chapter': chapter,
+                                             'audio': audio, 'sub': sub})
     # grab the guid from the comboindex
-    media_path = g.db_connection.db_media_path_by_uuid(request.values.get("Video_Track"))[0]
-    if media_path is None:
-        abort(500)
+    media_path = g.db_connection.db_media_path_by_uuid(guid)
     # set ffpmeg options with the play_data
-    audio_track_index = request.values.get("Video_Play_Audio_Track")
-    common_global.es_inst.com_elastic_index('info', {"aud": audio_track_index})
-    # 0:0 as example # pylint: disable=C0326
-    atracks = ['-map ' + audio_track_index]
-    subtitle_track_index = request.values.get("Video_Play_Subtitles")
-    common_global.es_inst.com_elastic_index('info', {"sub": subtitle_track_index})
-    if subtitle_track_index is not None:
-        subtracks = ['subtitles=' + media_path,
-                     'language=' + subtitle_track_index]
+    atracks = ['-map ' + audio]
+    if sub is not None:
+        subtracks = ['subtitles=' + media_path, 'language=' + sub]
     else:
         subtracks = ''
     # fire up ffmpeg process

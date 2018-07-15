@@ -61,6 +61,11 @@ def movie_detail(guid):
                                                        0] + '\" http://localhost/stream.ffm'))
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
+        elif request.form['status'] == 'WebPlay':
+            return redirect(url_for('user_playback.user_video_player_videojs', mtype='hls',
+                                    guid=request.form['Video_Track'], chapter=1,
+                                    audio=request.form['Video_Play_Audio_Track'],
+                                    sub=request.form['Video_Play_Subtitles']))
     else:
         data = g.db_connection.db_read_media_metadata_both(guid)
         json_ffmpeg = json.loads(data['mm_media_ffprobe_json'])
@@ -136,6 +141,7 @@ def movie_detail(guid):
         vid_versions = g.db_connection.db_media_by_metadata_guid(data[1],
                                                                  g.db_connection.db_media_uuid_by_class(
                                                                      'Movie'))
+        common_global.es_inst.com_elastic_index('info', {"vid_versions": vid_versions})
         # audio and sub sreams
         audio_streams = []
         subtitle_streams = [(0, 'None')]

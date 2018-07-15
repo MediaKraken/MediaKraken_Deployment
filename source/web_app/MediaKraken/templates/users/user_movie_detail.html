@@ -10,6 +10,7 @@
     </head>
     {% if data %}
     <div id="movie_detail">
+        <form name="video_play_stat_form" method="post">
         {% if data_background_image is none %}
         <img alt="fs_bg_image" src= {{ "/static/images/movie_ticket.png" }} id="fs_bg_image" >
         {% else %}
@@ -63,26 +64,24 @@
             </div>
             <div style="clear: both;"></div>
             <div id="textbox_gen">
-                <form name="video_detail_stat_form_status" method="post">
-                    {% if data_genres %}
-                    <p class="alignleft">Genres: {{data_genres}}</p>
+                {% if data_genres %}
+                <p class="alignleft">Genres: {{data_genres}}</p>
+                {% endif %}
+                <p class="alignright">
+                    {% if data_watched_status == True %}
+                    <input class="btn btn-default btn-submit" type="submit" name="status" value="Watched">
+                    {% else %}
+                    <input class="btn btn-default btn-submit" type="submit" name="status" value="Unwatched">
                     {% endif %}
-                    <p class="alignright">
-                        {% if data_watched_status == True %}
-                        <input class="btn btn-default btn-submit" type="submit" name="status" value="Watched">
-                        {% else %}
-                        <input class="btn btn-default btn-submit" type="submit" name="status" value="Unwatched">
-                        {% endif %}
-                        {% if data_sync_status == False %}
-                        <input class="btn btn-default btn-submit" type="submit" name="status" value="Sync">
-                        {% endif %}
-                        {% if data_cast == True %}
-                        <a href= "{{ url_for('user_chromecast.user_cast', action='base', guid=data_guid) }}" >
-                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/chromecast.png">
-                        </a>
-                        {% endif %}
-                    </p>
-                </form>
+                    {% if data_sync_status == False %}
+                    <input class="btn btn-default btn-submit" type="submit" name="status" value="Sync">
+                    {% endif %}
+                    {% if data_cast == True %}
+                    <a href= "{{ url_for('user_chromecast.user_cast', action='base', guid=data_guid) }}" >
+                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/chromecast.png">
+                    </a>
+                    {% endif %}
+                </p>
             </div>
             <div style="clear: both;"></div>
             <div id="textbox">
@@ -90,41 +89,39 @@
                 <p class="alignright"><input id="movie_rating_stars" value={{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}} type="number" class="rating" min=0 max=10 step=0.1 data-size="xx" data-stars="10"></p>
             </div>
             <div style="clear: both;"></div>
-            <form name="video_play_stat_form" method="post">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <p>Version(s):</p>
-                            <p>
-                                <select name="Video_Track", id="video_track">
-                                    {% for video_data in data_vid_versions %}
-                                    <option value={{video_data[1]}}>{{video_data[0]}}</option>
-                                    {% endfor %}
-                                </select>
-                            </p>
-                            <p><a href="{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=1) }}" class="btn btn-primary btn-large">Play Media</a></p>
-                        </div>
-                        <div class="col-md-3">
-                            <p>Audio track(s):</p>
-                            <p>
-                                <select name="Video_Play_Audio_Track", id="video_play_audio_track">
-                                    {% for audio_data in data_audio_track %}
-                                    <option value={{audio_data[0]}}>{{audio_data[1]}}</option>
-                                    {% endfor %}
-                                </select>
-                            </p>
-                            <p>
-                                Subtitle(s):
-                                <select name="Video_Play_Subtitles", id="video_play_subtitles">
-                                    {% for sub_data in data_sub_track %}
-                                    <option value={{sub_data[0]}}>{{sub_data[1]}}</option>
-                                    {% endfor %}
-                                </select>
-                            </p>
-                        </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p>Version(s):</p>
+                        <p>
+                            <select name="Video_Track", id="video_track">
+                                {% for video_data in data_vid_versions %}
+                                <option value={{video_data[1]}}>{{video_data[0]}}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        <p><input class="btn btn-default btn-submit" type="submit" name="status" value ="WebPlay">Play Media</a></p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>Audio track(s):</p>
+                        <p>
+                            <select name="Video_Play_Audio_Track", id="video_play_audio_track">
+                                {% for audio_data in data_audio_track %}
+                                <option value={{audio_data[0]}}>{{audio_data[1]}}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        <p>
+                            Subtitle(s):
+                            <select name="Video_Play_Subtitles", id="video_play_subtitles">
+                                {% for sub_data in data_sub_track %}
+                                <option value={{sub_data[0]}}>{{sub_data[1]}}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
                     </div>
                 </div>
-            </form>
+            </div>
             <div style="clear: both;"></div>
             {% if data_budget != "0" %}
             <p>Budget: {{data_budget}}</p>
@@ -164,6 +161,7 @@
             </div>
             {% endif %}
         </div>
+        </form>
     </div>
     {% else %}
     <p>No info found. ERROR! You should never see this message.</p>
