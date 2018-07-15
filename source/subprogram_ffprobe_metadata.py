@@ -150,6 +150,7 @@ class MKConsumer(object):
                         # as the worker might see it as finished if allowed to continue
                         chapter_image_list[chapter_data['tags']['title']] = image_file_path
                         first_image = False
+                # TODO this should be merged into one database update
                 db_connection.db_update_media_json(json_message['Media UUID'],
                                                    json.dumps(
                                                        {'ChapterImages': chapter_image_list}))
