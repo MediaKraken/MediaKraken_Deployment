@@ -63,7 +63,7 @@
             </div>
             <div style="clear: both;"></div>
             <div id="textbox_gen">
-                <form name="video_detail_stat_form_status" action={{data_detail_url}} method="post">
+                <form name="video_detail_stat_form_status" method="post">
                     {% if data_genres %}
                     <p class="alignleft">Genres: {{data_genres}}</p>
                     {% endif %}
@@ -90,7 +90,7 @@
                 <p class="alignright"><input id="movie_rating_stars" value={{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}} type="number" class="rating" min=0 max=10 step=0.1 data-size="xx" data-stars="10"></p>
             </div>
             <div style="clear: both;"></div>
-            <form name="video_play_stat_form" action={{data_playback_url}} method="post">
+            <form name="video_play_stat_form" method="post">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-3">
