@@ -1,0 +1,13 @@
+# To startup the application
+docker-compose up -d
+
+# To shutdown the application
+docker-compose down
+
+# To update the application
+docker-compose pull
+docker-compose up -d
+
+
+Access the HOST machine via a web browser at HOST:8900 address. Register a user via the link at top right of the screen. The first user to be registered will automatically be an administrator.
+
