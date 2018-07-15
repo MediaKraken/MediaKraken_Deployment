@@ -44,19 +44,18 @@ def user_video_player_videojs(mtype, guid, chapter):
     # TODO will need start time/etc for resume function
     common_global.es_inst.com_elastic_index('info',
                                             {"videojs": mtype, 'guid': guid, 'chapter': chapter})
-
     common_global.es_inst.com_elastic_index('info',
-                                            {"track": request.form["Video_Track"]})
+                                            {"track": request.values.get["Video_Track"]})
     # grab the guid from the comboindex
-    media_path = g.db_connection.db_media_path_by_uuid(request.form["Video_Track"])[0]
+    media_path = g.db_connection.db_media_path_by_uuid(request.values.get["Video_Track"])[0]
     if media_path is None:
         abort(500)
     # set ffpmeg options with the play_data
-    audio_track_index = request.form["Video_Play_Audio_Track"]
+    audio_track_index = request.values.get["Video_Play_Audio_Track"]
     common_global.es_inst.com_elastic_index('info', {"aud": audio_track_index})
     # 0:0 as example # pylint: disable=C0326
     atracks = ['-map ' + audio_track_index]
-    subtitle_track_index = request.form["Video_Play_Subtitles"]
+    subtitle_track_index = request.values.get["Video_Play_Subtitles"]
     common_global.es_inst.com_elastic_index('info', {"sub": subtitle_track_index})
     if subtitle_track_index is not None:
         subtracks = ['subtitles=' + media_path,
