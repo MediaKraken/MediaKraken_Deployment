@@ -44,13 +44,11 @@ def user_video_player_videojs(mtype, guid, chapter):
     # TODO will need start time/etc for resume function
     common_global.es_inst.com_elastic_index('info',
                                             {"videojs": mtype, 'guid': guid, 'chapter': chapter})
+
+    common_global.es_inst.com_elastic_index('info',
+                                            {"track": request.form["Video_Track"]})
     # grab the guid from the comboindex
-    # use try since people can go here "by-hand"
-    try:
-        media_guid_index = request.form["Video_Track"]
-    except:
-        abort(500)
-    media_path = g.db_connection.db_media_path_by_uuid(media_guid_index)[0]
+    media_path = g.db_connection.db_media_path_by_uuid(request.form["Video_Track"])[0]
     if media_path is None:
         abort(500)
     # set ffpmeg options with the play_data
