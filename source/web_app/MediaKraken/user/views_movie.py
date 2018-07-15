@@ -13,6 +13,7 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_movie", __name__,
                       url_prefix='/users', static_folder="../static")
+import json
 import subprocess
 import natsort
 import sys
@@ -62,7 +63,7 @@ def movie_detail(guid):
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
         data = g.db_connection.db_read_media_metadata_both(guid)
-        json_ffmpeg = data['mm_media_ffprobe_json']
+        json_ffmpeg = json.loads(data['mm_media_ffprobe_json'])
         json_media = data['mm_media_json']
         json_metadata = data['mm_metadata_json']
         json_imagedata = data['mm_metadata_localimage_json']
