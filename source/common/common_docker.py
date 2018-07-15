@@ -164,6 +164,7 @@ class CommonDocker(object):
         return self.cli.networks.prune()
 
     def com_docker_run_device_scan(self):
+        self.com_docker_delete_container('mediakraken/mkdevicescan')
         return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                        detach=True,
                                        command='python3 main_hardware_discover.py',
@@ -171,6 +172,7 @@ class CommonDocker(object):
                                        network_mode='host')
 
     def com_docker_run_elk(self):
+        self.com_docker_delete_container('mediakraken/mkelk')
         return self.cli.containers.run(image='mediakraken/mkelk',
                                        detach=True,
                                        ports={"5044": 5044, "5601": 5601, "9200": 9200},
@@ -186,6 +188,7 @@ class CommonDocker(object):
                                        )
 
     def com_docker_run_musicbrainz(self, brainzcode):
+        self.com_docker_delete_container('mediakraken/mkmusicbrainz')
         return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
                                        detach=True,
                                        name='mkmusicbrainz',
@@ -198,6 +201,7 @@ class CommonDocker(object):
                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self):
+        self.com_docker_delete_container('mediakraken/mkmumble')
         return self.cli.containers.run(image='mediakraken/mkmumble',
                                        detach=True,
                                        ports={"64738": 64738},
@@ -209,6 +213,7 @@ class CommonDocker(object):
                                        )
 
     def com_docker_run_openldap(self):
+        self.com_docker_delete_container('mediakraken/mkopenldap')
         return self.cli.containers.run(image='mediakraken/mkopenldap',
                                        detach=True,
                                        name='mkopenldap',
@@ -222,6 +227,7 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network')
 
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
+        self.com_docker_delete_container('dpage/pgadmin4')
         return self.cli.containers.run(image='dpage/pgadmin4',
                                        detach=True,
                                        name='mkpgadmin',
@@ -231,6 +237,7 @@ class CommonDocker(object):
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
 
     def com_docker_run_portainer(self):
+        self.com_docker_delete_container('portainer/portainer')
         return self.cli.containers.run(image='portainer/portainer',
                                        detach=True,
                                        name='mkportainer',
@@ -249,6 +256,7 @@ class CommonDocker(object):
             image_name = 'mediakraken/mkslavenvidiadebian'
         else:
             image_name = 'mediakraken/mkslave'
+        self.com_docker_delete_container(image_name)
         return self.cli.containers.run(image=image_name,
                                        ports=port_mapping,
                                        network='mk_mediakraken_network',
@@ -264,6 +272,7 @@ class CommonDocker(object):
                                        name=name_container)
 
     def com_docker_run_teamspeak(self):
+        self.com_docker_delete_container('mediakraken/mkteamspeak')
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
@@ -277,6 +286,7 @@ class CommonDocker(object):
         """
         run transmission daemon
         """
+        self.com_docker_delete_container('mediakraken/mktransmission')
         return self.cli.containers.run(image='mediakraken/mktransmission',
                                        network='mk_mediakraken_network',
                                        detach=True,
@@ -298,6 +308,7 @@ class CommonDocker(object):
         """
         run wireshark
         """
+        self.com_docker_delete_container('mediakraken/mkwireshark')
         return self.cli.containers.run(image='mediakraken/mkwireshark',
                                        detach=True,
                                        name='mkwireshark',
