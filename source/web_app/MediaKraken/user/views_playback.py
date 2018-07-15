@@ -42,7 +42,8 @@ def user_video_player_videojs(mtype, guid, chapter):
     Display video playback page
     """
     # TODO will need start time/etc for resume function
-    common_global.es_inst.com_elastic_index('info', {"videojs": mtype, 'guid': guid})
+    common_global.es_inst.com_elastic_index('info',
+                                            {"videojs": mtype, 'guid': guid, 'chapter': chapter})
     # grab the guid from the comboindex
     # use try since people can go here "by-hand"
     try:
