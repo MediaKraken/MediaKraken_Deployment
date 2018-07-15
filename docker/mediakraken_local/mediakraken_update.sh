@@ -2,7 +2,6 @@ docker-compose down
 docker-compose pull
 docker pull th-dockerhub-1:5000/mediakraken/mkbasecuda
 docker pull th-dockerhub-1:5000/mediakraken/mkbaseffmpeg
-docker pull th-dockerhub-1:5000/mediakraken/mkdebug
 docker pull th-dockerhub-1:5000/mediakraken/mkdevicescan
 docker pull th-dockerhub-1:5000/mediakraken/mkelk
 docker pull th-dockerhub-1:5000/mediakraken/mkmusicbrainz
