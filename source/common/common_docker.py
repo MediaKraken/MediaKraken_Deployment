@@ -135,8 +135,12 @@ class CommonDocker(object):
         """
         Remove container from disk and term it forcefully if asked
         """
-        return self.cli_api.remove_container(container=container_image_name,
+        try:
+            # since the container might not exist (like starting the main_debug.py
+            return self.cli_api.remove_container(container=container_image_name,
                                              force=container_force)
+        except:
+            pass
 
     def com_docker_pause_container(self, container_image_name):
         """
