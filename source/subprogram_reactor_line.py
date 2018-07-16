@@ -92,7 +92,7 @@ def read(queue_object):
         elif json_message['Type'] == 'Play':
             # to address the 30 char name limit for container
             name_container = (json_message['User'] + '_'
-                              + str(uuid.uuid4()).replace('-', ''))[-30:]
+                              + str(uuid.uuid4()).replace('-', ''))[:30]
             common_global.es_inst.com_elastic_index('info', {'cont': name_container})
             # TODO only for now until I get the device for websessions (cookie perhaps?)
             if 'Device' in json_message:
