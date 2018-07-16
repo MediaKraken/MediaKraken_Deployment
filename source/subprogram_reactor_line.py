@@ -97,10 +97,10 @@ def read(queue_object):
             # TODO only for now until I get the device for websessions (cookie perhaps?)
             if 'Device' in json_message:
                 define_new_container = (name_container, json_message['Device'],
-                                        json_message['Target'], json_message['Data'])
+                                        json_message['Target'])
             else:
                 define_new_container = (name_container, None,
-                                        json_message['Target'], json_message['Data'])
+                                        json_message['Target'])
             common_global.es_inst.com_elastic_index('info', {'def': define_new_container})
             if json_message['User'] in mk_containers:
                 user_activity_list = mk_containers[json_message['User']]
