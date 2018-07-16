@@ -18,7 +18,6 @@
 
 import json
 import subprocess
-import time
 
 import pika
 from common import common_global
@@ -27,6 +26,7 @@ from common import common_logging_elasticsearch
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware')
+
 
 class MKConsumer(object):
     EXCHANGE = 'mkque_hardware_ex'
@@ -122,7 +122,8 @@ class MKConsumer(object):
                             hardware_hue.com_hardware_hue_light_set(json_message['LightList'], 'on',
                                                                     json_message['Setting'])
                         elif json_message['Action'] == 'Bright':
-                            hardware_hue.com_hardware_hue_light_set(json_message['LightList'], 'bri',
+                            hardware_hue.com_hardware_hue_light_set(json_message['LightList'],
+                                                                    'bri',
                                                                     json_message['Setting'])
         self.acknowledge_message(basic_deliver.delivery_tag)
 
