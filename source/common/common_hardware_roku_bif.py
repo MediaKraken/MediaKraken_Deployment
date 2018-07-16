@@ -32,8 +32,8 @@ def getmp4info(filename):
     """
     Get mp4 info about the video
     """
-    details = {'type': "", 'length': 0,
-               'bitrate': 1500, 'format': "", 'size': ""}
+    details = {'type': None, 'length': 0,
+               'bitrate': 1500, 'format': None, 'size': None}
     cmd = ["mp4info", filename]
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, stdin=PIPE)
     (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
@@ -50,6 +50,7 @@ def getmp4info(filename):
                 details['bitrate'] = float(videofields[2].split()[0])
                 details['format'] = videofields[3]
                 details['size'] = videofields[3].split('@')[0].strip()
+                break
         except:
             pass
     return details
