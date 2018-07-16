@@ -1,5 +1,6 @@
 git pull
 ./source_sync.sh
+./webcode_minify/minify-web-scripts.sh
 
 # must move base dir so the docker-compose commands work
 cd /home/metaman/MediaKraken_Deployment/docker/alpine
