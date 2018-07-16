@@ -49,9 +49,9 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
     # grab the guid from the comboindex
     media_path = g.db_connection.db_media_path_by_uuid(guid)
     # set ffpmeg options with the play_data
-    atracks = ['-map ' + audio]
+    atracks = '-map ' + audio
     if sub is not None:
-        subtracks = ['subtitles=' + media_path, 'language=' + sub]
+        subtracks = 'subtitles=\"' + media_path + '\" language=' + sub
     else:
         subtracks = ''
     # fire up ffmpeg process
