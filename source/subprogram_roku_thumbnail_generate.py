@@ -21,6 +21,7 @@ import subprocess
 
 import pika
 from common import common_global
+from common import common_hardware_roku_bif
 from common import common_logging_elasticsearch
 
 # start logging
@@ -116,7 +117,7 @@ class MKConsumer(object):
             json_message = json.loads(body)
             if json_message['Type'] == 'Roku':
                 if json_message['Subtype'] == 'Thumbnail':
-                    pass
+                    common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
