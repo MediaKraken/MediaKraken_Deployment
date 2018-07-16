@@ -39,6 +39,7 @@ RUN buildDeps="autoconf \
         libvorbis-dev \
         libvpx-dev \
         libwebp-dev \
+        libressl-dev \
         make \
         nasm \
         openjpeg-dev \
@@ -54,7 +55,7 @@ RUN buildDeps="autoconf \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apk update && \
     apk upgrade && \
-    apk add --update ${buildDeps} libgcc libstdc++ ca-certificates libssl1.0 && \
+    apk add --update ${buildDeps} libgcc libstdc++ ca-certificates libressl && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
@@ -122,6 +123,7 @@ RUN buildDeps="autoconf \
         --enable-libx265 \
         --enable-libxvid \
         --enable-nonfree \
+        --enable-openssl \
         --enable-postproc \
         --enable-pthreads \
         --enable-shared \
