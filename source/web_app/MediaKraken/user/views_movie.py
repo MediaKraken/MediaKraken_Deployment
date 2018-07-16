@@ -144,7 +144,7 @@ def movie_detail(guid):
         common_global.es_inst.com_elastic_index('info', {"vid_versions": vid_versions})
         # audio and sub sreams
         audio_streams = []
-        subtitle_streams = [(0, 'None')]
+        subtitle_streams = [(None, 'None')]
         if json_ffmpeg is not None:
             for stream_info in json_ffmpeg['streams']:
                 stream_language = ''
