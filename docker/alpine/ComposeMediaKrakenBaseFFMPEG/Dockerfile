@@ -136,7 +136,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.7
+FROM alpine:3.8
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
