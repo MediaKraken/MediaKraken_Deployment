@@ -55,9 +55,10 @@ def extractimages(videofile, directory, interval, resolution, offset=0):
     @param resolution to create images at
     @param offset offset to first image, in seconds
     """
-    proc = Popen(["ffmpeg", "-i", videofile, "-ss", "%d" % offset,
+    proc = Popen(["ffmpeg", "-i", videofile,
+                  "-ss", "%d" % offset,
                   "-r", "%0.2f" % (1.00 / interval),
-                  "-s", "x".join([str(ndx) for ndx in resolution.split("x")]),
+                  "-s", resolution,
                   "%s/%%08d.jpg" % directory], stdout=PIPE, stdin=PIPE)
     (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
 
@@ -83,7 +84,7 @@ def makebif(filename, directory, interval):
     file_handle.write(struct.pack("<I1", 1000 * interval))
     array.array('B', [0x00 for ndx in range(20, 64)]).tofile(file_handle)  # pylint: disable=W0612
 
-    imageindex = 72 + (8 * len(images)) # bif table size
+    imageindex = 72 + (8 * len(images))  # bif table size
     timestamp = 0
 
     # Get the length of each image
