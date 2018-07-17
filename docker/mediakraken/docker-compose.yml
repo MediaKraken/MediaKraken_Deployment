@@ -185,13 +185,28 @@ services:
     container_name: mkffprobe
     depends_on:
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: python3 subprogram_ffprobe_metadata.py
     volumes:
       - /home/mediakraken:/mediakraken/mnt
     networks:
       - mediakraken_network
     restart: unless-stopped
 
+  # runs roku thumbnail
+  rokuthumb:
+    image: mediakraken/mkrokuthumb:latest
+    environment:
+      - DEBUG=${DEBUG}
+    container_name: mkrokuthumb
+    depends_on:
+      - rabbit
+    entrypoint: python3 subprogram_roku_thumbnail_generate.py
+    volumes:
+      - /home/mediakraken:/mediakraken/mnt
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+    
   # runs hardware
   hardware:
     image: mediakraken/mkhardware:latest

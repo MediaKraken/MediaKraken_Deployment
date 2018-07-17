@@ -9,4 +9,5 @@ docker tag alpine_nginx:latest th-dockerhub-1:5000/mediakraken/mknginx:latest
 docker tag alpine_pgbounce:latest th-dockerhub-1:5000/mediakraken/mkpgbounce:latest
 docker tag alpine_rabbit:latest th-dockerhub-1:5000/mediakraken/mkrabbitmq:latest
 docker tag alpine_redis:latest th-dockerhub-1:5000/mediakraken/mkredis:latest
+docker tag alpine_rokuthumb:latest th-dockerhub-1:5000/mediakraken/mkrokuthumb:latest
 docker tag alpine_webserver:latest th-dockerhub-1:5000/mediakraken/mkwebapp:latest

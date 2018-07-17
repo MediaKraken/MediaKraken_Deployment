@@ -28,6 +28,7 @@ docker push th-dockerhub-1:5000/mediakraken/mkprefetchtvmaze:latest
 docker push th-dockerhub-1:5000/mediakraken/mkrabbitmq:latest
 docker push th-dockerhub-1:5000/mediakraken/mkredis:latest
 #docker push th-dockerhub-1:5000/mediakraken/mkripper:latest
+docker push th-dockerhub-1:5000/mediakraken/mkrokuthumb:latest
 docker push th-dockerhub-1:5000/mediakraken/mkserver:latest
 docker push th-dockerhub-1:5000/mediakraken/mkslave:latest
 #docker push th-dockerhub-1:5000/mediakraken/mkslavenvidia:latest
