@@ -5,8 +5,6 @@ Copyright 2009-2013 by Brian C. Lane <bcl@brianlane.com>
 All Rights Reserved
 
 
-makebif.py --help for arguments
-
 Requires ffmpeg to be in the path
 
 NOTE: The jpg image sizes are set to the values posted by bbefilms in the Roku
