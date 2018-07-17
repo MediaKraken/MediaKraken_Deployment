@@ -55,10 +55,10 @@ def extractimages(videofile, directory, interval, resolution, offset=0):
     @param resolution to create images at
     @param offset offset to first image, in seconds
     """
-    size = "x".join([str(ndx) for ndx in resolution.split("x")])
-    cmd = ["ffmpeg", "-i", videofile, "-ss", "%d" % offset,
-           "-r", "%0.2f" % (1.00 / interval), "-s", size, "%s/%%08d.jpg" % directory]
-    proc = Popen(cmd, stdout=PIPE, stdin=PIPE)
+    proc = Popen(["ffmpeg", "-i", videofile, "-ss", "%d" % offset,
+                  "-r", "%0.2f" % (1.00 / interval),
+                  "-s", "x".join([str(ndx) for ndx in resolution.split("x")]),
+                  "%s/%%08d.jpg" % directory], stdout=PIPE, stdin=PIPE)
     (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
 
 
@@ -69,9 +69,6 @@ def makebif(filename, directory, interval):
     @param directory Directory of image files 00000001.jpg
     @param interval Time, in seconds, between the images
     """
-    magic = [0x89, 0x42, 0x49, 0x46, 0x0d, 0x0a, 0x1a, 0x0a]
-    version = 0
-
     images = []
     for image in os.listdir("%s" % directory):
         if image[-4:] == '.jpg':
@@ -80,14 +77,13 @@ def makebif(filename, directory, interval):
     images = images[1:]
 
     file_handle = open(filename, "wb")
-    array.array('B', magic).tofile(file_handle)
-    file_handle.write(struct.pack("<I1", version))
+    array.array('B', [0x89, 0x42, 0x49, 0x46, 0x0d, 0x0a, 0x1a, 0x0a]).tofile(file_handle)
+    file_handle.write(struct.pack("<I1", 0))
     file_handle.write(struct.pack("<I1", len(images)))
     file_handle.write(struct.pack("<I1", 1000 * interval))
     array.array('B', [0x00 for ndx in range(20, 64)]).tofile(file_handle)  # pylint: disable=W0612
 
-    biftablesize = 8 + (8 * len(images))
-    imageindex = 64 + biftablesize
+    imageindex = 72 + (8 * len(images)) # bif table size
     timestamp = 0
 
     # Get the length of each image
