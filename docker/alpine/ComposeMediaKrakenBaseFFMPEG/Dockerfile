@@ -39,7 +39,6 @@ RUN buildDeps="autoconf \
         libvorbis-dev \
         libvpx-dev \
         libwebp-dev \
-        libressl-dev \
         make \
         nasm \
         openjpeg-dev \
@@ -123,7 +122,6 @@ RUN buildDeps="autoconf \
         --enable-libx265 \
         --enable-libxvid \
         --enable-nonfree \
-        --enable-openssl \
         --enable-postproc \
         --enable-pthreads \
         --enable-shared \
