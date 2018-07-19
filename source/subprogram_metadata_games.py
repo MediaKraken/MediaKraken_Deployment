@@ -269,6 +269,107 @@ for sql_row in db_connection.db_media_game_clone_list():
     for sql_cat_row in db_connection.db_media_game_category_by_name(sql_row['gi_cloneof']):
         db_connection.db_media_game_category_update(sql_cat_row['gi_gc_category'], sql_row['gi_id'])
 
+# update mess system description
+infile = open("messinfo.dat", "r")
+start_system_read = False
+skip_next_line = False
+long_name_next = False
+desc_next = False
+wip_in_progress = False
+romset_in_progress = False
+# store args to sql
+sys_shortname = ""
+sys_longname = None
+sys_manufacturer = None
+sys_year = None
+sys_desc = None
+sys_emulation = None
+sys_color = None
+sys_sound = None
+sys_graphics = None
+sys_save_state = None
+sys_wip = ""
+sys_romset = None
+
+sql_string = ""
+while 1:
+    line = infile.readline()
+    if not line:
+        break
+    if skip_next_line:
+        skip_next_line = False
+    else:
+        if line.find("DRIVERS INFO") != -1:  # stop at drivers
+            break
+        line = line.replace("    ", "")
+        if line[0] == "#" or len(line) < 4 or line.find(
+                "$mame") == 0:  # skip comments and blank lines
+            if line.find("$mame") == 0:
+                skip_next_line = True
+                long_name_next = True
+        elif line.find("$info") == 0:  # found so begin start system read
+            start_system_read = True
+            # load the short name
+            sys_short_name = line.split('=')[1]
+        elif line.find("Emulation:") == 0:  # found so begin start system read
+            sys_emulation = line.split(' ')[1]
+        elif line.find("Color:") == 0:  # found so begin start system read
+            sys_color = line.split(' ')[1]
+        elif line.find("Sound:") == 0:  # found so begin start system read
+            sys_sound = line.split(' ')[1]
+        elif line.find("Graphics:") == 0:  # found so begin start system read
+            sys_graphics = line.split(' ')[1]
+        elif line.find("Save State:") == 0:  # found so begin start system read
+            if line.rsplit(' ', 1)[1][:-1] == "Supported":
+                sys_save_state = True
+            else:
+                sys_save_state = False
+        elif line.find("WIP:") == 0:  # found so begin start system read
+            wip_in_progress = True
+        elif line.find("Romset:") == 0:  # found so begin start system read
+            wip_in_progress = False
+            romset_in_progress = True
+        else:
+            if wip_in_progress and line.find("Romset:") != 0:
+                # sys_wip += line[:-1] + "<BR>"
+                pass
+            if romset_in_progress and line.find("$end") != 0:
+                # sys_romset += line[:-1] + "<BR>"
+                pass
+            if desc_next:
+                sys_desc = line
+                desc_next = False
+            if long_name_next:
+                try:
+                    sys_longname, sys_manufacturer, sys_year = line.split(',')
+                except:
+                    sys_longname, msys_manufacturer, sys_year = line.rsplit(',', 2)
+                long_name_next = False
+                desc_next = True
+            if line.find("$end") == 0:  # end of system info so store system into db
+                romset_in_progress = False
+                if sys_desc[:-1] == "...":
+                    sys_desc = None
+                else:
+                    sys_desc = sys_desc[:-1]
+                sys_manufacturer = (sys_manufacturer)
+                sys_emulation = sys_emulation[:-1]
+                sys_color = sys_color[:-1]
+                sys_sound = sys_sound[:-1]
+                sys_graphics = sys_graphics[:-1]
+                # build query
+                sql_args = sys_short_name[:-1], sys_longname, sys_desc, \
+                           sys_year[:-1], sys_manufacturer, sys_emulation, \
+                           sys_color, sys_sound, \
+                           sys_graphics, sys_save_state
+                # upsert the system
+                # TODO long name?
+                db_connection.db_meta_game_system_upsert(sys_short_name[:-1],
+                                                         sys_short_name[:-1],
+                                                         sys_desc)
+                sys_wip = None
+                sys_romset = None
+
 # commit all changes to db
 db_connection.db_commit()
 
