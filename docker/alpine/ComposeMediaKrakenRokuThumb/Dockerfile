@@ -15,6 +15,7 @@ RUN apk add --update \
   libressl \
   net-snmp \
   python3 \
+  openrc \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind
