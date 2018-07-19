@@ -155,7 +155,9 @@ class MKServerDatabase(object):
         db_meta_game_system_list_count, \
         db_meta_game_system_list, \
         db_meta_games_system_insert, \
-        db_meta_games_system_guid_by_short_name
+        db_meta_games_system_guid_by_short_name, \
+        db_meta_games_system_game_count, \
+        db_meta_game_system_upsert
     from database.db_base_metadata_games import db_meta_game_list_count, \
         db_meta_game_list, \
         db_meta_game_by_guid, \

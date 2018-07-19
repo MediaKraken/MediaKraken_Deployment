@@ -352,21 +352,18 @@ while 1:
                     sys_desc = None
                 else:
                     sys_desc = sys_desc[:-1]
-                sys_manufacturer = (sys_manufacturer)
                 sys_emulation = sys_emulation[:-1]
                 sys_color = sys_color[:-1]
                 sys_sound = sys_sound[:-1]
                 sys_graphics = sys_graphics[:-1]
-                # build query
-                sql_args = sys_short_name[:-1], sys_longname, sys_desc, \
-                           sys_year[:-1], sys_manufacturer, sys_emulation, \
-                           sys_color, sys_sound, \
-                           sys_graphics, sys_save_state
                 # upsert the system
-                # TODO long name?
                 db_connection.db_meta_game_system_upsert(sys_short_name[:-1],
-                                                         sys_short_name[:-1],
-                                                         sys_desc)
+                                                         sys_longname,
+                                                         sys_desc, sys_year[:-1],
+                                                         sys_manufacturer,
+                                                         sys_emulation,
+                                                         sys_color, sys_sound,
+                                                         sys_graphics, sys_save_state)
                 sys_wip = None
                 sys_romset = None
 
