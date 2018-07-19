@@ -18,7 +18,6 @@
 
 import json
 import os
-import xmltodict
 import zipfile
 
 import xmltodict
@@ -33,7 +32,8 @@ from common import common_version
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_metadata_games')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_metadata_games')
 
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does
@@ -241,6 +241,33 @@ if not os.path.exists(file_name):
             common_internationalization.com_inter_number_format(
                 total_software_update)
             + " games(s) metadata updated from MAME hash", True)
+
+# read the category file and create dict/list for it
+cat_file = open("Category.ini", "rb")
+cat_dictionary = {}
+category = ""
+while 1:
+    line = cat_file.readline()
+    if not line:
+        break
+    if line.find("[") == 0:
+        category = line.replace("[", "").replace("]", "").replace(" ", "").rstrip('\n').rstrip(
+            '\r')  # wipe out space to make the category table
+    elif len(line) > 1:
+        result_value = db_connection.db_meta_game_category_by_name(category)
+        if result_value is None:
+            result_value = db_connection.db_meta_game_category_add(category)
+        cat_dictionary[line.strip()] = result_value
+
+# grab all system null in db as those are mame
+for sql_row in db_connection.db_media_mame_game_list():
+    db_connection.db_media_game_category_update(cat_dictionary[sql_row['gi_short_name']],
+                                                sql_row['gi_id'])
+
+# grab all the non parent roms that aren't set
+for sql_row in db_connection.db_media_game_clone_list():
+    for sql_cat_row in db_connection.db_media_game_category_by_name(sql_row['gi_cloneof']):
+        db_connection.db_media_game_category_update(sql_cat_row['gi_gc_category'], sql_row['gi_id'])
 
 # commit all changes to db
 db_connection.db_commit()

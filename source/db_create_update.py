@@ -843,6 +843,13 @@ if db_connection.db_table_index_check('mm_game_systems_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_game_systems_idxgin_json'
                            ' ON mm_metadata_game_systems_info USING gin (gs_game_system_json)')
 
+# game category
+db_connection.db_query('create table IF NOT EXISTS mm_game_category (gc_id uuid'
+                       ' CONSTRAINT gc_id_pk primary key, gc_category text)')
+if db_connection.db_table_index_check('gc_category_idx_name') is None:
+    db_connection.db_query('CREATE INDEX gc_category_idx_name'
+                           ' ON mm_game_category(gc_category)')
+
 # person for bio and image info
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_person (mmp_id uuid'
                        ' CONSTRAINT mmp_id_pk primary key, mmp_person_media_id jsonb,'

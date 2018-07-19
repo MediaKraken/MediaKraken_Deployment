@@ -273,5 +273,13 @@ if db_connection.db_version_check() == 19:
            'password': None},
 '''
 
+# game category
+db_connection.db_query('create table IF NOT EXISTS mm_game_category (gc_id uuid'
+                       ' CONSTRAINT gc_id_pk primary key, gc_category text)')
+if db_connection.db_table_index_check('gc_category_idx_name') is None:
+    db_connection.db_query('CREATE INDEX gc_category_idx_name'
+                           ' ON mm_game_category(gc_category)')
+
+
 # close the database
 db_connection.db_close()
