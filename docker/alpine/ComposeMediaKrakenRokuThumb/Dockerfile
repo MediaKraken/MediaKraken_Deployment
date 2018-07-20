@@ -4,10 +4,11 @@ FROM mediakraken/mkbasenodeffmpeg:latest
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the Roku thumbnail generator app"
 
-# copy PIP requirements
-ADD requirements.txt /mediakraken
 # create work dir
 RUN mkdir /mediakraken
+
+# copy PIP requirements
+ADD requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
