@@ -1,4 +1,3 @@
-pyopenssl
 streamlink
 docker
 pika

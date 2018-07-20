@@ -4,6 +4,7 @@ User view in webapp
 # -*- coding: utf-8 -*-
 
 from fractions import Fraction
+from shlex import split
 
 from flask import Blueprint, render_template, g, request, \
     redirect, url_for
@@ -12,6 +13,7 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_movie", __name__,
                       url_prefix='/users', static_folder="../static")
+import json
 import subprocess
 import natsort
 import sys
@@ -53,15 +55,20 @@ def movie_detail(guid):
             audio_track_index = request.form["Video_Play_Audio_Track"]
             subtitle_track_index = request.form["Video_Play_Subtitles"]
             # launch ffmpeg to ffserver procecss
-            proc_ffserver = subprocess.Popen(['ffmpeg', '-i',
-                                              g.db_connection.db_media_path_by_uuid(
-                                                  media_guid_index)[0],
-                                              'http://localhost/stream.ffm'], shell=False)
+            proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
+                                                   g.db_connection.db_media_path_by_uuid(
+                                                       media_guid_index)[
+                                                       0] + '\" http://localhost/stream.ffm'))
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
+        elif request.form['status'] == 'WebPlay':
+            return redirect(url_for('user_playback.user_video_player_videojs', mtype='hls',
+                                    guid=request.form['Video_Track'], chapter=1,
+                                    audio=request.form['Video_Play_Audio_Track'],
+                                    sub=request.form['Video_Play_Subtitles']))
     else:
         data = g.db_connection.db_read_media_metadata_both(guid)
-        json_ffmpeg = data['mm_media_ffprobe_json']
+        json_ffmpeg = json.loads(data['mm_media_ffprobe_json'])
         json_media = data['mm_media_json']
         json_metadata = data['mm_metadata_json']
         json_imagedata = data['mm_metadata_localimage_json']
@@ -134,9 +141,10 @@ def movie_detail(guid):
         vid_versions = g.db_connection.db_media_by_metadata_guid(data[1],
                                                                  g.db_connection.db_media_uuid_by_class(
                                                                      'Movie'))
+        common_global.es_inst.com_elastic_index('info', {"vid_versions": vid_versions})
         # audio and sub sreams
         audio_streams = []
-        subtitle_streams = [(0, 'None')]
+        subtitle_streams = [(None, 'None')]
         if json_ffmpeg is not None:
             for stream_info in json_ffmpeg['streams']:
                 stream_language = ''

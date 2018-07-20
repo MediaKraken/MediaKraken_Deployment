@@ -195,3 +195,20 @@ def db_meta_game_update_by_guid(self, game_id, game_json):
     self.db_cursor.execute('update mm_metadata_game_software_info set gi_game_info_json = %s'
                            ' where gi_system_id = %s',
                            (json.dumps(game_json), game_id))
+
+
+def db_meta_game_category_by_name(self, category_name):
+    self.db_cursor.execute(
+        'select gc_id from mm_game_category where gc_category = %s' % category_name)
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
+
+
+def db_meta_game_category_add(self, category_name):
+    category_uuid = str(uuid.uuid4())
+    self.db_cursor.execute('insert into mm_game_category (gc_id, gc_category) values (%s, %s)'
+                           % (category_uuid, category_name))
+    self.db_cursor.commit()
+    return category_uuid

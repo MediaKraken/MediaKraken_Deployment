@@ -17,6 +17,7 @@
 '''
 
 import subprocess
+from shlex import split
 
 
 # notes on how to use the cli for the apps
@@ -25,5 +26,5 @@ import subprocess
 
 def com_calibre_convert_ebook(target_file, target_format):
     calibre_pid = subprocess.Popen(
-        ['./bin/calibre/ebook-convert', target_file, target_format])
+        split('./bin/calibre/ebook-convert \"' + target_file + '\" ' + target_format))
     return calibre_pid

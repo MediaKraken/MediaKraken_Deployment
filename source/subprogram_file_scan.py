@@ -21,11 +21,10 @@ import os
 import subprocess
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime  # to handle threading
 
 import pika
-from concurrent.futures import ThreadPoolExecutor
-
 from common import common_config_ini
 from common import common_file
 from common import common_file_extentions
@@ -98,19 +97,20 @@ def worker(audit_directory):
                 new_class_type_uuid = media_class_type_uuid
                 # video game data, don't do ffmpeg
                 if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Video Game':
-                    if file_extension.lower() == 'iso':
+                    if file_extension[1:].lower() == 'iso':
                         new_class_type_uuid = class_text_dict['Game ISO']
-                    elif file_extension.lower() == 'chd':
+                    elif file_extension[1:].lower() == 'chd':
                         new_class_type_uuid = class_text_dict['Game CHD']
                     else:
                         new_class_type_uuid = class_text_dict['Game ROM']
                     # TODO lookup game info in game database data
                     media_ffprobe_json = None
                 # if an extention skip
-                elif file_extension.lower() in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
-                        or file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
+                elif file_extension[
+                     1:].lower() in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                        or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
                     media_ffprobe_json = None
-                    if file_extension.lower() in common_file_extentions.SUBTITLE_EXTENSION:
+                    if file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
                         new_class_type_uuid = class_text_dict['Subtitle']
                 else:
                     if file_name.find('/trailers/') != -1 \
@@ -168,6 +168,15 @@ def worker(audit_directory):
                                       routing_key='mkffmpeg',
                                       body=json.dumps(
                                           {'Type': 'FFProbe', 'Media UUID': media_id,
+                                           'Media Path': file_name}),
+                                      properties=pika.BasicProperties(content_type='text/plain',
+                                                                      delivery_mode=1))
+                # Send a message so roku thumbnail is genrated
+                channel.basic_publish(exchange='mkque_roku_ex',
+                                      routing_key='mkroku',
+                                      body=json.dumps(
+                                          {'Type': 'Roku', 'Subtype': 'Thumbnail',
+                                           'Media UUID': media_id,
                                            'Media Path': file_name}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=1))

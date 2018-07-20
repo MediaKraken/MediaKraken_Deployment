@@ -33,7 +33,7 @@ class CommonHardwareSamsung(object):
         self.app = 'python'  # iphone..iapp.samsung
         self.tv = 'LE32C650'  # iphone.LE32C650.iapp.samsung
 
-    def com_hardware_samsung_command(self, key):
+    def com_hardware_command(self, key):
         new = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         new.connect((self.dst, 55000))
         msg = chr(0x64) + chr(0x00) + \
@@ -51,6 +51,8 @@ class CommonHardwareSamsung(object):
         new.send(pkt)
         new.close()
 
+    def com_hardware_close(self):
+        pass
 
 """
 Keycodes

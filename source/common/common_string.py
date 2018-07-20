@@ -124,3 +124,9 @@ def com_string_guessit_list(guessit_list):
     for title_name in guessit_list:
         return_string += title_name + ' '
     return return_string.strip()
+
+
+def com_string_escape_file_path(file_path):
+    return file_path.translate(str.maketrans({" ":  r"\ ",
+                                          "'":  r"\'"}))
+

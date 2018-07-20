@@ -24,6 +24,7 @@ This web page documents how to use the [sebp/elk](https://hub.docker.com/r/sebp/
 	- [Installing Logstash plugins](#installing-logstash-plugins)
 	- [Installing Kibana plugins](#installing-kibana-plugins)
 - [Persisting log data](#persisting-log-data)
+- [Snapshot and restore](#snapshot-restore)
 - [Setting up an Elasticsearch cluster](#elasticsearch-cluster)
 	- [Running Elasticsearch nodes on different hosts](#elasticsearch-cluster-different-hosts)
 	- [Running Elasticsearch nodes on a single host](#elasticsearch-cluster-single-host)
@@ -442,7 +443,7 @@ A `Dockerfile` like the following will extend the base image and install the [Ge
 	WORKDIR ${ES_HOME}
 
 	RUN CONF_DIR=/etc/elasticsearch gosu elasticsearch bin/elasticsearch-plugin \
-		install ingest-geoip
+		install -b ingest-geoip
 
 You can now build the new image (see the *[Building the image](#building-image)* section above) and run the container in the same way as you did with the base image.
 
@@ -496,6 +497,12 @@ See Docker's page on [Managing Data in Containers](https://docs.docker.com/engin
 In terms of permissions, Elasticsearch data is created by the image's `elasticsearch` user, with UID 991 and GID 991.
 
 There is a [known situation](https://github.com/spujadas/elk-docker/issues/69) where SELinux denies access to the mounted volume when running in _enforcing_ mode. The workaround is to use the `setenforce 0` command to run SELinux in _permissive_ mode.
+
+## Snapshot and restore <a name="snapshot-restore"></a>
+
+The `/var/backups` directory is registered as the snapshot repository (using the `path.repo` parameter in the `elasticsearch.yml` configuration file). A volume or bind-mount could be used to access this directory and the snapshots from outside the container.
+
+For further information on snapshot and restore operations, see the official documentation on [Snapshot and Restore](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html). 
 
 ## Setting up an Elasticsearch cluster <a name="elasticsearch-cluster"></a>
 
@@ -726,7 +733,7 @@ Attempting to start Filebeat without setting up the template produces the follow
       "status" : 400
     }
 
-One can assume that in later releases of Filebeat the instructions will be clarified to specify how to manually load the index template into an specific instance of Elastisearch, and that the warning message will vanish as no longer applicable in version 6.   
+One can assume that in later releases of Filebeat the instructions will be clarified to specify how to manually load the index template into an specific instance of Elasticsearch, and that the warning message will vanish as no longer applicable in version 6.   
 
 ## Troubleshooting <a name="troubleshooting"></a>
 
@@ -792,6 +799,12 @@ Bearing in mind that the first thing I'll need to do is reproduce your issue, pl
 ## Breaking changes <a name="breaking changes"></a>
 
 Here is the list of breaking changes that may have side effects when upgrading to later versions of the ELK image: 
+
+- **`path.repo`**
+
+	*Applies to tags: after `623`.*
+
+	Elasticsearch's `path.repo` parameter is predefined as `/var/backups` in `elasticsearch.yml` (see [Snapshot and restore](#snapshot-restore)). 
 
 - **Version 6**
 

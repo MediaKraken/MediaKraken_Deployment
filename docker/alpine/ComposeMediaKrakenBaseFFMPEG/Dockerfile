@@ -54,7 +54,7 @@ RUN buildDeps="autoconf \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apk update && \
     apk upgrade && \
-    apk add --update ${buildDeps} libgcc libstdc++ ca-certificates libssl1.0 && \
+    apk add --update ${buildDeps} libgcc libstdc++ ca-certificates && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
@@ -136,7 +136,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.7
+FROM alpine:3.8
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe

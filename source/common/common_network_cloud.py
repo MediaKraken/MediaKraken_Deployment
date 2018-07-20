@@ -21,6 +21,8 @@ import os
 import libcloud
 from gevent import monkey
 
+from . import common_global
+
 monkey.patch_all()
 
 
@@ -29,14 +31,15 @@ class CommonLibCloud(object):
     Class for interfacing with cloud
     """
 
-    def __init__(self, option_config_json):
+    def __init__(self, option_config_json, cloud_provider):
         self.cls = libcloud.get_driver(libcloud.DriverType.COMPUTE,
                                        libcloud.DriverType.COMPUTE.RACKSPACE)
-        self.driver = self.cls('my username', 'my api key')
+        self.driver = self.cls(option_config_json['Cloud'][cloud_provider]['User'],
+                               option_config_json['Cloud'][cloud_provider]['API_Key'])
 
-    def com_net_cloud_upload(self, input_file_name, output_file_name):
-        container = self.driver.get_container(
-            container_name='my-backups-12345')
+    def com_net_cloud_upload(self, container_name, input_file_name, output_file_name):
+        container = self.driver.get_container(container_name=container_name)
+        # TODO pull this info from the file itself?
         extra = {'meta_data': {'owner': 'myuser', 'created': '2014-02-2'}}
         with open(input_file_name, 'rb') as iterator:
             obj = self.driver.upload_object_via_stream(iterator=iterator,
@@ -44,27 +47,23 @@ class CommonLibCloud(object):
                                                        object_name=output_file_name,
                                                        extra=extra)
 
-    #
-    # pprint(driver.list_sizes())
-    # pprint(driver.list_nodes())
-
-    def download_obj(self, container, obj):
+    def com_net_cloud_download(self, container, obj):
         obj = self.driver.get_object(container_name=container.name,
                                      object_name=obj.name)
         filename = os.path.basename(obj.name)
         path = os.path.join(os.path.expanduser('~/Downloads'), filename)
-        print(('Downloading: %s to %s' % (obj.name, path)))
+        common_global.es_inst.com_elastic_index('info',
+                                                {'Downloading': '%s to %s' % (obj.name, path)})
         obj.download(destination_path=path)
 
-# containers = self.driver.list_containers()
-#
-# jobs = []
-# pool = Pool(20)
-#
-# for index, container in enumerate(containers):
-#     objects = container.list_objects()
-#
-#     for obj in objects:
-#         pool.spawn(download_obj, container, obj)
-#
-# pool.join()
+    def com_net_cloud_list_container(self):
+        return self.driver.list_containers()
+
+    def com_net_cloud_list_data_in_container(self, container_name):
+        pass
+
+    def com_net_cloud_node_list(self):
+        return self.driver.list_nodes()
+
+    def com_net_cloud_node_sizes(self):
+        return self.driver.list_sizes()

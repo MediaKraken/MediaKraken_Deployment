@@ -19,7 +19,7 @@
 import platform
 import subprocess
 import sys
-
+from shlex import split
 LINUX_VERSIONS = {
     'alpine': (3.6, 'apk add'),
     'debian': (8.4, 'apt_get -y install'),
@@ -81,5 +81,5 @@ file_name = 'MediaKraken_' + current_version + '.tar.bz2'
 wget_wait('http://www.mediakraken.org/%s' % file_name)
 
 # untar to home directory
-tar_pid = subprocess.Popen(['tar', 'xvjf', file_name, '-C' '~'])
+tar_pid = subprocess.Popen(split('tar xvjf \"' + file_name + '\" -C ~'))
 tar_pid.wait()

@@ -16,6 +16,13 @@
   MA 02110-1301, USA.
 '''
 
+# from . import common_hardware_controller_eiscp
+# from . import common_hardware_controller_ir
+from . import common_hardware_controller_kodi
+# from . import common_hardware_controller_lan
+from . import common_hardware_controller_rs232
+from . import common_hardware_controller_serial
+from . import common_hardware_controller_telnet
 from . import common_hardware_marantz
 from . import common_hardware_pioneer
 from . import common_hardware_samsung
@@ -26,35 +33,46 @@ class CommonHardwareController(object):
     Class for interfacing with hardware from json specifications
     """
 
-    def __init__(self, device_manufacturer, device_json, device_communication, device_ip,
-                 device_port):
+    # db_hardware_json_read will populate the json
+    def __init__(self, device_json, device_ip=None, device_port=None):
         self.device_inst = None
-        self.device_manufacturer = device_manufacturer
         self.device_json = device_json
-        if device_communication == 'network':
-            if device_manufacturer == 'marantz':
-                self.device_inst = common_hardware_marantz.CommonHardwareMarantz(
-                    device_ip=device_ip)
-            elif device_manufacturer == 'pioneer':
-                self.device_inst = common_hardware_pioneer.CommonHardwarePioneer(
-                    device_ip=device_ip, device_port=device_port)
-            elif device_manufacturer == 'samsung':
-                self.device_inst = common_hardware_samsung.CommonHardwareSamsung(
-                    device_ip=device_ip)
-        elif device_communication == 'ir remote':
-            pass
-
-    def com_hardware_command(self, command_type, command_value):
-        if command_type == 'Volume Up':
-            self.com_hardware_command_send(self.device_json['Commands']['Sound']['Volume Up'])
-        elif command_type == 'Volume Down':
-            self.com_hardware_command_send(self.device_json['Commands']['Sound']['Volume Down'])
-        elif command_type == 'Mute':
-            self.com_hardware_command_send(self.device_json['Commands']['Sound']['Mute'])
-        elif command_type == 'UnMute':
-            self.com_hardware_command_send(self.device_json['Commands']['Sound']['UnMute'])
+        if self.device_json['Manufacturer'] == 'Marantz':
+            self.device_inst = common_hardware_marantz.CommonHardwareMarantz(
+                device_ip=device_ip)
+        elif self.device_json['Manufacturer'] == 'Pioneer':
+            self.device_inst = common_hardware_pioneer.CommonHardwarePioneer(
+                device_ip=device_ip, device_port=device_port)
+        elif self.device_json['Manufacturer'] == 'Samsung':
+            self.device_inst = common_hardware_samsung.CommonHardwareSamsung(
+                device_ip=device_ip)
         else:
-            self.com_hardware_command_send(command_type, command_value)
+            # setup the initial connection that aren't setup above
+            if self.device_json['Protocol']['Method'] == "EISCP":
+                pass
+            elif self.device_json['Protocol']['Method'] == "IR":
+                pass
+            elif self.device_json['Protocol']['Method'] == "Kodi":
+                self.device_inst = common_hardware_controller_kodi.CommandHardwareControllerKodi(
+                    self.device_json)
+            elif self.device_json['Protocol']['Method'] == "LAN":
+                pass
+            elif self.device_json['Protocol']['Method'] == "RS232":
+                self.device_inst = common_hardware_controller_rs232.CommandHardwareControllerRS232(
+                    self.device_json)
+            elif self.device_json['Protocol']['Method'] == "Serial":
+                self.device_inst = common_hardware_controller_serial.CommonHardwareControllerSerial(
+                    self.device_json)
+            elif self.device_json['Protocol']['Method'] == "Telnet":
+                self.device_inst = common_hardware_controller_telnet.CommonHardwareControllerTelnet(
+                    self.device_json)
 
-    def com_hardware_command_send(self, command_json, command_value=None):
-        pass
+    def com_hardware_command(self, command_value):
+        """
+        The command_value is the actual command text/ir code to send to hardware.
+        The remote control program will have the value assigned to a key/mapping.
+        """
+        self.device_inst.com_hardware_command(command_value)
+
+    def com_hardware_close(self):
+        self.device_inst.com_hardware_close()

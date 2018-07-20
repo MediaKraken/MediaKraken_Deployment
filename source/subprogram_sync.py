@@ -26,7 +26,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_xfer
-
+from shlex import split
 
 def worker(row_data):
     """
@@ -58,8 +58,7 @@ def worker(row_data):
     ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                          + row_data['mm_sync_options_json']['Options']['VContainer'])
     common_global.es_inst.com_elastic_index('info', {'ffmpeg': ffmpeg_params})
-    ffmpeg_pid = subprocess.Popen(
-        ffmpeg_params, shell=False, stdout=subprocess.PIPE)
+    ffmpeg_pid = subprocess.Popen(split(ffmpeg_params), shell=False, stdout=subprocess.PIPE)
     # output after it gets started
     #  Duration: 01:31:10.10, start: 0.000000, bitrate: 4647 kb/s
     # frame= 1091 fps= 78 q=-1.0 Lsize=    3199kB time=00:00:36.48

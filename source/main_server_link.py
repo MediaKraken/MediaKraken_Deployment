@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+import json
 import platform
 import sys
 
@@ -87,7 +88,7 @@ class MediaKrakenApp(object):
         metaapp = self
         # start logging
         common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-            'main_link')
+            'main_server_link')
         # open the database
         option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.connect_to_server()
@@ -105,20 +106,15 @@ class MediaKrakenApp(object):
         """
         Process network message from server
         """
-        # otherwise the pickle can end up in thousands of chunks
-        messageWords = server_msg.split(' ', 1)
-        common_global.es_inst.com_elastic_index('info', {'message': messageWords[0],
-                                                         "len": len(server_msg),
-                                                         "chunks": len(messageWords)})
+        common_global.es_inst.com_elastic_index('info', {"body": server_msg})
+        # network_base.NetworkEvents.ampq_message_received(body)
+        json_message = json.loads(server_msg)
+        common_global.es_inst.com_elastic_index('info', {'json body': json_message})
         msg = None
-        try:
-            pickle_data = pickle.loads(messageWords[1])
-        except:
-            pickle_data = None
-        if messageWords[0] == "IDENT":
+        if json_message['Type'] == "Ident":
             msg = "VALIDATE " + "link" + " " + "password" + " " + platform.node()
-        elif messageWords[0] == "RECEIVENEWMEDIA":
-            for new_media in pickle.loads(messageWords[1]):
+        elif json_message['Type'] == "Receive New Media":
+            for new_media in json_message['Data']:
                 common_global.es_inst.com_elastic_index('info', {'new_media': new_media})
                 # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
                 # 3-mm_metadata_media_id jsonb
@@ -155,7 +151,7 @@ class MediaKrakenApp(object):
                     # find on internet
                     # for "keys" in new_media[3]
                     pass
-                self.db_connection.db_insert_remote_media(link_server, new_media[0],
+                self.db_connection.db_insert_remote_media(json_message['Target'], new_media[0],
                                                           self.db_connection.db_media_uuid_by_class(
                                                               new_media[1]),
                                                           new_media[2], metadata_guid)

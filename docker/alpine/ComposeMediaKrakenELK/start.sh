@@ -21,7 +21,7 @@ _term() {
   exit 0
 }
 
-trap _term SIGTERM
+trap _term SIGTERM SIGINT
 
 
 ## remove pidfiles in case previous graceful termination failed
@@ -34,6 +34,12 @@ rm -f /var/run/elasticsearch/elasticsearch.pid /var/run/logstash.pid \
 
 ## initialise list of log files to stream in console (initially empty)
 OUTPUT_LOGFILES=""
+
+
+## override default time zone (Etc/UTC) if TZ variable is set
+if [ ! -z "$TZ" ]; then
+  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+fi
 
 
 ## run pre-hooks

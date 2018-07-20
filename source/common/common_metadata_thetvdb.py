@@ -48,6 +48,7 @@ class CommonMetadataTheTVDB(object):
             'http://thetvdb.com/api/' + self.thetvdb_connection
             + '/updates/updates_' + frequency + '.zip', None)))
         # for the data
+        xml_show_data = None
         for zippedshowFile in updates_xml_zip.namelist():
             xml_show_data = xmltodict.parse(
                 updates_xml_zip.read(zippedshowFile))

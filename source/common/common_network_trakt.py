@@ -51,7 +51,7 @@ class CommonNetworkTrakt(object):
         Set watching status on media
         """
         media_instance = Movie(movie_name_year)
-        media_instance.watching_now
+        media_instance.watching_now()
 
     def com_net_trakt_set_rating_movie(self, movie_name_year, media_rating):
         """

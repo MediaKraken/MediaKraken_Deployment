@@ -236,14 +236,6 @@ class NetworkEvents(basic.LineReceiver):
                         self.send_single_ip(
                             json.dumps({'Type': 'Play', 'Data': media_path}),
                             json_message['Target'])
-                #     # launch and attach to local running ffserver
-                #     # TODO set server port for ffmpeg
-                #     http_link = 'http://localhost:' + self.server_port_ffmpeg + '/stream.ffm'
-                #     self.proc_ffmpeg_stream = subprocess.Popen(['ffmpeg', '-i',
-                #                                                 media_path, http_link], shell=False)
-                #     http_link = 'http://' + common_network.mk_network_get_default_ip() + ':' \
-                #                 + self.server_port_ffmpeg + '/stream.ffm'
-                # msg = json.dumps({"Type": 'Play', 'Data': http_link})
 
         elif json_message['Type'] == "MPV":
             self.send_all_users(json_message['Data'])

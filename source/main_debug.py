@@ -19,6 +19,8 @@
 from common import common_docker
 
 docker_inst = common_docker.CommonDocker()
+docker_inst.com_docker_network_prune()
+docker_inst.com_docker_network_create()
 docker_inst.com_docker_run_elk()
 docker_inst.com_docker_run_pgadmin()
 docker_inst.com_docker_run_portainer()

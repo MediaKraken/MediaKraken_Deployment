@@ -63,14 +63,14 @@ while 1:
                 else:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                             shell=False)
-                    common_global.es_inst.es_index('info',
+                    common_global.es_inst.com_elastic_index('info',
                                                    {'cron': row_data['mm_cron_name'],
                                                     'pid': proc.pid})
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match
             db_connection.db_commit()
-            common_global.es_inst.es_index('info', {'data': row_data})
+            common_global.es_inst.com_elastic_index('info', {'data': row_data})
     time.sleep(60)  # sleep for 60 seconds
 
 # close the database

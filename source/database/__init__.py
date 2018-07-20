@@ -103,7 +103,11 @@ class MKServerDatabase(object):
         db_media_game_list_by_system_count, \
         db_media_game_list_by_system, \
         db_media_game_list_count, \
-        db_media_game_list
+        db_media_game_list, \
+        db_media_mame_game_list, \
+        db_media_game_category_update, \
+        db_media_game_clone_list, \
+        db_media_game_category_by_name
     from database.db_base_media_images import db_media_images_list_count, \
         db_media_images_list
     from database.db_base_media_movie import db_web_media_list_count, \
@@ -151,7 +155,9 @@ class MKServerDatabase(object):
         db_meta_game_system_list_count, \
         db_meta_game_system_list, \
         db_meta_games_system_insert, \
-        db_meta_games_system_guid_by_short_name
+        db_meta_games_system_guid_by_short_name, \
+        db_meta_games_system_game_count, \
+        db_meta_game_system_upsert
     from database.db_base_metadata_games import db_meta_game_list_count, \
         db_meta_game_list, \
         db_meta_game_by_guid, \
@@ -160,7 +166,9 @@ class MKServerDatabase(object):
         db_meta_game_update, \
         db_meta_game_by_name, \
         db_meta_game_update_by_guid, \
-        db_meta_game_by_name_and_system
+        db_meta_game_by_name_and_system, \
+        db_meta_game_category_by_name, \
+        db_meta_game_category_add
     from database.db_base_metadata_movie import db_meta_movie_update_castcrew, \
         db_meta_movie_status_update, \
         db_meta_movie_json_update, \

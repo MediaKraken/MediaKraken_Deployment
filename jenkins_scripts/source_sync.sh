@@ -48,6 +48,10 @@ cp /home/metaman/MediaKraken_Deployment/source/bulk_tvmaze_netfetch.py /home/met
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRipper/src/.
 cp /home/metaman/MediaKraken_Deployment/source/main_ripper.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRipper/src/.
 
+# roku thumb
+cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRokuThumb/src/.
+cp /home/metaman/MediaKraken_Deployment/source/subprogram_roku_thumbnail_generate.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRokuThumb/src/.
+
 # server
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.

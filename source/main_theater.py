@@ -24,6 +24,7 @@ import platform
 import subprocess
 import sys
 import uuid
+from shlex import split
 
 from common import common_global
 from common import common_logging_elasticsearch
@@ -594,14 +595,11 @@ def on_config_change(self, config, section, key, value):
         common_global.es_inst.com_elastic_index('info', {'stuff': MediaKrakenApp.media_path})
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
             if os.path.isfile(MediaKrakenApp.media_path):
-                self.mpv_process = subprocess.Popen(['mpv', '--no-config', '--fullscreen',
-                                                     '--ontop', '--no-osc', '--no-osd-bar',
-                                                     '--aid=2',
-                                                     '--audio-spdif=ac3,dts,dts-hd,truehd,eac3',
-                                                     '--audio-device=pulse', '--hwdec=auto',
-                                                     '--input-ipc-server', './mk_mpv.sock',
-                                                     '%s' % MediaKrakenApp.media_path],
-                                                    shell=False)
+                self.mpv_process = subprocess.Popen(
+                    split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
+                          '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
+                          '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
+                          + MediaKrakenApp.media_path + '\"'))
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
             else:
                 self.theater_play_server()
@@ -690,27 +688,33 @@ def on_config_change(self, config, section, key, value):
             # refreshs for movie stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'Demo', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Demo',
+                                                  'Image Type': 'Backdrop'}))
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                              'Image Media Type': 'Movie', 'Image Type': 'Backdrop'}))
+                                              'Image Media Type': 'Movie',
+                                              'Image Type': 'Backdrop'}))
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                              'Image Media Type': 'New Movie', 'Image Type': 'Backdrop'}))
+                                              'Image Media Type': 'New Movie',
+                                              'Image Type': 'Backdrop'}))
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                              'Image Media Type': 'In Progress', 'Image Type': 'Backdrop'}))
+                                              'Image Media Type': 'In Progress',
+                                              'Image Type': 'Backdrop'}))
         # refreshs for tv stuff
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
                                               'Image Media Type': 'TV', 'Image Type': 'Backdrop'}))
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
-                                              'Image Media Type': 'Live TV', 'Image Type': 'Backdrop'}))
+                                              'Image Media Type': 'Live TV',
+                                              'Image Type': 'Backdrop'}))
         # refreshs for game stuff
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Game',
-                                              'Image Media Type': 'Game', 'Image Type': 'Backdrop'}))
+                                              'Image Media Type': 'Game',
+                                              'Image Type': 'Backdrop'}))
         # refreshs for books stuff
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Book',
@@ -721,7 +725,8 @@ def on_config_change(self, config, section, key, value):
                                               'Image Media Type': 'Album', 'Image Type': 'Cover'}))
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
-                                              'Image Media Type': 'Video', 'Image Type': 'Backdrop'}))
+                                              'Image Media Type': 'Video',
+                                              'Image Type': 'Backdrop'}))
         # refresh image stuff
         # request main screen background refresh
         # self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")

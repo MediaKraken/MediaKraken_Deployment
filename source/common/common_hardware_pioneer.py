@@ -31,11 +31,7 @@ class CommonHardwarePioneer(object):
         self.pioneer_inst.connect((device_ip, device_port))
         self.pioneer_inst.settimeout(1)
 
-    def com_hardware_pioneer_close(self):
-        self.pioneer_inst.shutdown(socket.SHUT_WR)
-        self.pioneer_inst.close()
-
-    def com_hardware_pioneer_send(self, command):
+    def com_hardware_command(self, command):
         buf = bytes(command + "\r\n", 'ascii')
         self.pioneer_inst.send(buf)
         datastr = []
@@ -60,6 +56,10 @@ class CommonHardwarePioneer(object):
                         self.pioneer_inst.close()
                         break
                 return data.decode(encoding='ascii')
+
+    def com_hardware_close(self):
+        self.pioneer_inst.shutdown(socket.SHUT_WR)
+        self.pioneer_inst.close()
 
 
 """

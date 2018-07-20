@@ -71,7 +71,7 @@ if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0
 common_network_share.com_net_share_mount(db_connection.db_audit_shares())
 
 common_global.es_inst.com_elastic_index('info', {'stuff': 'Validate Paths'})
-# validate paths in ini file
+# validate path in configuration json/database
 if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     common_global.es_inst.com_elastic_index('critical',
                                             {'Backup Dir': 'MediaKrakenServer/BackupLocal is '

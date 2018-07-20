@@ -125,3 +125,17 @@ def db_meta_games_system_game_count(self, short_name):
         return self.db_cursor.fetchone()['gs_id']
     except:
         return None
+
+
+def db_meta_game_system_upsert(self, system_name, system_alias=None, system_json=None):
+    new_guid = str(uuid.uuid4())
+    self.db_cursor.execute('INSERT INTO mm_metadata_game_systems_info'
+                           ' (gs_id, gs_game_system_name,'
+                           ' gs_game_system_alias, gs_game_system_json)'
+                           ' VALUES (%s, %s, %s, %s)'
+                           ' ON CONFLICT (gs_game_system_name)'
+                           ' DO UPDATE SET gs_game_system_alias = %s, gs_game_system_json = %s',
+                           (new_guid, system_name, system_alias, system_json,
+                            system_alias, system_json))
+    self.db_cursor.commit()
+    return new_guid

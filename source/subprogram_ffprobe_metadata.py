@@ -2,9 +2,9 @@ import json
 import os
 import subprocess
 import uuid
+from shlex import split
 
 import pika
-
 from common import common_config_ini
 from common import common_ffmpeg
 from common import common_global
@@ -103,53 +103,61 @@ class MKConsumer(object):
     def on_message(self, unused_channel, basic_deliver, properties, body):
         if body is not None:
             json_message = json.loads(body)
-            common_global.es_inst.es_index('info', {'ffprobe': json_message})
-            ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(
-                db_connection.db_read_media(
-                    json_message['Data'])['mm_media_path'])
-            # begin image generation
-            chapter_image_list = {}
-            chapter_count = 0
-            first_image = True
-            for chapter_data in ffprobe_data['chapters']:
-                chapter_count += 1
-                # file path, time, output name
-                # check image save option whether to save this in media folder or metadata folder
-                if option_config_json['MetadataImageLocal'] == False:
-                    image_file_path = os.path.join(
-                        common_metadata.com_meta_image_file_path(json_message['Media Path'],
-                                                                 'chapter'),
-                        (str(uuid.uuid4()) + '.png'))
-                else:
-                    image_file_path = os.path.join(os.path.dirname(json_message['Media Path']),
-                                                   'chapters')
-                    # have this bool so I don't hit the os looking for path each time
-                    if first_image == True and not os.path.isdir(image_file_path):
-                        os.makedirs(image_file_path)
-                    image_file_path = os.path.join(
-                        image_file_path, (str(chapter_count) + '.png'))
-                command_list = []
-                command_list.append('./bin/ffmpeg')
-                # if ss is before the input it seeks and doesn't convert every frame like after input
-                command_list.append('-ss')
-                # format the seconds to what ffmpeg is looking for
-                minutes, seconds = divmod(float(chapter_data['start_time']), 60)
-                hours, minutes = divmod(minutes, 60)
-                command_list.append("%02d:%02d:%02f" % (hours, minutes, seconds))
-                command_list.append('-i')
-                command_list.append(json_message['Media Path'])
-                command_list.append('-vframes')
-                command_list.append('1')
-                command_list.append(image_file_path)
-                ffmpeg_proc = subprocess.Popen(command_list, shell=False)
-                ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
-                # as the worker might see it as finished if allowed to continue
-                chapter_image_list[chapter_data['tags']['title']] = image_file_path
-                first_image = False
-            db_connection.db_update_media_json(json_message['Media UUID'],
-                                               json.dumps({'ChapterImages': chapter_image_list}))
-            db_connection.db_media_ffmeg_update(json_message['Media UUID'],
-                                                json.dumps(ffprobe_data))
+            common_global.es_inst.com_elastic_index('info', {'ffprobe': json_message})
+            ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
+            common_global.es_inst.com_elastic_index('info', {'ffprobe_data': ffprobe_data})
+            if ffprobe_data != None:
+                # begin image generation
+                chapter_image_list = {}
+                chapter_count = 0
+                first_image = True
+                # do this check as not all media has chapters....like LD rips
+                if 'chapters' in ffprobe_data:
+                    for chapter_data in ffprobe_data['chapters']:
+                        chapter_count += 1
+                        # file path, time, output name
+                        # check image save option whether to save this in media folder or metadata folder
+                        if option_config_json['MetadataImageLocal'] == False:
+                            image_file_path = os.path.join(
+                                common_metadata.com_meta_image_file_path(json_message['Media Path'],
+                                                                         'chapter'),
+                                (str(uuid.uuid4()) + '.png'))
+                        else:
+                            image_file_path = os.path.join(
+                                os.path.dirname(json_message['Media Path']),
+                                'chapters')
+                            # have this bool so I don't hit the os looking for path each time
+                            if first_image == True and not os.path.isdir(image_file_path):
+                                os.makedirs(image_file_path)
+                            image_file_path = os.path.join(
+                                image_file_path, (str(chapter_count) + '.png'))
+                        command_list = []
+                        command_list.append('./bin/ffmpeg')
+                        # if ss is before the input it seeks and doesn't convert every frame like after input
+                        command_list.append('-ss')
+                        # format the seconds to what ffmpeg is looking for
+                        minutes, seconds = divmod(float(chapter_data['start_time']), 60)
+                        hours, minutes = divmod(minutes, 60)
+                        command_list.append("%02d:%02d:%02f" % (hours, minutes, seconds))
+                        command_list.append('-i')
+                        command_list.append('\"' + json_message['Media Path'] + '\"')
+                        command_list.append('-vframes')
+                        command_list.append('1')
+                        command_list.append('\"' + image_file_path + '\"')
+                        ffmpeg_proc = subprocess.Popen(split(command_list))
+                        ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
+
+                        # as the worker might see it as finished if allowed to continue
+                        chapter_image_list[chapter_data['tags']['title']] = image_file_path
+                        first_image = False
+                # TODO this should be merged into one database update
+                db_connection.db_update_media_json(json_message['Media UUID'],
+                                                   json.dumps(
+                                                       {'ChapterImages': chapter_image_list}))
+                db_connection.db_media_ffmeg_update(json_message['Media UUID'],
+                                                    json.dumps(ffprobe_data))
+            else:
+                common_global.es_inst.com_elastic_index('error', {'ffprobe null': json_message})
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):

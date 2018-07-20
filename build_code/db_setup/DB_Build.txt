@@ -1,64 +1,10 @@
-# db layout creation
-python db_setup.py
-
 
 ############################
 #    optional below        #
 ############################
 
-# atm run in ORDER since not all stuff will update records instead of insert only
-
-# net fetch all tmdb's from range 0-500000
-# check if record exists before download
-# will grab posters, banner, etc, cast, crew
-python db_setup_bulk_themoviedb_netfetch.py
-
-
-# batch fetch the tvmaze data
-# (subprogam_tvshow_images.py)...so, new data will work
-# check for record exists before download
-# needs to run BEFORE thetvdb one since this inserts only
-python db_setup_bulk_tvmaze_netfetch.py
-
-
 # load discid's from freedb
 # /home/spoot/nfsmount/SQL_Dump/FreeDB - dir that holds all the data
 # offset id's, track names, album, musician, etc
 python db_setup_bulk_freedb.py
-
-
-
-
-############################
-#  to run before release   #
-############################
-
-# truncates user data like activity, media, etc
-python db_setup_prod_from_test.py
-
-
-
-************ below not tested with blank dump ATM
-
-# to update the comments later
-python db_setup_bulk_thetvdb_netfetch.py
-
-
-cd Game_Database_Build_JSON
-# sources for databuild for games in Game_Database_Build_JSON
-follow the instructions in there for game data
-
-
-
-
-# no longer used
-# no longer used
-# no longer used
-# no longer used
-
-python db_setup_bulk_thetvdb.py (need to grab images yet)
-db_setup_bulk_thetvdb_not_needed_tables.py
-db_setup_bulk_thetvdb_people.py
-db_setup_bulk_thetvdb_series.py
-db_temp_media_paths.py
 

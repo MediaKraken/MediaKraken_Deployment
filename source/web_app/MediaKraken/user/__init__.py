@@ -9,6 +9,7 @@ from . import views_games
 from . import views_home_media
 from . import views_images
 from . import views_internet
+from . import views_media_new
 from . import views_metadata_album
 from . import views_metadata_game
 from . import views_metadata_game_system

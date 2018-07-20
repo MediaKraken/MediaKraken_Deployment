@@ -22,6 +22,7 @@ import subprocess
 import sys
 
 sys.path.append('.')
+from common import common_global
 from common import common_network_mediakraken
 
 

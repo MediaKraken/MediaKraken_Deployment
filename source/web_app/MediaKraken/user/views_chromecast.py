@@ -41,13 +41,13 @@ def user_cast(action, guid):
     elif action == 'stop':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Stop', 'Sub': 'Cast',
+                         body=json.dumps({'Type': 'Stop', 'Subtype': 'Cast',
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     elif action == 'play':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Play', 'Sub': 'Cast',
+                         body=json.dumps({'Type': 'Play', 'Subtype': 'Cast',
                                           'User': current_user.get_id(),
                                           'Data': g.db_connection.db_read_media(guid)[
                                               'mm_media_path'],
@@ -56,7 +56,7 @@ def user_cast(action, guid):
     elif action == 'pause':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Pause', 'Sub': 'Cast',
+                         body=json.dumps({'Type': 'Pause', 'Subtype': 'Cast',
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     #    elif action == 'ff':
@@ -66,19 +66,19 @@ def user_cast(action, guid):
     elif action == 'mute':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Mute', 'Sub': 'Cast',
+                         body=json.dumps({'Type': 'Mute', 'Subtype': 'Cast',
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     elif action == 'vol_up':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Volume Up', 'Sub': 'Cast',
+                         body=json.dumps({'Type': 'Volume Up', 'Subtype': 'Cast',
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     elif action == 'vol down':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Volume Down', 'Sub': 'Cast',
+                         body=json.dumps({'Type': 'Volume Down', 'Subtype': 'Cast',
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     return render_template("users/user_playback_cast.html", data_uuid=guid,
