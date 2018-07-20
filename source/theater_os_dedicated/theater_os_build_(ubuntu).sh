@@ -1,6 +1,6 @@
 sudo dpkg-reconfigure dash
 
-CODEVERSION=8.1.1
+CODEVERSION=8.2.5
 
 # check to see if it's already been fetched
 if [ ! -f "$CODEVERSION.zip" ]
@@ -13,8 +13,8 @@ fi
 cd LibreELEC.tv-$CODEVERSION
 
 # copy over the mediakraken distro settings
-cp -R ./OpenMediaKraken/distributions/MediaKraken ./distributions/.
-cp -R ./OpenMediaKraken/packages/* ./packages/.
+cp -R ../OpenMediaKraken/distributions/MediaKraken ./distributions/.
+cp -R ../OpenMediaKraken/packages/* ./packages/.
 
 # allow it to install packages
 PROJECT=Generic DISTRO=MediaKraken ARCH=x86_64 make -j`getconf _NPROCESSORS_ONLN` release
