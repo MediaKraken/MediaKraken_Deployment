@@ -323,16 +323,15 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
 
             elif json_message['Subtype'] == 'FFprobe Detail':
-                # TODO need to list the actual video files
                 # TODO have the below refresh for the select video file
                 # TODO will need to display SD/HD/UHD and length of video
                 # populate the audio streams to select
                 self.root.ids.theater_media_video_audio_spinner.values = list(map(
-                    str, audio_streams))
+                    str, json_message['Audio Streams']))
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
                 self.root.ids.theater_media_video_subtitle_spinner.values \
-                    = list(map(str, subtitle_streams))
+                    = list(map(str, json_message['Subtitle Streams']))
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
             elif json_message['Subtype'] == "List":
                 self.send_twisted_message_thread(json.dumps({'Type': 'Device Play List'}))
