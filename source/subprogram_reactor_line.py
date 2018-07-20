@@ -125,18 +125,19 @@ def read(queue_object):
                     audio_channels=None)
                 container_command = 'castnow --address ' \
                                     + json_message['Target'] \
-                                    + ' --myip 10.0.0.198 ' + subtitle_command \
+                                    + ' --myip ' + docker_inst.com_docker_info()['Swarm'][
+                                        'NodeAddr'] + subtitle_command \
                                     + ' --ffmpeg \'-c:v copy -c:a ac3' \
                                     + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
                                     + ' --tomp4 \'' + json_message['Data'] + '\''
             elif json_message['Subtype'] == 'HLS':
                 # stream to hls
                 container_command = 'ffmpeg -i \"' + json_message['Input File'] \
-                                  + '\" -vcodec libx264 -preset veryfast' \
-                                  + ' -acodec aac -ac:a:0 2 -vbr 5 ' \
-                                  + json_message['Audio Track'] \
-                                  + '-vf ' + json_message['Subtitle Track'] + ' yadif=0:0:0 ' \
-                                  + json_message['Target UUID']
+                                    + '\" -vcodec libx264 -preset veryfast' \
+                                    + ' -acodec aac -ac:a:0 2 -vbr 5 ' \
+                                    + json_message['Audio Track'] \
+                                    + '-vf ' + json_message['Subtitle Track'] + ' yadif=0:0:0 ' \
+                                    + json_message['Target UUID']
             elif json_message['Subtype'] == 'Web':
                 # stream to web
                 container_command = "ffmpeg -v fatal {ss_string}" \
