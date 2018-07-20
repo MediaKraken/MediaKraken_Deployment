@@ -218,6 +218,7 @@ class MediaKrakenApp(App):
 
         elif json_message['Type'] == 'Play':  # direct file play
             video_source_dir = json_message['Data']
+            # TODO - load real mapping
             share_mapping = (
                 ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
             if share_mapping is not None:
@@ -247,7 +248,7 @@ class MediaKrakenApp(App):
                         on_load=self._image_loaded_home_demo)
                     self.first_image_demo = False
         elif json_message['Type'] == "MPV":
-            # sends the data message direct as a command
+            # sends the data message direct as a command to local running mpv
             self.mpv_connection.execute(json_message['Data'])
         else:
             common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
