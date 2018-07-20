@@ -4,6 +4,8 @@ FROM mediakraken/mkbasenodeffmpeg:latest
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the Roku thumbnail generator app"
 
+# copy PIP requirements
+ADD requirements.txt /mediakraken
 # create work dir
 RUN mkdir /mediakraken
 
@@ -16,7 +18,9 @@ RUN apk add --update \
   net-snmp \
   python3 \
   openrc \
+  && pip3 install -r requirements.txt \
   && rm -rf /var/cache/apk/* \
+  && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
 
