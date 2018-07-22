@@ -175,33 +175,3 @@ docker tag alpine_webserver:latest mediakraken/mkwebserver:latest
 # build the image/containers to run
 docker-compose build xxxxx - xxxxx optional for image to build
 
-
-
-BaseFFMPEG
-	the base image for ffmpeg deps
-	docker build -t mediakraken/mkbaseffmpeg .
-Database
-	Hosts the postgresql database
-Devicescan
-	Runs on HOST network to scan for devices
-Metadata
-	Host the metadata fetcher
-MusicBrainz
-	Host the musicbrainz slave
-Nginx
-	Host the ssl, static data webserver
-OpenLDAP
-	Host the openldap server
-PGBouncer
-	Host the pgbouncer connection pooler
-PHPPGAdmin
-	hosts the phppgadmin for testing
-Redis
-	hosts the redis server for flask/login
-Server
-	Kicks off the other main programs and ffmpeg
-Slave
-	Slave image for server/ffmpeg
-WebServer
-	Hosts the uswgi webapp for the server interface
-
