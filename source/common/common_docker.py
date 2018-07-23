@@ -159,9 +159,8 @@ class CommonDocker(object):
         create network
         """
         # verify the network doesn't already exist
-        if network_name in self.com_docker_network_list(network_name):
-            return None
-        return self.cli.networks.create(name=network_name, driver="bridge")
+        if len(self.com_docker_network_list(network_name)) == 0:
+            return self.cli.networks.create(name=network_name, driver="bridge")
 
     def com_docker_network_list(self, network_name='mk_mediakraken_network'):
         return self.cli.networks.list(network_name)
