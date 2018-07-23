@@ -138,7 +138,7 @@ class CommonDocker(object):
         try:
             # since the container might not exist (like starting the main_debug.py
             return self.cli_api.remove_container(container=container_image_name,
-                                             force=container_force)
+                                                 force=container_force)
         except:
             pass
 
@@ -158,8 +158,13 @@ class CommonDocker(object):
         """
         create network
         """
-        # TODO make sure the network doesn't already exist
+        # verify the network doesn't already exist
+        if network_name in self.com_docker_network_list(network_name):
+            return None
         return self.cli.networks.create(name=network_name, driver="bridge")
+
+    def com_docker_network_list(self, network_name='mk_mediakraken_network'):
+        return self.cli.list(network_name)
 
     def com_docker_network_prune(self):
         """
