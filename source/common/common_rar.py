@@ -22,14 +22,17 @@
 
 import rarfile
 
-rf = rarfile.RarFile('myarchive.rar')
-for f in rf.infolist():
-    print f.filename, f.file_size
-    if f.filename == 'README':
-        print(rf.read(f))
+
+def com_rar_file_list(file_name):
+    rf = rarfile.RarFile(file_name)
+    for f in rf.infolist():
+        print(f.filename, f.file_size)
+        if f.filename == 'README':
+            print(rf.read(f))
 
 
-with rarfile.RarFile('archive.rar') as rf:
-    with rf.open('README') as f:
-        for ln in f:
-            print(ln.strip())
+def com_rar_file_read_file(file_name, file_single):
+    with rarfile.RarFile(file_name) as rf:
+        with rf.open(file_single) as f:
+            for ln in f:
+                print(ln.strip())
