@@ -164,7 +164,7 @@ class CommonDocker(object):
         return self.cli.networks.create(name=network_name, driver="bridge")
 
     def com_docker_network_list(self, network_name='mk_mediakraken_network'):
-        return self.cli.list(network_name)
+        return self.cli.networks.list(network_name)
 
     def com_docker_network_prune(self):
         """
