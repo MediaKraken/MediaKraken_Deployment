@@ -75,4 +75,5 @@ GAME_EXTENSION = [
     'chd',
     'zip',
     '7z',
+    'rar',
 ]
