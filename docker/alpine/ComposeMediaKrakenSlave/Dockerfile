@@ -25,6 +25,7 @@ RUN apk add --update \
   musl-dev \
   net-snmp \
   net-snmp-dev \
+  nginx-mod-rtmp \
   python3 \
   python3-dev \
   openrc \
