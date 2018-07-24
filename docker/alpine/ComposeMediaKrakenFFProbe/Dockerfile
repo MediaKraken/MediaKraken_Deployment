@@ -44,7 +44,8 @@ RUN apk add --update \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
-  && rc-update add rpcbind
+  && rc-update add rpcbind \
+  && rm /usr/local/bin/ffmpeg
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
