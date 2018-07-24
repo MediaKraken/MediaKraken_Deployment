@@ -25,7 +25,6 @@ RUN apk add --update \
   musl-dev \
   net-snmp \
   net-snmp-dev \
-  nginx-mod-rtmp \
   python3 \
   python3-dev \
   openrc \
@@ -45,6 +44,9 @@ RUN apk add --update \
   && apk add \
   py-setuptools \
   && rm requirements.txt \
+  && echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> etc/apk/repositories \
+  apk add --update \
+  nginx-mod-rtmp \
   && rm -rf /var/cache/apk/* \
   && rm -r /root/.npm \
   && rc-update add netmount \
