@@ -32,16 +32,14 @@ def com_meta_fetch_subtitle(file_name, sub_lang="en"):
     return cmd_output
 
 
-def com_meta_fetch_subtitle_batch(dir_name, sub_lang):
+def com_meta_fetch_subtitle_batch(dir_name, sub_lang='eng'):
     """
     # batch fetch subtitles
     """
     # configure the cache
-    #    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename':
-    # '/home/spoot/cachefile.dbm'})
-    #    # scan for videos in the folder and their subtitles
-    #    videos = subliminal.scan_videos(['/nfsmount/TV_Shows_Misc/Earth 2
-    # (1994)/season 1/'], subtitles=True, embedded_subtitles=True)
-    #    # download
-    #    subliminal.download_best_subtitles(videos, Language('eng'))
-    pass
+    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename':
+                                                                          '/mediakraken/cache/cachefile.dbm'})
+    # scan for videos in the folder and their subtitles
+    videos = subliminal.scan_videos(dir_name, subtitles=True, embedded_subtitles=True)
+    # download
+    subliminal.download_best_subtitles(videos, Language(sub_lang))
