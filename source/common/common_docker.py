@@ -181,6 +181,7 @@ class CommonDocker(object):
 
     def com_docker_run_elk(self):
         self.com_docker_delete_container('mkelk')
+        self.com_docker_network_create('mk_mediakraken_network')
         return self.cli.containers.run(image='mediakraken/mkelk',
                                        detach=True,
                                        ports={"5044": 5044, "5601": 5601, "9200": 9200},
@@ -236,6 +237,7 @@ class CommonDocker(object):
 
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
         self.com_docker_delete_container('mkpgadmin')
+        self.com_docker_network_create('mk_mediakraken_network')
         return self.cli.containers.run(image='dpage/pgadmin4',
                                        detach=True,
                                        name='mkpgadmin',
@@ -317,6 +319,7 @@ class CommonDocker(object):
         run wireshark
         """
         self.com_docker_delete_container('mkwireshark')
+        self.com_docker_network_create('mk_mediakraken_network')
         return self.cli.containers.run(image='mediakraken/mkwireshark',
                                        detach=True,
                                        name='mkwireshark',
