@@ -40,8 +40,6 @@ class CommonNetworkSSH(object):
                                                                              get_pty=True)
         ssh_stdin.write(sudo_password + '\n')
         ssh_stdin.flush()
-        for line in ssh_stdout:
-            print(('Sudo... ' + line.strip('\n')))
         return ssh_stdout
 
     def com_net_ssh_run_command(self, command_text):
@@ -50,8 +48,6 @@ class CommonNetworkSSH(object):
         """
         ssh_stdin, ssh_stdout, ssh_stderr = self.ssh_connection.exec_command(command_text,
                                                                              get_pty=True)
-        for line in ssh_stdout:
-            print(('... ' + line.strip('\n')))
         return ssh_stdout
 
     def com_net_ssh_close(self):
