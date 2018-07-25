@@ -27,7 +27,7 @@ docker build -t mediakraken/mkbase37py3 .
 
 # base python 3 images
 cd ../ComposeMediaKrakenBase38Py3
-docker build -t mediakraken/mkbase38py3 .
+docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 .
 
 # Build the base cuda from alpine
 #cd ../ComposeMediaKrakenBaseCuda

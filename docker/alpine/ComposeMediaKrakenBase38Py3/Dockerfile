@@ -4,6 +4,7 @@ FROM alpine:3.8
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the base image"
 
+ARG ALPMIRROR=alpmirror
 # create work dir
 RUN mkdir /mediakraken
 
