@@ -11,7 +11,7 @@ RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> etc/apk/repositories \
+RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
   && apk add --update \
   python \
   cifs-utils \
