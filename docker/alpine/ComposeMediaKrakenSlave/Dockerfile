@@ -11,7 +11,8 @@ RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> etc/apk/repositories \
+  && apk add --update \
   python \
   cifs-utils \
   nfs-utils \
@@ -25,6 +26,7 @@ RUN apk add --update \
   musl-dev \
   net-snmp \
   net-snmp-dev \
+  nginx-mod-rtmp@edge \
   python3 \
   python3-dev \
   openrc \
@@ -44,9 +46,6 @@ RUN apk add --update \
   && apk add \
   py-setuptools \
   && rm requirements.txt \
-  && echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> etc/apk/repositories \
-  apk add --update \
-  nginx-mod-rtmp \
   && rm -rf /var/cache/apk/* \
   && rm -r /root/.npm \
   && rc-update add netmount \
