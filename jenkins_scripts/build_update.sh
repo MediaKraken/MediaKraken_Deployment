@@ -106,8 +106,8 @@ cd ../ComposeMediaKrakenMusicBrainz
 docker build -t mediakraken/mkmusicbrainz .
 
 # build the stream container
-cd ../ComposeMediaKrakenStream
-docker build -t mediakraken/mkstream .
+#cd ../ComposeMediaKrakenStream
+#docker build -t mediakraken/mkstream .
 
 # build the teamspeak
 cd ../ComposeMediaKrakenTeamspeak
@@ -123,7 +123,7 @@ docker build -t mediakraken/mkwireshark .
 
 # build the tvheadend
 cd ../ComposeMediaKrakenTvheadend
-docker build -t mediakraken/mktvheadend .
+#docker build -t mediakraken/mktvheadend .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh
