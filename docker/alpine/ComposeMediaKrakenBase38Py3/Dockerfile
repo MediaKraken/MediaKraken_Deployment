@@ -13,7 +13,8 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # pip3 is installed with python3
-RUN apk add --update \
+RUN sed -i 's/dl-cdn.alpinelinux.org/${ALPMIRROR}/' /etc/apk/repositories \
+  && apk add --update \
   python3 \
   && pip3 install --upgrade pip \
   && pip3 install -r requirements.txt \
