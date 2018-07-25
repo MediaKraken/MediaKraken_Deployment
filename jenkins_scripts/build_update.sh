@@ -5,7 +5,7 @@ git pull
 # must move base dir so the docker-compose commands work
 cd /home/metaman/MediaKraken_Deployment/docker/alpine
 
-docker-compose down
+docker-compose down --build-arg ALPMIRROR=10.0.0.122
 
 # Build the base pypy
 # leave this here so all the cd ../ work later
@@ -18,12 +18,12 @@ cd ComposeMediaKrakenBasePYPY/2
 cd ../
 
 # base python 2 images
-cd ../ComposeMediaKrakenBase37
-docker build -t mediakraken/mkbase37 .
+#cd ../ComposeMediaKrakenBase37
+#docker build -t mediakraken/mkbase37 .
 
 # base python 3 images
-cd ../ComposeMediaKrakenBase37Py3
-docker build -t mediakraken/mkbase37py3 .
+#cd ../ComposeMediaKrakenBase37Py3
+#docker build -t mediakraken/mkbase37py3 .
 
 # base python 3 images
 cd ../ComposeMediaKrakenBase38Py3
@@ -36,12 +36,12 @@ docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 .
 # Build the base FFMPEG from base images
 # Image that simply has ffmpeg and ffprobe for use by other containers.
 cd ../ComposeMediaKrakenBaseFFMPEG
-docker build -t mediakraken/mkbaseffmpeg .
+docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=10.0.0.122 .
 
 # build the base node
 # Adds NODE to the base ffmpeg and ffprobe.
 cd ../ComposeMediaKrakenBaseNodeFFMPEG
-docker build -t mediakraken/mkbasenodeffmpeg .
+docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=10.0.0.122 .
 
 # Build the nginx RTMP
 #cd ../ComposeMediaKrakenNginxRTMP
@@ -50,7 +50,7 @@ docker build -t mediakraken/mkbasenodeffmpeg .
 # build the device scan
 # When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
 cd ../ComposeMediaKrakenDevicescan
-docker build -t mediakraken/mkdevicescan .
+docker build -t mediakraken/mkdevicescan --build-arg ALPMIRROR=10.0.0.122 .
 
 # build the openldap
 #cd ../ComposeMediaKrakenOpenLDAP
@@ -58,15 +58,15 @@ docker build -t mediakraken/mkdevicescan .
 
 # build the tmdb prefetch
 cd ../ComposeMediaKrakenPrefetchTMDB
-docker build -t mediakraken/mkprefetchtmdb .
+docker build -t mediakraken/mkprefetchtmdb --build-arg ALPMIRROR=10.0.0.122 .
 
 # build the tvamze prefetch
 cd ../ComposeMediaKrakenPrefetchTVMaze
-docker build -t mediakraken/mkprefetchtvmaze .
+docker build -t mediakraken/mkprefetchtvmaze --build-arg ALPMIRROR=10.0.0.122 .
 
 # Build the base slave images from other base images (basenodeffmpeg)
 cd ../ComposeMediaKrakenSlave
-docker build -t mediakraken/mkslave .
+docker build -t mediakraken/mkslave --build-arg ALPMIRROR=10.0.0.122 .
 
 #cd ../ComposeMediaKrakenSlaveNvidia
 #docker build -t mediakraken/mkslavenvidia .
@@ -89,7 +89,6 @@ docker build -t mediakraken/mkslave .
 
 # move here so all the "deps" are built first
 docker-compose build
-
 
 # containers here and later are "standalone" with no deps
 

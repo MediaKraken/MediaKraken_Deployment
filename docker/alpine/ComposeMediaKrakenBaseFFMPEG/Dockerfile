@@ -1,5 +1,7 @@
 FROM alpine:3.8 as builder
 
+ARG ALPMIRROR=dl-cdn.alpinelinux.org
+
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
 
@@ -52,6 +54,7 @@ RUN buildDeps="autoconf \
         yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
+    sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories && \
     apk update && \
     apk upgrade && \
     apk add --update ${buildDeps} libgcc libstdc++ ca-certificates && \

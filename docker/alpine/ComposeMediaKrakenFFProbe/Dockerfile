@@ -4,6 +4,8 @@ FROM mediakraken/mkbaseffmpeg
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main ffprobe app"
 
+ARG ALPMIRROR=dl-cdn.alpinelinux.org
+
 # create work dir
 RUN mkdir /mediakraken
 
@@ -11,7 +13,8 @@ RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   python3 \
   cifs-utils \
   nfs-utils \

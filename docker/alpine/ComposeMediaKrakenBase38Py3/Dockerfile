@@ -5,6 +5,7 @@ LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the base image"
 
 ARG ALPMIRROR=dl-cdn.alpinelinux.org
+
 # create work dir
 RUN mkdir /mediakraken
 

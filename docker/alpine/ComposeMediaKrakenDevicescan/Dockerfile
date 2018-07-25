@@ -4,6 +4,8 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image scans for new hardware devices"
 
+ARG ALPMIRROR=dl-cdn.alpinelinux.org
+
 WORKDIR /mediakraken
 
 # add hdhomerun lib to install
@@ -12,7 +14,8 @@ ADD libhdhomerun /mediakraken/libhdhomerun
 ADD libhdhomerun_python /mediakraken/libhdhomerun_python
 
 # Update repository and install packages
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   alpine-sdk \
   py3-requests \
   py3-setuptools \

@@ -1,6 +1,8 @@
 # vim:set ft=dockerfile:
 FROM alpine:3.8
 
+ARG ALPMIRROR=dl-cdn.alpinelinux.org
+
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:
@@ -31,7 +33,8 @@ ENV PG_SHA256 1b60812310bd5756c62d93a9f93de8c28ea63b0df254f428cd1cf1a4d9020048
 
 RUN set -ex \
 	\
-	&& apk add --no-cache --virtual .fetch-deps \
+	&& sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+        && apk add --no-cache --virtual .fetch-deps \
 		ca-certificates \
 		openssl \
 		tar \
