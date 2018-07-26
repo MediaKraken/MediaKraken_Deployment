@@ -56,9 +56,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got transport',
-                                                         'ip': str(self.transport.getPeer())})
-        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        ip_addr, port = self.transport.client
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection', 'ip': ip_addr})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
@@ -66,7 +64,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection dropped so remove client
         """
-        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        ip_addr, port = self.transport.client
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection',
                                                          'ip': ip_addr})
         for user_device_uuid, protocol in self.users.items():
