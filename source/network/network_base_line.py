@@ -77,7 +77,6 @@ class NetworkEvents(basic.LineReceiver):
         Message received from client
         """
         msg = None
-        common_global.es_inst.com_elastic_index('info', {'GOT Data': data})
         json_message = json.loads(data.decode())
         common_global.es_inst.com_elastic_index('info', {'Message': json_message})
 
