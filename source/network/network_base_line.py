@@ -161,6 +161,8 @@ class NetworkEvents(basic.LineReceiver):
                 image_json, metadata_id \
                     = self.db_connection.db_meta_tvshow_image_random(json_message['Image Type'])
             if metadata_id is not None and image_json is not None:
+                common_global.es_inst.com_elastic_index('info', {"metadata_id": metadata_id,
+                                                                 "image_json": image_json})
                 image_handle = open(image_json, "rb")
                 image_data = image_handle.read()
                 image_data = base64.b64encode(image_data)
