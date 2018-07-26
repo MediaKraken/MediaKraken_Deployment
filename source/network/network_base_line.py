@@ -80,7 +80,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         msg = None
         common_global.es_inst.com_elastic_index('info', {'GOT Data': data})
-        json_message = json.loads(data)
+        json_message = json.loads(data.decode())
         common_global.es_inst.com_elastic_index('info', {'Message': json_message})
 
         if json_message['Type'] == "CPU Usage":

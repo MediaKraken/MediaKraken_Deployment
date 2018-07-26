@@ -273,7 +273,7 @@ class MediaKrakenApp(App):
         """
         Process network message from server
         """
-        json_message = json.loads(server_msg)
+        json_message = json.loads(server_msg.decode())
         try:
             if json_message['Type'] != "Image":
                 common_global.es_inst.com_elastic_index('info', {"Got Message": server_msg})
