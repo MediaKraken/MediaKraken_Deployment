@@ -134,18 +134,18 @@ class NetworkEvents(basic.LineReceiver):
         elif json_message['Type'] == "Image":
             metadata_id = None
             image_json = None
-            if json_message['Sub'] == 'Album':
+            if json_message['Subtype'] == 'Album':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id = self.db_connection.db_meta_album_image_random()
-            elif json_message['Sub'] == 'Book':
+            elif json_message['Subtype'] == 'Book':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
                     = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
-            elif json_message['Sub'] == 'Game':
+            elif json_message['Subtype'] == 'Game':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
                     = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
-            elif json_message['Sub'] == 'Movie':
+            elif json_message['Subtype'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
                 if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie' \
                         or json_message['Sub2'] == 'Demo':
@@ -155,7 +155,7 @@ class NetworkEvents(basic.LineReceiver):
                     pass
                 elif json_message['Sub2'] == 'In Progress':
                     pass
-            elif json_message['Sub'] == 'TV Show':
+            elif json_message['Subtype'] == 'TV Show':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
                     = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
@@ -164,7 +164,7 @@ class NetworkEvents(basic.LineReceiver):
                 image_data = image_handle.read()
                 image_data = base64.b64encode(image_data)
                 image_handle.close()
-                msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
+                msg = json.dumps({"Type": "Image", "Subtype": json_message['Subtype'],
                                   "Sub2": json_message['Sub2'],
                                   "Data": image_data, "UUID": metadata_id})
 
@@ -178,7 +178,7 @@ class NetworkEvents(basic.LineReceiver):
             elif json_message['Subtype'] == 'Detail':
                 mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
                     = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
-                msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
+                msg = json.dumps({'Type': 'Media', 'Subtype': 'Detail',
                                   'Data': mm_metadata_json, 'Data2': mm_media_ffprobe_json,
                                   'Data3': mm_metadata_localimage_json})
             elif json_message['Subtype'] == 'List':
@@ -201,7 +201,7 @@ class NetworkEvents(basic.LineReceiver):
                 # (Offset, Limit)
                 pass
             elif json_message['Subtype'] == 'New':
-                msg = json.dumps({'Type': 'Media', 'Sub': 'New',
+                msg = json.dumps({'Type': 'Media', 'Subtype': 'New',
                                   'Data': self.db_connection.db_read_media_new(
                                       json_message['Offset'],
                                       json_message['Limit'])})
