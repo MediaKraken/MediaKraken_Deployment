@@ -26,7 +26,7 @@ for container_json in docker_inst.com_docker_container_list():
 # begin loop to respond to all broadcast messages
 while True:
     recv_data, addr = server_socket.recvfrom(2048)
-    if recv_data == "who is MediaKrakenServer?":
+    if recv_data == b"who is MediaKrakenServer?":
         common_global.es_inst.com_elastic_index('info', {'addr': str(addr),
                                                          'data': str(recv_data)})
         server_socket.sendto(mediakraken_ip + ":" + docker_port, addr)
