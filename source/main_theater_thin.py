@@ -220,7 +220,7 @@ class MediaKrakenApp(App):
             video_source_dir = json_message['Data']
             # TODO - load real mapping
             share_mapping = (
-                ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+                ('/mediakraken/mnt/', '/home/spoot/zfsspoo/Media/'),)
             if share_mapping is not None:
                 for mapping in share_mapping:
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])

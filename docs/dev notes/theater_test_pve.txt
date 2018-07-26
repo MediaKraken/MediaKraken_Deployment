@@ -29,3 +29,5 @@ cd source
 python3 main_theater_thin.py
 
 # apt-get --with-new-pkgs upgrade
+
+apt-get install nfs-client
