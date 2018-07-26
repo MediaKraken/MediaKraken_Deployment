@@ -24,7 +24,8 @@ while True:
         for container_json in docker_inst.com_docker_container_list():
             # grab ports for server
             if container_json['Names'][0] == '/mkserver':
-                docker_port = str(docker_inst.com_docker_port(container_json['Id'], 8903))
+                docker_port = str(
+                    docker_inst.com_docker_port(container_json['Id'], 8903)[0]['HostPort'])
                 break
         common_global.es_inst.com_elastic_index('info', {'addr': str(addr),
                                                          'data': str(recv_data)})
