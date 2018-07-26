@@ -84,7 +84,7 @@ class MKEcho(basic.LineReceiver):
 
     def sendline_data(self, line):
         common_global.es_inst.com_elastic_index('info', {'sending': line})
-        self.sendLine(line.encode("utf8"))
+        self.sendLine(line.encode())
 
 
 class MKFactory(protocol.ClientFactory):

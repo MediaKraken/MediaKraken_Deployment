@@ -112,7 +112,8 @@ class NetworkEvents(basic.LineReceiver):
         elif json_message['Type'] == "Ident":
             # have to create the self.player data so network knows how to send data back
             self.user_device_uuid = json_message['UUID']
-            self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
+            ip_addr, port = self.transport.client
+            self.user_ip_addy = str(ip_addr)
             self.user_user_name = None
             self.user_platform = json_message['Platform']
             # lookup the country
