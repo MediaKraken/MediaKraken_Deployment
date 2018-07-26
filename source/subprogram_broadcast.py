@@ -29,4 +29,4 @@ while True:
     if recv_data == b"who is MediaKrakenServer?":
         common_global.es_inst.com_elastic_index('info', {'addr': str(addr),
                                                          'data': str(recv_data)})
-        server_socket.sendto(mediakraken_ip + ":" + docker_port, addr)
+        server_socket.sendto(bytes(mediakraken_ip + ":" + docker_port), addr)
