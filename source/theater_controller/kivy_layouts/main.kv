@@ -960,14 +960,14 @@
                         orientation: 'vertical'
                         value: s1.value
                         on_value: s1.value = self.value
-                            BoxLayout:
-                                Button:
-                                    text: 'On'
-                                    on_press: app.hue_lights_on()
-                                Button:
-                                    text: 'Off'
-                                    on_press: app.hue_lights_off()
-                        BoxLayout:
+                    BoxLayout:
+                        Button:
+                            text: 'On'
+                            on_press: app.hue_lights_on()
+                        Button:
+                            text: 'Off'
+                            on_press: app.hue_lights_off()
+                    BoxLayout:
                         ColorPicker:
-                    id: hue_colorpicker
-                    size_hint: 1.0, 1.0
+                        id: hue_colorpicker
+                        size_hint: 1.0, 1.0
