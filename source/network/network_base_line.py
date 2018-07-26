@@ -56,6 +56,8 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got transport',
+                                                         'ip': str(self.transport.getPeer())})
         ip_addr = str(self.transport.getPeer()).split('\'')[1]
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection', 'ip': ip_addr})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
