@@ -140,32 +140,33 @@ class NetworkEvents(basic.LineReceiver):
             elif json_message['Subtype'] == 'Book':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
-                    = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
+                    = self.db_connection.db_meta_book_image_random(json_message['Image Type'])
             elif json_message['Subtype'] == 'Game':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
-                    = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
+                    = self.db_connection.db_meta_game_image_random(json_message['Image Type'])
             elif json_message['Subtype'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
-                if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie' \
-                        or json_message['Sub2'] == 'Demo':
+                if json_message['Image Media Type'] == 'Main' or json_message[
+                    'Image Media Type'] == 'Movie' \
+                        or json_message['Image Media Type'] == 'Demo':
                     image_json, metadata_id \
-                        = self.db_connection.db_meta_movie_image_random(json_message['Sub3'])
-                elif json_message['Sub2'] == 'New Movie':
+                        = self.db_connection.db_meta_movie_image_random(json_message['Image Type'])
+                elif json_message['Image Media Type'] == 'New Movie':
                     pass
-                elif json_message['Sub2'] == 'In Progress':
+                elif json_message['Image Media Type'] == 'In Progress':
                     pass
             elif json_message['Subtype'] == 'TV Show':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
-                    = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
+                    = self.db_connection.db_meta_tvshow_image_random(json_message['Image Type'])
             if metadata_id is not None and image_json is not None:
                 image_handle = open(image_json, "rb")
                 image_data = image_handle.read()
                 image_data = base64.b64encode(image_data)
                 image_handle.close()
                 msg = json.dumps({"Type": "Image", "Subtype": json_message['Subtype'],
-                                  "Sub2": json_message['Sub2'],
+                                  "Image Media Type": json_message['Image Media Type'],
                                   "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
