@@ -174,5 +174,8 @@ def mk_network_stats():
 
 
 def mk_network_country_code():
-    response = urllib.request.urlopen("https://geoip-db.com/json")
-    return json.loads(response.read())
+    try:
+        response = urllib.request.urlopen("https://geoip-db.com/json")
+        return json.loads(response.read())
+    except:
+        return {'country_code': 'Error', 'country_name': 'Unknown'}
