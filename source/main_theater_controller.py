@@ -28,7 +28,7 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_signal
-from common import common_theater
+#from common import common_theater
 
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
@@ -228,7 +228,7 @@ class MediaKrakenApp(App):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.first_image_demo = True
-        self.common_remote = common_theater.main_remote_control_event_process
+        #self.common_remote = common_theater.main_remote_control_event_process
         self.play_status = None
         return root
 
