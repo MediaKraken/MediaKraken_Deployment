@@ -962,12 +962,14 @@
                         on_value: s1.value = self.value
                     BoxLayout:
                         Button:
+                            id: hue_light_button_on
                             text: 'On'
                             on_press: app.hue_lights_on()
                         Button:
+                            id: hue_light_button_off
                             text: 'Off'
                             on_press: app.hue_lights_off()
                     BoxLayout:
                         ColorPicker:
-                        id: hue_colorpicker
-                        size_hint: 1.0, 1.0
+                            id: hue_colorpicker
+                            size_hint: 1.0, 1.0
