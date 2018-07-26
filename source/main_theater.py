@@ -261,13 +261,13 @@ class MediaKrakenApp(App):
         """
         Send message via twisted reactor
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message.encode("utf8"))
+        MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def send_twisted_message_thread(self, message):
         """
         Send message via twisted reactor from the crochet thread
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message.encode("utf8"))
+        MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def process_message(self, server_msg):
         """
