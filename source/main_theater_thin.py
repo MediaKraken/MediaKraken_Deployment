@@ -162,9 +162,12 @@ class MediaKrakenApp(App):
             common_global.es_inst.com_elastic_index('info', {'stuff': 'here in connect to server'})
             if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
                 # TODO if more than one server, popup list selection
+                print("here")
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
+                print(server_list)
                 common_global.es_inst.com_elastic_index('info', {'server list': server_list})
                 host_ip = server_list[0]
+                print(host_ip)
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
                                 host_ip.split(':')[0])
