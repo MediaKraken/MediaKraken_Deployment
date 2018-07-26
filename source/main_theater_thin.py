@@ -224,6 +224,8 @@ class MediaKrakenApp(App):
             if share_mapping is not None:
                 for mapping in share_mapping:
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+            if os.path.exists(video_source_dir):
+                # direct play it
                 self.mpv_process = subprocess.Popen(
                     split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
                           '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
