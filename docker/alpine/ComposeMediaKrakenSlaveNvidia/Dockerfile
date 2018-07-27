@@ -16,7 +16,6 @@ RUN apk add --update \
   cifs-utils \
   nfs-utils \
   bash \
-  postgresql-client \
   alpine-sdk \
   libxml2-dev \
   libxslt-dev \
@@ -24,7 +23,6 @@ RUN apk add --update \
   musl-dev \
   net-snmp \
   net-snmp-dev \
-  postgresql-dev \
   py-pip \
   python-dev \
   openrc \
@@ -36,7 +34,6 @@ RUN apk add --update \
   linux-headers \
   musl-dev \
   net-snmp-dev \
-  postgresql-dev \
   py-pip \
   python-dev \
   && apk add \
