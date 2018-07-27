@@ -410,28 +410,28 @@ class MediaKrakenApp(App):
             if json_message['Subtype'] == "Movie":
                 common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
                 f = open('./image_demo', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 self.demo_media_id = json_message['UUID']
                 proxy_image_demo = Loader.image('./image_demo')
                 proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
             elif json_message['Image Media Type'] == "Movie":
                 f = open('./image_movie', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 proxy_image_movie = Loader.image('./image_movie')
                 proxy_image_movie.bind(
                     on_load=self._image_loaded_home_movie)
             elif json_message['Image Media Type'] == "New Movie":
                 f = open('./image_new_movie', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 proxy_image_new_movie = Loader.image('./image_new_movie')
                 proxy_image_new_movie.bind(
                     on_load=self._image_loaded_home_new_movie)
             elif json_message['Image Media Type'] == "In Progress":
                 f = open('./image_in_progress', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 proxy_image_prog_movie = Loader.image('./image_in_progress')
                 proxy_image_prog_movie.bind(
