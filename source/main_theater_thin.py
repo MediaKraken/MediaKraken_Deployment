@@ -236,7 +236,7 @@ class MediaKrakenApp(App):
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
             if json_message['Image Media Type'] == "Demo":
                 f = open("./image_demo", "w")
-                f.write(base64.b64decode(json_message['Data'].decode()))
+                f.write(base64.b64decode(json_message['Data']))
                 f.close()
                 self.demo_media_id = json_message['UUID']
                 if self.first_image_demo == False:

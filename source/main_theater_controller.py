@@ -388,7 +388,7 @@ class MediaKrakenApp(App):
                 common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
                 if json_message['Image Media Type'] == "Demo":
                     f = open("./image_demo", "w")
-                    f.write(base64.b64decode(json_message['Data'].decode()))
+                    f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     self.demo_media_id = json_message['UUID']
                     if self.first_image_demo == False:
@@ -403,21 +403,21 @@ class MediaKrakenApp(App):
                         self.first_image_demo = False
                 elif json_message['Image Media Type'] == "Movie":
                     f = open("./image_movie", "w")
-                    f.write(base64.b64decode(json_message['Data'].decode()))
+                    f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     proxy_image_movie = Loader.image("./image_movie")
                     proxy_image_movie.bind(
                         on_load=self._image_loaded_home_movie)
                 elif json_message['Image Media Type'] == "New Movie":
                     f = open("./image_new_movie", "w")
-                    f.write(base64.b64decode(json_message['Data'].decode()))
+                    f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     proxy_image_new_movie = Loader.image("./image_new_movie")
                     proxy_image_new_movie.bind(
                         on_load=self._image_loaded_home_new_movie)
                 elif json_message['Image Media Type'] == "In Progress":
                     f = open("./image_in_progress", "w")
-                    f.write(base64.b64decode(json_message['Data'].decode()))
+                    f.write(base64.b64decode(json_message['Data']))
                     f.close()
                     proxy_image_prog_movie = Loader.image(
                         "./image_in_progress")
