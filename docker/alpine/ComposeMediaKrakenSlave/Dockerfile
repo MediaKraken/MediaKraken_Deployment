@@ -54,6 +54,13 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rc-update add netmount \
   && rc-update add rpcbind
 
+# Forward logs to Docker
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
+    ln -sf /dev/stderr /var/log/nginx/error.log
+
+# Set up config file
+COPY nginx.conf /etc/nginx/nginx.conf
+
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
