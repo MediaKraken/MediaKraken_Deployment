@@ -241,7 +241,7 @@ class MediaKrakenApp(App):
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
                 common_global.es_inst.com_elastic_index('info', {'server list': server_list})
-                host_ip = server_list[0]
+                host_ip = server_list[0].decode() # as this is returned as bytes
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
                                 host_ip.split(':')[0])
