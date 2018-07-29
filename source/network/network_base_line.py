@@ -164,7 +164,6 @@ class NetworkEvents(basic.LineReceiver):
                                                                  "image_json": image_json})
                 image_handle = open(image_json, "rb")
                 image_data = image_handle.read()
-                #image_data = base64.b64encode(image_data)
                 image_data = base64.b64encode(image_data).decode('ascii')
                 image_handle.close()
                 msg = json.dumps({"Type": "Image", "Subtype": json_message['Subtype'],
