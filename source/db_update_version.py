@@ -281,5 +281,7 @@ if db_connection.db_table_index_check('gc_category_idx_name') is None:
                            ' ON mm_game_category(gc_category)')
 
 
+add mm_metadata_localimage_json to mm_metadata_game_software_info
+
 # close the database
 db_connection.db_close()
