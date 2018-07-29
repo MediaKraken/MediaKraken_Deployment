@@ -168,7 +168,7 @@ class NetworkEvents(basic.LineReceiver):
                 image_handle.close()
                 msg = json.dumps({"Type": "Image", "Subtype": json_message['Subtype'],
                                   "Image Media Type": json_message['Image Media Type'],
-                                  "Data": image_data.decode(), "UUID": metadata_id})
+                                  "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
             self.db_connection.db_user_login(
