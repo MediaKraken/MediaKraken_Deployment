@@ -1,4 +1,10 @@
-ubuntu 16.04 - containered
+clone https://github.com/LibreELEC/LibreELEC.tv.git to https://github.com/MediaKraken/LibreELEC.tv
+
+th-libreelec-1
+
+***************
+
+ubuntu 16.04 - containered (th-libreelec-1)
 
 apt update && apt upgrade
 apt install gcc make git unzip wget xz-utils
@@ -9,7 +15,7 @@ git clone https://github.com/LibreELEC/LibreELEC.tv.git
 
 cd LibreELEC.tv
 
-git checkout 8.2.5
+git checkout 8.2
 
 PROJECT=Generic ARCH=x86_64
 
