@@ -26,7 +26,7 @@ rc-update add dbus
 rc-service slim start
 
 
-apk add git python3 nano gcc python3-dev musl-dev mesa-dev libffi-dev libressl-dev
+apk add git python3 nano gcc python3-dev musl-dev mesa-dev libffi-dev libressl-dev sdl2-dev sdl-dev jpeg-dev sdl_mixer-dev sdl_image-dev
 apk add mpv
 
 git clone https://github.com/MediaKraken/MediaKraken_Deployment 
