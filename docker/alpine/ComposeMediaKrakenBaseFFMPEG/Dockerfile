@@ -1,6 +1,7 @@
 FROM alpine:3.8 as builder
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local

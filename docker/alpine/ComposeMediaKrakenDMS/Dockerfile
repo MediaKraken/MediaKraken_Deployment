@@ -4,11 +4,15 @@ FROM  mediakraken/mkbaseffmpeg:latest
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the dms app"
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 # copy PIP requirements
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   go \
   go get github.com/anacrolix/dms \
   cifs-utils \
@@ -32,8 +36,8 @@ RUN apk add --update \
   python3-dev \
   openrc \
   && export PYCURL_SSL_LIBRARY=openssl \
-  && pip3 install pycurl \
-  && pip3 install -r requirements.txt \
+  && pip3 install -i http://${PIPMIRROR} pycurl \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && apk del \
   alpine-sdk \
   libxml2-dev \

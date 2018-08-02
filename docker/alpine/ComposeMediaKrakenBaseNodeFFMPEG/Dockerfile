@@ -1,6 +1,7 @@
 FROM  mediakraken/mkbaseffmpeg:latest
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 ENV NODE_VERSION 10.6.0
 

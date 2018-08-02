@@ -4,7 +4,8 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the broadcast server"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 # copy PIP requirements
 ADD requirements.txt /mediakraken
@@ -12,7 +13,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && pip3 install -r requirements.txt \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/*
 

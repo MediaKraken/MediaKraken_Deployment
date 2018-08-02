@@ -4,7 +4,8 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image sets up tmdb preload"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 # copy PIP requirements
 ADD requirements.txt /mediakraken
@@ -17,7 +18,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   openrc \
   py3-psycopg2 \
   py3-psutil \
-  && pip3 install -r requirements.txt \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && rm requirements.txt \
   && apk add \
   py-setuptools \

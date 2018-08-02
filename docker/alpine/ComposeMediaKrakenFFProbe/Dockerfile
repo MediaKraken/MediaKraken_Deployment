@@ -4,7 +4,8 @@ FROM mediakraken/mkbaseffmpeg
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main ffprobe app"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 # create work dir
 RUN mkdir /mediakraken
@@ -32,7 +33,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-psycopg2 \
   py3-psutil \
   openrc \
-  && pip3 install -r requirements.txt \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && apk del \
   alpine-sdk \
   libffi-dev \

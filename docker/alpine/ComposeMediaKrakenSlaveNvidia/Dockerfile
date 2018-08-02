@@ -4,6 +4,9 @@ FROM mediakraken/mkbaseffmpegnvidia
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main slave app"
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 # create work dir
 RUN mkdir /mediakraken
 
@@ -11,7 +14,8 @@ RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   python \
   cifs-utils \
   nfs-utils \
@@ -26,7 +30,7 @@ RUN apk add --update \
   py-pip \
   python-dev \
   openrc \
-  && pip install -r requirements.txt \
+  && pip install -i http://${PIPMIRROR} -r requirements.txt \
   && apk del \
   alpine-sdk \
   libxml2-dev \

@@ -4,7 +4,8 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image sets up tvmaze preload"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 WORKDIR /mediakraken
 

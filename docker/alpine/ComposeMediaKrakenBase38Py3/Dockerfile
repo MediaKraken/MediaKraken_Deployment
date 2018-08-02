@@ -4,7 +4,8 @@ FROM alpine:3.8
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the base image"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 # create work dir
 RUN mkdir /mediakraken
@@ -18,8 +19,8 @@ WORKDIR /mediakraken
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   python3 \
-  && pip3 install --upgrade pip \
-  && pip3 install -r requirements.txt \
+  && pip3 install -i http://${PIPMIRROR} --upgrade pip \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/*
 

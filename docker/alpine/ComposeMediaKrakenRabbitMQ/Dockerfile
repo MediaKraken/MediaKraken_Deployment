@@ -1,6 +1,8 @@
 FROM alpine:3.8
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added

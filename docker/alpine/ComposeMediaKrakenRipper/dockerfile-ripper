@@ -4,6 +4,9 @@ FROM mediakraken/mkbaseffmpeg
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the ripper app"
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 # create work dir
 RUN mkdir /mediakraken
 
@@ -11,15 +14,13 @@ RUN mkdir /mediakraken
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   abcde \
   openjdk8-jre-base \
-  python \
-  py-pip \
-  && pip install --upgrade pip \
-  && pip install -r requirements.txt \
-  && apk del \
-  py-pip \
+  python3 \
+  && pip3 install -i http://${PIPMIRROR} --upgrade pip \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 

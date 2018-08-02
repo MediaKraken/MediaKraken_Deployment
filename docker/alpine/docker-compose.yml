@@ -3,12 +3,18 @@ version: '3'
 
 # Volumes are HOST directory and then CONTAINER directory
 
+ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG PIPMIRROR=pypi.io
+
 services:
   # start broadcast server (so clients can find server)
   broadcast:
     build:
       context: ./ComposeMediaKrakenBroadcast
       dockerfile: dockerfile-broadcast
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     container_name: mkbroadcast
     depends_on:
       - appserver
@@ -25,6 +31,9 @@ services:
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
@@ -60,6 +69,9 @@ services:
     build:
       context: ./ComposeMediaKrakenDatabase
       dockerfile: dockerfile-database
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -76,6 +88,9 @@ services:
     build:
       context: ./ComposeMediaKrakenPGBouncer
       dockerfile: dockerfile-pgbouncer
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
@@ -97,6 +112,9 @@ services:
     build:
       context: ./ComposeMediaKrakenMetadata
       dockerfile: dockerfile-metadata
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -127,6 +145,9 @@ services:
     build:
       context: ./ComposeMediaKrakenNginx
       dockerfile: dockerfile-nginx
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     container_name: mknginx
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
@@ -143,6 +164,9 @@ services:
     build:
       context: ./ComposeMediaKrakenRedis
       dockerfile: dockerfile-redis
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     container_name: mkredis
     ports:
       - "6379:6379"
@@ -155,6 +179,9 @@ services:
     build:
       context: ./ComposeMediaKrakenDownload
       dockerfile: dockerfile-download
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -174,6 +201,9 @@ services:
     build:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -197,21 +227,14 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-#  nginxrtmpforward:
-#    build:
-#      context: ./ComposeMediaKrakenNginxRTMPStreamForward
-#      dockerfile: Dockerfile
-#    container_name: mknginxrtmpforward
-#    ports:
-#      - "1935:1935"
-#      - "80:80"
-#    restart: unless-stopped
-
   # rabbit
   rabbit:
     build:
       context: ./ComposeMediaKrakenRabbitMQ/management
       dockerfile: Dockerfile
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     container_name: mkrabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
@@ -259,39 +282,14 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-#  mail:
-#    build:
-#      context: ./ComposeMediaKrakenMail
-#      dockerfile: Dockerfile
-#    hostname: mkmail
-#    domainname: domain.com
-#    container_name: mkmail
-#    ports:
-#    - "25:25"
-#    - "143:143"
-#    - "587:587"
-#    - "993:993"
-#    volumes:
-#    - /var/opt/mediakraken/maildata:/var/mail
-#    - /var/opt/mediakraken/mailstate:/var/mail-state
-#    - /var/opt/mediakraken/mail/config/:/tmp/docker-mailserver/
-#    environment:
-#    - ENABLE_SPAMASSASSIN=0
-#    - ENABLE_CLAMAV=0
-#    - ENABLE_FAIL2BAN=0
-#    - ONE_DIR=1
-#    - DMS_DEBUG=0
-#    cap_add:
-#    - NET_ADMIN
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
-
   # runs ffprobe
   ffprobe:
     build:
       context: ./ComposeMediaKrakenFFProbe
       dockerfile: Dockerfile
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
@@ -313,6 +311,9 @@ services:
     build:
       context: ./ComposeMediaKrakenRokuThumb
       dockerfile: Dockerfile
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - DEBUG=${DEBUG}
     container_name: mkrokuthumb
@@ -330,6 +331,9 @@ services:
     build:
       context: ./ComposeMediaKrakenHardware
       dockerfile: dockerfile-hardware
+      args:
+        ALPMIRROR: ${ALPMIRROR}
+        PIPMIRROR: ${PIPMIRROR}
     environment:
       - DEBUG=${DEBUG}
     container_name: mkhardware
@@ -339,21 +343,6 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-#  # runs filebeat
-#  filebeat:
-#    build:
-#      context: ./ComposeMediaKrakenFilebeat
-#      dockerfile: Dockerfile
-#    container_name: mkfilebeat
-#    depends_on:
-#      - elk
-#    entrypoint: ./wait-for-it-bash.sh -h elk -p 9200 -t 30 -- filebeat -e
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
 
 # Docker private networks
 networks:

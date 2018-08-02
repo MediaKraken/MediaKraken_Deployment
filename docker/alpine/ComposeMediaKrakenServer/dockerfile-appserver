@@ -4,7 +4,8 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main server app"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 # copy PIP requirements
 ADD requirements.txt /mediakraken
@@ -14,7 +15,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   alpine-sdk \
   python3-dev \
-  && pip3 install -r requirements.txt \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && apk add \
   libressl-dev \
   libressl \

@@ -4,7 +4,8 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the image for the web server app"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 # copy PIP requirements
 ADD requirements.txt /mediakraken
@@ -36,8 +37,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-psycopg2 \
   py3-psutil \
   && export PYCURL_SSL_LIBRARY=openssl \
-  && pip3 install pycurl \
-  && pip3 install -r requirements.txt \
+  && pip3 install -i http://${PIPMIRROR} pycurl \
+  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
   && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \
   gcc \

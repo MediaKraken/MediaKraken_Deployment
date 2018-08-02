@@ -2,7 +2,8 @@ FROM alpine:3.8
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 ENV NGINX_VERSION 1.14.0
 
