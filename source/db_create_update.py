@@ -838,7 +838,7 @@ if db_connection.db_table_index_check('gi_game_idx_short_name') is None:
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_systems_info (gs_id uuid'
                        ' CONSTRAINT gs_id_pk primary key,'
                        ' gs_game_system_name text, gs_game_system_alias text,'
-                       ' gs_game_system_json jsonb)')
+                       ' gs_game_system_json jsonb, mm_metadata_localimage_json jsonb)')
 if db_connection.db_table_index_check('mm_game_systems_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_game_systems_idxgin_json'
                            ' ON mm_metadata_game_systems_info USING gin (gs_game_system_json)')
