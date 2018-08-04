@@ -4,7 +4,7 @@ version: '3'
 # Volumes are HOST directory and then CONTAINER directory
 
 ARG ALPMIRROR=dl-cdn.alpinelinux.org
-ARG PIPMIRROR=pypi.io
+ARG PIPMIRROR=files.pythonhosted.org
 
 services:
   # start broadcast server (so clients can find server)
