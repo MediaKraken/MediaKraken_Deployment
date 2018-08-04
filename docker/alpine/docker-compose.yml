@@ -3,9 +3,6 @@ version: '3'
 
 # Volumes are HOST directory and then CONTAINER directory
 
-ARG ALPMIRROR=dl-cdn.alpinelinux.org
-ARG PIPMIRROR=files.pythonhosted.org
-
 services:
   # start broadcast server (so clients can find server)
   broadcast:
@@ -13,8 +10,8 @@ services:
       context: ./ComposeMediaKrakenBroadcast
       dockerfile: dockerfile-broadcast
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     container_name: mkbroadcast
     depends_on:
       - appserver
@@ -32,8 +29,8 @@ services:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
@@ -70,8 +67,8 @@ services:
       context: ./ComposeMediaKrakenDatabase
       dockerfile: dockerfile-database
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -89,8 +86,8 @@ services:
       context: ./ComposeMediaKrakenPGBouncer
       dockerfile: dockerfile-pgbouncer
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
@@ -113,8 +110,8 @@ services:
       context: ./ComposeMediaKrakenMetadata
       dockerfile: dockerfile-metadata
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -146,8 +143,8 @@ services:
       context: ./ComposeMediaKrakenNginx
       dockerfile: dockerfile-nginx
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     container_name: mknginx
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
@@ -165,8 +162,8 @@ services:
       context: ./ComposeMediaKrakenRedis
       dockerfile: dockerfile-redis
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     container_name: mkredis
     ports:
       - "6379:6379"
@@ -180,8 +177,8 @@ services:
       context: ./ComposeMediaKrakenDownload
       dockerfile: dockerfile-download
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -202,8 +199,8 @@ services:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -233,8 +230,8 @@ services:
       context: ./ComposeMediaKrakenRabbitMQ/management
       dockerfile: Dockerfile
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     container_name: mkrabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
@@ -288,8 +285,8 @@ services:
       context: ./ComposeMediaKrakenFFProbe
       dockerfile: Dockerfile
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
@@ -312,8 +309,8 @@ services:
       context: ./ComposeMediaKrakenRokuThumb
       dockerfile: Dockerfile
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - DEBUG=${DEBUG}
     container_name: mkrokuthumb
@@ -332,8 +329,8 @@ services:
       context: ./ComposeMediaKrakenHardware
       dockerfile: dockerfile-hardware
       args:
-        ALPMIRROR: ${ALPMIRROR}
-        PIPMIRROR: ${PIPMIRROR}
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: files.pythonhosted.org
     environment:
       - DEBUG=${DEBUG}
     container_name: mkhardware
