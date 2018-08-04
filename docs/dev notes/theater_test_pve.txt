@@ -19,7 +19,7 @@ apt-get update
 
 apt-get install python3-kivy
 
-pip3 install crochet elasticsearch pyopenssl
+pip3 install crochet elasticsearch pyopenssl service_identity
 
 git clone https://github.com/MediaKraken/MediaKraken_Deployment
 cd MediaKraken_Deployment
