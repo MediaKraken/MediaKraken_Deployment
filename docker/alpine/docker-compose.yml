@@ -262,22 +262,22 @@ services:
 #    restart: unless-stopped
 
   # runs calibre server
-  calibre:
-    build:
-      context: ./ComposeMediaKrakenCalibre
-      dockerfile: Dockerfile
-    container_name: mkcalibre
-    ports:
-      - "5299:5299"
-    volumes:
-      - /var/opt/mediakraken/calibre/config:/config
-      - /var/opt/mediakraken/calibre/books:/books
-      - /var/opt/mediakraken/calibre/audiobooks:/audiobooks
-      - /var/opt/mediakraken/calibre/magazines:/magazines
-      - /var/opt/mediakraken/calibre/downloads:/downloads
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
+#  calibre:
+#    build:
+#      context: ./ComposeMediaKrakenCalibre
+#      dockerfile: Dockerfile
+#    container_name: mkcalibre
+#    ports:
+#      - "5299:5299"
+#    volumes:
+#      - /var/opt/mediakraken/calibre/config:/config
+#      - /var/opt/mediakraken/calibre/books:/books
+#      - /var/opt/mediakraken/calibre/audiobooks:/audiobooks
+#      - /var/opt/mediakraken/calibre/magazines:/magazines
+#      - /var/opt/mediakraken/calibre/downloads:/downloads
+#    networks:
+#      - mediakraken_network
+#    restart: unless-stopped
 
   # runs ffprobe
   ffprobe:
