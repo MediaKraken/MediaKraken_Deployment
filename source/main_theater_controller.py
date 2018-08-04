@@ -876,11 +876,11 @@ if __name__ == '__main__':
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_controller/kivy_layouts/main.kv')
     Builder.load_file(
-        'theater_controller/kivy_layouts/KV_Layout_Load_Dialog.kv')
-    Builder.load_file('theater_controller/kivy_layouts/KV_Layout_Login.kv')
+        'theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file(
-        'theater_controller/kivy_layouts/KV_Layout_Notification.kv')
-    Builder.load_file('theater_controller/kivy_layouts/KV_Layout_Slider.kv')
+        'theater_resources/kivy_layouts/KV_Layout_Notification.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
     # so the raspberry pi doesn't crash
     if os.uname()[4][:3] != 'arm':
         Window.fullscreen = 'auto'
