@@ -144,11 +144,12 @@ def db_meta_game_image_random(self, return_image_type='Poster'):
     """
     Find random game image
     """
-    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\' as image_json,mm_metadata_guid'
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'thegamesdb\'->>\''
+                           + return_image_type + '\' as image_json,gi_id'
                                                  ' from mm_media,mm_metadata_game_software_info'
-                                                 ' where mm_media_metadata_guid = mm_metadata_guid'
-                                                 ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                                                 ' where mm_media_metadata_guid = gi_id'
+                                                 ' and ('
+                                                 'mm_metadata_localimage_json->\'Images\'->\'thegamesdb\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')
     try:
