@@ -104,7 +104,8 @@ class MKConsumer(object):
         if body is not None:
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'ffprobe': json_message})
-            ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
+            ffprobe_data = json.loads(common_ffmpeg.com_ffmpeg_media_attr(json_message['Media '
+                                                                                       'Path']))
             common_global.es_inst.com_elastic_index('info', {'ffprobe_data': ffprobe_data})
             if ffprobe_data != None:
                 # begin image generation
