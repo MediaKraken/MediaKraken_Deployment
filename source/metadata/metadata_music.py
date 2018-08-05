@@ -16,6 +16,8 @@
   MA 02110-1301, USA.
 '''
 
+import json
+
 from common import common_config_ini
 from common import common_metadata_musicbrainz
 
@@ -50,27 +52,32 @@ def metadata_music_lookup(db_connection, media_file_path, download_que_id):
     #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
     #  "bits_per_raw_sample": "16"}], "chapters": []}
     # 5-mm_media_json jsonb,
-    pass
     # see if record is stored locally
-#                if row_data[4] is not None:
-#                    ffmpeg_data_json = row_data[4]
-#                    print "what:", ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE']
-#                    db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'])
-#                    if db_result is None:
-#                        if mbrainz_api_connection is not None:
-#                            # look at musicbrainz server
-#                            brainz_id = None
-#                            music_data = mbrainz_api_connection.com_Mediabrainz_Get_Recordings(ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags']['ALBUM'], ffmpeg_data_json['format']['tags']['TITLE'], 1)
-#                            # TODO  if not, store it
-#                            # TODO  use the metadata id for record update
-#                            metadata_uuid = music_data
-#                    else:
-#                        metadata_uuid = db_result[0]
-#                        brainz_id = db_result[1]
-#                    if brainz_id is not None:
-#                        media_id_json = json.dumps({'Mbrainz':brainz_id})  # release id as that's indiv song
-
-#            elif class_text == "Music Album":
-#                # search musicbrainz
-#                #mbrainz_api_connection.com_Mediabrainz_Get_Releases()
-#                pass
+    if row_data[4] is not None:
+        ffmpeg_data_json = row_data[4]
+        print
+        "what:", ffmpeg_data_json['format']['tags']['ARTIST'], ffmpeg_data_json['format']['tags'][
+            'ALBUM'], ffmpeg_data_json['format']['tags']['TITLE']
+        db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
+                                                  ffmpeg_data_json['format']['tags']['ALBUM'],
+                                                  ffmpeg_data_json['format']['tags']['TITLE'])
+        if db_result is None:
+            if mbrainz_api_connection is not None:
+                # look at musicbrainz server
+                brainz_id = None
+                music_data = mbrainz_api_connection.com_Mediabrainz_Get_Recordings(
+                    ffmpeg_data_json['format']['tags']['ARTIST'],
+                    ffmpeg_data_json['format']['tags']['ALBUM'],
+                    ffmpeg_data_json['format']['tags']['TITLE'], 1)
+                # TODO  if not, store it
+                # TODO  use the metadata id for record update
+                metadata_uuid = music_data
+        else:
+            metadata_uuid = db_result[0]
+            brainz_id = db_result[1]
+        if brainz_id is not None:
+            media_id_json = json.dumps({'Mbrainz': brainz_id})  # release id as that's indiv song
+    elif class_text == "Music Album":
+        # search musicbrainz
+        # mbrainz_api_connection.com_Mediabrainz_Get_Releases()
+        pass
