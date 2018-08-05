@@ -19,8 +19,8 @@ WORKDIR /mediakraken
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   python3 \
-  && pip3 install --trusted-host -i https://${PIPMIRROR} --upgrade pip \
-  && pip3 install --trusted-host -i https://${PIPMIRROR} -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR} --upgrade pip \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR} -r requirements.txt \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/*
 
