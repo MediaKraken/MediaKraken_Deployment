@@ -36,7 +36,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   openrc \
   py3-service_identity \
   py3-setuptools \
-  && pip3 install --trusted-host -i https://${PIPMIRROR} -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && npm install -g castnow \
   && apk del \
   alpine-sdk \

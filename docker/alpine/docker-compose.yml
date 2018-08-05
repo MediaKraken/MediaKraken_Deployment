@@ -11,7 +11,7 @@ services:
       dockerfile: dockerfile-broadcast
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     container_name: mkbroadcast
     depends_on:
       - appserver
@@ -30,7 +30,7 @@ services:
       dockerfile: dockerfile-appserver
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
@@ -68,7 +68,7 @@ services:
       dockerfile: dockerfile-database
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -87,7 +87,7 @@ services:
       dockerfile: dockerfile-pgbouncer
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
@@ -111,7 +111,7 @@ services:
       dockerfile: dockerfile-metadata
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -144,7 +144,7 @@ services:
       dockerfile: dockerfile-nginx
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     container_name: mknginx
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
@@ -163,7 +163,7 @@ services:
       dockerfile: dockerfile-redis
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     container_name: mkredis
     ports:
       - "6379:6379"
@@ -178,7 +178,7 @@ services:
       dockerfile: dockerfile-download
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -200,7 +200,7 @@ services:
       dockerfile: dockerfile-webserver
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -231,7 +231,7 @@ services:
       dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     container_name: mkrabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
@@ -286,7 +286,7 @@ services:
       dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
@@ -310,7 +310,7 @@ services:
       dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - DEBUG=${DEBUG}
     container_name: mkrokuthumb
@@ -330,7 +330,7 @@ services:
       dockerfile: dockerfile-hardware
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
-        PIPMIRROR: files.pythonhosted.org
+        PIPMIRROR: pypi.python.org
     environment:
       - DEBUG=${DEBUG}
     container_name: mkhardware

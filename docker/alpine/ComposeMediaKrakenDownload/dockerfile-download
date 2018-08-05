@@ -18,7 +18,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   py3-libcloud \
   py3-psycopg2 \
-  && pip3 install --trusted-host -i https://${PIPMIRROR} -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 

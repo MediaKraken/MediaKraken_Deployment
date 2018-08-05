@@ -37,8 +37,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-psycopg2 \
   py3-psutil \
   && export PYCURL_SSL_LIBRARY=openssl \
-  && pip3 install --trusted-host -i https://${PIPMIRROR} pycurl \
-  && pip3 install --trusted-host -i https://${PIPMIRROR} -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \
   gcc \
