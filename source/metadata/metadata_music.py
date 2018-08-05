@@ -52,9 +52,11 @@ def metadata_music_lookup(db_connection, media_file_path, download_que_id):
     #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
     #  "bits_per_raw_sample": "16"}], "chapters": []}
     # 5-mm_media_json jsonb,
+
     # see if record is stored locally
-    if row_data[4] is not None:
-        ffmpeg_data_json = row_data[4]
+    ffmpeg_data_json = None
+
+    if ffmpeg_data_json is not None:
         print("what:", ffmpeg_data_json['format']['tags']['ARTIST'],
               ffmpeg_data_json['format']['tags']['ALBUM'],
               ffmpeg_data_json['format']['tags']['TITLE'])
