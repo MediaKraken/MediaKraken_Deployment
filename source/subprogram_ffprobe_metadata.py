@@ -133,7 +133,7 @@ class MKConsumer(object):
                             image_file_path = os.path.join(
                                 image_file_path, (str(chapter_count) + '.png'))
                         command_list = []
-                        command_list.append('./bin/ffmpeg')
+                        command_list.append('ffmpeg')
                         # if ss is before the input it seeks and doesn't convert every frame like after input
                         command_list.append('-ss')
                         # format the seconds to what ffmpeg is looking for
@@ -145,7 +145,7 @@ class MKConsumer(object):
                         command_list.append('-vframes')
                         command_list.append('1')
                         command_list.append('\"' + image_file_path + '\"')
-                        ffmpeg_proc = subprocess.Popen(split(command_list))
+                        ffmpeg_proc = subprocess.Popen(command_list)
                         ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
 
                         # as the worker might see it as finished if allowed to continue
