@@ -17,6 +17,7 @@
 '''
 
 import discid
+import os
 from libdiscid import read
 
 from . import common_global
@@ -40,7 +41,9 @@ def com_discid_caclulate_dir(dir_to_calculate):
     """
     Calculate the discid from specified directory
     """
-    last = 15  # number of files in directory could be used
+    last = len(os.listdir(dir_to_calculate)) # number of files in directory could be used
+    # https://python-discid.readthedocs.io/en/latest/usage/
+    # os.stat could get the numbers I think
     sectors = 258725
     offsets = [150, 17510, 235590]
     disc = discid.put(1, last, sectors, offsets)
