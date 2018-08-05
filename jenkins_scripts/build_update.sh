@@ -5,7 +5,7 @@ git pull
 # must move base dir so the docker-compose commands work
 cd /home/metaman/MediaKraken_Deployment/docker/alpine
 
-docker-compose down --build-arg ALPMIRROR=10.0.0.122
+docker-compose down
 
 # Build the base pypy
 # leave this here so all the cd ../ work later
@@ -27,7 +27,7 @@ cd ../
 
 # base python 3 images
 cd ../ComposeMediaKrakenBase38Py3
-docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 .
+docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the base cuda from alpine
 #cd ../ComposeMediaKrakenBaseCuda
@@ -36,12 +36,12 @@ docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 .
 # Build the base FFMPEG from base images
 # Image that simply has ffmpeg and ffprobe for use by other containers.
 cd ../ComposeMediaKrakenBaseFFMPEG
-docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=10.0.0.122 .
+docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the base node
 # Adds NODE to the base ffmpeg and ffprobe.
 cd ../ComposeMediaKrakenBaseNodeFFMPEG
-docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=10.0.0.122 .
+docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the nginx RTMP
 #cd ../ComposeMediaKrakenNginxRTMP
@@ -50,7 +50,7 @@ docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=10.0.0.122 .
 # build the device scan
 # When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
 cd ../ComposeMediaKrakenDevicescan
-docker build -t mediakraken/mkdevicescan --build-arg ALPMIRROR=10.0.0.122 .
+docker build -t mediakraken/mkdevicescan --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the openldap
 #cd ../ComposeMediaKrakenOpenLDAP
@@ -58,15 +58,15 @@ docker build -t mediakraken/mkdevicescan --build-arg ALPMIRROR=10.0.0.122 .
 
 # build the tmdb prefetch
 cd ../ComposeMediaKrakenPrefetchTMDB
-docker build -t mediakraken/mkprefetchtmdb --build-arg ALPMIRROR=10.0.0.122 .
+docker build -t mediakraken/mkprefetchtmdb --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the tvamze prefetch
 cd ../ComposeMediaKrakenPrefetchTVMaze
-docker build -t mediakraken/mkprefetchtvmaze --build-arg ALPMIRROR=10.0.0.122 .
+docker build -t mediakraken/mkprefetchtvmaze --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the base slave images from other base images (basenodeffmpeg)
 cd ../ComposeMediaKrakenSlave
-docker build -t mediakraken/mkslave --build-arg ALPMIRROR=10.0.0.122 .
+docker build -t mediakraken/mkslave --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 #cd ../ComposeMediaKrakenSlaveNvidia
 #docker build -t mediakraken/mkslavenvidia .
@@ -94,15 +94,15 @@ docker-compose build
 
 # build the elk
 cd ../ComposeMediaKrakenELK
-docker build -t mediakraken/mkelk .
+docker build -t mediakraken/mkelk --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the mumble
 cd ../ComposeMediaKrakenMumble
-docker build -t mediakraken/mkmumble .
+docker build -t mediakraken/mkmumble --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the mediabrainz
 cd ../ComposeMediaKrakenMusicBrainz
-docker build -t mediakraken/mkmusicbrainz .
+docker build -t mediakraken/mkmusicbrainz --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the stream container
 #cd ../ComposeMediaKrakenStream
@@ -110,15 +110,15 @@ docker build -t mediakraken/mkmusicbrainz .
 
 # build the teamspeak
 cd ../ComposeMediaKrakenTeamspeak
-docker build -t mediakraken/mkteamspeak .
+docker build -t mediakraken/mkteamspeak --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the transmission
 cd ../ComposeMediaKrakenTransmission
-docker build -t mediakraken/mktransmission .
+docker build -t mediakraken/mktransmission --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the wireshark
 cd ../ComposeMediaKrakenWireshark
-docker build -t mediakraken/mkwireshark .
+docker build -t mediakraken/mkwireshark --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the tvheadend
 cd ../ComposeMediaKrakenTvheadend
