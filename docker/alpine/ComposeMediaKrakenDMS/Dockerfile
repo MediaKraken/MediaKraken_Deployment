@@ -36,7 +36,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   openrc \
   && export PYCURL_SSL_LIBRARY=openssl \
-  && pip3 install --trusted-host -i http://${PIPMIRROR} pycurl \
+  && pip3 install --trusted-host -i https://${PIPMIRROR} pycurl \
   && apk del \
   alpine-sdk \
   libxml2-dev \
