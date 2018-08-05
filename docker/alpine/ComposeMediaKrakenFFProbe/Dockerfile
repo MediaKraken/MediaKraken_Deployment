@@ -48,8 +48,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
-  && rc-update add rpcbind \
-  && rm /usr/local/bin/ffmpeg
+  && rc-update add rpcbind
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
