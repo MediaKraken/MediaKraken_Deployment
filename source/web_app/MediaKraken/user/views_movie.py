@@ -68,7 +68,7 @@ def movie_detail(guid):
                                     sub=request.form['Video_Play_Subtitles']))
     else:
         data = g.db_connection.db_read_media_metadata_both(guid)
-        json_ffmpeg = json.loads(data['mm_media_ffprobe_json'])
+        json_ffmpeg = data['mm_media_ffprobe_json']
         json_media = data['mm_media_json']
         json_metadata = data['mm_metadata_json']
         json_imagedata = data['mm_metadata_localimage_json']
