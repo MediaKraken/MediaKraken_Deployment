@@ -43,14 +43,15 @@ class CommonMetadataMusicbrainz(object):
         # musicbrainzngs.auth(option_config_json.get('MediaBrainz','User').strip(),
         # option_config_json.get('MediaBrainz','Password').strip())
         musicbrainzngs.set_useragent("MediaKraken_Server", common_version.APP_VERSION,
-                                     "spootdev@gmail.com http://www.mediakraken.org")
+                                     "spootdev@gmail.com "
+                                     "https://https://github.com/MediaKraken/MediaKraken_Deployment")
         # If you are connecting to a development server
         if option_config_json['MusicBrainz']['Host'] != None:
             if option_config_json['MusicBrainz']['Host'] != 'Docker':
                 musicbrainzngs.set_hostname(option_config_json['MusicBrainz']['Host'] + ':'
                                             + option_config_json['MusicBrainz']['Port'])
             else:
-                musicbrainzngs.set_hostname('mkbrainz:5000')
+                musicbrainzngs.set_hostname('mkmusicbrainz:5000')
 
     def show_release_details(self, rel):
         """
