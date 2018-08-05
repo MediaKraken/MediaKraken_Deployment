@@ -30,7 +30,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py-pip \
   python-dev \
   openrc \
-  && pip install -i http://${PIPMIRROR} -r requirements.txt \
   && apk del \
   alpine-sdk \
   libxml2-dev \

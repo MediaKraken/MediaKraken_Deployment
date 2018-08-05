@@ -15,7 +15,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   alpine-sdk \
   python3-dev \
-  && pip3 install -i http://${PIPMIRROR} -r requirements.txt \
+  && pip3 install --trusted-host -i http://${PIPMIRROR} -r requirements.txt \
   && apk add \
   libressl-dev \
   libressl \
