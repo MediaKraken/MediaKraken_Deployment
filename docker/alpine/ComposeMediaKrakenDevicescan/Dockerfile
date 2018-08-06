@@ -21,7 +21,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-setuptools \
   python3-dev \
   && cd PyHdHomeRun \
-  && python setup.py install \
+  && python3 setup.py install \
   && cd .. \
   && rm -R PyHdHomeRun \
   && apk del alpine-sdk \
