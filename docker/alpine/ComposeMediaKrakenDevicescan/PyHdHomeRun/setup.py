@@ -8,7 +8,7 @@ sys.path.insert(0, dev_path)
 try:
     import pyhdhomerun.hdhr
 except OSError as e:
-    print("Could not load HDHomeRun library: %s" % (e))
+    print(("Could not load HDHomeRun library: %s" % (e)))
     sys.exit(1)
 else:
     print("HDHomeRun libraries verified.")

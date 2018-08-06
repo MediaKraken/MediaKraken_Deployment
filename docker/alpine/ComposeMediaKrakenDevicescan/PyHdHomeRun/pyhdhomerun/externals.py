@@ -163,4 +163,3 @@ CFUNC_hdhomerun_device_stream_recv.argtypes = \
     ]
 CFUNC_hdhomerun_device_stream_recv.restype = \
     POINTER(c_uint8)
-
