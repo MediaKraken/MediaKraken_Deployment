@@ -59,7 +59,7 @@
                         <p class="description_content_left">{{row_data[0]}}</p>
                     </div>
                 {% else %}
-                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + row_data[2] }} height="300" width="200">
                     {% if row_data[3] == True %}
                     <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
                     {% endif %}
