@@ -86,7 +86,7 @@ def metadata_music_album_list():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
-                                                      'mm_metadata_music_album'),
+                                                      'mm_metadata_album'),
                                                   record_name='album(s)',
                                                   format_total=True,
                                                   format_number=True,
