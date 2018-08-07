@@ -43,10 +43,6 @@ docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=10.0.0.122 --buil
 cd ../ComposeMediaKrakenBaseNodeFFMPEG
 docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
-# Build the nginx RTMP
-#cd ../ComposeMediaKrakenNginxRTMP
-#docker build -t mediakraken/mknginxrtmp .
-
 # build the device scan
 # When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
 cd ../ComposeMediaKrakenDevicescan
