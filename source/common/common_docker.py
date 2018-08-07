@@ -196,7 +196,7 @@ class CommonDocker(object):
                                                     'KIBANA_START': 1}
                                        )
 
-    def com_docker_run_game_data(self, container_command):
+    def com_docker_run_game_data(self, container_command='python3 subprogram_metadata_games.py'):
         """
         Launch container for game data load
         """
@@ -205,12 +205,9 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network',
                                        command=container_command,
                                        detach=True,
-                                       volumes={'/var/run/docker.sock':
-                                                    {'bind': '/var/run/docker.sock',
-                                                     'mode': 'ro'},
-                                                '/mediakraken/nfsmount':
-                                                    {'bind': '/mediakraken/mnt',
-                                                     'mode': 'ro'}
+                                       volumes={'/var/opt/mediakraken/emulation':
+                                                    {'bind': '/mediakraken/emulation',
+                                                     'mode': 'rw'}
                                                 },
                                        name='mkgamedata')
 
