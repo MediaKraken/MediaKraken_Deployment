@@ -196,7 +196,7 @@ class CommonDocker(object):
                                                     'KIBANA_START': 1}
                                        )
 
-    def com_docker_run_game_data(self, container_command='python3 subprogram_metadata_games.py'):
+    def com_docker_run_game_data(self, container_command='python3 ./subprogram_metadata_games.py'):
         """
         Launch container for game data load
         """
@@ -209,6 +209,11 @@ class CommonDocker(object):
                                                     {'bind': '/mediakraken/emulation',
                                                      'mode': 'rw'}
                                                 },
+                                       environment={'POSTGRES_DB': os.environ['POSTGRES_DB'],
+                                                    'POSTGRES_USER': os.environ['POSTGRES_USER'],
+                                                    'POSTGRES_PASSWORD': os.environ[
+                                                        'POSTGRES_PASSWORD'],
+                                                    },
                                        name='mkgamedata')
 
     def com_docker_run_musicbrainz(self, brainzcode):
