@@ -97,13 +97,10 @@ def db_table_count(self, table_name):
     """
     # return count of records in table
     """
-    try:
-        # can't %s due to ' inserted
-        # TODO little bobby tables
-        self.db_cursor.execute('select count(*) from ' + table_name)
-        return self.db_cursor.fetchone()[0]
-    except:
-        return None
+    # can't %s due to ' inserted
+    # TODO little bobby tables
+    self.db_cursor.execute('select count(*) from ' + table_name)
+    return self.db_cursor.fetchone()[0]
 
 
 def db_drop_table(self, table_name):
