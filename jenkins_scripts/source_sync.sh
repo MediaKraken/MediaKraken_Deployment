@@ -17,6 +17,11 @@ cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKrak
 cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenFFProbe/src/.
 cp /home/metaman/MediaKraken_Deployment/source/subprogram_ffprobe_metadata.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenFFProbe/src/.
 
+# load game/metadata
+cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenGameData/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenGameData/src/.
+cp /home/metaman/MediaKraken_Deployment/source/subprogram_metadata_games.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenGameData/src/.
+
 # hardware
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenHardware/src/.
 cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenHardware/src/.

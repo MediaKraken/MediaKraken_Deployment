@@ -56,9 +56,13 @@ docker build -t mediakraken/mkdevicescan --build-arg ALPMIRROR=10.0.0.122 --buil
 cd ../ComposeMediaKrakenPrefetchTMDB
 docker build -t mediakraken/mkprefetchtmdb --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
-# build the tvamze prefetch
+# build the tvmaze prefetch
 cd ../ComposeMediaKrakenPrefetchTVMaze
 docker build -t mediakraken/mkprefetchtvmaze --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+
+# build the game metadata
+cd ../ComposeMediaKrakenGameData
+docker build -t mediakraken/mkgamedata --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the base slave images from other base images (basenodeffmpeg)
 cd ../ComposeMediaKrakenSlave

@@ -21,7 +21,6 @@ import os
 import re
 import socket
 import ssl
-import sys
 import urllib.error
 import urllib.parse
 import urllib.request

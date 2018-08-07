@@ -196,6 +196,24 @@ class CommonDocker(object):
                                                     'KIBANA_START': 1}
                                        )
 
+    def com_docker_run_game_data(self, container_command):
+        """
+        Launch container for game data load
+        """
+        self.com_docker_delete_container('mkgamedata')
+        return self.cli.containers.run(image='mediakraken/mkgamedata',
+                                       network='mk_mediakraken_network',
+                                       command=container_command,
+                                       detach=True,
+                                       volumes={'/var/run/docker.sock':
+                                                    {'bind': '/var/run/docker.sock',
+                                                     'mode': 'ro'},
+                                                '/mediakraken/nfsmount':
+                                                    {'bind': '/mediakraken/mnt',
+                                                     'mode': 'ro'}
+                                                },
+                                       name='mkgamedata')
+
     def com_docker_run_musicbrainz(self, brainzcode):
         self.com_docker_delete_container('mkmusicbrainz')
         return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
