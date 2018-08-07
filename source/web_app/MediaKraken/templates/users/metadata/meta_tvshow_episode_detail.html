@@ -42,5 +42,12 @@
     <p id="general_text">No info found. ERROR! You should never see this message.</p>
     {% endif %}
     <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/static/js/blazy.min.js"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
 </body>
 {% endblock %}
