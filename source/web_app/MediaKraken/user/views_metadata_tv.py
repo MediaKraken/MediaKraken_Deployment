@@ -106,7 +106,7 @@ def metadata_tvshow_detail(guid):
                            data_overview=data_overview,
                            data_season_data=data_season_data,
                            data_season_count=sorted(
-                               data_season_data.iterkeys()),
+                               data_season_data),
                            data_genres_list=data_genres_list[:-2]
                            )
 
