@@ -83,6 +83,7 @@ def register_blueprints(app):
     app.register_blueprint(admins.views_chromecasts.blueprint)
     app.register_blueprint(admins.views_cron.blueprint)
     app.register_blueprint(admins.views_docker.blueprint)
+    app.register_blueprint(admins.views_game_metadata.blueprint)
     app.register_blueprint(admins.views_library.blueprint)
     app.register_blueprint(admins.views_link.blueprint)
     app.register_blueprint(admins.views_messages.blueprint)
