@@ -55,6 +55,18 @@ class CommonDocker(object):
             container_id = socket.gethostname()
         return self.cli_api.port(container_id, mapped_port)
 
+    def com_docker_ports_free(self):
+        """
+        return list of ports in use by docker
+        """
+        port_list = []
+        for container_inst in self.com_docker_container_list():
+            if len(container_inst['Ports']) > 0:
+                for port_ndx in container_inst['Ports']:
+                    if 'PublicPort' in port_ndx:
+                        port_list.append(port_ndx['PublicPort'])
+        return port_list
+
     def com_docker_swarm_init(self):
         """
         initialize swarm on host
