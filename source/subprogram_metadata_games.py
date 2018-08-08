@@ -112,10 +112,11 @@ if not os.path.exists(file_name):
                 if game_short_name_guid is None:
                     game_short_name_guid = db_connection.db_meta_games_system_insert(
                         None, file_name.split('/', 1)[1], None)
+                print('json: %s' % json_data)
                 if ext == ".xml":
                     # could be no games in list
                     if 'software' in json_data['softwarelist']:
-                        print((json_data['softwarelist']['software']))
+                        print(json_data['softwarelist']['software'])
                         # TODO this fails if only one game
                         print(len(json_data['softwarelist']['software']))
                         if '@name' in json_data['softwarelist']['software']:
