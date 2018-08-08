@@ -91,7 +91,7 @@ if not os.path.exists(file_name):
     total_software = 0
     total_software_update = 0
     # do this all the time, since could be a new one
-    with zipfile.ZipFile(file_name, 'rb') as zf:
+    with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('mame.zip', '/mediakraken/emulation/')
     zip_handle = zipfile.ZipFile(
         '/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
@@ -185,7 +185,7 @@ if not os.path.exists(file_name):
     # do this all the time, since could be a new one
     with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('history.dat', '/mediakraken/emulation/')
-    history_file = open("/mediakraken/emulation/history.dat", "rb")
+    history_file = open("/mediakraken/emulation/history.dat", "r")
     while 1:
         line = history_file.readline().decode("utf-8")
         # print('line: %s' % line)
@@ -243,7 +243,7 @@ if not os.path.exists(file_name):
             + " games(s) metadata updated from MAME hash", True)
 
 # read the category file and create dict/list for it
-cat_file = open("Category.ini", "rb")
+cat_file = open("Category.ini", "r")
 cat_dictionary = {}
 category = ""
 while 1:
