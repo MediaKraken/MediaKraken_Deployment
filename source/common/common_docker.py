@@ -61,10 +61,9 @@ class CommonDocker(object):
         """
         port_list = []
         for container_inst in self.com_docker_container_list():
-            if len(container_inst['Ports']) > 0:
-                for port_ndx in container_inst['Ports']:
-                    if 'PublicPort' in port_ndx:
-                        port_list.append(port_ndx['PublicPort'])
+            for port_ndx in container_inst['Ports']:
+                if 'PublicPort' in port_ndx: # as not all containers have open port
+                    port_list.append(port_ndx['PublicPort'])
         return port_list
 
     def com_docker_swarm_init(self):
