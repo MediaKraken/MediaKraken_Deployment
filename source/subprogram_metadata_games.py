@@ -94,30 +94,30 @@ if not os.path.exists(file_name):
     with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('mame.zip', '/mediakraken/emulation/')
     zip_handle = zipfile.ZipFile(
-        '/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
+        '/mediakraken/emulation/mame.zip', 'r') # issues if u do RB
     for zippedfile in zip_handle.namelist():
-        print(('zip: %s', zippedfile))
+        print('zip: %s' % zippedfile)
         if zippedfile[0:5] == 'hash/' and zippedfile != 'hash/':
-            print(("fname: %s", zippedfile))
+            print("fname: %s" % zippedfile)
             # find system id from mess
             file_name, ext = os.path.splitext(zippedfile)
-            print(('fil,etx %s %s' % (file_name, ext)))
+            print('fil,etx %s %s' % (file_name, ext))
             if ext == ".xml" or ext == ".hsi":
                 json_data = xmltodict.parse(zip_handle.read(zippedfile))
-                print(('sys: %s', file_name.split('/', 1)[1]))
+                print('sys: %s' % file_name.split('/', 1)[1])
                 game_short_name_guid \
                     = db_connection.db_meta_games_system_guid_by_short_name(
                     file_name.split('/', 1)[1])
-                print(('wh %s', game_short_name_guid))
+                print('wh %s' % game_short_name_guid)
                 if game_short_name_guid is None:
                     game_short_name_guid = db_connection.db_meta_games_system_insert(
-                        None, file_name.split('/', 1)[1], None, None)
+                        None, file_name.split('/', 1)[1], None)
                 if ext == ".xml":
                     # could be no games in list
                     if 'software' in json_data['softwarelist']:
                         print((json_data['softwarelist']['software']))
                         # TODO this fails if only one game
-                        print((len(json_data['softwarelist']['software'])))
+                        print(len(json_data['softwarelist']['software']))
                         if '@name' in json_data['softwarelist']['software']:
                             # TODO check to see if exists....if so, update
                             db_connection.db_meta_game_insert(game_short_name_guid,
@@ -149,7 +149,7 @@ if not os.path.exists(file_name):
                                                               json_data['hashfile']['hash'])
                         else:
                             for json_game in json_data['hashfile']['hash']:
-                                print(('hsi: %s', json_game))
+                                print('hsi: %s' % json_game)
                                 # TODO check to see if exists....if so, update
                                 # build args and insert the record
                                 db_connection.db_meta_game_insert(game_short_name_guid,
@@ -200,10 +200,9 @@ if not os.path.exists(file_name):
             elif line.find("$end") == 0:  # goes by position if found
                 add_to_desc = False
                 for game in game_titles:
-                    print(('game: %s' % game))
-                    game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[
-                        0]
-                    print(('data: %s', game_data))
+                    print('game: %s' % game)
+                    game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[0]
+                    print('data: %s' % game_data)
                     if game_data is None:
                         db_connection.db_meta_game_insert(
                             db_connection.db_meta_games_system_guid_by_short_name(
@@ -212,7 +211,7 @@ if not os.path.exists(file_name):
                         total_software += 1
                     else:
                         game_data['gi_game_info_json']['overview'] = game_desc
-                        print((game_data['gi_id']))
+                        print(game_data['gi_id'])
                         db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
                                                                   json.dumps(game_data[
                                                                                  'gi_game_info_json']))
