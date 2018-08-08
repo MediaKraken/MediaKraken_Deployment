@@ -187,7 +187,7 @@ if not os.path.exists(file_name):
         zf.extract('history.dat', '/mediakraken/emulation/')
     history_file = open("/mediakraken/emulation/history.dat", "r")
     while 1:
-        line = history_file.readline().decode("utf-8")
+        line = history_file.readline()
         # print('line: %s' % line)
         if not line:
             break
@@ -220,9 +220,8 @@ if not os.path.exists(file_name):
                 game_desc = ''
             # this line can be skipped and is basically the "start" of game info
             elif line.find("$bio") == 0:  # goes by position if found
-                line = history_file.readline().decode("utf-8")  # skip blank line
-                new_title = history_file.readline().decode(
-                    "utf-8").strip()  # grab the "real" game name
+                line = history_file.readline() # skip blank line
+                new_title = history_file.readline().strip()  # grab the "real" game name
                 add_to_desc = True
             else:
                 # should be a system/game
