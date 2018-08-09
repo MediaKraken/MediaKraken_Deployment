@@ -14,7 +14,9 @@
         <p>Docker Engine: {{data_host['ServerVersion']}}</p>
     </div>
     <div>
-        <p>Cluster Join Token: {{data_swam}}</p>
+        <p>Cluster Join Token: {{data_swam}}</p><BR><BR>
+        <p>Run the following command on other node(s) to join swarm as worker:</p><BR>
+        <p>docker swarm join --token {{data_swam}} {{data_host['Swarm']['NodeAddr']}}:2377</p>
     </div>
     <script src="/static/js/jquery.min.js" type="text/javascript"></script>
 </body>
