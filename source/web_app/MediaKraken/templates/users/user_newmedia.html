@@ -11,8 +11,77 @@
     {{ pagination.info }}
     {{ pagination.links }}
     <div id="the-newmedia-node">
-
-
+    <!-- this div is needed to show up between pagination correctly -->
+    <div id="the-movie-node">
+        {% for row_data in media %}
+        <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 = watched or not -->
+        <div class="main_photo">
+            <div data-id={{row_data[1]}}>
+                {% if row_data[7] == 'movie' %}
+                    <a href= "{{ url_for('user_movie.movie_detail', guid=row_data[1]) }}">
+                {% else %}
+                    {% if row_data[7] == 'tvshow' %}
+                        <a href= "{{ url_for('user_tv.user_tv_show_detail_page', guid=row_data[1]) }}">
+                    {% else %}
+                        {% if row_data[7] == 'music' %}
+                            <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1]) }}">
+                        {% else %}
+                            {% if row_data[7] == 'game' %}
+                                <a href= "{{ url_for('user_games.user_games_detail', guid=row_data[1]) }}">
+                            {% else %}
+                                {% if row_data[7] == 'book' %}
+                                    <a href= "{{ url_for('user_periodicals.user_books_detail', guid=row_data[1]) }}">
+                                {% else %}
+                                    {% if row_data[7] == 'musicvideo' %}
+                                        <a href= "{{ url_for('user_music_video.user_music_video_detail', guid=row_data[1]) }}">
+                                    {% else %}
+                                        {% if row_data[7] == 'sports' %}
+                                            <a href= "{{ url_for('user_sports.user_sports_detail_page', guid=row_data[1]) }}">
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                {% if row_data[2] == None %}
+                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "/static/images/Movie-icon.png" height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="/static/images/synced.jpg" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="exclamation_icon" src="/static/images/exclamation-circle-frame.png" height="20" width="20">
+                    {% endif %}
+                    </a>
+                    <div class="description">
+                        <p class="description_content_left">{{row_data[0]}}</p>
+                    </div>
+                {% else %}
+                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="/static/images/synced.jpg" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="exclamation_icon" src="/static/images/exclamation-circle-frame.png" height="20" width="20">
+                    {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
     </div>
     {{ pagination.links }}
     {% else %}
