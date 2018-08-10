@@ -135,7 +135,7 @@
                 <div class="grid">
                     {% for chapter_info in data_json_media_chapters %}
                     <div class="col-1-4">
-                        <a href= {{ "./movie_play_chapter/" + data_guid + "/" + chapter_info[0].replace(' ','%20') }} >
+                        <a href= "{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}" >
                         <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + chapter_info[1] }} alt= {{ "../static/meta/images/" + chapter_info[1] }} height="150" width="150">
                         </a>
                         <p>{{chapter_info[0]}}</p>
