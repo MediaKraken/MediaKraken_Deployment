@@ -166,6 +166,7 @@ def read(queue_object):
                                                          'name': name_container})
                 hwaccel = False
                 docker_inst.com_docker_run_slave(hwaccel=hwaccel,
+                                                 port_mapping=None,
                                                  name_container=name_container,
                                                  container_command=container_command)
                 common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
