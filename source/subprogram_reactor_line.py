@@ -123,13 +123,11 @@ def read(queue_object):
                     video_codec=None,
                     audio_codec=None,
                     audio_channels=None)
-                container_command = 'castnow --address ' \
-                                    + json_message['Target'] \
-                                    + ' --myip ' + docker_inst.com_docker_info()['Swarm'][
-                                        'NodeAddr'] + subtitle_command \
-                                    + ' --ffmpeg \'-c:v copy -c:a ac3' \
-                                    + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
-                                    + ' --tomp4 \'' + json_message['Data'] + '\''
+                container_command = 'castnow --tomp4 --ffmpeg-acodec aac --ffmpeg-movflags ' \
+                                    'frag_keyframe+empty_moov+faststart --address ' \
+                                    + json_message['Target'] + ' --myip ' \
+                                    + docker_inst.com_docker_info()['Swarm']['NodeAddr']\
+                                    + subtitle_command + ' \'' + json_message['Data'] + '\''
             elif json_message['Subtype'] == 'HLS':
                 # stream to hls
                 container_command = 'ffmpeg -i \"' + json_message['Input File'] \
