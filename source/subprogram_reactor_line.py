@@ -167,7 +167,7 @@ def read(queue_object):
                 hwaccel = False
                 docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                                  name_container=name_container,
-                                                 container_command=shlex.split(container_command))
+                                                 container_command=container_command)
                 common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
