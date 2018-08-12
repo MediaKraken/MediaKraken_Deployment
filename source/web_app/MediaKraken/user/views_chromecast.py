@@ -81,7 +81,7 @@ def user_cast(action, guid):
                          body=json.dumps({'Type': 'Volume Down', 'Subtype': 'Cast',
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
-    return render_template("users/user_playback_cast.html", data_uuid=guid,
+    return render_template("users/user_playback_cast.html", data_guid=guid,
                            data_chromecast=db_connection.db_device_list('cast'))
 
 
