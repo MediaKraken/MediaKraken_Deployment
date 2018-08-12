@@ -57,21 +57,21 @@ def user_movie_page(genre):
         # set watched
         try:
             watched_status \
-                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['watched']
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
         except:
             watched_status = False
         # set synced
         try:
-            sync_status = row_data['mm_media_json']['UserStats'][current_user.get_id(
+            sync_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id(
             )]['sync']
         except:
             sync_status = False
         # set rating
-        if 'UserStats' in row_data['mm_media_json'] \
-                and current_user.get_id() in row_data['mm_media_json']['UserStats'] \
-                and 'Rating' in row_data['mm_media_json']['UserStats'][current_user.get_id()]:
+        if 'UserStats' in row_data['mm_metadata_user_json'] \
+                and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
+                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]:
             rating_status \
-                = row_data['mm_media_json']['UserStats'][current_user.get_id()]['Rating']
+                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
             if rating_status == 'favorite':
                 rating_status = '/static/images/favorite-mark.png'
             elif rating_status == 'like':
