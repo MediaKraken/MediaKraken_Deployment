@@ -316,7 +316,7 @@ db_connection.db_pgsql_vacuum_table('mm_download_que')
 # Cancel the consumer and return any pending messages
 channel.cancel()
 # close pika
-channel.close()
+#channel.close() # throws error as previously closed
 
 # close the database
 db_connection.db_close()
