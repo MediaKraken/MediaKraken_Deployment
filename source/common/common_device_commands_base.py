@@ -34,6 +34,7 @@ DEVICE_ITEM_TYPES = [
     "Internet Radio",
     "LaserDisc",
     "MiniDisc",
+    "MUSE Laserdisc",
     "OTA Tuner",
     "PC",
     "Preamplifier",
