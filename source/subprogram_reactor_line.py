@@ -85,6 +85,7 @@ def read(queue_object):
         if json_message['Type'] == 'Cron Run':
             cron_pid = subprocess.Popen(split('python3 ' + json_message['Data']))
         elif json_message['Type'] == 'Library Scan':
+            # TODO launch a container to do this.....so, if it gets stuck the others still go
             scan_pid = subprocess.Popen(['python3', './subprogram_file_scan.py'])
         elif json_message['Type'] == 'Pause':
             if json_message['Subtype'] == 'Cast':
@@ -123,13 +124,16 @@ def read(queue_object):
                     video_codec=None,
                     audio_codec=None,
                     audio_channels=None)
-                container_command = 'castnow --tomp4 --ffmpeg-acodec aac --ffmpeg-movflags ' \
+                # TODO take number of channels into account
+                # TODO take the video codec into account
+                container_command = 'castnow --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags ' \
                                     'frag_keyframe+empty_moov+faststart --address ' \
                                     + json_message['Target'] + ' --myip ' \
                                     + docker_inst.com_docker_info()['Swarm']['NodeAddr']\
                                     + subtitle_command + ' \'' + json_message['Data'] + '\''
             elif json_message['Subtype'] == 'HLS':
                 # stream to hls
+                # TODO take the video codec into account
                 container_command = 'ffmpeg -i \"' + json_message['Input File'] \
                                     + '\" -vcodec libx264 -preset veryfast' \
                                     + ' -acodec aac -ac:a:0 2 -vbr 5 ' \
@@ -150,7 +154,7 @@ def read(queue_object):
                                       " -output_ts_offset {output_ts_offset:.6f}" \
                                       " -t {t:.6f} pipe:%d.ts".format(**locals())
             elif json_message['Subtype'] == 'HDHomerun':
-                # stream from homerun
+                # stream from hdhomerun
                 container_command = "ffmpeg -i http://" + json_message['IP'] \
                                     + ":5004/auto/v" + json_message['Channel'] \
                                     + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
@@ -175,18 +179,6 @@ def read(queue_object):
                                                                      json_message['User']]})
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
-        # elif json_message['Type'] == 'FFMPEG':
-        #     # to address the 30 char name limit for container
-        #     name_container = ((json_message['User'] + '_'
-        #                        + str(uuid.uuid4()).replace('-', ''))[-30:])
-        #     common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
-        #     hwaccel = False
-        #     docker_inst.com_docker_run_slave(hwaccel=hwaccel,
-        #                                      name_container=name_container,
-        #                                      container_command=(
-        #                                              'python3 subprogram_ffprobe_metadata.py %s' %
-        #                                              json_message['Data']))
-        #     common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
