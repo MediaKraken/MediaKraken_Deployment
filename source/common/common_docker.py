@@ -296,11 +296,16 @@ class CommonDocker(object):
         Launch container for slave play
         """
         if container_command[:7] == 'castnow':
-            dock_pid = subprocess.Popen(shlex.split('docker run --name ' + name_container
-                                                    + ' -it --rm --net host -v '
-                                                      '/mediakraken/nfsmount:/mediakraken/mnt '
+            dock_pid = subprocess.Popen(shlex.split('docker run --name ' + name_container \
+                                                    + ' -it --rm --net host -v ' \
+                                                      '/mediakraken/nfsmount:/mediakraken/mnt ' \
                                                       'mediakraken/mkslave ' + container_command))
             return dock_pid
+
+        # docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow
+        #  --tomp4 --ffmpeg-acodec ac3 --ffmpeg-vcodec copy --ffmpeg-movflags frag_keyframe+empty_moov+faststart \
+        # --address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/BluRay/Mirrors 2 (2010)/Mirrors 2 (2010).mkv'
+
         # docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4
         # --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
         # --myip 10.0.0.198 '/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv'
