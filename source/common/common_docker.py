@@ -17,7 +17,9 @@
 '''
 
 import os
+import shlex
 import socket
+import subprocess
 
 import docker
 from . import common_global
@@ -62,7 +64,7 @@ class CommonDocker(object):
         port_list = []
         for container_inst in self.com_docker_container_list():
             for port_ndx in container_inst['Ports']:
-                if 'PublicPort' in port_ndx: # as not all containers have open port
+                if 'PublicPort' in port_ndx:  # as not all containers have open port
                     port_list.append(port_ndx['PublicPort'])
         return port_list
 
@@ -293,7 +295,12 @@ class CommonDocker(object):
         """
         Launch container for slave play
         """
-
+        if container_command[:7] == 'castnow':
+            dock_pid = subprocess.Popen(shlex.split('docker run --name ' + name_container
+                                                    + ' -it --rm --net host -v '
+                                                      '/mediakraken/nfsmount:/mediakraken/mnt '
+                                                      'mediakraken/mkslave ' + container_command))
+            return dock_pid
         # docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4
         # --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
         # --myip 10.0.0.198 '/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv'
