@@ -69,6 +69,7 @@ class MKServerDatabase(object):
         db_link_delete
     from database.db_base_media import db_insert_media, \
         db_read_media, \
+        db_metadata_from_media_guid, \
         db_known_media_count, \
         db_known_media, \
         db_matched_media_count, \

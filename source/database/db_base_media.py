@@ -51,6 +51,12 @@ def db_read_media(self, media_guid=None):
         return self.db_cursor.fetchall()
 
 
+def db_metadata_from_media_guid(self, guid):
+    self.db_cursor.execute(
+        'select mm_media_metadata_guid from mm_media where mm_media_guid = %s' % guid)
+    return self.db_cursor.fetchone()[0]
+
+
 def db_known_media_count(self):
     """
     # count known media
@@ -190,14 +196,18 @@ def db_media_rating_update(self, media_guid, user_id, status_text):
     else:
         status_setting = status_text
         status_text = 'Rating'
-    json_data = self.db_cursor.fetchone()['mm_media_json']
-    if 'UserStats' not in json_data:
-        json_data['UserStats'] = {}
-    if user_id in json_data['UserStats']:
-        json_data['UserStats'][user_id][status_text] = status_setting
-    else:
-        json_data['UserStats'][user_id] = {status_text: status_setting}
-    self.db_update_media_json(media_guid, json.dumps(json_data))
+    try:
+        json_data = self.db_cursor.fetchone()['mm_media_json']
+        if 'UserStats' not in json_data:
+            json_data['UserStats'] = {}
+        if user_id in json_data['UserStats']:
+            json_data['UserStats'][user_id][status_text] = status_setting
+        else:
+            json_data['UserStats'][user_id] = {status_text: status_setting}
+        self.db_update_media_json(media_guid, json.dumps(json_data))
+    except:
+        self.db_rollback()
+        return None
 
 
 def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):

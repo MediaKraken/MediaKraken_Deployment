@@ -16,7 +16,6 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
-from common import common_pagination
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -54,8 +53,11 @@ def movie_status(guid, event_type):
     if event_type == "sync":
         return redirect(url_for('user.sync_edit', guid=guid))
     else:
-        g.db_connection.db_media_rating_update(
-            guid, current_user.get_id(), event_type)
+        # g.db_connection.db_media_rating_update(
+        #     guid, current_user.get_id(), event_type)
+        g.db_connection.db_meta_movie_status_update(
+            g.db_connection.db_metadata_from_media_guid(guid),
+            current_user.get_id(), event_type)
         return json.dumps({'status': 'OK'})
 
 
