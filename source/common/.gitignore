@@ -1,2 +1,4 @@
 *.md~
 *.pyc
+*.common_network_ssh.py.un~
+*.py~
