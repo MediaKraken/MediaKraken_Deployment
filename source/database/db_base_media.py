@@ -53,7 +53,7 @@ def db_read_media(self, media_guid=None):
 
 def db_metadata_from_media_guid(self, guid):
     self.db_cursor.execute(
-        'select mm_media_metadata_guid from mm_media where mm_media_guid = %s' % guid)
+        'select mm_media_metadata_guid from mm_media where mm_media_guid = %s', (guid,))
     return self.db_cursor.fetchone()[0]
 
 
