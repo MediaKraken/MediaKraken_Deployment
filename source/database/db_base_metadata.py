@@ -242,8 +242,8 @@ def db_find_metadata_guid(self, media_name, media_release_year):
         # for year and -3/+3 year as well
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->>\'original_title\') = %s)'
-                               ' and substring(mm_metadata_json->>\'release_date\' from 0 for 5)'
+                               ' or LOWER(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'original_title\') = %s)'
+                               ' and substring(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'release_date\' from 0 for 5)'
                                ' in (%s,%s,%s,%s,%s,%s,%s)',
                                (media_name.lower(), media_name.lower(), str(media_release_year),
                                 str(int(media_release_year) + 1),
@@ -255,7 +255,7 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     else:
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->>\'original_title\') = %s)',
+                               ' or LOWER(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'original_title\') = %s)',
                                (media_name.lower(), media_name.lower()))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_guid']
