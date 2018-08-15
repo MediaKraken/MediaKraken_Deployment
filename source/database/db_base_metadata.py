@@ -239,13 +239,19 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     """
     metadata_guid = None
     if media_release_year is not None:
-        # for year and -1/+1 year as well
+        # for year and -3/+3 year as well
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
                                ' or LOWER(mm_metadata_json->>\'original_title\') = %s)'
-                               ' and substring(mm_metadata_json->>\'release_date\' from 0 for 5) in (%s,%s,%s)',
+                               ' and substring(mm_metadata_json->>\'release_date\' from 0 for 5)'
+                               ' in (%s,%s,%s,%s,%s,%s,%s)',
                                (media_name.lower(), media_name.lower(), str(media_release_year),
-                                str(int(media_release_year) + 1), str(int(media_release_year) - 1)))
+                                str(int(media_release_year) + 1),
+                                str(int(media_release_year) + 2),
+                                str(int(media_release_year) + 3),
+                                str(int(media_release_year) - 1),
+                                str(int(media_release_year) - 2),
+                                str(int(media_release_year) - 3)))
     else:
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'

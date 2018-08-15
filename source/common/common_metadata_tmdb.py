@@ -62,7 +62,15 @@ class CommonMetadataTMDB(object):
                 if tv_year is not None and (str(tv_year) == res.release_date.split('-', 1)[0]
                                             or str(int(tv_year) - 1) ==
                                             res.release_date.split('-', 1)[0]
+                                            or str(int(tv_year) - 2) ==
+                                            res.release_date.split('-', 1)[0]
+                                            or str(int(tv_year) - 3) ==
+                                            res.release_date.split('-', 1)[0]
                                             or str(int(tv_year) + 1) ==
+                                            res.release_date.split('-', 1)[0]
+                                            or str(int(tv_year) + 2) ==
+                                            res.release_date.split('-', 1)[0]
+                                            or str(int(tv_year) + 3) ==
                                             res.release_date.split('-', 1)[0]):
                     if not id_only:
                         return 'info', self.com_tmdb_metadata_tv_by_id(res.id)
@@ -97,7 +105,15 @@ class CommonMetadataTMDB(object):
                 if movie_year is not None and (str(movie_year) == res.release_date.split('-', 1)[0]
                                                or str(int(movie_year) - 1) ==
                                                res.release_date.split('-', 1)[0]
+                                               or str(int(movie_year) - 2) ==
+                                               res.release_date.split('-', 1)[0]
+                                               or str(int(movie_year) - 3) ==
+                                               res.release_date.split('-', 1)[0]
                                                or str(int(movie_year) + 1) ==
+                                               res.release_date.split('-', 1)[0]
+                                               or str(int(movie_year) + 2) ==
+                                               res.release_date.split('-', 1)[0]
+                                               or str(int(movie_year) + 3) ==
                                                res.release_date.split('-', 1)[0]):
                     if not id_only:
                         return 'info', self.com_tmdb_metadata_by_id(res.id)

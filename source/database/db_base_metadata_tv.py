@@ -36,14 +36,23 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
         self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
                                ' where (LOWER(mm_metadata_tvshow_name) = %s)'
                                ' and (substring(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\''
-                               '->>\'FirstAired\' from 0 for 5) in (%s,%s,%s)'
+                               '->>\'FirstAired\' from 0 for 5) in (%s,%s,%s,%s,%s,%s,%s)'
                                ' or substring(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->>\'premiered\''
-                               ' from 0 for 5) in (%s,%s,%s))',
+                               ' from 0 for 5) in (%s,%s,%s,%s,%s,%s,%s))',
                                (tvshow_name.lower(), str(tvshow_year),
-                                str(int(tvshow_year) +
-                                    1), str(int(tvshow_year) - 1),
+                                str(int(tvshow_year) + 1),
+                                str(int(tvshow_year) + 2),
+                                str(int(tvshow_year) + 3),
+                                str(int(tvshow_year) - 1),
+                                str(int(tvshow_year) - 2),
+                                str(int(tvshow_year) - 3),
                                 str(tvshow_year),
-                                str(int(tvshow_year) + 1), str(int(tvshow_year) - 1)))
+                                str(int(tvshow_year) + 1),
+                                str(int(tvshow_year) + 2),
+                                str(int(tvshow_year) + 3),
+                                str(int(tvshow_year) - 1),
+                                str(int(tvshow_year) - 2),
+                                str(int(tvshow_year) - 3)))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_tvshow_guid']
         common_global.es_inst.com_elastic_index('info', {"db find metadata tv guid":
