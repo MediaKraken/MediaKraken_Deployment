@@ -162,11 +162,13 @@ def db_meta_game_insert(self, game_system_id, game_short_name, game_name, game_j
     """
     Insert game
     """
+    new_game_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_game_software_info(gi_id, gi_system_id, '
                            'gi_game_info_short_name, gi_game_info_name, gi_game_info_json)'
                            ' values (%s, %s, %s, %s, %s)',
-                           (str(uuid.uuid4()), game_system_id, game_short_name, game_name,
+                           (new_game_id, game_system_id, game_short_name, game_name,
                             json.dumps(game_json)))
+    return new_game_id
 
 
 def db_meta_game_update(self, game_system_id, game_short_name, game_name, game_json):

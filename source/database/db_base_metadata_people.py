@@ -222,6 +222,7 @@ def db_meta_person_as_seen_in(self, person_guid):
     row_data = self.db_meta_person_by_guid(person_guid)
     if row_data is None:  # exit on not found person
         return None
+    # TODO jin index the credits
     common_global.es_inst.com_elastic_index('info', {"row_data": row_data})
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),

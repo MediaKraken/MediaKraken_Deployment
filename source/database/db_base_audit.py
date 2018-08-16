@@ -36,7 +36,7 @@ def db_audit_path_update_status(self, lib_guid, status_json):
     # update status
     """
     self.db_cursor.execute('update mm_media_dir set mm_media_dir_status = %s'
-                           ' where mm_media_dir_guid = %s', (status_json, lib_guid,))
+                           ' where mm_media_dir_guid = %s', (status_json, lib_guid))
 
 
 def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):

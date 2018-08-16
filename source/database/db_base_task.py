@@ -25,12 +25,14 @@ def db_task_insert(self, task_name, task_desc, task_enabled, task_schedule, task
     """
     insert task job
     """
+    new_task_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_task (mm_task_guid, mm_task_name,'
                            ' mm_task_description, mm_task_enabled, mm_task_schedule,'
                            ' mm_task_last_run,'
                            ' mm_task_file_path, mm_task_json) values (%s,%s,%s,%s,%s,%s,%s,%s)',
-                           (str(uuid.uuid4()), task_name, task_desc, task_enabled, task_schedule,
+                           (new_task_id, task_name, task_desc, task_enabled, task_schedule,
                             task_last_run, task_file_path, task_json))
+    return new_task_id
 
 
 def db_task_list_count(self, enabled_only=False):

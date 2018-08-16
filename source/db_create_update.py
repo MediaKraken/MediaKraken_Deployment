@@ -377,6 +377,9 @@ if db_connection.db_table_index_check('mm_metadata_idxgin_json') is None:
 if db_connection.db_table_index_check('mm_metadata_idxgin_media_id') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idxgin_media_id'
                            ' ON mm_metadata_movie USING gin (mm_metadata_media_id)')
+# TODO - add index for alternate title
+# TODO - add index for release date
+# TODO - add index for genres
 # yes double paran is required
 if db_connection.db_table_index_check('mm_metadata_idxgin_media_id_thetvdb') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_idxgin_media_id_thetvdb'

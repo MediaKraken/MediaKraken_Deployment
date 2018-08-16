@@ -32,6 +32,7 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
                                ' where LOWER(mm_metadata_tvshow_name) = %s',
                                (tvshow_name.lower(),))
     else:
+        # TODO jin index firstaird and premiered
         # TODO check tvmaze as well
         self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
                                ' where (LOWER(mm_metadata_tvshow_name) = %s)'
