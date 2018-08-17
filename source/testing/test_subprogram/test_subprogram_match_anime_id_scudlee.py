@@ -32,5 +32,5 @@ class TestSubprogramScudlee(object):
         """
         proc_info = subprocess.Popen(['python3', './subprogram_match_anime_id_scudlee.py'],
                                      shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s", proc_info.pid)
+        common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s" % proc_info.pid})
         proc_info.wait()
