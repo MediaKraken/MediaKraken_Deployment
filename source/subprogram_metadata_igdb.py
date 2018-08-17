@@ -30,7 +30,7 @@ def main(argv):
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
-
+# TODO this should go thru the limiter
 if __name__ == "__main__":
     print(('IGDB game info download attempts: %s' % total_download_attempts))
     # send notifications

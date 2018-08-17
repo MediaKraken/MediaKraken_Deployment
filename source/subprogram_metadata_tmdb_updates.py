@@ -33,6 +33,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # grab the updated data
 tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 
+# TODO this should go thru the limiter
 # process movie changes
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
     common_global.es_inst.com_elastic_index('info', {'mov': movie_change['id']})

@@ -46,7 +46,7 @@ from shlex import split
 from common import common_global
 from common import common_logging_elasticsearch
 
-
+# TODO move to slave container since FFMPEG will be there
 def main(argv):
     """
     Main commercial strip

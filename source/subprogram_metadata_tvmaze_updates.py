@@ -28,6 +28,7 @@ from common import common_metadata_tvmaze
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_tvmaze_updates')
 
+# TODO this should go thru the limiter
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 

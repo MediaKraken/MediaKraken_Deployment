@@ -53,4 +53,5 @@ for meta_provider in list(common_metadata_limiter.API_LIMIT.keys()):
     common_global.es_inst.com_elastic_index('info', {'meta_provider': meta_provider})
     proc_api_fetch = subprocess.Popen(['python3', './main_server_metadata_api_worker.py',
                                        meta_provider], shell=False)
+# TODO this only wait for the last one......so, if that bombs....could kill rest on exit
 proc_api_fetch.wait()  # so this doesn't end which will cause docker to restart
