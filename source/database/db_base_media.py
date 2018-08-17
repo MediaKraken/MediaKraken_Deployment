@@ -360,3 +360,20 @@ def db_media_ffmeg_update(self, media_guid, ffmpeg_json):
     self.db_cursor.execute('update mm_media set mm_media_ffprobe_json = %s'
                            ' where mm_media_guid = %s', (ffmpeg_json, media_guid))
     self.db_commit()
+
+
+def db_unmatched_list_count(self):
+    self.db_cursor.execute('select count(*) from mm_media'
+                           ' where mm_media_metadata_guid is NULL')
+    return self.db_cursor.fetchone()[0]
+
+
+def db_unmatched_list(self, offset=None, records=None):
+    if offset is None:
+        self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
+                               ' where mm_media_metadata_guid is NULL')
+    else:
+        self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
+                               ' where mm_media_metadata_guid is NULL offset %s limit %s',
+                               (offset, records))
+    return self.db_cursor.fetchall()
