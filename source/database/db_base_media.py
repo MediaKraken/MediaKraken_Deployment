@@ -368,12 +368,12 @@ def db_unmatched_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_unmatched_list(self, offset=None, records=None):
+def db_unmatched_list(self, offset=None, list_limit=None):
     if offset is None:
         self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
                                ' where mm_media_metadata_guid is NULL')
     else:
         self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
                                ' where mm_media_metadata_guid is NULL offset %s limit %s',
-                               (offset, records))
+                               (offset, list_limit))
     return self.db_cursor.fetchall()
