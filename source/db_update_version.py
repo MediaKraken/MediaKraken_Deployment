@@ -286,5 +286,9 @@ if db_connection.db_table_index_check('gc_category_idx_name') is None:
 
 #         "MetadataImageLocal": false to metadata json options
 
+# add class
+# Movie Subtitle
+# TV Subtitle
+
 # close the database
 db_connection.db_close()
