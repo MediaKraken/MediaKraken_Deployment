@@ -80,9 +80,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                                          download_que_json['Path'],
                                                                          download_que_json,
                                                                          download_que_id)
-    elif class_text == "Movie" or class_text == "Movie Subtitle"\
-            or class_text == "Subtitle":
-        # TODO......remove subtitle after
+    elif class_text == "Movie" or class_text == "Movie Subtitle":
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
                                                              download_que_json['Path'],
                                                              download_que_json, download_que_id,
