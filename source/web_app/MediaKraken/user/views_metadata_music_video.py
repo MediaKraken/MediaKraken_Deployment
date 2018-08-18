@@ -48,6 +48,18 @@ def metadata_music_video_list():
                            )
 
 
+@blueprint.route('/meta_music_video_detail/<guid>')
+@login_required
+def metadata_music_video_detail(guid):
+    """
+    Display metadata music video detail
+    """
+
+    return render_template('users/metadata/meta_music_video_detail.html',
+                           media=mediadata,
+                           )
+
+
 @blueprint.before_request
 def before_request():
     """
