@@ -46,6 +46,7 @@ def worker(audit_directory):
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     common_global.es_inst.com_elastic_index('info', {'worker dir': dir_path})
+    media_class = thread_db.db_media_class_by_uuid(media_class_type_uuid)
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,
@@ -106,12 +107,18 @@ def worker(audit_directory):
                     # TODO lookup game info in game database data
                     media_ffprobe_json = None
                 # if an extention skip
-                elif file_extension[
-                     1:].lower() in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                elif file_extension[1:].lower() \
+                        in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
                         or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
                     media_ffprobe_json = None
                     if file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
-                        new_class_type_uuid = class_text_dict['Subtitle']
+                        if media_class == 'Movie':
+                            new_class_type_uuid = class_text_dict['Movie Subtitle']
+                        elif media_class == 'TV Show' or media_class == 'TV Episode' \
+                                or media_class == 'TV Season':
+                            new_class_type_uuid = class_text_dict['TV Subtitle']
+                        else:
+                            new_class_type_uuid = class_text_dict['Subtitle']
                 else:
                     if file_name.find('/trailers/') != -1 \
                             or file_name.find('\\trailers\\') != -1 \
@@ -135,9 +142,9 @@ def worker(audit_directory):
                             else:
                                 new_class_type_uuid = class_text_dict['TV Theme']
                     elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
-                        if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Movie':
+                        if media_class == 'Movie':
                             new_class_type_uuid = class_text_dict['Movie Extras']
-                        elif thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Show' \
+                        elif media_class == 'TV Show' \
                                 or thread_db.db_media_class_by_uuid(
                             media_class_type_uuid) == 'TV Episode' \
                                 or media_class_text == 'TV Season':
@@ -316,7 +323,7 @@ db_connection.db_pgsql_vacuum_table('mm_download_que')
 # Cancel the consumer and return any pending messages
 channel.cancel()
 # close pika
-#channel.close() # throws error as previously closed
+# channel.close() # throws error as previously closed
 
 # close the database
 db_connection.db_close()
