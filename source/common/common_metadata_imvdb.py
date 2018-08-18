@@ -26,9 +26,9 @@ class CommonMetadataIMVdb(object):
     Class for interfacing with imvdb
     """
 
-    def __init__(self, option_config_json):
+    def __init__(self, imvdb_api_key):
         self.headers = {'User-Agent': 'MediaKraken_0.1.6',
-                        'IMVDB-APP-KEY': option_config_json['API']['imvdb'],
+                        'IMVDB-APP-KEY': imvdb_api_key,
                         'Accept': 'application/json'}
         self.base_api_url = 'http://imvdb.com/api/v1'
 
