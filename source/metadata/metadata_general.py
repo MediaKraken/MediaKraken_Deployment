@@ -222,7 +222,14 @@ def metadata_fetch(thread_db, provider_name, download_data):
     """
     common_global.es_inst.com_elastic_index('info', {'metadata_fetch': provider_name, 'dldata':
         download_data})
-    if provider_name == 'themoviedb':
+    if provider_name == 'imvdb':
+        common_global.es_inst.com_elastic_index('info', {'fetch imvdb': provider_name})
+        imvdb_id = metadata_music_video.movie_fetch_save_imvdb(thread_db,
+                                                               download_data['mdq_download_json'][
+                                                                   'ProviderMetaID'],
+                                                               download_data['mdq_download_json'][
+                                                                   'MetaNewID'])
+    elif provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == 3:  # person info
             common_global.es_inst.com_elastic_index('info', {'fetch person bio': provider_name})
             metadata_person.metadata_fetch_tmdb_person(

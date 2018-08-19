@@ -30,12 +30,11 @@ def db_meta_music_video_lookup(self, artist_name, song_title):
     return self.db_cursor.fetchall()
 
 
-def db_meta_music_video_add(self, artist_name, artist_song, id_json,
+def db_meta_music_video_add(self, new_guid, artist_name, artist_song, id_json,
                             data_json, image_json):
     """
     Add metadata for music video
     """
-    new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_music_video (mm_metadata_music_video_guid,'
                            ' mm_metadata_music_video_media_id, mm_media_music_video_band,'
                            ' mm_media_music_video_song, mm_metadata_music_video_json,'
