@@ -37,7 +37,7 @@ class CommonMetadataIMVdb(object):
         Video info
         """
         resp = requests.post(self.base_api_url + "/video/" + video_id
-                             + "?include=sources,credits,bts,featured,popularity,countries,",
+                             + "?include=sources,credits,bts,featured,popularity,countries",
                              headers=self.headers)
         try:
             # common_global.es_inst.com_elastic_index('info', {"imvdb Info Status":
