@@ -53,8 +53,8 @@ def imvdb_lookup(db_connection, file_name):
         except:
             pass
         # set name for lookups
-        band_name = band_name.replace(' ', '-')
-        song_name = song_name.replace(' ', '-')
+        band_name = band_name.strip().replace(' ', '-')
+        song_name = song_name.strip().replace(' ', '-')
         common_global.es_inst.com_elastic_index('info', {'mv title': band_name, 'song': song_name})
         # if same as last, return last id and save lookup
         if band_name == imvdb_lookup.metadata_last_band \
@@ -72,6 +72,7 @@ def imvdb_lookup(db_connection, file_name):
                 if imvdb_json is not None:
                     # parse the results and insert/udpate
                     for video_data in imvdb_json['results']:
+                        # the results are bit crazy....hence the breakup and insert
                         common_global.es_inst.com_elastic_index('info', {"vid data": video_data})
                         if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                             db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],
