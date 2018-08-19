@@ -54,10 +54,8 @@ def metadata_music_video_detail(guid):
     """
     Display metadata music video detail
     """
-
     return render_template('users/metadata/meta_music_video_detail.html',
-                           media=mediadata,
-                           )
+                           media=g.db_connection.db_meta_music_video_detail_uuid(guid))
 
 
 @blueprint.before_request
