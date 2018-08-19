@@ -18,8 +18,6 @@
 
 import requests
 
-from . import common_global
-
 
 class CommonMetadataIMVdb(object):
     """
