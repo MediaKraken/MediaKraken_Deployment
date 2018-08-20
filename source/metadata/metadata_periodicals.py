@@ -100,6 +100,7 @@ def metadata_periodicals_cover(db_connection, isbn):
     """
     pull and save the cover image for periodical
     """
+    # TODO use the cover pull in common_metadata_open_library
     url = ('http://covers.openlibrary.org/b/ISBN/%s-L.jpg?default=false', isbn)
 
     common_metadata.com_meta_image_path(download_data['Name'],
