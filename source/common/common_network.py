@@ -60,7 +60,7 @@ def mk_network_fetch_from_url(url, directory=None):
 
 def mk_network_wol(mac_address):
     """
-    Send wake on lan even to mac address
+    Send wake on lan event to mac address
     """
     wol.send_magic_packet(mac_address)
 
