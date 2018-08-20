@@ -369,6 +369,8 @@ while True:
             imvdb(thread_db, row_data)
         elif content_providers == 'isbndb':
             isbndb(thread_db, row_data)
+        elif content_providers == 'musicbrainz':
+            musicbrainz(thread_db, row_data)
         elif content_providers == 'omdb':
             omdb(thread_db, row_data)
         elif content_providers == 'pitchfork':

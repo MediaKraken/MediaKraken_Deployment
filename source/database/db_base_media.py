@@ -348,7 +348,7 @@ def db_read_media_ffprobe(self):
     """
     Read in all media that needs ffprobe
     """
-    self.db_cursor.execute('select mm_media_guid,b from mm_media'
+    self.db_cursor.execute('select mm_media_guid from mm_media'
                            ' where mm_media_ffprobe_json is NULL')
     return self.db_cursor.fetchall()
 
@@ -378,3 +378,9 @@ def db_unmatched_list(self, offset=None, list_limit=None):
                                ' order by mm_media_path offset %s limit %s',
                                (offset, list_limit))
     return self.db_cursor.fetchall()
+
+
+def db_ffprobe_data(self, guid):
+    self.db_cursor.execute('select mm_media_ffprobe_json from mm_media'
+                           ' where mm_media_guid = %s' % guid)
+    return self.db_cursor.fetchone()[0]

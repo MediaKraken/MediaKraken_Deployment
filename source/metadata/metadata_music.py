@@ -31,15 +31,10 @@ else:
     mbrainz_api_connection = None
 
 
-def metadata_music_lookup(db_connection, media_file_path, download_que_id):
+def metadata_music_lookup(db_connection, metadata_provider, download_que_id):
     """
     Search musicbrainz
     """
-    # 0-mm_media_guid uuid NOT NULL,
-    # 1-mm_media_class_guid uuid,
-    # 2-mm_media_metadata_guid uuid,
-    # 3-mm_media_path text,
-    # 4-mm_media_ffprobe_json jsonb,
     # {"format": {"size": "9396411", "tags": {"DATE": "1996", "disc": "1", "ALBUM": "Theli", "GENRE": "Symphonic Metal",
     #  "TITLE": "Preludium", "track": "01", "ARTIST": "Therion", "TOTALDISCS": "1", "TOTALTRACKS": "10"},
     #  "bit_rate": "726058", "duration": "103.533333", "filename": "/home/spoot/nfsmount/Music_CD/Therion/Theli/01 - Preludium.flac", "nb_streams": 1,
@@ -51,35 +46,30 @@ def metadata_music_lookup(db_connection, media_file_path, download_que_id):
     #  "r_frame_rate": "0/0", "avg_frame_rate": "0/0", "channel_layout": "stereo", "bits_per_sample": 0,
     #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
     #  "bits_per_raw_sample": "16"}], "chapters": []}
-    # 5-mm_media_json jsonb,
 
-    # see if record is stored locally
-    ffmpeg_data_json = None
-
+    metadata_uuid = None
+    # get ffmpeg data
+    ffmpeg_data_json = db_connection.db_ffprobe_data(download_que_id['MediaID'])
     if ffmpeg_data_json is not None:
-        print("what:", ffmpeg_data_json['format']['tags']['ARTIST'],
-              ffmpeg_data_json['format']['tags']['ALBUM'],
-              ffmpeg_data_json['format']['tags']['TITLE'])
-        db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
-                                                  ffmpeg_data_json['format']['tags']['ALBUM'],
-                                                  ffmpeg_data_json['format']['tags']['TITLE'])
-        if db_result is None:
-            if mbrainz_api_connection is not None:
-                # look at musicbrainz server
-                brainz_id = None
-                music_data = mbrainz_api_connection.com_Mediabrainz_Get_Recordings(
-                    ffmpeg_data_json['format']['tags']['ARTIST'],
-                    ffmpeg_data_json['format']['tags']['ALBUM'],
-                    ffmpeg_data_json['format']['tags']['TITLE'], 1)
-                # TODO  if not, store it
-                # TODO  use the metadata id for record update
-                metadata_uuid = music_data
-        else:
-            metadata_uuid = db_result[0]
-            brainz_id = db_result[1]
-        if brainz_id is not None:
-            media_id_json = json.dumps({'Mbrainz': brainz_id})  # release id as that's indiv song
-    elif class_text == "Music Album":
-        # search musicbrainz
-        # mbrainz_api_connection.com_Mediabrainz_Get_Releases()
-        pass
+        # see if record is stored locally
+        if ffmpeg_data_json is not None:
+            db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
+                                                      ffmpeg_data_json['format']['tags']['ALBUM'],
+                                                      ffmpeg_data_json['format']['tags']['TITLE'])
+            if db_result is None:
+                if mbrainz_api_connection is not None:
+                    # look at musicbrainz server
+                    music_data = mbrainz_api_connection.com_Mediabrainz_Get_Recordings(
+                        ffmpeg_data_json['format']['tags']['ARTIST'],
+                        ffmpeg_data_json['format']['tags']['ALBUM'],
+                        ffmpeg_data_json['format']['tags']['TITLE'], 1)
+                    # TODO  if not, store it
+                    # TODO  use the metadata id for record update
+                    metadata_uuid = music_data
+            else:
+                metadata_uuid = db_result['mm_metadata_music_guid']
+        # elif class_text == "Music Album":
+        #     # search musicbrainz
+        #     # mbrainz_api_connection.com_Mediabrainz_Get_Releases()
+        #     pass
+    return metadata_uuid

@@ -33,9 +33,10 @@ def db_music_lookup(self, artist_name, album_name, song_title):
     # query to see if song is in local DB
     """
     self.db_cursor.execute('select mm_metadata_music_guid,'
-                           ' mm_metadata_media_music_id->\'Mbrainz\' from mm_metadata_music,'
+                           ' mm_metadata_media_music_id->\'Mbrainz\' as mbrainz from '
+                           'mm_metadata_music,'
                            ' mm_metadata_album, mm_metadata_musician'
-                           ' where blah and lower(mm_metadata_musician_name) = %s'
+                           ' where lower(mm_metadata_musician_name) = %s'
                            ' and lower(mm_metadata_album_name) = %s'
                            ' and lower(mm_metadata_music_name) = %s',
                            (artist_name.lower(), album_name.lower(), song_title.lower()))
