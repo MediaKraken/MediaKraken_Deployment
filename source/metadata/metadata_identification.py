@@ -117,12 +117,13 @@ def metadata_identification(db_connection, class_text, download_que_json,
         else:
             metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
                                                                  download_que_json['Path'],
-                                                                 download_que_json, download_que_id,
+                                                                 download_que_json,
+                                                                 download_que_id,
                                                                  guessit_file_name)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,
-                                                             download_que_json['Path'],
-                                                             download_que_json, download_que_id)
+                                                             'musicbrainz',
+                                                             download_que_id)
     elif class_text == "Music Lyric":
         # search musicbrainz as the lyrics should already be in the file/record
         pass
@@ -134,7 +135,8 @@ def metadata_identification(db_connection, class_text, download_que_json,
     elif class_text == "Sports":
         metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection,
                                                                download_que_json['Path'],
-                                                               download_que_json, download_que_id)
+                                                               download_que_json,
+                                                               download_que_id)
     elif class_text == "Subtitle":
         # TODO perhaps check file name for blah.sub = blah.mkv   then the metadata id for that
         pass
