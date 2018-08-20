@@ -63,9 +63,11 @@ def metadata_music_lookup(db_connection, metadata_provider, download_que_id):
                         ffmpeg_data_json['format']['tags']['ARTIST'],
                         ffmpeg_data_json['format']['tags']['ALBUM'],
                         ffmpeg_data_json['format']['tags']['TITLE'], 1)
-                    # TODO  if not, store it
-                    # TODO  use the metadata id for record update
-                    metadata_uuid = music_data
+                    metadata_uuid = db_connection.db_meta_music_by_provider_uuid('musicbrainz')
+                    if metadata_uuid is None:
+                        metadata_uuid = db_connection.db_meta_song_add(
+                            ffmpeg_data_json['format']['tags']['TITLE'],
+                            music_data['fakealbun_id'], json.dumps(music_data))
             else:
                 metadata_uuid = db_result['mm_metadata_music_guid']
         # elif class_text == "Music Album":

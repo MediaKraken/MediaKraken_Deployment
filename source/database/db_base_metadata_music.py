@@ -32,6 +32,7 @@ def db_music_lookup(self, artist_name, album_name, song_title):
     """
     # query to see if song is in local DB
     """
+    # TODO the following fields don't exist on the database (album and musician)
     self.db_cursor.execute('select mm_metadata_music_guid,'
                            ' mm_metadata_media_music_id->\'Mbrainz\' as mbrainz from '
                            'mm_metadata_music,'
@@ -209,3 +210,13 @@ def db_meta_album_image_random(self):
         return image_json, metadata_id
     except:
         return None, None
+
+
+def db_meta_music_by_provider_uuid(self, provider, uuid_id):
+    try:
+        self.db_cursor.execute('select mm_metadata_music_guid from mm_metadata_music'
+                               ' where mm_metadata_media_music_id->\'' + provider
+                               + '\' ? %s', (uuid_id,))
+        return self.db_cursor.fetchone()['mm_metadata_music_guid']
+    except:
+        return None
