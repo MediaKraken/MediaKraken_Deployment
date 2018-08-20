@@ -52,7 +52,11 @@ def metadata_music_lookup(db_connection, metadata_provider, download_que_id):
     ffmpeg_data_json = db_connection.db_ffprobe_data(download_que_id['MediaID'])
     if ffmpeg_data_json is not None:
         # see if record is stored locally
-        if ffmpeg_data_json is not None:
+        if ffmpeg_data_json is not None and 'format' in ffmpeg_data_json\
+                and 'tags' in ffmpeg_data_json['format'] \
+                and 'ARTIST' in ffmpeg_data_json['format'][['tags']] \
+                and 'ALBUM' in ffmpeg_data_json['format'][['tags']] \
+                and 'TITLE' in ffmpeg_data_json['format'][['tags']]:
             db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
                                                       ffmpeg_data_json['format']['tags']['ALBUM'],
                                                       ffmpeg_data_json['format']['tags']['TITLE'])
@@ -70,6 +74,9 @@ def metadata_music_lookup(db_connection, metadata_provider, download_que_id):
                             music_data['fakealbun_id'], json.dumps(music_data))
             else:
                 metadata_uuid = db_result['mm_metadata_music_guid']
+        else:
+            # TODO do search in musicbrainz since tagging in file is missing data
+            pass
         # elif class_text == "Music Album":
         #     # search musicbrainz
         #     # mbrainz_api_connection.com_Mediabrainz_Get_Releases()
