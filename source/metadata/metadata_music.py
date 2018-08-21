@@ -32,7 +32,7 @@ else:
     mbrainz_api_connection = None
 
 
-def metadata_music_lookup(db_connection, metadata_provider, download_que_id):
+def metadata_music_lookup(db_connection, metadata_provider, download_data):
     """
     Search musicbrainz
     """
@@ -48,11 +48,11 @@ def metadata_music_lookup(db_connection, metadata_provider, download_que_id):
     #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
     #  "bits_per_raw_sample": "16"}], "chapters": []}
 
-    common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_que_id})
+    common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_data})
 
     metadata_uuid = None
     # get ffmpeg data
-    ffmpeg_data_json = db_connection.db_ffprobe_data(download_que_id['MediaID'])
+    ffmpeg_data_json = db_connection.db_ffprobe_data(download_data['MediaID'])
     if ffmpeg_data_json is not None:
         # see if record is stored locally
         if ffmpeg_data_json is not None and 'format' in ffmpeg_data_json\
