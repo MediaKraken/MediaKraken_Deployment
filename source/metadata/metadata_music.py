@@ -19,6 +19,7 @@
 import json
 
 from common import common_config_ini
+from common import common_global
 from common import common_metadata_musicbrainz
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -46,6 +47,8 @@ def metadata_music_lookup(db_connection, metadata_provider, download_que_id):
     #  "r_frame_rate": "0/0", "avg_frame_rate": "0/0", "channel_layout": "stereo", "bits_per_sample": 0,
     #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
     #  "bits_per_raw_sample": "16"}], "chapters": []}
+
+    common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_que_id})
 
     metadata_uuid = None
     # get ffmpeg data
