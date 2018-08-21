@@ -162,7 +162,7 @@ def db_meta_tmdb_count(self, tmdb_id):
 def db_meta_movie_count(self, search_value=None):
     if search_value is not None:
         self.db_cursor.execute('select count(*) from mm_metadata_movie '
-                               ' where mm_media_name %% %s by LOWER(mm_media_name)',
+                               ' where mm_media_name %% %s',
                                (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_movie')
