@@ -139,6 +139,7 @@ class MKServerDatabase(object):
         db_meta_guid_by_rt, \
         db_meta_insert_tmdb, \
         db_meta_tmdb_count, \
+        db_meta_movie_count, \
         db_meta_movie_list, \
         db_meta_fetch_media_id_json, \
         db_meta_fetch_series_media_id_json, \

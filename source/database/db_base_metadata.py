@@ -159,6 +159,17 @@ def db_meta_tmdb_count(self, tmdb_id):
     return self.db_cursor.fetchone()[0]
 
 
+def db_meta_movie_count(self, search_value=None):
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_movie order '
+                               ' where mm_media_name %% %s by LOWER(mm_media_name)',
+                               (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_movie'
+                               ' order by LOWER(mm_media_name)')
+    return self.db_cursor.fetchone()[0]
+
+
 def db_meta_movie_list(self, offset=None, records=None, search_value=None):
     """
     # return list of movies

@@ -171,7 +171,7 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
     # store/update the record
     # don't string this since it's a pure result store
     collection_guid = db_connection.db_collection_by_tmdb(tmdb_collection_id)
-    common_global.es_inst.com_elastic_index('info', {"colfsdfsd": tmdb_collection_id,
+    common_global.es_inst.com_elastic_index('info', {"collection": tmdb_collection_id,
                                                      'guid': collection_guid})
     if collection_guid is None:
         # insert
