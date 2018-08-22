@@ -28,20 +28,14 @@ def user_queue_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_queue_list(current_user.get_id(),offset, per_page,
+    mediadata = g.db_connection.db_meta_queue_list(current_user.get_id(),offset, per_page,
                                                        session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_queue_list(current_user.get_id(),offset, per_page)
-
     # TODO union read all four.....then if first "group"....add header in the html
-    media = g.db_connection.db_meta_queue_list(current_user.get_id(), offset, per_page)
-
     session['search_page'] = 'user_media_queue'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
-                                                      None, None),
+                                                      None, None, session['search_text']),
                                                   record_name='queue',
                                                   format_total=True,
                                                   format_number=True,

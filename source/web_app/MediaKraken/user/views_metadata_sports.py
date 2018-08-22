@@ -26,11 +26,8 @@ def metadata_sports_list():
     Display sports metadata list
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_sports_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
     session['search_page'] = 'meta_sports'
+    # TODO search for count
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_sports_list_count(),
@@ -39,7 +36,9 @@ def metadata_sports_list():
                                                   format_number=True,
                                                   )
     return render_template('users/metadata/meta_sports_list.html',
-                           media_sports_list=mediadata,
+                           media_sports_list=g.db_connection.db_meta_sports_list(offset, per_page,
+                                                                                 session[
+                                                                                     'search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

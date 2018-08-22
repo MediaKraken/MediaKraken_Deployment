@@ -27,10 +27,6 @@ def metadata_music_song_list():
     Display metdata music song list
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_song_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_song_list(offset, per_page)
     session['search_page'] = 'meta_music_song'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
@@ -41,7 +37,8 @@ def metadata_music_song_list():
                                                   format_number=True,
                                                   )
     return render_template('users/metadata/meta_music_list.html',
-                           media=mediadata,
+                           media=g.db_connection.db_meta_song_list(offset, per_page,
+                                                                   session['search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -56,11 +53,7 @@ def metadata_music_album_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_album_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_album_list(offset, per_page)
-    for album_data in mediadata:
+    for album_data in g.db_connection.db_meta_album_list(offset, per_page, session['search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
                                                          'id': album_data['mm_metadata_album_guid'],
                                                          'name': album_data[

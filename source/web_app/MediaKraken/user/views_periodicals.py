@@ -27,11 +27,8 @@ def user_books_list():
     Display books page
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_media_book_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_media_book_list(offset, per_page)
     session['search_page'] = 'media_periodicals'
+    # TODO redo count for search
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -40,7 +37,9 @@ def user_books_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template("users/user_books_list.html", media=mediadata,
+    return render_template("users/user_books_list.html",
+                           media=g.db_connection.db_media_book_list(offset, per_page,
+                                                                    session['search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

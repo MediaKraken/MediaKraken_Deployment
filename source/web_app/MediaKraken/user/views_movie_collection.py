@@ -27,11 +27,7 @@ def metadata_movie_collection_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_collection_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_collection_list(offset, per_page)
-    for row_data in mediadata:
+    for row_data in g.db_connection.db_collection_list(offset, per_page, session['search_text']):
         try:
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'],
@@ -40,6 +36,7 @@ def metadata_movie_collection_list():
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'], None))
     session['search_page'] = 'meta_movie_collection'
+    # TODO redo count with search
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

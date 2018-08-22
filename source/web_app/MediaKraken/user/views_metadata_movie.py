@@ -87,13 +87,7 @@ def metadata_movie_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
-        metadata_count = g.db_connection.db_meta_movie_count(session['search_text'])
-    else:
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page)
-        metadata_count = g.db_connection.db_table_count('mm_metadata_movie')
-    for row_data in metadata:
+    for row_data in g.db_connection.db_meta_movie_list(offset, per_page, session['search_text']):
         # set watched
         try:
             watched_status \
@@ -140,7 +134,8 @@ def metadata_movie_list():
     session['search_page'] = 'meta_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=metadata_count,
+                                                  total=g.db_connection.db_meta_movie_count(
+                                                      session['search_text']),
                                                   record_name='movie(s)',
                                                   format_total=True,
                                                   format_number=True,

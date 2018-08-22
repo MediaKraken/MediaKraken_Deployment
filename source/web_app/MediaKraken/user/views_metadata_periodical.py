@@ -28,16 +28,13 @@ def metadata_periodical_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     item_list = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_book_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_book_list(offset, per_page)
-    for item_data in mediadata:
+    for item_data in g.db_connection.db_meta_book_list(offset, per_page, session['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': item_data})
         item_image = "/static/images/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
     session['search_page'] = 'meta_periodical'
+    # TODO add the search to count
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

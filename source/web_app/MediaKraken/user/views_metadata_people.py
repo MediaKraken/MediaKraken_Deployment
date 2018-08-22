@@ -56,11 +56,8 @@ def metadata_person_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     person_list = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_person_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_person_list(offset, per_page)
-    for person_data in mediadata:
+    for person_data in g.db_connection.db_meta_person_list(offset, per_page,
+                                                           session['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
@@ -77,6 +74,7 @@ def metadata_person_list():
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     session['search_page'] = 'meta_people'
+    # TODO fix count to use search
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

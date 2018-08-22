@@ -27,11 +27,7 @@ def user_album_list_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_media_album_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_media_album_list(offset, per_page)
-    for row_data in mediadata:
+    for row_data in g.db_connection.db_media_album_list(offset, per_page, session['search_text']):
         if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
                           row_data['mm_metadata_album_json']))
@@ -41,7 +37,8 @@ def user_album_list_page():
     session['search_page'] = 'music_album'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_media_album_count(),
+                                                  total=g.db_connection.db_media_album_count(
+                                                      session['search_page']),
                                                   record_name='music album(s)',
                                                   format_total=True,
                                                   format_number=True,
@@ -52,6 +49,7 @@ def user_album_list_page():
                            pagination=pagination,
                            )
 
+
 @blueprint.route("/album_detail/<guid>")
 @login_required
 def user_album_detail_page(guid):
@@ -59,6 +57,7 @@ def user_album_detail_page(guid):
     Display album page
     """
     pass
+
 
 @blueprint.before_request
 def before_request():

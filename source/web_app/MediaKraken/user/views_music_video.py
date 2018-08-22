@@ -26,11 +26,8 @@ def user_music_video_list():
     Display music video page
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_music_video_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_music_video_list(offset, per_page)
     session['search_page'] = 'media_music_video'
+    # TODO redo search for count
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -40,7 +37,8 @@ def user_music_video_list():
                                                   format_number=True,
                                                   )
     return render_template('users/user_music_video_list.html',
-                           media_person=mediadata,
+                           media_person=g.db_connection.db_music_video_list(offset, per_page,
+                                                                            session['search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
