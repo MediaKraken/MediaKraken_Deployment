@@ -178,8 +178,8 @@ def db_meta_movie_list(self, offset=None, records=None, search_value=None):
             self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
                                    'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
                                    'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json from mm_metadata_movie order '
-                                   ' where mm_media_name %% %s by LOWER(mm_media_name)',
+                                   'mm_metadata_user_json from mm_metadata_movie '
+                                   'where mm_media_name %% %s order by LOWER(mm_media_name)',
                                    (search_value,))
         else:
             self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
