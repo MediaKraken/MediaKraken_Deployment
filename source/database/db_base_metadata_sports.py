@@ -47,7 +47,8 @@ def db_meta_sports_list_count(self, search_value=None):
 
 def db_meta_sports_list(self, offset=None, records=None, search_value=None):
     """
-    # return list of game systems
+    # return list of sporting events
+    # TODO order by year
     """
     if offset is None:
         if search_value is not None:

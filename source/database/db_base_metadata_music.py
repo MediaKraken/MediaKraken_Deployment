@@ -33,6 +33,7 @@ def db_music_lookup(self, artist_name, album_name, song_title):
     # query to see if song is in local DB
     """
     # TODO the following fields don't exist on the database (album and musician)
+    # TODO order by release year
     self.db_cursor.execute('select mm_metadata_music_guid,'
                            ' mm_metadata_media_music_id->\'Mbrainz\' as mbrainz from '
                            'mm_metadata_music,'
@@ -136,6 +137,7 @@ def db_meta_album_list(self, offset=None, records=None, search_value=None):
     # return albums metadatalist
     """
     # TODO, only grab the poster local from json
+    # TODO order by release year
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'

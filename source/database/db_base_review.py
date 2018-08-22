@@ -32,6 +32,8 @@ def db_review_list_by_tmdb_guid(self, metadata_id):
     """
     # grab reviews for metadata
     """
+    # TODO order by release date
+    # TODO order by rating? (optional?)
     self.db_cursor.execute('select mm_review_guid,mm_review_json from mm_review'
                            ' where mm_review_metadata_id->\'themoviedb\' ? %s', (metadata_id,))
     return self.db_cursor.fetchall()

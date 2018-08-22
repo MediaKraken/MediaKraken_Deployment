@@ -49,6 +49,7 @@ def db_meta_game_system_list(self, offset=None, records=None, search_value=None)
     """
     # return list of game systems
     """
+    # TODO might need to sort by release year as well for machines with multiple released
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select gs_id,gs_game_system_name,'

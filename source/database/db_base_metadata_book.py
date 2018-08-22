@@ -26,6 +26,7 @@ def db_meta_book_list(self, offset=None, records=None, search_value=None):
     """
     book list
     """
+    # TODO sort by release date
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
@@ -64,6 +65,8 @@ def db_meta_book_guid_by_name(self, book_name):
     """
     # metadata guid by name
     """
+    # TODO can be more than one by name
+    # TODO sort by release date
     self.db_cursor.execute('select mm_metadata_book_guid from mm_metadata_book'
                            ' where mm_metadata_book_name =  %s', (book_name,))
     try:

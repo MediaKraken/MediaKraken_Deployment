@@ -31,6 +31,7 @@ def db_sync_list(self, offset=None, records=None, user_guid=None):
     """
     # return list of sync jobs
     """
+    # TODO by priority, name, year
     if user_guid is None:
         # complete list for admins
         if offset is None:

@@ -82,6 +82,7 @@ def db_meta_music_video_list(self, offset=None, records=None, search_value=None)
     """
     List music video metadata
     """
+    # TODO order by release date
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_music_video_guid,'

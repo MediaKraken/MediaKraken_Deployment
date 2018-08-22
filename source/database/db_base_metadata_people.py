@@ -38,6 +38,7 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     """
     # return list of people
     """
+    # TODO order by birth date
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'

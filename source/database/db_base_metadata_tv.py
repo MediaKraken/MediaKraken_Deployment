@@ -149,6 +149,7 @@ def db_meta_tvshow_list(self, offset=None, records=None, search_value=None):
     """
     # return list of tvshows
     """
+    # TODO order by release date
     # COALESCE - priority over one column
     if offset is None:
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
