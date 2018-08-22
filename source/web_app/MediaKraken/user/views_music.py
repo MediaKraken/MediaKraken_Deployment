@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_music", __name__,
@@ -27,13 +27,18 @@ def user_album_list_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db_connection.db_media_album_list(offset, per_page):
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_media_album_list(offset, per_page, session['search_text'])
+    else:
+        mediadata = g.db_connection.db_media_album_list(offset, per_page)
+    for row_data in mediadata:
         if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
                           row_data['mm_metadata_album_json']))
         else:
             media.append((row_data['mm_metadata_album_guid'],
                           row_data['mm_metadata_album_name'], None))
+    session['search_page'] = 'music_album'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_media_album_count(),

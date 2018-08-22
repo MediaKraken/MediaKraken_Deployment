@@ -46,10 +46,15 @@ def user_movie_page(genre):
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for row_data in g.db_connection.db_web_media_list(
-            g.db_connection.db_media_uuid_by_class('Movie'),
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_web_media_list(g.db_connection.db_media_uuid_by_class('Movie'),
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
-            offset=offset, include_remote=True):
+            offset=offset, include_remote=True, session['search_text'])
+    else:
+        mediadata = g.db_connection.db_web_media_list(g.db_connection.db_media_uuid_by_class('Movie'),
+            list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
+            offset=offset, include_remote=True)
+    for row_data in mediadata:
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_metadata_user_json,
         # 3 - mm_metadata_localimage_json
         common_global.es_inst.com_elastic_index('info', {"row2": row_data['mm_metadata_user_json']})
@@ -102,7 +107,7 @@ def user_movie_page(genre):
                           watched_status, sync_status, rating_status, match_status))
     total = g.db_connection.db_web_media_list_count(
         g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre,
-        group_collection=False, include_remote=True)
+        group_collection=False, include_remote=True, session['search_text'])
     session['search_page'] = 'media_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

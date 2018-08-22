@@ -25,7 +25,6 @@ from . import views_movie_genre
 from . import views_music
 from . import views_music_video
 from . import views_periodicals
-from . import views_person
 from . import views_playback
 from . import views_queue
 from . import views_search

@@ -26,6 +26,12 @@ def user_newmedia_page():
     Display new media
     """
     page, per_page, offset = common_pagination.get_page_items()
+    # TODO replace with new media queries
+    if session['search_text'] is not None:
+        mediadata = g.db_connection.db_meta_person_list(offset, per_page, session['search_text'])
+    else:
+        mediadata = g.db_connection.db_meta_person_list(offset, per_page)
+    session['search_page'] = 'new_media'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=0,
