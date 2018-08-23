@@ -218,7 +218,7 @@ class NetworkEvents(basic.LineReceiver):
                     if json_message['Target'] == client[1]:
                         # to address the 30 char name limit for container
                         name_container = ((json_message['User'] + '_'
-                                           + str(uuid.uuid4()).replace('-', ''))[-30:])
+                                           + str(uuid.uuid4()).replace('-', ''))[:30])
                         cast_docker_inst = common_docker.CommonDocker()
                         cast_docker_inst.com_docker_run_slave(hwaccel=False,
                                                               name_container=name_container,
