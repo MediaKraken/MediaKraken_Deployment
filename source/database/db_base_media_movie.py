@@ -56,7 +56,7 @@ def db_media_movie_count_by_genre(self, class_guid):
 
 
 def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
-                            group_collection=False, include_remote=False):
+                            group_collection=False, include_remote=False, search_text=None):
     """
     # web media count
     """
@@ -184,7 +184,8 @@ def db_web_media_list_count(self, class_guid, list_type=None, list_genre='All',
 
 
 def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
-                      list_limit=0, group_collection=False, offset=None, include_remote=False):
+                      list_limit=0, group_collection=False, offset=None, include_remote=False,
+                      search_text=None):
     """
     # web media return
     """
