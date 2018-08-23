@@ -16,8 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-# import subliminal
 import os
+import shlex
+
+import subliminal
 
 
 def com_meta_fetch_subtitle(file_name, sub_lang="en"):
@@ -25,9 +27,8 @@ def com_meta_fetch_subtitle(file_name, sub_lang="en"):
     # fetch subtitles
     """
     # file_hash = com_Hash.com_hash_thesubdb(file_name)
-    # TODO shelex to stop little bobby tables
-    command_handle = os.popen("subliminal -l " + sub_lang + " -- \'"
-                              + file_name.encode("utf8") + "\'")
+    command_handle = os.popen(shlex.split("subliminal -l " + sub_lang + " -- \'"
+                                          + file_name.encode("utf8") + "\'"))
     cmd_output = command_handle.read()
     return cmd_output
 
