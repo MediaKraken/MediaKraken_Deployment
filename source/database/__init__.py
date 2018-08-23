@@ -33,6 +33,7 @@ class MKServerDatabase(object):
         db_collection_guid_by_name, \
         db_collection_insert, \
         db_collection_update, \
+        db_collection_list_count, \
         db_collection_list, \
         db_collection_read_by_guid, \
         db_collection_by_tmdb
@@ -122,7 +123,8 @@ class MKServerDatabase(object):
         db_read_media_list_by_uuid
     from database.db_base_media_music import db_media_album_count, \
         db_media_album_list
-    from database.db_base_media_music_video import db_music_video_list
+    from database.db_base_media_music_video import db_music_video_list, \
+        db_music_video_list_count
     from database.db_base_media_remote import db_insert_remote_media, \
         db_read_remote_media, \
         db_known_remote_media_count, \
@@ -150,7 +152,8 @@ class MKServerDatabase(object):
         db_meta_anime_title_search, \
         db_meta_anime_update_meta_id, \
         db_meta_anime_meta_by_id
-    from database.db_base_metadata_book import db_meta_book_list, \
+    from database.db_base_metadata_book import db_meta_book_list_count, \
+        db_meta_book_list, \
         db_meta_book_guid_by_isbn, \
         db_meta_book_guid_by_name, \
         db_meta_book_insert, \

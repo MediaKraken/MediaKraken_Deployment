@@ -22,6 +22,18 @@ import uuid
 from common import common_global
 
 
+def db_meta_book_list_count(self, search_value=None):
+    """
+    book list count
+    """
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) '
+                               'from mm_metadata_book where mm_metadata_book_name %% %s',
+                               (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_book')
+
+
 def db_meta_book_list(self, offset=None, records=None, search_value=None):
     """
     book list

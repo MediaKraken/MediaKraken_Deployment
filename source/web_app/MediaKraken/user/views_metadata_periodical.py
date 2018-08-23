@@ -34,11 +34,10 @@ def metadata_periodical_list():
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
     session['search_page'] = 'meta_periodical'
-    # TODO add the search to count
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_book'),
+                                                  total=g.db_connection.db_meta_book_list_count(
+                                                      session['search_text']),
                                                   record_name='periodical(s)',
                                                   format_total=True,
                                                   format_number=True,

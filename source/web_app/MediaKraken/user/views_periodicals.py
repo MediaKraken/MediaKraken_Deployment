@@ -28,11 +28,10 @@ def user_books_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     session['search_page'] = 'media_periodicals'
-    # TODO redo count for search
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_movie'),
+                                                  total=g.db_connection.db_media_book_list_count(
+                                                      session['search_text']),
                                                   record_name='periodical(s)',
                                                   format_total=True,
                                                   format_number=True,

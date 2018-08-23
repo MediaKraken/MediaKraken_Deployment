@@ -36,11 +36,10 @@ def metadata_movie_collection_list():
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'], None))
     session['search_page'] = 'meta_movie_collection'
-    # TODO redo count with search
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_collection'),
+                                                  total=g.db_connection.db_collection_list_count(
+                                                      session['search_text']),
                                                   record_name='movie collection(s)',
                                                   format_total=True,
                                                   format_number=True,

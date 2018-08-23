@@ -17,6 +17,10 @@
 '''
 
 
+def db_music_video_list_count(self, search_value=None):
+    pass
+
+
 def db_music_video_list(self, offset=None, per_page=None, search_value=None):
     """
     music video list

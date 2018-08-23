@@ -27,11 +27,10 @@ def user_music_video_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     session['search_page'] = 'media_music_video'
-    # TODO redo search for count
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_music_video'),
+                                                  total=g.db_connection.db_music_video_list_count(
+                                                      session['search_text']),
                                                   record_name='music video(s)',
                                                   format_total=True,
                                                   format_number=True,

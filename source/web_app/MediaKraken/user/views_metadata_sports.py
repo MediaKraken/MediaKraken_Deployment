@@ -27,10 +27,10 @@ def metadata_sports_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     session['search_page'] = 'meta_sports'
-    # TODO search for count
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_meta_sports_list_count(),
+                                                  total=g.db_connection.db_meta_sports_list_count(
+                                                      session['search_text']),
                                                   record_name='sporting event(s)',
                                                   format_total=True,
                                                   format_number=True,

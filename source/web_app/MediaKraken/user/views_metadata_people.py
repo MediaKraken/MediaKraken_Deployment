@@ -74,11 +74,10 @@ def metadata_person_list():
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     session['search_page'] = 'meta_people'
-    # TODO fix count to use search
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_person'),
+                                                  total=g.db_connection.db_meta_person_list_count(
+                                                      session['search_text']),
                                                   record_name='person',
                                                   format_total=True,
                                                   format_number=True,

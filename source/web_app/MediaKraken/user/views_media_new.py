@@ -27,7 +27,6 @@ def user_newmedia_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     # TODO replace with new media queries
-    mediadata = g.db_connection.db_meta_person_list(offset, per_page, session['search_text'])
     session['search_page'] = 'new_media'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
@@ -37,7 +36,8 @@ def user_newmedia_page():
                                                   format_number=True,
                                                   )
     return render_template('users/user_newmedia.html',
-                           media=None,
+                           media=g.db_connection.db_meta_person_list(offset, per_page,
+                                                                     session['search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
