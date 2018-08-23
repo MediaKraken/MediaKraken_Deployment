@@ -124,7 +124,6 @@ def db_media_duplicate_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-# TODO subselect for speed
 def db_media_duplicate(self, offset=None, records=None):
     """
     # list duplicates
@@ -313,7 +312,6 @@ def db_read_media_new_count(self, days_old=7):
     return self.db_cursor.fetchone()[0]
 
 
-# TODO subselect for speed
 def db_read_media_new(self, days_old=7, offset=None, records=None):
     """
     # new media
