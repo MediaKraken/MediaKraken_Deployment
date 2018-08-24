@@ -229,12 +229,10 @@ def admin_server_settings():
         settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
         settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
         settings_json['Docker Instances']['portainer'] = request.form['docker_portainer']
-        # TODO fix blank
-        # settings_json['Docker Instances']['smtp'] = request.form['']
+        settings_json['Docker Instances']['smtp'] = request.form['docker_smtp']
         settings_json['Docker Instances']['teamspeak'] = request.form['docker_teamspeak']
         settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
         settings_json['Docker Instances']['wireshark'] = request.form['docker_wireshark']
-
         g.db_connection.db_opt_update(settings_json)
 
     '''
