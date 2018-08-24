@@ -155,17 +155,17 @@ def db_meta_tvshow_list(self, offset=None, records=None, search_value=None):
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
                                ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
                                ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
-                               '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+                               '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
                                '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
+                               '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
                                ' order by LOWER(mm_metadata_tvshow_name)')
     else:
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
                                ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
                                ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
-                               '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+                               '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
                                '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
+                               '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
                                ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
                                ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
                                ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)',

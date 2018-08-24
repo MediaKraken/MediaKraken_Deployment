@@ -244,8 +244,8 @@ def metadata_tvshow_list():
     media_tvshow = []
     for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page, session['search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
-                             row_data['mm_metadata_tvshow_name'], row_data[2],
-                             row_data[3]))  # TODO dictcursor
+                             row_data['mm_metadata_tvshow_name'], row_data['air_date'],
+                             row_data['image_json']))
     session['search_page'] = 'meta_tv'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
