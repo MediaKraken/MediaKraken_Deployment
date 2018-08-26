@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  buggenie:
+    image: romanyagodin/thebuggenie-docker
+    container_name: buggenie
+    depends_on:
+      - nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    networks:
+      - buggenie_network
+    restart: unless-stopped
+
+  # runs the nginx proxy service
+  nginx:
+    image: mediakraken/mknginx:latest
+    container_name: mknginx
+    volumes:
+      - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
+      - /var/opt/mediakraken/certs:/etc/nginx/certs
+    ports:
+      - "443:8900"
+    networks:
+      - buggenie_network
+    restart: unless-stopped
+
+# Docker private networks
+networks:
+  buggenie_network:
+    driver: bridge
