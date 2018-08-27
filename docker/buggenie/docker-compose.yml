@@ -3,7 +3,7 @@ version: '3'
 services:
   webserver:
     image: romanyagodin/thebuggenie-docker
-    container_name: mkwebapp
+    container_name: mkbuggenie
     ports:
       - "8080:80"
     volumes:
@@ -21,7 +21,7 @@ services:
       - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
       - /var/opt/mediakraken/certs:/etc/nginx/certs
     ports:
-      - "443:8900"
+      - "443:443"
     networks:
       - buggenie_network
     restart: unless-stopped
