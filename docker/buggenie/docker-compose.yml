@@ -11,7 +11,6 @@ services:
     volumes:
       - /var/lib/mysql:/var/lib/mysql
       - /var/www/thebuggenie:/var/www/thebuggenie
-      - /home/centos/buggenie/html:/var/www/html
     networks:
       - buggenie_network
     restart: unless-stopped

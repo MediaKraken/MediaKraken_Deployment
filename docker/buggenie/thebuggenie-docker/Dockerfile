@@ -23,6 +23,8 @@ ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 RUN chown -R www-data:www-data /var/www/thebuggenie && \
     chmod a+w /create_mysql_admin_user.sh
 
+VOLUME /var/www/thebuggenie
+
 EXPOSE 80 
 
 CMD ["/run.sh"]
