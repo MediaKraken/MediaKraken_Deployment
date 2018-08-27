@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  buggenie:
+  webserver:
     image: romanyagodin/thebuggenie-docker
-    container_name: buggenie
+    container_name: mkwebapp
     ports:
       - "8080:80"
     volumes:
@@ -16,7 +16,7 @@ services:
   nginx:
     image: mediakraken/mknginx:latest
     container_name: mknginx
-    entrypoint: /usr/bin/wait-for-it-ash.sh -h buggenie -p 8080 -t 30 -- nginx
+    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
       - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
       - /var/opt/mediakraken/certs:/etc/nginx/certs
