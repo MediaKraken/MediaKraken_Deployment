@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: mkbuggenie
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - /var/lib/mysql:/var/lib/mysql
     networks:
@@ -20,7 +20,7 @@ services:
       context: ./thebuggenie-nginx
       dockerfile: dockerfile-nginx
     container_name: mkbugnginx
-    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
+    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 80 -t 30 -- nginx
     volumes:
       - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
       - /var/opt/mediakraken/certs:/etc/nginx/certs
