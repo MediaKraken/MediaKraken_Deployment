@@ -9,7 +9,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /home/centos/buggenie/mysql:/var/lib/mysql
+      - /var/lib/mysql:/var/lib/mysql
       - /home/centos/buggenie/www:/var/www/thebuggenie
     networks:
       - buggenie_network
