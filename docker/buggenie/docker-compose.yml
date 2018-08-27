@@ -9,7 +9,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /var/lib/mysql:/var/lib/mysql
+      - /home/centos/buggenie/mysql:/var/lib/mysql
+      - /home/centos/buggenie/html:/var/www/html
     networks:
       - buggenie_network
     restart: unless-stopped
