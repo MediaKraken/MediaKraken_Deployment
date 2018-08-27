@@ -9,8 +9,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /var/lib/mysql:/var/lib/mysql
-      - /var/www/thebuggenie:/var/www/thebuggenie
+      - /var/opt/buggenie/mysql:/var/lib/mysql
+      - /var/opt/buggenie/www:/var/www/thebuggenie
     networks:
       - buggenie_network
     restart: unless-stopped
