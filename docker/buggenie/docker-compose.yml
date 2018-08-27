@@ -2,7 +2,9 @@ version: '3'
 
 services:
   webserver:
-    image: romanyagodin/thebuggenie-docker
+    build:
+      context: ./thebuggenie-docker
+      dockerfile: Dockerfile
     container_name: mkbuggenie
     ports:
       - "8080:80"
@@ -14,8 +16,10 @@ services:
 
   # runs the nginx proxy service
   nginx:
-    image: mediakraken/mknginx:latest
-    container_name: mknginx
+    build:
+      context: ./thebuggenie-nginx
+      dockerfile: dockerfile-nginx
+    container_name: mkbugnginx
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
       - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
