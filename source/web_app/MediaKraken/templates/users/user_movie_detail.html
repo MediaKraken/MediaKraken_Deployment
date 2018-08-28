@@ -12,13 +12,13 @@
     <div id="movie_detail">
         <form name="video_play_stat_form" method="post">
         {% if data_background_image is none %}
-        <img alt="fs_bg_image" src= {{ "/static/images/movie_ticket.png" }} id="fs_bg_image" >
+        <img alt="fs_bg_image" src="/static/images/movie_ticket.png" id="fs_bg_image" >
         {% else %}
         <img alt="fs_bg_image" src= {{ "/static/meta/images/" + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} id="fs_bg_image" >
         {% endif %}
         <div id="movie_image_div" class="table-responsive">
             {% if data_poster_image is none %}
-            <img class="center" src= {{ "/static/images/Movie-icon.png" }} >
+            <img class="center" src="/static/images/Movie-icon.png">
             {% else %}
             <img class="center" src= {{ "/static/meta/images/" + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} >
             {% endif %}
@@ -33,15 +33,6 @@
                         <div id="textbox">
                             <p class="alignleft"> {{data_resolution}}</p>
                             <p class="alignright">{{data_aspect}} </p>
-                        </div>
-                        <div style="clear: both;"></div>
-                        <div id="textbox">
-                            <p class="alignleft"> Size: {{data_file_size}}</p>
-                            <p class="alignright">Bitrate: {{data_bitrate}} </p>
-                        </div>
-                        <div style="clear: both;"></div>
-                        <div id="textbox">
-                            <p class="alignleft"> Codec: {{data_codec}}</p>
                         </div>
                         <div style="clear: both;"></div>
                     </tr>
@@ -132,7 +123,6 @@
             {% if json_metadata['Meta']['themoviedb']['Meta']['homepage'] %}
             <p>Homepage: <a href = {{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
             {% endif %}
-            <p>Overview: {{json_metadata['Meta']['themoviedb']['Meta']['overview']}}</p>
             {% if data_production %}
             <p>Production Companies: {{data_production}}</p>
             {% endif %}
@@ -144,24 +134,26 @@
                 {% endfor %}
             </div>
             {% endif %}
-            <p>File: {{data_filename}}</p>
-            {% if data_json_media_chapters %}
-            <p>Chapters:</p>
-            <div id="container">
-                <div class="grid">
-                    {% for chapter_info in data_json_media_chapters %}
-                    <div class="col-1-4">
-                        <a href= "{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}" >
-                        <img class="b-lazy"
-                             src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + chapter_info[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="150" width="150">
-                        </a>
-                        <p>{{chapter_info[0]}}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
+
+
         </div>
+        <p>Overview: {{json_metadata['Meta']['themoviedb']['Meta']['overview']}}</p>
+        {% if data_json_media_chapters %}
+        <p>Chapters:</p>
+        <div id="container">
+            <div class="grid">
+                {% for chapter_info in data_json_media_chapters %}
+                <div class="col-1-4">
+                    <a href= "{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}" >
+                    <img class="b-lazy"
+                         src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + chapter_info[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="150" width="150">
+                    </a>
+                    <p>{{chapter_info[0]}}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
         </form>
     </div>
     {% else %}
