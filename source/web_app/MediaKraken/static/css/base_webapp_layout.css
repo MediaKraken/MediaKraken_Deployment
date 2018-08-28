@@ -67,19 +67,19 @@ p.description_content_left{
     display:inline-block;
 }
 
-.watched_icon { position:absolute; top: 10px; left: 10px; }
+.watched_icon { position:absolute; top: 10px; left: 185px; }
 
-.rating_icon { position:absolute; top: 10px; left: 35px; }
+.rating_icon { position:absolute; top: 10px; left: 215px; }
 
-.synced_icon { position:absolute; top: 10px; left: 60px; }
+.synced_icon { position:absolute; top: 10px; left: 245px; }
 
-.request_icon { position:absolute; top: 10px; left: 85px; }
+.request_icon { position:absolute; top: 10px; left: 275px; }
 
-.exclamation_icon { position:absolute; top: 10px; left: 110px; }
+.exclamation_icon { position:absolute; top: 10px; left: 305px; }
 
-.queue_icon { position:absolute; top: 10px; left: 135px; }
+.queue_icon { position:absolute; top: 10px; left: 335px; }
 
-.user_icon { position:absolute; top: 10px; left: 160px; }
+.user_icon { position:absolute; top: 10px; left: 365px; }
 
 .tab { margin-left: 40px; }
 
