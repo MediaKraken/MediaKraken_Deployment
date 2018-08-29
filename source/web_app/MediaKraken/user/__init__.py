@@ -6,6 +6,7 @@ from . import views_cctv
 from . import views_chromecast
 from . import views_class
 from . import views_games
+from . import views_hardware
 from . import views_home_media
 from . import views_images
 from . import views_internet
