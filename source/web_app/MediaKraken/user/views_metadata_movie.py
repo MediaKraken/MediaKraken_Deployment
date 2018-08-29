@@ -87,6 +87,7 @@ def metadata_movie_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
+    media_count = 0
     for row_data in g.db_connection.db_meta_movie_list(offset, per_page, session['search_text']):
         # set watched
         try:
@@ -128,9 +129,16 @@ def metadata_movie_list():
                                                          'rating': rating_status,
                                                          'request': request_status,
                                                          'queue': queue_status})
+        if media_count == 0:
+            deck_break = True
+        else:
+            deck_break = False
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
-                      rating_status, request_status, queue_status))
+                      rating_status, request_status, queue_status, deck_break))
+        media_count += 1
+        if media_count == 4:
+            media_count = 0
     session['search_page'] = 'meta_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

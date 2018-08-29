@@ -13,9 +13,11 @@
     {{ pagination.info }}
     {{ pagination.links }}
     <div id="the-movie-metadata-node">
-        <div class="card-deck">
         {% for row_data in media_movie %}
-        <div class="card" style="max-width: 400px;" id="data_background">
+            {% if row_data[8] == True %}
+                <div class="card-deck">
+            {% endif %}
+            <div class="card" style="max-width: 400px;" id="data_background">
             <h4 class="card-header">
                 {{row_data[1]}}
             </h4>
@@ -59,6 +61,9 @@
                 </div>
             </div>
         </div>
+        {% if row_data[8] == True %}
+            </div>
+        {% endif %}
         {% endfor %}
         </div>
     </div>
