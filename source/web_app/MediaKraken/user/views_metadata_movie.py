@@ -129,16 +129,19 @@ def metadata_movie_list():
                                                          'rating': rating_status,
                                                          'request': request_status,
                                                          'queue': queue_status})
-        if media_count == 0:
+        media_count += 1
+        if media_count == 1:
+            deck_start = True
+        else:
+            deck_start = False
+        if media_count == 4:
             deck_break = True
+            media_count = 0
         else:
             deck_break = False
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
-                      rating_status, request_status, queue_status, deck_break))
-        media_count += 1
-        if media_count == 4:
-            media_count = 0
+                      rating_status, request_status, queue_status, deck_start, deck_break))
     session['search_page'] = 'meta_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
