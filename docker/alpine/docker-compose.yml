@@ -333,6 +333,8 @@ services:
         PIPMIRROR: pypi.python.org
     environment:
       - DEBUG=${DEBUG}
+    volumes:
+      - /var/opt/mediakraken/phue:/mediakraken/phue
     container_name: mkhardware
     depends_on:
       - rabbit

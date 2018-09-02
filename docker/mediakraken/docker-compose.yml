@@ -216,6 +216,8 @@ services:
     depends_on:
       - rabbit
     entrypoint: python3 main_hardware.py
+    volumes:
+      - /var/opt/mediakraken/phue:/mediakraken/phue
     networks:
       - mediakraken_network
     restart: unless-stopped
