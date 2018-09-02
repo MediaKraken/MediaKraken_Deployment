@@ -18,7 +18,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-# internet sites
 @blueprint.route('/hardware')
 @login_required
 def user_hardware():
