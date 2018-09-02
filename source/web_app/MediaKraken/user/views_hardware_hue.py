@@ -41,7 +41,7 @@ def user_hardware_hue_on():
     ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
                      body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
                                       'Hardware': 'Hue', 'Action': 'OnOff',
-                                      'Setting': True}))
+                                      'Setting': True, 'Target': '10.0.0.225'}))
     fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 
@@ -56,7 +56,7 @@ def user_hardware_hue_off():
     ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
                      body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
                                       'Hardware': 'Hue', 'Action': 'OnOff',
-                                      'Setting': False}))
+                                      'Setting': False, 'Target': '10.0.0.225'}))
     fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 
