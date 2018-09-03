@@ -4,6 +4,8 @@ cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKrak
 
 # cron
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCron/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/network /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenServer/src/.
 cp /home/metaman/MediaKraken_Deployment/source/subprogram_cron_checker.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenCron/src/.
 
 # devicescanner
@@ -52,6 +54,12 @@ cp /home/metaman/MediaKraken_Deployment/source/bulk_themoviedb_netfetch.py /home
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
 cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
 cp /home/metaman/MediaKraken_Deployment/source/bulk_tvmaze_netfetch.py /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
+
+# reactor
+cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenReactor/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/database /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenReactor/src/.
+cp -R /home/metaman/MediaKraken_Deployment/source/network /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenReactor/src/.
+cp /home/metaman/MediaKraken_Deployment/source/subprogram*.py  /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenReactor/src/.
 
 # ripper
 cp -R /home/metaman/MediaKraken_Deployment/source/common /home/metaman/MediaKraken_Deployment/docker/alpine/ComposeMediaKrakenRipper/src/.

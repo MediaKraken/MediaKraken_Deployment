@@ -17,6 +17,7 @@ docker tag alpine_pgbounce:latest mediakraken/mkpgbounce:latest
 #docker tag alpine_prefetchtmdb:latest mediakraken/mkprefetchtmdb:latest
 #docker tag alpine_prefetchtvmaze:latest mediakraken/mkprefetchtvmaze:latest
 docker tag alpine_rabbit:latest mediakraken/mkrabbitmq:latest
+docker tag alpine_redis:latest mediakraken/mkreactor:latest
 docker tag alpine_redis:latest mediakraken/mkredis:latest
 #docker tag alpine_ripper mediakraken/mkripper:latest
 docker tag alpine_rokuthumb mediakraken/mkrokuthumb:latest

@@ -33,8 +33,6 @@ services:
       - pgbounce
       - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server.py
-    ports:
-      - "8903:8903"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
       - /var/opt/mediakraken/certs:/mediakraken/key
@@ -118,6 +116,31 @@ services:
       - /var/opt/mediakraken/certs:/etc/nginx/certs
     ports:
       - "8900:8900"
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # Main reactor
+  reactor:
+    image: mediakraken/mkreactor:latest
+    environment:
+      - POSTGRES_DB_HOST=${DBHOST}
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - SWARMIP=${SWARMIP}
+      - DEBUG=${DEBUG}
+    container_name: mkreactor
+    depends_on:
+      - pgbounce
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_reactor_lines.py
+    ports:
+      - "8903:8903"
+    volumes:
+      - /var/log/mediakraken:/mediakraken/log
+      - /home/mediakraken:/mediakraken/mnt
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken_network
     restart: unless-stopped
