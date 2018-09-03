@@ -85,10 +85,11 @@ proc = subprocess.Popen(
     ['python3', './subprogram_reactor_line.py'], shell=False)
 common_global.es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
 
-# fire up cron service
-proc_cron = subprocess.Popen(
-    ['python3', './subprogram_cron_checker.py'], shell=False)
-common_global.es_inst.com_elastic_index('info', {'Cron PID': proc_cron.pid})
+# moved to docker image
+# # fire up cron service
+# proc_cron = subprocess.Popen(
+#     ['python3', './subprogram_cron_checker.py'], shell=False)
+# common_global.es_inst.com_elastic_index('info', {'Cron PID': proc_cron.pid})
 
 # fire up link servers
 link_pid = {}

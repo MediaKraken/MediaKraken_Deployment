@@ -303,6 +303,24 @@ services:
       - mediakraken_network
     restart: unless-stopped
  
+  # runs cron
+  cron:
+    build:
+      context: ./ComposeMediaKrakenCron
+      dockerfile: dockerfile-cron
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - DEBUG=${DEBUG}
+    container_name: mkcron
+    depends_on:
+      - rabbit
+    entrypoint: python3 subprogram_cron_checker.py
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
   # runs roku thumbnail
   rokuthumb:
     build:
