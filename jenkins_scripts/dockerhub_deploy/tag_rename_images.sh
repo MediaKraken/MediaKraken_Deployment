@@ -2,7 +2,7 @@ docker tag alpine_appserver:latest mediakraken/mkserver:latest
 #docker tag alpine_basenodeffmpeg:latest mediakraken/mkbasenodeffmpeg:latest
 docker tag alpine_broadcast:latest mediakraken/mkbroadcast:latest
 #docker tag alpine_cloud:latest mediakraken/mkcloud:latest
-docker tag alpine_cloud:latest mediakraken/mkcron:latest
+docker tag alpine_cron:latest mediakraken/mkcron:latest
 docker tag alpine_database:latest mediakraken/mkdatabase:latest
 #docker tag alpine_devicescan:latest mediakraken/mkdevicescan:latest
 docker tag alpine_download:latest mediakraken/mkdownload:latest
