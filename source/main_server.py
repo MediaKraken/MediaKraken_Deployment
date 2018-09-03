@@ -126,7 +126,7 @@ if option_config_json['Docker Instances']['wireshark']:
 
 # hold here
 # this will key off the twisted reactor...only reason is so doesn't shut down
-proc.wait()
+proc_link.wait()
 
 # commit
 db_connection.db_commit()
