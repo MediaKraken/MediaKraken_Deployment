@@ -67,19 +67,33 @@ p.description_content_left{
     display:inline-block;
 }
 
-.watched_icon { position:absolute; top: 10px; left: 185px; }
+.watched_icon { position:absolute; top: 10px; left: 10px; }
 
-.rating_icon { position:absolute; top: 10px; left: 215px; }
+.rating_icon { position:absolute; top: 10px; left: 35px; }
 
-.synced_icon { position:absolute; top: 10px; left: 245px; }
+.synced_icon { position:absolute; top: 10px; left: 60px; }
 
-.request_icon { position:absolute; top: 10px; left: 275px; }
+.request_icon { position:absolute; top: 10px; left: 85px; }
 
-.exclamation_icon { position:absolute; top: 10px; left: 305px; }
+.exclamation_icon { position:absolute; top: 10px; left: 110px; }
 
-.queue_icon { position:absolute; top: 10px; left: 335px; }
+.queue_icon { position:absolute; top: 10px; left: 135px; }
 
-.user_icon { position:absolute; top: 10px; left: 365px; }
+.user_icon { position:absolute; top: 10px; left: 160px; }
+
+.wide_watched_icon { position:absolute; top: 10px; left: 185px; }
+
+.wide_rating_icon { position:absolute; top: 10px; left: 215px; }
+
+.wide_synced_icon { position:absolute; top: 10px; left: 245px; }
+
+.wide_request_icon { position:absolute; top: 10px; left: 275px; }
+
+.wide_exclamation_icon { position:absolute; top: 10px; left: 305px; }
+
+.wide_queue_icon { position:absolute; top: 10px; left: 335px; }
+
+.wide_user_icon { position:absolute; top: 10px; left: 365px; }
 
 .tab { margin-left: 40px; }
 
