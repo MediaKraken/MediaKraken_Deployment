@@ -53,7 +53,6 @@ services:
       - /var/opt/mediakraken/emulation:/mediakraken/emulation
     networks:
       - mediakraken_network
-    restart: no
     # to allow mount nfs/cifs
     cap_add:
       - SYS_ADMIN
