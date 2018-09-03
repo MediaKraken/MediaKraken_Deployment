@@ -178,8 +178,12 @@ services:
       - "8903:8903"
     volumes:
       - /var/log/mediakraken:/mediakraken/log
+      - /var/opt/mediakraken/certs:/mediakraken/key
+      - /var/opt/mediakraken/backup:/mediakraken/backup
       - /home/mediakraken:/mediakraken/mnt
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - /var/opt/mediakraken/emulation:/mediakraken/emulation
     networks:
       - mediakraken_network
     restart: unless-stopped
