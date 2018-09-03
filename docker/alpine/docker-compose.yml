@@ -173,7 +173,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_reactor_line.py
+    entrypoint: python3 subprogram_reactor_line.py
     ports:
       - "8903:8903"
     volumes:

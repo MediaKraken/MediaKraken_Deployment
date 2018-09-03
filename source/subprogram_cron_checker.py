@@ -31,6 +31,11 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subpro
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
+# fire off wait for it script to allow rabbitmq connection
+wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+wait_pid.wait()
+
 # start loop for cron checks
 pid_dict = {}  # pylint: disable=C0103
 while 1:
