@@ -17,7 +17,6 @@
 '''
 
 import json
-import shlex
 import subprocess
 import time
 import uuid
@@ -129,8 +128,12 @@ def read(queue_object):
                 container_command = 'castnow --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags ' \
                                     'frag_keyframe+empty_moov+faststart --address ' \
                                     + json_message['Target'] + ' --myip ' \
-                                    + docker_inst.com_docker_info()['Swarm']['NodeAddr']\
+                                    + docker_inst.com_docker_info()['Swarm']['NodeAddr'] \
                                     + subtitle_command + ' \'' + json_message['Data'] + '\''
+                hwaccel = False
+                docker_inst.com_docker_run_cast(hwaccel=hwaccel,
+                                                name_container=name_container,
+                                                container_command=container_command)
             elif json_message['Subtype'] == 'HLS':
                 # stream to hls
                 # TODO take the video codec into account

@@ -17,9 +17,7 @@
 '''
 
 import os
-import shlex
 import socket
-import subprocess
 
 import docker
 from . import common_global
@@ -229,6 +227,35 @@ class CommonDocker(object):
                                                     },
                                        name='mkgamedata')
 
+    def com_docker_run_cast(self, hwaccel, name_container, container_command):
+        """
+        Launch container for cast play
+        """
+        # docker run --name waffleboy -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow
+        #  --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags frag_keyframe+empty_moov+faststart
+        # --address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/DVD/Creep (2004)/Creep (2004).mkv'
+        if hwaccel:
+            image_name = 'mediakraken/mkslavenvidiadebian'
+        else:
+            image_name = 'mediakraken/mkslave'
+        # rm - cleanup after exit
+        # it - interactive tty
+        # container_command = 'docker run -it --rm --net host -v ' \
+        #     +  '/mediakraken/nfsmount:/mediakraken/mnt ' \
+        #     +  'mediakraken/mkslave ' + container_command)
+        return self.cli.containers.run(image=image_name,
+                                       network_mode='host',
+                                       command=container_command,
+                                       detach=True,
+                                       volumes={'/var/run/docker.sock':
+                                                    {'bind': '/var/run/docker.sock',
+                                                     'mode': 'ro'},
+                                                '/mediakraken/nfsmount':
+                                                    {'bind': '/mediakraken/mnt',
+                                                     'mode': 'ro'}
+                                                },
+                                       name=name_container)
+
     def com_docker_run_musicbrainz(self, brainzcode):
         self.com_docker_delete_container('mkmusicbrainz')
         return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
@@ -291,28 +318,39 @@ class CommonDocker(object):
                                                 '/var/opt/mediakraken/data':
                                                     {'bind': '/ data', 'mode': 'rw'}})
 
+    def com_docker_run_cast(self, hwaccel, name_container, container_command):
+        """
+        Launch container for cast play
+        """
+        # docker run --name waffleboy -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow
+        #  --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags frag_keyframe+empty_moov+faststart
+        # --address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/DVD/Creep (2004)/Creep (2004).mkv'
+        if hwaccel:
+            image_name = 'mediakraken/mkslavenvidiadebian'
+        else:
+            image_name = 'mediakraken/mkslave'
+        # rm - cleanup after exit
+        # it - interactive tty
+        # container_command = 'docker run -it --rm --net host -v ' \
+        #     +  '/mediakraken/nfsmount:/mediakraken/mnt ' \
+        #     +  'mediakraken/mkslave ' + container_command)
+        return self.cli.containers.run(image=image_name,
+                                       network_mode='host',
+                                       command=container_command,
+                                       detach=True,
+                                       volumes={'/var/run/docker.sock':
+                                                    {'bind': '/var/run/docker.sock',
+                                                     'mode': 'ro'},
+                                                '/mediakraken/nfsmount':
+                                                    {'bind': '/mediakraken/mnt',
+                                                     'mode': 'ro'}
+                                                },
+                                       name=name_container)
+
     def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command):
         """
         Launch container for slave play
         """
-        if container_command[:7] == 'castnow':
-            dock_pid = subprocess.Popen(shlex.split('docker run --name ' + name_container \
-                                                    + ' -it --rm --net host -v ' \
-                                                      '/mediakraken/nfsmount:/mediakraken/mnt ' \
-                                                      'mediakraken/mkslave ' + container_command))
-            return dock_pid
-
-        # docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow
-        #  --tomp4 --ffmpeg-acodec ac3 --ffmpeg-vcodec copy --ffmpeg-movflags frag_keyframe+empty_moov+faststart \
-        # --address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/BluRay/Mirrors 2 (2010)/Mirrors 2 (2010).mkv'
-
-        # docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4
-        # --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
-        # --myip 10.0.0.198 '/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv'
-
-        # castnow --address 10.0.0.220 --myip 10.0.0.198 --ffmpeg '-c:v copy -c:a ac3 --ffmpeg-movflags frag_keyframe+empty_moov+faststart'
-        #  --tomp4 '/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv'
-
         if hwaccel:
             image_name = 'mediakraken/mkslavenvidiadebian'
         else:
