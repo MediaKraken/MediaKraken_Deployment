@@ -134,7 +134,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_reactor_lines.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_reactor_line.py
     ports:
       - "8903:8903"
     volumes:
@@ -219,6 +219,11 @@ services:
   cron:
     image: mediakraken/mkcron:latest
     environment:
+      - POSTGRES_DB_HOST=${DBHOST}
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - SWARMIP=${SWARMIP}
       - DEBUG=${DEBUG}
     container_name: mkcron
     depends_on:
