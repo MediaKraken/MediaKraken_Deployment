@@ -124,10 +124,6 @@ if option_config_json['Docker Instances']['transmission']:
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
 
-# hold here
-# this will key off the twisted reactor...only reason is so doesn't shut down
-proc_link.wait()
-
 # commit
 db_connection.db_commit()
 
