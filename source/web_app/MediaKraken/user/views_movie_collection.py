@@ -28,11 +28,11 @@ def metadata_movie_collection_list():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db_connection.db_collection_list(offset, per_page, session['search_text']):
-        try:
+        if 'Poster' in row_data['mm_metadata_collection_imagelocal_json']:
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'],
                           row_data['mm_metadata_collection_imagelocal_json']['Poster']))
-        except:
+        else:
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'], None))
     session['search_page'] = 'meta_movie_collection'
