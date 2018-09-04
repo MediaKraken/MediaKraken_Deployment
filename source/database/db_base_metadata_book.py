@@ -32,6 +32,7 @@ def db_meta_book_list_count(self, search_value=None):
                                (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_book')
+    return self.db_cursor.fetchone()[0]
 
 
 def db_meta_book_list(self, offset=None, records=None, search_value=None):
