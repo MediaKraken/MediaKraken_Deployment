@@ -250,7 +250,6 @@ services:
       - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
       - /var/opt/mediakraken/webkey:/mediakraken/key
       - /var/opt/mediakraken/uploads:/mediakraken/uploads
-      - /var/opt/mediakraken/nginx:/mediakraken/nginx
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken_network

@@ -23,7 +23,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libxslt-dev \
   linux-headers \
   musl-dev \  
-  nginx \
   openrc \
   libressl-dev \
   py3-cffi \
@@ -55,10 +54,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && cp /usr/lib/uwsgi/python3_plugin.so /mediakraken/. \
   && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
-  && rc-update add rpcbind \
-  && rc-update add nginx
+  && rc-update add rpcbind
 
-COPY nginx.conf /etc/nginx/nginx.conf
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
