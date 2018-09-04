@@ -53,12 +53,20 @@ def movie_status(guid, event_type):
     if event_type == "sync":
         return redirect(url_for('user.sync_edit', guid=guid))
     else:
-        # g.db_connection.db_media_rating_update(
-        #     guid, current_user.get_id(), event_type)
-        g.db_connection.db_meta_movie_status_update(
-            g.db_connection.db_metadata_from_media_guid(guid),
-            current_user.get_id(), event_type)
-        return json.dumps({'status': 'OK'})
+        if event_type == "mismatch":
+            # TODO ummmm, how do I know which specific media to update?
+            # TODO as some might be right
+            g.db_connection.db_media_status_update(
+                g.db_connection.db_metadata_from_media_guid(guid),
+                current_user.get_id(), event_type)
+            return json.dumps({'status': 'OK'})
+        else:
+            # g.db_connection.db_media_rating_update(
+            #     guid, current_user.get_id(), event_type)
+            g.db_connection.db_meta_movie_status_update(
+                g.db_connection.db_metadata_from_media_guid(guid),
+                current_user.get_id(), event_type)
+            return json.dumps({'status': 'OK'})
 
 
 @blueprint.route('/movie_metadata_status/<guid>/<event_type>', methods=['GET', 'POST'])
