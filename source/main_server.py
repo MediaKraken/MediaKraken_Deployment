@@ -80,18 +80,6 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
         'Invalid Path': option_config_json['MediaKrakenServer']['BackupLocal']})
     sys.exit()
 
-# moved to docker image
-# # startup the other reactor via popen as it's non-blocking
-# proc = subprocess.Popen(
-#     ['python3', './subprogram_reactor_line.py'], shell=False)
-# common_global.es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
-
-# moved to docker image
-# # fire up cron service
-# proc_cron = subprocess.Popen(
-#     ['python3', './subprogram_cron_checker.py'], shell=False)
-# common_global.es_inst.com_elastic_index('info', {'Cron PID': proc_cron.pid})
-
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
