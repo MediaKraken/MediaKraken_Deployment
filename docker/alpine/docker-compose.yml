@@ -13,8 +13,6 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     container_name: mkbroadcast
-    depends_on:
-      - appserver
     entrypoint: python3 subprogram_broadcast.py
     ports:
       - "9101:9101"

@@ -23,7 +23,7 @@ while True:
         # grab container list - do here since server could have restarted on other port
         for container_json in docker_inst.com_docker_container_list():
             # grab ports for server
-            if container_json['Names'][0] == '/mkserver':
+            if container_json['Names'][0] == '/mkreactor':
                 docker_port = str(
                     docker_inst.com_docker_port(container_json['Id'], 8903)[0]['HostPort'])
                 break

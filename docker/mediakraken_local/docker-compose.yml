@@ -8,8 +8,6 @@ services:
   broadcast:
     image: th-dockerhub-1:5000/mediakraken/mkbroadcast:latest
     container_name: mkbroadcast
-    depends_on:
-      - appserver
     entrypoint: python3 subprogram_broadcast.py
     ports:
       - "9101:9101"
