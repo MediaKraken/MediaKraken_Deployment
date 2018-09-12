@@ -39,11 +39,11 @@ def movie_detail(guid):
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db_connection.db_media_watched_status_update(
+            g.db_connection.db_meta_movie_status_update(
                 guid, current_user.get_id(), False)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db_connection.db_media_watched_status_update(
+            g.db_connection.db_meta_movie_status_update(
                 guid, current_user.get_id(), True)
             return redirect(url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Sync':
