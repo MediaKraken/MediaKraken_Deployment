@@ -3,9 +3,13 @@ import socket
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_broadcast')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 address = ('', 9101)
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

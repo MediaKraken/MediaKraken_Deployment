@@ -23,6 +23,7 @@ import sys
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
 from twisted.internet import reactor, ssl
 # import twisted files that are required
 from twisted.internet.protocol import ClientFactory
@@ -164,4 +165,6 @@ class MediaKrakenApp(object):
 
 
 if __name__ == '__main__':
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     MediaKrakenApp().build()

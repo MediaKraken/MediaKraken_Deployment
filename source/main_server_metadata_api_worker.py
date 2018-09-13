@@ -27,6 +27,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
+from common import common_signal
 from common import common_string
 from common.common_metadata_limiter import *
 from guessit import guessit
@@ -319,6 +320,10 @@ def on_message(channel, method_frame, header_frame, body):
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'meta_api_worker_%s' % str(sys.argv[1]).lower())
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
 content_providers = str(sys.argv[1])
 common_global.es_inst.com_elastic_index('info', {"worker meta api name":
                                                      content_providers})

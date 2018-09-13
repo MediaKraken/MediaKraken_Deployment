@@ -25,7 +25,7 @@ import pika
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_system
-
+from common import common_signal
 
 class MKConsumer(object):
     EXCHANGE = 'mkque_ex'
@@ -350,6 +350,9 @@ class MKConsumer(object):
 def main():
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_slave')
+
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(

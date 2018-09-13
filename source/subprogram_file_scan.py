@@ -32,6 +32,7 @@ from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_cifs
+from common import common_signal
 from common import common_string
 
 # start logging
@@ -223,6 +224,9 @@ def worker(audit_directory):
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                              'mkrabbitmq', '-p', ' 5672'], shell=False)
 wait_pid.wait()
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 # Open a connection to RabbitMQ
 parameters = pika.ConnectionParameters('mkrabbitmq',

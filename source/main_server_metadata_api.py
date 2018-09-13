@@ -24,6 +24,7 @@ from build_trailer_directory import build_trailer_dirs
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
+from common import common_signal
 
 # TODO should be using env variables
 # build image directories if needed
@@ -41,6 +42,9 @@ else:
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_metadata_api')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times

@@ -25,10 +25,14 @@ from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_share
+from common import common_signal
 from common import common_version
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_server')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 common_global.es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})
 

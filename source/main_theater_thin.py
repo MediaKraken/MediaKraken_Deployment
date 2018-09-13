@@ -164,7 +164,7 @@ class MediaKrakenApp(App):
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
                 common_global.es_inst.com_elastic_index('info', {'server list': server_list})
-                host_ip = server_list[0].decode() # as this is returned as bytes
+                host_ip = server_list[0].decode()  # as this is returned as bytes
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
                                 host_ip.split(':')[0])
@@ -392,6 +392,9 @@ if __name__ == '__main__':
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
         'main_theater_thin')
+
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
 
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks

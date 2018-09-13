@@ -26,14 +26,18 @@ from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network
+from common import common_signal
 from common import common_version
-
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_metadata_games')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
+# open the database
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does
@@ -94,7 +98,7 @@ if not os.path.exists(file_name):
     with zipfile.ZipFile(file_name, 'r') as zf:
         zf.extract('mame.zip', '/mediakraken/emulation/')
     zip_handle = zipfile.ZipFile(
-        '/mediakraken/emulation/mame.zip', 'r') # issues if u do RB
+        '/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
         print('zip: %s' % zippedfile)
         if zippedfile[0:5] == 'hash/' and zippedfile != 'hash/':
@@ -220,7 +224,7 @@ if not os.path.exists(file_name):
                 game_desc = ''
             # this line can be skipped and is basically the "start" of game info
             elif line.find("$bio") == 0:  # goes by position if found
-                line = history_file.readline() # skip blank line
+                line = history_file.readline()  # skip blank line
                 new_title = history_file.readline().strip()  # grab the "real" game name
                 add_to_desc = True
             else:

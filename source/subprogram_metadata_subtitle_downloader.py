@@ -21,10 +21,14 @@ import os
 from common import common_file
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_subtitle_downloader')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 total_download_attempts = 0
 

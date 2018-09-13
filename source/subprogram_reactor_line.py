@@ -28,6 +28,7 @@ from common import common_device_capability
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
 from network import network_base_line as network_base
 from pika.adapters import twisted_connection
 from twisted.internet import reactor, protocol, defer, task
@@ -208,7 +209,8 @@ if __name__ == '__main__':
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
         'subprogram_reactor_line')
-
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # pika rabbitmq connection
     cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection,
                                 pika.ConnectionParameters(

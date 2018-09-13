@@ -45,6 +45,8 @@ from shlex import split
 
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
+
 
 # TODO move to slave container since FFMPEG will be there
 def main(argv):
@@ -54,6 +56,8 @@ def main(argv):
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
         'subprogram_commercial_strip')
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     inputfile = None
     outputfile = None
     try:

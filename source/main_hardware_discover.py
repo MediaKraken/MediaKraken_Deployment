@@ -21,11 +21,15 @@ from common import common_file
 from common import common_hardware_chromecast
 from common import common_hardware_hdhomerun
 from common import common_hardware_roku_network
+from common import common_signal
 # from common import common_logging_elasticsearch
 from common import common_string
 
 # start logging - REMOVED SINCE RUNS AS HOST NETWORK
 # common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 media_devices = []
 

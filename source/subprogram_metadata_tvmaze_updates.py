@@ -23,10 +23,14 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_tvmaze
+from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_tvmaze_updates')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 # TODO this should go thru the limiter
 # open the database

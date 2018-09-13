@@ -23,6 +23,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_schedules_direct
+from common import common_signal
 
 
 def mk_schedules_direct_program_info_fetch(meta_program_fetch):
@@ -40,6 +41,9 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_schedules_direct_updates')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
