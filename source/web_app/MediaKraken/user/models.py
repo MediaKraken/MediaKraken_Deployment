@@ -49,14 +49,10 @@ class User(UserMixin, SurrogatePK, Model):
             self.password = None
 
     def set_password(self, password):
-        self.password = bcrypt.generate_password_hash(password)
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def check_password(self, value):
         return bcrypt.check_password_hash(self.password, value)
-
-    #    @property
-    #    def full_name(self):
-    #        return "{0} {1}".format(self.first_name, self.last_name)
 
     def __repr__(self):
         return '<User({username!r})>'.format(username=self.username)
