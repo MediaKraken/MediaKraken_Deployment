@@ -269,6 +269,8 @@ services:
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
       - /var/run/docker.sock:/var/run/docker.sock
+      # hold log files
+      - ./data/log:/mediakraken/log
     networks:
       - mediakraken_network
     restart: unless-stopped
