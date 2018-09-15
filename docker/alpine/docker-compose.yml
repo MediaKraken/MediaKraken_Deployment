@@ -200,7 +200,7 @@ services:
     volumes:
       - ./data/nginx:/var/log/mediakraken/nginx
       - ./data/certs:/etc/nginx/certs
-      - ./data/static:/mediakraken/web_app/MediaKraken/static
+      - static-volume:/mediakraken/web_app/MediaKraken/static
     ports:
       - "8900:8900"
     networks:
@@ -343,7 +343,7 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     volumes:
       - ./data/directories:/mediakraken/mnt
-      - ./data/static:/mediakraken/web_app/MediaKraken/static
+      - static-volume:/mediakraken/web_app/MediaKraken/static
       - ./data/webkey:/mediakraken/key
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
@@ -391,3 +391,6 @@ networks:
   # Twisted, Database and AMQP communications network
   mediakraken_network:
     driver: bridge
+
+volumes:
+     static-volume:
