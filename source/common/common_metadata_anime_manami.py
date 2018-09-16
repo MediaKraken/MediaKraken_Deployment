@@ -68,7 +68,7 @@ def mk_manami_anime_list_parse(file_name='./cache/anime-manami-list.json'):
     #     "Liberation Maiden",
     #     "\u89e3\u653e\u5c11\u5973"
     # ]
-    
+
     #     anime_cross_reference.append((anime_data['@anidbid'], tvdbid, imdbid,
     #                                   default_tvseason, mapping_data, before_data))
     # return anime_cross_reference
