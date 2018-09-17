@@ -20,6 +20,7 @@ import os
 import socket
 
 import docker
+
 from . import common_global
 
 
@@ -318,35 +319,6 @@ class CommonDocker(object):
                                                 '/var/opt/mediakraken/data':
                                                     {'bind': '/ data', 'mode': 'rw'}})
 
-    def com_docker_run_cast(self, hwaccel, name_container, container_command):
-        """
-        Launch container for cast play
-        """
-        # docker run --name waffleboy -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow
-        #  --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags frag_keyframe+empty_moov+faststart
-        # --address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/DVD/Creep (2004)/Creep (2004).mkv'
-        if hwaccel:
-            image_name = 'mediakraken/mkslavenvidiadebian'
-        else:
-            image_name = 'mediakraken/mkslave'
-        # rm - cleanup after exit
-        # it - interactive tty
-        # container_command = 'docker run -it --rm --net host -v ' \
-        #     +  '/mediakraken/nfsmount:/mediakraken/mnt ' \
-        #     +  'mediakraken/mkslave ' + container_command)
-        return self.cli.containers.run(image=image_name,
-                                       network_mode='host',
-                                       command=container_command,
-                                       detach=True,
-                                       volumes={'/var/run/docker.sock':
-                                                    {'bind': '/var/run/docker.sock',
-                                                     'mode': 'ro'},
-                                                '/mediakraken/nfsmount':
-                                                    {'bind': '/mediakraken/mnt',
-                                                     'mode': 'ro'}
-                                                },
-                                       name=name_container)
-
     def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command):
         """
         Launch container for slave play
@@ -402,6 +374,20 @@ class CommonDocker(object):
                                        name='mktransmission',
                                        environment={'USERNAME': username,
                                                     'PASSWORD': password})
+
+    def com_docker_run_twitch_record_user(self, twitch_user):
+        """
+        Launch container for twitch user recording
+        """
+        return self.cli.containers.run(image='mediakraken/mkslave',
+                                       command='python3 check.py ' + twitch_user,
+                                       detach=True,
+                                       volumes={
+                                           '/mediakraken/nfsmount':
+                                               {'bind': '/mediakraken/mnt',
+                                                'mode': 'rw'}
+                                       },
+                                       name='mktwitchrecorduser_' + twitch_user)
 
     def com_docker_run_wireshark(self):
         """
