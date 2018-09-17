@@ -281,5 +281,7 @@ if db_connection.db_table_index_check('gc_category_idx_name') is None:
 
 #         "MetadataImageLocal": false to metadata json options
 
+# add api for [api][dirble]
+
 # close the database
 db_connection.db_close()
