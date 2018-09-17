@@ -25,8 +25,7 @@ class CommonHardwareControllerTelnet(object):
     """
 
     # db_hardware_json_read will populate the json
-    def __init__(self, device_json, device_ip=None, device_port=None):
-        self.device_inst = None
+    def __init__(self, device_json):
         self.device_json = device_json
         self.device_inst = common_network_telnet.CommonNetworkTelnet()
         self.device_inst.com_net_telnet_open_device(
