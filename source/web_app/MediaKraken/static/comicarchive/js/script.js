@@ -4,7 +4,7 @@ $(document).ready(function(){
     $('#output').hide();
    
     // Load all the archive formats
-	loadArchiveFormats(['rar', 'zip', 'tar']);
+    loadArchiveFormats(['rar', 'zip', 'tar']);
     
     $("#fileup").change(function(){
         
@@ -26,7 +26,7 @@ $(document).ready(function(){
         });
         
         // show loading
-		$('.se-pre-con').fadeIn('slow');
+        $('.se-pre-con').fadeIn('slow');
         
         // destroy lightGallery
         var $lg = $('#output');
