@@ -68,6 +68,10 @@ docker build -t th-dockerhub-1:5000/mediakraken/mkprefetchtvmaze .
 cd ../ComposeMediaKrakenSlave
 docker build -t th-dockerhub-1:5000/mediakraken/mkslave .
 
+# Build the base twitch recorder
+cd ../ComposeMediaKrakenTwitchRecordUser
+docker build -t mediakraken/mktwitchrecorduser --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+
 #cd ../ComposeMediaKrakenSlaveNvidia
 #docker build -t th-dockerhub-1:5000/mediakraken/mkslavenvidia .
 

@@ -68,6 +68,10 @@ docker build -t mediakraken/mkgamedata --build-arg ALPMIRROR=10.0.0.122 --build-
 cd ../ComposeMediaKrakenSlave
 docker build -t mediakraken/mkslave --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
+# Build the base twitch recorder
+cd ../ComposeMediaKrakenTwitchRecordUser
+docker build -t mediakraken/mktwitchrecorduser --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+
 #cd ../ComposeMediaKrakenSlaveNvidia
 #docker build -t mediakraken/mkslavenvidia .
 

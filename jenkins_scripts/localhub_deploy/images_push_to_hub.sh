@@ -38,5 +38,6 @@ docker push th-dockerhub-1:5000/mediakraken/mkstream:latest
 docker push th-dockerhub-1:5000/mediakraken/mkteamspeak:latest
 docker push th-dockerhub-1:5000/mediakraken/mktransmission:latest
 docker push th-dockerhub-1:5000/mediakraken/mktvheadend:latest
+docker push th-dockerhub-1:5000/mediakraken/mktwitchrecorduser:latest
 docker push th-dockerhub-1:5000/mediakraken/mkwebapp:latest
 docker push th-dockerhub-1:5000/mediakraken/mkwireshark:latest
