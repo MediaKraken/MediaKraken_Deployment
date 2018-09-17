@@ -13,8 +13,11 @@ WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
+  alpine-sdk \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
+  && apk del \
+  alpine-sdk \
   && rm -rf /var/cache/apk/*
 
 # Copy the source files for the app
