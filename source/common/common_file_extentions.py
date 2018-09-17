@@ -77,3 +77,9 @@ GAME_EXTENSION = [
     '7z',
     'rar',
 ]
+
+COMIC_BOOK_EXTENTION = [
+    'cbr',
+    'cbz',
+    'cbt'
+]
