@@ -127,6 +127,4 @@ def com_string_guessit_list(guessit_list):
 
 
 def com_string_escape_file_path(file_path):
-    return file_path.translate(str.maketrans({" ":  r"\ ",
-                                          "'":  r"\'"}))
-
+    return file_path.translate(str.maketrans({" ": r"\ ", "'": r"\'"}))
