@@ -19,6 +19,7 @@
 from steam import SteamID
 
 
+# https://developer.valvesoftware.com/wiki/Steam_Web_API
 class CommonNetworkSteam(object):
     """
     Class for interfacing with Valve Steam

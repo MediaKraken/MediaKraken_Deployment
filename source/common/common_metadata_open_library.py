@@ -19,6 +19,8 @@
 from . import common_network
 
 
+# https://openlibrary.org/developers/api
+
 class CommonMetadataOpenLibrary(object):
     """
     Class for interfacing with OpenLibrary
