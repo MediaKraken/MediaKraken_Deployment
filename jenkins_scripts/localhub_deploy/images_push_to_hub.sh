@@ -8,6 +8,7 @@ docker push th-dockerhub-1:5000/mediakraken/mkbaseffmpeg:latest
 docker push th-dockerhub-1:5000/mediakraken/mkbasenodeffmpeg:latest
 #docker push th-dockerhub-1:5000/mediakraken/mkbasenvidiadebain:latest
 docker push th-dockerhub-1:5000/mediakraken/mkbroadcast:latest
+docker push th-dockerhub-1:5000/mediakraken/mkcastimage:latest
 #docker push th-dockerhub-1:5000/mediakraken/mkcloud:latest
 docker push th-dockerhub-1:5000/mediakraken/mkdatabase:latest
 docker push th-dockerhub-1:5000/mediakraken/mkdevicescan:latest

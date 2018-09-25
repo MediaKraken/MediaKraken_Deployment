@@ -72,6 +72,10 @@ docker build -t th-dockerhub-1:5000/mediakraken/mkslave .
 cd ../ComposeMediaKrakenTwitchRecordUser
 docker build -t mediakraken/mktwitchrecorduser --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
+# Build the castpy
+cd ../ComposeMediaKrakenCastImage
+docker build -t mediakraken/mkcastimage --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+
 #cd ../ComposeMediaKrakenSlaveNvidia
 #docker build -t th-dockerhub-1:5000/mediakraken/mkslavenvidia .
 
