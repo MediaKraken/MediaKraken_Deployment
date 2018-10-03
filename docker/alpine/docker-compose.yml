@@ -180,7 +180,7 @@ services:
     volumes:
       - ./data/directories:/mediakraken/mnt
       # stores posters/etc so webserver can present
-      - ./data/meta_images:/mediakraken/web_app/MediaKraken/static/meta/images
+      - static-volume:/mediakraken/web_app/MediaKraken/static
       # stores the xml/json xref files for anime match
       - ./data/cache:/mediakraken/cache
     networks:
