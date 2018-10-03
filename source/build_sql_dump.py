@@ -17,15 +17,43 @@
 '''
 
 import subprocess
+import time
+
+from common import common_network_ssh
+from common import common_network_vm_proxmox
 
 # start the postgres if not up on pve
+prox_inst = common_network_vm_proxmox.CommonNetworkProxMox('pve', 'metaman', 'metaman')
+for lxc_list in prox_inst.com_net_prox_node_lxc_list():
+    if blah == blah:
+        node = blah
+        vmid = blah
+        break
+vm_status = prox_inst.com_net_prox_node_lxc_status(node, vmid)
+if vm_status == 'off':
+    prox_inst.com_net_prox_node_lxc_start(node, vmid)
+    time.sleep(60)
 
-# drop the db
+# log into the postgresql vm
+ssh_inst = common_network_ssh.CommonNetworkSSH('th-postgresql-1', 'metaman', 'metaman')
+
+# drop the db, this name can be this even with user specified as the db name
+# is not in the dump file
+ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "drop database mediakraken"')
+
 # create the empty database
+ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "createdb mediakraken"')
 
 db_create_pid = subprocess.Popen(['python3', './db_create_update.py'], shell=False)
 db_create_pid.wait()
 
-# ssh into it and do a dump
+# do a dump
+ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c pg_dump mediakraken > create_schema.sql')
+
+# close the ssh connection
+ssh_inst.com_net_ssh_close()
+
 # scp the file to local machine
-# throw in the docker database container
+scp_inst = subprocess.Popen(['scp', '-r', 'metaman@th-postgresql-1:/create_schema.sql',
+                             '../docker/alpine/ComposeMediaKrakenDatabase/docker-entrypoint-initdb.d/.'])
+scp_inst.wait()
