@@ -39,8 +39,7 @@ common_global.es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Cert not found, generating.'})
-    proc_ssl = subprocess.Popen(
-        ['python3', './subprogram_ssl_keygen.py'], shell=False)
+    proc_ssl = subprocess.Popen(['python3', './subprogram_ssl_keygen.py'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
@@ -55,8 +54,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 if db_connection.db_version_check() != common_version.DB_VERSION:
     common_global.es_inst.com_elastic_index('info',
                                             {'stuff': 'Database upgrade in progress...'})
-    db_create_pid = subprocess.Popen(
-        ['python3', './db_update_version.py'], shell=False)
+    db_create_pid = subprocess.Popen(['python3', './db_update_version.py'], shell=False)
     db_create_pid.wait()
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Database upgrade complete.'})
 
