@@ -44,6 +44,7 @@ class CommonNetworkProxMox(object):
         self.prox_ticket = {'PVEAuthCookie': self.api_response['data']['ticket']}
         self.httpheaders['CSRFPreventionToken'] = str(
             self.api_response['data']['CSRFPreventionToken'])
+        return self.api_response
 
     def com_net_prox_api_call(self, request_type, api_call_type, post_data=None):
         """
