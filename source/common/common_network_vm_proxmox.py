@@ -31,11 +31,19 @@ class CommonNetworkProxMox(object):
         self.httpheaders = {'Accept': 'application/json',
                             'Content-Type': 'application/x-www-form-urlencoded'}
         self.full_url = ('https://%s:8006/api2/json/' % node_addr)
-        api_response = requests.post(self.full_url + 'access/ticket', verify=False,
-                                     data={'username': node_user, 'password': node_password}).json()
-        self.prox_ticket = {'PVEAuthCookie': api_response['data']['ticket']}
+        self.node_user = node_user
+        self.node_password = node_password
+
+    # can't return a value with init.  So, broke out the connect to handle bad user/pass
+    def com_net_prox_api_connect(self):
+        self.api_response = requests.post(self.full_url + 'access/ticket', verify=False,
+                                          data={'username': self.node_user,
+                                                'password': self.node_password}).json()
+        if self.api_response['data'] is None:
+            return None
+        self.prox_ticket = {'PVEAuthCookie': self.api_response['data']['ticket']}
         self.httpheaders['CSRFPreventionToken'] = str(
-            api_response['data']['CSRFPreventionToken'])
+            self.api_response['data']['CSRFPreventionToken'])
 
     def com_net_prox_api_call(self, request_type, api_call_type, post_data=None):
         """
