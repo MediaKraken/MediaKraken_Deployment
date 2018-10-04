@@ -29,12 +29,27 @@ prox_inst.com_net_prox_api_connect()
 if prox_inst is None:
     print('Error connecting to Proxmox!!')
     sys.exit(0)
-for lxc_list in prox_inst.com_net_prox_node_lxc_list():
-    print(lxc_list)
-    if blah == blah:
-        node = blah
-        vmid = blah
-        break
+
+# go through the node(s) in a cluster
+for node_name in prox_inst.com_net_prox_cluster_config_nodes():
+    print(node_name)
+    # list vm's
+    for kvm_list in prox_inst.com_net_prox_node_qemu_list('pve'):
+        print(kvm_list)
+        if blah == blah:
+            node = blah
+            vmid = blah
+            break
+
+    # list containers
+    for lxc_list in prox_inst.com_net_prox_node_lxc_list('pve'):
+        print(lxc_list)
+        if blah == blah:
+            node = blah
+            vmid = blah
+            break
+
+# start the vm from selected machine above
 vm_status = prox_inst.com_net_prox_node_lxc_status(node, vmid)
 if vm_status == 'off':
     prox_inst.com_net_prox_node_lxc_start(node, vmid)

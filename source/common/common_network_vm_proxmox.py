@@ -138,6 +138,18 @@ class CommonNetworkProxMox(object):
         return self.com_net_prox_api_call('delete', 'cluster/backup/%s' % backup_id)
 
     ###
+    # Cluster config
+    ###
+    def com_net_prox_cluster_config_nodes(self):
+        return self.com_net_prox_api_call('get', 'cluster/config/nodes')
+
+    # TODO node create
+    # TODO node delete
+    # TODO node info on cluster
+    # TODO node join cluster
+    # TODO node Get corosync totem protocol settings.
+
+    ###
     # Cluster/firewall API
     ###
     def com_net_prox_cluster_firewall(self):
@@ -230,11 +242,11 @@ class CommonNetworkProxMox(object):
     ###
     # Nodes
     ###
-    def com_net_prox_node_index(self, ):
+    def com_net_prox_node_index(self, node_name):
         """
         Cluster node index.
         """
-        return self.com_net_prox_api_call('get', 'nodes')
+        return self.com_net_prox_api_call('get', node_name)
 
     ###
     # Nodes/apt
