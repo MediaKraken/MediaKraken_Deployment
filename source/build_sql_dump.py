@@ -25,6 +25,7 @@ from common import common_network_vm_proxmox
 # start the postgres if not up on pve
 prox_inst = common_network_vm_proxmox.CommonNetworkProxMox('pve', 'metaman', 'metaman')
 for lxc_list in prox_inst.com_net_prox_node_lxc_list():
+    print(lxc_list)
     if blah == blah:
         node = blah
         vmid = blah
