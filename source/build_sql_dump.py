@@ -25,7 +25,7 @@ from common import common_network_vm_proxmox
 
 # start the postgres if not up on pve
 prox_inst = common_network_vm_proxmox.CommonNetworkProxMox('pve', 'metaman', 'metaman')
-if prox_inst.com_net_prox_api_connect()['data'] is None:
+if prox_inst.com_net_prox_api_connect() is None:
     print('Error connecting to Proxmox!!')
     sys.exit(0)
 
