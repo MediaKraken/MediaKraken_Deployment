@@ -62,7 +62,7 @@ ssh_inst = common_network_ssh.CommonNetworkSSH('th-postgresql-1', 'metaman', 'me
 ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "drop database mediakraken"')
 
 # create the empty database
-ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "createdb mediakraken"')
+ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "create database mediakraken"')
 
 db_create_pid = subprocess.Popen(['python3', './db_create_update.py'], shell=False)
 db_create_pid.wait()
