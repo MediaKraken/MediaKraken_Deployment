@@ -23,36 +23,36 @@ import time
 from common import common_network_ssh
 from common import common_network_vm_proxmox
 
-# start the postgres if not up on pve
-prox_inst = common_network_vm_proxmox.CommonNetworkProxMox('pve', 'metaman', 'metaman')
-if prox_inst.com_net_prox_api_connect() is None:
-    print('Error connecting to Proxmox!!')
-    sys.exit(0)
-
-# go through the node(s) in a cluster
-for node_name in prox_inst.com_net_prox_cluster_config_nodes():
-    print(node_name)
-    # list vm's
-    for kvm_list in prox_inst.com_net_prox_node_qemu_list('pve'):
-        print(kvm_list)
-        if blah == blah:
-            node = blah
-            vmid = blah
-            break
-
-    # list containers
-    for lxc_list in prox_inst.com_net_prox_node_lxc_list('pve'):
-        print(lxc_list)
-        if blah == blah:
-            node = blah
-            vmid = blah
-            break
-
-# start the vm from selected machine above
-vm_status = prox_inst.com_net_prox_node_lxc_status(node, vmid)
-if vm_status == 'off':
-    prox_inst.com_net_prox_node_lxc_start(node, vmid)
-    time.sleep(60)
+# # start the postgres if not up on pve
+# prox_inst = common_network_vm_proxmox.CommonNetworkProxMox('pve', 'metaman', 'metaman')
+# if prox_inst.com_net_prox_api_connect() is None:
+#     print('Error connecting to Proxmox!!')
+#     sys.exit(0)
+#
+# # go through the node(s) in a cluster
+# for node_name in prox_inst.com_net_prox_cluster_config_nodes():
+#     print(node_name)
+#     # list vm's
+#     for kvm_list in prox_inst.com_net_prox_node_qemu_list('pve'):
+#         print(kvm_list)
+#         if blah == blah:
+#             node = blah
+#             vmid = blah
+#             break
+#
+#     # list containers
+#     for lxc_list in prox_inst.com_net_prox_node_lxc_list('pve'):
+#         print(lxc_list)
+#         if blah == blah:
+#             node = blah
+#             vmid = blah
+#             break
+#
+# # start the vm from selected machine above
+# vm_status = prox_inst.com_net_prox_node_lxc_status(node, vmid)
+# if vm_status == 'off':
+#     prox_inst.com_net_prox_node_lxc_start(node, vmid)
+#     time.sleep(60)
 
 # log into the postgresql vm
 ssh_inst = common_network_ssh.CommonNetworkSSH('th-postgresql-1', 'metaman', 'metaman')
