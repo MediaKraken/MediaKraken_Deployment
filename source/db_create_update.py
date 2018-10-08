@@ -302,10 +302,9 @@ if db_connection.db_table_index_check('mm_metadata_music_idxgin_media_id') is No
 if db_connection.db_table_index_check('mm_metadata_music_idx_album') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_music_idx_album'
                            ' ON mm_metadata_music(mm_metadata_music_album_guid)')
-# TODO why does this fail?
-# if db_connection.db_table_index_check('mm_metadata_music_idxgin_user_json') is None:
-#     db_connection.db_query('CREATE INDEX mm_metadata_music_idxgin_user_json'
-#                            ' ON mm_metadata_music USING gin (mm_metadata_music_user_json)')
+if db_connection.db_table_index_check('mm_metadata_music_idxgin_user_json') is None:
+    db_connection.db_query('CREATE INDEX mm_metadata_music_idxgin_user_json'
+                           ' ON mm_metadata_music USING gin (mm_metadata_music_user_json)')
 
 # create the base media class
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_class (mm_media_class_guid uuid'
@@ -430,10 +429,9 @@ if db_connection.db_table_index_check('mm_metadata_idxgin_music_video_media_id_i
     db_connection.db_query('CREATE INDEX mm_metadata_idxgin_music_video_media_id_imvdb'
                            ' ON mm_metadata_music_video USING gin'
                            ' ((mm_metadata_music_video_media_id->\'imvdb\'))')
-# TODO
-# if db_connection.db_table_index_check('mm_metadata_music_video_idxgin_user_json') is None:
-#     db_connection.db_query('CREATE INDEX mm_metadata_music_video_idxgin_user_json'
-#                            ' ON mm_metadata_music_video USING gin (mm_metadata_music_video_user_json)')
+if db_connection.db_table_index_check('mm_metadata_music_video_idxgin_user_json') is None:
+    db_connection.db_query('CREATE INDEX mm_metadata_music_video_idxgin_user_json'
+                           ' ON mm_metadata_music_video USING gin (mm_metadata_music_video_user_json)')
 
 # create table for metadata for book
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_book (mm_metadata_book_guid uuid'
@@ -840,10 +838,9 @@ if db_connection.db_table_index_check('mm_game_info_idxgin_name') is None:
 if db_connection.db_table_index_check('gi_game_idx_name') is None:
     db_connection.db_query('CREATE INDEX gi_game_idx_name'
                            ' on mm_metadata_game_software_info (gi_game_info_name)')
-# TODO
-# if db_connection.db_table_index_check('gi_game_idx_short_name') is None:
-#     db_connection.db_query('CREATE INDEX gi_game_idx_short_name'
-#                            ' on mm_metadata_game_software_info (gi_game_info_short_name)')
+if db_connection.db_table_index_check('gi_game_idx_short_name') is None:
+    db_connection.db_query('CREATE INDEX gi_game_idx_short_name'
+                           ' on mm_metadata_game_software_info (gi_game_info_short_name)')
 
 # create table for games systems
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_systems_info (gs_id uuid'

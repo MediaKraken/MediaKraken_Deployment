@@ -64,8 +64,12 @@ ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "drop database metama
 # create the empty database
 ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "create database metamandb"')
 
+# enable pg_trgm
+ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -d metamandb -c "create extension pg_trgm;"')
+
 db_create_pid = subprocess.Popen(['python3',
-                                  '/home/metaman/MediaKraken_Deployment/source/db_create_update.py'], shell=False)
+                                  '/home/metaman/MediaKraken_Deployment/source/db_create_update.py'],
+                                 shell=False)
 db_create_pid.wait()
 
 # do a dump
