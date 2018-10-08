@@ -59,16 +59,17 @@ ssh_inst = common_network_ssh.CommonNetworkSSH('th-postgresql-1', 'metaman', 'me
 
 # drop the db, this name can be this even with user specified as the db name
 # is not in the dump file
-ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "drop database mediakraken"')
+ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "drop database metamandb"')
 
 # create the empty database
-ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "create database mediakraken"')
+ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "create database metamandb"')
 
-db_create_pid = subprocess.Popen(['python3', './db_create_update.py'], shell=False)
+db_create_pid = subprocess.Popen(['python3',
+                                  '/home/metaman/MediaKraken_Deployment/source/db_create_update.py'], shell=False)
 db_create_pid.wait()
 
 # do a dump
-ssh_inst.com_net_ssh_run_sudo_command('pg_dump -U postgres -d mediakraken -n public -f > '
+ssh_inst.com_net_ssh_run_sudo_command('pg_dump -U postgres -d metamandb -n public -f > '
                                       '/home/metaman/create_schema.sql')
 
 # close the ssh connection
