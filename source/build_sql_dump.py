@@ -68,12 +68,13 @@ db_create_pid = subprocess.Popen(['python3', './db_create_update.py'], shell=Fal
 db_create_pid.wait()
 
 # do a dump
-ssh_inst.com_net_ssh_run_sudo_command('pg_dump -U postgres -c mediakraken > create_schema.sql')
+ssh_inst.com_net_ssh_run_sudo_command('pg_dump -U postgres -c mediakraken > '
+                                      '/home/metaman/create_schema.sql')
 
 # close the ssh connection
 ssh_inst.com_net_ssh_close()
 
 # scp the file to local machine
-scp_inst = subprocess.Popen(['scp', '-r', 'metaman@th-postgresql-1:/create_schema.sql',
+scp_inst = subprocess.Popen(['scp', '-r', 'metaman@th-postgresql-1:/home/metaman/create_schema.sql',
                              '../docker/alpine/ComposeMediaKrakenDatabase/docker-entrypoint-initdb.d/.'])
 scp_inst.wait()
