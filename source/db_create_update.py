@@ -283,7 +283,8 @@ if db_connection.db_table_index_check('mm_metadata_album_idx_musician') is None:
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_music (mm_metadata_music_guid uuid'
                        ' CONSTRAINT mm_metadata_music_pk PRIMARY KEY,'
                        ' mm_metadata_media_music_id jsonb,'
-                       ' mm_metadata_music_name text, mm_metadata_music_json jsonb,'
+                       ' mm_metadata_music_name text,'
+                       ' mm_metadata_music_json jsonb,'
                        ' mm_metadata_music_album_guid uuid,'
                        ' mm_metadata_music_user_json jsonb)')
 if db_connection.db_table_index_check('mm_metadata_music_idx_name') is None:
@@ -301,9 +302,10 @@ if db_connection.db_table_index_check('mm_metadata_music_idxgin_media_id') is No
 if db_connection.db_table_index_check('mm_metadata_music_idx_album') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_music_idx_album'
                            ' ON mm_metadata_music(mm_metadata_music_album_guid)')
-if db_connection.db_table_index_check('mm_metadata_music_idxgin_user_json') is None:
-    db_connection.db_query('CREATE INDEX mm_metadata_music_idxgin_user_json'
-                           ' ON mm_metadata_music USING gin (mm_metadata_music_user_json)')
+# TODO why does this fail?
+# if db_connection.db_table_index_check('mm_metadata_music_idxgin_user_json') is None:
+#     db_connection.db_query('CREATE INDEX mm_metadata_music_idxgin_user_json'
+#                            ' ON mm_metadata_music USING gin (mm_metadata_music_user_json)')
 
 # create the base media class
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_class (mm_media_class_guid uuid'
