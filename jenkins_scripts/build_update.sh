@@ -112,6 +112,10 @@ docker build -t mediakraken/mkmumble --build-arg ALPMIRROR=10.0.0.122 --build-ar
 cd ../ComposeMediaKrakenMusicBrainz
 docker build -t mediakraken/mkmusicbrainz --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
+# build the pgadmin4
+cd ../ComposeMediaKrakenPgAdmin4
+docker build -t mediakraken/mkpgadmin --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+
 # build the stream container
 #cd ../ComposeMediaKrakenStream
 #docker build -t mediakraken/mkstream .
