@@ -1,5 +1,6 @@
 ### Alpine requires glibc to be present in the system below link to fficial repository
 ### https://github.com/sgerrand/alpine-pkg-glibc
+### Based on https://github.com/pozgo/docker-teamspeak
 FROM alpine:3.8
 
 ARG ALPMIRROR

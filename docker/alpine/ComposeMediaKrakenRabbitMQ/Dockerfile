@@ -1,3 +1,5 @@
+# https://github.com/docker-library/rabbitmq
+
 FROM alpine:3.8
 
 ARG ALPMIRROR
