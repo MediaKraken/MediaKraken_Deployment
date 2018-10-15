@@ -299,7 +299,7 @@ class CommonDocker(object):
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
         self.com_docker_delete_container('mkpgadmin')
         self.com_docker_network_create('mk_mediakraken_network')
-        return self.cli.containers.run(image='dpage/pgadmin4',
+        return self.cli.containers.run(image='mediakraken/mkpgadmin',
                                        detach=True,
                                        name='mkpgadmin',
                                        ports={"80": 12345},
