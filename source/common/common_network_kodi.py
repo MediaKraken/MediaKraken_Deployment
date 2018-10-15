@@ -23,6 +23,7 @@ import socket
 
 
 # from kodipydent import Kodi
+# https://github.com/haikuginger/kodipydent
 
 
 def com_net_kodi_command(host_ip, host_port, kodi_command):
