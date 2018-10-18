@@ -6,13 +6,13 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <!--[if lt IE 9]>
-        <script src="/static/js/html5.js"></script>
+        <script src="{{ url_for('static', filename='/static/js/html5.js') }}"></script>
         <![endif]-->
-        <link href="/static/css/style.min.css" rel="stylesheet">
-        <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link href="{{ url_for('static', filename='/static/css/style.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
     </head>
     {% if media_dir %}
     {{ pagination.info }}
@@ -111,10 +111,10 @@
     <p>No share data found.</p>
     {% endif %}
     <p><a href="{{ url_for('admins_share.admin_share_edit_page') }}" class="btn btn-primary btn-large">Add New Share</a></p>
-    <script type="text/javascript" src="/static/js/jquery.tmpl.min.js"></script>
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/base_webapp_delete.js"></script>
-    <script src="/static/js/base_webapp_update.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='/static/js/jquery.tmpl.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/base_webapp_delete.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/base_webapp_update.js') }}"></script>
 </body>
 {% endblock %}

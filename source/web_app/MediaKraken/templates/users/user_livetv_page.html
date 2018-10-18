@@ -3,10 +3,10 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="/static/datetimepicker/jquery.datetimepicker.min.css"/ >
-        <link rel="stylesheet"  href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/static/datetimepicker/jquery.datetimepicker.min.css') }}"/ >
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <p><input id="_datetimepicker3" type="text" value="10.12.2013 23:45"/></p>
     {% if media != "" %}
@@ -26,8 +26,8 @@
         });
         // ]]>
     </script>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/datetimepicker/jquery.datetimepicker.full.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/datetimepicker/jquery.datetimepicker.full.min.js') }}"></script>
 </body>
 {% endblock %}

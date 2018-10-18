@@ -3,14 +3,14 @@
     <head>
         <meta charset="utf-8" />
         <title>HTML5 / jQuery</title>
-        <link rel="stylesheet" href="/static/css/styles.min.css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/styles.min.css') }}"/>
     </head>
     <body>
         <div id="dropbox">
             <span class="message">Drop images here to upload.</span>
         </div>
-        <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-        <script type="text/javascript" src="/static/js/jquery.filedrop.min.js"></script>
-        <script type="text/javascript" src="/static/js/upload.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='/static/js/jquery.filedrop.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='/static/js/upload.min.js') }}"></script>
     </body>
 </html>

@@ -108,8 +108,8 @@
         <a href="{{ url_for('admins.admin_server_zfs') }}" id="admin_navmenu_zfs"><i class="fa fa-database"></i>ZFS</a>
 
     </div>
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
     <script>
         var dropdown = document.getElementsByClassName("dropdown-btn");
         var i;

@@ -3,7 +3,7 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <div class="container-narrow">
         <h1>Sync Modification</h1>
@@ -53,6 +53,6 @@
             <p><input class="btn btn-default btn-submit" type="submit" value="Create Sync Job"></p>
         </form>
     </div>
-    <script src="/static/js/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
 </body>
 {% endblock %}

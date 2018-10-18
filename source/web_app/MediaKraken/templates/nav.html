@@ -1,6 +1,6 @@
 <head>
     <meta charset="UTF-8">
-    <script src="/static/js/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
     <script>
         $(function () {
             $('nav li ul').hide().removeClass('fallback');
@@ -12,7 +12,7 @@
 </head>
 <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
     <a class="navbar-brand" href="#">
-        <img src="/static/images/MediaKraken.png" alt="Logo" style="width:40px;">
+        <img src="{{ url_for('static', filename='/static/images/MediaKraken.png') }}" alt="Logo" style="width:40px;">
         <a class="navbar-brand" href="{{ url_for('public.home') }}" id="menu_home">MediaKraken</a>
     </a>
     <ul class="navbar-nav">
@@ -65,7 +65,7 @@
             </form>
         {% endif %}
     </ul>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- the script for refresh current time -->
     <script>
     var update = function () {

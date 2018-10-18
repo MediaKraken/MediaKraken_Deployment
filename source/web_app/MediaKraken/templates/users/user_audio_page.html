@@ -3,9 +3,9 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet"  href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
     </head>
     {% if media %}
     {{ pagination.info }}
@@ -38,11 +38,11 @@
     <p id="general_text">No media found.</p>
     {% endif %}
     {% endblock %}
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/context/jquery.contextmenu.js"></script>
-    <script src="/static/js/jquery.shuffle.min.js"></script>
-    <script src="/static/js/blazy.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/context/jquery.contextmenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.shuffle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
     <script>
         ;(function() {
             // Initialize

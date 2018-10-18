@@ -5,8 +5,8 @@
     <head>
         <meta charset="utf-8" />
         <title>MediaKraken Video Player</title>
-        <link href="/static/videojs/video-js.min.css" rel="stylesheet">
-        <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link href="{{ url_for('static', filename='/static/videojs/video-js.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
     </head>
     <body id="data_background">
         {% if data_mtype == "yt" %}
@@ -37,7 +37,7 @@
             width="600"
             controls
             data-setup='{ "techOrder": ["aurora"] }'>
-        <source src="/static/sound/Hallelujah.flac" type="audio/flac" />
+        <source src="{{ url_for('static', filename='/static/sound/Hallelujah.flac') }}" type="audio/flac" />
         {% else %}
         <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264" poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
             <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
@@ -54,35 +54,35 @@
         {% endif %}
         {% endif %}
         {% endif %}
-        <script src="/static/videojs/video.min.js"></script>
+        <script src="{{ url_for('static', filename='/static/videojs/video.min.js') }}"></script>
         {% if data_mtype == "yt" %}
-        <script src="/static/videojs/Youtube.min.js"></script>
+        <script src="{{ url_for('static', filename='/static/videojs/Youtube.min.js') }}"></script>
         {% else %}
         {% if data_mtype == "vm" %}
-        <script src="/static/videojs/Vimeo.js"></script>
+        <script src="{{ url_for('static', filename='/static/videojs/Vimeo.js') }}"></script>
         {% else %}
         {% if data_mtype == "hls" %}
-        <script src="/static/videojs/videojs-contrib-hls.min.js"></script>
+        <script src="{[ url_for('static', filename='/static/videojs/videojs-contrib-hls.min.js') }}"></script>
         <script>
             var player = videojs('example-video');
             player.play();
         </script>
         {% else %}
         {% if data_mtype == "dm" %}
-        <script src="/static/videojs/videojs-dailymotion.js"></script>
+        <script src="{[ url_for('static', filename='/static/videojs/videojs-dailymotion.js') }}"></script>
         {% else %}
         {% if data_mtype == "mu" %}
-        <script src="/static/videojs/videojs-aurora.js"></script>
-        <script src="/static/js/aurora/aurora.min.js"></script>
-        <script src="/static/js/aurora/aac.min.js"></script>
-        <script src="/static/js/aurora/alac.min.js"></script>
-        <script src="/static/js/aurora/aurora-speex.min.js"></script>
-        <script src="/static/js/aurora/flac.min.js"></script>
-        <script src="/static/js/aurora/mp3.min.js"></script>
-        <script src="/static/js/aurora/ogg.min.js"></script>
-        <script src="/static/js/aurora/opus.min.js"></script>
-        <script src="/static/js/aurora/speex.min.js"></script>
-        <script src="/static/js/aurora/vorbis.min.js"></script>
+        <script src="{{ url_for('static', filename='/static/videojs/videojs-aurora.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/aurora.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/aac.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/alac.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/aurora-speex.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/flac.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/mp3.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/ogg.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/opus.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/speex.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/static/js/aurora/vorbis.min.js') }}"></script>
         {% endif %}
         {% endif %}
         {% endif %}

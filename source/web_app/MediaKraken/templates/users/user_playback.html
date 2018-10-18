@@ -5,18 +5,18 @@
     <head>
         <meta charset="utf-8" />
         <title>MediaKraken Video Player</title>
-        <link href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
     </head>
     <body id="data_background">
         <section>
             <figure>
-                <video controls="controls" width="826" height="360" poster="/static/images/movie_ticket.png" preload="metadata" aria-describedby="full-descript">
+                <video controls="controls" width="826" height="360" poster="{{ url_for('static', filename='/static/images/movie_ticket.png') }}" preload="metadata" aria-describedby="full-descript">
                     <source type="video/webm" src="http://10.0.0.31:8900/stream.ffm" />
-                    <track src="/static/subs/TOS-arabic.srt" kind="subtitles" srclang="ar" label="Arabic" />
-                    <track src="/static/subs/TOS-japanese.srt" kind="subtitles" srclang="jp" label="Japanese" />
-                    <track src="/static/subs/TOS-english.srt" kind="subtitles" srclang="en" label="English" />
-                    <track src="/static/subs/TOS-turkish.srt" kind="subtitles" srclang="tr" label="Turkish" />
-                    <track src="/static/subs/TOS-ukrainian.srt" kind="subtitles" srclang="uk" label="Ukrainian" />
+                    <track src="{{ url_for('static', filename='/static/subs/TOS-arabic.srt') }}" kind="subtitles" srclang="ar" label="Arabic" />
+                    <track src="{{ url_for('static', filename='/static/subs/TOS-japanese.srt') }}" kind="subtitles" srclang="jp" label="Japanese" />
+                    <track src="{{ url_for('static', filename='/static/subs/TOS-english.srt') }}" kind="subtitles" srclang="en" label="English" />
+                    <track src="{{ url_for('static', filename='/static/subs/TOS-turkish.srt') }}" kind="subtitles" srclang="tr" label="Turkish" />
+                    <track src="{{ url_for('static', filename='/static/subs/TOS-ukrainian.srt') }}" kind="subtitles" srclang="uk" label="Ukrainian" />
                 </video>
                 <figcaption id="full-descript">
                     <p><em>{{data_desc}}</em></p>

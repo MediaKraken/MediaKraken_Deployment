@@ -3,16 +3,16 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/css/star-rating.min.css" media="all" type="text/css"/>
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/star-rating.min.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" type="text/css"/>
     </head>
     {% if data %}
     <div id="movie_detail">
-        <img alt="fs_bg_image" src= {{ "/static/meta/images/" + data_background_image }} id="fs_bg_image" />
+        <img alt="fs_bg_image" src= "{{ url_for('static', filename='/static/meta/images/' + data_background_image) }}" id="fs_bg_image" />
         <div id="movie_image_div" class="table-responsive">
-            <img class="center" src= {{ "/static/meta/images/" + data_poster_image }} >
+            <img class="center" src= "{{ url_for('static', filename='/static/meta/images/' + data_poster_image) }}" >
             <table class="table table-hover">
                 <tbody>
                     <tr>
@@ -136,7 +136,7 @@
                     {% for chapter_info in data_json_media_chapters %}
                     <div class="col-1-4">
                         <a href= "{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}" >
-                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + chapter_info[1] }} alt= {{ "../static/meta/images/" + chapter_info[1] }} height="150" width="150">
+                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/meta/images/' + chapter_info[1]) }}" alt= "{{ url_for('static', filename='/static/meta/images/' + chapter_info[1] }}" height="150" width="150">
                         </a>
                         <p>{{chapter_info[0]}}</p>
                     </div>
@@ -149,10 +149,10 @@
     {% else %}
     <p>No info found. ERROR! You should never see this message.</p>
     {% endif %}
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.min.js" type="text/javascript"></script>
-    <script src="/static/js/star-rating.min.js" type="text/javascript"></script>
-    <script src="/static/js/blazy.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='/static/js/star-rating.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
     <script>
         ;(function() {
             // Initialize
