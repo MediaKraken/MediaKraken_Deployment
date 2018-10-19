@@ -594,6 +594,12 @@ def on_config_change(self, config, section, key, value):
     def main_mediakraken_event_play_media_mpv(self, *args):
         common_global.es_inst.com_elastic_index('info', {'stuff': MediaKrakenApp.media_path})
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
+            # TODO - load real mapping
+            share_mapping = (
+                ('/mediakraken/mnt/', '/home/spoot/zfsspoo/Media/'),)
+            if share_mapping is not None:
+                for mapping in share_mapping:
+                    video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
             if os.path.isfile(MediaKrakenApp.media_path):
                 self.mpv_process = subprocess.Popen(
                     split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
