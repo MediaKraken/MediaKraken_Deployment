@@ -21,6 +21,7 @@ from common import common_file
 from common import common_hardware_chromecast
 from common import common_hardware_hdhomerun
 from common import common_hardware_roku_network
+from common import common_hardware_soco
 from common import common_signal
 # from common import common_logging_elasticsearch
 from common import common_string
@@ -60,6 +61,11 @@ for chromecast_ip, data_value in common_hardware_chromecast.com_hard_chrome_disc
 for roku in common_hardware_roku_network.com_roku_network_discovery():
     # common_global.es_inst.com_elastic_index('info', {'roku out': roku})
     media_devices.append({'Roku': roku})
+
+# soco discover
+for soco in common_hardware_soco.common_hardware_soco():
+    # common_global.es_inst.com_elastic_index('info', {'soco out': soco})
+    media_devices.append({'Soco': soco})
 
 common_file.com_file_save_data('/mediakraken/devices/device_scan.txt',
                                media_devices, True, False, None)
