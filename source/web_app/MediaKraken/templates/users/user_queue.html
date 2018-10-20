@@ -3,9 +3,9 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" type="text/css"/>
     </head>
     {% if media %}
     {{ pagination.info }}
@@ -17,13 +17,13 @@
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href= {{ "../tv_show_detail/" + row_data[1] }} >
                 {% if row_data[2] == None %}
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "/static/images/missing_icon.jpg" height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/images/missing_icon.jpg') }}" height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content">{{row_data[0] + " - " + row_data[3]}}</p>
                 </div>
                 {% else %}
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= ""{{ url_for('static', filename='/static/meta/images/' + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[3]}}</p>
@@ -37,10 +37,11 @@
     {% else %}
     <p id="general_text">No media found in queue.</p>
     {% endif %}
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/context/jquery.contextmenu.js"></script>
-    <script src="/static/js/base_webapp.js"></script>
-    <script src="/static/js/blazy.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/context/jquery.contextmenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/base_webapp.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
     <script>
         ;(function() {
             // Initialize

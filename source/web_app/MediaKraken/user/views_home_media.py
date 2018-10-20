@@ -28,11 +28,8 @@ def home_media_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        # TODO wrong movie query
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
-    else:
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page)
+    # TODO wrong movie query
+    metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
     return render_template("users/user_home_media_list.html", media=media)
 
 

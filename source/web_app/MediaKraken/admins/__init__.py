@@ -5,6 +5,7 @@ from . import views_backup
 from . import views_chromecasts
 from . import views_cron
 from . import views_docker
+from . import views_game_metadata
 from . import views_library
 from . import views_link
 from . import views_messages

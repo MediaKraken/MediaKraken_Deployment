@@ -5,22 +5,22 @@
     <html>
         <head>
             <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-            <link rel="stylesheet" href="/static/css/style_album_player.min.css" />
-            <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+            <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/style_album_player.min.css') }}" />
+            <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
         </head>
         <body id="data_background">
             <div id="album-player"></div>
-            <script src="/static/js/aurora/aurora.min.js"></script>
-            <script src="/static/js/aurora/flac.min.js"></script>
-            <script src="/static/js/aurora/aac.min.js"></script>
-            <script src="/static/js/aurora/alac.min.js"></script>
-            <script src="/static/js/aurora/mp3.min.js"></script>
-            <script src="/static/js/aurora/ogg.min.js"></script>
-            <script src="/static/js/aurora/opus.min.js"></script>
-            <script src="/static/js/aurora/vorbis.min.js"></script>
-            <script src="/static/js/aurora/aurora-speex.min.js"></script>
-            <script src="/static/js/aurora/speex.min.js"></script>
-            <h2>Metaman | Album Info</h2>
+            <script src="{{ url_for('static', filename='/static/js/aurora/aurora.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/flac.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/aac.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/alac.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/mp3.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/ogg.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/opus.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/vorbis.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/aurora-speex.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='/static/js/aurora/speex.min.js') }}"></script>
+            <h2>MediaKraken | Album Info</h2>
             <p>{{ data_desc }}</p>
             <ul class="album-player-controls">
                 {% for row_data in data_song_list %}

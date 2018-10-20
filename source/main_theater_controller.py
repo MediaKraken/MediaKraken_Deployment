@@ -28,7 +28,7 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_signal
-from common import common_theater
+#from common import common_theater
 
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
@@ -128,7 +128,7 @@ class MKEcho(basic.LineReceiver):
 
     def sendline_data(self, line):
         common_global.es_inst.com_elastic_index('info', {'sending': line})
-        self.sendLine(line.encode("utf8"))
+        self.sendLine(line.encode())
 
 
 class MKFactory(protocol.ClientFactory):
@@ -228,7 +228,7 @@ class MediaKrakenApp(App):
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.first_image_demo = True
-        self.common_remote = common_theater.main_remote_control_event_process
+        #self.common_remote = common_theater.main_remote_control_event_process
         self.play_status = None
         return root
 
@@ -241,7 +241,7 @@ class MediaKrakenApp(App):
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
                 common_global.es_inst.com_elastic_index('info', {'server list': server_list})
-                host_ip = server_list[0]
+                host_ip = server_list[0].decode() # as this is returned as bytes
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
                                 host_ip.split(':')[0])
@@ -273,7 +273,7 @@ class MediaKrakenApp(App):
         """
         Process network message from server
         """
-        json_message = json.loads(server_msg)
+        json_message = json.loads(server_msg.decode())
         try:
             if json_message['Type'] != "Image":
                 common_global.es_inst.com_elastic_index('info', {"Got Message": server_msg})
@@ -323,16 +323,15 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_video_production_companies.text = production_list[:-2]
 
             elif json_message['Subtype'] == 'FFprobe Detail':
-                # TODO need to list the actual video files
                 # TODO have the below refresh for the select video file
                 # TODO will need to display SD/HD/UHD and length of video
                 # populate the audio streams to select
                 self.root.ids.theater_media_video_audio_spinner.values = list(map(
-                    str, audio_streams))
+                    str, json_message['Audio Streams']))
                 self.root.ids.theater_media_video_audio_spinner.text = 'None'
                 # populate the subtitle options
                 self.root.ids.theater_media_video_subtitle_spinner.values \
-                    = list(map(str, subtitle_streams))
+                    = list(map(str, json_message['Subtitle Streams']))
                 self.root.ids.theater_media_video_subtitle_spinner.text = 'None'
             elif json_message['Subtype'] == "List":
                 self.send_twisted_message_thread(json.dumps({'Type': 'Device Play List'}))
@@ -389,7 +388,7 @@ class MediaKrakenApp(App):
                 common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
                 if json_message['Image Media Type'] == "Demo":
                     f = open("./image_demo", "w")
-                    f.write(base64.b64decode(json_message['Data']))
+                    f.write(base64.b64decode(json_message['Data'].encode()))
                     f.close()
                     self.demo_media_id = json_message['UUID']
                     if self.first_image_demo == False:
@@ -404,21 +403,21 @@ class MediaKrakenApp(App):
                         self.first_image_demo = False
                 elif json_message['Image Media Type'] == "Movie":
                     f = open("./image_movie", "w")
-                    f.write(base64.b64decode(json_message['Data']))
+                    f.write(base64.b64decode(json_message['Data'].encode()))
                     f.close()
                     proxy_image_movie = Loader.image("./image_movie")
                     proxy_image_movie.bind(
                         on_load=self._image_loaded_home_movie)
                 elif json_message['Image Media Type'] == "New Movie":
                     f = open("./image_new_movie", "w")
-                    f.write(base64.b64decode(json_message['Data']))
+                    f.write(base64.b64decode(json_message['Data'].encode()))
                     f.close()
                     proxy_image_new_movie = Loader.image("./image_new_movie")
                     proxy_image_new_movie.bind(
                         on_load=self._image_loaded_home_new_movie)
                 elif json_message['Image Media Type'] == "In Progress":
                     f = open("./image_in_progress", "w")
-                    f.write(base64.b64decode(json_message['Data']))
+                    f.write(base64.b64decode(json_message['Data'].encode()))
                     f.close()
                     proxy_image_prog_movie = Loader.image(
                         "./image_in_progress")
@@ -877,11 +876,11 @@ if __name__ == '__main__':
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_controller/kivy_layouts/main.kv')
     Builder.load_file(
-        'theater_controller/kivy_layouts/KV_Layout_Load_Dialog.kv')
-    Builder.load_file('theater_controller/kivy_layouts/KV_Layout_Login.kv')
+        'theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
     Builder.load_file(
-        'theater_controller/kivy_layouts/KV_Layout_Notification.kv')
-    Builder.load_file('theater_controller/kivy_layouts/KV_Layout_Slider.kv')
+        'theater_resources/kivy_layouts/KV_Layout_Notification.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
     # so the raspberry pi doesn't crash
     if os.uname()[4][:3] != 'arm':
         Window.fullscreen = 'auto'

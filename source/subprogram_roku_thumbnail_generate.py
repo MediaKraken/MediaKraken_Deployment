@@ -23,7 +23,7 @@ import pika
 from common import common_global
 from common import common_hardware_roku_bif
 from common import common_logging_elasticsearch
-
+from common import common_signal
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_roku_thumbnail_generate')
@@ -152,6 +152,8 @@ def main():
                                  'mkrabbitmq', '-p', ' 5672'], shell=False)
     wait_pid.wait()
     mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:

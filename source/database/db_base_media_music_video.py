@@ -17,6 +17,20 @@
 '''
 
 
+def db_music_video_list_count(self, search_value=None):
+    """
+    Music video count
+    """
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_music_video, mm_media'
+                               ' where mm_media_metadata_guid = mm_metadata_music_video_guid group'
+                               ' and mm_media_music_video_song %% %s', (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_music_video, mm_media'
+                               ' where mm_media_metadata_guid = mm_metadata_music_video_guid')
+    return self.db_cursor.fetchone()[0]
+
+
 def db_music_video_list(self, offset=None, per_page=None, search_value=None):
     """
     music video list

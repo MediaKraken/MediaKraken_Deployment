@@ -30,10 +30,7 @@ def db_media_album_count(self, search_value=None):
         self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
                                ' where mm_media_metadata_guid = mm_metadata_album_guid'
                                ' group by mm_metadata_album_guid')
-    sql_data = self.db_cursor.fetchall()
-    if sql_data is None:
-        return 0
-    return len(sql_data)
+    return self.db_cursor.fetchone()[0]
 
 
 def db_media_album_list(self, offset=None, per_page=None, search_value=None):

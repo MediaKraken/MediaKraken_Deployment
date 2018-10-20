@@ -50,14 +50,14 @@ def db_open(self, db_prod=True):
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
                            multiprocessing.cpu_count())
     # do here since the db cursor is created now
-    if db_prod == True:
-        # verify the trigram extension is enabled for the database
-        self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
-        if self.db_cursor.fetchone()[0] == 0:
-            common_global.es_inst.com_elastic_index('critical',
-                                                    {'stuff': 'pg_trgm extension needs to '
-                                                              'be enabled for database!!!!  Exiting!!!'})
-            sys.exit(1)
+    # verify the trigram extension is enabled for the database
+    self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
+    if self.db_cursor.fetchone()[0] == 0:
+        common_global.es_inst.com_elastic_index('critical',
+                                                {'stuff': 'pg_trgm extension needs to '
+                                                          'be enabled for database!!!!'
+                                                          '  Exiting!!!'})
+        sys.exit(1)
 
 
 def db_close(self):
@@ -97,18 +97,17 @@ def db_table_count(self, table_name):
     """
     # return count of records in table
     """
-    try:
-        # can't %s due to ' inserted
-        self.db_cursor.execute('select count(*) from ' + table_name)
-        return self.db_cursor.fetchone()[0]
-    except:
-        return None
+    # can't %s due to ' inserted
+    # TODO little bobby tables
+    self.db_cursor.execute('select count(*) from ' + table_name)
+    return self.db_cursor.fetchone()[0]
 
 
 def db_drop_table(self, table_name):
     """
     drop a table
     """
+    # TODO little bobby tables
     self.db_cursor.execute('DROP TABLE IF EXISTS ' +
                            table_name)  # can't %s due to ' inserted
 
@@ -117,6 +116,7 @@ def db_query(self, query_string):
     """
     # general run anything
     """
+    # TODO little bobby tables
     common_global.es_inst.com_elastic_index('info', {"query": query_string})
     self.db_cursor.execute(query_string)
     try:

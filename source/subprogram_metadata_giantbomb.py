@@ -18,9 +18,13 @@
 
 from common import common_config_ini
 from common import common_internationalization
+from common import common_signal
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 total_download_attempts = 0
 
@@ -32,6 +36,7 @@ def main(argv):
     # search the directory for filter files
 
 
+# TODO this should go thru the limiter
 if __name__ == "__main__":
     print(('bomb game info download attempts: %s' % total_download_attempts))
     # send notifications

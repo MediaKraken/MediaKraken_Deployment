@@ -49,6 +49,7 @@ def db_meta_game_system_list(self, offset=None, records=None, search_value=None)
     """
     # return list of game systems
     """
+    # TODO might need to sort by release year as well for machines with multiple released
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select gs_id,gs_game_system_name,'
@@ -103,7 +104,7 @@ def db_meta_games_system_insert(self, platform_name,
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_game_systems_info(gs_id,'
                            ' gs_game_system_name, gs_game_system_alias,'
-                           ' gs_game_system_json) values (%s, %s, %s, %s, %s)',
+                           ' gs_game_system_json) values (%s, %s, %s, %s)',
                            (new_guid, platform_name, platform_alias, platform_json))
     self.db_commit()
     return new_guid

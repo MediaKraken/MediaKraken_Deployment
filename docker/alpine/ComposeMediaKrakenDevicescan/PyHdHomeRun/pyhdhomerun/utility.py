@@ -12,4 +12,3 @@ def ip_ascii_to_int(ip):
 
     encoded = ("%02x%02x%02x%02x" % (octets[0], octets[1], octets[2], octets[3]))
     return int(encoded, 16)
-

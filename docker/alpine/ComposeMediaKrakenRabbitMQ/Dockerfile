@@ -1,4 +1,11 @@
+# https://github.com/docker-library/rabbitmq
+
 FROM alpine:3.8
+
+ARG ALPMIRROR
+ARG PIPMIRROR
+
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN addgroup -S rabbitmq && adduser -S -h /var/lib/rabbitmq -G rabbitmq rabbitmq

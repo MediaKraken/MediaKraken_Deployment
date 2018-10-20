@@ -23,10 +23,12 @@ from shlex import split
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_streamlink')
-
+# set signal exit breaks
+common_signal.com_signal_set_break()
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 

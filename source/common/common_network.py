@@ -21,7 +21,6 @@ import os
 import re
 import socket
 import ssl
-import sys
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -61,7 +60,7 @@ def mk_network_fetch_from_url(url, directory=None):
 
 def mk_network_wol(mac_address):
     """
-    Send wake on lan even to mac address
+    Send wake on lan event to mac address
     """
     wol.send_magic_packet(mac_address)
 
@@ -174,5 +173,8 @@ def mk_network_stats():
 
 
 def mk_network_country_code():
-    response = urllib.request.urlopen("https://geoip-db.com/json")
-    return json.loads(response.read())
+    try:
+        response = urllib.request.urlopen("https://geoip-db.com/json")
+        return json.loads(response.read())
+    except:
+        return {'country_code': 'Error', 'country_name': 'Unknown'}

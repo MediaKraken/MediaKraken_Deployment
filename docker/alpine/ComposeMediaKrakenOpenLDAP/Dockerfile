@@ -2,7 +2,11 @@ FROM gliderlabs/alpine:3.8
 
 MAINTAINER packeteer <packeteer@gmail.com>
 
-RUN apk-install openldap openldap-clients openldap-back-hdb openldap-back-bdb ldapvi
+ARG ALPMIRROR
+ARG PIPMIRROR
+
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update openldap openldap-clients openldap-back-hdb openldap-back-bdb ldapvi
 
 EXPOSE 389 636
 

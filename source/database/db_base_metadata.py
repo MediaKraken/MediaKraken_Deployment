@@ -159,6 +159,16 @@ def db_meta_tmdb_count(self, tmdb_id):
     return self.db_cursor.fetchone()[0]
 
 
+def db_meta_movie_count(self, search_value=None):
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_movie '
+                               ' where mm_media_name %% %s',
+                               (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_movie')
+    return self.db_cursor.fetchone()[0]
+
+
 def db_meta_movie_list(self, offset=None, records=None, search_value=None):
     """
     # return list of movies
@@ -168,14 +178,16 @@ def db_meta_movie_list(self, offset=None, records=None, search_value=None):
             self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
                                    'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
                                    'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json from mm_metadata_movie order '
-                                   ' where mm_media_name %% %s by LOWER(mm_media_name)',
+                                   'mm_metadata_user_json from mm_metadata_movie '
+                                   'where mm_media_name %% %s '
+                                   'order by LOWER(mm_media_name), mm_date',
                                    (search_value,))
         else:
             self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
                                    'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
                                    'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json from mm_metadata_movie order by LOWER(mm_media_name)')
+                                   'mm_metadata_user_json from mm_metadata_movie'
+                                   ' order by LOWER(mm_media_name), mm_date')
     else:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
@@ -185,7 +197,7 @@ def db_meta_movie_list(self, offset=None, records=None, search_value=None):
                                    ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
                                    ' from mm_metadata_movie where mm_media_name %% %s'
                                    ' order by mm_media_name offset %s limit %s)'
-                                   ' order by mm_media_name', (search_value, offset, records))
+                                   ' order by mm_media_name, mm_date', (search_value, offset, records))
         else:
             self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
                                    'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
@@ -193,7 +205,7 @@ def db_meta_movie_list(self, offset=None, records=None, search_value=None):
                                    'mm_metadata_user_json'
                                    ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
                                    ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
-                                   ' order by mm_media_name', (offset, records))
+                                   ' order by mm_media_name, mm_date', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -239,17 +251,23 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     """
     metadata_guid = None
     if media_release_year is not None:
-        # for year and -1/+1 year as well
+        # for year and -3/+3 year as well
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->>\'original_title\') = %s)'
-                               ' and substring(mm_metadata_json->>\'release_date\' from 0 for 5) in (%s,%s,%s)',
+                               ' or LOWER(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'original_title\') = %s)'
+                               ' and substring(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'release_date\' from 0 for 5)'
+                               ' in (%s,%s,%s,%s,%s,%s,%s)',
                                (media_name.lower(), media_name.lower(), str(media_release_year),
-                                str(int(media_release_year) + 1), str(int(media_release_year) - 1)))
+                                str(int(media_release_year) + 1),
+                                str(int(media_release_year) + 2),
+                                str(int(media_release_year) + 3),
+                                str(int(media_release_year) - 1),
+                                str(int(media_release_year) - 2),
+                                str(int(media_release_year) - 3)))
     else:
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->>\'original_title\') = %s)',
+                               ' or LOWER(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'original_title\') = %s)',
                                (media_name.lower(), media_name.lower()))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_guid']
@@ -313,6 +331,7 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
 
 
 def db_meta_queue_list(self, user_id, offset=None, records=None):
+    # TODO sort by release date as well
     if offset is None:
         self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'
                                ' from mm_metadata_movie'

@@ -128,7 +128,7 @@ class MKEcho(basic.LineReceiver):
 
     def sendline_data(self, line):
         common_global.es_inst.com_elastic_index('info', {'sending': line})
-        self.sendLine(line.encode("utf8"))
+        self.sendLine(line.encode())
 
 
 class MKFactory(protocol.ClientFactory):
@@ -241,7 +241,7 @@ class MediaKrakenApp(App):
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
                 common_global.es_inst.com_elastic_index('info', {'server list':
                                                                      server_list})
-                host_ip = server_list[0]
+                host_ip = server_list[0].decode() # as this is returned as bytes
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
                                 host_ip.split(':')[0])
@@ -273,7 +273,7 @@ class MediaKrakenApp(App):
         """
         Process network message from server
         """
-        json_message = json.loads(server_msg)
+        json_message = json.loads(server_msg.decode())
         try:
             if json_message['Type'] != "Image":
                 common_global.es_inst.com_elastic_index('info', {'Got Message': server_msg})
@@ -407,31 +407,31 @@ class MediaKrakenApp(App):
                 self.root.ids.theater_media_genre_list_scrollview.add_widget(
                     btn1)
         elif json_message['Type'] == "Image":
-            if json_message['Sub'] == "Movie":
+            if json_message['Subtype'] == "Movie":
                 common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
                 f = open('./image_demo', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 self.demo_media_id = json_message['UUID']
                 proxy_image_demo = Loader.image('./image_demo')
                 proxy_image_demo.bind(on_load=self._image_loaded_home_demo)
-            elif json_message['Sub2'] == "Movie":
+            elif json_message['Image Media Type'] == "Movie":
                 f = open('./image_movie', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 proxy_image_movie = Loader.image('./image_movie')
                 proxy_image_movie.bind(
                     on_load=self._image_loaded_home_movie)
-            elif json_message['Sub2'] == "New Movie":
+            elif json_message['Image Media Type'] == "New Movie":
                 f = open('./image_new_movie', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 proxy_image_new_movie = Loader.image('./image_new_movie')
                 proxy_image_new_movie.bind(
                     on_load=self._image_loaded_home_new_movie)
-            elif json_message['Sub2'] == "In Progress":
+            elif json_message['Image Media Type'] == "In Progress":
                 f = open('./image_in_progress', "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(base64.b64decode(json_message['Data'].encode()))
                 f.close()
                 proxy_image_prog_movie = Loader.image('./image_in_progress')
                 proxy_image_prog_movie.bind(
@@ -594,6 +594,12 @@ def on_config_change(self, config, section, key, value):
     def main_mediakraken_event_play_media_mpv(self, *args):
         common_global.es_inst.com_elastic_index('info', {'stuff': MediaKrakenApp.media_path})
         if self.root.ids.theater_media_video_play_local_spinner.text == 'This Device':
+            # TODO - load real mapping
+            share_mapping = (
+                ('/mediakraken/mnt/', '/home/spoot/zfsspoo/Media/'),)
+            if share_mapping is not None:
+                for mapping in share_mapping:
+                    video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
             if os.path.isfile(MediaKrakenApp.media_path):
                 self.mpv_process = subprocess.Popen(
                     split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
@@ -787,10 +793,10 @@ def on_config_change(self, config, section, key, value):
         common_signal.com_signal_set_break()
         # load the kivy's here so all the classes have been defined
         Builder.load_file('theater/kivy_layouts/main.kv')
-        Builder.load_file('theater/kivy_layouts/KV_Layout_Load_Dialog.kv')
-        Builder.load_file('theater/kivy_layouts/KV_Layout_Login.kv')
-        Builder.load_file('theater/kivy_layouts/KV_Layout_Notification.kv')
-        Builder.load_file('theater/kivy_layouts/KV_Layout_Slider.kv')
+        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
+        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
+        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
+        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
         # so the raspberry pi doesn't crash
         if os.uname()[4][:3] != 'arm':
             Window.fullscreen = 'auto'

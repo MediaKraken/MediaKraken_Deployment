@@ -25,7 +25,7 @@ class CommonHardwareHue(object):
     """
 
     def __init__(self, ip_addr):
-        self.hue_inst = Bridge(ip_addr)
+        self.hue_inst = Bridge(ip_addr, config_file_path='/mediakraken/phue/phue.config')
         # If the app is not registered and the button is not pressed,
         # press the button and call connect() (this only needs to be run a single time)
         self.hue_inst.connect()

@@ -17,11 +17,13 @@
 '''
 
 import os
+from datetime import date
 
 import libcloud
 from gevent import monkey
 
 from . import common_global
+from . import common_internationalization
 
 monkey.patch_all()
 
@@ -36,11 +38,13 @@ class CommonLibCloud(object):
                                        libcloud.DriverType.COMPUTE.RACKSPACE)
         self.driver = self.cls(option_config_json['Cloud'][cloud_provider]['User'],
                                option_config_json['Cloud'][cloud_provider]['API_Key'])
+        self.user = option_config_json['Cloud'][cloud_provider]['User']
 
     def com_net_cloud_upload(self, container_name, input_file_name, output_file_name):
         container = self.driver.get_container(container_name=container_name)
-        # TODO pull this info from the file itself?
-        extra = {'meta_data': {'owner': 'myuser', 'created': '2014-02-2'}}
+        extra = {'meta_data': {'owner': self.user,
+                               'created': common_internationalization.com_inter_date_format(
+                                   date.today())}}
         with open(input_file_name, 'rb') as iterator:
             obj = self.driver.upload_object_via_stream(iterator=iterator,
                                                        container=container,

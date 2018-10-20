@@ -18,6 +18,7 @@
 
 import uuid
 
+# this is to hold the ir/network codes for specific hardware devices!d
 
 def db_hardware_json_read(self, manufacturer, model_name):
     """

@@ -25,18 +25,21 @@ from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_share
+from common import common_signal
 from common import common_version
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_server')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 common_global.es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})
 
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Cert not found, generating.'})
-    proc_ssl = subprocess.Popen(
-        ['python3', './subprogram_ssl_keygen.py'], shell=False)
+    proc_ssl = subprocess.Popen(['python3', './subprogram_ssl_keygen.py'], shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
@@ -51,8 +54,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 if db_connection.db_version_check() != common_version.DB_VERSION:
     common_global.es_inst.com_elastic_index('info',
                                             {'stuff': 'Database upgrade in progress...'})
-    db_create_pid = subprocess.Popen(
-        ['python3', './db_update_version.py'], shell=False)
+    db_create_pid = subprocess.Popen(['python3', './db_update_version.py'], shell=False)
     db_create_pid.wait()
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Database upgrade complete.'})
 
@@ -79,16 +81,6 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
     common_global.es_inst.com_elastic_index('critical', {
         'Invalid Path': option_config_json['MediaKrakenServer']['BackupLocal']})
     sys.exit()
-
-# startup the other reactor via popen as it's non-blocking
-proc = subprocess.Popen(
-    ['python3', './subprogram_reactor_line.py'], shell=False)
-common_global.es_inst.com_elastic_index('info', {'Reactor PID': proc.pid})
-
-# fire up cron service
-proc_cron = subprocess.Popen(
-    ['python3', './subprogram_cron_checker.py'], shell=False)
-common_global.es_inst.com_elastic_index('info', {'Cron PID': proc_cron.pid})
 
 # fire up link servers
 link_pid = {}
@@ -121,10 +113,6 @@ if option_config_json['Docker Instances']['transmission']:
 
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
-
-# hold here
-# this will key off the twisted reactor...only reason is so doesn't shut down
-proc.wait()
 
 # commit
 db_connection.db_commit()

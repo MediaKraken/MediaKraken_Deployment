@@ -1,1 +1,3 @@
 *.vh.default.conf~
+/dockerfile-nginx~
+*.conf~

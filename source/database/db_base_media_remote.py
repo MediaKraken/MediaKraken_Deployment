@@ -103,6 +103,7 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     """
     # new media for link
     """
+    # TODO add games to this
     first_query = True
     sync_query = ''
     if sync_movie is not None:

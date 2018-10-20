@@ -5,7 +5,10 @@ from . import views_3d
 from . import views_cctv
 from . import views_chromecast
 from . import views_class
+from . import views_comic_reader
 from . import views_games
+from . import views_hardware
+from . import views_hardware_hue
 from . import views_home_media
 from . import views_images
 from . import views_internet
@@ -25,7 +28,6 @@ from . import views_movie_genre
 from . import views_music
 from . import views_music_video
 from . import views_periodicals
-from . import views_person
 from . import views_playback
 from . import views_queue
 from . import views_search

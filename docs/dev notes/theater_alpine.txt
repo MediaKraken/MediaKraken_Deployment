@@ -1,0 +1,35 @@
+3.8 alpine
+set video card to vmware compat
+
+adduser <user>
+
+su
+setup-xorg-base
+enbale community repo and update
+apk add xfce4
+apk add xf86-video-vmware
+apk add xf86-input-mouse xf86-input-keyboard
+rc-service dbus start
+rc-update add dbus
+
+rc-service lxdm start
+
+rc-update add lxdm
+
+***************** below works
+
+apk add alpine-desktop
+apk add xfce4 thunar-volman faenza-icon-theme
+apk add xf86-video-vmware
+rc-service dbus start
+rc-update add dbus
+rc-service slim start
+
+
+apk add git python3 nano gcc python3-dev musl-dev mesa-dev libffi-dev libressl-dev sdl2-dev sdl-dev jpeg-dev sdl_mixer-dev sdl_image-dev
+apk add mpv
+
+git clone https://github.com/MediaKraken/MediaKraken_Deployment 
+
+pip3 install cython
+pip3 install kivy pyopenssl crochet elasticsearch pygame

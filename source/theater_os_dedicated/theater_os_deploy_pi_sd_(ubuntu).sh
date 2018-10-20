@@ -2,7 +2,7 @@
 DRIVE_ID=/dev/sdb
 DRIVE_BOOT=$DRIVE_ID + '1'
 DRIVE_SYS=$DRIVE_ID + '2'
-CODEVERSION=8.1.1
+CODEVERSION=8.2.5
 
 # setup the partitions on DRIVE_ID
 # THIS WILL WIPE OUT DRIVE_ID!!!!!!!!!!

@@ -199,6 +199,7 @@ class AdminSettingsForm(Form):
     docker_mumble = BooleanField('Start Mumble (chat server)')
     docker_pgadmin = BooleanField('Start PgAdmin (database webgui)')
     docker_portainer = BooleanField('Start Portainer (Docker monitor)')
+    docker_smtp = BooleanField('Start SMTP (Mail Server)')
     docker_teamspeak = BooleanField('Start Teamspeak 3 (chat server)')
     docker_transmission = BooleanField('Start Transmission (bittorrent webgui)')
     docker_wireshark = BooleanField('Start Wireshark (network sniffer)')

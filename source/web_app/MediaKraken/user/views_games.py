@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, request, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_games", __name__,
@@ -26,11 +26,6 @@ def user_games_list():
     Display games page
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page,
-                                                             session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page)
     session['search_page'] = 'media_games'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
@@ -40,7 +35,9 @@ def user_games_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template("users/user_game_list.html", media=mediadata,
+    return render_template("users/user_game_list.html",
+                           media=g.db_connection.db_meta_game_system_list(offset, per_page,
+                                                                          session['search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -75,11 +72,6 @@ def metadata_game_system_list():
     Display game system metadata
     """
     page, per_page, offset = common_pagination.get_page_items()
-    if session['search_text']:
-        mediadata = g.db_connection.db_meta_game_system_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_game_system_list(
-            offset, per_page)
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.
@@ -89,7 +81,10 @@ def metadata_game_system_list():
                                                   format_number=True,
                                                   )
     return render_template('users/metadata/meta_game_system_list.html',
-                           media_game_system=mediadata,
+                           media_game_system=g.db_connection.db_meta_game_system_list(offset,
+                                                                                      per_page,
+                                                                                      session[
+                                                                                          'search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

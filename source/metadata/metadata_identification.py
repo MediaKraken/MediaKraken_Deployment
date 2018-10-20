@@ -80,17 +80,13 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                                          download_que_json['Path'],
                                                                          download_que_json,
                                                                          download_que_id)
-    elif class_text == "Movie":
+    elif class_text == "Movie" or class_text == "Movie Subtitle":
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
                                                              download_que_json['Path'],
                                                              download_que_json, download_que_id,
                                                              guessit_file_name)
     elif class_text == "Movie Extras":
         # include end slash so media doesn't get chopped up
-        # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-        #         download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\', 1)[0]))
-        # else:
         metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
             download_que_json['Path'].replace('/extras/', '/').rsplit('/', 1)[0]))
         if metadata_uuid is not None:
@@ -99,11 +95,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
             pass  # TODO lookup properly
     elif class_text == "Movie Theme":
         # include end slash so theme.mp3 doesn't get chopped up
-        # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-        #         download_que_json['Path'].replace('\\theme\\', '\\')
-        #             .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
-        # else:
         metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
             download_que_json['Path'].replace(
                 '/theme/', '/').replace('/backdrops/', '/')
@@ -118,10 +109,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                                  guessit_file_name)
     elif class_text == "Movie Trailer":
         # include end slash so theme.mp3 doesn't get chopped up
-        # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-        #         download_que_json['Path'].replace('\\trailers\\', '\\').rsplit('\\', 1)[0]))
-        # else:
         metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
             download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
         common_global.es_inst.com_elastic_index('info', {'mtrailer guid': metadata_uuid})
@@ -130,12 +117,13 @@ def metadata_identification(db_connection, class_text, download_que_json,
         else:
             metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
                                                                  download_que_json['Path'],
-                                                                 download_que_json, download_que_id,
+                                                                 download_que_json,
+                                                                 download_que_id,
                                                                  guessit_file_name)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,
-                                                             download_que_json['Path'],
-                                                             download_que_json, download_que_id)
+                                                             'musicbrainz',
+                                                             download_que_id)
     elif class_text == "Music Lyric":
         # search musicbrainz as the lyrics should already be in the file/record
         pass
@@ -147,16 +135,13 @@ def metadata_identification(db_connection, class_text, download_que_json,
     elif class_text == "Sports":
         metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection,
                                                                download_que_json['Path'],
-                                                               download_que_json, download_que_id)
+                                                               download_que_json,
+                                                               download_que_id)
     elif class_text == "Subtitle":
         # TODO perhaps check file name for blah.sub = blah.mkv   then the metadata id for that
         pass
     elif class_text == "TV Extras":
         # include end slash so media doesn't get chopped up
-        # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-        #         download_que_json['Path'].replace('\\extras\\', '\\').rsplit('\\', 1)[0]))
-        # else:
         metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
             download_que_json['Path'].replace('/extras/', '/').rsplit('/', 1)[0]))
         if metadata_uuid is not None:
@@ -173,11 +158,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
     elif class_text == "TV Theme":
         common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident'})
         # include end slash so theme.mp3 doesn't get chopped up
-        # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-        #         download_que_json['Path'].replace('\\theme\\', '\\')
-        #             .replace('\\backdrops\\', '\\').rsplit('\\', 1)[0]))
-        # else:
         common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 2'})
         metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
             download_que_json['Path'].replace(
@@ -201,10 +181,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
                     'ZZ', download_que_id)
     elif class_text == "TV Trailer":
         # include end slash so theme.mp3 doesn't get chopped up
-        # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-        #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-        #         download_que_json['Path'].replace('\\trailers\\', '\\').rsplit('\\', 1)[0]))
-        # else:
         metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
             download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
         if metadata_uuid is not None:

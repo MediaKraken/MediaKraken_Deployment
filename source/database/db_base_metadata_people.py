@@ -38,6 +38,7 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     """
     # return list of people
     """
+    # TODO order by birth date
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
@@ -222,6 +223,7 @@ def db_meta_person_as_seen_in(self, person_guid):
     row_data = self.db_meta_person_by_guid(person_guid)
     if row_data is None:  # exit on not found person
         return None
+    # TODO jin index the credits
     common_global.es_inst.com_elastic_index('info', {"row_data": row_data})
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),

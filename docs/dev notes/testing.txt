@@ -5,16 +5,11 @@ python -m pytest --capture=no testing/test_common/test_common_network_youtube.py
 # launching docker containers from app
 transmission works
 
-potainer works
-
 slave starts now
 
 musicbrainz - runs but no web
 
 openldap - config not copied in docker file
 
-wireshark - launches
-
 mumble bombs about ini file that's copied
 
-devicescan - missing requests

@@ -3,7 +3,7 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <form id="bookaddform" class="form form-bookaddform" method="POST" action="" role="form">
         {{ form.hidden_tag() }}
@@ -13,6 +13,6 @@
         </div>
         <p><input class="btn btn-default btn-submit" type="submit" value="Add Book(s)"></p>
     </form>
-    <script src="/static/js/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
 </body>
 {% endblock %}

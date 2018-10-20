@@ -1,6 +1,6 @@
 /**
  * @license
- * Video.js 6.8.0 <http://videojs.com/>
+ * Video.js 6.11.0 <http://videojs.com/>
  * Copyright Brightcove, Inc. <https://www.brightcove.com/>
  * Available under Apache License Version 2.0
  * <https://github.com/videojs/video.js/blob/master/LICENSE>
@@ -19,7 +19,7 @@ var safeParseTuple = _interopDefault(require('safe-json-parse/tuple'));
 var xhr = _interopDefault(require('xhr'));
 var vtt = _interopDefault(require('videojs-vtt.js'));
 
-var version = "6.8.0";
+var version = "6.11.0";
 
 /**
  * @file browser.js
@@ -81,12 +81,12 @@ var IS_NATIVE_ANDROID = IS_ANDROID && ANDROID_VERSION < 5 && appleWebkitVersion 
 
 var IS_FIREFOX = /Firefox/i.test(USER_AGENT);
 var IS_EDGE = /Edge/i.test(USER_AGENT);
-var IS_CHROME = !IS_EDGE && /Chrome/i.test(USER_AGENT);
+var IS_CHROME = !IS_EDGE && (/Chrome/i.test(USER_AGENT) || /CriOS/i.test(USER_AGENT));
 var CHROME_VERSION = function () {
-  var match = USER_AGENT.match(/Chrome\/(\d+)/);
+  var match = USER_AGENT.match(/(Chrome|CriOS)\/(\d+)/);
 
-  if (match && match[1]) {
-    return parseFloat(match[1]);
+  if (match && match[2]) {
+    return parseFloat(match[2]);
   }
   return null;
 }();
@@ -104,9 +104,9 @@ var IE_VERSION = function () {
 }();
 
 var IS_SAFARI = /Safari/i.test(USER_AGENT) && !IS_CHROME && !IS_ANDROID && !IS_EDGE;
-var IS_ANY_SAFARI = IS_SAFARI || IS_IOS;
+var IS_ANY_SAFARI = (IS_SAFARI || IS_IOS) && !IS_CHROME;
 
-var TOUCH_ENABLED = isReal() && ('ontouchstart' in window || window.DocumentTouch && window.document instanceof window.DocumentTouch);
+var TOUCH_ENABLED = isReal() && ('ontouchstart' in window || window.navigator.maxTouchPoints || window.DocumentTouch && window.document instanceof window.DocumentTouch);
 
 var BACKGROUND_SIZE_SUPPORTED = isReal() && 'backgroundSize' in window.document.createElement('video').style;
 
@@ -2114,8 +2114,8 @@ var videojs$2 = void 0;
  */
 var autoSetup = function autoSetup() {
 
-  // Protect against breakage in non-browser environments.
-  if (!isReal()) {
+  // Protect against breakage in non-browser environments and check global autoSetup option.
+  if (!isReal() || videojs$2.options.autoSetup === false) {
     return;
   }
 
@@ -4454,9 +4454,9 @@ var Component = function () {
    *    {@link Component#dispose} gets called.
    * 2. The function callback will gets turned into a {@link Component~GenericCallback}
    *
-   * > Note: You can use `window.clearTimeout` on the id returned by this function. This
+   * > Note: You can't use `window.clearTimeout` on the id returned by this function. This
    *         will cause its dispose listener not to get cleaned up! Please use
-   *         {@link Component#clearTimeout} or {@link Component#dispose}.
+   *         {@link Component#clearTimeout} or {@link Component#dispose} instead.
    *
    * @param {Component~GenericCallback} fn
    *        The function that will be run after `timeout`.
@@ -4477,10 +4477,18 @@ var Component = function () {
   Component.prototype.setTimeout = function setTimeout(fn, timeout) {
     var _this2 = this;
 
+    // declare as variables so they are properly available in timeout function
+    // eslint-disable-next-line
+    var timeoutId, disposeFn;
+
     fn = bind(this, fn);
 
-    var timeoutId = window.setTimeout(fn, timeout);
-    var disposeFn = function disposeFn() {
+    timeoutId = window.setTimeout(function () {
+      _this2.off('dispose', disposeFn);
+      fn();
+    }, timeout);
+
+    disposeFn = function disposeFn() {
       return _this2.clearTimeout(timeoutId);
     };
 
@@ -4619,11 +4627,19 @@ var Component = function () {
   Component.prototype.requestAnimationFrame = function requestAnimationFrame(fn) {
     var _this4 = this;
 
+    // declare as variables so they are properly available in rAF function
+    // eslint-disable-next-line
+    var id, disposeFn;
+
     if (this.supportsRaf_) {
       fn = bind(this, fn);
 
-      var id = window.requestAnimationFrame(fn);
-      var disposeFn = function disposeFn() {
+      id = window.requestAnimationFrame(function () {
+        _this4.off('dispose', disposeFn);
+        fn();
+      });
+
+      disposeFn = function disposeFn() {
         return _this4.cancelAnimationFrame(id);
       };
 
@@ -8863,7 +8879,15 @@ ALL.names.forEach(function (name) {
 Tech.prototype.featuresVolumeControl = true;
 
 /**
- * Boolean indicating wether the `Tech` support fullscreen resize control.
+ * Boolean indicating whether the `Tech` supports muting volume.
+ *
+ * @type {bolean}
+ * @default
+ */
+Tech.prototype.featuresMuteControl = true;
+
+/**
+ * Boolean indicating whether the `Tech` supports fullscreen resize control.
  * Resizing plugins using request fullscreen reloads the plugin
  *
  * @type {boolean}
@@ -9042,7 +9066,7 @@ Tech.withSourceHandlers = function (_Tech) {
    * When using a source handler, prefer its implementation of
    * any function normally provided by the tech.
    */
-  var deferrable = ['seekable', 'duration'];
+  var deferrable = ['seekable', 'seeking', 'duration'];
 
   /**
    * A wrapper around {@link Tech#seekable} that will call a `SourceHandler`s seekable
@@ -9308,6 +9332,12 @@ function setSourceHelper() {
   } else if (mwFactory) {
     var mw = getOrCreateFactory(player, mwFactory);
 
+    // if setSource isn't present, implicitly select this middleware
+    if (!mw.setSource) {
+      acc.push(mw);
+      return setSourceHelper(src, mwrest, next, player, acc, lastRun);
+    }
+
     mw.setSource(assign({}, src), function (err, _src) {
 
       // something happened, try the next middleware on the current level
@@ -9353,6 +9383,71 @@ var MimetypesKind = {
 };
 
 /**
+ * Get the mimetype of a given src url if possible
+ *
+ * @param {string} src
+ *        The url to the src
+ *
+ * @return {string}
+ *         return the mimetype if it was known or empty string otherwise
+ */
+var getMimetype = function getMimetype() {
+  var src = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+  var ext = getFileExtension(src);
+  var mimetype = MimetypesKind[ext.toLowerCase()];
+
+  return mimetype || '';
+};
+
+/**
+ * Find the mime type of a given source string if possible. Uses the player
+ * source cache.
+ *
+ * @param {Player} player
+ *        The player object
+ *
+ * @param {string} src
+ *        The source string
+ *
+ * @return {string}
+ *         The type that was found
+ */
+var findMimetype = function findMimetype(player, src) {
+  if (!src) {
+    return '';
+  }
+
+  // 1. check for the type in the `source` cache
+  if (player.cache_.source.src === src && player.cache_.source.type) {
+    return player.cache_.source.type;
+  }
+
+  // 2. see if we have this source in our `currentSources` cache
+  var matchingSources = player.cache_.sources.filter(function (s) {
+    return s.src === src;
+  });
+
+  if (matchingSources.length) {
+    return matchingSources[0].type;
+  }
+
+  // 3. look for the src url in source elements and use the type there
+  var sources = player.$$('source');
+
+  for (var i = 0; i < sources.length; i++) {
+    var s = sources[i];
+
+    if (s.type && s.src && s.src === src) {
+      return s.type;
+    }
+  }
+
+  // 4. finally fallback to our list of mime types based on src url extension
+  return getMimetype(src);
+};
+
+/**
  * @module filter-source
  */
 /**
@@ -9386,10 +9481,10 @@ var filterSource = function filterSource(src) {
     src = newsrc;
   } else if (typeof src === 'string' && src.trim()) {
     // convert string into object
-    src = [checkMimetype({ src: src })];
+    src = [fixSource({ src: src })];
   } else if (isObject(src) && typeof src.src === 'string' && src.src && src.src.trim()) {
     // src is already valid
-    src = [checkMimetype(src)];
+    src = [fixSource(src)];
   } else {
     // invalid source, turn it into an empty array
     src = [];
@@ -9406,9 +9501,8 @@ var filterSource = function filterSource(src) {
  * @return {Tech~SourceObject}
  *        src Object with known type
  */
-function checkMimetype(src) {
-  var ext = getFileExtension(src.src);
-  var mimetype = MimetypesKind[ext.toLowerCase()];
+function fixSource(src) {
+  var mimetype = getMimetype(src.src);
 
   if (!src.type && mimetype) {
     src.type = mimetype;
@@ -9552,10 +9646,7 @@ var ClickableComponent = function (_Component) {
 
     // Add ARIA attributes for clickable element which is not a native HTML button
     attributes = assign({
-      'role': 'button',
-
-      // let the screen reader user know that the text of the element may change
-      'aria-live': 'polite'
+      role: 'button'
     }, attributes);
 
     this.tabIndex_ = props.tabIndex;
@@ -9588,6 +9679,9 @@ var ClickableComponent = function (_Component) {
   ClickableComponent.prototype.createControlTextEl = function createControlTextEl(el) {
     this.controlTextEl_ = createEl('span', {
       className: 'vjs-control-text'
+    }, {
+      // let the screen reader user know that the text of the element may change
+      'aria-live': 'polite'
     });
 
     if (el) {
@@ -9901,7 +9995,7 @@ var PosterImage = function (_ClickableComponent) {
     }
 
     if (this.player_.paused()) {
-      this.player_.play();
+      silencePromise(this.player_.play());
     } else {
       this.player_.pause();
     }
@@ -9934,20 +10028,27 @@ var fontMap = {
  * Construct an rgba color from a given hex color code.
  *
  * @param {number} color
- *        Hex number for color, like #f0e.
+ *        Hex number for color, like #f0e or #f604e2.
  *
  * @param {number} opacity
  *        Value for opacity, 0.0 - 1.0.
  *
  * @return {string}
  *         The rgba color that was created, like 'rgba(255, 0, 0, 0.3)'.
- *
- * @private
  */
 function constructColor(color, opacity) {
-  return 'rgba(' +
-  // color looks like "#f0e"
-  parseInt(color[1] + color[1], 16) + ',' + parseInt(color[2] + color[2], 16) + ',' + parseInt(color[3] + color[3], 16) + ',' + opacity + ')';
+  var hex = void 0;
+
+  if (color.length === 4) {
+    // color looks like "#f0e"
+    hex = color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+  } else if (color.length === 7) {
+    // color looks like "#f604e2"
+    hex = color.slice(1);
+  } else {
+    throw new Error('Invalid color code provided, ' + color + '; must be formatted as e.g. #f0e or #f604e2.');
+  }
+  return 'rgba(' + parseInt(hex.slice(0, 2), 16) + ',' + parseInt(hex.slice(2, 4), 16) + ',' + parseInt(hex.slice(4, 6), 16) + ',' + opacity + ')';
 }
 
 /**
@@ -10364,10 +10465,7 @@ var Button = function (_ClickableComponent) {
     attributes = assign({
 
       // Necessary since the default button type is "submit"
-      'type': 'button',
-
-      // let the screen reader user know that the text of the button may change
-      'aria-live': 'polite'
+      type: 'button'
     }, attributes);
 
     var el = Component.prototype.createEl.call(this, tag, props, attributes);
@@ -10509,6 +10607,7 @@ var BigPlayButton = function (_Button) {
 
     // exit early if clicked via the mouse
     if (this.mouseused_ && event.clientX && event.clientY) {
+      silencePromise(playPromise);
       return;
     }
 
@@ -10904,18 +11003,16 @@ var TimeDisplay = function (_Component) {
   TimeDisplay.prototype.createEl = function createEl$$1(plainName) {
     var className = this.buildCSSClass();
     var el = _Component.prototype.createEl.call(this, 'div', {
-      className: className + ' vjs-time-control vjs-control'
+      className: className + ' vjs-time-control vjs-control',
+      innerHTML: '<span class="vjs-control-text">' + this.localize(this.labelText_) + '\xA0</span>'
     });
 
-    this.contentEl_ = createEl('div', {
+    this.contentEl_ = createEl('span', {
       className: className + '-display'
     }, {
       // tell screen readers not to automatically read the time as it changes
       'aria-live': 'off'
-    }, createEl('span', {
-      className: 'vjs-control-text',
-      textContent: this.localize(this.controlText_)
-    }));
+    });
 
     this.updateTextNode_();
     el.appendChild(this.contentEl_);
@@ -10946,7 +11043,7 @@ var TimeDisplay = function (_Component) {
       this.contentEl_.removeChild(this.contentEl_.firstChild);
     }
 
-    this.textNode_ = document.createTextNode(this.formattedTime_ || '0:00');
+    this.textNode_ = document.createTextNode(this.formattedTime_ || this.formatTime_(0));
     this.contentEl_.appendChild(this.textNode_);
   };
 
@@ -11006,13 +11103,23 @@ var TimeDisplay = function (_Component) {
 }(Component);
 
 /**
- * The text that should display over the `TimeDisplay`s controls. Added to for localization.
+ * The text that is added to the `TimeDisplay` for screen reader users.
  *
  * @type {string}
  * @private
  */
 
 
+TimeDisplay.prototype.labelText_ = 'Time';
+
+/**
+ * The text that should display over the `TimeDisplay`s controls. Added to for localization.
+ *
+ * @type {string}
+ * @private
+ *
+ * @deprecated in v7; controlText_ is not used in non-active display Components
+ */
 TimeDisplay.prototype.controlText_ = 'Time';
 
 Component.registerComponent('TimeDisplay', TimeDisplay);
@@ -11099,13 +11206,23 @@ var CurrentTimeDisplay = function (_TimeDisplay) {
 }(TimeDisplay);
 
 /**
- * The text that should display over the `CurrentTimeDisplay`s controls. Added to for localization.
+ * The text that is added to the `CurrentTimeDisplay` for screen reader users.
  *
  * @type {string}
  * @private
  */
 
 
+CurrentTimeDisplay.prototype.labelText_ = 'Current Time';
+
+/**
+ * The text that should display over the `CurrentTimeDisplay`s controls. Added to for localization.
+ *
+ * @type {string}
+ * @private
+ *
+ * @deprecated in v7; controlText_ is not used in non-active display Components
+ */
 CurrentTimeDisplay.prototype.controlText_ = 'Current Time';
 
 Component.registerComponent('CurrentTimeDisplay', CurrentTimeDisplay);
@@ -11186,14 +11303,24 @@ var DurationDisplay = function (_TimeDisplay) {
 }(TimeDisplay);
 
 /**
- * The text that should display over the `DurationDisplay`s controls. Added to for localization.
+ * The text that is added to the `DurationDisplay` for screen reader users.
  *
  * @type {string}
  * @private
  */
 
 
-DurationDisplay.prototype.controlText_ = 'Duration Time';
+DurationDisplay.prototype.labelText_ = 'Duration';
+
+/**
+ * The text that should display over the `DurationDisplay`s controls. Added to for localization.
+ *
+ * @type {string}
+ * @private
+ *
+ * @deprecated in v7; controlText_ is not used in non-active display Components
+ */
+DurationDisplay.prototype.controlText_ = 'Duration';
 
 Component.registerComponent('DurationDisplay', DurationDisplay);
 
@@ -11290,6 +11417,7 @@ var RemainingTimeDisplay = function (_TimeDisplay) {
 
 
   RemainingTimeDisplay.prototype.formatTime_ = function formatTime_(time) {
+    // TODO: The "-" should be decorative, and not announced by a screen reader
     return '-' + _TimeDisplay.prototype.formatTime_.call(this, time);
   };
 
@@ -11341,13 +11469,23 @@ var RemainingTimeDisplay = function (_TimeDisplay) {
 }(TimeDisplay);
 
 /**
- * The text that should display over the `RemainingTimeDisplay`s controls. Added to for localization.
+ * The text that is added to the `RemainingTimeDisplay` for screen reader users.
  *
  * @type {string}
  * @private
  */
 
 
+RemainingTimeDisplay.prototype.labelText_ = 'Remaining Time';
+
+/**
+ * The text that should display over the `RemainingTimeDisplay`s controls. Added to for localization.
+ *
+ * @type {string}
+ * @private
+ *
+ * @deprecated in v7; controlText_ is not used in non-active display Components
+ */
 RemainingTimeDisplay.prototype.controlText_ = 'Remaining Time';
 
 Component.registerComponent('RemainingTimeDisplay', RemainingTimeDisplay);
@@ -11400,7 +11538,7 @@ var LiveDisplay = function (_Component) {
 
     this.contentEl_ = createEl('div', {
       className: 'vjs-live-display',
-      innerHTML: '<span class="vjs-control-text">' + this.localize('Stream Type') + '</span>' + this.localize('LIVE')
+      innerHTML: '<span class="vjs-control-text">' + this.localize('Stream Type') + '\xA0</span>' + this.localize('LIVE')
     }, {
       'aria-live': 'off'
     });
@@ -11600,7 +11738,16 @@ var Slider = function (_Component) {
   Slider.prototype.handleMouseDown = function handleMouseDown(event) {
     var doc = this.bar.el_.ownerDocument;
 
-    event.preventDefault();
+    if (event.type === 'mousedown') {
+      event.preventDefault();
+    }
+    // Do not call preventDefault() on touchstart in Chrome
+    // to avoid console warnings. Use a 'touch-action: none' style
+    // instead to prevent unintented scrolling.
+    // https://developers.google.com/web/updates/2017/01/scrolling-intervention
+    if (event.type === 'touchstart' && !IS_CHROME) {
+      event.preventDefault();
+    }
     blockTextSelection();
 
     this.addClass('vjs-sliding');
@@ -12254,32 +12401,45 @@ var SeekBar = function (_Slider) {
 
     var _this = possibleConstructorReturn(this, _Slider.call(this, player, options));
 
-    _this.update = throttle(bind(_this, _this.update), UPDATE_REFRESH_INTERVAL);
+    _this.setEventHandlers_();
+    return _this;
+  }
 
-    _this.on(player, 'timeupdate', _this.update);
-    _this.on(player, 'ended', _this.handleEnded);
+  /**
+   * Sets the event handlers
+   *
+   * @private
+   */
+
+
+  SeekBar.prototype.setEventHandlers_ = function setEventHandlers_() {
+    var _this2 = this;
+
+    this.update = throttle(bind(this, this.update), UPDATE_REFRESH_INTERVAL);
+
+    this.on(this.player_, 'timeupdate', this.update);
+    this.on(this.player_, 'ended', this.handleEnded);
 
     // when playing, let's ensure we smoothly update the play progress bar
     // via an interval
-    _this.updateInterval = null;
+    this.updateInterval = null;
 
-    _this.on(player, ['playing'], function () {
-      _this.clearInterval(_this.updateInterval);
+    this.on(this.player_, ['playing'], function () {
+      _this2.clearInterval(_this2.updateInterval);
 
-      _this.updateInterval = _this.setInterval(function () {
-        _this.requestAnimationFrame(function () {
-          _this.update();
+      _this2.updateInterval = _this2.setInterval(function () {
+        _this2.requestAnimationFrame(function () {
+          _this2.update();
         });
       }, UPDATE_REFRESH_INTERVAL);
     });
 
-    _this.on(player, ['ended', 'pause', 'waiting'], function () {
-      _this.clearInterval(_this.updateInterval);
+    this.on(this.player_, ['ended', 'pause', 'waiting'], function () {
+      _this2.clearInterval(_this2.updateInterval);
     });
 
-    _this.on(player, ['timeupdate', 'ended'], _this.update);
-    return _this;
-  }
+    this.on(this.player_, ['timeupdate', 'ended'], this.update);
+  };
 
   /**
    * Create the `Component`'s DOM element
@@ -12846,6 +13006,10 @@ var FullscreenToggle = function (_Button) {
     var _this = possibleConstructorReturn(this, _Button.call(this, player, options));
 
     _this.on(player, 'fullscreenchange', _this.handleFullscreenChange);
+
+    if (document[FullscreenApi.fullscreenEnabled] === false) {
+      _this.disable();
+    }
     return _this;
   }
 
@@ -13342,6 +13506,33 @@ VolumeControl.prototype.options_ = {
 Component.registerComponent('VolumeControl', VolumeControl);
 
 /**
+ * Check if muting volume is supported and if it isn't hide the mute toggle
+ * button.
+ *
+ * @param {Component} self
+ *        A reference to the mute toggle button
+ *
+ * @param {Player} player
+ *        A reference to the player
+ *
+ * @private
+ */
+var checkMuteSupport = function checkMuteSupport(self, player) {
+  // hide mute toggle button if it's not supported by the current tech
+  if (player.tech_ && !player.tech_.featuresMuteControl) {
+    self.addClass('vjs-hidden');
+  }
+
+  self.on(player, 'loadstart', function () {
+    if (!player.tech_.featuresMuteControl) {
+      self.addClass('vjs-hidden');
+    } else {
+      self.removeClass('vjs-hidden');
+    }
+  });
+};
+
+/**
  * @file mute-toggle.js
  */
 /**
@@ -13368,7 +13559,7 @@ var MuteToggle = function (_Button) {
     // hide this control if volume support is missing
     var _this = possibleConstructorReturn(this, _Button.call(this, player, options));
 
-    checkVolumeSupport(_this, player);
+    checkMuteSupport(_this, player);
 
     _this.on(player, ['loadstart', 'volumechange'], _this.update);
     return _this;
@@ -13447,6 +13638,13 @@ var MuteToggle = function (_Button) {
   MuteToggle.prototype.updateIcon_ = function updateIcon_() {
     var vol = this.player_.volume();
     var level = 3;
+
+    // in iOS when a player is loaded with muted attribute
+    // and volume is changed with a native mute button
+    // we want to make sure muted state is updated
+    if (IS_IOS) {
+      this.player_.muted(this.player_.tech_.el_.muted);
+    }
 
     if (vol === 0 || this.player_.muted()) {
       level = 0;
@@ -13536,10 +13734,9 @@ var VolumePanel = function (_Component) {
       options.volumeControl.vertical = !options.inline;
     }
 
-    // hide this control if volume support is missing
     var _this = possibleConstructorReturn(this, _Component.call(this, player, options));
 
-    checkVolumeSupport(_this, player);
+    _this.on(player, ['loadstart'], _this.volumePanelState_);
 
     // while the slider is active (the mouse has been pressed down and
     // is dragging) we do not want to hide the VolumeBar
@@ -13571,6 +13768,29 @@ var VolumePanel = function (_Component) {
 
   VolumePanel.prototype.sliderInactive_ = function sliderInactive_() {
     this.removeClass('vjs-slider-active');
+  };
+
+  /**
+   * Adds vjs-hidden or vjs-mute-toggle-only to the VolumePanel
+   * depending on MuteToggle and VolumeControl state
+   *
+   * @listens Player#loadstart
+   * @private
+   */
+
+
+  VolumePanel.prototype.volumePanelState_ = function volumePanelState_() {
+    // hide volume panel if neither volume control or mute toggle
+    // are displayed
+    if (this.volumeControl.hasClass('vjs-hidden') && this.muteToggle.hasClass('vjs-hidden')) {
+      this.addClass('vjs-hidden');
+    }
+
+    // if only mute toggle is visible we don't want
+    // volume panel expanding when hovered or active
+    if (this.volumeControl.hasClass('vjs-hidden') && !this.muteToggle.hasClass('vjs-hidden')) {
+      this.addClass('vjs-mute-toggle-only');
+    }
   };
 
   /**
@@ -14309,13 +14529,16 @@ var MenuItem = function (_ClickableComponent) {
 
     _this.selectable = options.selectable;
     _this.isSelected_ = options.selected || false;
+    _this.multiSelectable = options.multiSelectable;
 
     _this.selected(_this.isSelected_);
 
     if (_this.selectable) {
-      // TODO: May need to be either menuitemcheckbox or menuitemradio,
-      //       and may need logical grouping of menu items.
-      _this.el_.setAttribute('role', 'menuitemcheckbox');
+      if (_this.multiSelectable) {
+        _this.el_.setAttribute('role', 'menuitemcheckbox');
+      } else {
+        _this.el_.setAttribute('role', 'menuitemradio');
+      }
     } else {
       _this.el_.setAttribute('role', 'menuitem');
     }
@@ -14351,7 +14574,7 @@ var MenuItem = function (_ClickableComponent) {
   };
 
   /**
-   * Any click on a `MenuItem` puts int into the selected state.
+   * Any click on a `MenuItem` puts it into the selected state.
    * See {@link ClickableComponent#handleClick} for instances where this is called.
    *
    * @param {EventTarget~Event} event
@@ -14626,6 +14849,8 @@ var OffTextTrackMenuItem = function (_TextTrackMenuItem) {
 
     // MenuItem is selectable
     options.selectable = true;
+    // MenuItem is NOT multiSelectable (i.e. only one can be marked "selected" at a time)
+    options.multiSelectable = false;
 
     return possibleConstructorReturn(this, _TextTrackMenuItem.call(this, player, options));
   }
@@ -14760,7 +14985,9 @@ var TextTrackButton = function (_TrackButton) {
         var item = new TrackMenuItem(this.player_, {
           track: track,
           // MenuItem is selectable
-          selectable: true
+          selectable: true,
+          // MenuItem is NOT multiSelectable (i.e. only one can be marked "selected" at a time)
+          multiSelectable: false
         });
 
         item.addClass('vjs-' + track.kind + '-menu-item');
@@ -14806,6 +15033,7 @@ var ChaptersTrackMenuItem = function (_MenuItem) {
 
     // Modify options for parent MenuItem class's init.
     options.selectable = true;
+    options.multiSelectable = false;
     options.label = cue.text;
     options.selected = cue.startTime <= currentTime && currentTime < cue.endTime;
 
@@ -15568,6 +15796,8 @@ var AudioTrackMenuItem = function (_MenuItem) {
 
     _this.track = track;
 
+    _this.addClass('vjs-' + track.kind + '-menu-item');
+
     var changeHandler = function changeHandler() {
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
@@ -15582,6 +15812,22 @@ var AudioTrackMenuItem = function (_MenuItem) {
     });
     return _this;
   }
+
+  AudioTrackMenuItem.prototype.createEl = function createEl(type, props, attrs) {
+    var innerHTML = '<span class="vjs-menu-item-text">' + this.localize(this.options_.label);
+
+    if (this.options_.track.kind === 'main-desc') {
+      innerHTML += '\n        <span aria-hidden="true" class="vjs-icon-placeholder"></span>\n        <span class="vjs-control-text"> ' + this.localize('Descriptions') + '</span>\n      ';
+    }
+
+    innerHTML += '</span>';
+
+    var el = _MenuItem.prototype.createEl.call(this, type, assign({
+      innerHTML: innerHTML
+    }, props), attrs);
+
+    return el;
+  };
 
   /**
    * This gets called when an `AudioTrackMenuItem is "clicked". See {@link ClickableComponent}
@@ -15698,7 +15944,9 @@ var AudioTrackButton = function (_TrackButton) {
       items.push(new AudioTrackMenuItem(this.player_, {
         track: track,
         // MenuItem is selectable
-        selectable: true
+        selectable: true,
+        // MenuItem is NOT multiSelectable (i.e. only one can be marked "selected" at a time)
+        multiSelectable: false
       }));
     }
 
@@ -15750,6 +15998,7 @@ var PlaybackRateMenuItem = function (_MenuItem) {
     options.label = label;
     options.selected = rate === 1;
     options.selectable = true;
+    options.multiSelectable = false;
 
     var _this = possibleConstructorReturn(this, _MenuItem.call(this, player, options));
 
@@ -16145,10 +16394,6 @@ var ControlBar = function (_Component) {
     return _Component.prototype.createEl.call(this, 'div', {
       className: 'vjs-control-bar',
       dir: 'ltr'
-    }, {
-      // The control bar is a group, but we don't aria-label it to avoid
-      //  over-announcing by JAWS
-      role: 'group'
     });
   };
 
@@ -16515,11 +16760,12 @@ var TextTrackSettings = function (_ModalDialog) {
 
     var config = selectConfigs[key];
     var id = config.id.replace('%s', this.id_);
+    var selectLabelledbyIds = [legendId, id].join(' ').trim();
 
-    return ['<' + type + ' id="' + id + '" class="' + (type === 'label' ? 'vjs-label' : '') + '">', this.localize(config.label), '</' + type + '>', '<select aria-labelledby="' + (legendId !== '' ? legendId + ' ' : '') + id + '">'].concat(config.options.map(function (o) {
-      var optionId = id + '-' + o[1];
+    return ['<' + type + ' id="' + id + '" class="' + (type === 'label' ? 'vjs-label' : '') + '">', this.localize(config.label), '</' + type + '>', '<select aria-labelledby="' + selectLabelledbyIds + '">'].concat(config.options.map(function (o) {
+      var optionId = id + '-' + o[1].replace(/\W+/g, '');
 
-      return ['<option id="' + optionId + '" value="' + o[0] + '" ', 'aria-labelledby="' + (legendId !== '' ? legendId + ' ' : '') + id + ' ' + optionId + '">', _this2.localize(o[1]), '</option>'].join('');
+      return ['<option id="' + optionId + '" value="' + o[0] + '" ', 'aria-labelledby="' + selectLabelledbyIds + ' ' + optionId + '">', _this2.localize(o[1]), '</option>'].join('');
     })).concat('</select>').join('');
   };
 
@@ -16874,7 +17120,9 @@ var ResizeManager = function (_Component) {
 
   ResizeManager.prototype.dispose = function dispose() {
     if (this.resizeObserver_) {
-      this.resizeObserver_.unobserve(this.player_.el());
+      if (this.player_.el()) {
+        this.resizeObserver_.unobserve(this.player_.el());
+      }
       this.resizeObserver_.disconnect();
     }
 
@@ -16896,6 +17144,321 @@ var ResizeManager = function (_Component) {
 }(Component);
 
 Component.registerComponent('ResizeManager', ResizeManager);
+
+/**
+ * This function is used to fire a sourceset when there is something
+ * similar to `mediaEl.load()` being called. It will try to find the source via
+ * the `src` attribute and then the `<source>` elements. It will then fire `sourceset`
+ * with the source that was found or empty string if we cannot know. If it cannot
+ * find a source then `sourceset` will not be fired.
+ *
+ * @param {Html5} tech
+ *        The tech object that sourceset was setup on
+ *
+ * @return {boolean}
+ *         returns false if the sourceset was not fired and true otherwise.
+ */
+var sourcesetLoad = function sourcesetLoad(tech) {
+  var el = tech.el();
+
+  // if `el.src` is set, that source will be loaded.
+  if (el.hasAttribute('src')) {
+    tech.triggerSourceset(el.src);
+    return true;
+  }
+
+  /**
+   * Since there isn't a src property on the media element, source elements will be used for
+   * implementing the source selection algorithm. This happens asynchronously and
+   * for most cases were there is more than one source we cannot tell what source will
+   * be loaded, without re-implementing the source selection algorithm. At this time we are not
+   * going to do that. There are three special cases that we do handle here though:
+   *
+   * 1. If there are no sources, do not fire `sourceset`.
+   * 2. If there is only one `<source>` with a `src` property/attribute that is our `src`
+   * 3. If there is more than one `<source>` but all of them have the same `src` url.
+   *    That will be our src.
+   */
+  var sources = tech.$$('source');
+  var srcUrls = [];
+  var src = '';
+
+  // if there are no sources, do not fire sourceset
+  if (!sources.length) {
+    return false;
+  }
+
+  // only count valid/non-duplicate source elements
+  for (var i = 0; i < sources.length; i++) {
+    var url = sources[i].src;
+
+    if (url && srcUrls.indexOf(url) === -1) {
+      srcUrls.push(url);
+    }
+  }
+
+  // there were no valid sources
+  if (!srcUrls.length) {
+    return false;
+  }
+
+  // there is only one valid source element url
+  // use that
+  if (srcUrls.length === 1) {
+    src = srcUrls[0];
+  }
+
+  tech.triggerSourceset(src);
+  return true;
+};
+
+/**
+ * our implementation of an `innerHTML` descriptor for browsers
+ * that do not have one.
+ */
+var innerHTMLDescriptorPolyfill = {};
+
+if (!IS_IE8) {
+  innerHTMLDescriptorPolyfill = Object.defineProperty({}, 'innerHTML', {
+    get: function get() {
+      return this.cloneNode(true).innerHTML;
+    },
+    set: function set(v) {
+      // make a dummy node to use innerHTML on
+      var dummy = document.createElement(this.nodeName.toLowerCase());
+
+      // set innerHTML to the value provided
+      dummy.innerHTML = v;
+
+      // make a document fragment to hold the nodes from dummy
+      var docFrag = document.createDocumentFragment();
+
+      // copy all of the nodes created by the innerHTML on dummy
+      // to the document fragment
+      while (dummy.childNodes.length) {
+        docFrag.appendChild(dummy.childNodes[0]);
+      }
+
+      // remove content
+      this.innerText = '';
+
+      // now we add all of that html in one by appending the
+      // document fragment. This is how innerHTML does it.
+      window.Element.prototype.appendChild.call(this, docFrag);
+
+      // then return the result that innerHTML's setter would
+      return this.innerHTML;
+    }
+  });
+}
+/**
+ * Get a property descriptor given a list of priorities and the
+ * property to get.
+ */
+var getDescriptor = function getDescriptor(priority, prop) {
+  var descriptor = {};
+
+  for (var i = 0; i < priority.length; i++) {
+    descriptor = Object.getOwnPropertyDescriptor(priority[i], prop);
+
+    if (descriptor && descriptor.set && descriptor.get) {
+      break;
+    }
+  }
+
+  descriptor.enumerable = true;
+  descriptor.configurable = true;
+
+  return descriptor;
+};
+
+var getInnerHTMLDescriptor = function getInnerHTMLDescriptor(tech) {
+  return getDescriptor([tech.el(), window.HTMLMediaElement.prototype, window.Element.prototype, innerHTMLDescriptorPolyfill], 'innerHTML');
+};
+
+/**
+ * Patches browser internal functions so that we can tell syncronously
+ * if a `<source>` was appended to the media element. For some reason this
+ * causes a `sourceset` if the the media element is ready and has no source.
+ * This happens when:
+ * - The page has just loaded and the media element does not have a source.
+ * - The media element was emptied of all sources, then `load()` was called.
+ *
+ * It does this by patching the following functions/properties when they are supported:
+ *
+ * - `append()` - can be used to add a `<source>` element to the media element
+ * - `appendChild()` - can be used to add a `<source>` element to the media element
+ * - `insertAdjacentHTML()` -  can be used to add a `<source>` element to the media element
+ * - `innerHTML` -  can be used to add a `<source>` element to the media element
+ *
+ * @param {Html5} tech
+ *        The tech object that sourceset is being setup on.
+ */
+var firstSourceWatch = function firstSourceWatch(tech) {
+  var el = tech.el();
+
+  // make sure firstSourceWatch isn't setup twice.
+  if (el.resetSourceWatch_) {
+    return;
+  }
+
+  var old = {};
+  var innerDescriptor = getInnerHTMLDescriptor(tech);
+  var appendWrapper = function appendWrapper(appendFn) {
+    return function () {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var retval = appendFn.apply(el, args);
+
+      sourcesetLoad(tech);
+
+      return retval;
+    };
+  };
+
+  ['append', 'appendChild', 'insertAdjacentHTML'].forEach(function (k) {
+    if (!el[k]) {
+      return;
+    }
+
+    // store the old function
+    old[k] = el[k];
+
+    // call the old function with a sourceset if a source
+    // was loaded
+    el[k] = appendWrapper(old[k]);
+  });
+
+  Object.defineProperty(el, 'innerHTML', mergeOptions(innerDescriptor, {
+    set: appendWrapper(innerDescriptor.set)
+  }));
+
+  el.resetSourceWatch_ = function () {
+    el.resetSourceWatch_ = null;
+    Object.keys(old).forEach(function (k) {
+      el[k] = old[k];
+    });
+
+    Object.defineProperty(el, 'innerHTML', innerDescriptor);
+  };
+
+  // on the first sourceset, we need to revert our changes
+  tech.one('sourceset', el.resetSourceWatch_);
+};
+
+/**
+ * our implementation of a `src` descriptor for browsers
+ * that do not have one.
+ */
+
+var srcDescriptorPolyfill = {};
+
+if (!IS_IE8) {
+  srcDescriptorPolyfill = Object.defineProperty({}, 'src', {
+    get: function get() {
+      if (this.hasAttribute('src')) {
+        return getAbsoluteURL(window.Element.prototype.getAttribute.call(this, 'src'));
+      }
+
+      return '';
+    },
+    set: function set(v) {
+      window.Element.prototype.setAttribute.call(this, 'src', v);
+
+      return v;
+    }
+  });
+}
+
+var getSrcDescriptor = function getSrcDescriptor(tech) {
+  return getDescriptor([tech.el(), window.HTMLMediaElement.prototype, srcDescriptorPolyfill], 'src');
+};
+
+/**
+ * setup `sourceset` handling on the `Html5` tech. This function
+ * patches the following element properties/functions:
+ *
+ * - `src` - to determine when `src` is set
+ * - `setAttribute()` - to determine when `src` is set
+ * - `load()` - this re-triggers the source selection algorithm, and can
+ *              cause a sourceset.
+ *
+ * If there is no source when we are adding `sourceset` support or during a `load()`
+ * we also patch the functions listed in `firstSourceWatch`.
+ *
+ * @param {Html5} tech
+ *        The tech to patch
+ */
+var setupSourceset = function setupSourceset(tech) {
+  if (!tech.featuresSourceset) {
+    return;
+  }
+
+  var el = tech.el();
+
+  // make sure sourceset isn't setup twice.
+  if (el.resetSourceset_) {
+    return;
+  }
+
+  var srcDescriptor = getSrcDescriptor(tech);
+  var oldSetAttribute = el.setAttribute;
+  var oldLoad = el.load;
+
+  Object.defineProperty(el, 'src', mergeOptions(srcDescriptor, {
+    set: function set(v) {
+      var retval = srcDescriptor.set.call(el, v);
+
+      // we use the getter here to get the actual value set on src
+      tech.triggerSourceset(el.src);
+
+      return retval;
+    }
+  }));
+
+  el.setAttribute = function (n, v) {
+    var retval = oldSetAttribute.call(el, n, v);
+
+    if (/src/i.test(n)) {
+      tech.triggerSourceset(el.src);
+    }
+
+    return retval;
+  };
+
+  el.load = function () {
+    var retval = oldLoad.call(el);
+
+    // if load was called, but there was no source to fire
+    // sourceset on. We have to watch for a source append
+    // as that can trigger a `sourceset` when the media element
+    // has no source
+    if (!sourcesetLoad(tech)) {
+      tech.triggerSourceset('');
+      firstSourceWatch(tech);
+    }
+
+    return retval;
+  };
+
+  if (el.currentSrc) {
+    tech.triggerSourceset(el.currentSrc);
+  } else if (!sourcesetLoad(tech)) {
+    firstSourceWatch(tech);
+  }
+
+  el.resetSourceset_ = function () {
+    el.resetSourceset_ = null;
+    el.load = oldLoad;
+    el.setAttribute = oldSetAttribute;
+    Object.defineProperty(el, 'src', srcDescriptor);
+    if (el.resetSourceWatch_) {
+      el.resetSourceWatch_();
+    }
+  };
+};
 
 var _templateObject$2 = taggedTemplateLiteralLoose(['Text Tracks are being loaded from another origin but the crossorigin attribute isn\'t used.\n            This may prevent text tracks from loading.'], ['Text Tracks are being loaded from another origin but the crossorigin attribute isn\'t used.\n            This may prevent text tracks from loading.']);
 
@@ -16926,10 +17489,6 @@ var Html5 = function (_Tech) {
 
     var _this = possibleConstructorReturn(this, _Tech.call(this, options, ready));
 
-    if (options.enableSourceset) {
-      _this.setupSourcesetHandling_();
-    }
-
     var source = options.source;
     var crossoriginTracks = false;
 
@@ -16941,6 +17500,11 @@ var Html5 = function (_Tech) {
       _this.setSource(source);
     } else {
       _this.handleLateInit_(_this.el_);
+    }
+
+    // setup sourceset after late sourceset/init
+    if (options.enableSourceset) {
+      _this.setupSourcesetHandling_();
     }
 
     if (_this.el_.hasChildNodes()) {
@@ -17007,6 +17571,9 @@ var Html5 = function (_Tech) {
 
 
   Html5.prototype.dispose = function dispose() {
+    if (this.el_ && this.el_.resetSourceset_) {
+      this.el_.resetSourceset_();
+    }
     Html5.disposeMediaElement(this.el_);
     this.options_ = null;
 
@@ -17021,86 +17588,7 @@ var Html5 = function (_Tech) {
 
 
   Html5.prototype.setupSourcesetHandling_ = function setupSourcesetHandling_() {
-    var _this2 = this;
-
-    if (!this.featuresSourceset) {
-      return;
-    }
-
-    var el = this.el();
-
-    // we need to fire sourceset when the player is ready
-    // if we find that the media element had a src when it was
-    // given to us and that tech element is not in a stalled state
-    if (el.src || el.currentSrc && this.el().initNetworkState_ !== 3) {
-      this.triggerSourceset(el.src || el.currentSrc);
-    }
-
-    var proto = window.HTMLMediaElement.prototype;
-    var srcDescriptor = {};
-
-    // preserve getters/setters already on `el.src` if they exist
-    if (Object.getOwnPropertyDescriptor(el, 'src')) {
-      srcDescriptor = Object.getOwnPropertyDescriptor(el, 'src');
-    } else if (Object.getOwnPropertyDescriptor(proto, 'src')) {
-      srcDescriptor = mergeOptions(srcDescriptor, Object.getOwnPropertyDescriptor(proto, 'src'));
-    }
-
-    if (!srcDescriptor.get) {
-      srcDescriptor.get = function () {
-        return proto.getAttribute.call(this, 'src');
-      };
-    }
-
-    if (!srcDescriptor.set) {
-      srcDescriptor.set = function (v) {
-        return proto.setAttribute.call(this, 'src', v);
-      };
-    }
-
-    if (typeof srcDescriptor.enumerable === 'undefined') {
-      srcDescriptor.enumerable = true;
-    }
-
-    Object.defineProperty(el, 'src', {
-      get: srcDescriptor.get.bind(el),
-      set: function set$$1(v) {
-        var retval = srcDescriptor.set.call(el, v);
-
-        _this2.triggerSourceset(v);
-
-        return retval;
-      },
-      configurable: true,
-      enumerable: srcDescriptor.enumerable
-    });
-
-    var oldSetAttribute = el.setAttribute;
-
-    el.setAttribute = function (n, v) {
-      var retval = oldSetAttribute.call(el, n, v);
-
-      if (n === 'src') {
-        _this2.triggerSourceset(v);
-      }
-
-      return retval;
-    };
-
-    var oldLoad = el.load;
-
-    el.load = function () {
-      var retval = oldLoad.call(el);
-
-      // if `el.src` is set, that source will be loaded
-      // otherwise, we can't know for sure what source will be set because
-      // source elements will be used but implementing the source selection algorithm
-      // is laborious and asynchronous, so,
-      // instead return an empty string to basically indicate source may change
-      _this2.triggerSourceset(el.src || '');
-
-      return retval;
-    };
+    setupSourceset(this);
   };
 
   /**
@@ -17184,14 +17672,14 @@ var Html5 = function (_Tech) {
 
 
   Html5.prototype.proxyNativeTracks_ = function proxyNativeTracks_() {
-    var _this3 = this;
+    var _this2 = this;
 
     NORMAL.names.forEach(function (name) {
       var props = NORMAL[name];
-      var elTracks = _this3.el()[props.getterName];
-      var techTracks = _this3[props.getterName]();
+      var elTracks = _this2.el()[props.getterName];
+      var techTracks = _this2[props.getterName]();
 
-      if (!_this3['featuresNative' + props.capitalName + 'Tracks'] || !elTracks || !elTracks.addEventListener) {
+      if (!_this2['featuresNative' + props.capitalName + 'Tracks'] || !elTracks || !elTracks.addEventListener) {
         return;
       }
       var listeners = {
@@ -17237,15 +17725,15 @@ var Html5 = function (_Tech) {
         var listener = listeners[eventName];
 
         elTracks.addEventListener(eventName, listener);
-        _this3.on('dispose', function (e) {
+        _this2.on('dispose', function (e) {
           return elTracks.removeEventListener(eventName, listener);
         });
       });
 
       // Remove (native) tracks that are not used anymore
-      _this3.on('loadstart', removeOldTracks);
-      _this3.on('dispose', function (e) {
-        return _this3.off('loadstart', removeOldTracks);
+      _this2.on('loadstart', removeOldTracks);
+      _this2.on('dispose', function (e) {
+        return _this2.off('loadstart', removeOldTracks);
       });
     });
   };
@@ -17443,7 +17931,7 @@ var Html5 = function (_Tech) {
 
 
   Html5.prototype.duration = function duration() {
-    var _this4 = this;
+    var _this3 = this;
 
     // Android Chrome will report duration as Infinity for VOD HLS until after
     // playback has started, which triggers the live display erroneously.
@@ -17453,12 +17941,12 @@ var Html5 = function (_Tech) {
       // Wait for the first `timeupdate` with currentTime > 0 - there may be
       // several with 0
       var checkProgress = function checkProgress() {
-        if (_this4.el_.currentTime > 0) {
+        if (_this3.el_.currentTime > 0) {
           // Trigger durationchange for genuinely live video
-          if (_this4.el_.duration === Infinity) {
-            _this4.trigger('durationchange');
+          if (_this3.el_.duration === Infinity) {
+            _this3.trigger('durationchange');
           }
-          _this4.off('timeupdate', checkProgress);
+          _this3.off('timeupdate', checkProgress);
         }
       };
 
@@ -17505,7 +17993,7 @@ var Html5 = function (_Tech) {
 
 
   Html5.prototype.proxyWebkitFullscreen_ = function proxyWebkitFullscreen_() {
-    var _this5 = this;
+    var _this4 = this;
 
     if (!('webkitDisplayingFullscreen' in this.el_)) {
       return;
@@ -17525,8 +18013,8 @@ var Html5 = function (_Tech) {
 
     this.on('webkitbeginfullscreen', beginFn);
     this.on('dispose', function () {
-      _this5.off('webkitbeginfullscreen', beginFn);
-      _this5.off('webkitendfullscreen', endFn);
+      _this4.off('webkitbeginfullscreen', beginFn);
+      _this4.off('webkitendfullscreen', endFn);
     });
   };
 
@@ -17896,6 +18384,33 @@ Html5.canControlVolume = function () {
 };
 
 /**
+ * Check if the volume can be muted in this browser/device.
+ * Some devices, e.g. iOS, don't allow changing volume
+ * but permits muting/unmuting.
+ *
+ * @return {bolean}
+ *      - True if volume can be muted
+ *      - False otherwise
+ */
+Html5.canMuteVolume = function () {
+  try {
+    var muted = Html5.TEST_VID.muted;
+
+    // in some versions of iOS muted property doesn't always
+    // work, so we want to set both property and attribute
+    Html5.TEST_VID.muted = !muted;
+    if (Html5.TEST_VID.muted) {
+      setAttribute(Html5.TEST_VID, 'muted', 'muted');
+    } else {
+      removeAttribute(Html5.TEST_VID, 'muted', 'muted');
+    }
+    return muted !== Html5.TEST_VID.muted;
+  } catch (e) {
+    return false;
+  }
+};
+
+/**
  * Check if the playback rate can be changed in this browser/device.
  *
  * @return {boolean}
@@ -17931,13 +18446,15 @@ Html5.canOverrideAttributes = function () {
   if (IS_IE8) {
     return false;
   }
-  // if we cannot overwrite the src property, there is no support
+  // if we cannot overwrite the src/innerHTML property, there is no support
   // iOS 7 safari for instance cannot do this.
   try {
     var noop = function noop() {};
 
     Object.defineProperty(document.createElement('video'), 'src', { get: noop, set: noop });
     Object.defineProperty(document.createElement('audio'), 'src', { get: noop, set: noop });
+    Object.defineProperty(document.createElement('video'), 'innerHTML', { get: noop, set: noop });
+    Object.defineProperty(document.createElement('audio'), 'innerHTML', { get: noop, set: noop });
   } catch (e) {
     return false;
   }
@@ -17953,7 +18470,7 @@ Html5.canOverrideAttributes = function () {
  *         - False otherwise
  */
 Html5.supportsNativeTextTracks = function () {
-  return IS_ANY_SAFARI;
+  return IS_ANY_SAFARI || IS_IOS && IS_CHROME;
 };
 
 /**
@@ -17993,6 +18510,14 @@ Html5.Events = ['loadstart', 'suspend', 'abort', 'error', 'emptied', 'stalled', 
  * @default {@link Html5.canControlVolume}
  */
 Html5.prototype.featuresVolumeControl = Html5.canControlVolume();
+
+/**
+ * Boolean indicating whether the `Tech` supports muting volume.
+ *
+ * @type {bolean}
+ * @default {@link Html5.canMuteVolume}
+ */
+Html5.prototype.featuresMuteControl = Html5.canMuteVolume();
 
 /**
  * Boolean indicating whether the `Tech` supports changing the speed at which the media
@@ -18972,22 +19497,6 @@ var TECH_EVENTS_RETRIGGER = [
 'timeupdate',
 
 /**
- * Fires when the playing speed of the audio/video is changed
- *
- * @event Player#ratechange
- * @type {event}
- */
-/**
- * Retrigger the `ratechange` event that was triggered by the {@link Tech}.
- *
- * @private
- * @method Player#handleTechRatechange_
- * @fires Player#ratechange
- * @listens Tech#ratechange
- */
-'ratechange',
-
-/**
  * Fires when the video's intrinsic dimensions change
  *
  * @event Player#resize
@@ -19035,6 +19544,16 @@ var TECH_EVENTS_RETRIGGER = [
  */
 'texttrackchange'];
 
+// events to queue when playback rate is zero
+// this is a hash for the sole purpose of mapping non-camel-cased event names
+// to camel-cased function names
+var TECH_EVENTS_QUEUE = {
+  canplay: 'CanPlay',
+  canplaythrough: 'CanPlayThrough',
+  playing: 'Playing',
+  seeked: 'Seeked'
+};
+
 /**
  * An instance of the `Player` class is created when any of the Video.js setup methods
  * are used to initialize a video.
@@ -19065,7 +19584,7 @@ var Player = function (_Component) {
     classCallCheck(this, Player);
 
     // Make sure tag ID exists
-    tag.id = tag.id || 'vjs_video_' + newGUID();
+    tag.id = tag.id || options.id || 'vjs_video_' + newGUID();
 
     // Set Options
     // The options argument overrides options set in the video tag
@@ -19115,6 +19634,10 @@ var Player = function (_Component) {
     var _this = possibleConstructorReturn(this, _Component.call(this, null, options, ready));
 
     _this.isPosterFromTech_ = false;
+
+    // Holds callback info that gets queued when playback rate is zero
+    // and a seek is happening
+    _this.queuedCallbacks_ = [];
 
     // Turn off API access because we're loading a new tech that might load asynchronously
     _this.isReady_ = false;
@@ -19171,6 +19694,15 @@ var Player = function (_Component) {
     tag.controls = false;
     tag.removeAttribute('controls');
 
+    // the attribute overrides the option
+    if (tag.hasAttribute('autoplay')) {
+      _this.options_.autoplay = true;
+    } else {
+      // otherwise use the setter to validate and
+      // set the correct value.
+      _this.autoplay(_this.options_.autoplay);
+    }
+
     /*
      * Store the internal state of scrubbing
      *
@@ -19180,6 +19712,9 @@ var Player = function (_Component) {
     _this.scrubbing_ = false;
 
     _this.el_ = _this.createEl();
+
+    // Set default value for lastPlaybackRate
+    _this.cache_.lastPlaybackRate = _this.defaultPlaybackRate();
 
     // Make this an evented object and use `el_` as its event bus.
     evented(_this, { eventBusKey: 'el_' });
@@ -19259,8 +19794,8 @@ var Player = function (_Component) {
     // like the control bar show themselves if needed
     _this.userActive(true);
     _this.reportUserActivity();
-    _this.listenForUserActivity_();
 
+    _this.one('play', _this.listenForUserActivity_);
     _this.on('fullscreenchange', _this.handleFullscreenChange_);
     _this.on('stageclick', _this.handleStageClick_);
 
@@ -19365,10 +19900,26 @@ var Player = function (_Component) {
       el.appendChild(tag);
 
       playerElIngest = this.playerElIngest_ = el;
+
+      // copy over properties from the video-js element
+      // ie8 doesn't support Object.keys nor hasOwnProperty
+      // on dom elements so we have to specify properties individually
+      ['autoplay', 'controls', 'crossOrigin', 'defaultMuted', 'defaultPlaybackRate', 'loop', 'muted', 'playbackRate', 'src', 'volume'].forEach(function (prop) {
+        if (typeof el[prop] !== 'undefined') {
+          tag[prop] = el[prop];
+        }
+      });
     }
 
-    // set tabindex to -1 so we could focus on the player element
+    // set tabindex to -1 to remove the video element from the focus order
     tag.setAttribute('tabindex', '-1');
+    // Workaround for #4583 (JAWS+IE doesn't announce BPB or play button)
+    // See https://github.com/FreedomScientific/VFO-standards-support/issues/78
+    // Note that we can't detect if JAWS is being used, but this ARIA attribute
+    //  doesn't change behavior of IE11 if JAWS is not being used
+    if (IE_VERSION) {
+      tag.setAttribute('role', 'application');
+    }
 
     // Remove width/height attrs from tag so CSS can make it 100% width/height
     tag.removeAttribute('width');
@@ -19716,13 +20267,17 @@ var Player = function (_Component) {
     // Turn off API access because we're loading a new tech that might load asynchronously
     this.isReady_ = false;
 
+    // if autoplay is a string we pass false to the tech
+    // because the player is going to handle autoplay on `loadstart`
+    var autoplay = typeof this.autoplay() === 'string' ? false : this.autoplay();
+
     // Grab tech-specific options from player options and add source and parent element to use.
     var techOptions = {
       source: source,
+      autoplay: autoplay,
       'nativeControlsForTouch': this.options_.nativeControlsForTouch,
       'playerId': this.id(),
       'techId': this.id() + '_' + titleTechName + '_api',
-      'autoplay': this.options_.autoplay,
       'playsinline': this.options_.playsinline,
       'preload': this.options_.preload,
       'loop': this.options_.loop,
@@ -19771,15 +20326,25 @@ var Player = function (_Component) {
     TECH_EVENTS_RETRIGGER.forEach(function (event) {
       _this2.on(_this2.tech_, event, _this2['handleTech' + toTitleCase(event) + '_']);
     });
+
+    Object.keys(TECH_EVENTS_QUEUE).forEach(function (event) {
+      _this2.on(_this2.tech_, event, function (eventObj) {
+        if (_this2.tech_.playbackRate() === 0 && _this2.tech_.seeking()) {
+          _this2.queuedCallbacks_.push({
+            callback: _this2['handleTech' + TECH_EVENTS_QUEUE[event] + '_'].bind(_this2),
+            event: eventObj
+          });
+          return;
+        }
+        _this2['handleTech' + TECH_EVENTS_QUEUE[event] + '_'](eventObj);
+      });
+    });
+
     this.on(this.tech_, 'loadstart', this.handleTechLoadStart_);
     this.on(this.tech_, 'sourceset', this.handleTechSourceset_);
     this.on(this.tech_, 'waiting', this.handleTechWaiting_);
-    this.on(this.tech_, 'canplay', this.handleTechCanPlay_);
-    this.on(this.tech_, 'canplaythrough', this.handleTechCanPlayThrough_);
-    this.on(this.tech_, 'playing', this.handleTechPlaying_);
     this.on(this.tech_, 'ended', this.handleTechEnded_);
     this.on(this.tech_, 'seeking', this.handleTechSeeking_);
-    this.on(this.tech_, 'seeked', this.handleTechSeeked_);
     this.on(this.tech_, 'play', this.handleTechPlay_);
     this.on(this.tech_, 'firstplay', this.handleTechFirstPlay_);
     this.on(this.tech_, 'pause', this.handleTechPause_);
@@ -19789,6 +20354,7 @@ var Player = function (_Component) {
     this.on(this.tech_, 'loadedmetadata', this.updateStyleEl_);
     this.on(this.tech_, 'posterchange', this.handleTechPosterChange_);
     this.on(this.tech_, 'textdata', this.handleTechTextData_);
+    this.on(this.tech_, 'ratechange', this.handleTechRateChange_);
 
     this.usingNativeControls(this.techGet_('controls'));
 
@@ -19998,6 +20564,137 @@ var Player = function (_Component) {
       this.hasStarted(false);
       this.trigger('loadstart');
     }
+
+    // autoplay happens after loadstart for the browser,
+    // so we mimic that behavior
+    this.manualAutoplay_(this.autoplay());
+  };
+
+  /**
+   * Handle autoplay string values, rather than the typical boolean
+   * values that should be handled by the tech. Note that this is not
+   * part of any specification. Valid values and what they do can be
+   * found on the autoplay getter at Player#autoplay()
+   */
+
+
+  Player.prototype.manualAutoplay_ = function manualAutoplay_(type) {
+    var _this4 = this;
+
+    if (!this.tech_ || typeof type !== 'string') {
+      return;
+    }
+
+    var muted = function muted() {
+      var previouslyMuted = _this4.muted();
+
+      _this4.muted(true);
+
+      var playPromise = _this4.play();
+
+      if (!playPromise || !playPromise.then || !playPromise['catch']) {
+        return;
+      }
+
+      return playPromise['catch'](function (e) {
+        // restore old value of muted on failure
+        _this4.muted(previouslyMuted);
+      });
+    };
+
+    var promise = void 0;
+
+    if (type === 'any') {
+      promise = this.play();
+
+      if (promise && promise.then && promise['catch']) {
+        promise['catch'](function () {
+          return muted();
+        });
+      }
+    } else if (type === 'muted') {
+      promise = muted();
+    } else {
+      promise = this.play();
+    }
+
+    if (!promise || !promise.then || !promise['catch']) {
+      return;
+    }
+
+    return promise.then(function () {
+      _this4.trigger({ type: 'autoplay-success', autoplay: type });
+    })['catch'](function (e) {
+      _this4.trigger({ type: 'autoplay-failure', autoplay: type });
+    });
+  };
+
+  /**
+   * Update the internal source caches so that we return the correct source from
+   * `src()`, `currentSource()`, and `currentSources()`.
+   *
+   * > Note: `currentSources` will not be updated if the source that is passed in exists
+   *         in the current `currentSources` cache.
+   *
+   *
+   * @param {Tech~SourceObject} srcObj
+   *        A string or object source to update our caches to.
+   */
+
+
+  Player.prototype.updateSourceCaches_ = function updateSourceCaches_() {
+    var srcObj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+
+    var src = srcObj;
+    var type = '';
+
+    if (typeof src !== 'string') {
+      src = srcObj.src;
+      type = srcObj.type;
+    }
+    // make sure all the caches are set to default values
+    // to prevent null checking
+    this.cache_.source = this.cache_.source || {};
+    this.cache_.sources = this.cache_.sources || [];
+
+    // try to get the type of the src that was passed in
+    if (src && !type) {
+      type = findMimetype(this, src);
+    }
+
+    // update `currentSource` cache always
+    this.cache_.source = mergeOptions({}, srcObj, { src: src, type: type });
+
+    var matchingSources = this.cache_.sources.filter(function (s) {
+      return s.src && s.src === src;
+    });
+    var sourceElSources = [];
+    var sourceEls = this.$$('source');
+    var matchingSourceEls = [];
+
+    for (var i = 0; i < sourceEls.length; i++) {
+      var sourceObj = getAttributes(sourceEls[i]);
+
+      sourceElSources.push(sourceObj);
+
+      if (sourceObj.src && sourceObj.src === src) {
+        matchingSourceEls.push(sourceObj.src);
+      }
+    }
+
+    // if we have matching source els but not matching sources
+    // the current source cache is not up to date
+    if (matchingSourceEls.length && !matchingSources.length) {
+      this.cache_.sources = sourceElSources;
+      // if we don't have matching source or source els set the
+      // sources cache to the `currentSource` cache
+    } else if (!matchingSources.length) {
+      this.cache_.sources = [this.cache_.source];
+    }
+
+    // update the tech `src` cache
+    this.cache_.src = src;
   };
 
   /**
@@ -20038,6 +20735,32 @@ var Player = function (_Component) {
 
 
   Player.prototype.handleTechSourceset_ = function handleTechSourceset_(event) {
+    var _this5 = this;
+
+    // only update the source cache when the source
+    // was not updated using the player api
+    if (!this.changingSrc_) {
+      // update the source to the intial source right away
+      // in some cases this will be empty string
+      this.updateSourceCaches_(event.src);
+
+      // if the `sourceset` `src` was an empty string
+      // wait for a `loadstart` to update the cache to `currentSrc`.
+      // If a sourceset happens before a `loadstart`, we reset the state
+      // as this function will be called again.
+      if (!event.src) {
+        var updateCache = function updateCache(e) {
+          if (e.type !== 'sourceset') {
+            _this5.updateSourceCaches_(_this5.techGet_('currentSrc'));
+          }
+
+          _this5.tech_.off(['sourceset', 'loadstart'], updateCache);
+        };
+
+        this.tech_.one(['sourceset', 'loadstart'], updateCache);
+      }
+    }
+
     this.trigger({
       src: event.src,
       type: 'sourceset'
@@ -20106,6 +20829,36 @@ var Player = function (_Component) {
   };
 
   /**
+   * Retrigger the `ratechange` event that was triggered by the {@link Tech}.
+   *
+   * If there were any events queued while the playback rate was zero, fire
+   * those events now.
+   *
+   * @private
+   * @method Player#handleTechRateChange_
+   * @fires Player#ratechange
+   * @listens Tech#ratechange
+   */
+
+
+  Player.prototype.handleTechRateChange_ = function handleTechRateChange_() {
+    if (this.tech_.playbackRate() > 0 && this.cache_.lastPlaybackRate === 0) {
+      this.queuedCallbacks_.forEach(function (queued) {
+        return queued.callback(queued.event);
+      });
+      this.queuedCallbacks_ = [];
+    }
+    this.cache_.lastPlaybackRate = this.tech_.playbackRate();
+    /**
+     * Fires when the playing speed of the audio/video is changed
+     *
+     * @event Player#ratechange
+     * @type {event}
+     */
+    this.trigger('ratechange');
+  };
+
+  /**
    * Retrigger the `waiting` event that was triggered by the {@link Tech}.
    *
    * @fires Player#waiting
@@ -20115,7 +20868,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.handleTechWaiting_ = function handleTechWaiting_() {
-    var _this4 = this;
+    var _this6 = this;
 
     this.addClass('vjs-waiting');
     /**
@@ -20126,7 +20879,7 @@ var Player = function (_Component) {
      */
     this.trigger('waiting');
     this.one('timeupdate', function () {
-      return _this4.removeClass('vjs-waiting');
+      return _this6.removeClass('vjs-waiting');
     });
   };
 
@@ -20347,7 +21100,7 @@ var Player = function (_Component) {
     }
 
     if (this.paused()) {
-      this.play();
+      silencePromise(this.play());
     } else {
       this.pause();
     }
@@ -20612,7 +21365,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.play = function play() {
-    var _this5 = this;
+    var _this7 = this;
 
     // If this is called while we have a play queued up on a loadstart, remove
     // that listener to avoid getting in a potentially bad state.
@@ -20632,8 +21385,8 @@ var Player = function (_Component) {
 
       this.playWaitingForReady_ = true;
       this.ready(function () {
-        _this5.playWaitingForReady_ = false;
-        silencePromise(_this5.play());
+        _this7.playWaitingForReady_ = false;
+        silencePromise(_this7.play());
       });
 
       // If the player/tech is ready and we have a source, we can attempt playback.
@@ -20649,8 +21402,8 @@ var Player = function (_Component) {
     } else {
 
       this.playOnLoadstart_ = function () {
-        _this5.playOnLoadstart_ = null;
-        silencePromise(_this5.play());
+        _this7.playOnLoadstart_ = null;
+        silencePromise(_this7.play());
       };
 
       this.one('loadstart', this.playOnLoadstart_);
@@ -21260,7 +22013,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.selectSource = function selectSource(sources) {
-    var _this6 = this;
+    var _this8 = this;
 
     // Get only the techs specified in `techOrder` that exist and are supported by the
     // current platform
@@ -21309,7 +22062,7 @@ var Player = function (_Component) {
       var techName = _ref2[0],
           tech = _ref2[1];
 
-      if (tech.canPlaySource(source, _this6.options_[techName.toLowerCase()])) {
+      if (tech.canPlaySource(source, _this8.options_[techName.toLowerCase()])) {
         return { source: source, tech: techName };
       }
     };
@@ -21345,7 +22098,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.src = function src(source) {
-    var _this7 = this;
+    var _this9 = this;
 
     // getter usage
     if (typeof source === 'undefined') {
@@ -21366,40 +22119,42 @@ var Player = function (_Component) {
     }
 
     // intial sources
-    this.cache_.sources = sources;
     this.changingSrc_ = true;
 
-    // intial source
-    this.cache_.source = sources[0];
+    this.cache_.sources = sources;
+    this.updateSourceCaches_(sources[0]);
 
     // middlewareSource is the source after it has been changed by middleware
     setSource(this, sources[0], function (middlewareSource, mws) {
-      _this7.middleware_ = mws;
+      _this9.middleware_ = mws;
 
-      var err = _this7.src_(middlewareSource);
+      // since sourceSet is async we have to update the cache again after we select a source since
+      // the source that is selected could be out of order from the cache update above this callback.
+      _this9.cache_.sources = sources;
+      _this9.updateSourceCaches_(middlewareSource);
+
+      var err = _this9.src_(middlewareSource);
 
       if (err) {
         if (sources.length > 1) {
-          return _this7.src(sources.slice(1));
+          return _this9.src(sources.slice(1));
         }
 
+        _this9.changingSrc_ = false;
+
         // We need to wrap this in a timeout to give folks a chance to add error event handlers
-        _this7.setTimeout(function () {
+        _this9.setTimeout(function () {
           this.error({ code: 4, message: this.localize(this.options_.notSupportedMessage) });
         }, 0);
 
         // we could not find an appropriate tech, but let's still notify the delegate that this is it
         // this needs a better comment about why this is needed
-        _this7.triggerReady();
+        _this9.triggerReady();
 
         return;
       }
 
-      _this7.changingSrc_ = false;
-      // video element listed source
-      _this7.cache_.src = middlewareSource.src;
-
-      setTech(mws, _this7.tech_);
+      setTech(mws, _this9.tech_);
     });
   };
 
@@ -21419,6 +22174,8 @@ var Player = function (_Component) {
 
 
   Player.prototype.src_ = function src_(source) {
+    var _this10 = this;
+
     var sourceTech = this.selectSource([source]);
 
     if (!sourceTech) {
@@ -21427,13 +22184,16 @@ var Player = function (_Component) {
 
     if (!titleCaseEquals(sourceTech.tech, this.techName_)) {
       this.changingSrc_ = true;
-
       // load this technology with the chosen source
       this.loadTech_(sourceTech.tech, sourceTech.source);
+      this.tech_.ready(function () {
+        _this10.changingSrc_ = false;
+      });
       return false;
     }
 
     // wait until the tech is ready to set the source
+    // and set it synchronously if possible (#2326)
     this.ready(function () {
 
       // The setSource tech method was added with source handlers
@@ -21446,11 +22206,7 @@ var Player = function (_Component) {
         this.techCall_('src', source.src);
       }
 
-      if (this.options_.preload === 'auto') {
-        this.load();
-      }
-
-      // Set the source synchronously if possible (#2326)
+      this.changingSrc_ = false;
     }, true);
 
     return false;
@@ -21557,24 +22313,56 @@ var Player = function (_Component) {
   };
 
   /**
-   * Get or set the autoplay attribute.
+   * Get or set the autoplay option. When this is a boolean it will
+   * modify the attribute on the tech. When this is a string the attribute on
+   * the tech will be removed and `Player` will handle autoplay on loadstarts.
    *
-   * @param {boolean} [value]
-   *        - true means that we should autoplay
-   *        - false means that we should not autoplay
+   * @param {boolean|string} [value]
+   *        - true: autoplay using the browser behavior
+   *        - false: do not autoplay
+   *        - 'play': call play() on every loadstart
+   *        - 'muted': call muted() then play() on every loadstart
+   *        - 'any': call play() on every loadstart. if that fails call muted() then play().
+   *        - *: values other than those listed here will be set `autoplay` to true
    *
-   * @return {string}
+   * @return {boolean|string}
    *         The current value of autoplay when getting
    */
 
 
   Player.prototype.autoplay = function autoplay(value) {
-    if (value !== undefined) {
-      this.techCall_('setAutoplay', value);
-      this.options_.autoplay = value;
-      return;
+    // getter usage
+    if (value === undefined) {
+      return this.options_.autoplay || false;
     }
-    return this.techGet_('autoplay', value);
+
+    var techAutoplay = void 0;
+
+    // if the value is a valid string set it to that
+    if (typeof value === 'string' && /(any|play|muted)/.test(value)) {
+      this.options_.autoplay = value;
+      this.manualAutoplay_(value);
+      techAutoplay = false;
+
+      // any falsy value sets autoplay to false in the browser,
+      // lets do the same
+    } else if (!value) {
+      this.options_.autoplay = false;
+
+      // any other value (ie truthy) sets autoplay to true
+    } else {
+      this.options_.autoplay = true;
+    }
+
+    techAutoplay = techAutoplay || this.options_.autoplay;
+
+    // if we don't have a tech then we do not queue up
+    // a setAutoplay call on tech ready. We do this because the
+    // autoplay option will be passed in the constructor and we
+    // do not need to set it twice
+    if (this.tech_) {
+      this.techCall_('setAutoplay', techAutoplay);
+    }
   };
 
   /**
@@ -22045,12 +22833,14 @@ var Player = function (_Component) {
 
   Player.prototype.playbackRate = function playbackRate(rate) {
     if (rate !== undefined) {
+      // NOTE: this.cache_.lastPlaybackRate is set from the tech handler
+      // that is registered above
       this.techCall_('setPlaybackRate', rate);
       return;
     }
 
     if (this.tech_ && this.tech_.featuresPlaybackRate) {
-      return this.techGet_('playbackRate');
+      return this.cache_.lastPlaybackRate || this.techGet_('playbackRate');
     }
     return 1.0;
   };
@@ -22307,7 +23097,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.createModal = function createModal(content, options) {
-    var _this8 = this;
+    var _this11 = this;
 
     options = options || {};
     options.content = content || '';
@@ -22316,7 +23106,7 @@ var Player = function (_Component) {
 
     this.addChild(modal);
     modal.on('dispose', function () {
-      _this8.removeChild(modal);
+      _this11.removeChild(modal);
     });
 
     modal.open();

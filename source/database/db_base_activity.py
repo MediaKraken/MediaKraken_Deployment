@@ -42,6 +42,7 @@ def db_activity_purge(self, days_old):
     """
     Purge records older than specified days
     """
+    # TODO broken.....passing %s then + the field
     self.db_cursor.execute('delete from mm_user_activity where mm_activity_datecreated'
                            ' < now() - interval %s;', (str(days_old) + ' day',))
     self.db_commit()

@@ -43,10 +43,9 @@ class TestSubprogramBroadcast(object):
         self.proc_broadcast = subprocess.Popen(['python3', './subprogram_broadcast.py'],
                                                shell=False)
         common_global.es_inst.com_elastic_index('info',
-                                                {'stuff': "PID: %s", self.proc_broadcast.pid)
+                                                {'stuff': "PID: %s" % self.proc_broadcast.pid})
 
-        @ classmethod
-
+    @classmethod
     def teardown_class(self):
         os.kill(self.proc_broadcast.pid, signal.SIGTERM)
 

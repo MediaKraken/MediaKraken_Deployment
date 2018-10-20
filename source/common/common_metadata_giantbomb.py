@@ -19,6 +19,8 @@
 import giantbomb
 
 
+# https://www.giantbomb.com/api/
+
 class CommonMetadataGiantbomb(object):
     """
     Class for interfacing with Giantbomb

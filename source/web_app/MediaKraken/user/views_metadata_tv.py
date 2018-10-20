@@ -106,7 +106,7 @@ def metadata_tvshow_detail(guid):
                            data_overview=data_overview,
                            data_season_data=data_season_data,
                            data_season_count=sorted(
-                               data_season_data.iterkeys()),
+                               data_season_data),
                            data_genres_list=data_genres_list[:-2]
                            )
 
@@ -242,18 +242,15 @@ def metadata_tvshow_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media_tvshow = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_tvshow_list(offset, per_page)
-    for row_data in mediadata:
+    for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page, session['search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
-                             row_data['mm_metadata_tvshow_name'], row_data[2],
-                             row_data[3]))  # TODO dictcursor
+                             row_data['mm_metadata_tvshow_name'], row_data['air_date'],
+                             row_data['image_json']))
     session['search_page'] = 'meta_tv'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_meta_tvshow_list_count(),
+                                                  total=g.db_connection.db_meta_tvshow_list_count(
+                                                      session['search_text']),
                                                   record_name='TV show(s)',
                                                   format_total=True,
                                                   format_number=True,

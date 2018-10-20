@@ -4,6 +4,9 @@ FROM mediakraken/mkbasenodeffmpeg:latest
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the Roku thumbnail generator app"
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 # create work dir
 RUN mkdir /mediakraken
 
@@ -12,14 +15,15 @@ ADD requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   cifs-utils \
   nfs-utils \
   libressl \
   net-snmp \
   python3 \
   openrc \
-  && pip3 install -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt \
   && rc-update add netmount \

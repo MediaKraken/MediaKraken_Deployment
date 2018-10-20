@@ -2,3 +2,5 @@
 8900 - Main web app
 9000 - Portainer (docker monitor) - Optional
 9091 - Transmission (bittorrent) - Optional
+12345 - PGAdmin4 - Optional
+15672 - RabbitMQ Management - Optional

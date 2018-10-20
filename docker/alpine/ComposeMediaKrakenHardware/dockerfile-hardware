@@ -4,11 +4,15 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the hardware app"
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 # copy PIP requirements
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   gcc \
   linux-headers \
   libffi-dev \
@@ -16,7 +20,7 @@ RUN apk add --update \
   openssl-dev \
   python \
   python3-dev \
-  && pip3 install -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apk del \
   gcc \

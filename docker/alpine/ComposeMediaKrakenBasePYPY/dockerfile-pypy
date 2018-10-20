@@ -1,8 +1,13 @@
+# https://github.com/JayH5/alpine-pypy
+# 
 # Download base image
 FROM alpine:3.6
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the pypy builder"
+
+ARG ALPMIRROR
+ARG PIPMIRROR
 
 RUN apk add --no-cache ca-certificates
 
@@ -17,7 +22,8 @@ RUN tar -xjv --strip-components=1 -f pypy2-v5.9.0-src.tar.bz2;
 
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   py2-pip \
   alpine-sdk \
   linux-headers \
@@ -32,7 +38,7 @@ RUN apk add --update \
   gdbm-dev \
   python-dev \
   libressl-dev \
-  && pip install -r requirements.txt \
+  && pip install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && cd pypy/goal \
   && python ../../rpython/bin/rpython --opt=jit \
   && cd ../tool/release \

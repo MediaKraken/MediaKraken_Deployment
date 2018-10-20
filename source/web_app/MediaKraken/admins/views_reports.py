@@ -36,7 +36,7 @@ def report_display_all_duplicates():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/reports/report_all_duplicate_media.html',
+    return render_template('admin/reports/report_all_duplicate_media.html',
                            media=g.db_connection.db_media_duplicate(
                                offset, per_page),
                            page=page,
@@ -72,7 +72,7 @@ def report_display_all_duplicates_detail(guid):
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/reports/report_all_duplicate_media_detail.html', media=media,
+    return render_template('admin/reports/report_all_duplicate_media_detail.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -98,7 +98,7 @@ def report_display_all_media():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/reports/report_all_media.html', media=media_data,
+    return render_template('admin/reports/report_all_media.html', media=media_data,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -121,9 +121,32 @@ def report_display_all_media_known_video():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/reports/report_all_known_media_video.html',
+    return render_template('admin/reports/report_all_known_media_video.html',
                            media=g.db_connection.db_web_media_list(
                                g.db_connection.db_media_uuid_by_class('Movie'),
+                               offset=offset, list_limit=per_page),
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination,
+                           )
+
+
+@blueprint.route('/report_unmatched_media')
+@login_required
+def report_display_all_unmatched_media():
+    """
+    Display list of all unmatched media
+    """
+    page, per_page, offset = common_pagination.get_page_items()
+    pagination = common_pagination.get_pagination(page=page,
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_unmatched_list_count(),
+                                                  record_name='unmatched media',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                  )
+    return render_template('admin/reports/report_unmatched_media.html',
+                           media=g.db_connection.db_unmatched_list(
                                offset=offset, list_limit=per_page),
                            page=page,
                            per_page=per_page,
@@ -146,7 +169,7 @@ def report_top10(mtype):
         top10_data = g.db_connection.db_usage_top10_tv_show()
     elif mtype == '4':  # tv episode
         top10_data = g.db_connection.db_usage_top10_tv_episode()
-    return render_template('users/reports/report_top10_base.html', media=top10_data)
+    return render_template('admin/reports/report_top10_base.html', media=top10_data)
 
 
 @blueprint.before_request

@@ -4,6 +4,7 @@ import os
 
 os_env = os.environ
 import sys
+import binascii
 
 sys.path.append('..')
 from common import common_file
@@ -14,7 +15,7 @@ class Config(object):
         pass
     else:
         common_file.com_file_save_data('/mediakraken/key/web_secret_key.txt',
-                                       os.urandom(24).encode('hex'), False)
+                                       binascii.hexlify(os.urandom(24)).decode(), False)
     SECRET_KEY = os_env.get('MEDIAKRAKEN_SECRET',
                             common_file.com_file_load_data('/mediakraken/key/web_secret_key.txt',
                                                            False))

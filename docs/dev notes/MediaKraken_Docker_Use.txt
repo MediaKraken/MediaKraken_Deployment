@@ -154,6 +154,11 @@ docker run --network=alpine_mediakraken-dbnetwork -p 12345:80 -itd --name=alpine
 docker run -t -i alpine:latest /bin/ash
 
 
+docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4 --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
+--myip 10.0.0.198 '/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv'
+
+/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv
+
 # can ping mkdatabase then......
 
 # rename
@@ -174,34 +179,4 @@ docker tag alpine_webserver:latest mediakraken/mkwebserver:latest
 
 # build the image/containers to run
 docker-compose build xxxxx - xxxxx optional for image to build
-
-
-
-BaseFFMPEG
-	the base image for ffmpeg deps
-	docker build -t mediakraken/mkbaseffmpeg .
-Database
-	Hosts the postgresql database
-Devicescan
-	Runs on HOST network to scan for devices
-Metadata
-	Host the metadata fetcher
-MusicBrainz
-	Host the musicbrainz slave
-Nginx
-	Host the ssl, static data webserver
-OpenLDAP
-	Host the openldap server
-PGBouncer
-	Host the pgbouncer connection pooler
-PHPPGAdmin
-	hosts the phppgadmin for testing
-Redis
-	hosts the redis server for flask/login
-Server
-	Kicks off the other main programs and ffmpeg
-Slave
-	Slave image for server/ffmpeg
-WebServer
-	Hosts the uswgi webapp for the server interface
 

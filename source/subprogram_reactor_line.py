@@ -17,7 +17,6 @@
 '''
 
 import json
-import shlex
 import subprocess
 import time
 import uuid
@@ -29,6 +28,7 @@ from common import common_device_capability
 from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
 from network import network_base_line as network_base
 from pika.adapters import twisted_connection
 from twisted.internet import reactor, protocol, defer, task
@@ -85,6 +85,7 @@ def read(queue_object):
         if json_message['Type'] == 'Cron Run':
             cron_pid = subprocess.Popen(split('python3 ' + json_message['Data']))
         elif json_message['Type'] == 'Library Scan':
+            # TODO launch a container to do this.....so, if it gets stuck the others still go
             scan_pid = subprocess.Popen(['python3', './subprogram_file_scan.py'])
         elif json_message['Type'] == 'Pause':
             if json_message['Subtype'] == 'Cast':
@@ -123,20 +124,26 @@ def read(queue_object):
                     video_codec=None,
                     audio_codec=None,
                     audio_channels=None)
-                container_command = 'castnow --address ' \
-                                    + json_message['Target'] \
-                                    + ' --myip 10.0.0.198 ' + subtitle_command \
-                                    + ' --ffmpeg \'-c:v copy -c:a ac3' \
-                                    + ' --ffmpeg-movflags frag_keyframe+empty_moov+faststart\'' \
-                                    + ' --tomp4 \'' + json_message['Data'] + '\''
+                # TODO take number of channels into account
+                # TODO take the video codec into account
+                container_command = 'castnow --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags ' \
+                                    'frag_keyframe+empty_moov+faststart --address ' \
+                                    + json_message['Target'] + ' --myip ' \
+                                    + docker_inst.com_docker_info()['Swarm']['NodeAddr'] \
+                                    + subtitle_command + ' \'' + json_message['Data'] + '\''
+                hwaccel = False
+                docker_inst.com_docker_run_cast(hwaccel=hwaccel,
+                                                name_container=name_container,
+                                                container_command=container_command)
             elif json_message['Subtype'] == 'HLS':
                 # stream to hls
+                # TODO take the video codec into account
                 container_command = 'ffmpeg -i \"' + json_message['Input File'] \
-                                  + '\" -vcodec libx264 -preset veryfast' \
-                                  + ' -acodec aac -ac:a:0 2 -vbr 5 ' \
-                                  + json_message['Audio Track'] \
-                                  + '-vf ' + json_message['Subtitle Track'] + ' yadif=0:0:0 ' \
-                                  + json_message['Target UUID']
+                                    + '\" -vcodec libx264 -preset veryfast' \
+                                    + ' -acodec aac -ac:a:0 2 -vbr 5 ' \
+                                    + json_message['Audio Track'] \
+                                    + '-vf ' + json_message['Subtitle Track'] + ' yadif=0:0:0 ' \
+                                    + json_message['Target UUID']
             elif json_message['Subtype'] == 'Web':
                 # stream to web
                 container_command = "ffmpeg -v fatal {ss_string}" \
@@ -151,7 +158,7 @@ def read(queue_object):
                                       " -output_ts_offset {output_ts_offset:.6f}" \
                                       " -t {t:.6f} pipe:%d.ts".format(**locals())
             elif json_message['Subtype'] == 'HDHomerun':
-                # stream from homerun
+                # stream from hdhomerun
                 container_command = "ffmpeg -i http://" + json_message['IP'] \
                                     + ":5004/auto/v" + json_message['Channel'] \
                                     + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
@@ -165,8 +172,9 @@ def read(queue_object):
                                                          'name': name_container})
                 hwaccel = False
                 docker_inst.com_docker_run_slave(hwaccel=hwaccel,
+                                                 port_mapping=None,
                                                  name_container=name_container,
-                                                 container_command=shlex.split(container_command))
+                                                 container_command=container_command)
                 common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
@@ -175,18 +183,6 @@ def read(queue_object):
                                                                      json_message['User']]})
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
-        # elif json_message['Type'] == 'FFMPEG':
-        #     # to address the 30 char name limit for container
-        #     name_container = ((json_message['User'] + '_'
-        #                        + str(uuid.uuid4()).replace('-', ''))[-30:])
-        #     common_global.es_inst.com_elastic_index('info', {'ffmpegcont': name_container})
-        #     hwaccel = False
-        #     docker_inst.com_docker_run_slave(hwaccel=hwaccel,
-        #                                      name_container=name_container,
-        #                                      container_command=(
-        #                                              'python3 subprogram_ffprobe_metadata.py %s' %
-        #                                              json_message['Data']))
-        #     common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
@@ -213,7 +209,8 @@ if __name__ == '__main__':
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
         'subprogram_reactor_line')
-
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # pika rabbitmq connection
     cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection,
                                 pika.ConnectionParameters(

@@ -33,6 +33,7 @@ class MKServerDatabase(object):
         db_collection_guid_by_name, \
         db_collection_insert, \
         db_collection_update, \
+        db_collection_list_count, \
         db_collection_list, \
         db_collection_read_by_guid, \
         db_collection_by_tmdb
@@ -69,6 +70,7 @@ class MKServerDatabase(object):
         db_link_delete
     from database.db_base_media import db_insert_media, \
         db_read_media, \
+        db_metadata_from_media_guid, \
         db_known_media_count, \
         db_known_media, \
         db_matched_media_count, \
@@ -90,7 +92,10 @@ class MKServerDatabase(object):
         db_media_watched_checkpoint_update, \
         db_media_rating_update, \
         db_read_media_ffprobe, \
-        db_media_ffmeg_update
+        db_media_ffmeg_update, \
+        db_unmatched_list_count, \
+        db_unmatched_list, \
+        db_ffprobe_data
     from database.db_base_media_books import db_media_book_list_count, \
         db_media_book_list
     from database.db_base_media_class import db_media_class_list_count, \
@@ -118,7 +123,8 @@ class MKServerDatabase(object):
         db_read_media_list_by_uuid
     from database.db_base_media_music import db_media_album_count, \
         db_media_album_list
-    from database.db_base_media_music_video import db_music_video_list
+    from database.db_base_media_music_video import db_music_video_list, \
+        db_music_video_list_count
     from database.db_base_media_remote import db_insert_remote_media, \
         db_read_remote_media, \
         db_known_remote_media_count, \
@@ -135,6 +141,7 @@ class MKServerDatabase(object):
         db_meta_guid_by_rt, \
         db_meta_insert_tmdb, \
         db_meta_tmdb_count, \
+        db_meta_movie_count, \
         db_meta_movie_list, \
         db_meta_fetch_media_id_json, \
         db_meta_fetch_series_media_id_json, \
@@ -145,7 +152,8 @@ class MKServerDatabase(object):
         db_meta_anime_title_search, \
         db_meta_anime_update_meta_id, \
         db_meta_anime_meta_by_id
-    from database.db_base_metadata_book import db_meta_book_list, \
+    from database.db_base_metadata_book import db_meta_book_list_count, \
+        db_meta_book_list, \
         db_meta_book_guid_by_isbn, \
         db_meta_book_guid_by_name, \
         db_meta_book_insert, \
@@ -184,7 +192,8 @@ class MKServerDatabase(object):
         db_meta_songs_by_album_guid, \
         db_meta_album_list, \
         db_meta_muscian_list, \
-        db_meta_album_image_random
+        db_meta_album_image_random, \
+        db_meta_music_by_provider_uuid
     from database.db_base_metadata_music_video import db_meta_music_video_lookup, \
         db_meta_music_video_add, \
         db_meta_music_video_detail_uuid, \

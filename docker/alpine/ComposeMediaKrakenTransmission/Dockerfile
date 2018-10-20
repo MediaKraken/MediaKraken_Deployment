@@ -1,8 +1,14 @@
+# https://github.com/rlesouef/alpine-transmission
+
 FROM alpine:3.8
 
 MAINTAINER Open Source Services [opensourceservices.fr]
 
-RUN apk add --update \
+ARG ALPMIRROR
+ARG PIPMIRROR
+
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+    && apk add --update \
     transmission-daemon \
     && rm -rf /var/cache/apk/*
 

@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  webserver:
+    build:
+      context: ./thebuggenie-docker
+      dockerfile: Dockerfile
+    container_name: mkbuggenie
+    ports:
+      - "80:80"
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+      - /home/centos/buggenie/www:/var/www/thebuggenie
+    networks:
+      - buggenie_network
+    restart: unless-stopped
+
+  # runs the nginx proxy service
+  nginx:
+    build:
+      context: ./thebuggenie-nginx
+      dockerfile: dockerfile-nginx
+    container_name: mkbugnginx
+    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 80 -t 30 -- nginx
+    volumes:
+      - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
+      - /var/opt/mediakraken/certs:/etc/nginx/certs
+    ports:
+      - "443:443"
+    networks:
+      - buggenie_network
+    restart: unless-stopped
+
+# Docker private networks
+networks:
+  buggenie_network:
+    driver: bridge

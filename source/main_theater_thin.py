@@ -84,7 +84,7 @@ class MKEcho(basic.LineReceiver):
 
     def sendline_data(self, line):
         common_global.es_inst.com_elastic_index('info', {'sending': line})
-        self.sendLine(line.encode("utf8"))
+        self.sendLine(line.encode())
 
 
 class MKFactory(protocol.ClientFactory):
@@ -164,7 +164,7 @@ class MediaKrakenApp(App):
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
                 common_global.es_inst.com_elastic_index('info', {'server list': server_list})
-                host_ip = server_list[0]
+                host_ip = server_list[0].decode()  # as this is returned as bytes
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
                                 host_ip.split(':')[0])
@@ -196,7 +196,7 @@ class MediaKrakenApp(App):
         """
         Process network message from server
         """
-        json_message = json.loads(server_msg)
+        json_message = json.loads(server_msg.decode())
         try:
             if json_message['Type'] != "Image":
                 common_global.es_inst.com_elastic_index('info', {"Got Message": server_msg})
@@ -218,11 +218,14 @@ class MediaKrakenApp(App):
 
         elif json_message['Type'] == 'Play':  # direct file play
             video_source_dir = json_message['Data']
+            # TODO - load real mapping
             share_mapping = (
-                ('/mediakraken/mnt/zfsspoo/', '/home/spoot/zfsspoo/'),)
+                ('/mediakraken/mnt/', '/home/spoot/zfsspoo/Media/'),)
             if share_mapping is not None:
                 for mapping in share_mapping:
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
+            if os.path.exists(video_source_dir):
+                # direct play it
                 self.mpv_process = subprocess.Popen(
                     split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
                           '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
@@ -231,9 +234,9 @@ class MediaKrakenApp(App):
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
-            if json_message['Sub2'] == "Demo":
+            if json_message['Image Media Type'] == "Demo":
                 f = open("./image_demo", "w")
-                f.write(base64.b64decode(json_message['Data']))
+                f.write(str(base64.b64decode(json_message['Data'])))
                 f.close()
                 self.demo_media_id = json_message['UUID']
                 if self.first_image_demo == False:
@@ -247,7 +250,7 @@ class MediaKrakenApp(App):
                         on_load=self._image_loaded_home_demo)
                     self.first_image_demo = False
         elif json_message['Type'] == "MPV":
-            # sends the data message direct as a command
+            # sends the data message direct as a command to local running mpv
             self.mpv_connection.execute(json_message['Data'])
         else:
             common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
@@ -390,12 +393,15 @@ if __name__ == '__main__':
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
         'main_theater_thin')
 
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
+
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_thin/kivy_layouts/main.kv')
-    Builder.load_file('theater_thin/kivy_layouts/KV_Layout_Notification.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
     # so the raspberry pi doesn't crash
     if os.uname()[4][:3] != 'arm':
         Window.fullscreen = 'auto'

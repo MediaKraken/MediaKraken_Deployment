@@ -4,69 +4,205 @@ version: '3'
 # Volumes are HOST directory and then CONTAINER directory
 
 services:
-  # start broadcast server (so clients can find server)
-  broadcast:
-    build:
-      context: ./ComposeMediaKrakenBroadcast
-      dockerfile: dockerfile-broadcast
-    container_name: mkbroadcast
-    depends_on:
-      - appserver
-    entrypoint: python3 subprogram_broadcast.py
-    ports:
-      - "9101:9101"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    network_mode: host
-    restart: unless-stopped
-
-  # Main app server which controls the show
+  # Main app server
   appserver:
     build:
       context: ./ComposeMediaKrakenServer
       dockerfile: dockerfile-appserver
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
       - DEBUG=${DEBUG}
     container_name: mkserver
     depends_on:
       - pgbounce
-      - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server.py
-    ports:
-      - "8903:8903"
     volumes:
-      - /var/log/mediakraken:/mediakraken/log
-      - /var/opt/mediakraken/certs:/mediakraken/key
-      - /var/opt/mediakraken/backup:/mediakraken/backup
-      - /home/mediakraken:/mediakraken/mnt
+      # server will generate ssl key for use by web/nginx
+      - ./data/certs:/mediakraken/key
+      # if swarmip init
       - /var/run/docker.sock:/var/run/docker.sock
-      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
-      - /var/opt/mediakraken/emulation:/mediakraken/emulation
+    networks:
+      - mediakraken_network
+
+  # start broadcast server (so clients can find server)
+  broadcast:
+    build:
+      context: ./ComposeMediaKrakenBroadcast
+      dockerfile: dockerfile-broadcast
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    container_name: mkbroadcast
+    entrypoint: python3 subprogram_broadcast.py
+    ports:
+      - "9101:9101"
+    volumes:
+      # needs socket for running image list
+      - /var/run/docker.sock:/var/run/docker.sock
+    # needs to run as host so clients can see it on their subnet
+    network_mode: host
+    restart: unless-stopped
+
+  # runs cron
+  cron:
+    build:
+      context: ./ComposeMediaKrakenCron
+      dockerfile: dockerfile-cron
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - POSTGRES_DB_HOST=${DBHOST}
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkcron
+    depends_on:
+      - rabbit
+    entrypoint: python3 subprogram_cron_checker.py
     networks:
       - mediakraken_network
     restart: unless-stopped
-    # to allow mount nfs/cifs
-    cap_add:
-      - SYS_ADMIN
-      - DAC_READ_SEARCH
 
   # Postgresql server
   database:
     build:
       context: ./ComposeMediaKrakenDatabase
       dockerfile: dockerfile-database
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
     volumes:
-      - /var/lib/postgresql:/var/lib/postgresql
+      - ./data/postgresql:/var/lib/postgresql
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # Runs the download services
+  download:
+    build:
+      context: ./ComposeMediaKrakenDownload
+      dockerfile: dockerfile-download
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+    container_name: mkdownload
+    depends_on:
+      - rabbit
+    entrypoint: python3 main_download.py
+    volumes:
+      - ./data/download:/mediakraken/download
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # runs ffprobe
+  ffprobe:
+    build:
+      context: ./ComposeMediaKrakenFFProbe
+      dockerfile: Dockerfile
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - POSTGRES_DB_HOST=${DBHOST}
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkffprobe
+    depends_on:
+      - rabbit
+    entrypoint: python3 subprogram_ffprobe_metadata.py
+    volumes:
+      - ./data/directories:/mediakraken/mnt
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # runs hardware
+  hardware:
+    build:
+      context: ./ComposeMediaKrakenHardware
+      dockerfile: dockerfile-hardware
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - DEBUG=${DEBUG}
+    volumes:
+      # this stores the "push button" key
+      - ./data/phue:/mediakraken/phue
+    container_name: mkhardware
+    depends_on:
+      - rabbit
+    entrypoint: python3 main_hardware.py
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # runs the server to fetch/process all metadata
+  metadata:
+    build:
+      context: ./ComposeMediaKrakenMetadata
+      dockerfile: dockerfile-metadata
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkmetadata
+    depends_on:
+      - pgbounce
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server_metadata_api.py
+    volumes:
+      - ./data/directories:/mediakraken/mnt
+      # stores posters/etc so webserver can present
+      - static-volume:/mediakraken/web_app/MediaKraken/static
+      # stores the xml/json xref files for anime match
+      - ./data/cache:/mediakraken/cache
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # runs the nginx proxy service
+  nginx:
+    build:
+      context: ./ComposeMediaKrakenNginx
+      dockerfile: dockerfile-nginx
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    container_name: mknginx
+    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
+    volumes:
+      - ./data/nginx:/var/log/mediakraken/nginx
+      - ./data/certs:/etc/nginx/certs
+      - static-volume:/mediakraken/web_app/MediaKraken/static
+    ports:
+      - "8900:8900"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -76,6 +212,9 @@ services:
     build:
       context: ./ComposeMediaKrakenPGBouncer
       dockerfile: dockerfile-pgbouncer
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
     environment:
       - DB_HOST=${DBHOST}
       - DB_USER=${DBUSER}
@@ -92,48 +231,57 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # runs the server to fetch/process all metadata
-  metadata:
+  # rabbit
+  rabbit:
     build:
-      context: ./ComposeMediaKrakenMetadata
-      dockerfile: dockerfile-metadata
+      context: ./ComposeMediaKrakenRabbitMQ/management
+      dockerfile: Dockerfile
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    container_name: mkrabbitmq
     environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+#      - "5671:5671"
+      - "5672:5672"
+#      - "15671:15671"
+      - "15672:15672"
+    volumes:
+      - ./data/rabbit:/var/lib/rabbitmq
+    restart: unless-stopped
+    networks:
+      - mediakraken_network
+
+  # Main reactor
+  reactor:
+    build:
+      context: ./ComposeMediaKrakenReactor
+      dockerfile: dockerfile-reactor
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
-    container_name: mkmetadata
+    container_name: mkreactor
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server_metadata_api.py
-    volumes:
-      - /var/log/mediakraken:/mediakraken/log
-      - /home/mediakraken:/mediakraken/mnt
-      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
-      - /var/opt/mediakraken/trailers:/mediakraken/web_app/MediaKraken/static/meta/trailers
-      - /var/opt/mediakraken/emulation:/mediakraken/emulation
-      - /var/opt/mediakraken/cache:/mediakraken/cache
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-    # to allow mount nfs/cifs
-    cap_add:
-      - SYS_ADMIN
-      - DAC_READ_SEARCH
-
-  # runs the nginx proxy service
-  nginx:
-    build:
-      context: ./ComposeMediaKrakenNginx
-      dockerfile: dockerfile-nginx
-    container_name: mknginx
-    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
-    volumes:
-      - /var/log/mediakraken/nginx:/var/log/mediakraken/nginx
-      - /var/opt/mediakraken/certs:/etc/nginx/certs
+    entrypoint: python3 subprogram_reactor_line.py
     ports:
-      - "8900:8900"
+      - "8903:8903"
+    volumes:
+      # for start of SSL server
+      - ./data/certs:/mediakraken/key
+      - ./data/backup:/mediakraken/backup
+      - ./data/directories:/mediakraken/mnt
+      # so it can start docker containers
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -143,6 +291,9 @@ services:
     build:
       context: ./ComposeMediaKrakenRedis
       dockerfile: dockerfile-redis
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
     container_name: mkredis
     ports:
       - "6379:6379"
@@ -150,21 +301,22 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # Runs the download services
-  download:
+  # runs roku thumbnail
+  rokuthumb:
     build:
-      context: ./ComposeMediaKrakenDownload
-      dockerfile: dockerfile-download
+      context: ./ComposeMediaKrakenRokuThumb
+      dockerfile: Dockerfile
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
     environment:
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
-    container_name: mkdownload
+      - DEBUG=${DEBUG}
+    container_name: mkrokuthumb
     depends_on:
       - rabbit
-    entrypoint: python3 main_download.py
+    entrypoint: python3 subprogram_roku_thumbnail_generate.py
     volumes:
-      - /var/opt/mediakraken/download:/mediakraken/download
+      - ./data/directories:/mediakraken/mnt
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -174,6 +326,9 @@ services:
     build:
       context: ./ComposeMediaKrakenWebServer
       dockerfile: dockerfile-webserver
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -187,45 +342,17 @@ services:
       - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     volumes:
-      - /var/log/mediakraken:/mediakraken/log
-      - /home/mediakraken:/mediakraken/mnt
-      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images
-      - /var/opt/mediakraken/webkey:/mediakraken/key
-      - /var/opt/mediakraken/uploads:/mediakraken/uploads
+      - ./data/directories:/mediakraken/mnt
+      - static-volume:/mediakraken/web_app/MediaKraken/static
+      - ./data/webkey:/mediakraken/key
+      - ./data/uploads:/mediakraken/uploads
+      # needed to show docker/swarm info
       - /var/run/docker.sock:/var/run/docker.sock
+      # hold log files
+      - ./data/log:/mediakraken/log
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-#  nginxrtmpforward:
-#    build:
-#      context: ./ComposeMediaKrakenNginxRTMPStreamForward
-#      dockerfile: Dockerfile
-#    container_name: mknginxrtmpforward
-#    ports:
-#      - "1935:1935"
-#      - "80:80"
-#    restart: unless-stopped
-
-  # rabbit
-  rabbit:
-    build:
-      context: ./ComposeMediaKrakenRabbitMQ/management
-      dockerfile: Dockerfile
-    container_name: mkrabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-    ports:
-#      - "5671:5671"
-      - "5672:5672"
-#      - "15671:15671"
-      - "15672:15672"
-    volumes:
-      - /var/opt/mediakraken/rabbit:/var/lib/rabbitmq
-    restart: unless-stopped
-    networks:
-      - mediakraken_network
 
 #  # runs mail server
 #  smtp:
@@ -242,115 +369,19 @@ services:
 #    restart: unless-stopped
 
   # runs calibre server
-  calibre:
-    build:
-      context: ./ComposeMediaKrakenCalibre
-      dockerfile: Dockerfile
-    container_name: mkcalibre
-    ports:
-      - "5299:5299"
-    volumes:
-      - /var/opt/mediakraken/calibre/config:/config
-      - /var/opt/mediakraken/calibre/books:/books
-      - /var/opt/mediakraken/calibre/audiobooks:/audiobooks
-      - /var/opt/mediakraken/calibre/magazines:/magazines
-      - /var/opt/mediakraken/calibre/downloads:/downloads
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-
-#  mail:
+#  calibre:
 #    build:
-#      context: ./ComposeMediaKrakenMail
+#      context: ./ComposeMediaKrakenCalibre
 #      dockerfile: Dockerfile
-#    hostname: mkmail
-#    domainname: domain.com
-#    container_name: mkmail
+#    container_name: mkcalibre
 #    ports:
-#    - "25:25"
-#    - "143:143"
-#    - "587:587"
-#    - "993:993"
+#      - "5299:5299"
 #    volumes:
-#    - /var/opt/mediakraken/maildata:/var/mail
-#    - /var/opt/mediakraken/mailstate:/var/mail-state
-#    - /var/opt/mediakraken/mail/config/:/tmp/docker-mailserver/
-#    environment:
-#    - ENABLE_SPAMASSASSIN=0
-#    - ENABLE_CLAMAV=0
-#    - ENABLE_FAIL2BAN=0
-#    - ONE_DIR=1
-#    - DMS_DEBUG=0
-#    cap_add:
-#    - NET_ADMIN
-#    networks:
-#      - mediakraken_network
-#    restart: unless-stopped
-
-  # runs ffprobe
-  ffprobe:
-    build:
-      context: ./ComposeMediaKrakenFFProbe
-      dockerfile: Dockerfile
-    environment:
-      - POSTGRES_DB_HOST=${DBHOST}
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
-    container_name: mkffprobe
-    depends_on:
-      - rabbit
-    entrypoint: python3 subprogram_ffprobe_metadata.py
-    volumes:
-      - /home/mediakraken:/mediakraken/mnt
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
- 
-  # runs roku thumbnail
-  rokuthumb:
-    build:
-      context: ./ComposeMediaKrakenRokuThumb
-      dockerfile: Dockerfile
-    environment:
-      - DEBUG=${DEBUG}
-    container_name: mkrokuthumb
-    depends_on:
-      - rabbit
-    entrypoint: python3 subprogram_roku_thumbnail_generate.py
-    volumes:
-      - /home/mediakraken:/mediakraken/mnt
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-    
-  # runs hardware
-  hardware:
-    build:
-      context: ./ComposeMediaKrakenHardware
-      dockerfile: dockerfile-hardware
-    environment:
-      - DEBUG=${DEBUG}
-    container_name: mkhardware
-    depends_on:
-      - rabbit
-    entrypoint: python3 main_hardware.py
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-
-#  # runs filebeat
-#  filebeat:
-#    build:
-#      context: ./ComposeMediaKrakenFilebeat
-#      dockerfile: Dockerfile
-#    container_name: mkfilebeat
-#    depends_on:
-#      - elk
-#    entrypoint: ./wait-for-it-bash.sh -h elk -p 9200 -t 30 -- filebeat -e
-#    volumes:
-#      - /var/log/mediakraken:/mediakraken/log
+#      - /var/opt/mediakraken/calibre/config:/config
+#      - /var/opt/mediakraken/calibre/books:/books
+#      - /var/opt/mediakraken/calibre/audiobooks:/audiobooks
+#      - /var/opt/mediakraken/calibre/magazines:/magazines
+#      - /var/opt/mediakraken/calibre/downloads:/downloads
 #    networks:
 #      - mediakraken_network
 #    restart: unless-stopped
@@ -360,3 +391,6 @@ networks:
   # Twisted, Database and AMQP communications network
   mediakraken_network:
     driver: bridge
+
+volumes:
+     static-volume:

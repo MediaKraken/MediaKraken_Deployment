@@ -24,12 +24,21 @@ import psutil
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_cron_checker')
 
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
+
+# fire off wait for it script to allow rabbitmq connection
+wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+wait_pid.wait()
 
 # start loop for cron checks
 pid_dict = {}  # pylint: disable=C0103
@@ -64,8 +73,8 @@ while 1:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                             shell=False)
                     common_global.es_inst.com_elastic_index('info',
-                                                   {'cron': row_data['mm_cron_name'],
-                                                    'pid': proc.pid})
+                                                            {'cron': row_data['mm_cron_name'],
+                                                             'pid': proc.pid})
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match

@@ -3,75 +3,78 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/css/jquery.contextMenu.min.css">
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="/static/css/listnav.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/jquery.contextMenu.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/listnav.css') }}">
     </head>
     {% if media_movie %}
     {{ pagination.info }}
     {{ pagination.links }}
     <div id="the-movie-metadata-node">
         {% for row_data in media_movie %}
-        <div class="main_photo">
-            <div data-id={{row_data[0]}}>
-                <a href= "{{ url_for('user_metadata_movie.metadata_movie_detail', guid=row_data[0]) }}" >
-                {% if row_data[3] == None %}
-                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "/static/images/Movie-icon.png" height="300" width="200">
-                    {% if row_data[4] == True %}
-                    <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
-                    {% endif %}
-                    {% if row_data[5] != None %}
-                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
-                    {% endif %}
-                    {% if row_data[6] != None %}
-                    <img class="request_icon" src="/static/images/add-button.png" height="20" width="20">
-                    {% endif %}
-                    {% if row_data[7] != None %}
-                    <img class="queue_icon" src="/static/images/rectangles.png" height="20" width="20">
-                    {% endif %}
-                    </a>
-                    {% if row_data[2] == "" %}
-                        <div class="description">
-                            <p class="description_content_left">{{row_data[1]}}</p>
+            {% if row_data[8] == True %}
+                <div class="card-deck">
+            {% endif %}
+            <div class="card" style="max-width: 400px;" id="data_background">
+                <h4 class="card-header">
+                    {{row_data[1]}}
+                </h4>
+                <div class="card-body">
+                    <h4>Tagline</h4>
+                    <div class="main_photo">
+                        <div data-id={{row_data[0]}}>
+                            <a href= "{{ url_for('user_metadata_movie.metadata_movie_detail', guid=row_data[0]) }}" >
+                            <div class="main_photo">
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="column">
+                                            {% if row_data[3] == None %}
+                                                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/images/Movie-icon.png') }}" height="300" width="200">
+                                            {% else %}
+                                                <img class="b-lazy" src=data: data-src= "{{ url_for('static', filename='/static/meta/images/' + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
+                                            {% endif %}
+                                        </div>
+                                        <div class="column">
+                                            {% if row_data[4] == True %}
+                                            <img class="wide_watched_icon" src="{{ url_for('static', filename='/static/images/eye.png') }}" height="25" width="25">
+                                            {% endif %}
+                                            {% if row_data[5] != None %}
+                                            <img class="wide_rating_icon" src={{row_data[5]}} height="25" width="25">
+                                            {% endif %}
+                                            {% if row_data[6] != None %}
+                                            <img class="wide_request_icon" src="{{ url_for('static', filename='/static/images/add-button.png') }}" height="25" width="25">
+                                            {% endif %}
+                                            {% if row_data[7] != None %}
+                                            <img class="wide_queue_icon" src="{{ url_for('static', filename='/static/images/rectangles.png') }}" height="25" width="25">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                {{row_data[2]}}
+                            </div>
+                            </a>
                         </div>
-                    {% else %}
-                        <div class="description">
-                            <p class="description_content_left">{{row_data[1] + " - " + row_data[2]}}</p>
-                        </div>
-                    {% endif %}
-                {% else %}
-                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ "/static/meta/images/" + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="300" width="200">
-                    {% if row_data[4] == True %}
-                    <img class="watched_icon" src="/static/images/eye.png" height="20" width="20">
-                    {% endif %}
-                    {% if row_data[5] != None %}
-                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
-                    {% endif %}
-                    {% if row_data[6] != None %}
-                    <img class="request_icon" src="/static/images/add-button.png" height="20" width="20">
-                    {% endif %}
-                    {% if row_data[7] != None %}
-                    <img class="queue_icon" src="/static/images/rectangles.png" height="20" width="20">
-                    {% endif %}
-                    </a>
-                    <div class="description">
-                        <p class="description_content_left">{{row_data[2]}}</p>
                     </div>
-                {% endif %}
+                </div>
             </div>
-        </div>
+            {% if row_data[9] == True %}
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
     {{ pagination.links }}
     {% else %}
     <p id="general_text">No movie metadata found.</p>
     {% endif %}
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/jquery.contextMenu.min.js"></script>
-    <script src="/static/js/base_webapp.js"></script>
-    <script src="/static/js/blazy.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.contextMenu.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/base_webapp.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
     <script>
         ;(function() {
             // Initialize

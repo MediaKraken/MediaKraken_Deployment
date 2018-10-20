@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+# https://github.com/MediaKraken-Dependancies/python-twitch-client
 from twitch import TwitchClient
 
 
@@ -38,7 +39,7 @@ class CommonNetworkTwitchV5(object):
     def com_net_twitch_channels_by_id(self, channel_id):
         """
         Gets a specified channel object.
-        Parameters:	channel_id (string) – Channel ID
+        Parameters: channel_id (string) - Channel ID
         """
         return self.twitch_inst.channels.get_by_id(channel_id)
 
@@ -46,7 +47,7 @@ class CommonNetworkTwitchV5(object):
     def com_net_twitch_clip_by_slug(self, slug_id):
         """
         Gets a clip object based on the slug provided
-        Parameters:	slug (string) – Twitch Slug.
+        Parameters: slug (string) - Twitch Slug.
         """
         return self.twitch_inst.clips.get_by_slug(slug_id)
 

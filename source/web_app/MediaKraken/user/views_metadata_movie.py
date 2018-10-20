@@ -87,11 +87,8 @@ def metadata_movie_list():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
-    else:
-        metadata = g.db_connection.db_meta_movie_list(offset, per_page)
-    for row_data in metadata:
+    media_count = 0
+    for row_data in g.db_connection.db_meta_movie_list(offset, per_page, session['search_text']):
         # set watched
         try:
             watched_status \
@@ -132,14 +129,24 @@ def metadata_movie_list():
                                                          'rating': rating_status,
                                                          'request': request_status,
                                                          'queue': queue_status})
+        media_count += 1
+        if media_count == 1:
+            deck_start = True
+        else:
+            deck_start = False
+        if media_count == 4:
+            deck_break = True
+            media_count = 0
+        else:
+            deck_break = False
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
-                      rating_status, request_status, queue_status))
+                      rating_status, request_status, queue_status, deck_start, deck_break))
     session['search_page'] = 'meta_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_movie'),
+                                                  total=g.db_connection.db_meta_movie_count(
+                                                      session['search_text']),
                                                   record_name='movie(s)',
                                                   format_total=True,
                                                   format_number=True,

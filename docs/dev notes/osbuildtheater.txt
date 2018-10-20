@@ -1,0 +1,26 @@
+clone https://github.com/LibreELEC/LibreELEC.tv.git to https://github.com/MediaKraken/LibreELEC.tv
+
+th-libreelec-1
+
+***************
+
+ubuntu 16.04 - containered (th-libreelec-1)
+
+apt update && apt upgrade
+apt install gcc make git unzip wget xz-utils
+
+adduser <user> sudo
+
+git clone https://github.com/LibreELEC/LibreELEC.tv.git
+
+cd LibreELEC.tv
+
+git checkout 8.2
+
+PROJECT=Generic ARCH=x86_64
+
+PROJECT=Generic ARCH=x86_64 tools/download-tool
+
+PROJECT=Generic ARCH=x86_64 make -j`getconf _NPROCESSORS_ONLN` image
+
+answer y to install stuff - will whine about perl thing to just restart the compile

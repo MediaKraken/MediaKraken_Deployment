@@ -32,18 +32,28 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
                                ' where LOWER(mm_metadata_tvshow_name) = %s',
                                (tvshow_name.lower(),))
     else:
+        # TODO jin index firstaird and premiered
         # TODO check tvmaze as well
         self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
                                ' where (LOWER(mm_metadata_tvshow_name) = %s)'
                                ' and (substring(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\''
-                               '->>\'FirstAired\' from 0 for 5) in (%s,%s,%s)'
+                               '->>\'FirstAired\' from 0 for 5) in (%s,%s,%s,%s,%s,%s,%s)'
                                ' or substring(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->>\'premiered\''
-                               ' from 0 for 5) in (%s,%s,%s))',
+                               ' from 0 for 5) in (%s,%s,%s,%s,%s,%s,%s))',
                                (tvshow_name.lower(), str(tvshow_year),
-                                str(int(tvshow_year) +
-                                    1), str(int(tvshow_year) - 1),
+                                str(int(tvshow_year) + 1),
+                                str(int(tvshow_year) + 2),
+                                str(int(tvshow_year) + 3),
+                                str(int(tvshow_year) - 1),
+                                str(int(tvshow_year) - 2),
+                                str(int(tvshow_year) - 3),
                                 str(tvshow_year),
-                                str(int(tvshow_year) + 1), str(int(tvshow_year) - 1)))
+                                str(int(tvshow_year) + 1),
+                                str(int(tvshow_year) + 2),
+                                str(int(tvshow_year) + 3),
+                                str(int(tvshow_year) - 1),
+                                str(int(tvshow_year) - 2),
+                                str(int(tvshow_year) - 3)))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_tvshow_guid']
         common_global.es_inst.com_elastic_index('info', {"db find metadata tv guid":
@@ -139,22 +149,23 @@ def db_meta_tvshow_list(self, offset=None, records=None, search_value=None):
     """
     # return list of tvshows
     """
+    # TODO order by release date
     # COALESCE - priority over one column
     if offset is None:
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
                                ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
                                ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
-                               '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+                               '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
                                '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
+                               '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
                                ' order by LOWER(mm_metadata_tvshow_name)')
     else:
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
                                ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
                                ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
-                               '->\'FirstAired\'), COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+                               '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
                                '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
+                               '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
                                ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
                                ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
                                ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)',

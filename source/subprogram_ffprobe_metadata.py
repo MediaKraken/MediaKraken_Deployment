@@ -2,7 +2,6 @@ import json
 import os
 import subprocess
 import uuid
-from shlex import split
 
 import pika
 from common import common_config_ini
@@ -10,9 +9,13 @@ from common import common_ffmpeg
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata
+from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_ffprobe')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -104,7 +107,8 @@ class MKConsumer(object):
         if body is not None:
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'ffprobe': json_message})
-            ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
+            ffprobe_data = json.loads(common_ffmpeg.com_ffmpeg_media_attr(json_message['Media '
+                                                                                       'Path']))
             common_global.es_inst.com_elastic_index('info', {'ffprobe_data': ffprobe_data})
             if ffprobe_data != None:
                 # begin image generation
@@ -117,7 +121,7 @@ class MKConsumer(object):
                         chapter_count += 1
                         # file path, time, output name
                         # check image save option whether to save this in media folder or metadata folder
-                        if option_config_json['MetadataImageLocal'] == False:
+                        if option_config_json['Metadata']['MetadataImageLocal'] == False:
                             image_file_path = os.path.join(
                                 common_metadata.com_meta_image_file_path(json_message['Media Path'],
                                                                          'chapter'),
@@ -132,7 +136,7 @@ class MKConsumer(object):
                             image_file_path = os.path.join(
                                 image_file_path, (str(chapter_count) + '.png'))
                         command_list = []
-                        command_list.append('./bin/ffmpeg')
+                        command_list.append('ffmpeg')
                         # if ss is before the input it seeks and doesn't convert every frame like after input
                         command_list.append('-ss')
                         # format the seconds to what ffmpeg is looking for
@@ -144,7 +148,7 @@ class MKConsumer(object):
                         command_list.append('-vframes')
                         command_list.append('1')
                         command_list.append('\"' + image_file_path + '\"')
-                        ffmpeg_proc = subprocess.Popen(split(command_list))
+                        ffmpeg_proc = subprocess.Popen(command_list)
                         ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
 
                         # as the worker might see it as finished if allowed to continue

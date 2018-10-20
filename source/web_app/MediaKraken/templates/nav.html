@@ -1,6 +1,6 @@
 <head>
     <meta charset="UTF-8">
-    <script src="/static/js/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
     <script>
         $(function () {
             $('nav li ul').hide().removeClass('fallback');
@@ -12,12 +12,12 @@
 </head>
 <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
     <a class="navbar-brand" href="#">
-        <img src="/static/images/MediaKraken.png" alt="Logo" style="width:40px;">
+        <img src="{{ url_for('static', filename='/static/images/MediaKraken.png') }}" alt="Logo" style="width:40px;">
         <a class="navbar-brand" href="{{ url_for('public.home') }}" id="menu_home">MediaKraken</a>
     </a>
     <ul class="navbar-nav">
         {% if current_user and current_user.is_authenticated %}
-            <li><a class="nav-link" href="{{ url_for('user.members') }}" id="menu_media">Media</a></li>
+            <li><a class="nav-link" href="{{ url_for('user.members') }}" id="menu_media">Home</a></li>
             <li><a class="nav-link" href="{{ url_for('user_sync.sync_display_all') }}" id="menu_sync">Sync</a></li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Metadata</a>
@@ -47,7 +47,7 @@
             <form id="searchForm" method="POST" class="navbar-form form-inline navbar-right"
                   action="{{ url_for('user_search.search_nav_media') }}" role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="nav_search" placeholder="Search">
+                    <input type="text" class="form-control" style="width: 400px;" name="nav_search" placeholder="Search">
                 </div>
                 <button type="submit" formmethod="post" class="btn btn-default" id="main_button_search">Submit</button>
             </form>
@@ -65,7 +65,7 @@
             </form>
         {% endif %}
     </ul>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- the script for refresh current time -->
     <script>
     var update = function () {

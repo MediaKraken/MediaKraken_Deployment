@@ -81,6 +81,20 @@ p.description_content_left{
 
 .user_icon { position:absolute; top: 10px; left: 160px; }
 
+.wide_watched_icon { position:absolute; top: 10px; left: 185px; }
+
+.wide_rating_icon { position:absolute; top: 10px; left: 215px; }
+
+.wide_synced_icon { position:absolute; top: 10px; left: 245px; }
+
+.wide_request_icon { position:absolute; top: 10px; left: 275px; }
+
+.wide_exclamation_icon { position:absolute; top: 10px; left: 305px; }
+
+.wide_queue_icon { position:absolute; top: 10px; left: 335px; }
+
+.wide_user_icon { position:absolute; top: 10px; left: 365px; }
+
 .tab { margin-left: 40px; }
 
 img.center {

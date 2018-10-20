@@ -56,7 +56,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        ip_addr, port = self.transport.client
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection', 'ip': ip_addr})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
@@ -64,7 +64,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection dropped so remove client
         """
-        ip_addr = str(self.transport.getPeer()).split('\'')[1]
+        ip_addr, port = self.transport.client
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection',
                                                          'ip': ip_addr})
         for user_device_uuid, protocol in self.users.items():
@@ -77,8 +77,7 @@ class NetworkEvents(basic.LineReceiver):
         Message received from client
         """
         msg = None
-        common_global.es_inst.com_elastic_index('info', {'GOT Data': data})
-        json_message = json.loads(data)
+        json_message = json.loads(data.decode())
         common_global.es_inst.com_elastic_index('info', {'Message': json_message})
 
         if json_message['Type'] == "CPU Usage":
@@ -112,7 +111,8 @@ class NetworkEvents(basic.LineReceiver):
         elif json_message['Type'] == "Ident":
             # have to create the self.player data so network knows how to send data back
             self.user_device_uuid = json_message['UUID']
-            self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
+            ip_addr, port = self.transport.client
+            self.user_ip_addy = ip_addr
             self.user_user_name = None
             self.user_platform = json_message['Platform']
             # lookup the country
@@ -133,38 +133,41 @@ class NetworkEvents(basic.LineReceiver):
         elif json_message['Type'] == "Image":
             metadata_id = None
             image_json = None
-            if json_message['Sub'] == 'Album':
+            if json_message['Subtype'] == 'Album':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id = self.db_connection.db_meta_album_image_random()
-            elif json_message['Sub'] == 'Book':
+            elif json_message['Subtype'] == 'Book':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
-                    = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
-            elif json_message['Sub'] == 'Game':
+                    = self.db_connection.db_meta_book_image_random(json_message['Image Type'])
+            elif json_message['Subtype'] == 'Game':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
-                    = self.db_connection.db_meta_book_image_random(json_message['Sub3'])
-            elif json_message['Sub'] == 'Movie':
+                    = self.db_connection.db_meta_game_image_random(json_message['Image Type'])
+            elif json_message['Subtype'] == 'Movie':
                 # metadata_id is needed so client can id the media when clicked
-                if json_message['Sub2'] == 'Main' or json_message['Sub2'] == 'Movie' \
-                        or json_message['Sub2'] == 'Demo':
+                if json_message['Image Media Type'] == 'Main' or json_message[
+                    'Image Media Type'] == 'Movie' \
+                        or json_message['Image Media Type'] == 'Demo':
                     image_json, metadata_id \
-                        = self.db_connection.db_meta_movie_image_random(json_message['Sub3'])
-                elif json_message['Sub2'] == 'New Movie':
+                        = self.db_connection.db_meta_movie_image_random(json_message['Image Type'])
+                elif json_message['Image Media Type'] == 'New Movie':
                     pass
-                elif json_message['Sub2'] == 'In Progress':
+                elif json_message['Image Media Type'] == 'In Progress':
                     pass
-            elif json_message['Sub'] == 'TV Show':
+            elif json_message['Subtype'] == 'TV Show':
                 # metadata_id is needed so client can id the media when clicked
                 image_json, metadata_id \
-                    = self.db_connection.db_meta_tvshow_image_random(json_message['Sub3'])
+                    = self.db_connection.db_meta_tvshow_image_random(json_message['Image Type'])
             if metadata_id is not None and image_json is not None:
+                common_global.es_inst.com_elastic_index('info', {"metadata_id": metadata_id,
+                                                                 "image_json": image_json})
                 image_handle = open(image_json, "rb")
                 image_data = image_handle.read()
-                image_data = base64.b64encode(image_data)
+                image_data = base64.b64encode(image_data).decode('ascii')
                 image_handle.close()
-                msg = json.dumps({"Type": "Image", "Sub": json_message['Sub'],
-                                  "Sub2": json_message['Sub2'],
+                msg = json.dumps({"Type": "Image", "Subtype": json_message['Subtype'],
+                                  "Image Media Type": json_message['Image Media Type'],
                                   "Data": image_data, "UUID": metadata_id})
 
         elif json_message['Type'] == "Login":
@@ -177,7 +180,7 @@ class NetworkEvents(basic.LineReceiver):
             elif json_message['Subtype'] == 'Detail':
                 mm_media_ffprobe_json, mm_metadata_json, mm_metadata_localimage_json \
                     = self.db_connection.db_read_media_metadata_movie_both(json_message['UUID'])
-                msg = json.dumps({'Type': 'Media', 'Sub': 'Detail',
+                msg = json.dumps({'Type': 'Media', 'Subtype': 'Detail',
                                   'Data': mm_metadata_json, 'Data2': mm_media_ffprobe_json,
                                   'Data3': mm_metadata_localimage_json})
             elif json_message['Subtype'] == 'List':
@@ -200,7 +203,7 @@ class NetworkEvents(basic.LineReceiver):
                 # (Offset, Limit)
                 pass
             elif json_message['Subtype'] == 'New':
-                msg = json.dumps({'Type': 'Media', 'Sub': 'New',
+                msg = json.dumps({'Type': 'Media', 'Subtype': 'New',
                                   'Data': self.db_connection.db_read_media_new(
                                       json_message['Offset'],
                                       json_message['Limit'])})
@@ -215,7 +218,7 @@ class NetworkEvents(basic.LineReceiver):
                     if json_message['Target'] == client[1]:
                         # to address the 30 char name limit for container
                         name_container = ((json_message['User'] + '_'
-                                           + str(uuid.uuid4()).replace('-', ''))[-30:])
+                                           + str(uuid.uuid4()).replace('-', ''))[:30])
                         cast_docker_inst = common_docker.CommonDocker()
                         cast_docker_inst.com_docker_run_slave(hwaccel=False,
                                                               name_container=name_container,

@@ -18,17 +18,15 @@
 
 import requests
 
-from . import common_global
-
 
 class CommonMetadataIMVdb(object):
     """
     Class for interfacing with imvdb
     """
 
-    def __init__(self, option_config_json):
+    def __init__(self, imvdb_api_key):
         self.headers = {'User-Agent': 'MediaKraken_0.1.6',
-                        'IMVDB-APP-KEY': option_config_json['API']['imvdb'],
+                        'IMVDB-APP-KEY': imvdb_api_key,
                         'Accept': 'application/json'}
         self.base_api_url = 'http://imvdb.com/api/v1'
 
@@ -37,11 +35,14 @@ class CommonMetadataIMVdb(object):
         Video info
         """
         resp = requests.post(self.base_api_url + "/video/" + video_id
-                             + "?include=sources,credits,bts,featured,popularity,countries,",
+                             + "?include=sources,credits,bts,featured,popularity,countries",
                              headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {"imvdb Info Status":
-                                                             resp.status_code, 'json': resp.json()})
-        return resp.json()
+        try:
+            # common_global.es_inst.com_elastic_index('info', {"imvdb Info Status":
+            #                                                      resp.status_code, 'json': resp.json()})
+            return resp.json()
+        except:
+            return None
 
     def com_imvdb_search_video(self, artist_name, song_title):
         """
@@ -51,9 +52,12 @@ class CommonMetadataIMVdb(object):
                              + (artist_name.replace(' ', '+') + '+'
                                 + song_title.replace(' ', '+')),
                              headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {"imvdb Video Status":
-                                                             resp.status_code, 'json': resp.json()})
-        return resp.json()
+        try:
+            # common_global.es_inst.com_elastic_index('info', {"imvdb Video Status":
+            #                                                      resp.status_code, 'json': resp.json()})
+            return resp.json()
+        except:
+            return None
 
     def com_imvdb_search_entities(self, artist_name):
         """
@@ -61,6 +65,9 @@ class CommonMetadataIMVdb(object):
         """
         resp = requests.post(self.base_api_url + "/search/entities?q="
                              + artist_name.replace(' ', '+'), headers=self.headers)
-        common_global.es_inst.com_elastic_index('info', {"imvdb Entities Status":
-                                                             resp.status_code, 'json': resp.json()})
-        return resp.json()
+        try:
+            # common_global.es_inst.com_elastic_index('info', {"imvdb Entities Status":
+            #                                                      resp.status_code, 'json': resp.json()})
+            return resp.json()
+        except:
+            return None

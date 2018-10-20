@@ -19,8 +19,6 @@
 from pylgtv import WebOsClient
 
 
-# python >= 3.3
-
 class CommonNetworkWebOS(object):
     """
     Class for interfacing with webos

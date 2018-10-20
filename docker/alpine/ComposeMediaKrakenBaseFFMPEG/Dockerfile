@@ -1,12 +1,15 @@
 FROM alpine:3.8 as builder
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
 
 ARG FDKAAC_VERSION=0.1.5
-ARG X264_VERSION=20180704-2245-stable
+ARG X264_VERSION=20180723-2245-stable
 ARG X265_VERSION=2.8
-ARG FFMPEG_VERSION="4.0.1"
+ARG FFMPEG_VERSION="4.0.2"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 COPY scripts /mediakraken
@@ -52,6 +55,7 @@ RUN buildDeps="autoconf \
         yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
+    sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories && \
     apk update && \
     apk upgrade && \
     apk add --update ${buildDeps} libgcc libstdc++ ca-certificates && \

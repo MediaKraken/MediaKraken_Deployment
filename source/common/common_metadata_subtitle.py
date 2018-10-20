@@ -16,8 +16,10 @@
   MA 02110-1301, USA.
 '''
 
-# import subliminal
 import os
+import shlex
+
+import subliminal
 
 
 def com_meta_fetch_subtitle(file_name, sub_lang="en"):
@@ -25,23 +27,20 @@ def com_meta_fetch_subtitle(file_name, sub_lang="en"):
     # fetch subtitles
     """
     # file_hash = com_Hash.com_hash_thesubdb(file_name)
-    # TODO shelex to stop little bobby tables
-    command_handle = os.popen("subliminal -l " + sub_lang + " -- \'"
-                              + file_name.encode("utf8") + "\'")
+    command_handle = os.popen(shlex.split("subliminal -l " + sub_lang + " -- \'"
+                                          + file_name.encode("utf8") + "\'"))
     cmd_output = command_handle.read()
     return cmd_output
 
 
-def com_meta_fetch_subtitle_batch(dir_name, sub_lang):
+def com_meta_fetch_subtitle_batch(dir_name, sub_lang='eng'):
     """
     # batch fetch subtitles
     """
     # configure the cache
-    #    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename':
-    # '/home/spoot/cachefile.dbm'})
-    #    # scan for videos in the folder and their subtitles
-    #    videos = subliminal.scan_videos(['/nfsmount/TV_Shows_Misc/Earth 2
-    # (1994)/season 1/'], subtitles=True, embedded_subtitles=True)
-    #    # download
-    #    subliminal.download_best_subtitles(videos, Language('eng'))
-    pass
+    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename':
+                                                                          '/mediakraken/cache/cachefile.dbm'})
+    # scan for videos in the folder and their subtitles
+    videos = subliminal.scan_videos(dir_name, subtitles=True, embedded_subtitles=True)
+    # download
+    subliminal.download_best_subtitles(videos, Language(sub_lang))

@@ -71,6 +71,7 @@ class CommonDatabaseOctmote(object):
             # create device db and load with types
             self.db_cursor.execute('CREATE TABLE octmote_device (device_guid text,'
                                    ' device_name text, device_description text)')
+            # TODO use the DEVICE_ITEM_TYPES from common_device_commands_base.py
             # add base devices to database
             self.db_cursor.execute('insert into octmote_device'
                                    ' (device_guid, device_name, device_description)'

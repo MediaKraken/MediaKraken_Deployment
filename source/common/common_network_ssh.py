@@ -21,7 +21,7 @@ import paramiko
 
 class CommonNetworkSSH(object):
     """
-    Class for interfacing via SNMP
+    Class for interfacing via SSH
     """
 
     def __init__(self, host, user_name, user_password):
@@ -40,9 +40,7 @@ class CommonNetworkSSH(object):
                                                                              get_pty=True)
         ssh_stdin.write(sudo_password + '\n')
         ssh_stdin.flush()
-        for line in ssh_stdout:
-            print(('Sudo... ' + line.strip('\n')))
-        return ssh_stdout
+        return ssh_stdout.read()
 
     def com_net_ssh_run_command(self, command_text):
         """
@@ -50,9 +48,7 @@ class CommonNetworkSSH(object):
         """
         ssh_stdin, ssh_stdout, ssh_stderr = self.ssh_connection.exec_command(command_text,
                                                                              get_pty=True)
-        for line in ssh_stdout:
-            print(('... ' + line.strip('\n')))
-        return ssh_stdout
+        return ssh_stdout.read()
 
     def com_net_ssh_close(self):
         """

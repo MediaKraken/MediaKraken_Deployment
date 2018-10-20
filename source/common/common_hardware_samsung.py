@@ -29,7 +29,7 @@ class CommonHardwareSamsung(object):
         self.src = '192.168.1.2'  # ip of remote
         self.mac = '00-AB-11-11-11-11'  # mac of remote
         self.remote = 'python remote'  # remote name
-        self.dst = '192.168.1.3'  # ip of tv
+        self.dst = device_ip  # ip of tv
         self.app = 'python'  # iphone..iapp.samsung
         self.tv = 'LE32C650'  # iphone.LE32C650.iapp.samsung
 

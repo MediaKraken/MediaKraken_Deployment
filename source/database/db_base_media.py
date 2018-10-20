@@ -51,6 +51,12 @@ def db_read_media(self, media_guid=None):
         return self.db_cursor.fetchall()
 
 
+def db_metadata_from_media_guid(self, guid):
+    self.db_cursor.execute(
+        'select mm_media_metadata_guid from mm_media where mm_media_guid = %s', (guid,))
+    return self.db_cursor.fetchone()[0]
+
+
 def db_known_media_count(self):
     """
     # count known media
@@ -118,7 +124,6 @@ def db_media_duplicate_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-# TODO subselect for speed
 def db_media_duplicate(self, offset=None, records=None):
     """
     # list duplicates
@@ -199,7 +204,6 @@ def db_media_rating_update(self, media_guid, user_id, status_text):
         else:
             json_data['UserStats'][user_id] = {status_text: status_setting}
         self.db_update_media_json(media_guid, json.dumps(json_data))
-        self.db_commit()
     except:
         self.db_rollback()
         return None
@@ -211,20 +215,14 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
     """
     self.db_cursor.execute('SELECT mm_media_json from mm_media'
                            ' where mm_media_guid = %s FOR UPDATE', (media_guid,))
-    try:
-        json_data = self.db_cursor.fetchone()['mm_media_json']
-        if 'UserStats' not in json_data:
-            json_data['UserStats'] = {}
-        if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id]['ffmpeg_checkpoint'] = ffmpeg_time
-        else:
-            json_data['UserStats'][user_id] = {
-                'ffmpeg_checkpoint': ffmpeg_time}
-        self.db_update_media_json(media_guid, json.dumps(json_data))
-        self.db_commit()
-    except:
-        self.db_rollback()
-        return None
+    json_data = self.db_cursor.fetchone()['mm_media_json']
+    if 'UserStats' not in json_data:
+        json_data['UserStats'] = {}
+    if user_id in json_data['UserStats']:
+        json_data['UserStats'][user_id]['ffmpeg_checkpoint'] = ffmpeg_time
+    else:
+        json_data['UserStats'][user_id] = {'ffmpeg_checkpoint': ffmpeg_time}
+    self.db_update_media_json(media_guid, json.dumps(json_data))
 
 
 def db_update_media_id(self, media_guid, metadata_guid):
@@ -252,7 +250,7 @@ def db_media_by_metadata_guid(self, metadata_guid, media_class_uuid):
     self.db_cursor.execute('select mm_media_name,mm_media_guid from mm_media,'
                            'mm_metadata_movie where mm_media_metadata_guid = mm_metadata_guid'
                            ' and mm_media_metadata_guid = %s and mm_media_class_guid = %s',
-                            (metadata_guid, media_class_uuid))
+                           (metadata_guid, media_class_uuid))
     return self.db_cursor.fetchall()
 
 
@@ -314,7 +312,6 @@ def db_read_media_new_count(self, days_old=7):
     return self.db_cursor.fetchone()[0]
 
 
-# TODO subselect for speed
 def db_read_media_new(self, days_old=7, offset=None, records=None):
     """
     # new media
@@ -349,7 +346,7 @@ def db_read_media_ffprobe(self):
     """
     Read in all media that needs ffprobe
     """
-    self.db_cursor.execute('select mm_media_guid,b from mm_media'
+    self.db_cursor.execute('select mm_media_guid from mm_media'
                            ' where mm_media_ffprobe_json is NULL')
     return self.db_cursor.fetchall()
 
@@ -361,3 +358,27 @@ def db_media_ffmeg_update(self, media_guid, ffmpeg_json):
     self.db_cursor.execute('update mm_media set mm_media_ffprobe_json = %s'
                            ' where mm_media_guid = %s', (ffmpeg_json, media_guid))
     self.db_commit()
+
+
+def db_unmatched_list_count(self):
+    self.db_cursor.execute('select count(*) from mm_media'
+                           ' where mm_media_metadata_guid is NULL')
+    return self.db_cursor.fetchone()[0]
+
+
+def db_unmatched_list(self, offset=None, list_limit=None):
+    if offset is None:
+        self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
+                               ' where mm_media_metadata_guid is NULL order by mm_media_path')
+    else:
+        self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
+                               ' where mm_media_metadata_guid is NULL'
+                               ' order by mm_media_path offset %s limit %s',
+                               (offset, list_limit))
+    return self.db_cursor.fetchall()
+
+
+def db_ffprobe_data(self, guid):
+    self.db_cursor.execute('select mm_media_ffprobe_json from mm_media'
+                           ' where mm_media_guid = %s' % guid)
+    return self.db_cursor.fetchone()[0]

@@ -22,10 +22,24 @@ import uuid
 from common import common_global
 
 
+def db_meta_book_list_count(self, search_value=None):
+    """
+    book list count
+    """
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) '
+                               'from mm_metadata_book where mm_metadata_book_name %% %s',
+                               (search_value,))
+    else:
+        self.db_cursor.execute('select count(*) from mm_metadata_book')
+    return self.db_cursor.fetchone()[0]
+
+
 def db_meta_book_list(self, offset=None, records=None, search_value=None):
     """
     book list
     """
+    # TODO sort by release date
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
@@ -64,6 +78,8 @@ def db_meta_book_guid_by_name(self, book_name):
     """
     # metadata guid by name
     """
+    # TODO can be more than one by name
+    # TODO sort by release date
     self.db_cursor.execute('select mm_metadata_book_guid from mm_metadata_book'
                            ' where mm_metadata_book_name =  %s', (book_name,))
     try:

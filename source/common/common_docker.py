@@ -20,6 +20,7 @@ import os
 import socket
 
 import docker
+
 from . import common_global
 
 
@@ -54,6 +55,17 @@ class CommonDocker(object):
             # docker containers spun up have container id as hostname
             container_id = socket.gethostname()
         return self.cli_api.port(container_id, mapped_port)
+
+    def com_docker_ports_free(self):
+        """
+        return list of ports in use by docker
+        """
+        port_list = []
+        for container_inst in self.com_docker_container_list():
+            for port_ndx in container_inst['Ports']:
+                if 'PublicPort' in port_ndx:  # as not all containers have open port
+                    port_list.append(port_ndx['PublicPort'])
+        return port_list
 
     def com_docker_swarm_init(self):
         """
@@ -138,7 +150,7 @@ class CommonDocker(object):
         try:
             # since the container might not exist (like starting the main_debug.py
             return self.cli_api.remove_container(container=container_image_name,
-                                             force=container_force)
+                                                 force=container_force)
         except:
             pass
 
@@ -158,8 +170,12 @@ class CommonDocker(object):
         """
         create network
         """
-        # TODO make sure the network doesn't already exist
-        return self.cli.networks.create(name=network_name, driver="bridge")
+        # verify the network doesn't already exist
+        if len(self.com_docker_network_list(network_name)) == 0:
+            return self.cli.networks.create(name=network_name, driver="bridge")
+
+    def com_docker_network_list(self, network_name='mk_mediakraken_network'):
+        return self.cli.networks.list(network_name)
 
     def com_docker_network_prune(self):
         """
@@ -177,6 +193,7 @@ class CommonDocker(object):
 
     def com_docker_run_elk(self):
         self.com_docker_delete_container('mkelk')
+        self.com_docker_network_create('mk_mediakraken_network')
         return self.cli.containers.run(image='mediakraken/mkelk',
                                        detach=True,
                                        ports={"5044": 5044, "5601": 5601, "9200": 9200},
@@ -190,6 +207,55 @@ class CommonDocker(object):
                                                     'LOGSTASH_START': 0,
                                                     'KIBANA_START': 1}
                                        )
+
+    def com_docker_run_game_data(self, container_command='python3 ./subprogram_metadata_games.py'):
+        """
+        Launch container for game data load
+        """
+        self.com_docker_delete_container('mkgamedata')
+        return self.cli.containers.run(image='mediakraken/mkgamedata',
+                                       network='mk_mediakraken_network',
+                                       command=container_command,
+                                       detach=True,
+                                       volumes={'/var/opt/mediakraken/emulation':
+                                                    {'bind': '/mediakraken/emulation',
+                                                     'mode': 'rw'}
+                                                },
+                                       environment={'POSTGRES_DB': os.environ['POSTGRES_DB'],
+                                                    'POSTGRES_USER': os.environ['POSTGRES_USER'],
+                                                    'POSTGRES_PASSWORD': os.environ[
+                                                        'POSTGRES_PASSWORD'],
+                                                    },
+                                       name='mkgamedata')
+
+    def com_docker_run_cast(self, hwaccel, name_container, container_command):
+        """
+        Launch container for cast play
+        """
+        # docker run --name waffleboy -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow
+        #  --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags frag_keyframe+empty_moov+faststart
+        # --address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/DVD/Creep (2004)/Creep (2004).mkv'
+        if hwaccel:
+            image_name = 'mediakraken/mkslavenvidiadebian'
+        else:
+            image_name = 'mediakraken/mkslave'
+        # rm - cleanup after exit
+        # it - interactive tty
+        # container_command = 'docker run -it --rm --net host -v ' \
+        #     +  '/mediakraken/nfsmount:/mediakraken/mnt ' \
+        #     +  'mediakraken/mkslave ' + container_command)
+        return self.cli.containers.run(image=image_name,
+                                       network_mode='host',
+                                       command=container_command,
+                                       detach=True,
+                                       volumes={'/var/run/docker.sock':
+                                                    {'bind': '/var/run/docker.sock',
+                                                     'mode': 'ro'},
+                                                '/mediakraken/nfsmount':
+                                                    {'bind': '/mediakraken/mnt',
+                                                     'mode': 'ro'}
+                                                },
+                                       name=name_container)
 
     def com_docker_run_musicbrainz(self, brainzcode):
         self.com_docker_delete_container('mkmusicbrainz')
@@ -232,7 +298,8 @@ class CommonDocker(object):
 
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
         self.com_docker_delete_container('mkpgadmin')
-        return self.cli.containers.run(image='dpage/pgadmin4',
+        self.com_docker_network_create('mk_mediakraken_network')
+        return self.cli.containers.run(image='mediakraken/mkpgadmin',
                                        detach=True,
                                        name='mkpgadmin',
                                        ports={"80": 12345},
@@ -308,11 +375,26 @@ class CommonDocker(object):
                                        environment={'USERNAME': username,
                                                     'PASSWORD': password})
 
+    def com_docker_run_twitch_record_user(self, twitch_user):
+        """
+        Launch container for twitch user recording
+        """
+        return self.cli.containers.run(image='mediakraken/mkslave',
+                                       command='python3 check.py ' + twitch_user,
+                                       detach=True,
+                                       volumes={
+                                           '/mediakraken/nfsmount':
+                                               {'bind': '/mediakraken/mnt',
+                                                'mode': 'rw'}
+                                       },
+                                       name='mktwitchrecorduser_' + twitch_user)
+
     def com_docker_run_wireshark(self):
         """
         run wireshark
         """
         self.com_docker_delete_container('mkwireshark')
+        self.com_docker_network_create('mk_mediakraken_network')
         return self.cli.containers.run(image='mediakraken/mkwireshark',
                                        detach=True,
                                        name='mkwireshark',

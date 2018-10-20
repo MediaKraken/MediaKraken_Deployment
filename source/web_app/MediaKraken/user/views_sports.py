@@ -28,17 +28,14 @@ def user_sports_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    if session['search_text'] is not None:
-        mediadata = g.db_connection.db_meta_sports_list(offset, per_page, session['search_text'])
-    else:
-        mediadata = g.db_connection.db_meta_sports_list(offset, per_page)
-    for row_data in mediadata:
+    for row_data in g.db_connection.db_meta_sports_list(offset, per_page, session['search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     session['search_page'] = 'media_sports'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_meta_sports_list_count(),
+                                                  total=g.db_connection.db_meta_sports_list_count(
+                                                      session['search_text']),
                                                   record_name='sporting event(s)',
                                                   format_total=True,
                                                   format_number=True,

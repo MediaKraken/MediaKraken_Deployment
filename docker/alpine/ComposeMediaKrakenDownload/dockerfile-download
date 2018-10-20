@@ -4,6 +4,9 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the downloader app"
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 # create work dir
 RUN mkdir /mediakraken/downloads
 
@@ -11,10 +14,11 @@ RUN mkdir /mediakraken/downloads
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   py3-libcloud \
   py3-psycopg2 \
-  && pip3 install -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 

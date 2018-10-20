@@ -80,19 +80,23 @@ def db_user_group_insert(self, group_name, group_desc, group_rights_json):
     """
     insert user group
     """
+    new_user_group_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_user_group (mm_user_group_guid,'
                            ' mm_user_group_name, mm_user_group_description,'
                            ' mm_user_group_rights_json)'
-                           ' values (%s,%s,%s,%s)', (str(uuid.uuid4()), group_name,
+                           ' values (%s,%s,%s,%s)', (new_user_group_id, group_name,
                                                      group_desc, group_rights_json))
     self.db_commit()
+    return new_user_group_id
 
 
 def db_user_profile_insert(self, profile_name, profile_json):
     """
     insert user profile
     """
+    new_user_profile_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_user_profile (mm_user_profile_guid,'
                            ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)',
-                           (str(uuid.uuid4()), profile_name, profile_json))
+                           (new_user_profile_id, profile_name, profile_json))
     self.db_commit()
+    return new_user_profile_id

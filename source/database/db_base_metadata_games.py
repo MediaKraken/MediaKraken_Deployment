@@ -45,14 +45,16 @@ def db_meta_game_list(self, offset=None, records=None, search_value=None):
                                    ' from mm_metadata_game_software_info,'
                                    'mm_metadata_game_systems_info'
                                    ' where gi_system_id = gs_id and gi_game_info_name %% %s '
-                                   'order by gi_game_info_name', (search_value,))
+                                   'order by gi_game_info_name, gi_game_info_json->\'year\'',
+                                   (search_value,))
         else:
             self.db_cursor.execute('select gi_id,gi_game_info_short_name,gi_game_info_name,'
                                    'gi_game_info_json->\'year\','
                                    'gs_game_system_json->\'description\''
                                    ' from mm_metadata_game_software_info,'
                                    'mm_metadata_game_systems_info'
-                                   ' where gi_system_id = gs_id order by gi_game_info_name')
+                                   ' where gi_system_id = gs_id order by gi_game_info_name,'
+                                   ' gi_game_info_json->\'year\'')
     else:
         if search_value is not None:
             self.db_cursor.execute('select gi_id,gi_game_info_short_name,gi_game_info_name,'
@@ -61,7 +63,7 @@ def db_meta_game_list(self, offset=None, records=None, search_value=None):
                                    ' from mm_metadata_game_software_info,'
                                    'mm_metadata_game_systems_info'
                                    ' where gi_system_id = gs_id and gi_game_info_name %% %s '
-                                   'order by gi_game_info_name'
+                                   'order by gi_game_info_name, gi_game_info_json->\'year\''
                                    ' offset %s limit %s', (search_value, offset, records))
         else:
             self.db_cursor.execute('select gi_id,gi_game_info_short_name,gi_game_info_name,'
@@ -69,7 +71,8 @@ def db_meta_game_list(self, offset=None, records=None, search_value=None):
                                    'gs_game_system_json->\'description\''
                                    ' from mm_metadata_game_software_info,'
                                    'mm_metadata_game_systems_info'
-                                   ' where gi_system_id = gs_id order by gi_game_info_name'
+                                   ' where gi_system_id = gs_id order by gi_game_info_name,'
+                                   ' gi_game_info_json->\'year\''
                                    ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
@@ -144,11 +147,12 @@ def db_meta_game_image_random(self, return_image_type='Poster'):
     """
     Find random game image
     """
-    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\' as image_json,mm_metadata_guid'
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'thegamesdb\'->>\''
+                           + return_image_type + '\' as image_json,gi_id'
                                                  ' from mm_media,mm_metadata_game_software_info'
-                                                 ' where mm_media_metadata_guid = mm_metadata_guid'
-                                                 ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                                                 ' where mm_media_metadata_guid = gi_id'
+                                                 ' and ('
+                                                 'mm_metadata_localimage_json->\'Images\'->\'thegamesdb\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')
     try:
@@ -161,11 +165,13 @@ def db_meta_game_insert(self, game_system_id, game_short_name, game_name, game_j
     """
     Insert game
     """
+    new_game_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_game_software_info(gi_id, gi_system_id, '
                            'gi_game_info_short_name, gi_game_info_name, gi_game_info_json)'
                            ' values (%s, %s, %s, %s, %s)',
-                           (str(uuid.uuid4()), game_system_id, game_short_name, game_name,
+                           (new_game_id, game_system_id, game_short_name, game_name,
                             json.dumps(game_json)))
+    return new_game_id
 
 
 def db_meta_game_update(self, game_system_id, game_short_name, game_name, game_json):

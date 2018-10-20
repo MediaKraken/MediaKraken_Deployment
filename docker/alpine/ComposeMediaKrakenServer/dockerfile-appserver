@@ -4,14 +4,18 @@ FROM mediakraken/mkbase38py3
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main server app"
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 # copy PIP requirements
 ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN apk add --update \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && apk add --update \
   alpine-sdk \
   python3-dev \
-  && pip3 install -r requirements.txt \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk add \
   libressl-dev \
   libressl \
@@ -61,7 +65,5 @@ RUN cd /mediakraken/np_inline \
   && rm -R ./np_inline
 # Copy the source files for the app
 ADD src /mediakraken
-
-EXPOSE 8903
 
 CMD ["/bin/ash"]

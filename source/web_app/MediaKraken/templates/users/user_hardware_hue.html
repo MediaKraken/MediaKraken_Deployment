@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_slider.css') }}" media="all" type="text/css"/>
+    </head>
+
+    <a href="{{ url_for('user_hardware_hue.user_hardware_hue_on') }}" id="user_hue_bulb_on">
+        <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='/static/images/lightbulb_on.png') }}"
+             alt="hue_bulb_on" height="200" width="200">
+    </a>
+    <a href="{{ url_for('user_hardware_hue.user_hardware_hue_off') }}" id="user_hue_bulb_off">
+        <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='/static/images/lightbulb_off.png') }}"
+             alt="hue_bulb_off" height="200" width="200">
+    </a>
+
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="hue_brightness">
+    </div>
+
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
+</body>
+{% endblock %}

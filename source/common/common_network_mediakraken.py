@@ -44,7 +44,7 @@ def com_net_mediakraken_find_server(server_seconds=1):
     while time.time() < t_end:
         try:
             search_socket.sendto(
-                "who is MediaKrakenServer?", ('<broadcast>', 9101))
+                b"who is MediaKrakenServer?", ('<broadcast>', 9101))
             server_reply = search_socket.recvfrom(1024)[0]
             common_global.es_inst.com_elastic_index('info', {'Server reply': server_reply})
             if server_reply not in server_hosts_found:

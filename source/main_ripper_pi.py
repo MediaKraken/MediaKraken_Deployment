@@ -29,7 +29,6 @@ from common import common_global
 from common import common_hardware_arduino_usb_serial
 from common import common_logging_elasticsearch
 from common import common_signal
-
 setup()
 
 from kivy.lang import Builder

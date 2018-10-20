@@ -3,26 +3,27 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" type="text/css"/>
     </head>
     <p>
         <a href="{{url_for('user_internet.user_internet_youtube')}}" id="user_internet_youtube_page">
-        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/youtube-logo.png" alt="YouTube" height="200" width="200">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='/static/images/youtube-logo.png') }}" alt="YouTube" height="200" width="200">
         </a>
         <a href="{{url_for('user_internet.user_internet_vimeo')}}" id="user_internet_vimeo_page">
-        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/vimeo_icon_white_on_blue_rounded.png" alt="Vimeo" height="200" width="200">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='/static/images/vimeo_icon_white_on_blue_rounded.png') }}" alt="Vimeo" height="200" width="200">
         </a>
         <a href="{{url_for('user_internet.user_internet_twitch')}}" id="user_internet_twitch_page">
-        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/twitch.png" alt="Twitch TV" height="200" width="200">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='/static/images/twitch.png') }}" alt="Twitch TV" height="200" width="200">
         </a>
         <a href="{{url_for('user_internet.user_internet_flickr')}}" id="user_internet_flickr_page">
-        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/flickr.png" alt="Flickr" height="200" width="200">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='/static/images/flickr.png') }}" alt="Flickr" height="200" width="200">
         </a>
     </p>
-    <script src="/static/js/jquery.min.js"></script>
-    <script src="/static/js/blazy.min.js"></script>
+    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
     <script>
         ;(function() {
             // Initialize

@@ -24,6 +24,7 @@ from build_trailer_directory import build_trailer_dirs
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
+from common import common_signal
 
 # TODO should be using env variables
 # build image directories if needed
@@ -42,6 +43,9 @@ else:
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_metadata_api')
 
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
@@ -53,4 +57,5 @@ for meta_provider in list(common_metadata_limiter.API_LIMIT.keys()):
     common_global.es_inst.com_elastic_index('info', {'meta_provider': meta_provider})
     proc_api_fetch = subprocess.Popen(['python3', './main_server_metadata_api_worker.py',
                                        meta_provider], shell=False)
+# TODO this only wait for the last one......so, if that bombs....could kill rest on exit
 proc_api_fetch.wait()  # so this doesn't end which will cause docker to restart

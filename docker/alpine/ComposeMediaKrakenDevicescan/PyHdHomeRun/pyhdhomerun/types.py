@@ -26,7 +26,7 @@ class TYPE_hdhomerun_discover_device_t(Structure):
 class TYPE_hdhomerun_channel_entry_t(Structure):
     def __str__(self):
         return ("CHANNEL-ENTRY  NEXT= [%s]  PREV= [%s]  FREQ= (%d)  CHAN= (%d)"
-                "  NAME= [%s]" % ('<present>' if self.next else None, 
+                "  NAME= [%s]" % ('<present>' if self.__next__ else None, 
                                   '<present>' if self.prev else None, 
                                   self.frequency, self.channel_number, 
                                   ''))#self.name.value))
@@ -125,8 +125,8 @@ class TYPE_hdhomerun_channelscan_result_t(Structure):
 
     def dump_programs(self):
         i = 0
-        for i in xrange(self.program_count):
-            print("%d: %s" % (i, self.programs[i]))
+        for i in range(self.program_count):
+            print(("%d: %s" % (i, self.programs[i])))
 
             i += 1
 
@@ -295,4 +295,3 @@ class TYPE_hdhomerun_tuner_vstatus_t(Structure):
                 "COPY_PROTECTED= [%s]" % (self.vchannel, self.name, self.auth,
                  self.cci, self.cgms, not not self.not_subscribed, 
                  not not self.not_available, not not self.copy_protected))
-

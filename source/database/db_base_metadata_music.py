@@ -32,10 +32,13 @@ def db_music_lookup(self, artist_name, album_name, song_title):
     """
     # query to see if song is in local DB
     """
+    # TODO the following fields don't exist on the database (album and musician)
+    # TODO order by release year
     self.db_cursor.execute('select mm_metadata_music_guid,'
-                           ' mm_metadata_media_music_id->\'Mbrainz\' from mm_metadata_music,'
+                           ' mm_metadata_media_music_id->\'Mbrainz\' as mbrainz from '
+                           'mm_metadata_music,'
                            ' mm_metadata_album, mm_metadata_musician'
-                           ' where blah and lower(mm_metadata_musician_name) = %s'
+                           ' where lower(mm_metadata_musician_name) = %s'
                            ' and lower(mm_metadata_album_name) = %s'
                            ' and lower(mm_metadata_music_name) = %s',
                            (artist_name.lower(), album_name.lower(), song_title.lower()))
@@ -134,6 +137,7 @@ def db_meta_album_list(self, offset=None, records=None, search_value=None):
     # return albums metadatalist
     """
     # TODO, only grab the poster local from json
+    # TODO order by release year
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
@@ -208,3 +212,13 @@ def db_meta_album_image_random(self):
         return image_json, metadata_id
     except:
         return None, None
+
+
+def db_meta_music_by_provider_uuid(self, provider, uuid_id):
+    try:
+        self.db_cursor.execute('select mm_metadata_music_guid from mm_metadata_music'
+                               ' where mm_metadata_media_music_id->\'' + provider
+                               + '\' ? %s', (uuid_id,))
+        return self.db_cursor.fetchone()['mm_metadata_music_guid']
+    except:
+        return None
