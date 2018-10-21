@@ -107,6 +107,32 @@ CREATE TABLE public.mm_download_que (
 ALTER TABLE public.mm_download_que OWNER TO metamanpg;
 
 --
+-- Name: mm_game_category; Type: TABLE; Schema: public; Owner: metamanpg
+--
+
+CREATE TABLE public.mm_game_category (
+    gc_id uuid NOT NULL,
+    gc_category text
+);
+
+
+ALTER TABLE public.mm_game_category OWNER TO metamanpg;
+
+--
+-- Name: mm_hardware; Type: TABLE; Schema: public; Owner: metamanpg
+--
+
+CREATE TABLE public.mm_hardware (
+    mm_hardware_id uuid NOT NULL,
+    mm_hardware_manufacturer text,
+    mm_hardware_model text,
+    mm_hardware_json jsonb
+);
+
+
+ALTER TABLE public.mm_hardware OWNER TO metamanpg;
+
+--
 -- Name: mm_link; Type: TABLE; Schema: public; Owner: metamanpg
 --
 
@@ -223,7 +249,9 @@ CREATE TABLE public.mm_metadata_album (
     mm_metadata_album_name text,
     mm_metadata_album_id jsonb,
     mm_metadata_album_json jsonb,
-    mm_metadata_album_musician_guid uuid
+    mm_metadata_album_musician_guid uuid,
+    mm_metadata_album_user_json jsonb,
+    mm_metadata_album_localimage jsonb
 );
 
 
@@ -257,7 +285,8 @@ CREATE TABLE public.mm_metadata_book (
     mm_metadata_book_isbn13 text,
     mm_metadata_book_name text,
     mm_metadata_book_json jsonb,
-    mm_metadata_book_image_json jsonb
+    mm_metadata_book_user_json jsonb,
+    mm_metadata_book_localimage_json jsonb
 );
 
 
@@ -285,6 +314,7 @@ ALTER TABLE public.mm_metadata_collection OWNER TO metamanpg;
 CREATE TABLE public.mm_metadata_game_software_info (
     gi_id uuid NOT NULL,
     gi_system_id uuid,
+    gi_game_info_short_name text,
     gi_game_info_name text,
     gi_game_info_json jsonb
 );
@@ -300,7 +330,8 @@ CREATE TABLE public.mm_metadata_game_systems_info (
     gs_id uuid NOT NULL,
     gs_game_system_name text,
     gs_game_system_alias text,
-    gs_game_system_json jsonb
+    gs_game_system_json jsonb,
+    mm_metadata_localimage_json jsonb
 );
 
 
@@ -344,7 +375,8 @@ CREATE TABLE public.mm_metadata_music (
     mm_metadata_media_music_id jsonb,
     mm_metadata_music_name text,
     mm_metadata_music_json jsonb,
-    mm_metadata_music_album_guid uuid
+    mm_metadata_music_album_guid uuid,
+    mm_metadata_music_user_json jsonb
 );
 
 
@@ -360,7 +392,8 @@ CREATE TABLE public.mm_metadata_music_video (
     mm_media_music_video_band text,
     mm_media_music_video_song text,
     mm_metadata_music_video_json jsonb,
-    mm_metadata_music_video_localimage_json jsonb
+    mm_metadata_music_video_localimage_json jsonb,
+    mm_metadata_music_video_user_json jsonb
 );
 
 
@@ -374,7 +407,8 @@ CREATE TABLE public.mm_metadata_musician (
     mm_metadata_musician_guid uuid NOT NULL,
     mm_metadata_musician_name text,
     mm_metadata_musician_id jsonb,
-    mm_metadata_musician_json jsonb
+    mm_metadata_musician_json jsonb,
+    mm_metadata_musician_localimage_json jsonb
 );
 
 
@@ -404,6 +438,7 @@ CREATE TABLE public.mm_metadata_sports (
     mm_metadata_media_sports_id jsonb,
     mm_metadata_sports_name text,
     mm_metadata_sports_json jsonb,
+    mm_metadata_sports_user_json jsonb,
     mm_metadata_sports_image_json jsonb
 );
 
@@ -694,6 +729,22 @@ COPY public.mm_download_que (mdq_id, mdq_provider, mdq_que_type, mdq_download_js
 
 
 --
+-- Data for Name: mm_game_category; Type: TABLE DATA; Schema: public; Owner: metamanpg
+--
+
+COPY public.mm_game_category (gc_id, gc_category) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mm_hardware; Type: TABLE DATA; Schema: public; Owner: metamanpg
+--
+
+COPY public.mm_hardware (mm_hardware_id, mm_hardware_manufacturer, mm_hardware_model, mm_hardware_json) FROM stdin;
+\.
+
+
+--
 -- Data for Name: mm_link; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
@@ -722,40 +773,44 @@ COPY public.mm_media (mm_media_guid, mm_media_class_guid, mm_media_metadata_guid
 --
 
 COPY public.mm_media_class (mm_media_class_guid, mm_media_class_type, mm_media_class_parent_type, mm_media_class_display) FROM stdin;
-8915f7a9-02b9-4b77-9fb1-d11417be106f	Adult	Video	t
-1c6116e5-197c-4761-8f3d-f34a347f1d86	Anime	Video	t
-40c931d4-48c7-4d8e-9739-f78e5baefe82	Book	Publication	t
-9187840c-68d1-4672-b389-5f060261b224	Boxset	\N	f
-32c1516a-ac75-48ab-86a2-230f302fad15	Game CHD	\N	f
-322e9133-72cd-4f56-9dca-f111b5e3c60b	Game ISO	\N	f
-dfef1d37-5449-4700-88aa-c275712de148	Game ROM	\N	f
-285f52a2-5591-4523-a613-ba2dc302d46f	Home Movie	Video	t
-6b9ad387-641c-4b0c-910c-a899b70c6fd5	Magazine	Publication	t
-334d465a-d3a8-431e-b252-b019d78b1c3b	Movie	Video	t
-58246cbd-0c33-4c0c-8425-0dae16460dc5	Movie Extras	Video	f
-4c9c3df5-d758-4edd-b8c5-3c3483d8b2f0	Movie Collection	\N	f
-c3875ea6-7550-488b-816f-6038aafc056a	Movie Theme	Audio	f
-78eeb338-38d0-4b49-a484-367ca260cfc1	Movie Trailer	Video	f
-5c344914-f9ee-4f25-8a79-f39fd2e8751b	Music	Audio	t
-8077a233-ee24-41e2-a72f-bd12aea0e8bc	Music Album	\N	f
-5b222278-6fd9-4052-adef-26ae7497b458	Music Collection	\N	f
-759aaccb-5a27-4636-9ded-59498ff7acc6	Music Lyric	\N	f
-d4ea3456-d03d-4ba9-9c16-e3a10ab4fa13	Music Video	Video	t
-f37e3cbc-b8ed-4537-9b6b-e5e473e0d8a8	Person	\N	f
-71c729d3-9eea-4963-9cf8-94c7c875bb05	Picture	Image	t
-c56a083d-8196-41cc-8527-5091a0e5eade	Soundtrack	Audio	f
-ca3a245a-22fb-4d61-9600-da5704ae9e9f	Sports	Video	t
-c2ce7fbb-b423-41a9-8194-bb4aaf728ed5	Subtitle	\N	f
-b18fadc1-4855-447d-96d3-b828ea9cb932	TV Episode	Video	f
-296f1e68-a824-47b5-926b-5ba04893a82c	TV Extras	Video	f
-ab821ae2-191e-47d7-9224-c980bc75a100	TV Season	\N	f
-4f5c1f72-4e5e-469c-991d-71008dfaf587	TV Show	Video	t
-82f6004a-bc8d-4370-a93b-0e82ec0f78b0	TV Theme	Audio	f
-6b9cf1c0-fbb3-4da5-a956-f7415db98401	TV Trailer	Video	f
-6e2fcf38-8481-4f83-827a-737865479212	Video Game	Game	t
-cf189035-a9c8-4907-ac07-613375a0aa9b	Video Game Intro	Video	t
-246fbb2f-3d71-4b8e-bf94-9c48bcc0f6c6	Video Game Speedrun	Video	t
-c82cd0bb-86b6-484d-b0e7-af7f036728ff	Video Game Superplay	Video	t
+f7354910-02fc-455d-bdb5-361bf42e794c	Adult	Video	t
+e8ad8398-70be-483b-b0b9-abe8b8d7de2d	Anime	Video	t
+852bc096-20ea-4af7-a5a1-4be735c3b1ab	Book	Publication	t
+fd8387da-9d93-4554-be9d-d26e52832ff3	Boxset	\N	f
+f75c3b31-0d48-47eb-b66b-670aef07777b	Comic	Publication	t
+9dd3946f-a499-4f50-af77-b637f159ce66	Comic Strip	Publication	t
+9ba7e24a-ed4e-42c6-b667-e3179d2e71cb	Game CHD	\N	f
+f08b3310-b4a6-4e17-9ab9-74dfd0c71ca0	Game ISO	\N	f
+0ad11426-e4a2-421b-a438-0ff820e4c864	Game ROM	\N	f
+359cd32d-362b-4130-abb9-c1c1debf86cc	Home Movie	Video	t
+f0658749-4aa0-4fa1-8359-fac51106635d	Magazine	Publication	t
+8b40abac-a071-48bc-b1f9-5b678dcc934c	Movie	Video	t
+c53138ee-ab7c-40b9-b86e-d3eed7a26cc1	Movie Extras	Video	f
+d7631d4c-4e3d-4e09-866e-cd26d6c42fab	Movie Collection	\N	f
+eefee9fe-10ac-4ecd-899a-0cb162c67b6f	Movie Theme	Audio	f
+1481b6c9-8f68-4da1-8deb-19d5257035f1	Movie Subtitle	\N	f
+84742b9a-3870-418d-9bbd-4a1d7a3056c8	Movie Trailer	Video	f
+da762d3e-12b8-48a2-a214-647e76453316	Music	Audio	t
+493431f2-5f65-49cb-bb23-dbc20c906481	Music Album	\N	f
+d79edbb5-0c7c-46c1-96c4-128bea0af90b	Music Collection	\N	f
+7284c348-1f47-4d11-813a-bba08ef6b21b	Music Lyric	\N	f
+e0175eb1-b00d-438a-ad5c-8e23a2cc71c9	Music Video	Video	t
+1f187b8d-72fb-4bce-b809-01d6482a149e	Person	\N	f
+b6661e75-4474-44b3-b379-dde721daa31d	Picture	Image	t
+ba02ae59-6d4f-46f8-97a5-dd6e31d7676c	Soundtrack	Audio	f
+b118f082-8771-4ac3-b645-96d9b8d6bad4	Sports	Video	t
+f57d4cdb-7aff-45f0-9235-3f9c8b57842c	Subtitle	\N	f
+f3dc966d-2056-4ba7-8342-54191bb92117	TV Episode	Video	f
+4862b282-3130-430a-84de-cc47ec6caae4	TV Extras	Video	f
+c11a9cb5-6dda-455a-8f63-e94be3998042	TV Season	\N	f
+c62e715c-e35e-4907-a3c5-b7e9ca6f2333	TV Show	Video	t
+d4dea663-25f2-4c25-8f3b-5f68eb49d2f1	TV Subtitle	\N	f
+274f00a5-f058-41dd-a17a-dec9bcc18891	TV Theme	Audio	f
+a359aad3-7a95-4b9f-9050-aa09be35c326	TV Trailer	Video	f
+7c889c86-5eef-48cf-b840-2b56bee4b86b	Video Game	Game	t
+30ba9f85-51dc-49ad-a471-964575adf72c	Video Game Intro	Video	t
+02a162d2-194d-4ca8-8c8c-8167282d1c67	Video Game Speedrun	Video	t
+2e6bc294-eff4-40b9-8e94-e328ae4ab553	Video Game Superplay	Video	t
 \.
 
 
@@ -787,7 +842,7 @@ COPY public.mm_media_share (mm_media_share_guid, mm_media_share_type, mm_media_s
 -- Data for Name: mm_metadata_album; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_id, mm_metadata_album_json, mm_metadata_album_musician_guid) FROM stdin;
+COPY public.mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_id, mm_metadata_album_json, mm_metadata_album_musician_guid, mm_metadata_album_user_json, mm_metadata_album_localimage) FROM stdin;
 \.
 
 
@@ -803,7 +858,7 @@ COPY public.mm_metadata_anime (mm_metadata_anime_guid, mm_metadata_anime_media_i
 -- Data for Name: mm_metadata_book; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_book (mm_metadata_book_guid, mm_metadata_book_isbn, mm_metadata_book_isbn13, mm_metadata_book_name, mm_metadata_book_json, mm_metadata_book_image_json) FROM stdin;
+COPY public.mm_metadata_book (mm_metadata_book_guid, mm_metadata_book_isbn, mm_metadata_book_isbn13, mm_metadata_book_name, mm_metadata_book_json, mm_metadata_book_user_json, mm_metadata_book_localimage_json) FROM stdin;
 \.
 
 
@@ -819,7 +874,7 @@ COPY public.mm_metadata_collection (mm_metadata_collection_guid, mm_metadata_col
 -- Data for Name: mm_metadata_game_software_info; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_name, gi_game_info_json) FROM stdin;
+COPY public.mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_short_name, gi_game_info_name, gi_game_info_json) FROM stdin;
 \.
 
 
@@ -827,7 +882,7 @@ COPY public.mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_na
 -- Data for Name: mm_metadata_game_systems_info; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_game_systems_info (gs_id, gs_game_system_name, gs_game_system_alias, gs_game_system_json) FROM stdin;
+COPY public.mm_metadata_game_systems_info (gs_id, gs_game_system_name, gs_game_system_alias, gs_game_system_json, mm_metadata_localimage_json) FROM stdin;
 \.
 
 
@@ -851,7 +906,7 @@ COPY public.mm_metadata_movie (mm_metadata_guid, mm_metadata_media_id, mm_media_
 -- Data for Name: mm_metadata_music; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_music (mm_metadata_music_guid, mm_metadata_media_music_id, mm_metadata_music_name, mm_metadata_music_json, mm_metadata_music_album_guid) FROM stdin;
+COPY public.mm_metadata_music (mm_metadata_music_guid, mm_metadata_media_music_id, mm_metadata_music_name, mm_metadata_music_json, mm_metadata_music_album_guid, mm_metadata_music_user_json) FROM stdin;
 \.
 
 
@@ -859,7 +914,7 @@ COPY public.mm_metadata_music (mm_metadata_music_guid, mm_metadata_media_music_i
 -- Data for Name: mm_metadata_music_video; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_music_video_media_id, mm_media_music_video_band, mm_media_music_video_song, mm_metadata_music_video_json, mm_metadata_music_video_localimage_json) FROM stdin;
+COPY public.mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_music_video_media_id, mm_media_music_video_band, mm_media_music_video_song, mm_metadata_music_video_json, mm_metadata_music_video_localimage_json, mm_metadata_music_video_user_json) FROM stdin;
 \.
 
 
@@ -867,7 +922,7 @@ COPY public.mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_m
 -- Data for Name: mm_metadata_musician; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_musician (mm_metadata_musician_guid, mm_metadata_musician_name, mm_metadata_musician_id, mm_metadata_musician_json) FROM stdin;
+COPY public.mm_metadata_musician (mm_metadata_musician_guid, mm_metadata_musician_name, mm_metadata_musician_id, mm_metadata_musician_json, mm_metadata_musician_localimage_json) FROM stdin;
 \.
 
 
@@ -883,7 +938,7 @@ COPY public.mm_metadata_person (mmp_id, mmp_person_media_id, mmp_person_meta_jso
 -- Data for Name: mm_metadata_sports; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_metadata_sports (mm_metadata_sports_guid, mm_metadata_media_sports_id, mm_metadata_sports_name, mm_metadata_sports_json, mm_metadata_sports_image_json) FROM stdin;
+COPY public.mm_metadata_sports (mm_metadata_sports_guid, mm_metadata_media_sports_id, mm_metadata_sports_name, mm_metadata_sports_json, mm_metadata_sports_user_json, mm_metadata_sports_image_json) FROM stdin;
 \.
 
 
@@ -908,7 +963,7 @@ COPY public.mm_notification (mm_notification_guid, mm_notification_text, mm_noti
 --
 
 COPY public.mm_options_and_status (mm_options_and_status_guid, mm_options_json, mm_status_json) FROM stdin;
-fe163df3-709f-4eb1-bb4d-a9c404e0cc7e	{"SD": {"User": null, "Password": null}, "API": {"anidb": null, "imvdb": null, "google": "AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY", "isbndb": "25C8IT4I", "tvmaze": null, "thetvdb": "147CB43DCA8B61B7", "shoutcast": null, "thelogodb": null, "soundcloud": null, "themoviedb": "f72118d1e84b8a1438935972a9c37cac", "globalcache": null, "mediabrainz": null, "thesportsdb": "4352761817344", "opensubtitles": null, "openweathermap": "575b4ae4615e4e2a4c34fb9defa17ceb", "rottentomatoes": "f4tnu5dn9r7f28gjth3ftqaj"}, "User": {"Password Lock": null, "Activity Purge": null}, "AWSS3": {"Bucket": "mediakraken", "AccessKey": null, "BackupBucket": "mkbackup", "SecretAccessKey": null}, "Trakt": {"ApiKey": null, "ClientID": null, "SecretKey": null}, "Backup": {"Interval": 0, "BackupType": "local"}, "Docker": {"Nodes": 0, "SwarmID": null, "Instances": 0}, "Dropbox": {"APIKey": null, "APISecret": null}, "Trailer": {"Clip": false, "Behind": false, "Carpool": false, "Trailer": false, "Featurette": false}, "Metadata": {"Source": {"omdb": false, "tmdb": false, "tvdb": false, "anidb": false, "imvdb": false, "tvmaze": false, "pitchfork": false, "chartlyrics": false, "musicbrainz": false}, "DL Artwork": true, "DL Metadata": true, "DL Subtitle": false, "DL Person Image": true}, "OneDrive": {"ClientID": null, "SecretKey": null}, "GoogleDrive": {"SecretFile": null}, "Maintenance": null, "MediaBrainz": {"Host": null, "Port": 5000, "User": null, "Password": null, "BrainzDBHost": null, "BrainzDBName": null, "BrainzDBPass": null, "BrainzDBPort": 5432, "BrainzDBUser": null}, "MaxResumePct": 5, "Transmission": {"Host": null, "Port": 9091, "Password": "metaman", "Username": "spootdev"}, "Docker Instances": {"smtp": false, "mumble": false, "pgadmin": false, "portainer": false, "teamspeak": false, "musicbrainz": false, "transmission": false}, "MediaKrakenServer": {"MOTD": null, "APIPort": 8097, "Sync Path": "/mediakraken/sync/", "ListenPort": 8098, "BackupLocal": "/mediakraken/backups/", "Server Name": "MediaKraken"}}	{"thetvdb_Updated_Epoc": 0}
+62b7e775-8e3e-4eda-8eb4-60d991a03833	{"SD": {"User": null, "Password": null}, "API": {"anidb": null, "imvdb": null, "dirble": "184709fc95ff6c4dacf841eb14", "google": "AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY", "isbndb": "25C8IT4I", "tvmaze": "mknotneeded", "thetvdb": "147CB43DCA8B61B7", "shoutcast": null, "thelogodb": null, "soundcloud": null, "themoviedb": "f72118d1e84b8a1438935972a9c37cac", "globalcache": null, "musicbrainz": null, "thesportsdb": "4352761817344", "opensubtitles": null, "openweathermap": "575b4ae4615e4e2a4c34fb9defa17ceb", "rottentomatoes": "f4tnu5dn9r7f28gjth3ftqaj"}, "User": {"Password Lock": null, "Activity Purge": null}, "AWSS3": {"Bucket": "mediakraken", "AccessKey": null, "BackupBucket": "mkbackup", "SecretAccessKey": null}, "Trakt": {"ApiKey": null, "ClientID": null, "SecretKey": null}, "Backup": {"Interval": 0, "BackupType": "local"}, "Docker": {"Nodes": 0, "SwarmID": null, "Instances": 0}, "LastFM": {"api_key": null, "password": null, "username": null, "api_secret": null}, "Dropbox": {"APIKey": null, "APISecret": null}, "Trailer": {"Clip": false, "Behind": false, "Carpool": false, "Trailer": false, "Featurette": false}, "Metadata": {"Source": {"omdb": false, "tmdb": false, "tvdb": false, "anidb": false, "imvdb": false, "tvmaze": false, "pitchfork": false, "chartlyrics": false, "musicbrainz": false}, "DL Artwork": true, "DL Metadata": true, "DL Subtitle": false, "DL Person Image": true}, "OneDrive": {"ClientID": null, "SecretKey": null}, "GoogleDrive": {"SecretFile": null}, "Maintenance": null, "MusicBrainz": {"Host": null, "Port": 5000, "User": null, "Password": null, "BrainzDBHost": null, "BrainzDBName": null, "BrainzDBPass": null, "BrainzDBPort": 5432, "BrainzDBUser": null}, "MaxResumePct": 5, "Transmission": {"Host": null, "Port": 9091, "Password": "metaman", "Username": "spootdev"}, "Docker Instances": {"smtp": false, "mumble": false, "pgadmin": false, "portainer": false, "teamspeak": false, "wireshark": false, "musicbrainz": false, "transmission": false}, "MediaKrakenServer": {"MOTD": null, "APIPort": 8097, "Sync Path": "/mediakraken/sync/", "ListenPort": 8098, "BackupLocal": "/mediakraken/backups/", "Server Name": "MediaKraken"}}	{"thetvdb_Updated_Epoc": 0}
 \.
 
 
@@ -941,21 +996,21 @@ COPY public.mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_option
 --
 
 COPY public.mm_task (mm_task_guid, mm_task_name, mm_task_description, mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path, mm_task_json) FROM stdin;
-ee85af47-d7be-471f-8c24-af4ced07863b	Anime	Match anime via Scudlee data	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_match_anime_id_scudlee.py	{"task": "anime", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-e1cd9198-60e2-453d-86fc-c0575eaa12af	Collections	Create and update collection(s)	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_update_create_collections.py	{"task": "collection", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
-5435fbe1-cebb-4b52-8ded-6f390e93a11c	Create Chapter Image	Create chapter images for all media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_create_chapter_images.py	{"task": "chapter", "route_key": "mkque", "exchange_key": "mkque_ex"}
-dc1744a8-cfdd-41f1-b301-f54aeda48532	Roku Thumb	Generate Roku thumbnail images	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_roku_thumbnail_generate.py	{"task": "rokuthumbnail", "route_key": "mkque", "exchange_key": "mkque_ex"}
-65769a1a-370d-4238-b878-e161951b58af	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_schedules_direct_updates.py	{"task": "update", "route_key": "schedulesdirect", "exchange_key": "mkque_metadata_ex"}
-8dcf45a0-93f2-4611-87e8-52c00992b8a2	Subtitle	Download missing subtitles for media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_subtitle_downloader.py	{"task": "subtitle", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-efe90970-52cf-494e-80c6-bd32e4ca545b	The Movie Database	Grab updated movie metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tmdb_updates.py	{"task": "update", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
-7c742cff-05df-4a64-9c41-4ac0f2361882	TheTVDB Update	Grab updated TheTVDB metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_thetvdb_updates.py	{"task": "update", "route_key": "thetvdb", "exchange_key": "mkque_metadata_ex"}
-6f975908-fb7c-4656-b554-3542d8278026	TVmaze Update	Grab updated TVmaze metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tvmaze_updates.py	{"task": "update", "route_key": "tvmaze", "exchange_key": "mkque_metadata_ex"}
-b91faa7b-577a-4dbc-8329-0f7d0d10110e	Trailer	Download new trailers	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_trailer_download.py	{"task": "trailer", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-020c95ab-a687-4ec9-9ba2-8bc2d189d15a	Backup	Backup Postgresql DB	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_backup.py	{"task": "dbbackup", "route_key": "mkque", "exchange_key": "mkque_ex"}
-90db5b09-239a-49ac-907d-46a7f2c67362	DB Vacuum	Postgresql Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_vacuum.py	{"task": "dbvacuum", "route_key": "mkque", "exchange_key": "mkque_ex"}
-f06779c2-a647-4a0b-b7e2-0d7d3434db62	iRadio Scan	Scan for iRadio stations	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_iradio_channels.py	{"task": "iradio", "route_key": "mkque", "exchange_key": "mkque_ex"}
-552b88b6-0b72-4dc9-8b06-adbaee5d093e	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_file_scan.py	{"task": "scan", "route_key": "mkque", "exchange_key": "mkque_ex"}
-9e944a1a-e852-4072-8cd4-7290bc107a8d	Sync	Sync/Transcode media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_sync.py	{"task": "sync", "route_key": "mkque", "exchange_key": "mkque_ex"}
+cbb42a96-f95f-4616-a0bb-e635e7b6d9ca	Anime	Match anime via Scudlee data	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_match_anime_id_scudlee.py	{"task": "anime", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
+00bcb1b1-7f16-4e90-8c55-77ce4c1ac86a	Collections	Create and update collection(s)	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_update_create_collections.py	{"task": "collection", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
+2345b078-c1d9-4f11-bd95-a625105c28f3	Create Chapter Image	Create chapter images for all media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_create_chapter_images.py	{"task": "chapter", "route_key": "mkque", "exchange_key": "mkque_ex"}
+9f60a368-4b07-4475-af34-df1e3eed2a1e	Roku Thumb	Generate Roku thumbnail images	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_roku_thumbnail_generate.py	{"task": "rokuthumbnail", "route_key": "mkque", "exchange_key": "mkque_ex"}
+7be16469-e0e5-44fd-8727-90ec21cae1c4	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_schedules_direct_updates.py	{"task": "update", "route_key": "schedulesdirect", "exchange_key": "mkque_metadata_ex"}
+e8d1169b-8b02-48cb-94a8-6219c09c7556	Subtitle	Download missing subtitles for media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_subtitle_downloader.py	{"task": "subtitle", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
+7831b403-408b-49db-8658-f565af581245	The Movie Database	Grab updated movie metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tmdb_updates.py	{"task": "update", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
+93ffc7eb-5560-4c49-91a6-da319851f13b	TheTVDB Update	Grab updated TheTVDB metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_thetvdb_updates.py	{"task": "update", "route_key": "thetvdb", "exchange_key": "mkque_metadata_ex"}
+c3eb29fc-140b-4933-ab27-3d2ca950b961	TVmaze Update	Grab updated TVmaze metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tvmaze_updates.py	{"task": "update", "route_key": "tvmaze", "exchange_key": "mkque_metadata_ex"}
+de9b4b9b-8cd2-482a-bfa1-14c298f27aef	Trailer	Download new trailers	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_trailer_download.py	{"task": "trailer", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
+950ec436-d010-44fb-a653-ef019bf05cc4	Backup	Backup Postgresql DB	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_backup.py	{"task": "dbbackup", "route_key": "mkque", "exchange_key": "mkque_ex"}
+ac093b30-f4ff-4e97-bb08-8ebb2b1e38d5	DB Vacuum	Postgresql Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_vacuum.py	{"task": "dbvacuum", "route_key": "mkque", "exchange_key": "mkque_ex"}
+e5b0d4dd-f8ce-4bc2-85b8-fccf5dfea202	iRadio Scan	Scan for iRadio stations	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_iradio_channels.py	{"task": "iradio", "route_key": "mkque", "exchange_key": "mkque_ex"}
+4974d078-cab7-4e37-8922-2a2c2202fb33	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_file_scan.py	{"task": "scan", "route_key": "mkque", "exchange_key": "mkque_ex"}
+144feb59-e15c-491c-8eb9-3a81cc62febe	Sync	Sync/Transcode media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_sync.py	{"task": "sync", "route_key": "mkque", "exchange_key": "mkque_ex"}
 \.
 
 
@@ -1004,9 +1059,9 @@ COPY public.mm_user_activity (mm_activity_guid, mm_activity_name, mm_activity_ov
 --
 
 COPY public.mm_user_group (mm_user_group_guid, mm_user_group_name, mm_user_group_description, mm_user_group_rights_json) FROM stdin;
-ff45c074-5f11-4bca-a7fc-8e47a89d1ab0	Administrator	Server administrator	{"Admin": true, "PreviewOnly": false}
-f8fbae1f-c875-4698-97cd-0f15d7c4ef7d	User	General user	{"Admin": false, "PreviewOnly": false}
-7fdb4e75-ac8a-4561-a0eb-e1bcbd1cc363	Guest	Guest (Preview only)	{"Admin": false, "PreviewOnly": true}
+43245db5-e3f2-4d2f-afaf-95d3847555b0	Administrator	Server administrator	{"Admin": true, "PreviewOnly": false}
+34099a51-d3eb-4c5b-9257-68fe8b7c3b62	User	General user	{"Admin": false, "PreviewOnly": false}
+4067a224-3c9a-42d8-8096-8ab6c950a8ff	Guest	Guest (Preview only)	{"Admin": false, "PreviewOnly": true}
 \.
 
 
@@ -1015,9 +1070,9 @@ f8fbae1f-c875-4698-97cd-0f15d7c4ef7d	User	General user	{"Admin": false, "Preview
 --
 
 COPY public.mm_user_profile (mm_user_profile_guid, mm_user_profile_name, mm_user_profile_json) FROM stdin;
-9bee38a9-e2e1-4ad5-8135-abe1343fda70	Adult	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": true, "Adult": true, "Books": true, "Games": true, "MaxBR": 100, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 5}
-e660a950-8fe0-4e87-9602-b55587fab236	Teen	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 50, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 3}
-00b89639-8c8a-45c5-bf05-f675dca73d73	Child	{"3D": false, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 20, "Movie": true, "Music": true, "IRadio": false, "Images": true, "LiveTV": false, "Sports": true, "Internet": false, "MaxRating": 0}
+34f122f3-2fa7-4b7a-a485-1f201ef02f8b	Adult	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": true, "Adult": true, "Books": true, "Games": true, "MaxBR": 100, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 5}
+5ad879a3-4c57-411a-9983-eaecf1473c9c	Teen	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 50, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 3}
+ae303673-9a39-45ee-a761-e18c3a9d027e	Child	{"3D": false, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 20, "Movie": true, "Music": true, "IRadio": false, "Images": true, "LiveTV": false, "Sports": true, "Internet": false, "MaxRating": 0}
 \.
 
 
@@ -1026,7 +1081,7 @@ e660a950-8fe0-4e87-9602-b55587fab236	Teen	{"3D": true, "TV": true, "Home": true,
 --
 
 COPY public.mm_version (mm_version_no) FROM stdin;
-19
+21
 \.
 
 
@@ -1035,6 +1090,14 @@ COPY public.mm_version (mm_version_no) FROM stdin;
 --
 
 SELECT pg_catalog.setval('public.mm_user_id_seq', 1, false);
+
+
+--
+-- Name: mm_game_category gc_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+--
+
+ALTER TABLE ONLY public.mm_game_category
+    ADD CONSTRAINT gc_id_pk PRIMARY KEY (gc_id);
 
 
 --
@@ -1091,6 +1154,14 @@ ALTER TABLE ONLY public.mm_cron
 
 ALTER TABLE ONLY public.mm_device
     ADD CONSTRAINT mm_device_id_pk PRIMARY KEY (mm_device_id);
+
+
+--
+-- Name: mm_hardware mm_hardware_id; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+--
+
+ALTER TABLE ONLY public.mm_hardware
+    ADD CONSTRAINT mm_hardware_id PRIMARY KEY (mm_hardware_id);
 
 
 --
@@ -1342,6 +1413,13 @@ ALTER TABLE ONLY public.mm_media_remote
 
 
 --
+-- Name: gc_category_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX gc_category_idx_name ON public.mm_game_category USING btree (gc_category);
+
+
+--
 -- Name: gi_game_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
@@ -1353,6 +1431,13 @@ CREATE INDEX gi_game_idx_name ON public.mm_metadata_game_software_info USING btr
 --
 
 CREATE INDEX gi_game_idx_name_trigram_idx ON public.mm_metadata_game_software_info USING gist (gi_game_info_name public.gist_trgm_ops);
+
+
+--
+-- Name: gi_game_idx_short_name; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX gi_game_idx_short_name ON public.mm_metadata_game_software_info USING btree (gi_game_info_short_name);
 
 
 --
@@ -1444,6 +1529,20 @@ CREATE INDEX mm_game_info_idxgin_name ON public.mm_metadata_game_software_info U
 --
 
 CREATE INDEX mm_game_systems_idxgin_json ON public.mm_metadata_game_systems_info USING gin (gs_game_system_json);
+
+
+--
+-- Name: mm_hardware_idx_manufacturer; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_hardware_idx_manufacturer ON public.mm_hardware USING btree (mm_hardware_manufacturer);
+
+
+--
+-- Name: mm_hardware_idx_model; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_hardware_idx_model ON public.mm_hardware USING btree (mm_hardware_model);
 
 
 --
@@ -1832,10 +1931,24 @@ CREATE INDEX mm_metadata_music_idxgin_media_id ON public.mm_metadata_music USING
 
 
 --
+-- Name: mm_metadata_music_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_music_idxgin_user_json ON public.mm_metadata_music USING gin (mm_metadata_music_user_json);
+
+
+--
 -- Name: mm_metadata_music_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
 --
 
 CREATE INDEX mm_metadata_music_name_trigram_idx ON public.mm_metadata_music USING gist (mm_metadata_music_name public.gist_trgm_ops);
+
+
+--
+-- Name: mm_metadata_music_video_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
+--
+
+CREATE INDEX mm_metadata_music_video_idxgin_user_json ON public.mm_metadata_music_video USING gin (mm_metadata_music_video_user_json);
 
 
 --
