@@ -6,13 +6,13 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <link href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <!--[if lt IE 9]>
-        <script src="{{ url_for('static', filename='/static/js/html5.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
         <![endif]-->
-        <link href="{{ url_for('static', filename='/static/css/style.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static', filename='css/style.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
     </head>
     <form id="backupeditForm" class="form form-backupedit" method="POST" action="" role="form">
         {{ form.hidden_tag() }}
@@ -86,9 +86,9 @@
     {% else %}
     <p>No backups found.</p>
     {% endif %}
-    <script type="text/javascript" src="{{ url_for('static', filename='/static/js/jquery.tmpl.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/base_webapp_delete.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.tmpl.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp_delete.js') }}"></script>
 </body>
 {% endblock %}

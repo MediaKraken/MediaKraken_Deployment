@@ -3,11 +3,11 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/jquery.contextMenu.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/listnav.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.contextMenu.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/listnav.css') }}">
     </head>
     {% if media_movie %}
     {{ pagination.info }}
@@ -31,23 +31,23 @@
                                     <div class="row">
                                         <div class="column">
                                             {% if row_data[3] == None %}
-                                                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/images/Movie-icon.png') }}" height="300" width="200">
+                                                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/Movie-icon.png') }}" height="300" width="200">
                                             {% else %}
-                                                <img class="b-lazy" src=data: data-src= "{{ url_for('static', filename='/static/meta/images/' + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
+                                                <img class="b-lazy" src=data: data-src= "{{ url_for('static', filename='meta/images/' + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
                                             {% endif %}
                                         </div>
                                         <div class="column">
                                             {% if row_data[4] == True %}
-                                            <img class="wide_watched_icon" src="{{ url_for('static', filename='/static/images/eye.png') }}" height="25" width="25">
+                                            <img class="wide_watched_icon" src="{{ url_for('static', filename='images/eye.png') }}" height="25" width="25">
                                             {% endif %}
                                             {% if row_data[5] != None %}
                                             <img class="wide_rating_icon" src={{row_data[5]}} height="25" width="25">
                                             {% endif %}
                                             {% if row_data[6] != None %}
-                                            <img class="wide_request_icon" src="{{ url_for('static', filename='/static/images/add-button.png') }}" height="25" width="25">
+                                            <img class="wide_request_icon" src="{{ url_for('static', filename='images/add-button.png') }}" height="25" width="25">
                                             {% endif %}
                                             {% if row_data[7] != None %}
-                                            <img class="wide_queue_icon" src="{{ url_for('static', filename='/static/images/rectangles.png') }}" height="25" width="25">
+                                            <img class="wide_queue_icon" src="{{ url_for('static', filename='images/rectangles.png') }}" height="25" width="25">
                                             {% endif %}
                                         </div>
                                     </div>
@@ -70,11 +70,11 @@
     {% else %}
     <p id="general_text">No movie metadata found.</p>
     {% endif %}
-    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/jquery.contextMenu.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/base_webapp.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.contextMenu.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
     <script>
         ;(function() {
             // Initialize
