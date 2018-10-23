@@ -86,7 +86,7 @@ function ConfirmLibraryDelete(elem) {
 
 function Library_Delete() {
     $.ajax({
-        url: '../admin/library_delete',
+        url: '../../library_delete',
         data: {
             id: localStorage.getItem('deleteId')
         },
