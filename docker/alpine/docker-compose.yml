@@ -133,7 +133,7 @@ services:
       - rabbit
     entrypoint: python3 subprogram_ffprobe_metadata.py
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./data/directories:/mediakraken/mnt:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
