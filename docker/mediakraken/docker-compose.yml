@@ -23,7 +23,7 @@ services:
       # server will generate ssl key for use by web/nginx
       - ./data/certs:/mediakraken/key
       # if swarmip init
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - mediakraken_network
 
@@ -36,7 +36,7 @@ services:
       - "9101:9101"
     volumes:
       # needs socket for running image list
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     # needs to run as host so clients can see it on their subnet
     network_mode: host
     restart: unless-stopped
@@ -103,7 +103,7 @@ services:
       - rabbit
     entrypoint: python3 subprogram_ffprobe_metadata.py
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./data/directories:/mediakraken/mnt:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -154,8 +154,8 @@ services:
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
       - ./data/nginx:/var/log/mediakraken/nginx
-      - ./data/certs:/etc/nginx/certs
-      - static-volume:/mediakraken/web_app/MediaKraken/static
+      - ./data/certs:/etc/nginx/certs:ro
+      - static-volume:/mediakraken/web_app/MediaKraken/static:ro
     ports:
       - "8900:8900"
     networks:
@@ -214,11 +214,11 @@ services:
       - "8903:8903"
     volumes:
       # for start of SSL server
-      - ./data/certs:/mediakraken/key
+      - ./data/certs:/mediakraken/key:ro
       - ./data/backup:/mediakraken/backup
       - ./data/directories:/mediakraken/mnt
       # so it can start docker containers
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -266,10 +266,10 @@ services:
     volumes:
       - ./data/directories:/mediakraken/mnt
       - static-volume:/mediakraken/web_app/MediaKraken/static
-      - ./data/webkey:/mediakraken/key
+      - ./data/webkey:/mediakraken/key:ro
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       # hold log files
       - ./data/log:/mediakraken/log
     networks:
