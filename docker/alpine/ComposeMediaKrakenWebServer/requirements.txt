@@ -9,7 +9,6 @@ Flask-Paginate>=0.5.1
 Flask-Assets
 Flask-SQLAlchemy
 Flask-KVSession
-flask-pika
 Flask-uWSGI-WebSocket
 ipgetter
 uwsgi
