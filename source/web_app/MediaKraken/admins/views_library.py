@@ -175,6 +175,18 @@ def admin_library_edit_page():
                            data_share=share_list)
 
 
+@blueprint.route('/library_delete', methods=["POST"])
+@login_required
+@admin_required
+def admin_library_delete_page():
+    """
+    Delete library action 'page'
+    """
+    g.db_connection.db_audit_path_delete(request.form['id'])
+    g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})
+
+
 @blueprint.route('/getLibraryById', methods=['POST'])
 @login_required
 @admin_required

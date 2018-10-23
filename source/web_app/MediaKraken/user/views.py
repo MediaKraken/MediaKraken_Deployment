@@ -3,11 +3,10 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, redirect, url_for, flash, request
+from flask import Blueprint, render_template, g, redirect, url_for, flash
 from flask_login import current_user
 from flask_login import login_required
-from functools import wraps
-import flask
+
 blueprint = Blueprint("user", __name__, url_prefix='/users',
                       static_folder="../static")
 import json
@@ -42,23 +41,6 @@ def members():
     """
     return render_template("users/members.html",
                            data_new_media=g.db_connection.db_read_media_new_count(7))
-
-
-def admin_required(fn):
-    """
-    Admin check
-    """
-
-    @wraps(fn)
-    @login_required
-    def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                             current_user.get_id()})
-        if not current_user.is_admin:
-            return flask.abort(403)  # access denied
-        return fn(*args, **kwargs)
-
-    return decorated_view
 
 
 @blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
@@ -119,17 +101,6 @@ def tv_status(guid, event_type):
         pass
     return redirect(url_for('user_tv.user_tv_page'))
 
-
-@blueprint.route('/library_delete', methods=["POST"])
-@login_required
-@admin_required
-def admin_library_delete_page():
-    """
-    Delete library action 'page'
-    """
-    g.db_connection.db_audit_path_delete(request.form['id'])
-    g.db_connection.db_commit()
-    return json.dumps({'status': 'OK'})
 
 @blueprint.before_request
 def before_request():
