@@ -20,6 +20,7 @@ from common import common_file
 # from common import common_global
 from common import common_hardware_chromecast
 from common import common_hardware_hdhomerun
+from common import common_hardware_hue
 from common import common_hardware_roku_network
 from common import common_hardware_soco
 from common import common_signal
@@ -66,6 +67,10 @@ for roku in common_hardware_roku_network.com_roku_network_discovery():
 for soco in common_hardware_soco.common_hardware_soco():
     # common_global.es_inst.com_elastic_index('info', {'soco out': soco})
     media_devices.append({'Soco': soco})
+
+# phillips hue discover
+hue_inst = common_hardware_hue.CommonHardwareHue()
+media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
 
 common_file.com_file_save_data('/mediakraken/devices/device_scan.txt',
                                media_devices, True, False, None)
