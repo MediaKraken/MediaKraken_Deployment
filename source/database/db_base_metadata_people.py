@@ -42,7 +42,7 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                    ' from mm_metadata_person where mmp_person_name %% %s'
                                    ' order by mmp_person_name', (search_value,))
         else:
@@ -52,13 +52,13 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     else:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                    ' from mm_metadata_person where mmp_person_name %% %s'
                                    ' order by mmp_person_name offset %s limit %s',
                                    (search_value, offset, records))
         else:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                    ' from mm_metadata_person order by mmp_person_name'
                                    ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
@@ -69,12 +69,10 @@ def db_meta_person_by_guid(self, guid):
     # return person data
     """
     self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
-                           ' mmp_person_image, mmp_person_name from mm_metadata_person'
-                           ' where mmp_id = %s', (guid,))
-    try:
-        return self.db_cursor.fetchone()
-    except:
-        return None
+                           ' mmp_person_image, mmp_person_name,'
+                           ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                           ' from mm_metadata_person where mmp_id = %s', (guid,))
+    return self.db_cursor.fetchone()
 
 
 def db_meta_person_by_name(self, person_name):
@@ -84,10 +82,7 @@ def db_meta_person_by_name(self, person_name):
     self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
                            ' mmp_person_image, mmp_person_name from mm_metadata_person'
                            ' where mmp_person_name = %s', (person_name,))
-    try:
-        return self.db_cursor.fetchone()
-    except:
-        return None
+    return self.db_cursor.fetchone()
 
 
 def db_meta_person_id_count(self, host_type, guid):
