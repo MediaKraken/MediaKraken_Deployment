@@ -9,21 +9,21 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_slider.css') }}" media="all" type="text/css"/>
     </head>
 
-    <a href="{{ url_for('user_hardware_hue.user_hardware_hue_on') }}" id="user_hue_bulb_on">
-        <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_on.png') }}"
-             alt="hue_bulb_on" height="200" width="200">
-    </a>
-    <a href="{{ url_for('user_hardware_hue.user_hardware_hue_off') }}" id="user_hue_bulb_off">
-        <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_off.png') }}"
-             alt="hue_bulb_off" height="200" width="200">
-    </a>
-
-    <div class="slidecontainer">
-        <input type="range" min="1" max="100" value="50" class="slider" id="hue_brightness">
-    </div>
-
     {% if data_hue_avail is none %}
-    <p><h2>Key not found for Hue device! Have administrator sync the device and try again.</h2></p>
+        <p><h2>Key not found for Hue device! Have administrator sync the device and try again.</h2></p>
+    {% else %}
+        <a href="{{ url_for('user_hardware_hue.user_hardware_hue_on') }}" id="user_hue_bulb_on">
+            <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_on.png') }}"
+                 alt="hue_bulb_on" height="200" width="200">
+        </a>
+        <a href="{{ url_for('user_hardware_hue.user_hardware_hue_off') }}" id="user_hue_bulb_off">
+            <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_off.png') }}"
+                 alt="hue_bulb_off" height="200" width="200">
+        </a>
+
+        <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" class="slider" id="hue_brightness">
+        </div>
     {% endif %}
 
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
