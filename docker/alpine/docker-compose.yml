@@ -350,6 +350,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # hold log files
       - ./data/log:/mediakraken/log
+      # this stores the "push button" key
+      - ./data/phue:/mediakraken/phue        
     networks:
       - mediakraken_network
     restart: unless-stopped

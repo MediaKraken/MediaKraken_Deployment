@@ -22,6 +22,10 @@
         <input type="range" min="1" max="100" value="50" class="slider" id="hue_brightness">
     </div>
 
+    {% if data_hue_avail is none %}
+    <p><h2>Key not found for Hue device! Have administrator sync the device and try again.</h2></p>
+    {% endif %}
+
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
