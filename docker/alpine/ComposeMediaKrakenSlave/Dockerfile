@@ -60,7 +60,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Set up config file
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx_conf/nginx.conf /etc/nginx/nginx.conf
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
