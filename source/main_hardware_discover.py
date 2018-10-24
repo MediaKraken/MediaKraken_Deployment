@@ -23,6 +23,7 @@ from common import common_hardware_hdhomerun
 from common import common_hardware_hue
 from common import common_hardware_roku_network
 from common import common_hardware_soco
+from common import common_network_dlna
 from common import common_signal
 # from common import common_logging_elasticsearch
 from common import common_string
@@ -71,6 +72,12 @@ for soco in common_hardware_soco.common_hardware_soco():
 # phillips hue discover
 hue_inst = common_hardware_hue.CommonHardwareHue()
 media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
+
+# scan for dlna devices
+for dlna_devices in common_network_dlna.com_net_dlna_discover():
+    if dlna_devices == 'No compatible devices found.':
+        break
+    media_devices.append({'DLNA': dlna_devices})
 
 common_file.com_file_save_data('/mediakraken/devices/device_scan.txt',
                                media_devices, True, False, None)
