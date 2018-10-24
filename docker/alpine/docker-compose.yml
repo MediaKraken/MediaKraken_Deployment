@@ -133,7 +133,7 @@ services:
       - rabbit
     entrypoint: python3 subprogram_ffprobe_metadata.py
     volumes:
-      - ./data/directories:/mediakraken/mnt:ro
+      - ./mkmount:/mediakraken/mnt:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -178,7 +178,7 @@ services:
       - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server_metadata_api.py
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
       # stores posters/etc so webserver can present
       - static-volume:/mediakraken/web_app/MediaKraken/static
       # stores the xml/json xref files for anime match
@@ -279,7 +279,7 @@ services:
       # for start of SSL server
       - ./data/certs:/mediakraken/key:ro
       - ./data/backup:/mediakraken/backup
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
@@ -316,7 +316,7 @@ services:
       - rabbit
     entrypoint: python3 subprogram_roku_thumbnail_generate.py
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -342,7 +342,7 @@ services:
       - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
       - static-volume:/mediakraken/web_app/MediaKraken/static
       - ./data/webkey:/mediakraken/key:ro
       - ./data/uploads:/mediakraken/uploads
