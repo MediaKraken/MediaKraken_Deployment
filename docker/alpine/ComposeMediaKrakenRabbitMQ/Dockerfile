@@ -43,8 +43,8 @@ ENV PATH $RABBITMQ_HOME/sbin:$PATH
 # gpg: key 6026DFCA: public key "RabbitMQ Release Signing Key <info@rabbitmq.com>" imported
 ENV RABBITMQ_GPG_KEY 0A9AF2115F4687BD29803A206B73A36E6026DFCA
 
-ENV RABBITMQ_VERSION 3.7.4
-ENV RABBITMQ_GITHUB_TAG v3.7.4
+ENV RABBITMQ_VERSION 3.7.8
+ENV RABBITMQ_GITHUB_TAG v3.7.8
 
 RUN set -ex; \
 	\
@@ -52,6 +52,7 @@ RUN set -ex; \
 		ca-certificates \
 		gnupg \
 		libressl \
+		wget \
 		xz \
 	; \
 	\
@@ -61,6 +62,7 @@ RUN set -ex; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$RABBITMQ_GPG_KEY"; \
 	gpg --batch --verify rabbitmq-server.tar.xz.asc rabbitmq-server.tar.xz; \
+	command -v gpgconf && gpgconf --kill all || :; \
 	rm -rf "$GNUPGHOME"; \
 	\
 	mkdir -p "$RABBITMQ_HOME"; \
