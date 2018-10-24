@@ -10,7 +10,6 @@ Flask-Assets
 Flask-SQLAlchemy
 Flask-KVSession
 Flask-uWSGI-WebSocket
-ipgetter
 uwsgi
 pygal
 pdfkit

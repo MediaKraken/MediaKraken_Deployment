@@ -77,10 +77,8 @@ def mk_network_get_outside_ip():
     """
     Get outside ip addy
     """
-    # whatismyip = 'http://checkip.dyndns.org/'
-    # return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
-    import ipgetter
-    return ipgetter.myip()
+    url_data = str(urllib.request.urlopen('http://checkip.dyndns.org/').read())
+    return url_data.split(':')[1].split('<')[0].strip()
 
 
 def mk_network_get_default_ip():
@@ -178,3 +176,4 @@ def mk_network_country_code():
         return json.loads(response.read())
     except:
         return {'country_code': 'Error', 'country_name': 'Unknown'}
+
