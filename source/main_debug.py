@@ -16,6 +16,8 @@
   MA 02110-1301, USA.
 '''
 
+# will most likely need to run following on HOST
+# sysctl -w vm.max_map_count=262144
 from common import common_docker
 
 docker_inst = common_docker.CommonDocker()
