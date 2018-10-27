@@ -2,3 +2,4 @@ futures
 twisted
 pika
 docker
+pysmb
