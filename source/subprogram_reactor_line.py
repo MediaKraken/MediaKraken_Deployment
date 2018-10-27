@@ -86,7 +86,7 @@ def read(queue_object):
             cron_pid = subprocess.Popen(split('python3 ' + json_message['Data']))
         elif json_message['Type'] == 'Library Scan':
             # TODO launch a container to do this.....so, if it gets stuck the others still go
-            scan_pid = subprocess.Popen(['python3', './subprogram_file_scan.py'])
+            scan_pid = subprocess.Popen(['python3', '/mediakraken/subprogram_file_scan.py'])
         elif json_message['Type'] == 'Pause':
             if json_message['Subtype'] == 'Cast':
                 pass
