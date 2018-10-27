@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 # MediaKraken
 
 # Volumes are HOST directory and then CONTAINER directory
@@ -283,6 +283,7 @@ networks:
   # Twisted, Database and AMQP communications network
   mediakraken_network:
     driver: bridge
+    name: mk_mediakraken_network
 
 volumes:
      static-volume:
