@@ -36,7 +36,8 @@
                         <a href= "{{ url_for('user_metadata_movie.metadata_movie_detail', guid=media_info[0]) }}" > {{media_info[1]}}</a>
                         {% else %}
                         <a href= "{{ url_for('user_metadata_movie.metadata_movie_detail', guid=media_info[0]) }}" >
-                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + media_info[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" height="300" width="200">
+                        <img class="b-lazy"
+                             src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + media_info[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
                         </a>
                         {% endif %}
                     </div>
