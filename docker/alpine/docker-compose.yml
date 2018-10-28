@@ -344,7 +344,7 @@ services:
     volumes:
       - ./mkmount:/mediakraken/mnt
       - static-volume:/mediakraken/web_app/MediaKraken/static
-      - ./data/webkey:/mediakraken/key:ro
+      - ./data/webkey:/mediakraken/key
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
       - /var/run/docker.sock:/var/run/docker.sock:ro
