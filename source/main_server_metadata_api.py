@@ -49,7 +49,8 @@ common_signal.com_signal_set_break()
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+                             'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                            shell=False)
 wait_pid.wait()
 
 # fire up the workers for each provider

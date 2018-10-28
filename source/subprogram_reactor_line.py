@@ -203,7 +203,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
 if __name__ == '__main__':
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672'], shell=False)
+                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                                shell=False)
     wait_pid.wait()
 
     # start logging
