@@ -1,5 +1,4 @@
 passwordmeter
-futures
 twisted
 pika
 docker

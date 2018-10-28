@@ -1,4 +1,3 @@
-futures
 twisted
 pika
 docker
