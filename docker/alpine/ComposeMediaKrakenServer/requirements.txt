@@ -1,7 +1,6 @@
 passwordmeter
 futures
 twisted
-ipgetter
 pika
 docker
 pysmb
