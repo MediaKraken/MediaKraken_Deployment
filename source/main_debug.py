@@ -18,7 +18,21 @@
 
 # will most likely need to run following on HOST
 # sysctl -w vm.max_map_count=262144
-from common import common_docker
+import sys
+
+try:
+    from common import common_docker
+except:
+    print('Must install docker via "pip3 install docker".  Exiting...')
+    sys.exit()
+# map count limit, vm.max_map_count
+with open('/proc/sys/vm/max_map_count') as f:
+    max_map_count = int(f.read())
+if max_map_count < 262144:
+    print(
+        'Map count too small.  Run "sysctl -w vm.max_map_count=262144" as root and rerun.'
+        '  Exiting...')
+    sys.exit()
 
 docker_inst = common_docker.CommonDocker()
 docker_inst.com_docker_network_prune()
