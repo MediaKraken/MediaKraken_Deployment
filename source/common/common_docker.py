@@ -302,7 +302,7 @@ class CommonDocker(object):
         return self.cli.containers.run(image='mediakraken/mkpgadmin',
                                        detach=True,
                                        name='mkpgadmin',
-                                       ports={"80": 12345},
+                                       ports={"5050": 5050},
                                        network='mk_mediakraken_network',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
