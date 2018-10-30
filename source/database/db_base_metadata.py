@@ -330,8 +330,9 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
                                                                            'mm_metadata_tvshow_guid']))
 
 
-def db_meta_queue_list(self, user_id, offset=None, records=None):
+def db_meta_queue_list(self, user_id, offset=None, records=None, search_value=None):
     # TODO sort by release date as well
+    # TODO use the search value
     if offset is None:
         self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'
                                ' from mm_metadata_movie'
