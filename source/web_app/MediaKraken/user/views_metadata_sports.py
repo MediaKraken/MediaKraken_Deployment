@@ -26,6 +26,10 @@ def metadata_sports_list():
     Display sports metadata list
     """
     page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    for row_data in g.db_connection.db_meta_sports_list(offset, per_page, session['search_text']):
+        media.append((row_data['mm_metadata_sports_guid'],
+                      row_data['mm_metadata_sports_name']))
     session['search_page'] = 'meta_sports'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,

@@ -39,8 +39,7 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_json, do
     """
     stripped_name = os.path.basename(
         media_file_path.replace('_', ' ').rsplit('(', 1)[0].strip())
-    metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(
-        stripped_name)
+    metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
         common_global.es_inst.com_elastic_index('info', {"searching": stripped_name})
         thesportsdb_data = \

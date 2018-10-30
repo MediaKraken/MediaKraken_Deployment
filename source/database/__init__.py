@@ -131,6 +131,12 @@ class MKServerDatabase(object):
         db_read_remote_media, \
         db_known_remote_media_count, \
         db_media_remote_read_new
+    from database.db_base_media_sports import db_media_sports_random, \
+        db_media_sports_count_by_genre, \
+        db_media_sports_list_count, \
+        db_media_sports_list, \
+        db_read_media_metadata_sports_both, \
+        db_read_media_sports_list_by_uuid
     from database.db_base_media_tv import db_web_tvmedia_list, \
         db_web_tvmedia_list_count
     from database.db_base_metadata import db_read_media_metadata, \
