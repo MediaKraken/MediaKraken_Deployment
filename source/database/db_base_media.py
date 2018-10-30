@@ -380,5 +380,5 @@ def db_unmatched_list(self, offset=None, list_limit=None):
 
 def db_ffprobe_data(self, guid):
     self.db_cursor.execute('select mm_media_ffprobe_json from mm_media'
-                           ' where mm_media_guid = %s' % guid)
+                           ' where mm_media_guid = %s', (guid,))
     return self.db_cursor.fetchone()[0]
