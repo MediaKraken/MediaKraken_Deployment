@@ -11,6 +11,8 @@ class MKServerDatabase(object):
         db_query, \
         db_parallel_workers, \
         db_drop_table
+    from database.db_base_3d import db_3d_list_count, \
+        db_3d_list
     from database.db_base_activity import db_activity_insert, \
         db_activity_purge
     from database.db_base_audit import db_audit_path_status, \
