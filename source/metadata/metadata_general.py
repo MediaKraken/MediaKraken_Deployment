@@ -74,6 +74,11 @@ def metadata_search(thread_db, provider_name, download_data):
                                                                  'mdq_id'],
                                                              guessit(download_data['Path'])[
                                                                  'title'])
+        if metadata_uuid is None:
+            if match_result is None:
+                update_provider = 'themoviedb'
+            else:
+                set_fetch = True
     elif provider_name == 'chart_lyrics':
         lookup_halt = True
     elif provider_name == 'comicvine':
@@ -147,6 +152,11 @@ def metadata_search(thread_db, provider_name, download_data):
                                                                    'Path'], download_data,
                                                                download_data[
                                                                    'mdq_id'])
+        if metadata_uuid is None:
+            if match_result is None:
+                update_provider = 'themoviedb'
+            else:
+                set_fetch = True
     elif provider_name == 'thetvdb':
         metadata_uuid, match_result = metadata_tv.tv_search_tvdb(thread_db,
                                                                  download_data['mdq_download_json'][
