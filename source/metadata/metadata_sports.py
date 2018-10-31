@@ -65,4 +65,5 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_json, do
                                                             json.dumps(
                                                                 thesportsdb_data),
                                                             json.dumps(image_json))
+                    db_connection.db_download_delete(download_que_id)
     return metadata_uuid
