@@ -35,8 +35,7 @@ else:
     ANIDB_CONNECTION = None
 
 
-def metadata_anime_lookup(db_connection, media_file_path, download_que_json, download_que_id,
-                          file_name):
+def metadata_anime_lookup(db_connection, download_que_json, download_que_id, file_name):
     """
     Check for anime in tv sections of the metadata providers
     """
@@ -67,7 +66,7 @@ def metadata_anime_lookup(db_connection, media_file_path, download_que_json, dow
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
     # determine provider id's from nfo/xml if they exist
-    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
+    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(file_name)
     imdb_id, tmdb_id, rt_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
         nfo_data, xml_data)
     common_global.es_inst.com_elastic_index('info', {"meta anime look": imdb_id, 'tmdb': tmdb_id,
