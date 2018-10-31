@@ -8,69 +8,84 @@
     <title>MediaKraken Admin</title>
     <meta name="generator" content="Bootply"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"
+          rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
     <![endif]-->
     <link href="{{ url_for('static', filename='css/style.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static', filename='css/base_webapp_flex.css') }}" media="all" rel="stylesheet" type="text/css"/>
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}"
+          rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all"
+          rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/base_webapp_flex.css') }}" media="all"
+          rel="stylesheet" type="text/css"/>
 </head>
 <body id="data_background">
-<div class="flexContainer flexItem">
-    <div class="sidebar sidebarLeft">
-        {% with data_library=data_library, data_messages=data_messages, data_share=data_share,
-        data_user_count=data_user_count %}
-        {% include "admin/admin_sidenav.html" %}
-        {% endwith %}
-    </div>
-    <div class="flexItem main">
-        <div class="flexContainer flexSpaceAround">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Server Info</h4>
-                    </div>
-                    <div class="card-text">
-                        <p>
-                            <small><b>Server Name:</b> {{ data_server_info_server_name }}
-                            </small>
-                        </p>
-                        <p>
-                            <small><b>Uptime:</b> {{ data_server_uptime }}</small>
-                        </p>
-                        <p>
-                            <small><b>Host IP:</b> {{ data_host_ip }}</small>
-                        </p>
-                        <p>
-                            <small>
-                                <b>Docker IP Internal:</b>
-                                {% for nic_data in data_server_info_server_ip %}
-                        <p class="tab">{{ nic_data }}</p>
-                        {% endfor %}
-                        <p>
-                            <small><b>Port:</b> {{ data_server_info_server_port }}</small>
-                        </p>
-                        <p>
-                            <small><b>IP External:</b> {{ data_server_info_server_ip_external }}
-                            </small>
-                        </p>
-                        <p>
-                            <small><b>Version:</b> {{ data_server_info_server_version }}</small>
-                        </p>
-                    </div>
-                </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="sidebar sidebarLeft">
+                {% with data_library=data_library, data_messages=data_messages,
+                data_share=data_share,
+                data_user_count=data_user_count %}
+                {% include "admin/admin_sidenav.html" %}
+                {% endwith %}
             </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Notices</h4>
+        </div>
+        <div class="col-sm">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-header">
+                                Server Info
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                <p>
+                                    <small><b>Server Name:</b> {{ data_server_info_server_name
+                                        }}
+                                    </small>
+                                </p>
+                                <p>
+                                    <small><b>Uptime:</b> {{ data_server_uptime }}</small>
+                                </p>
+                                <p>
+                                    <small><b>Host IP:</b> {{ data_host_ip }}</small>
+                                </p>
+                                <p>
+                                    <small>
+                                        <b>Docker IP Internal:</b>
+                                        {% for nic_data in data_server_info_server_ip %}
+                                <p class="tab">{{ nic_data }}</p>
+                                {% endfor %}
+                                <p>
+                                    <small><b>Port:</b> {{ data_server_info_server_port }}
+                                    </small>
+                                </p>
+                                <p>
+                                    <small><b>IP External:</b> {{
+                                        data_server_info_server_ip_external }}
+                                    </small>
+                                </p>
+                                <p>
+                                    <small><b>Version:</b> {{ data_server_info_server_version }}
+                                    </small>
+                                </p>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-text">
-                        {% if data_alerts_dismissable %}
-                        <div class="alert alert-info">
-                            {% for row_data in data_alerts_dismissable %}
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-header">
+                                Notices
+                            </div>
+                            <p class="card-body">
+                                {% if data_alerts_dismissable %}
+                                <div class="alert alert-info">
+                                    {% for row_data in data_alerts_dismissable %}
                             <p>
                                 <button type="button" class="close" data-dismiss="alert">×
                                 </button>
@@ -87,45 +102,46 @@
                         {% if not data_alerts_dismissable and not data_alerts %}
                         <p>No alerts.</p>
                         {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Media Files</th>
+                                <th>Matched Media</th>
+                                <th>Streamed Media</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td> {{ data_count_media_files }}</td>
+                                <td> {{ data_count_matched_media }}</td>
+                                <td> {{ data_count_streamed_media }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Metadata to Fetch</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td> {{ data_count_meta_fetch }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Media Files</th>
-                            <th>Matched Media</th>
-                            <th>Streamed Media</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td> {{ data_count_media_files }}</td>
-                            <td> {{ data_count_matched_media }}</td>
-                            <td> {{ data_count_streamed_media }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Metadata to Fetch</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td> {{ data_count_meta_fetch }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
-        <div class="flexContainer flexSpaceAround">
+        <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -149,6 +165,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Scanning Status</h4>
@@ -172,7 +190,7 @@
                 </div>
             </div>
         </div>
-        <div class="flexContainer flexSpaceAround">
+        <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
