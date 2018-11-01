@@ -25,6 +25,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from threading import Thread
+from uuid import getnode
 
 from . import common_file
 from . import common_global
@@ -69,7 +70,6 @@ def mk_network_get_mac():
     """
     Get MAC address
     """
-    from uuid import getnode
     return ':'.join(("%012X" % getnode())[i:i + 2] for i in range(0, 12, 2))
 
 
@@ -176,4 +176,3 @@ def mk_network_country_code():
         return json.loads(response.read())
     except:
         return {'country_code': 'Error', 'country_name': 'Unknown'}
-
