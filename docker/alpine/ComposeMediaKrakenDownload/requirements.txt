@@ -11,6 +11,6 @@ colorama
 lxml
 pbr
 requests
-sixi
+six
 cssselect
 argcomplete
