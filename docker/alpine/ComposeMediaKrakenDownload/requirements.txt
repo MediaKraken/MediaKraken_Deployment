@@ -7,3 +7,10 @@ dropbox
 onedrivesdk
 dosage
 xmltodict
+colorama
+lxml
+pbr
+requests
+sixi
+cssselect
+argcomplete
