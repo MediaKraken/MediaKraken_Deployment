@@ -3,7 +3,7 @@ git pull
 # ./webcode_minify/minify-web-scripts.sh
 
 # must move base dir so the docker-compose commands work
-cd /home/metaman/MediaKraken_Deployment/docker/alpine
+cd ../docker/alpine
 
 docker-compose down
 
