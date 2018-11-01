@@ -16,7 +16,7 @@ WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
-  gcc
+  gcc \
   libxml2-dev \
   py3-libcloud \
   py3-psycopg2 \
