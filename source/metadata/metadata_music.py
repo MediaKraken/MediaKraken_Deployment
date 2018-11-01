@@ -57,9 +57,9 @@ def metadata_music_lookup(db_connection, metadata_provider, download_data):
         # see if record is stored locally
         if ffmpeg_data_json is not None and 'format' in ffmpeg_data_json\
                 and 'tags' in ffmpeg_data_json['format'] \
-                and 'ARTIST' in ffmpeg_data_json['format'][['tags']] \
-                and 'ALBUM' in ffmpeg_data_json['format'][['tags']] \
-                and 'TITLE' in ffmpeg_data_json['format'][['tags']]:
+                and 'ARTIST' in ffmpeg_data_json['format']['tags'] \
+                and 'ALBUM' in ffmpeg_data_json['format']['tags'] \
+                and 'TITLE' in ffmpeg_data_json['format']['tags']:
             db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
                                                       ffmpeg_data_json['format']['tags']['ALBUM'],
                                                       ffmpeg_data_json['format']['tags']['TITLE'])
