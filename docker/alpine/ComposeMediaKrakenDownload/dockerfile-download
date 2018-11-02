@@ -18,6 +18,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   gcc \
   libxml2-dev \
+  linux-headers \
   py3-libcloud \
   py3-psycopg2 \
   python3-dev \
