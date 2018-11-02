@@ -108,38 +108,22 @@
                         Media Count
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Media Files</th>
-                                    <th>Matched Media</th>
-                                    <th>Streamed Media</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td> {{ data_count_media_files }}</td>
-                                    <td> {{ data_count_matched_media }}</td>
-                                    <td> {{ data_count_streamed_media }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Metadata to Fetch</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td> {{ data_count_meta_fetch }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <p>
+                            <small><b>Media:</b> {{ data_count_media_files }}
+                            </small>
+                        </p>
+                        <p>
+                            <small><b>Matched:</b> {{ data_count_matched_media }}
+                            </small>
+                        </p>
+                        <p>
+                            <small><b>Streamed:</b> {{ data_count_streamed_media }}
+                            </small>
+                        </p>
+                        <p>
+                            <small><b>Fetch Metadata:</b> {{ data_count_meta_fetch }}
+                            </small>
+                        </p>
                     </div>
                 </div>
             </div>
