@@ -5,7 +5,7 @@ from common import common_docker
 # from common import common_logging_elasticsearch
 from common import common_signal
 
-# can't use elasticsearch......this runs as "host" to mkelk won't be available
+# can't use elasticsearch......this runs as "host" so mkelk won't be available
 # start logging
 #common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_broadcast')
 
