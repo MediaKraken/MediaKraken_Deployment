@@ -27,7 +27,7 @@ import time
  which won't have access to mkelk
 '''
 
-def com_net_mediakraken_find_server(server_seconds=1):
+def com_net_mediakraken_find_server(server_seconds=2):
     """
     # create dictionary containing
     # Address = Id, Name
