@@ -738,6 +738,7 @@ class MediaKrakenApp(App):
 
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
+        print(msg)
         common_global.es_inst.com_elastic_index('info', {"home press": args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
                 or args[0] == 'Movie' or args[0] == 'video':
