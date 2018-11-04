@@ -31,7 +31,7 @@ from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_network_mpv
 from common import common_signal
-from common import common_theater
+#from common import common_theater
 
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
