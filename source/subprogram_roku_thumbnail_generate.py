@@ -113,8 +113,8 @@ class MKConsumer(object):
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
         if body is not None:
-            common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
+            common_global.es_inst.com_elastic_index('info', {'msg body': json_message})
             if json_message['Type'] == 'Roku':
                 if json_message['Subtype'] == 'Thumbnail':
                     common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
