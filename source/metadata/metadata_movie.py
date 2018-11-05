@@ -268,7 +268,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         db_connection.db_download_delete(download_que_id)
         # fall through here to set last name/year id's
     else:
-        # id is known from nfo/xml but not in db yet so fetch data
+        # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
                 dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
