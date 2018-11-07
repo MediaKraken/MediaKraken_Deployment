@@ -137,8 +137,11 @@ cd ../ComposeMediaKrakenWireshark
 docker build -t mediakraken/mkwireshark --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # build the tvheadend
-cd ../ComposeMediaKrakenTvheadend
+#cd ../ComposeMediaKrakenTvheadend
 #docker build -t mediakraken/mktvheadend .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh
+
+# retag all the images
+./dockerhub_deploy/tag_rename_images.sh
