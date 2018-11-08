@@ -143,5 +143,5 @@ docker build -t mediakraken/mkwireshark --build-arg ALPMIRROR=10.0.0.122 --build
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh
 
-# retag all the images - double .. since cd'd into last docker image directory
-../dockerhub_deploy/tag_rename_images.sh
+# retag all the images - need to back out of docker/alpine as well as docker directory for container
+../../../dockerhub_deploy/tag_rename_images.sh
