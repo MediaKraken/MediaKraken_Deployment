@@ -86,10 +86,7 @@ class CommonMetadataTMDB(object):
         """
         common_global.es_inst.com_elastic_index('info', {"tmdb search": movie_title,
                                                          'year': movie_year})
-        try:
-            search = self.movie.search(movie_title.replace('\\u25ba', ''))
-        except:
-            search = self.movie.search(movie_title.encode('utf-8'))
+        search = self.movie.search(movie_title)
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
         if type(search) != list:
             for res in search:
