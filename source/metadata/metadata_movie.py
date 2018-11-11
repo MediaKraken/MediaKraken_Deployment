@@ -211,36 +211,20 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     Movie lookup
     This is the main function called from metadata_identification
     """
+    # don't bother checking title/year as the main_server_metadata_api_worker does it already
     if not hasattr(metadata_movie_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
         metadata_movie_lookup.metadata_last_id = None
-        metadata_movie_lookup.metadata_last_title = None
-        metadata_movie_lookup.metadata_last_year = None
         metadata_movie_lookup.metadata_last_imdb = None
         metadata_movie_lookup.metadata_last_tmdb = None
         metadata_movie_lookup.metadata_last_rt = None
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'meta movie look filename': str(file_name)})
-    # check for dupes by name/year
-    if 'year' in file_name:
-        if file_name['title'] == metadata_movie_lookup.metadata_last_title \
-                and file_name['year'] == metadata_movie_lookup.metadata_last_year:
-            db_connection.db_download_delete(download_que_id)
-            common_global.es_inst.com_elastic_index('info', {'meta movie return 1':
-                                                                 metadata_movie_lookup.metadata_last_id})
-            # don't need to set last......since they are equal
-            return metadata_movie_lookup.metadata_last_id
-    elif file_name['title'] == metadata_movie_lookup.metadata_last_title:
-        db_connection.db_download_delete(download_que_id)
-        common_global.es_inst.com_elastic_index('info', {'meta movie return 2':
-                                                             metadata_movie_lookup.metadata_last_id})
-        # don't need to set last......since they are equal
-        return metadata_movie_lookup.metadata_last_id
+    common_global.es_inst.com_elastic_index('info', {'metadata_movie_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
-    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(
-        nfo_data, xml_data)
-    common_global.es_inst.com_elastic_index('info', {"meta movie look": imdb_id, 'tmdb': tmdb_id,
+    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
+    common_global.es_inst.com_elastic_index('info', {"meta movie look": imdb_id,
+                                                     'tmdb': tmdb_id,
                                                      'rt': rt_id})
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
@@ -266,13 +250,12 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid A": metadata_uuid})
     if metadata_uuid is not None:
         db_connection.db_download_delete(download_que_id)
-        # fall through here to set last name/year id's
+        # fall through here to set last id's
     else:
         # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
-                                                               'themoviedb', str(tmdb_id))
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 0, 'themoviedb', str(tmdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update(
@@ -328,11 +311,6 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid c": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid
-    metadata_movie_lookup.metadata_last_title = file_name['title']
-    try:
-        metadata_movie_lookup.metadata_last_year = file_name['year']
-    except:
-        metadata_movie_lookup.metadata_last_year = None
     metadata_movie_lookup.metadata_last_imdb = imdb_id
     metadata_movie_lookup.metadata_last_tmdb = tmdb_id
     metadata_movie_lookup.metadata_last_rt = rt_id
