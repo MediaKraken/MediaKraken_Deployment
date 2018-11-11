@@ -127,6 +127,12 @@ class CommonMetadataTMDB(object):
         """
         Fetch all metadata by id to reduce calls
         """
+        if tmdb_id[2:0].lower() == 'tt':
+            # imdb id......so, run find and then do the requests
+            result_json = requests.get('https://api.themoviedb.org/3/find/%s'
+                                       '?api_key=%s' % (tmdb_id, self.API_KEY))
+            if result_json.status_code == 200:
+                tmdb_id = result_json['id']
         return requests.get('https://api.themoviedb.org/3/movie/%s'
                             '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                             (tmdb_id, self.API_KEY))
