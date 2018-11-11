@@ -28,16 +28,12 @@ from common import common_signal
 
 # TODO should be using env variables
 # build image directories if needed
-if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
-    pass
-else:
+if not os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
     build_image_dirs()
 
 # TODO should be using env variables
 # build trailer directories if needed
-if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/a'):
-    pass
-else:
+if not os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/a'):
     build_trailer_dirs()
 
 # start logging
