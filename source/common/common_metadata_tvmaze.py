@@ -69,7 +69,7 @@ class CommonMetadatatvmaze(object):
         return common_network.mk_network_fetch_from_url((
                 self.API_BASE_URL + 'singlesearch/shows?q=%s' % url_opts), None)
 
-    def com_meta_tvmaze_show_by_id(self, tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
+    def com_meta_tvmaze_show_by_id(self, tvmaze_id, imdb_id=None, tvdb_id=None,
                                    embed_info=True):
         """
         # lookup specific id
@@ -87,11 +87,7 @@ class CommonMetadatatvmaze(object):
                         self.API_BASE_URL + 'shows/%s' % url_opts), None)
         else:
             # currently embed options don't work on the lookup calls
-            if tvrage_id is not None and result_json is None:
-                url_opts = tvrage_id,
-                result_json = common_network.mk_network_fetch_from_url((
-                        self.API_BASE_URL + 'lookup/shows?tvrage=%s' % url_opts), None)
-            elif imdb_id is not None and result_json is None:
+            if imdb_id is not None and result_json is None:
                 url_opts = imdb_id,
                 result_json = common_network.mk_network_fetch_from_url((
                         self.API_BASE_URL + 'lookup/shows?imdb=%s' % url_opts), None)

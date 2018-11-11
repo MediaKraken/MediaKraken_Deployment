@@ -251,10 +251,10 @@ class CommonMetadataTMDB(object):
     # TODO
     # The supported external sources for each object are as follows:
     #    Movies: imdb_id
-    #    People: imdb_id, freebase_mid, freebase_id, tvrage_id
-    #    TV Series: imdb_id, freebase_mid, freebase_id, tvdb_id, tvrage_id
-    #    TV Seasons: freebase_mid, freebase_id, tvdb_id, tvrage_id
-    #    TV Episodes: imdb_id, freebase_mid, freebase_id, tvdb_id, tvrage_id
+    #    People: imdb_id, freebase_mid, freebase_id
+    #    TV Series: imdb_id, freebase_mid, freebase_id, tvdb_id
+    #    TV Seasons: freebase_mid, freebase_id, tvdb_id
+    #    TV Episodes: imdb_id, freebase_mid, freebase_id, tvdb_id
 
     def com_tmdb_meta_by_imdb_id(self, imdb_id):
         """

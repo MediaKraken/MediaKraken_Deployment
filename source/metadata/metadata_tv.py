@@ -220,7 +220,9 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     common_global.es_inst.com_elastic_index('info', {"meta tv tvmaze save fetch": tvmaze_id})
     metadata_uuid = None
     result_data = TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
-        tvmaze_id, tvrage_id=None, imdb_id=None, tvdb_id=None,
+        tvmaze_id,
+        imdb_id=None,
+        tvdb_id=None,
         embed_info=True)
     try:
         result_json = json.loads(result_data)
@@ -234,10 +236,6 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         tvmaze_name = show_detail['name']
         common_global.es_inst.com_elastic_index('info', {"name": tvmaze_name})
         try:
-            tvrage_id = str(show_detail['externals']['tvrage'])
-        except:
-            tvrage_id = None
-        try:
             thetvdb_id = str(show_detail['externals']['thetvdb'])
         except:
             thetvdb_id = None
@@ -245,8 +243,9 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
             imdb_id = str(show_detail['externals']['imdb'])
         except:
             imdb_id = None
-        series_id_json = json.dumps({'tvmaze': str(tvmaze_id), 'TVRage': tvrage_id,
-                                     'imdb': imdb_id, 'thetvdb': thetvdb_id})
+        series_id_json = json.dumps({'tvmaze': str(tvmaze_id),
+                                     'imdb': imdb_id,
+                                     'thetvdb': thetvdb_id})
         image_json = {'Images': {'tvmaze': {
             'Characters': {}, 'Episodes': {}, "Redo": True}}}
         metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
