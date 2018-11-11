@@ -75,19 +75,21 @@ def worker(audit_directory):
         else:
             # set lower here so I can remove alot of .lower() in the code below
             filename_base, file_extension = os.path.splitext(file_name.lower())
-            # checking subtitles for parts as need multiple files for mutiple media files
+            # checking subtitles for parts as need multiple files for multiple media files
             if file_extension[1:] in common_file_extentions.MEDIA_EXTENSION \
                     or file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION \
                     or file_extension[1:] in common_file_extentions.GAME_EXTENSION:
+                ffprobe_bif_data = True
                 save_dl_record = True
                 total_files += 1
                 # set here which MIGHT be overrode later
                 new_class_type_uuid = media_class_type_uuid
+                media_class_text = thread_db.db_media_class_by_uuid(media_class_type_uuid)
                 # check for "stacked" media file
                 # the split below and the splitext above do return different results
                 head, base_file_name = os.path.split(file_name)
                 # check to see if it's a "stacked" file
-                # including games since some are 2 or more discs
+                # including games since some are two or more discs
                 if common_string.STACK_CD.search(base_file_name) is not None \
                         or common_string.STACK_PART.search(base_file_name) is not None \
                         or common_string.STACK_DVD.search(base_file_name) is not None \
@@ -103,7 +105,6 @@ def worker(audit_directory):
                             and common_string.STACK_DISC1.search(base_file_name) is None:
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
-
                 # video game data
                 if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Video Game':
                     if file_extension[1:] == 'iso':
@@ -112,9 +113,9 @@ def worker(audit_directory):
                         new_class_type_uuid = class_text_dict['Game CHD']
                     else:
                         new_class_type_uuid = class_text_dict['Game ROM']
-
+                    ffprobe_bif_data = False
                 # set new media class for subtitles
-                if file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION:
+                elif file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION:
                     if original_media_class == 'Movie':
                         new_class_type_uuid = class_text_dict['Movie Subtitle']
                     elif original_media_class == 'TV Show' or original_media_class == 'TV Episode' \
@@ -122,73 +123,73 @@ def worker(audit_directory):
                         new_class_type_uuid = class_text_dict['TV Subtitle']
                     else:
                         new_class_type_uuid = class_text_dict['Subtitle']
-
-                else:
-                    if file_name.find('/trailers/') != -1 \
-                            or file_name.find('\\trailers\\') != -1 \
-                            or file_name.find('/theme.mp3') != -1 \
+                    ffprobe_bif_data = False
+                # set new media class for trailers or themes
+                elif file_name.find('/trailers/') != -1 \
+                        or file_name.find('\\trailers\\') != -1 \
+                        or file_name.find('/theme.mp3') != -1 \
+                        or file_name.find('\\theme.mp3') != -1 \
+                        or file_name.find('/theme.mp4') != -1 \
+                        or file_name.find('\\theme.mp4') != -1:
+                    if media_class_text == 'Movie':
+                        if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
+                            new_class_type_uuid = class_text_dict['Movie Trailer']
+                        else:
+                            new_class_type_uuid = class_text_dict['Movie Theme']
+                    elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
+                            or media_class_text == 'TV Season':
+                        if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
+                            new_class_type_uuid = class_text_dict['TV Trailer']
+                        else:
+                            new_class_type_uuid = class_text_dict['TV Theme']
+                # set new media class for extras
+                elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
+                    if original_media_class == 'Movie':
+                        new_class_type_uuid = class_text_dict['Movie Extras']
+                    elif original_media_class == 'TV Show' \
+                            or thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Episode' \
+                            or media_class_text == 'TV Season':
+                        new_class_type_uuid = class_text_dict['TV Extras']
+                # set new media class for backdrops (usually themes)
+                elif file_name.find('/backdrops/') != -1 \
+                        or file_name.find('\\backdrops\\') != -1:
+                    media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
+                    if file_name.find('/theme.mp3') != -1 \
                             or file_name.find('\\theme.mp3') != -1 \
                             or file_name.find('/theme.mp4') != -1 \
                             or file_name.find('\\theme.mp4') != -1:
-                        media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
                         if media_class_text == 'Movie':
-                            if file_name.find('/trailers/') != -1 \
-                                    or file_name.find('\\trailers\\') != -1:
-                                new_class_type_uuid = class_text_dict['Movie Trailer']
-                            else:
                                 new_class_type_uuid = class_text_dict['Movie Theme']
                         elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
                                 or media_class_text == 'TV Season':
-                            if file_name.find('/trailers/') != -1 \
-                                    or file_name.find('\\trailers\\') != -1:
-                                new_class_type_uuid = class_text_dict['TV Trailer']
-                            else:
-                                new_class_type_uuid = class_text_dict['TV Theme']
-                    elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
-                        if original_media_class == 'Movie':
-                            new_class_type_uuid = class_text_dict['Movie Extras']
-                        elif original_media_class == 'TV Show' \
-                                or thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Episode' \
-                                or media_class_text == 'TV Season':
-                            new_class_type_uuid = class_text_dict['TV Extras']
-                    elif file_name.find('/backdrops/') != -1 \
-                            or file_name.find('\\backdrops\\') != -1:
-                        media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
-                        if media_class_text == 'Movie':
-                            if file_name.find('/theme.mp3') != -1 \
-                                    or file_name.find('\\theme.mp3') != -1 \
-                                    or file_name.find('/theme.mp4') != -1 \
-                                    or file_name.find('\\theme.mp4') != -1:
-                                new_class_type_uuid = class_text_dict['Movie Theme']
-                    # determine ffmpeg json data
-                    if file_name[:1] == "\\":
-                        file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
-
+                            new_class_type_uuid = class_text_dict['TV Theme']
+                # flip around slashes for smb paths
+                if file_name[:1] == "\\":
+                    file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
                 media_id = str(uuid.uuid4())
-                thread_db.db_insert_media(media_id, file_name,
-                                          new_class_type_uuid, None, None, media_json)
-
-                # Send a message so ffprobe runs
-                channel.basic_publish(exchange='mkque_ffmpeg_ex',
-                                      routing_key='mkffmpeg',
-                                      body=json.dumps(
-                                          {'Type': 'FFProbe', 'Media UUID': media_id,
-                                           'Media Path': file_name}),
-                                      properties=pika.BasicProperties(content_type='text/plain',
-                                                                      delivery_mode=1))
-
-                # Send a message so roku thumbnail is generated
-                channel.basic_publish(exchange='mkque_roku_ex',
-                                      routing_key='mkroku',
-                                      body=json.dumps(
-                                          {'Type': 'Roku', 'Subtype': 'Thumbnail',
-                                           'Media UUID': media_id,
-                                           'Media Path': file_name}),
-                                      properties=pika.BasicProperties(content_type='text/plain',
-                                                                      delivery_mode=1))
-
+                thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None, media_json)
+                # verify ffprobe and bif should run on the data
+                if ffprobe_bif_data:
+                    # Send a message so ffprobe runs
+                    channel.basic_publish(exchange='mkque_ffmpeg_ex',
+                                          routing_key='mkffmpeg',
+                                          body=json.dumps(
+                                              {'Type': 'FFProbe', 'Media UUID': media_id,
+                                               'Media Path': file_name}),
+                                          properties=pika.BasicProperties(content_type='text/plain',
+                                                                          delivery_mode=1))
+                    # Send a message so roku thumbnail is generated
+                    channel.basic_publish(exchange='mkque_roku_ex',
+                                          routing_key='mkroku',
+                                          body=json.dumps(
+                                              {'Type': 'Roku', 'Subtype': 'Thumbnail',
+                                               'Media UUID': media_id,
+                                               'Media Path': file_name}),
+                                          properties=pika.BasicProperties(content_type='text/plain',
+                                                                          delivery_mode=1))
+                # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert
                     thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
@@ -207,12 +208,14 @@ def worker(audit_directory):
                                                           'Pct': (
                                                                          total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
+    # end of for loop for each file in library
     common_global.es_inst.com_elastic_index('info',
                                             {'worker dir done': dir_path,
                                              'media class': media_class_type_uuid})
-    # set to none so it doesn't show up
+    # set to none so it doesn't show up anymore in admin status page
     thread_db.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
+        # add notification to admin status page
         thread_db.db_notification_insert(
             common_internationalization.com_inter_number_format(total_files)
             + " file(s) added from " + dir_path, True)
@@ -250,19 +253,14 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # load in all media from DB
 global_known_media = []  # pylint: disable=C0103
-known_media = db_connection.db_known_media()
-# verify rows were returned
-if known_media is not None:
-    for media_row in known_media:
-        if media_row['mm_media_path'] is not None:
-            global_known_media.append(media_row['mm_media_path'])
-known_media = None
+for media_row in db_connection.db_known_media():
+    if media_row['mm_media_path'] is not None:
+        global_known_media.append(media_row['mm_media_path'])
 
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
 for class_data in db_connection.db_media_class_list(None, None):
-    class_text_dict[class_data['mm_media_class_type']
-    ] = class_data['mm_media_class_guid']
+    class_text_dict[class_data['mm_media_class_type']] = class_data['mm_media_class_guid']
 
 # determine directories to audit
 audit_directories = []  # pylint: disable=C0103
@@ -271,8 +269,7 @@ for row_data in db_connection.db_audit_paths():
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         smb_stuff = common_network_cifs.CommonCIFSShare()
-        addr, share, path \
-            = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
+        addr, share, path = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
         smb_stuff.com_cifs_connect(addr)
         if smb_stuff.com_cifs_share_directory_check(share, path):
             if datetime.strptime(time.ctime(
@@ -322,7 +319,7 @@ if len(audit_directories) > 0:
 # commit
 db_connection.db_commit()
 
-# vaccum tables that had records added
+# vacuum tables that had records added
 db_connection.db_pgsql_vacuum_table('mm_media')
 db_connection.db_pgsql_vacuum_table('mm_download_que')
 
