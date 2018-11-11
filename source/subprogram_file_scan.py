@@ -47,7 +47,7 @@ def worker(audit_directory):
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     common_global.es_inst.com_elastic_index('info', {'worker dir': dir_path})
-    media_class = thread_db.db_media_class_by_uuid(media_class_type_uuid)
+    original_media_class = thread_db.db_media_class_by_uuid(media_class_type_uuid)
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,
@@ -73,11 +73,18 @@ def worker(audit_directory):
         if file_name in global_known_media:
             pass
         else:
-            filename_base, file_extension = os.path.splitext(file_name)
-            if file_extension[1:].lower() in common_file_extentions.MEDIA_EXTENSION \
-                    or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
+            # set lower here so I can remove alot of .lower() in the code below
+            filename_base, file_extension = os.path.splitext(file_name.lower())
+            # checking subtitles for parts as need multiple files for mutiple media files
+            if file_extension[1:] in common_file_extentions.MEDIA_EXTENSION \
+                    or file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION \
+                    or file_extension[1:] in common_file_extentions.GAME_EXTENSION:
                 save_dl_record = True
+                total_files += 1
+                # set here which MIGHT be overrode later
+                new_class_type_uuid = media_class_type_uuid
                 # check for "stacked" media file
+                # the split and the splitext above do return different results
                 head, base_file_name = os.path.split(file_name)
                 if common_string.STACK_CD.search(base_file_name) is not None \
                         or common_string.STACK_PART.search(base_file_name) is not None \
@@ -94,29 +101,25 @@ def worker(audit_directory):
                             and common_string.STACK_DISC1.search(base_file_name) is None:
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
-                total_files += 1
-                filename_base, file_extension = os.path.splitext(file_name)
-                new_class_type_uuid = media_class_type_uuid
-                # video game data, don't do ffmpeg
+
+                # video game data
                 if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Video Game':
-                    if file_extension[1:].lower() == 'iso':
+                    if file_extension[1:] == 'iso':
                         new_class_type_uuid = class_text_dict['Game ISO']
-                    elif file_extension[1:].lower() == 'chd':
+                    elif file_extension[1:] == 'chd':
                         new_class_type_uuid = class_text_dict['Game CHD']
                     else:
                         new_class_type_uuid = class_text_dict['Game ROM']
-                    # TODO lookup game info in game database data
-                    media_ffprobe_json = None
+
                 # if an extention skip
-                elif file_extension[1:].lower() \
+                elif file_extension[1:] \
                         in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
-                        or file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
-                    media_ffprobe_json = None
-                    if file_extension[1:].lower() in common_file_extentions.SUBTITLE_EXTENSION:
-                        if media_class == 'Movie':
+                        or file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION:
+                    if file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION:
+                        if original_media_class == 'Movie':
                             new_class_type_uuid = class_text_dict['Movie Subtitle']
-                        elif media_class == 'TV Show' or media_class == 'TV Episode' \
-                                or media_class == 'TV Season':
+                        elif original_media_class == 'TV Show' or original_media_class == 'TV Episode' \
+                                or original_media_class == 'TV Season':
                             new_class_type_uuid = class_text_dict['TV Subtitle']
                         else:
                             new_class_type_uuid = class_text_dict['Subtitle']
@@ -127,8 +130,7 @@ def worker(audit_directory):
                             or file_name.find('\\theme.mp3') != -1 \
                             or file_name.find('/theme.mp4') != -1 \
                             or file_name.find('\\theme.mp4') != -1:
-                        media_class_text = thread_db.db_media_class_by_uuid(
-                            new_class_type_uuid)
+                        media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
                         if media_class_text == 'Movie':
                             if file_name.find('/trailers/') != -1 \
                                     or file_name.find('\\trailers\\') != -1:
@@ -143,9 +145,9 @@ def worker(audit_directory):
                             else:
                                 new_class_type_uuid = class_text_dict['TV Theme']
                     elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
-                        if media_class == 'Movie':
+                        if original_media_class == 'Movie':
                             new_class_type_uuid = class_text_dict['Movie Extras']
-                        elif media_class == 'TV Show' \
+                        elif original_media_class == 'TV Show' \
                                 or thread_db.db_media_class_by_uuid(
                             media_class_type_uuid) == 'TV Episode' \
                                 or media_class_text == 'TV Season':
@@ -165,12 +167,12 @@ def worker(audit_directory):
                         file_name \
                             = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
                     # common_ffmpeg.com_ffmpeg_media_attr(file_name)
-                    media_ffprobe_json = None
+
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name,
-                                          new_class_type_uuid, None, media_ffprobe_json, media_json)
+                                          new_class_type_uuid, None, None, media_json)
                 # Send a message so ffprobe runs
                 channel.basic_publish(exchange='mkque_ffmpeg_ex',
                                       routing_key='mkffmpeg',
@@ -188,6 +190,7 @@ def worker(audit_directory):
                                            'Media Path': file_name}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=1))
+
                 if save_dl_record:
                     # media id begin and download que insert
                     thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
