@@ -37,8 +37,10 @@ def metadata_identification(db_connection, class_text, download_que_json,
     """
     Determine which provider to start lookup via class text
     """
-    common_global.es_inst.com_elastic_index('info', {"Ident": class_text, 'dl': download_que_json[
-        'Path'], 'json': download_que_json, 'quiid': download_que_id})
+    common_global.es_inst.com_elastic_index('info', {"metadata_identification": class_text,
+                                                     'path': download_que_json['Path'],
+                                                     'json': download_que_json,
+                                                     'quiid': download_que_id})
     metadata_uuid = None
     # find data by class type
     if class_text == "Adult":
