@@ -28,22 +28,18 @@ def getfileinfo(filename):
     """
     Get info about the video
     """
-    for stream in common_ffmpeg.com_ffmpeg_media_attr(filename):
-        if stream['type'] == 'Video':
-            resolution = stream['resolution'].split('x')
-            video_aspect_ratio = float(resolution[0]) / float(resolution[1])
-            if video_aspect_ratio > 1.5:
-                if float(resolution[1] >= 720):
-                    return "320x180", 'HD'  # HD 16:9 ~ 1.7 ratio
-                else:
-                    return "240x136", 'SD'  # SD 16:9 ~ 1.7 ratio
-            else:
-                if float(resolution[1] >= 720):
-                    return "320x240", 'HD'  # HD 4:3 ~ 1.3 ratio
-                else:
-                    return "240x180", 'SD'  # SD 4:3 ~ 1.3 ratio
-    # catchall resolution
-    return "240x180", 'SD'  # SD 4:3 ~ 1.3 ratio
+    json_ffmpeg = common_ffmpeg.com_ffmpeg_media_attr(filename)
+    video_aspect_ratio = float(json_ffmpeg['streams'][0]['width']) / float(json_ffmpeg['streams'][0]['height'])
+    if video_aspect_ratio > 1.5:
+        if float(json_ffmpeg['streams'][0]['height'] >= 720):
+            return "320x180", 'HD'  # HD 16:9 ~ 1.7 ratio
+        else:
+            return "240x136", 'SD'  # SD 16:9 ~ 1.7 ratio
+    else:
+        if float(json_ffmpeg['streams'][0]['height'] >= 720):
+            return "320x240", 'HD'  # HD 4:3 ~ 1.3 ratio
+        else:
+            return "240x180", 'SD'  # SD 4:3 ~ 1.3 ratio
 
 
 def extractimages(videofile, directory, interval, resolution, offset=0):
