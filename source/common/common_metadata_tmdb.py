@@ -27,6 +27,7 @@ from tmdbv3api import TMDb, TV
 from . import common_global
 from . import common_metadata
 from . import common_network
+from metadata import metadata_movie
 
 
 class CommonMetadataTMDB(object):
@@ -127,12 +128,9 @@ class CommonMetadataTMDB(object):
         """
         Fetch all metadata by id to reduce calls
         """
-        if tmdb_id[2:0].lower() == 'tt':
+        if tmdb_id[0:2].lower() == 'tt':
             # imdb id......so, run find and then do the requests
-            result_json = requests.get('https://api.themoviedb.org/3/find/%s'
-                                       '?api_key=%s' % (tmdb_id, self.API_KEY))
-            if result_json.status_code == 200:
-                tmdb_id = result_json['id']
+            tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
         return requests.get('https://api.themoviedb.org/3/movie/%s'
                             '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                             (tmdb_id, self.API_KEY))
