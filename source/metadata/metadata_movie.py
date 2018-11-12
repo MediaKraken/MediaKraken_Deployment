@@ -256,29 +256,20 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
         # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0, 'themoviedb', str(tmdb_id))
-                if dl_meta is None:
-                    metadata_uuid = download_que_json['MetaNewID']
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
-                    db_connection.db_download_update(json.dumps(download_que_json),
-                                                     download_que_id)
-                    # set provider last so it's not picked up by the wrong thread too early
-                    db_connection.db_download_update_provider('themoviedb', download_que_id)
-                else:
-                    db_connection.db_download_delete(download_que_id)
-                    metadata_uuid = dl_meta
+                provider_id = str(tmdb_id)
             else:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0, 'themoviedb', imdb_id)
-                if dl_meta is None:
-                    metadata_uuid = download_que_json['MetaNewID']
-                    download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': imdb_id})
-                    db_connection.db_download_update(json.dumps(download_que_json),
-                                                     download_que_id)
-                    # set provider last so it's not picked up by the wrong thread too early
-                    db_connection.db_download_update_provider('themoviedb', download_que_id)
-                else:
-                    db_connection.db_download_delete(download_que_id)
-                    metadata_uuid = dl_meta
+                provider_id = imdb_id
+            dl_meta = db_connection.db_download_que_exists(download_que_id, 0, 'themoviedb', provider_id)
+            if dl_meta is None:
+                metadata_uuid = download_que_json['MetaNewID']
+                download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': provider_id})
+                db_connection.db_download_update(json.dumps(download_que_json),
+                                                 download_que_id)
+                # set provider last so it's not picked up by the wrong thread too early
+                db_connection.db_download_update_provider('themoviedb', download_que_id)
+            else:
+                db_connection.db_download_delete(download_que_id)
+                metadata_uuid = dl_meta
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
