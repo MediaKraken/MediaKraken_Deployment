@@ -135,9 +135,7 @@ def metadata_search(thread_db, provider_name, download_data):
         lookup_halt = True
     elif provider_name == 'themoviedb':
         metadata_uuid, match_result = metadata_movie.movie_search_tmdb(thread_db,
-                                                                       download_data[
-                                                                           'mdq_download_json'][
-                                                                           'Path'])
+                                                                       download_data['mdq_download_json']['Path'])
         common_global.es_inst.com_elastic_index('info', {'metadata_uuid': metadata_uuid,
                                                          'result': match_result})
         # if match_result is an int, that means the lookup found a match but isn't in db
@@ -148,10 +146,9 @@ def metadata_search(thread_db, provider_name, download_data):
                 set_fetch = True
     elif provider_name == 'thesportsdb':
         metadata_uuid = metadata_sports.metadata_sports_lookup(thread_db,
-                                                               download_data['mdq_download_json'][
-                                                                   'Path'], download_data,
-                                                               download_data[
-                                                                   'mdq_id'])
+                                                               download_data['mdq_download_json']['Path'],
+                                                               download_data,
+                                                               download_data['mdq_id'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'themoviedb'
@@ -159,8 +156,7 @@ def metadata_search(thread_db, provider_name, download_data):
                 set_fetch = True
     elif provider_name == 'thetvdb':
         metadata_uuid, match_result = metadata_tv.tv_search_tvdb(thread_db,
-                                                                 download_data['mdq_download_json'][
-                                                                     'Path'])
+                                                                 download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             if match_result is None:
                 lookup_halt = True
@@ -170,8 +166,7 @@ def metadata_search(thread_db, provider_name, download_data):
         lookup_halt = True
     elif provider_name == 'tvmaze':
         metadata_uuid, match_result = metadata_tv.tv_search_tvmaze(thread_db,
-                                                                   download_data[
-                                                                       'mdq_download_json']['Path'])
+                                                                   download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'thetvdb'
