@@ -29,6 +29,8 @@ def user_hardware_hue():
     Display hardware page for hue
     """
     # this is checking to see if the hue key exists
+    # keep doing this even with not displaying in hardware page
+    # as hue might be in the database without the key file
     key_list = common_file.com_file_dir_list('/mediakraken/phue',
                                                                       filter_text=None,
                                                                       walk_dir=False,

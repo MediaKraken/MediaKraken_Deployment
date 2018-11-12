@@ -19,11 +19,15 @@
 import uuid
 
 
-def db_device_count(self, search_value=None):
+def db_device_count(self, device_type=None, search_value=None):
     """
     Return the number of devices in database
     """
-    self.db_cursor.execute('select count(*) from mm_device')
+    if device_type is None:
+        self.db_cursor.execute('select count(*) from mm_device')
+    else:
+        self.db_cursor.execute('select count(*) from mm_device where mm_device_type = %s',
+                               (device_type,))
     return self.db_cursor.fetchone()[0]
 
 
