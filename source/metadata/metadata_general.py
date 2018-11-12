@@ -32,7 +32,7 @@ from . import metadata_tv
 
 
 def metadata_process(thread_db, provider_name, download_data):
-    common_global.es_inst.com_elastic_index('info', {'full downloaddata record': download_data})
+    common_global.es_inst.com_elastic_index('info', {'metadata_process': download_data})
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
         common_global.es_inst.com_elastic_index('info', {'search': provider_name})
@@ -67,11 +67,8 @@ def metadata_search(thread_db, provider_name, download_data):
     update_provider = None
     if provider_name == 'anidb':
         metadata_uuid = metadata_anime.metadata_anime_lookup(thread_db,
-                                                             download_data[
-                                                                 'mdq_download_json'][
-                                                                 'Path'], download_data,
-                                                             download_data[
-                                                                 'mdq_id'],
+                                                             download_data,
+                                                             download_data['mdq_id'],
                                                              guessit(download_data['Path'])[
                                                                  'title'])
         if metadata_uuid is None:
@@ -93,9 +90,7 @@ def metadata_search(thread_db, provider_name, download_data):
         metadata_uuid, match_result = metadata_music_video.metadata_music_video_lookup(thread_db,
                                                                                        download_data[
                                                                                            'mdq_download_json'][
-                                                                                           'Path'],
-                                                                                       download_data[
-                                                                                           'mdq_id'])
+                                                                                           'Path'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'theaudiodb'
