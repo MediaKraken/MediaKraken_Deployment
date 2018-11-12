@@ -80,15 +80,13 @@ def admin_library():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_media_dir'),
+                                                  total=g.db_connection.db_table_count('mm_media_dir'),
                                                   record_name='library dir(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
     return render_template("admin/admin_library.html",
-                           media_dir=g.db_connection.db_audit_paths(
-                               offset, per_page),
+                           media_dir=g.db_connection.db_audit_paths(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
