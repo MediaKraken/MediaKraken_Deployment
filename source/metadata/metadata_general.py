@@ -145,7 +145,7 @@ def metadata_search(thread_db, provider_name, download_data):
             if metadata_uuid is None:
                 set_fetch = True
     elif provider_name == 'thesportsdb':
-        metadata_uuid = metadata_sports.metadata_sports_lookup(thread_db,
+        metadata_uuid, match_result = metadata_sports.metadata_sports_lookup(thread_db,
                                                                download_data['mdq_download_json']['Path'],
                                                                download_data,
                                                                download_data['mdq_id'])
@@ -179,16 +179,15 @@ def metadata_search(thread_db, provider_name, download_data):
 
     # if search is being updated to new provider
     if update_provider is not None:
-        thread_db.db_download_update_provider(
-            update_provider, download_data['mdq_id'])
+        thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
         return  # no need to continue with checks
-    # if lookup halt set to ZZ so it doesn't get picked up my metadata dl ques
+    # if lookup halt set to ZZ so it doesn't get picked up by metadata dl queue
     if lookup_halt:
         thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
         return  # no need to continue with checks
     # if set fetch, set provider id and status on dl record
     if set_fetch:
-        # first verify a download que record doesn't exist for this id
+        # first verify a download queue record doesn't exist for this id
         metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'], 0,
                                                          provider_name, str(match_result))
         common_global.es_inst.com_elastic_index('info', {'metaquelook': metadata_uuid})
@@ -240,28 +239,24 @@ def metadata_fetch(thread_db, provider_name, download_data):
             metadata_person.metadata_fetch_tmdb_person(
                 thread_db, provider_name, download_data)
         elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1:  # movie
-            if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt':  # imdb id check
-                tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(
-                    download_data['mdq_download_json']['ProviderMetaID'])
-                if tmdb_id is not None:
-                    download_data['mdq_download_json'].update(
-                        {'ProviderMetaID': str(tmdb_id)})
-                    thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
-                                                 download_data['mdq_id'])
-                else:
-                    # TODO this is kinda bad if you have a valid id
-                    thread_db.db_download_update_provider(
-                        'ZZ', download_data['mdq_id'])
-            else:
-                metadata_movie.movie_fetch_save_tmdb(thread_db,
-                                                     download_data['mdq_download_json'][
-                                                         'ProviderMetaID'],
-                                                     download_data['mdq_download_json'][
-                                                         'MetaNewID'])
-                thread_db.db_download_delete(download_data['mdq_id'])
-        #            download_data['mdq_download_json'].update({'Status': 'FetchCastCrew'})
-        #            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']), \
-        #                download_data['mdq_id'])
+            # removing the imdb check.....as com_tmdb_metadata_by_id converts it
+            # if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt':  # imdb id check
+            #     tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(
+            #         download_data['mdq_download_json']['ProviderMetaID'])
+            #     if tmdb_id is not None:
+            #         download_data['mdq_download_json'].update(
+            #             {'ProviderMetaID': str(tmdb_id)})
+            #         thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
+            #                                      download_data['mdq_id'])
+            #     else:
+            #         # TODO this is kinda bad if you have a valid id
+            #         thread_db.db_download_update_provider(
+            #             'ZZ', download_data['mdq_id'])
+            # else:
+            metadata_movie.movie_fetch_save_tmdb(thread_db,
+                                                 download_data['mdq_download_json']['ProviderMetaID'],
+                                                 download_data['mdq_download_json']['MetaNewID'])
+            thread_db.db_download_delete(download_data['mdq_id'])
         else:  # tv
             pass
     elif provider_name == 'thetvdb':
