@@ -155,11 +155,11 @@ class CommonMetadataTMDB(object):
         """
         # download info and set data to be ready for insert into database
         """
-        common_global.es_inst.com_elastic_index('info', {'tmdb bio build': result_json})
+        # common_global.es_inst.com_elastic_index('info', {'tmdb bio build': result_json})
         # create file path for poster
         image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
                                                                    'person')
-        common_global.es_inst.com_elastic_index('info', {'tmdb bio image path': image_file_path})
+        # common_global.es_inst.com_elastic_index('info', {'tmdb bio image path': image_file_path})
         if 'profile_path' in result_json and result_json['profile_path'] is not None:
             if not os.path.isfile(image_file_path + result_json['profile_path']):
                 if result_json['profile_path'] is not None:
@@ -247,8 +247,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.releases()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Releases Error": str(
-                err_code)})
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Releases Error": str(err_code)})
             metadata = None
         return metadata
 
@@ -268,8 +267,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.info(external_source='imdb_id')
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch imdb Error": str(
-                err_code)})
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch imdb Error": str(err_code)})
             metadata = None
         return metadata
 
@@ -305,8 +303,7 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie_collection.info()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Collection Error": str(
-                err_code)})
+            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Collection Error": str(err_code)})
             metadata = None
         return metadata
 
@@ -314,11 +311,11 @@ class CommonMetadataTMDB(object):
         """
         # download info and set data to be ready for insert into database
         """
-        common_global.es_inst.com_elastic_index('info', {'tmdb info build': result_json})
+        # common_global.es_inst.com_elastic_index('info', {'tmdb info build': result_json})
         # create file path for poster
         image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
                                                                    'poster')
-        common_global.es_inst.com_elastic_index('info', {'tmdb image path': image_file_path})
+        # common_global.es_inst.com_elastic_index('info', {'tmdb image path': image_file_path})
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']

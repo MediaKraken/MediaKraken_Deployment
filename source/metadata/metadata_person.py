@@ -38,15 +38,15 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     fetch person bio
     """
     if TMDB_CONNECTION is not None:
-        common_global.es_inst.com_elastic_index('info', {"meta person tmdb save fetch":
-                                                             download_data})
+        # common_global.es_inst.com_elastic_index('info', {"meta person tmdb save fetch":
+        #                                                      download_data})
         # fetch and save json data via tmdb id
         result_json = TMDB_CONNECTION.com_tmdb_metadata_bio_by_id(
             download_data['mdq_download_json']['ProviderMetaID'])
-        common_global.es_inst.com_elastic_index('info', {"meta person code":
-                                                             result_json.status_code})
-        common_global.es_inst.com_elastic_index('info', {"meta person save fetch result":
-                                                             result_json.json()})
+        # common_global.es_inst.com_elastic_index('info', {"meta person code":
+        #                                                      result_json.status_code})
+        # common_global.es_inst.com_elastic_index('info', {"meta person save fetch result":
+        #                                                      result_json.json()})
         if result_json.status_code == 200:
             thread_db.db_meta_person_update(provider_name,
                                             download_data['mdq_download_json']['ProviderMetaID'],
