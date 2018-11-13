@@ -223,9 +223,10 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
     imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
-    common_global.es_inst.com_elastic_index('info', {"meta movie look": imdb_id,
-                                                     'tmdb': tmdb_id,
-                                                     'rt': rt_id})
+    if imdb_id is not None or tmdb_id is not None or rt_id is not None:
+        common_global.es_inst.com_elastic_index('info', {"meta movie look": imdb_id,
+                                                         'tmdb': tmdb_id,
+                                                         'rt': rt_id})
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
         db_connection.db_download_delete(download_que_id)
@@ -259,7 +260,8 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                 provider_id = str(tmdb_id)
             else:
                 provider_id = imdb_id
-            dl_meta = db_connection.db_download_que_exists(download_que_id, 0, 'themoviedb', provider_id)
+            dl_meta = db_connection.db_download_que_exists(download_que_id, 0, 'themoviedb',
+                                                           provider_id)
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']
                 download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': provider_id})
@@ -293,7 +295,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
                                              download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('themoviedb', download_que_id)
-    common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid c": metadata_uuid})
+    common_global.es_inst.com_elastic_index('info', {"metadata_movie return uuid": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid
     metadata_movie_lookup.metadata_last_imdb = imdb_id
