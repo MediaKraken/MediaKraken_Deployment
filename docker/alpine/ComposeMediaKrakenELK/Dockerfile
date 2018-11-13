@@ -1,7 +1,5 @@
-# https://github.com/spujadas/elk-docker
-
 # Dockerfile for ELK stack
-# Elasticsearch, Logstash, Kibana 6.3.0
+# Elasticsearch, Logstash, Kibana 6.4.2
 
 # Build with:
 # docker build -t <repo-user>/elk .
@@ -41,7 +39,7 @@ RUN set -x \
  && set +x
 
 
-ENV ELK_VERSION 6.3.0
+ENV ELK_VERSION 6.4.2
 
 ### install Elasticsearch
 
@@ -133,6 +131,9 @@ RUN mkdir -p /etc/pki/tls/certs && mkdir /etc/pki/tls/private
 ADD ./logstash-beats.crt /etc/pki/tls/certs/logstash-beats.crt
 ADD ./logstash-beats.key /etc/pki/tls/private/logstash-beats.key
 
+# pipelines
+ADD pipelines.yml ${LOGSTASH_PATH_SETTINGS}/pipelines.yml
+
 # filters
 ADD ./02-beats-input.conf ${LOGSTASH_PATH_CONF}/conf.d/02-beats-input.conf
 ADD ./10-syslog.conf ${LOGSTASH_PATH_CONF}/conf.d/10-syslog.conf
@@ -144,7 +145,8 @@ ADD ./nginx.pattern ${LOGSTASH_HOME}/patterns/nginx
 RUN chown -R logstash:logstash ${LOGSTASH_HOME}/patterns
 
 # Fix permissions
-RUN chmod -R +r ${LOGSTASH_PATH_CONF}
+RUN chmod -R +r ${LOGSTASH_PATH_CONF} ${LOGSTASH_PATH_SETTINGS} \
+ && chown -R logstash:logstash ${LOGSTASH_PATH_SETTINGS}
 
 ### configure logrotate
 
