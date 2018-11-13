@@ -420,12 +420,12 @@ while True:
                 if 'year' in file_name:
                     if type(file_name['year']) == list:
                         file_name['year'] = file_name['year'][0]
-                    if file_name['title'] == metadata_last_title \
+                    if file_name['title'].lower() == metadata_last_title \
                             and file_name['year'] == metadata_last_year:
                         # matches last media scanned, so set with that metadata id
                         thread_db.db_download_delete(row_data['mdq_id'])
                         metadata_uuid = metadata_last_id
-                elif file_name['title'] == metadata_last_title:
+                elif file_name['title'].lower() == metadata_last_title:
                     # matches last media scanned, so set with that metadata id
                     thread_db.db_download_delete(row_data['mdq_id'])
                     metadata_uuid = metadata_last_id
@@ -446,7 +446,7 @@ while True:
                                                                                     file_name)
                 # allow NONE to be set so, unmatched stuff can work for skipping
                 metadata_last_id = metadata_uuid
-                metadata_last_title = file_name['title']
+                metadata_last_title = file_name['title'].lower()
                 try:
                     metadata_last_year = file_name['year']
                 except KeyError:
