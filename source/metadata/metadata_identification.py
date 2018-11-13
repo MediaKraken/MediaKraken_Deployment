@@ -225,5 +225,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
         pass
     elif class_text == "Video Game Superplay":
         pass
-    common_global.es_inst.com_elastic_index('info', {"Meta id ident return": metadata_uuid})
+    common_global.es_inst.com_elastic_index('info',
+                                            {"metadata_identification uuid return": metadata_uuid})
     return metadata_uuid
