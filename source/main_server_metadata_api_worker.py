@@ -460,6 +460,7 @@ while True:
                                                                      row_data[
                                                                          'mdq_download_json'][
                                                                          'MediaID']})
+                # commit occurs in following function
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                                              metadata_uuid)
     time.sleep(1)
