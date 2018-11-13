@@ -138,7 +138,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     # batch insert from json of crew/cast
     """
     common_global.es_inst.com_elastic_index('info', {
-        'db person insert cast crew': meta_type, 'person': person_json})
+        'db_meta_person_insert_cast_crew': meta_type, 'person': person_json})
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     multiple_person = False
     try:
@@ -168,8 +168,12 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                    common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
+                    common_global.es_inst.com_elastic_index('info', {
+                        'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
+                    # Shouldn't need to verify fetch doesn't exist as the person insert
+                    # is right below.  As then the next person record read will find
+                    # the inserted record.
                     # insert download record for bio/info
                     self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
                                                                       "ProviderMetaID": str(
@@ -200,6 +204,9 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
                 common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
             else:
+                # Shouldn't need to verify fetch doesn't exist as the person insert
+                # is right below.  As then the next person record read will find
+                # the inserted record.
                 # insert download record for bio/info
                 self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
                                                                   "ProviderMetaID": str(
