@@ -89,14 +89,15 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
-    common_global.es_inst.com_elastic_index('info', {'db que exits': download_que_uuid,
+    common_global.es_inst.com_elastic_index('info', {'db_download_que_exists': download_que_uuid,
                                                      'name': provider_name,
                                                      'id': provider_id})
     if download_que_uuid is not None:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
                                ' where mdq_provider = %s and mdq_que_type = %s'
                                ' and mdq_download_json->\'ProviderMetaID\' ? %s'
-                               ' and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
+                               ' and mdq_download_json->>\'Status\' <> \'Search\''
+                               ' and mdq_download_json->>\'Status\' is not NULL limit 1',
                                (provider_name, download_que_type, provider_id))
         # why do I care about the download que id?
         #            ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
