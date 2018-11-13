@@ -142,11 +142,17 @@ def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id, metadata_id):
     cast_json = TMDB_CONNECTION.com_tmdb_meta_cast_by_id(tmdb_id)
     if cast_json is not None:  # cast/crew doesn't exist on all media
         if 'cast' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew(
-                'themoviedb', cast_json['cast'])
+            # verify the person is not already in the database
+            if db_connection.db_meta_person_id_count('themoviedb', cast_json['cast']) == 0:
+                # TODO must verify a fetch record doesn't exist already
+                db_connection.db_meta_person_insert_cast_crew(
+                    'themoviedb', cast_json['cast'])
         if 'crew' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew(
-                'themoviedb', cast_json['crew'])
+            # verify the person is not already in the database
+            if db_connection.db_meta_person_id_count('themoviedb', cast_json['cast']) == 0:
+                # TODO must verify a fetch record doesn't exist already
+                db_connection.db_meta_person_insert_cast_crew(
+                    'themoviedb', cast_json['crew'])
         # update the metadata record with the cast info
         db_connection.db_meta_movie_update_castcrew(cast_json, metadata_id)
 
