@@ -108,12 +108,12 @@ def com_roku_create_bif(videofile, first_image_offset=7, image_interval=10):
     Create BIF
     """
     # Get info about the video file
-    size, res_extention = getfileinfo(videofile)
+    size, res_extension = getfileinfo(videofile)
     tmpdirectory = tempfile.mkdtemp()
     # Extract jpg images from the video file
     extractimages(videofile, tmpdirectory, image_interval,
                   size, first_image_offset)
-    biffile = "%s-%s.bif" % (os.path.basename(videofile).rsplit('.', 1)[0], res_extention)
+    biffile = "%s-%s.bif" % (os.path.basename(videofile).rsplit('.', 1)[0], res_extension)
     # Create the BIF file
     makebif(biffile, tmpdirectory, image_interval)
     # Clean up the temporary directory
