@@ -56,10 +56,10 @@ def movie_search_tmdb(db_connection, file_name):
         # try to match ID ONLY
         if 'year' in file_name:
             match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
-                file_name['title'], file_name['year'], True)
+                file_name['title'], file_name['year'], True, media_type='movie')
         else:
             match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
-                file_name['title'], None, True)
+                file_name['title'], None, True, media_type='movie')
         common_global.es_inst.com_elastic_index('info', {"meta movie response":
                                                              match_response, 'res': match_result})
         if match_response == 'idonly':

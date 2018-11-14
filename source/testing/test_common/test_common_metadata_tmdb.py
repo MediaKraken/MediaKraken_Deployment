@@ -37,7 +37,7 @@ class TestCommonMetadataTMDB(object):
         pass
 
     # search for movie title and year
-    # def com_tmdb_Search(self, movie_title, movie_year=None, id_only=False):
+    # def com_tmdb_Search(self, movie_title, movie_year=None, id_only=False, media_type='movie'):
 
     # search by tmdb
     # def com_tmdb_Metadata_by_ID(self, tmdb_id):

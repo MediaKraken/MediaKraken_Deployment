@@ -21,13 +21,13 @@ import os
 
 import requests
 import tmdbsimple as tmdb
+from metadata import metadata_movie
 from tmdbv3api import Movie
 from tmdbv3api import TMDb, TV
 
 from . import common_global
 from . import common_metadata
 from . import common_network
-from metadata import metadata_movie
 
 
 class CommonMetadataTMDB(object):
@@ -43,54 +43,22 @@ class CommonMetadataTMDB(object):
         self.movie = Movie()
         self.tv = TV()
 
-    def com_tmdb_search_tv(self, tv_title, tv_year=None, id_only=False):
+    def com_tmdb_search(self, media_title, media_year=None, id_only=False, media_type='movie'):
         """
-        Search for tv show via title and year
+        # search for media title and year
         """
-        common_global.es_inst.com_elastic_index('info', {"tmdb tv search": tv_title,
-                                                         'year': tv_year})
-        try:
-            search = self.tv.search(tv_title.replace('\\u25ba', ''))
-        except:
-            search = self.tv.search(tv_title.encode('utf-8'))
-        common_global.es_inst.com_elastic_index('info', {'search': str(search)})
-        if len(search) > 0:
-            for res in search:
-                common_global.es_inst.com_elastic_index('info', {"result": res.title, 'id': res.id,
-                                                                 'date':
-                                                                     res.release_date.split('-', 1)[
-                                                                         0]})
-                if tv_year is not None and (str(tv_year) == res.release_date.split('-', 1)[0]
-                                            or str(int(tv_year) - 1) ==
-                                            res.release_date.split('-', 1)[0]
-                                            or str(int(tv_year) - 2) ==
-                                            res.release_date.split('-', 1)[0]
-                                            or str(int(tv_year) - 3) ==
-                                            res.release_date.split('-', 1)[0]
-                                            or str(int(tv_year) + 1) ==
-                                            res.release_date.split('-', 1)[0]
-                                            or str(int(tv_year) + 2) ==
-                                            res.release_date.split('-', 1)[0]
-                                            or str(int(tv_year) + 3) ==
-                                            res.release_date.split('-', 1)[0]):
-                    if not id_only:
-                        return 'info', self.com_tmdb_metadata_tv_by_id(res.id)
-                    else:
-                        return 'idonly', res.id  # , s['title']
-            return 're', search.results
+        common_global.es_inst.com_elastic_index('info', {"tmdb search": media_title,
+                                                         'year': media_year})
+        if media_type == 'movie':
+            try:
+                search = self.movie.search(media_title.replace('\\u25ba', ''))
+            except:
+                search = self.movie.search(media_title.encode('utf-8'))
         else:
-            return None, None
-
-    def com_tmdb_search(self, movie_title, movie_year=None, id_only=False):
-        """
-        # search for movie title and year
-        """
-        common_global.es_inst.com_elastic_index('info', {"tmdb search": movie_title,
-                                                         'year': movie_year})
-        try:
-            search = self.movie.search(movie_title.replace('\\u25ba', ''))
-        except:
-            search = self.movie.search(movie_title.encode('utf-8'))
+            try:
+                search = self.tv.search(media_title.replace('\\u25ba', ''))
+            except:
+                search = self.tv.search(media_title.encode('utf-8'))
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
         if len(search) > 0:
             for res in search:
@@ -103,18 +71,18 @@ class CommonMetadataTMDB(object):
                                                                  'date':
                                                                      res.release_date.split('-', 1)[
                                                                          0]})
-                if movie_year is not None and (str(movie_year) == res.release_date.split('-', 1)[0]
-                                               or str(int(movie_year) - 1) ==
+                if media_year is not None and (str(media_year) == res.release_date.split('-', 1)[0]
+                                               or str(int(media_year) - 1) ==
                                                res.release_date.split('-', 1)[0]
-                                               or str(int(movie_year) - 2) ==
+                                               or str(int(media_year) - 2) ==
                                                res.release_date.split('-', 1)[0]
-                                               or str(int(movie_year) - 3) ==
+                                               or str(int(media_year) - 3) ==
                                                res.release_date.split('-', 1)[0]
-                                               or str(int(movie_year) + 1) ==
+                                               or str(int(media_year) + 1) ==
                                                res.release_date.split('-', 1)[0]
-                                               or str(int(movie_year) + 2) ==
+                                               or str(int(media_year) + 2) ==
                                                res.release_date.split('-', 1)[0]
-                                               or str(int(movie_year) + 3) ==
+                                               or str(int(media_year) + 3) ==
                                                res.release_date.split('-', 1)[0]):
                     if not id_only:
                         return 'info', self.com_tmdb_metadata_by_id(res.id)
@@ -247,7 +215,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.releases()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Releases Error": str(err_code)})
+            common_global.es_inst.com_elastic_index('error',
+                                                    {"TMDB Fetch Releases Error": str(err_code)})
             metadata = None
         return metadata
 
@@ -267,7 +236,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie.info(external_source='imdb_id')
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch imdb Error": str(err_code)})
+            common_global.es_inst.com_elastic_index('error',
+                                                    {"TMDB Fetch imdb Error": str(err_code)})
             metadata = None
         return metadata
 
@@ -303,7 +273,8 @@ class CommonMetadataTMDB(object):
         try:
             metadata = movie_collection.info()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Collection Error": str(err_code)})
+            common_global.es_inst.com_elastic_index('error',
+                                                    {"TMDB Fetch Collection Error": str(err_code)})
             metadata = None
         return metadata
 
