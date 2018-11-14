@@ -135,13 +135,6 @@ class CommonMetadataTMDB(object):
                         common_network.mk_network_fetch_from_url(
                             'https://image.tmdb.org/t/p/original' + result_json['profile_path'],
                             image_file_path + result_json['profile_path'])
-                # thread_db.db_download_image_insert('themoviedb',
-                #                                    json.dumps(
-                #                                        {'url': 'https://image.tmdb.org/t/p/original'
-                #                                                + result_json['profile_path'],
-                #                                         'local': image_file_path + result_json[
-                #                                             'profile_path']}))
-        # TODO loop through cast to store new movies to fetch
         # set local image json
         return ({'Images': {'themoviedb': image_file_path}})
 
@@ -312,5 +305,4 @@ class CommonMetadataTMDB(object):
         # set local image json
         image_json = ({'Images': {'themoviedb': {'Backdrop': backdrop_file_path,
                                                  'Poster': poster_file_path}}})
-        # result_json.update({'LocalImages':{'Backdrop':backdrop_file_path, 'Poster':poster_file_path}})
         return series_id_json, result_json, image_json
