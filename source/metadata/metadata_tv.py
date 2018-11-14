@@ -47,16 +47,13 @@ channel.basic_qos(prefetch_count=1)
 if option_config_json['API']['thetvdb'] is not None:
     THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
     # tvshow xml downloader and general api interface
-    THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(
-        option_config_json)
+    THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
 else:
     THETVDB_CONNECTION = None
 
 # setup the tvmaze class
 # if option_config_json['API']['tvmaze'] is not None:
 TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
-
-
 # else:
 #    TVMAZE_CONNECTION = None
 
@@ -285,38 +282,18 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     """
     Lookup tv metadata
     """
-    # check for same show variables
+    # don't bother checking title/year as the main_server_metadata_api_worker does it already
     if not hasattr(metadata_tv_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
         metadata_tv_lookup.metadata_last_id = None
-        metadata_tv_lookup.metadata_last_title = None
-        metadata_tv_lookup.metadata_last_year = None
         metadata_tv_lookup.metadata_last_imdb = None
         metadata_tv_lookup.metadata_last_tvdb = None
         metadata_tv_lookup.metadata_last_rt = None
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'tvlook filename': str(file_name)})
-    # check for dupes by name/year
-    if 'year' in file_name:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'tv here 1'})
-        if file_name['title'] == metadata_tv_lookup.metadata_last_title \
-                and file_name['year'] == metadata_tv_lookup.metadata_last_year:
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'tv here 2'})
-            db_connection.db_download_delete(download_que_id)
-            common_global.es_inst.com_elastic_index('info', {'meta tv return 1':
-                                                                 metadata_tv_lookup.metadata_last_id})
-            return metadata_tv_lookup.metadata_last_id
-    elif file_name['title'] == metadata_tv_lookup.metadata_last_title:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'tv here 3'})
-        db_connection.db_download_delete(download_que_id)
-        common_global.es_inst.com_elastic_index('info', {'meta tv return 2':
-                                                             metadata_tv_lookup.metadata_last_id})
-        return metadata_tv_lookup.metadata_last_id
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'tv before nfo/xml'})
-    # grab by nfo/xml data
+    common_global.es_inst.com_elastic_index('info', {'metadata_tv_lookup': str(file_name)})
+    # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(media_file_path)
-    imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(
-        nfo_data, xml_data)
+    imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
     common_global.es_inst.com_elastic_index('info', {"tv look": imdb_id, 'tbdb': tvdb_id,
                                                      'rtid': rt_id})
     # if same as last, return last id and save lookup
@@ -406,11 +383,6 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
                 'tvmaze', download_que_id)
     # set last values to negate lookups for same show
     metadata_tv_lookup.metadata_last_id = metadata_uuid
-    metadata_tv_lookup.metadata_last_title = file_name['title']
-    try:
-        metadata_tv_lookup.metadata_last_year = file_name['year']
-    except:
-        metadata_tv_lookup.metadata_last_year = None
     metadata_tv_lookup.metadata_last_imdb = imdb_id
     metadata_tv_lookup.metadata_last_tvdb = tvdb_id
     metadata_tv_lookup.metadata_last_rt = rt_id
