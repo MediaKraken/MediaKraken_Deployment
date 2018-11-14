@@ -287,6 +287,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
             # match found by title/year on local db so purge dl record
             db_connection.db_download_delete(download_que_id)
         else:
+            metadata_uuid = download_que_json['MetaNewID']
             # no matches by name/year on local database
             # search themoviedb since not matched above via DB or nfo/xml
             download_que_json.update({'Status': 'Search'})
