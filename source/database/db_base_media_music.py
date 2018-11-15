@@ -28,9 +28,8 @@ def db_media_album_count(self, search_value=None):
                                ' group by mm_metadata_album_guid',
                                (search_value,))
     else:
-        self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
-                               ' where mm_media_metadata_guid = mm_metadata_album_guid'
-                               ' group by mm_metadata_album_guid')
+        self.db_cursor.execute('select count(distinct mm_metadata_album_guid) from mm_metadata_album, mm_media'
+                               ' where mm_media_metadata_guid = mm_metadata_album_guid')
     return self.db_cursor.fetchone()[0]
 
 
