@@ -56,7 +56,7 @@ def metadata_sports_detail(guid):
     Display sports detail metadata
     """
     return render_template('users/metadata/meta_sports_detail.html', guid=guid,
-                           data=g.db_connection.db_meta_sports_by_guid(guid))
+                           data=g.db_connection.db_meta_sports_guid_by_thesportsdb(guid))
 
 
 @blueprint.before_request
