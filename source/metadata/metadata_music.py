@@ -49,7 +49,6 @@ def metadata_music_lookup(db_connection, metadata_provider, download_data):
     #  "bits_per_raw_sample": "16"}], "chapters": []}
 
     common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_data})
-
     metadata_uuid = None
     # get ffmpeg data
     ffmpeg_data_json = db_connection.db_ffprobe_data(download_data['MediaID'])
@@ -81,8 +80,9 @@ def metadata_music_lookup(db_connection, metadata_provider, download_data):
         else:
             # TODO do search in musicbrainz since tagging in file is missing data
             pass
-        # elif class_text == "Music Album":
-        #     # search musicbrainz
-        #     # mbrainz_api_connection.com_Mediabrainz_Get_Releases()
-        #     pass
+    else:
+        # db lookup by name
+        # if not found
+        # brainz lookup
+        pass
     return metadata_uuid
