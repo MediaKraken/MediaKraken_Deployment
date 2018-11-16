@@ -55,7 +55,7 @@ def metadata_music_lookup(db_connection, metadata_provider, download_data):
     ffmpeg_data_json = db_connection.db_ffprobe_data(download_data['MediaID'])
     if ffmpeg_data_json is not None:
         # see if record is stored locally
-        if ffmpeg_data_json is not None and 'format' in ffmpeg_data_json\
+        if ffmpeg_data_json is not None and 'format' in ffmpeg_data_json \
                 and 'tags' in ffmpeg_data_json['format'] \
                 and 'ARTIST' in ffmpeg_data_json['format']['tags'] \
                 and 'ALBUM' in ffmpeg_data_json['format']['tags'] \
@@ -66,15 +66,16 @@ def metadata_music_lookup(db_connection, metadata_provider, download_data):
             if db_result is None:
                 if mbrainz_api_connection is not None:
                     # look at musicbrainz server
-                    music_data = mbrainz_api_connection.com_Mediabrainz_Get_Recordings(
+                    music_data = mbrainz_api_connection.com_mediabrainz_get_recordings(
                         ffmpeg_data_json['format']['tags']['ARTIST'],
                         ffmpeg_data_json['format']['tags']['ALBUM'],
-                        ffmpeg_data_json['format']['tags']['TITLE'], 1)
-                    metadata_uuid = db_connection.db_meta_music_by_provider_uuid('musicbrainz')
-                    if metadata_uuid is None:
-                        metadata_uuid = db_connection.db_meta_song_add(
-                            ffmpeg_data_json['format']['tags']['TITLE'],
-                            music_data['fakealbun_id'], json.dumps(music_data))
+                        ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)
+                    if music_data is not None:
+                        pass
+                    # if metadata_uuid is None:
+                    #     metadata_uuid = db_connection.db_meta_song_add(
+                    #         ffmpeg_data_json['format']['tags']['TITLE'],
+                    #         music_data['fakealbun_id'], json.dumps(music_data))
             else:
                 metadata_uuid = db_result['mm_metadata_music_guid']
         else:
