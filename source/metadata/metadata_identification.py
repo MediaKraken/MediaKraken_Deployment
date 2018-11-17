@@ -137,8 +137,8 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #                                                              guessit_file_name)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,
-                                                             'musicbrainz',
-                                                             download_que_json)
+                                                             download_que_json,
+                                                             download_que_id)
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
     elif class_text == "Music Lyric":
@@ -156,9 +156,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                                download_que_json['Path'],
                                                                download_que_json,
                                                                download_que_id)
-    elif class_text == "Subtitle":
-        # TODO perhaps check file name for blah.sub = blah.mkv   then the metadata id for that
-        pass
     elif class_text == "TV Extras":
         # include end slash so media doesn't get chopped up
         metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
