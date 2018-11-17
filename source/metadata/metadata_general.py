@@ -24,6 +24,7 @@ from guessit import guessit
 
 from . import metadata_anime
 from . import metadata_movie
+from . import metadata_music
 from . import metadata_music_video
 from . import metadata_periodicals
 from . import metadata_person
@@ -104,7 +105,13 @@ def metadata_search(thread_db, provider_name, download_data):
     elif provider_name == 'lastfm':
         lookup_halt = True
     elif provider_name == 'musicbrainz':
-        lookup_halt = True
+        metadata_uuid, match_result = metadata_music.music_search_musicbrainz(thread_db,
+                                                                              download_data['mdq_download_json'][
+                                                                                  'Path'])
+        common_global.es_inst.com_elastic_index('info', {'metadata_uuid': metadata_uuid,
+                                                         'result': match_result})
+        if metadata_uuid is None:
+            lookup_halt = True
     elif provider_name == 'omdb':
         lookup_halt = True
     elif provider_name == 'openlibrary':
@@ -141,9 +148,9 @@ def metadata_search(thread_db, provider_name, download_data):
                 set_fetch = True
     elif provider_name == 'thesportsdb':
         metadata_uuid, match_result = metadata_sports.metadata_sports_lookup(thread_db,
-                                                               download_data['mdq_download_json']['Path'],
-                                                               download_data,
-                                                               download_data['mdq_id'])
+                                                                             download_data['mdq_download_json']['Path'],
+                                                                             download_data,
+                                                                             download_data['mdq_id'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'themoviedb'

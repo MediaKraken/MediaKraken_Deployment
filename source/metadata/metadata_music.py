@@ -26,10 +26,27 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 if option_config_json['API']['musicbrainz'] is not None:
     # setup the mediabrainz class
-    mbrainz_api_connection \
-        = common_metadata_musicbrainz.CommonMetadataMusicbrainz(option_config_json)
+    MBRAINZ_CONNECTION = common_metadata_musicbrainz.CommonMetadataMusicbrainz(option_config_json)
 else:
-    mbrainz_api_connection = None
+    MBRAINZ_CONNECTION = None
+
+
+def music_search_musicbrainz(db_connection, file_name):
+    """
+    # search musicbrainz
+    """
+    try:
+        common_global.es_inst.com_elastic_index('info', {"meta music search musicbrainz": str(file_name)})
+    except:
+        pass
+    metadata_uuid = None
+    match_result = None
+    if MBRAINZ_CONNECTION is not None:
+        pass
+
+    common_global.es_inst.com_elastic_index('info', {'meta musicbrainz uuid': metadata_uuid,
+                                                     'result': match_result})
+    return metadata_uuid, match_result
 
 
 def metadata_music_lookup(db_connection, download_que_json, download_que_id):
@@ -49,6 +66,7 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
     #  "bits_per_raw_sample": "16"}], "chapters": []}
 
     common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_que_json})
+    search_brainz = False
     metadata_uuid = None
     # get ffmpeg data from database
     ffmpeg_data_json = db_connection.db_ffprobe_data(download_que_json['MediaID'])
@@ -62,16 +80,7 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
                                                   ffmpeg_data_json['format']['tags']['ALBUM'],
                                                   ffmpeg_data_json['format']['tags']['TITLE'])
         if db_result is None:
-            metadata_uuid = download_que_json['MetaNewID']
-            # no matches on local database
-            # search musicbrainz since not matched above via DB or nfo/xml
-            download_que_json.update({'Status': 'Search'})
-            # save the updated status
-            db_connection.db_download_update(json.dumps(download_que_json),
-                                             download_que_id)
-            # set provider last so it's not picked up by the wrong thread
-            db_connection.db_download_update_provider('musicbrainz', download_que_id)
-
+            search_brainz = True
             # if mbrainz_api_connection is not None:
             #     # look at musicbrainz server
             #     music_data = mbrainz_api_connection.com_mediabrainz_get_recordings(
@@ -87,7 +96,17 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
         else:
             metadata_uuid = db_result['mm_metadata_music_guid']
     else:
-        # TODO do search in musicbrainz since tagging in file is missing data
-        pass
+        # search in musicbrainz since tagging in file is missing data
+        search_brainz = True
+    if search_brainz:
+        metadata_uuid = download_que_json['MetaNewID']
+        # no matches on local database
+        # search musicbrainz since not matched above via DB or nfo/xml
+        download_que_json.update({'Status': 'Search'})
+        # save the updated status
+        db_connection.db_download_update(json.dumps(download_que_json),
+                                         download_que_id)
+        # set provider last so it's not picked up by the wrong thread
+        db_connection.db_download_update_provider('musicbrainz', download_que_id)
     common_global.es_inst.com_elastic_index('info', {"metadata_music_lookup return uuid": metadata_uuid})
     return metadata_uuid
