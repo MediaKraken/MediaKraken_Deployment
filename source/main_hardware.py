@@ -24,6 +24,7 @@ from common import common_global
 from common import common_hardware_hue
 from common import common_logging_elasticsearch
 from common import common_signal
+
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware')
 

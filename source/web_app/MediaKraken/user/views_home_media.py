@@ -41,6 +41,7 @@ def home_media_detail(guid):
     """
     pass
 
+
 @blueprint.before_request
 def before_request():
     """

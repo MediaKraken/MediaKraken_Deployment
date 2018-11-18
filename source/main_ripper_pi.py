@@ -21,14 +21,14 @@ import os
 import sys
 import time
 import uuid
-
 from concurrent.futures import ThreadPoolExecutor
-from crochet import wait_for, setup
 
 from common import common_global
 from common import common_hardware_arduino_usb_serial
 from common import common_logging_elasticsearch
 from common import common_signal
+from crochet import wait_for, setup
+
 setup()
 
 from kivy.lang import Builder

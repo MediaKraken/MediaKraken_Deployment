@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, request, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_internet", __name__, url_prefix='/users',
@@ -85,6 +85,7 @@ def user_internet_vimeo():
     """
     return render_template("users/user_internet_vimeo.html")
 
+
 @blueprint.route('/internet/internet_vimeo_detail/<guid>')
 @login_required
 def user_internet_vimeo_detail(guid):
@@ -92,6 +93,7 @@ def user_internet_vimeo_detail(guid):
     Display vimeo page
     """
     pass
+
 
 # twitch tv
 @blueprint.route('/internet/internet_twitch')
@@ -172,6 +174,7 @@ def user_iradio_list():
         mediadata = g.db_connection.db_iradio_list(offset, per_page)
     return render_template("users/user_iradio_list.html")
 
+
 @blueprint.route('/iradio_detail/<guid>')
 @login_required
 def user_iradio_detail(guid):
@@ -179,6 +182,7 @@ def user_iradio_detail(guid):
     Display main page for internet radio
     """
     pass
+
 
 @blueprint.before_request
 def before_request():

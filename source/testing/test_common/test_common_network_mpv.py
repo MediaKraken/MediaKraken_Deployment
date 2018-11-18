@@ -17,7 +17,7 @@
 '''
 
 import sys
-from shlex import split
+
 sys.path.append('.')
 # from common import common_network_mpv
 #

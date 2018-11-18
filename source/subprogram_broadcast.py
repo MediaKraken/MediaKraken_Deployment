@@ -7,7 +7,7 @@ from common import common_signal
 
 # can't use elasticsearch......this runs as "host" so mkelk won't be available
 # start logging
-#common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_broadcast')
+# common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_broadcast')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -21,7 +21,7 @@ docker_inst = common_docker.CommonDocker()
 # it returns a dict, not a json
 mediakraken_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
 
-#common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip })
+# common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip })
 print('mkip: %s', (mediakraken_ip,))
 
 # begin loop to respond to all broadcast messages

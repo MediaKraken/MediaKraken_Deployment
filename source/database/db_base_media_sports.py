@@ -21,7 +21,6 @@ import datetime
 from common import common_global
 
 
-
 def db_media_sports_random(self):
     """
     Find random sports
@@ -55,7 +54,7 @@ def db_media_sports_count_by_genre(self, class_guid):
 
 
 def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All',
-                            group_collection=False, include_remote=False, search_text=None):
+                               group_collection=False, include_remote=False, search_text=None):
     """
     # web media count
     """
@@ -183,8 +182,8 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
 
 
 def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
-                      list_limit=0, group_collection=False, offset=None, include_remote=False,
-                      search_text=None):
+                         list_limit=0, group_collection=False, offset=None, include_remote=False,
+                         search_text=None):
     """
     # web media return
     """

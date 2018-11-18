@@ -25,7 +25,7 @@ def db_collection_list_count(self, search_value=None):
         self.db_cursor.execute('select count(*)'
                                ' from mm_metadata_collection'
                                ' where mm_metadata_collection_name %% %s',
-                               (search_value, ))
+                               (search_value,))
     else:
         self.db_cursor.execute('select count(*)'
                                ' from mm_metadata_collection')

@@ -79,6 +79,7 @@ def db_media_game_clone_list(self):
                            ' and gi_cloneof IS NOT NULL and gi_gc_category is null')
     return self.db_cursor.fetchall()
 
+
 def db_media_game_category_by_name(self, category_name):
     self.db_cursor.execute('select gi_gc_category from mm_game_info'
                            ' where gi_short_name = %s' % category_name)

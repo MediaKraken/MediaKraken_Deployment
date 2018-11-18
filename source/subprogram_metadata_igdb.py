@@ -22,10 +22,12 @@ from common import common_signal
 
 total_download_attempts = 0
 
+
 # main code
 def main(argv):
     global total_download_attempts
     # search the directory for filter files
+
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

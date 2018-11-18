@@ -13,8 +13,8 @@ def com_hard_cddvdbrrom():
                                                                  device.get_device_file()})
             if device.has_property("ID_FS_LABEL"):
                 common_global.es_inst.com_elastic_index('info', {"Found disc":
-                                                                     device.get_property(
-                                                                         "ID_FS_LABEL")})
+                    device.get_property(
+                        "ID_FS_LABEL")})
                 drives[device.get_device_file()] = (
                     True, device.get_property("ID_FS_LABEL"))
             elif device.has_property("ID_FS_TYPE"):

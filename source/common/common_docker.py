@@ -20,7 +20,6 @@ import os
 import socket
 
 import docker
-
 from . import common_global
 
 

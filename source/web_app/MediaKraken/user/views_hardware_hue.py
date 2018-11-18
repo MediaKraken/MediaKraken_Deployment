@@ -32,11 +32,11 @@ def user_hardware_hue():
     # keep doing this even with not displaying in hardware page
     # as hue might be in the database without the key file
     key_list = common_file.com_file_dir_list('/mediakraken/phue',
-                                                                      filter_text=None,
-                                                                      walk_dir=False,
-                                                                      skip_junk=False,
-                                                                      file_size=False,
-                                                                      directory_only=False)
+                                             filter_text=None,
+                                             walk_dir=False,
+                                             skip_junk=False,
+                                             file_size=False,
+                                             directory_only=False)
     if key_list is None:
         data_hue_avail = None
     elif len(key_list) > 0:

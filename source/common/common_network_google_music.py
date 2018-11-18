@@ -19,6 +19,7 @@
 # https://unofficial-google-music-api.readthedocs.io/en/latest/
 from gmusicapi import Mobileclient
 
+
 class CommonNetworkGoogleMusic(object):
     """
     Class for interfacing with google music

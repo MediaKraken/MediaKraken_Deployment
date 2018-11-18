@@ -17,11 +17,10 @@
 '''
 
 from __future__ import absolute_import, division, print_function, unicode_literals
-import pytest  # pylint: disable=W0611
+
 import sys
 
 sys.path.append('.')
-from common import common_network_kodi
 
 # send commands to kodi via raw tcp and json
 # def MK_Network_Kodi_Command(host_ip, host_port, kodi_command):

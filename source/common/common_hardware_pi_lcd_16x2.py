@@ -75,4 +75,3 @@ class CommonHardwarePILCD16x2(object):
         while True:
             # An example of infinite scrolling text
             long_string(self.display, "Hello friend! This is a long text!", 2)
-

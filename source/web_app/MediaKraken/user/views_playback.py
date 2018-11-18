@@ -5,7 +5,7 @@ User view in webapp
 from MediaKraken.extensions import (
     fpika,
 )
-from flask import Blueprint, render_template, g, request, abort
+from flask import Blueprint, render_template, g
 from flask_login import login_required, current_user
 
 blueprint = Blueprint("user_playback", __name__,
@@ -36,7 +36,7 @@ def user_album_player(guid):
 
 
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>/<chapter>/<audio>/<sub>', methods=['GET',
-                                                                                      'POST'])
+                                                                                       'POST'])
 @login_required
 def user_video_player_videojs(mtype, guid, chapter, audio, sub):
     """

@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-import uuid
-
 
 def db_meta_music_video_lookup(self, artist_name, song_title):
     """

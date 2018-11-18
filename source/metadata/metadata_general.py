@@ -19,6 +19,7 @@
 import json
 
 from common import common_global
+from common import common_metadata_chart_lyrics
 from common import common_metadata_tv_theme
 from guessit import guessit
 
@@ -70,14 +71,14 @@ def metadata_search(thread_db, provider_name, download_data):
         metadata_uuid = metadata_anime.metadata_anime_lookup(thread_db,
                                                              download_data,
                                                              download_data['mdq_id'],
-                                                             guessit(download_data['Path'])[
-                                                                 'title'])
+                                                             guessit(download_data['Path'])['title'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'themoviedb'
             else:
                 set_fetch = True
     elif provider_name == 'chart_lyrics':
+        common_metadata_chart_lyrics.com_meta_chart_lyrics(artist_name, song_name)
         lookup_halt = True
     elif provider_name == 'comicvine':
         lookup_halt = True

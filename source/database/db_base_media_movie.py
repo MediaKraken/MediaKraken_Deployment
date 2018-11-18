@@ -21,7 +21,6 @@ import datetime
 from common import common_global
 
 
-
 def db_media_random(self):
     """
     Find random movie

@@ -13,7 +13,6 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_movie", __name__,
                       url_prefix='/users', static_folder="../static")
-import json
 import subprocess
 import natsort
 import sys

@@ -24,8 +24,9 @@ import subprocess
 import pika
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_system
 from common import common_signal
+from common import common_system
+
 
 class MKConsumer(object):
     EXCHANGE = 'mkque_ex'

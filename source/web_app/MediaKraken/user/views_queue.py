@@ -28,8 +28,8 @@ def user_queue_page():
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    mediadata = g.db_connection.db_meta_queue_list(current_user.get_id(),offset, per_page,
-                                                       session['search_text'])
+    mediadata = g.db_connection.db_meta_queue_list(current_user.get_id(), offset, per_page,
+                                                   session['search_text'])
     # TODO union read all four.....then if first "group"....add header in the html
     session['search_page'] = 'user_media_queue'
     pagination = common_pagination.get_pagination(page=page,

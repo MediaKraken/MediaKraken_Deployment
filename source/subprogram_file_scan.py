@@ -159,7 +159,7 @@ def worker(audit_directory):
                             or file_name.find('/theme.mp4') != -1 \
                             or file_name.find('\\theme.mp4') != -1:
                         if media_class_text == 'Movie':
-                                new_class_type_uuid = class_text_dict['Movie Theme']
+                            new_class_type_uuid = class_text_dict['Movie Theme']
                         elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
                                 or media_class_text == 'TV Season':
                             new_class_type_uuid = class_text_dict['TV Theme']

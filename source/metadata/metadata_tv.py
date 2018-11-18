@@ -54,6 +54,8 @@ else:
 # setup the tvmaze class
 # if option_config_json['API']['tvmaze'] is not None:
 TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
+
+
 # else:
 #    TVMAZE_CONNECTION = None
 
