@@ -42,29 +42,12 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
     if not hasattr(metadata_anime_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
         metadata_anime_lookup.metadata_last_id = None
-        metadata_anime_lookup.metadata_last_title = None
-        metadata_anime_lookup.metadata_last_year = None
         metadata_anime_lookup.metadata_last_imdb = None
         metadata_anime_lookup.metadata_last_tmdb = None
         metadata_anime_lookup.metadata_last_rt = None
         metadata_anime_lookup.metadata_last_anidb = None
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'meta anime look filename': str(file_name)})
-    # check for dupes by name/year
-    if 'year' in file_name:
-        if file_name['title'] == metadata_anime_lookup.metadata_last_title \
-                and file_name['year'] == metadata_anime_lookup.metadata_last_year:
-            db_connection.db_download_delete(download_que_id)
-            common_global.es_inst.com_elastic_index('info', {'meta anime return 1':
-                                                                 metadata_anime_lookup.metadata_last_id})
-            # don't need to set last......since they are equal
-            return metadata_anime_lookup.metadata_last_id
-    elif file_name['title'] == metadata_anime_lookup.metadata_last_title:
-        db_connection.db_download_delete(download_que_id)
-        common_global.es_inst.com_elastic_index('info', {'meta anime return 2':
-                                                             metadata_anime_lookup.metadata_last_id})
-        # don't need to set last......since they are equal
-        return metadata_anime_lookup.metadata_last_id
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(file_name)
     imdb_id, tmdb_id, rt_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
@@ -204,11 +187,6 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
     common_global.es_inst.com_elastic_index('info', {"meta anime metadata_uuid c": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_anime_lookup.metadata_last_id = metadata_uuid
-    metadata_anime_lookup.metadata_last_title = file_name['title']
-    try:
-        metadata_anime_lookup.metadata_last_year = file_name['year']
-    except:
-        metadata_anime_lookup.metadata_last_year = None
     metadata_anime_lookup.metadata_last_imdb = imdb_id
     metadata_anime_lookup.metadata_last_tmdb = tmdb_id
     metadata_anime_lookup.metadata_last_rt = rt_id
