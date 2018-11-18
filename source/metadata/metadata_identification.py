@@ -49,7 +49,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
         metadata_uuid = metadata_anime.metadata_anime_lookup(db_connection,
                                                              download_que_json,
                                                              download_que_id,
-                                                             download_que_json['Path'])
+                                                             guessit_file_name)
         if metadata_uuid is not None:
             db_connection.db_download_delete(download_que_id)
     elif class_text == "Book":
