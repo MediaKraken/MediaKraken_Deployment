@@ -38,7 +38,7 @@ class CommonMetadataShoutcast(object):
             options += '&br=%s' % bit_rate
         if media_type is not None:
             # MP3 = audio/mpeg and AAC+ = audio/aacp
-            if media_type == 'MP3':
+            if media_type.lower() == 'mp3':
                 media_type = 'audio/mpeg'
             else:
                 media_type = 'audio/aacp'
