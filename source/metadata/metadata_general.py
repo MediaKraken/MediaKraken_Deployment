@@ -31,6 +31,8 @@ from . import metadata_periodicals
 from . import metadata_person
 from . import metadata_sports
 from . import metadata_tv
+from . import metadata_tv_tvdb
+from . import metadata_tv_tvmaze
 
 
 def metadata_process(thread_db, provider_name, download_data):
@@ -39,6 +41,11 @@ def metadata_process(thread_db, provider_name, download_data):
     if download_data['mdq_download_json']['Status'] == "Search":
         common_global.es_inst.com_elastic_index('info', {'search': provider_name})
         metadata_search(thread_db, provider_name, download_data)
+    elif download_data['mdq_download_json']['Status'] == "Update":
+        common_global.es_inst.com_elastic_index('info', {'update': provider_name,
+                                                         'meta': download_data['mdq_download_json'][
+                                                             'ProviderMetaID']})
+        metadata_update(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
         common_global.es_inst.com_elastic_index('info', {'fetch': provider_name,
                                                          'meta': download_data['mdq_download_json'][
@@ -56,6 +63,13 @@ def metadata_process(thread_db, provider_name, download_data):
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
         common_global.es_inst.com_elastic_index('info', {'fetchcollection': provider_name})
         metadata_collection(thread_db, provider_name, download_data)
+
+
+def metadata_update(thread_db, provider_name, download_data):
+    """
+    Update main metadata for specified provider
+    """
+    common_global.es_inst.com_elastic_index('info', {'metadata_update': provider_name, 'dldata': download_data})
 
 
 def metadata_search(thread_db, provider_name, download_data):
@@ -158,8 +172,8 @@ def metadata_search(thread_db, provider_name, download_data):
             else:
                 set_fetch = True
     elif provider_name == 'thetvdb':
-        metadata_uuid, match_result = metadata_tv.tv_search_tvdb(thread_db,
-                                                                 download_data['mdq_download_json']['Path'])
+        metadata_uuid, match_result = metadata_tv_tvdb.tv_search_tvdb(thread_db,
+                                                                      download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             if match_result is None:
                 lookup_halt = True
@@ -168,8 +182,8 @@ def metadata_search(thread_db, provider_name, download_data):
     elif provider_name == 'tv_intros':
         lookup_halt = True
     elif provider_name == 'tvmaze':
-        metadata_uuid, match_result = metadata_tv.tv_search_tvmaze(thread_db,
-                                                                   download_data['mdq_download_json']['Path'])
+        metadata_uuid, match_result = metadata_tv_tvmaze.tv_search_tvmaze(thread_db,
+                                                                          download_data['mdq_download_json']['Path'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'thetvdb'
@@ -263,11 +277,11 @@ def metadata_fetch(thread_db, provider_name, download_data):
         else:  # tv
             pass
     elif provider_name == 'thetvdb':
-        metadata_tv.tv_fetch_save_tvdb(thread_db,
+        metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
                                        download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'tvmaze':
-        metadata_tv.tv_fetch_save_tvmaze(thread_db,
+        metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
                                          download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
 
