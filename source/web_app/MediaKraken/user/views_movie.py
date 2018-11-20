@@ -3,7 +3,6 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from fractions import Fraction
 from shlex import split
 
 from flask import Blueprint, render_template, g, request, \
@@ -21,8 +20,6 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
-from common import common_internationalization
-from common import common_string
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -72,18 +69,18 @@ def movie_detail(guid):
         # metadata_data['mm_metadata_json']
         # metadata_data['mm_metadata_localimage_json']
 
+        # build gen list
+        genres_list = ''
+        for ndx in range(0, len(
+                metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'])):
+            genres_list += (
+                    metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'][
+                        ndx]['name'] + ', ')
+
         # not sure if the following with display anymore
         # # vote count format
         # data_vote_count = common_internationalization.com_inter_number_format(
         #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_count'])
-        # # build gen list
-        # genres_list = ''
-        # for ndx in range(0, len(
-        #         metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'])):
-        #     genres_list += (
-        #                 metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'][
-        #                     ndx]['name']
-        #                 + ', ')
         # # build production list
         # production_list = ''
         # for ndx in range(0,
@@ -98,12 +95,18 @@ def movie_detail(guid):
         # revenue = common_internationalization.com_inter_number_format(
         #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['revenue'])
 
+        # # set watched and sync
+        # try:
+        #     watched_status = json_media['UserStats'][current_user.get_id()]['Watched']
+        # except:
+        #     watched_status = False
+        # try:
+        #     sync_status = json_media['Synced']
+        # except:
+        #     sync_status = False
 
         # not all files have ffmpeg that didn't fail
         if json_ffmpeg is None:
-            aspect_ratio = "NA"
-            bitrate = "NA"
-            file_size = "NA"
             hours = 0
             minutes = 0
             seconds = 0
@@ -111,21 +114,6 @@ def movie_detail(guid):
             data_codec = "NA"
             data_file = "NA"
         else:
-            # aspect ratio
-            try:
-                aspect_ratio = str(Fraction(json_ffmpeg['streams'][0]['width'],
-                                            json_ffmpeg['streams'][0]['height'])).replace('/', ':')
-            except:
-                aspect_ratio = 'NA'
-            # bitrate
-            try:
-                bitrate = common_string.com_string_bytes2human(
-                    float(json_ffmpeg['format']['bit_rate']))
-            except:
-                bitrate = 'NA'
-            # file size
-            file_size = common_string.com_string_bytes2human(
-                float(json_ffmpeg['format']['size']))
             # calculate a better runtime
             try:
                 minutes, seconds = divmod(
@@ -141,7 +129,7 @@ def movie_detail(guid):
             except:
                 data_resolution = 'NA'
             data_codec = json_ffmpeg['streams'][0]['codec_name']
-            data_file = json_ffmpeg['format']['filename']
+
         # check to see if there are other version of this video file (dvd, hddvd, etc)
         vid_versions = g.db_connection.db_media_by_metadata_guid(data[1],
                                                                  g.db_connection.db_media_uuid_by_class(
@@ -193,13 +181,13 @@ def movie_detail(guid):
             data_background_image = None
         # grab reviews
         review = []
-        review_json = g.db_connection.db_review_list_by_tmdb_guid(
-            json_metaid['themoviedb'])
+        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['themoviedb'])
         if review_json is not None and len(review_json) > 0:
             review_json = review_json[0]
             for review_data in review_json[1]['themoviedb']['results']:
                 review.append(
                     (review_data['author'], review_data['url'], review_data['content']))
+
         # do chapter stuff here so I can sort
         data_json_media_chapters = []
         try:
@@ -208,28 +196,15 @@ def movie_detail(guid):
                                                  json_media['ChapterImages'][chap_data]))
         except:
             pass
-        # set watched and sync
-        try:
-            watched_status = json_media['UserStats'][current_user.get_id()]['Watched']
-        except:
-            watched_status = False
-        try:
-            sync_status = json_media['Synced']
-        except:
-            sync_status = False
         return render_template('users/user_movie_detail.html', data=data[0],
                                json_media=json_media,
                                json_metadata=json_metadata,
                                data_genres=genres_list[:-2],
-                               data_production=production_list[:-2],
-                               data_budget=budget,
-                               data_revenue=revenue,
                                data_guid=guid,
                                data_playback_url='/users/playvideo_videojs/hls/' + guid,
                                data_review=review,
                                data_poster_image=data_poster_image,
                                data_background_image=data_background_image,
-                               data_vote_count=data_vote_count,
                                data_json_media_chapters=data_json_media_chapters,
                                data_watched_status=watched_status,
                                data_sync_status=sync_status,
