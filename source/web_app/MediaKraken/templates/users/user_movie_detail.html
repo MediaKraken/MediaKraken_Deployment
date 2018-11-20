@@ -39,12 +39,22 @@
             </div>
             <div class="col-sm">
                 <div class="row">
-                    <div id="tree">
+                    <div class="panel-body">
+                        <div id="tree">
+                        </div>
                     </div>
 
-                    <div id='jqxListBox'></div>
-                    <div>
-                        <input style="margin-top: 20px;" type="button" id='jqxButton' value="Show the selected index" />
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">Cast Ultracast
+                            </li>
+                            <li class="list-group-item">Cast Spoocast
+                            </li>
+                            <li class="list-group-item">HTPC - PiSpoo
+                            </li>
+                            <li class="list-group-item">Web Viewer
+                            </li>
+                        </ul>
                     </div>
 
                 </div>
@@ -244,33 +254,6 @@
       });
       // Note: Loading and initialization may be asynchronous, so the nodes may not be accessible yet.
     });
-</script>
-<script type="text/javascript">
-var source = [
-   "Affogato",
-   "Americano",
-   "Bicerin",
-   "Breve",
-   "Café Bombón",
-   "Café au lait",
-   "Caffé Corretto",
-   "Café Crema",
-   "Caffé Latte"];
-// Create a jqxListBox
-$("#jqxListBox").jqxListBox({
-   source: source,
-   theme: 'energyblue',
-   width: '200px',
-   height: '250px',
-   selectedIndex:0
-});
-$("#jqxButton").jqxButton({
-   theme: 'energyblue'
-});
-$('#jqxButton').on('click', function () {
-   var index = $("#jqxListBox").jqxListBox('getSelectedIndex');
-   alert("Selected Index: " + index);
-});
 </script>
 </body>
 {% endblock %}
