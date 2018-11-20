@@ -39,12 +39,13 @@
             </div>
             <div class="col-sm">
                 <div class="row">
-                    <div class="panel-body">
+
+                    <div class="col-sm">
                         <div id="tree">
                         </div>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="col-sm">
                         <ul class="list-group">
                             <li class="list-group-item">Cast Ultracast
                             </li>
@@ -97,13 +98,6 @@
                                 <input class="btn btn-default btn-submit" type="submit"
                                        name="status"
                                        value="Sync">
-                                {% endif %}
-                                {% if data_cast == True %}
-                                <a href="{{ url_for('user_chromecast.user_cast', action='base', guid=data_guid) }}">
-                                    <img class="b-lazy"
-                                         src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-                                         data-src="{{ url_for('static', filename='images/chromecast.png') }}">
-                                </a>
                                 {% endif %}
                             </p>
                         </div>

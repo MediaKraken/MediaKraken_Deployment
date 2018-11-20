@@ -227,7 +227,6 @@ def movie_detail(guid):
                                data_bitrate=bitrate,
                                data_guid=guid,
                                data_playback_url='/users/playvideo_videojs/hls/' + guid,
-                               data_detail_url='/users/movie_detail/' + guid,
                                data_audio_track=audio_streams,
                                data_sub_track=subtitle_streams,
                                data_aspect=aspect_ratio,
@@ -239,7 +238,6 @@ def movie_detail(guid):
                                data_json_media_chapters=data_json_media_chapters,
                                data_watched_status=watched_status,
                                data_sync_status=sync_status,
-                               data_cast=True,
                                data_runtime="%02dH:%02dM:%02dS" % (
                                    hours, minutes, seconds)
                                )
