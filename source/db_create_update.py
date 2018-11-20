@@ -616,11 +616,12 @@ if db_connection.fetchone()[0] == 0:
                                      psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
                                      base_item[2], json.dumps(base_item[3]))
 
-# create iradio tables
+# create internet radio tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_radio (mm_radio_guid uuid'
                        ' CONSTRAINT mm_radio_guid_pk PRIMARY KEY,'
                        ' mm_radio_name text,'
-                       ' mm_radio_adress text,'
+                       ' mm_radio_description text,'
+                       ' mm_radio_address text,'
                        ' mm_radio_active bool)')
 
 # create tables for sync
