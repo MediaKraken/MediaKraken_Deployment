@@ -12,31 +12,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}"
           media="all" type="text/css"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='fancytree/skin-bootstrap/ui.fancytree.min.css') }}">
-   var source = [
-       "Affogato",
-       "Americano",
-       "Bicerin",
-       "Breve",
-       "Café Bombón",
-       "Café au lait",
-       "Caffé Corretto",
-       "Café Crema",
-       "Caffé Latte"];
-   // Create a jqxListBox
-   $("#jqxListBox").jqxListBox({
-       source: source,
-       theme: 'energyblue',
-       width: '200px',
-       height: '250px',
-       selectedIndex:0
-   });
-   $("#jqxButton").jqxButton({
-       theme: 'energyblue'
-   });
-  $('#jqxButton').on('click', function () {
-       var index = $("#jqxListBox").jqxListBox('getSelectedIndex');
-       alert("Selected Index: " + index);
-   });
 </head>
 {% if data %}
 <div id="movie_detail">
@@ -269,6 +244,33 @@
       });
       // Note: Loading and initialization may be asynchronous, so the nodes may not be accessible yet.
     });
+</script>
+<script type="text/javascript">
+var source = [
+   "Affogato",
+   "Americano",
+   "Bicerin",
+   "Breve",
+   "Café Bombón",
+   "Café au lait",
+   "Caffé Corretto",
+   "Café Crema",
+   "Caffé Latte"];
+// Create a jqxListBox
+$("#jqxListBox").jqxListBox({
+   source: source,
+   theme: 'energyblue',
+   width: '200px',
+   height: '250px',
+   selectedIndex:0
+});
+$("#jqxButton").jqxButton({
+   theme: 'energyblue'
+});
+$('#jqxButton').on('click', function () {
+   var index = $("#jqxListBox").jqxListBox('getSelectedIndex');
+   alert("Selected Index: " + index);
+});
 </script>
 </body>
 {% endblock %}
