@@ -48,6 +48,7 @@ def movie_detail(guid):
         elif request.form['status'] == 'Sync':
             return redirect(url_for('user_sync.sync_edit', guid=guid))
         elif request.form['status'] == 'Cast':
+            # TODO submit cast comment via rabbitmq
             # grab the guid from the comboindex
             media_guid_index = request.form["Video_Track"]
             # call ffpmeg with the play_data
@@ -66,33 +67,38 @@ def movie_detail(guid):
                                     audio=request.form['Video_Play_Audio_Track'],
                                     sub=request.form['Video_Play_Subtitles']))
     else:
-        data = g.db_connection.db_read_media_metadata_both(guid)
-        json_ffmpeg = data['mm_media_ffprobe_json']
-        json_media = data['mm_media_json']
-        json_metadata = data['mm_metadata_json']
-        json_imagedata = data['mm_metadata_localimage_json']
-        json_metaid = data['mm_metadata_media_id']
-        # vote count format
-        data_vote_count = common_internationalization.com_inter_number_format(
-            json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
-        # build gen list
-        genres_list = ''
-        for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
-            genres_list += (json_metadata['Meta']['themoviedb']['Meta']['genres'][ndx]['name']
-                            + ', ')
-        # build production list
-        production_list = ''
-        for ndx in range(0,
-                         len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
-            production_list \
-                += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
-                    + ', ')
-        # budget format
-        budget = common_internationalization.com_inter_number_format(
-            json_metadata['Meta']['themoviedb']['Meta']['budget'])
-        # revenue format
-        revenue = common_internationalization.com_inter_number_format(
-            json_metadata['Meta']['themoviedb']['Meta']['revenue'])
+        metadata_data = g.db_connection.db_meta_movie_by_media_uuid(guid)
+        # fields returned
+        # metadata_data['mm_metadata_json']
+        # metadata_data['mm_metadata_localimage_json']
+
+        # not sure if the following with display anymore
+        # # vote count format
+        # data_vote_count = common_internationalization.com_inter_number_format(
+        #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_count'])
+        # # build gen list
+        # genres_list = ''
+        # for ndx in range(0, len(
+        #         metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'])):
+        #     genres_list += (
+        #                 metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'][
+        #                     ndx]['name']
+        #                 + ', ')
+        # # build production list
+        # production_list = ''
+        # for ndx in range(0,
+        #                  len(metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['production_companies'])):
+        #     production_list \
+        #         += (metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
+        #             + ', ')
+        # # budget format
+        # budget = common_internationalization.com_inter_number_format(
+        #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['budget'])
+        # # revenue format
+        # revenue = common_internationalization.com_inter_number_format(
+        #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['revenue'])
+
+
         # not all files have ffmpeg that didn't fail
         if json_ffmpeg is None:
             aspect_ratio = "NA"
@@ -141,7 +147,7 @@ def movie_detail(guid):
                                                                  g.db_connection.db_media_uuid_by_class(
                                                                      'Movie'))
         common_global.es_inst.com_elastic_index('info', {"vid_versions": vid_versions})
-        # audio and sub sreams
+        # audio and sub streams
         audio_streams = []
         subtitle_streams = [(None, 'None')]
         if json_ffmpeg is not None:
@@ -204,8 +210,7 @@ def movie_detail(guid):
             pass
         # set watched and sync
         try:
-            watched_status = json_media['UserStats'][current_user.get_id(
-            )]['Watched']
+            watched_status = json_media['UserStats'][current_user.get_id()]['Watched']
         except:
             watched_status = False
         try:
@@ -213,25 +218,15 @@ def movie_detail(guid):
         except:
             sync_status = False
         return render_template('users/user_movie_detail.html', data=data[0],
-                               json_ffmpeg=json_ffmpeg,
                                json_media=json_media,
                                json_metadata=json_metadata,
-                               data_resolution=data_resolution,
-                               data_codec=data_codec,
                                data_genres=genres_list[:-2],
                                data_production=production_list[:-2],
                                data_budget=budget,
                                data_revenue=revenue,
-                               data_file=data_file,
-                               data_file_size=file_size,
-                               data_bitrate=bitrate,
                                data_guid=guid,
                                data_playback_url='/users/playvideo_videojs/hls/' + guid,
-                               data_audio_track=audio_streams,
-                               data_sub_track=subtitle_streams,
-                               data_aspect=aspect_ratio,
                                data_review=review,
-                               data_vid_versions=vid_versions,
                                data_poster_image=data_poster_image,
                                data_background_image=data_background_image,
                                data_vote_count=data_vote_count,

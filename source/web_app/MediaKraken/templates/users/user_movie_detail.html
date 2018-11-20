@@ -47,12 +47,10 @@
 
                     <div class="col-sm">
                         <ul class="list-group">
-                            <li class="list-group-item">Cast Ultracast
-                            </li>
-                            <li class="list-group-item">Cast Spoocast
-                            </li>
-                            <li class="list-group-item">HTPC - PiSpoo
-                            </li>
+                            {% for playback_device in data_playback_device %}
+                                <li class="list-group-item">{{playback_device}}
+                                </li>
+                            {% endfor %}
                             <li class="list-group-item">Web Viewer
                             </li>
                         </ul>
@@ -111,46 +109,6 @@
                                                          type="number" class="rating" min=0 max=10
                                                          step=0.1
                                                          data-size="xx" data-stars="10"></p>
-                        </div>
-                        <div style="clear: both;"></div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <p>Version(s):</p>
-                                    <p>
-                                        <select name="Video_Track" , id="video_track">
-                                            {% for video_data in data_vid_versions %}
-                                            <option value={{video_data[1]}}>{{video_data[0]}}
-                                            </option>
-                                            {% endfor %}
-                                        </select>
-                                    </p>
-                                    <p><input class="btn btn-default btn-submit" type="submit"
-                                              name="status"
-                                              value="WebPlay"></p>
-                                </div>
-                                <div class="col-md-3">
-                                    <p>Audio track(s):</p>
-                                    <p>
-                                        <select name="Video_Play_Audio_Track" ,
-                                                id="video_play_audio_track">
-                                            {% for audio_data in data_audio_track %}
-                                            <option value={{audio_data[0]}}>{{audio_data[1]}}
-                                            </option>
-                                            {% endfor %}
-                                        </select>
-                                    </p>
-                                    <p>
-                                        Subtitle(s):
-                                        <select name="Video_Play_Subtitles" ,
-                                                id="video_play_subtitles">
-                                            {% for sub_data in data_sub_track %}
-                                            <option value={{sub_data[0]}}>{{sub_data[1]}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </p>
-                                </div>
-                            </div>
                         </div>
                         <div style="clear: both;"></div>
                         {% if data_budget != "0" %}
