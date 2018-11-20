@@ -91,7 +91,6 @@ def register_blueprints(app):
     app.register_blueprint(admins.views_messages.blueprint)
     app.register_blueprint(admins.views_reports.blueprint)
     app.register_blueprint(admins.views_share.blueprint)
-    app.register_blueprint(admins.views_task.blueprint)
     app.register_blueprint(admins.views_transmission.blueprint)
     app.register_blueprint(admins.views_tvtuners.blueprint)
     app.register_blueprint(admins.views_users.blueprint)
