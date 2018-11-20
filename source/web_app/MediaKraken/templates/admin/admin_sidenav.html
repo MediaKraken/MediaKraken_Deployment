@@ -99,14 +99,12 @@
         <a href="{{ url_for('admins.admin_server_settings') }}" id="admin_navmenu_server_settings"><i class="glyphicon glyphicon-cog"></i> Server</a>
         <a href="{{ url_for('admins_link.admin_server_link_server') }}" id="admin_navmenu_server_link"><i class="glyphicon glyphicon-link"></i>Server Links</a>
         <a href="{{ url_for('admins_share.admin_share') }}" id="admin_navmenu_share"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a>
-        <a href="{{ url_for('admins_task.admin_task_display_all') }}" id="admin_navmenu_task"><i class="glyphicon glyphicon-tasks"></i>Task</a>
 
         {% if data_transmission_active %}
         <a href="{{ url_for('admins_transmission.admin_transmission') }}" id="admin_navmenu_transmission"><i class="glyphicon glyphicon-globe"></i>Transmission</a>
         {% endif %}
         <a href="{{ url_for('admins_users.admin_users') }}" id="admin_navmenu_users"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
         <a href="{{ url_for('admins.admin_server_zfs') }}" id="admin_navmenu_zfs"><i class="fa fa-database"></i>ZFS</a>
-
     </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>

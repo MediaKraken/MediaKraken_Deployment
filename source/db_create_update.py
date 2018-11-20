@@ -560,65 +560,6 @@ if db_connection.db_table_index_check('mm_metadata_collection_idxgin_meta_json')
     db_connection.db_query('CREATE INDEX mm_metadata_collection_idxgin_meta_json'
                            ' ON mm_metadata_collection USING gin (mm_metadata_collection_json)')
 
-# create task tables
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_task (mm_task_guid uuid'
-                       ' CONSTRAINT mm_task_guid_pk PRIMARY KEY, mm_task_name text,'
-                       ' mm_task_description text,'
-                       ' mm_task_enabled bool,'
-                       ' mm_task_schedule text,'
-                       ' mm_task_last_run timestamp,'
-                       ' mm_task_file_path text,'
-                       ' mm_task_json jsonb)')
-# create base task entries
-base_task = [
-    # metadata
-    ('Anime', 'Match anime via Scudlee data', '/mediakraken/subprogram_match_anime_id_scudlee.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime'}),
-    ('Collections', 'Create and update collection(s)',
-     '/mediakraken/subprogram_metadata_update_create_collections.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'collection'}),
-    ('Create Chapter Image', 'Create chapter images for all media',
-     '/mediakraken/subprogram_create_chapter_images.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'chapter'}),
-    ('Roku Thumb', 'Generate Roku thumbnail images',
-     '/mediakraken/subprogram_roku_thumbnail_generate.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'rokuthumbnail'}),
-    ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
-     '/mediakraken/subprogram_schedules_direct_updates.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update'}),
-    ('Subtitle', 'Download missing subtitles for media',
-     '/mediakraken/subprogram_subtitle_downloader.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
-    ('The Movie Database', 'Grab updated movie metadata',
-     '/mediakraken/subprogram_metadata_tmdb_updates.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
-    ('TheTVDB Update', 'Grab updated TheTVDB metadata',
-     '/mediakraken/subprogram_metadata_thetvdb_updates.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'thetvdb', 'task': 'update'}),
-    ('TVmaze Update', 'Grab updated TVmaze metadata',
-     '/mediakraken/subprogram_metadata_tvmaze_updates.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update'}),
-    ('Trailer', 'Download new trailers', '/mediakraken/subprogram_metadata_trailer_download.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'trailer'}),
-    # normal subprograms
-    ('Backup', 'Backup Postgresql DB', '/mediakraken/subprogram_postgresql_backup.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbbackup'}),
-    ('DB Vacuum', 'Postgresql Vacuum Analyze all tables',
-     '/mediakraken/subprogram_postgresql_vacuum.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbvacuum'}),
-    ('iRadio Scan', 'Scan for iRadio stations', '/mediakraken/subprogram_iradio_channels.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'iradio'}),
-    ('Media Scan', 'Scan for new media', '/mediakraken/subprogram_file_scan.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'scan'}),
-    ('Sync', 'Sync/Transcode media', '/mediakraken/subprogram_sync.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'sync'}),
-]
-for base_item in base_task:
-    db_connection.db_task_insert(base_item[0], base_item[1], False, 'Days 1',
-                                 psycopg2.Timestamp(
-                                     1970, 1, 1, 0, 0, 1), base_item[2],
-                                 json.dumps(base_item[3]))
-
 # create cron tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
                        ' CONSTRAINT mm_cron_guid_pk PRIMARY KEY,'
@@ -627,36 +568,53 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
                        ' mm_cron_enabled bool,'
                        ' mm_cron_schedule text,'
                        ' mm_cron_last_run timestamp,'
-                       ' mm_cron_file_path text)')
+                       ' mm_cron_file_path text,'
+                       ' mm_cron_json jsonb)')
 
-# base_cron = [
-#     # game subprograms
-#     ('Game Audit', 'Scan for new game media', './subprogram_game_audit.py'),
-#     # media/metadata subprograms
-#     ('Anime', 'Match anime via Scudlee data', './subprogram_match_anime_id_scudlee.py'),
-#     ('Collections', 'Create and update collection(s)', './subprogram_metadata_update_create_collections.py'),
-#     ('Create Chapter Image', 'Create chapter images for all media', './subprogram_create_chapter_images.py'),
-#     ('Roku Thumb', 'Generate Roku thumbnail images', './subprogram_roku_thumbnail_generate.py'),
-#     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct', './subprogram_schedules_direct_updates.py'),
-#     ('Subtitle', 'Download missing subtitles for media', './subprogram_subtitle_downloader.py'),
-#     ('The Movie Database', 'Grab updated movie metadata', './subprogram_metadata_tmdb_updates.py'),
-#     ('TheTVDB Update', 'Grab updated TheTVDB metadata', './subprogram_metadata_thetvdb_updates.py'),
-#     ('TVmaze Update', 'Grab updated TVmaze metadata', './subprogram_metadata_tvmaze_updates.py'),
-#     ('Trailer', 'Download new trailers', './subprogram_metadata_trailer_download.py'),
-#     # normal subprograms
-#     ('Backup', 'Backup Postgresql DB', './subprogram_postgresql_backup.py'),
-#     ('DB Vacuum', 'Postgresql Vacuum Analyze all tables', './subprogram_postgresql_vacuum.py'),
-#     ('iRadio Scan', 'Scan for iRadio stations', './subprogram_iradio_channels.py'),
-#     ('Media Scan', 'Scan for new media', './subprogram_file_scan.py'),
-#     ('Sync', 'Sync/Transcode media', './subprogram_sync.py'),
-#     ]
-# # create base cron entries
-# db_connection.db_query('select count(*) from mm_cron')
-# if db_connection.fetchone()[0] == 0:
-#     for base_item in base_cron:
-#         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
-#             psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), base_item[2])
-
+base_cron = [
+    # metadata
+    ('Anime', 'Match anime via Scudlee and Manami data', '/mediakraken/subprogram_match_anime_id.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime'}),
+    ('Collections', 'Create and update collection(s)',
+     '/mediakraken/subprogram_metadata_update_create_collections.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'collection'}),
+    ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
+     '/mediakraken/subprogram_schedules_direct_updates.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update'}),
+    ('Subtitle', 'Download missing subtitles for media',
+     '/mediakraken/subprogram_subtitle_downloader.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
+    ('The Movie Database', 'Grab updated metadata for movie(s) and TV show(s)',
+     '/mediakraken/subprogram_metadata_tmdb_updates.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
+    # ('TheTVDB Update', 'Grab updated TheTVDB metadata',
+    #  '/mediakraken/subprogram_metadata_thetvdb_updates.py',
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'thetvdb', 'task': 'update'}),
+    # ('TVmaze Update', 'Grab updated TVmaze metadata',
+    #  '/mediakraken/subprogram_metadata_tvmaze_updates.py',
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update'}),
+    ('Trailer', 'Download new trailer(s)', '/mediakraken/subprogram_metadata_trailer_download.py',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'trailer'}),
+    # normal subprograms
+    ('Backup', 'Backup PostgreSQL DB', '/mediakraken/subprogram_postgresql_backup.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbbackup'}),
+    ('DB Vacuum', 'PostgreSQL Vacuum Analyze all tables',
+     '/mediakraken/subprogram_postgresql_vacuum.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbvacuum'}),
+    # ('iRadio Scan', 'Scan for iRadio stations', '/mediakraken/subprogram_iradio_channels.py',
+    #  {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'iradio'}),
+    ('Media Scan', 'Scan for new media', '/mediakraken/subprogram_file_scan.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'scan'}),
+    ('Sync', 'Sync/Transcode media', '/mediakraken/subprogram_sync.py',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'sync'}),
+]
+# create base cron entries
+db_connection.db_query('select count(*) from mm_cron')
+if db_connection.fetchone()[0] == 0:
+    for base_item in base_cron:
+        db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
+                                     psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+                                     base_item[2], json.dumps(base_item[3]))
 
 # create iradio tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_radio (mm_radio_guid uuid'

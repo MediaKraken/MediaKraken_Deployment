@@ -269,12 +269,6 @@ class MKServerDatabase(object):
         db_sync_insert, \
         db_sync_delete, \
         db_sync_progress_update
-    from database.db_base_task import db_task_list_count, \
-        db_task_list, \
-        db_task_time_update, \
-        db_task_insert, \
-        db_task_delete, \
-        db_task_info
     from database.db_base_tv_schedule import db_tv_stations_read, \
         db_tv_stations_read_stationid_list, \
         db_tv_station_insert, \
