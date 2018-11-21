@@ -87,12 +87,12 @@ def movie_detail(guid):
             data_background_image = None
 
         # build gen list
-        genres_list = ''
+        genres_list = []
         for ndx in range(0, len(
                 metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'])):
-            genres_list += (
+            genres_list.append(
                     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'][
-                        ndx]['name'] + ', ')
+                        ndx]['name'])
 
         # not sure if the following with display anymore
         # # vote count format
@@ -156,57 +156,43 @@ def movie_detail(guid):
                                       + str(video_version['mm_media_ffprobe_json']['streams'][0]['height'])
                 except:
                     data_resolution = 'NA'
-
-                # audio and sub streams
-                for stream_info in video_version['mm_media_ffprobe_json']['streams']:
-                    stream_language = ''
-                    stream_title = ''
-                    stream_codec = ''
-                    try:
-                        stream_language = stream_info['tags']['language'] + ' - '
-                    except:
-                        pass
-                    try:
-                        stream_title = stream_info['tags']['title'] + ' - '
-                    except:
-                        pass
-                    try:
-                        stream_codec \
-                            = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                              + ' - '
-                    except:
-                        pass
-                    if stream_info['codec_type'] == 'audio':
-                        audio_streams.append((len(audio_streams), (stream_codec + stream_language
-                                                                   + stream_title)[:-3]))
-                    elif stream_info['codec_type'] == 'subtitle':
-                        subtitle_streams.append(
-                            (len(subtitle_streams), stream_language[:-2]))
-
-
+            ffprobe_data.append(('V', video_version['mm_media_guid'], data_resolution,
+                                 "%02dH:%02dM:%02dS" % (hours, minutes, seconds)))
+            # audio and sub streams
+            for stream_info in video_version['mm_media_ffprobe_json']['streams']:
+                try:
+                    stream_language = stream_info['tags']['language']
+                except:
+                    stream_language = None
+                try:
+                    stream_title = stream_info['tags']['title']
+                except:
+                    stream_title = None
+                try:
+                    stream_codec = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '')
+                except:
+                    stream_codec = None
+                if stream_info['codec_type'] == 'audio':
+                    ffprobe_data.append(('A', stream_codec, stream_language, stream_title))
+                elif stream_info['codec_type'] == 'subtitle':
+                    ffprobe_data.append(('S', stream_language[:-2]))
 
         # do chapter stuff here so I can sort
         data_json_media_chapters = []
-        try:
-            for chap_data in natsort.natsorted(json_media['ChapterImages']):
-                data_json_media_chapters.append((chap_data,
-                                                 json_media['ChapterImages'][chap_data]))
-        except:
-            pass
-        return render_template('users/user_movie_detail.html', data=data[0],
-                               json_media=json_media,
-                               json_metadata=json_metadata,
-                               data_genres=genres_list[:-2],
-                               data_guid=guid,
-                               data_playback_url='/users/playvideo_videojs/hls/' + guid,
-                               data_review=review,
+        # try:
+        #     for chap_data in natsort.natsorted(json_media['ChapterImages']):
+        #         data_json_media_chapters.append((chap_data,
+        #                                          json_media['ChapterImages'][chap_data]))
+        # except:
+        #     pass
+        return render_template('users/user_movie_detail.html',
+                               data_genres=genres_list,
+                               data_playback_url='/users/playvideo_videojs/hls/',
                                data_poster_image=data_poster_image,
                                data_background_image=data_background_image,
                                data_json_media_chapters=data_json_media_chapters,
-                               data_watched_status=watched_status,
-                               data_sync_status=sync_status,
-                               data_runtime="%02dH:%02dM:%02dS" % (
-                                   hours, minutes, seconds)
+                               # data_watched_status=watched_status,
+                               # data_sync_status=sync_status
                                )
 
 

@@ -12,6 +12,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}"
           media="all" type="text/css"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='fancytree/skin-bootstrap/ui.fancytree.min.css') }}">
+    <script type="text/javascript">
+        $(function(){  // on page load
+          // Create the tree inside the <div id="tree"> element.
+          $("#tree").fancytree({
+            source: [
+            {title: "Node 1", key: "1"},
+            {title: "Folder 2", key: "2", folder: true, children: [
+              {title: "Node 2.1", key: "3"},
+              {title: "Node 2.2", key: "4"}
+            ],
+          });
+          // Note: Loading and initialization may be asynchronous, so the nodes may not be accessible yet.
+        });
+    </script>
 </head>
 {% if data %}
 <div id="movie_detail">
@@ -39,12 +53,10 @@
             </div>
             <div class="col-sm">
                 <div class="row">
-
                     <div class="col-sm">
                         <div id="tree">
                         </div>
                     </div>
-
                     <div class="col-sm">
                         <ul class="list-group">
                             {% for playback_device in data_playback_device %}
@@ -55,12 +67,11 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
                 <div class="row">
                     <div id="movie_detail_div" class="table-responsive">
                         <div id="textbox">
-                            <p class="alignleft">Title: {{data}}</p>
+                            <p class="alignleft">Title: {{json_metadata['Meta']['themoviedb']['Meta']['title']}}</p>
                             <p class="alignright">Release Date:
                                 {{json_metadata['Meta']['themoviedb']['Meta']['release_date']}}</p>
                         </div>
@@ -71,17 +82,21 @@
                             <p>{{json_metadata['Meta']['themoviedb']['Meta']['tagline']}}</p>
                             {% endif %}
                             {% if json_metadata['Meta']['themoviedb']['Meta']['original_title'] and
-                            json_metadata['Meta']['themoviedb']['Meta']['original_title'] != data %}
+                            json_metadata['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['Meta']['themoviedb']['Meta']['title'] %}
                             <p>Alternate Title:
                                 {{json_metadata['Meta']['themoviedb']['Meta']['original_title']}}</p>
                             {% endif %}
                         </div>
                         <div style="clear: both;"></div>
-                        <!-- #TODO add rating icon here-->
                         <div id="textbox_gen">
-                            {% if data_genres %}
-                            <p class="alignleft">Genres: {{data_genres}}</p>
-                            {% endif %}
+                           <p class="alignright"><input id="movie_rating_stars"
+                                                         value={{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}}
+                                                         type="number" class="rating" min=0 max=10
+                                                         step=0.1
+                                                         data-size="xx" data-stars="10"></p>
+                            {% for genre in data_genres %}
+                            <button type="button" class="btn">{{genre}}</button>
+                            {% endfor %}
                             <p class="alignright">
                                 {% if data_watched_status == True %}
                                 <input class="btn btn-default btn-submit" type="submit"
@@ -98,44 +113,12 @@
                                        value="Sync">
                                 {% endif %}
                             </p>
+                            {% if json_metadata['Meta']['themoviedb']['Meta']['homepage'] %}
+                            <p>Homepage: <a href={{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}</a>
+                            </p>
+                            {% endif %}
                         </div>
                         <div style="clear: both;"></div>
-                        <div id="textbox">
-                            <p class="alignleft">User Rating Avg:
-                                {{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}} with
-                                {{data_vote_count}} vote(s)</p>
-                            <p class="alignright"><input id="movie_rating_stars"
-                                                         value={{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}}
-                                                         type="number" class="rating" min=0 max=10
-                                                         step=0.1
-                                                         data-size="xx" data-stars="10"></p>
-                        </div>
-                        <div style="clear: both;"></div>
-                        {% if data_budget != "0" %}
-                        <p>Budget: {{data_budget}}</p>
-                        {% endif %}
-                        {% if data_revenue != "0" %}
-                        <p>Revenue: {{data_revenue}}</p>
-                        {% endif %}
-                        {% if json_metadata['Meta']['themoviedb']['Meta']['homepage'] %}
-                        <p>Homepage: <a
-                                href={{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}</a>
-                        </p>
-                        {% endif %}
-                        {% if data_production %}
-                        <p>Production Companies: {{data_production}}</p>
-                        {% endif %}
-                        {% if data_review %}
-                        <p>Reviews:
-                            <button data-toggle="collapse" data-target="#review_collapse">Toggle
-                            </button>
-                        </p>
-                        <div id="review_collapse" class="collapse">
-                            {% for review_info in data_review %}
-                            <p>{{ review_info[0] + ": " + review_info[2] }}</p>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -152,8 +135,8 @@
                 </div>
             </div>
         </div>
+        {% if data_json_media_chapters %}
         <div class="row">
-            {% if data_json_media_chapters %}
             <div class="card">
                 <div class="card-header">
                     Chapters
@@ -175,8 +158,8 @@
                     <p>
                 </div>
             </div>
-            {% endif %}
         </div>
+        {% endif %}
     </form>
 </div>
 {% else %}
@@ -192,20 +175,6 @@
         // Initialize
         var bLazy = new Blazy();
     })();
-</script>
-<script type="text/javascript">
-    $(function(){  // on page load
-      // Create the tree inside the <div id="tree"> element.
-      $("#tree").fancytree({
-        source: [
-        {title: "Node 1", key: "1"},
-        {title: "Folder 2", key: "2", folder: true, children: [
-          {title: "Node 2.1", key: "3"},
-          {title: "Node 2.2", key: "4"}
-        ],
-      });
-      // Note: Loading and initialization may be asynchronous, so the nodes may not be accessible yet.
-    });
 </script>
 </body>
 {% endblock %}
