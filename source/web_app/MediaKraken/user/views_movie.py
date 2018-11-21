@@ -69,6 +69,23 @@ def movie_detail(guid):
         # metadata_data['mm_metadata_json']
         # metadata_data['mm_metadata_localimage_json']
 
+        # poster image
+        try:
+            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster'] is not None:
+                data_poster_image = metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
+            else:
+                data_poster_image = None
+        except:
+            data_poster_image = None
+        # background image
+        try:
+            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop'] is not None:
+                data_background_image = metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
+            else:
+                data_background_image = None
+        except:
+            data_background_image = None
+
         # build gen list
         genres_list = ''
         for ndx in range(0, len(
@@ -94,7 +111,14 @@ def movie_detail(guid):
         # # revenue format
         # revenue = common_internationalization.com_inter_number_format(
         #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['revenue'])
-
+        # # grab reviews
+        # review = []
+        # review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['themoviedb'])
+        # if review_json is not None and len(review_json) > 0:
+        #     review_json = review_json[0]
+        #     for review_data in review_json[1]['themoviedb']['results']:
+        #         review.append(
+        #             (review_data['author'], review_data['url'], review_data['content']))
         # # set watched and sync
         # try:
         #     watched_status = json_media['UserStats'][current_user.get_id()]['Watched']
@@ -105,88 +129,61 @@ def movie_detail(guid):
         # except:
         #     sync_status = False
 
-        # not all files have ffmpeg that didn't fail
-        if json_ffmpeg is None:
-            hours = 0
-            minutes = 0
-            seconds = 0
-            data_resolution = "NA"
-            data_codec = "NA"
-            data_file = "NA"
-        else:
-            # calculate a better runtime
-            try:
-                minutes, seconds = divmod(
-                    float(json_ffmpeg['format']['duration']), 60)
-                hours, minutes = divmod(minutes, 60)
-            except:
+        # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
+        ffprobe_data = []
+        for video_version in g.db_connection.db_ffprobe_all_media_guid(guid,
+                                                                 g.db_connection.db_media_uuid_by_class('Movie')):
+            common_global.es_inst.com_elastic_index('info', {"vid_version": video_version})
+            # not all files have ffprobe
+            if video_version['mm_media_ffprobe_json'] is None:
                 hours = 0
                 minutes = 0
                 seconds = 0
-            try:
-                data_resolution = str(json_ffmpeg['streams'][0]['width']) + 'x' \
-                                  + str(json_ffmpeg['streams'][0]['height'])
-            except:
-                data_resolution = 'NA'
-            data_codec = json_ffmpeg['streams'][0]['codec_name']
+                data_resolution = "NA"
+            else:
+                # calculate a better runtime instead of just seconds
+                try:
+                    minutes, seconds = divmod(
+                        float(video_version['mm_media_ffprobe_json']['format']['duration']), 60)
+                    hours, minutes = divmod(minutes, 60)
+                except:
+                    hours = 0
+                    minutes = 0
+                    seconds = 0
+                # TODO will need to be able to loop through streams...for those with multiple videos in container
+                try:
+                    data_resolution = str(video_version['mm_media_ffprobe_json']['streams'][0]['width']) + 'x' \
+                                      + str(video_version['mm_media_ffprobe_json']['streams'][0]['height'])
+                except:
+                    data_resolution = 'NA'
 
-        # check to see if there are other version of this video file (dvd, hddvd, etc)
-        vid_versions = g.db_connection.db_media_by_metadata_guid(data[1],
-                                                                 g.db_connection.db_media_uuid_by_class(
-                                                                     'Movie'))
-        common_global.es_inst.com_elastic_index('info', {"vid_versions": vid_versions})
-        # audio and sub streams
-        audio_streams = []
-        subtitle_streams = [(None, 'None')]
-        if json_ffmpeg is not None:
-            for stream_info in json_ffmpeg['streams']:
-                stream_language = ''
-                stream_title = ''
-                stream_codec = ''
-                try:
-                    stream_language = stream_info['tags']['language'] + ' - '
-                except:
-                    pass
-                try:
-                    stream_title = stream_info['tags']['title'] + ' - '
-                except:
-                    pass
-                try:
-                    stream_codec \
-                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
-                          + ' - '
-                except:
-                    pass
-                if stream_info['codec_type'] == 'audio':
-                    audio_streams.append((len(audio_streams), (stream_codec + stream_language
-                                                               + stream_title)[:-3]))
-                elif stream_info['codec_type'] == 'subtitle':
-                    subtitle_streams.append(
-                        (len(subtitle_streams), stream_language[:-2]))
-        # poster image
-        try:
-            if json_imagedata['Images']['themoviedb']['Poster'] is not None:
-                data_poster_image = json_imagedata['Images']['themoviedb']['Poster']
-            else:
-                data_poster_image = None
-        except:
-            data_poster_image = None
-        # background image
-        try:
-            if json_imagedata['Images']['themoviedb']['Backdrop'] is not None:
-                data_background_image = json_imagedata['Images']['themoviedb']['Backdrop']
-            else:
-                data_background_image = None
-        except:
-            data_background_image = None
-        # grab reviews
-        review = []
-        review_json = g.db_connection.db_review_list_by_tmdb_guid(json_metaid['themoviedb'])
-        if review_json is not None and len(review_json) > 0:
-            review_json = review_json[0]
-            for review_data in review_json[1]['themoviedb']['results']:
-                review.append(
-                    (review_data['author'], review_data['url'], review_data['content']))
+                # audio and sub streams
+                for stream_info in video_version['mm_media_ffprobe_json']['streams']:
+                    stream_language = ''
+                    stream_title = ''
+                    stream_codec = ''
+                    try:
+                        stream_language = stream_info['tags']['language'] + ' - '
+                    except:
+                        pass
+                    try:
+                        stream_title = stream_info['tags']['title'] + ' - '
+                    except:
+                        pass
+                    try:
+                        stream_codec \
+                            = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
+                              + ' - '
+                    except:
+                        pass
+                    if stream_info['codec_type'] == 'audio':
+                        audio_streams.append((len(audio_streams), (stream_codec + stream_language
+                                                                   + stream_title)[:-3]))
+                    elif stream_info['codec_type'] == 'subtitle':
+                        subtitle_streams.append(
+                            (len(subtitle_streams), stream_language[:-2]))
+
+
 
         # do chapter stuff here so I can sort
         data_json_media_chapters = []

@@ -97,7 +97,8 @@ class MKServerDatabase(object):
         db_media_ffmeg_update, \
         db_unmatched_list_count, \
         db_unmatched_list, \
-        db_ffprobe_data
+        db_ffprobe_data, \
+        db_ffprobe_all_media_guid
     from database.db_base_media_books import db_media_book_list_count, \
         db_media_book_list
     from database.db_base_media_class import db_media_class_list_count, \
