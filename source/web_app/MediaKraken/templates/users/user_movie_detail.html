@@ -71,26 +71,26 @@
                 <div class="row">
                     <div id="movie_detail_div" class="table-responsive">
                         <div id="textbox">
-                            <p class="alignleft">Title: {{json_metadata['Meta']['themoviedb']['Meta']['title']}}</p>
+                            <p class="alignleft">Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</p>
                             <p class="alignright">Release Date:
-                                {{json_metadata['Meta']['themoviedb']['Meta']['release_date']}}</p>
+                                {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</p>
                         </div>
                         <div style="clear: both;"></div>
                         <div id="tag_title">
-                            {% if json_metadata['Meta']['themoviedb']['Meta']['tagline'] and
-                            json_metadata['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
-                            <p>{{json_metadata['Meta']['themoviedb']['Meta']['tagline']}}</p>
+                            {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] and
+                            json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
+                            <p>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline']}}</p>
                             {% endif %}
-                            {% if json_metadata['Meta']['themoviedb']['Meta']['original_title'] and
-                            json_metadata['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['Meta']['themoviedb']['Meta']['title'] %}
+                            {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] and
+                            json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
                             <p>Alternate Title:
-                                {{json_metadata['Meta']['themoviedb']['Meta']['original_title']}}</p>
+                                {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
                             {% endif %}
                         </div>
                         <div style="clear: both;"></div>
                         <div id="textbox_gen">
                            <p class="alignright"><input id="movie_rating_stars"
-                                                         value={{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}}
+                                                         value={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}
                                                          type="number" class="rating" min=0 max=10
                                                          step=0.1
                                                          data-size="xx" data-stars="10"></p>
@@ -114,7 +114,7 @@
                                 {% endif %}
                             </p>
                             {% if json_metadata['Meta']['themoviedb']['Meta']['homepage'] %}
-                            <p>Homepage: <a href={{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}</a>
+                            <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}</a>
                             </p>
                             {% endif %}
                         </div>
@@ -130,7 +130,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {{json_metadata['Meta']['themoviedb']['Meta']['overview']}}
+                        {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['overview']}}
                     <p>
                 </div>
             </div>
