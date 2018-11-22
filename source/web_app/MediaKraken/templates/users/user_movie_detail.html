@@ -63,19 +63,19 @@
                                     {% if data_ffprobe_data[stream_uuid][2]|length > 0 %}
                                         <ul>
                                         {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
-                                            <li id="{{audio_stream[0]}}">{{audio_stream[0] + ' ' + audio_stream[1]}}
+                                            <li>{{audio_stream[0] + ' ' + audio_stream[1]}}
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
                                     {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
                                         <ul>
                                         {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
-                                            <li id="{{subtitle_stream}}">{{subtitle_stream}}
+                                            <li>{{subtitle_stream}}
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
                                     <ul>
-                                        <li id="fsd">Waffles
+                                        <li>Waffles
                                     </ul>
                                 {% endfor %}
                                 <li id="fsdfs" class="expanded">fsdfsfsdfsefwe
