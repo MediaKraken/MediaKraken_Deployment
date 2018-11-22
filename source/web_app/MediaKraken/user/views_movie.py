@@ -13,7 +13,6 @@ from flask_login import login_required
 blueprint = Blueprint("user_movie", __name__,
                       url_prefix='/users', static_folder="../static")
 import subprocess
-import natsort
 import sys
 
 sys.path.append('..')
@@ -91,8 +90,8 @@ def movie_detail(guid):
         for ndx in range(0, len(
                 metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'])):
             genres_list.append(
-                    metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'][
-                        ndx]['name'])
+                metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'][
+                    ndx]['name'])
 
         # not sure if the following with display anymore
         # # vote count format
@@ -130,9 +129,9 @@ def movie_detail(guid):
         #     sync_status = False
 
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
-        ffprobe_data = []
+        ffprobe_data = {}
         for video_version in g.db_connection.db_ffprobe_all_media_guid(guid,
-                                                                 g.db_connection.db_media_uuid_by_class('Movie')):
+                                                                       g.db_connection.db_media_uuid_by_class('Movie')):
             common_global.es_inst.com_elastic_index('info', {"vid_version": video_version})
             # not all files have ffprobe
             if video_version['mm_media_ffprobe_json'] is None:
@@ -156,9 +155,9 @@ def movie_detail(guid):
                                       + str(video_version['mm_media_ffprobe_json']['streams'][0]['height'])
                 except:
                     data_resolution = 'NA'
-            ffprobe_data.append(('V', video_version['mm_media_guid'], data_resolution,
-                                 "%02dH:%02dM:%02dS" % (hours, minutes, seconds)))
             # audio and sub streams
+            audio_streams = []
+            subtitle_streams = []
             for stream_info in video_version['mm_media_ffprobe_json']['streams']:
                 try:
                     stream_language = stream_info['tags']['language']
@@ -173,10 +172,13 @@ def movie_detail(guid):
                 except:
                     stream_codec = None
                 if stream_info['codec_type'] == 'audio':
-                    ffprobe_data.append(('A', stream_codec, stream_language, stream_title))
+                    audio_streams.append((stream_codec, stream_language, stream_title))
                 elif stream_info['codec_type'] == 'subtitle':
-                    ffprobe_data.append(('S', stream_language[:-2]))
-
+                    subtitle_streams.append(stream_language[:-2])
+            ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
+                                                            "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
+                                                            audio_streams,
+                                                            subtitle_streams)
         # do chapter stuff here so I can sort
         data_json_media_chapters = []
         # try:
