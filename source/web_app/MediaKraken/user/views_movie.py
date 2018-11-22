@@ -186,11 +186,13 @@ def movie_detail(guid):
         # except:
         #     pass
         return render_template('users/user_movie_detail.html',
+                               json_metadata=metadata_data,
                                data_genres=genres_list,
                                data_playback_url='/users/playvideo_videojs/hls/',
                                data_poster_image=data_poster_image,
                                data_background_image=data_background_image,
                                data_json_media_chapters=data_json_media_chapters,
+                               data_ffprobe_data=ffprobe_data,
                                # data_watched_status=watched_status,
                                # data_sync_status=sync_status
                                )
