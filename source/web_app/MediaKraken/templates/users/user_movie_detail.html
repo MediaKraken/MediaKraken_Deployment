@@ -26,6 +26,16 @@
           // Note: Loading and initialization may be asynchronous, so the nodes may not be accessible yet.
         });
     </script>
+    <style>
+      body {
+        padding-top: 120px;
+      }
+      @media (max-width: 980px) {
+        body {
+          padding-top: 0;
+        }
+      }
+    </style>
 </head>
 {% if json_metadata %}
 <div id="movie_detail">

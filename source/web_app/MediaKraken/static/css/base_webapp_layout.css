@@ -1,7 +1,3 @@
-.navbar {
-  margin-bottom: 20px;
-}
-
 .list-group{
     max-height: 300px;
     margin-bottom: 10px;
@@ -122,11 +118,9 @@ img.center {
     float: right;
 }
 
-
 #data_background {
     background-color: rgb(136,136,136);
 }
-
 
 .neon {
   margin:20px 0 20px 0;
@@ -140,7 +134,6 @@ img.center {
              0 0 100px #228DFF,
              0 0 150px #228DFF;
 }
-
 
 #general_text {
     color: rgb(0,0,0);
@@ -210,4 +203,3 @@ div.transbox {
 [class*='col-'] {
   float: left;
 }
-
