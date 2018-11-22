@@ -60,14 +60,14 @@
                             <ul id="treeData" style="display: none;">
                                 {% for stream_uuid in data_ffprobe_data %}
                                     <li id="{{stream_uuid}}" class="expanded">{{data_ffprobe_data[stream_uuid][0]}}</li>
-                                    {% if len(data_ffprobe_data[stream_uuid][2]) > 0 %}
+                                    {% if data_ffprobe_data[stream_uuid][2]|length > 0 %}
                                         <ul>
                                         {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
                                             <li id="{{audio_stream}}">{{audio_stream}}
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
-                                    {% if len(data_ffprobe_data[stream_uuid][3]) > 0 %}
+                                    {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
                                         <ul>
                                         {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
                                             <li id="{{subtitle_stream}}">{{subtitle_stream}}
