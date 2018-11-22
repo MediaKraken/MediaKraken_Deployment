@@ -59,11 +59,11 @@
                         <div id="tree">
                             <ul id="treeData" style="display: none;">
                                 {% for stream_uuid in data_ffprobe_data %}
-                                    <li id="{{stream_uuid}}" class="expanded">{{data_ffprobe_data[stream_uuid][0]}}</li>
+                                    <li id="{{stream_uuid}}" class="expanded">{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}</li>
                                     {% if data_ffprobe_data[stream_uuid][2]|length > 0 %}
                                         <ul>
                                         {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
-                                            <li id="{{audio_stream}}">{{audio_stream}}
+                                            <li id="{{audio_stream[0]}}">{{audio_stream[0] + ' ' + audio_stream[1]}}
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
