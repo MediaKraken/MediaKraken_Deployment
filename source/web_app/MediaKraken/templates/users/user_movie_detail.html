@@ -13,9 +13,25 @@
           media="all" type="text/css"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='fancytree/skin-bootstrap/ui.fancytree.min.css') }}">
     <script type="text/javascript">
-        $(function(){
-            // using default options
-            $("#tree").fancytree();
+        $(function () {
+            $("#tree").fancytree({
+                onActivate: function (node) {
+                    // A DynaTreeNode object is passed to the activation handler
+                    // Note: we also get this event, if persistence is on, and the
+                     //  age is reloaded.
+                    alert("You activated " + node.data.title);
+                },
+                source: [ // Pass an array of nodes.
+                {title: "Item 1" },
+                { title: "Folder 2", isFolder: true,
+                    children: [
+                        { title: "Sub-item 2.1" },
+                        { title: "Sub-item 2.2" }
+                    ]
+                },
+                { title: "Item 3" }
+            ]
+            });
         });
     </script>
     <style>
@@ -57,22 +73,6 @@
                 <div class="row">
                     <div class="col-sm">
                         <div id="tree">
-                            <ul id="treeData" style="display: none;">
-                                {% for stream_uuid in data_ffprobe_data %}
-                                    <li class="expanded">{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}
-                                    <ul>
-                                        <li id="0">Audio Stream(s):
-                                        <ul>
-                                            <li id="1">Waffles1
-                                        </ul>
-                                    </ul>
-                                {% endfor %}
-                                <li class="expanded">Test node
-                                    <ul>
-                                        <li>Waffles2
-                                        <li>Waffles3
-                                    </ul>
-                            </ul>
                         </div>
                     </div>
                     <div class="col-sm">
