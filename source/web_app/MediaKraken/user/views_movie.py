@@ -190,6 +190,7 @@ def movie_detail(guid):
         #                                          json_media['ChapterImages'][chap_data]))
         # except:
         #     pass
+        ffprobe_data = '{ title: "Folder 2", isFolder: true, expanded: true, children: [{ title: "Sub-item 2.1" }, { title: "Sub-item 2.2", isFolder: true, expanded: true, children: [{ title: "Doh" }, ]}, ] }'
         return render_template('users/user_movie_detail.html',
                                json_metadata=metadata_data,
                                data_genres=genres_list,
