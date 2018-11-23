@@ -21,7 +21,20 @@
                     // page is reloaded.
                     alert("You activated " + node.data.title);
                 },
-                source: [ {{data_ffprobe_data}} ]
+                source: [ // Pass an array of nodes.
+                {% for ndx in range(2) %}
+                    { title: "Folder 2", isFolder: true, expanded: true,
+                        children: [
+                            { title: "Sub-item 2.1" },
+                            { title: "Sub-item 2.2", isFolder: true, expanded: true,
+                                children: [
+                                    { title: "Doh" },
+                                ]
+                            },
+                        ]
+                    }
+                {% endfor %}
+                ]
             });
         });
     </script>
