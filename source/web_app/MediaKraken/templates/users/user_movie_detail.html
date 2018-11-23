@@ -25,10 +25,7 @@
                 {% for stream_uuid in data_ffprobe_data %}
                     { title: {{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}, isFolder: true, expanded: true,
                         children: [
-                            { title: "Audio Stream(s):", isFolder: true, expanded: true,
-                                children: [
-                                ]
-                            }
+                            { title: "Audio Stream(s):" },
                         ]
                     },
                 {% endfor %}
