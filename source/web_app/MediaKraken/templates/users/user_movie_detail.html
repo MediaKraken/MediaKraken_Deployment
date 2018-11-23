@@ -22,11 +22,15 @@
                     alert("You activated " + node.data.title);
                 },
                 source: [ // Pass an array of nodes.
-                {title: "Item 1" },
-                { title: "Folder 2", isFolder: true,
+                { title: "Item 1" },
+                { title: "Folder 2", isFolder: true, expanded: true,
                     children: [
                         { title: "Sub-item 2.1" },
-                        { title: "Sub-item 2.2" }
+                        { title: "Sub-item 2.2", isFolder: true, expanded: true,
+                            children: [
+                                { title: "Doh" },
+                            ]
+                        },
                     ]
                 },
                 { title: "Item 3" }
