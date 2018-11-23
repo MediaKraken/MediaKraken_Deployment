@@ -19,6 +19,7 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
+from common import common_internationalization
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -70,16 +71,20 @@ def movie_detail(guid):
 
         # poster image
         try:
-            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster'] is not None:
-                data_poster_image = metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
+            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb'][
+                'Poster'] is not None:
+                data_poster_image = \
+                    metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
             else:
                 data_poster_image = None
         except:
             data_poster_image = None
         # background image
         try:
-            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop'] is not None:
-                data_background_image = metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
+            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb'][
+                'Backdrop'] is not None:
+                data_background_image = \
+                    metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
             else:
                 data_background_image = None
         except:
@@ -131,7 +136,8 @@ def movie_detail(guid):
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
         ffprobe_data = {}
         for video_version in g.db_connection.db_ffprobe_all_media_guid(guid,
-                                                                       g.db_connection.db_media_uuid_by_class('Movie')):
+                                                                       g.db_connection.db_media_uuid_by_class(
+                                                                           'Movie')):
             common_global.es_inst.com_elastic_index('info', {"vid_version": video_version})
             # not all files have ffprobe
             if video_version['mm_media_ffprobe_json'] is None:
@@ -151,8 +157,10 @@ def movie_detail(guid):
                     seconds = 0
                 # TODO will need to be able to loop through streams...for those with multiple videos in container
                 try:
-                    data_resolution = str(video_version['mm_media_ffprobe_json']['streams'][0]['width']) + 'x' \
-                                      + str(video_version['mm_media_ffprobe_json']['streams'][0]['height'])
+                    data_resolution = str(
+                        video_version['mm_media_ffprobe_json']['streams'][0]['width']) + 'x' \
+                                      + str(
+                        video_version['mm_media_ffprobe_json']['streams'][0]['height'])
                 except:
                     data_resolution = 'NA'
             # audio and sub streams
@@ -161,14 +169,16 @@ def movie_detail(guid):
             for stream_info in video_version['mm_media_ffprobe_json']['streams']:
                 if stream_info['codec_type'] == 'audio':
                     try:
-                        stream_language = stream_info['tags']['language']  # eng, spa and so on
+                        stream_language = common_internationalization.com_inter_country_name(
+                            stream_info['tags']['language'])  # eng, spa and so on
                     except KeyError:
                         stream_language = 'NA'
                     try:
                         stream_title = stream_info['tags']['title']  # Surround 5.1 and so on
                     except KeyError:
                         stream_title = 'NA'
-                    if 'codec_long_name' in stream_info and stream_info['codec_long_name'] != 'unknown':
+                    if 'codec_long_name' in stream_info and stream_info[
+                        'codec_long_name'] != 'unknown':
                         stream_codec = stream_info['codec_long_name']
                     else:
                         try:
@@ -177,9 +187,11 @@ def movie_detail(guid):
                             stream_codec = 'NA'
                     audio_streams.append((stream_codec, stream_language, stream_title))
                 elif stream_info['codec_type'] == 'subtitle':
-                    subtitle_streams.append(stream_info['tags']['language'])
+                    subtitle_streams.append(common_internationalization.com_inter_country_name(
+                        stream_info['tags']['language']))
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
-                                                            "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
+                                                            "%02dH:%02dM:%02dS" % (
+                                                                hours, minutes, seconds),
                                                             audio_streams,
                                                             subtitle_streams)
         # do chapter stuff here so I can sort
