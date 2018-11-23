@@ -32,11 +32,15 @@
                                     {% endfor %}
                                 ]
                             },
-                            { title: "Subtitle(s):", isFolder: true, expanded: true,
-                                children: [
-                                    { title: "Doh" },
-                                ]
-                            },
+                            {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
+                                { title: "Subtitle(s):", isFolder: true, expanded: true,
+                                    children: [
+                                        {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
+                                            { title: "{{subtitle_stream}}" },
+                                        {% endfor %}
+                                    ]
+                                },
+                            {$ endif %}
                         ]
                     },
                 {% endfor %}
