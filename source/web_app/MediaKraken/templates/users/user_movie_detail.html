@@ -62,11 +62,11 @@
                                     <li class="expanded">{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}
                                     <ul>
                                         <li>Audio Stream(s):
-                                        <ul>
-                                        {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
-                                            <li>{{audio_stream[0] + ' ' + audio_stream[1]}}
-                                        {% endfor %}
-                                        </li>
+                                            <ul>
+                                            {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
+                                                <li>{{audio_stream[0] + ' ' + audio_stream[1]}}
+                                            {% endfor %}
+                                            </ul>
                                         <li>Waffles3
                                     </ul>
                                 {% endfor %}
