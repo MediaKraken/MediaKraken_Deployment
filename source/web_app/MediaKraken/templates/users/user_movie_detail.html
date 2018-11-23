@@ -60,29 +60,28 @@
                             <ul id="treeData" style="display: none;">
                                 {% for stream_uuid in data_ffprobe_data %}
                                     <li id="{{stream_uuid}}" class="expanded">{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}</li>
+                                    <ul>
                                     {% if data_ffprobe_data[stream_uuid][2]|length > 0 %}
+                                        <li>Audio Stream(s):
                                         <ul>
                                         {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
-                                            <li>{{audio_stream[0] + ' ' + audio_stream[1]}}
+                                            <ul>{{audio_stream[0] + ' ' + audio_stream[1]}}
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
                                     {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
+                                        <li>Subtitle(s):
                                         <ul>
                                         {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
                                             <li>{{subtitle_stream}}
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
-                                    <ul>
-                                        <li>Waffles
                                     </ul>
                                 {% endfor %}
                                 <li id="fsdfs" class="expanded">fsdfsfsdfsefwe
                                     <ul>
                                         <li>Waffles2
-                                    </ul>
-                                    <ul>
                                         <li>Waffles3
                                     </ul>
                             </ul>
