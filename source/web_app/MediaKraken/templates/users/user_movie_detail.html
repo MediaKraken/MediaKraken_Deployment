@@ -27,7 +27,9 @@
                         children: [
                             { title: "Audio Stream(s):", isFolder: true, expanded: true,
                                 children: [
-                                    { title: "Doh" },
+                                    {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
+                                        { title: "{{audio_stream[0] + ' ' + audio_stream[1]}}" },
+                                    {% endfor %}
                                 ]
                             },
                             { title: "Subtitle(s):", isFolder: true, expanded: true,
