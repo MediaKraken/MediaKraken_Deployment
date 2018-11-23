@@ -21,7 +21,7 @@
                     // page is reloaded.
                     alert("You activated " + node.data.title);
                 },
-                source: [ // Pass an array of nodes.
+                source: [
                 {% for stream_uuid in data_ffprobe_data %}
                     { title: "{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}", isFolder: true, expanded: true,
                         children: [
