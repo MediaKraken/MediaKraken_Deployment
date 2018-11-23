@@ -61,7 +61,7 @@
                                 {% for stream_uuid in data_ffprobe_data %}
                                     <li class="expanded">{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}
                                     <ul>
-                                        <li>Audio Stream(s)
+                                        <li>Audio Stream(s):
                                             <ul>
                                                 <li>Waffles1
                                             </ul>
@@ -189,6 +189,7 @@
 <script src="{{ url_for('static', filename='js/star-rating.min.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
 <script src="{{ url_for('static', filename='fancytree/jquery.fancytree-all-deps.min.js') }}"></script>
+<script src="{{ url_for('static', filename='fancytree/modules/jquery.fancytree.ui-deps.js') }}"></script>
 <script>
     ;(function() {
         // Initialize
