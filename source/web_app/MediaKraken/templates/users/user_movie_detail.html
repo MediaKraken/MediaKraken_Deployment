@@ -18,11 +18,21 @@
                 onActivate: function (node) {
                     // A DynaTreeNode object is passed to the activation handler
                     // Note: we also get this event, if persistence is on, and the
-                     //  age is reloaded.
+                    // page is reloaded.
                     alert("You activated " + node.data.title);
                 },
                 source: [ // Pass an array of nodes.
-                { title: "Item 1" },
+                {% for stream_uuid in data_ffprobe_data %}
+                    { title: {{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}, isFolder: true, expanded: true,
+                        children: [
+                            { title: "Audio Stream(s):", isFolder: true, expanded: true,
+                                children: [
+                                ]
+                            }
+                        ]
+                    },
+                {% endfor %}
+
                 { title: "Folder 2", isFolder: true, expanded: true,
                     children: [
                         { title: "Sub-item 2.1" },
@@ -32,9 +42,8 @@
                             ]
                         },
                     ]
-                },
-                { title: "Item 3" }
-            ]
+                }
+                ]
             });
         });
     </script>
