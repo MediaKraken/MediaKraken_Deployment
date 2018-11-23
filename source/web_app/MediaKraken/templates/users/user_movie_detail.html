@@ -25,8 +25,12 @@
                 {% for stream_uuid in data_ffprobe_data %}
                     { title: "{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}", isFolder: true, expanded: true,
                         children: [
-                            { title: "Sub-item 2.1" },
-                            { title: "Sub-item 2.2", isFolder: true, expanded: true,
+                            { title: "Audio Stream(s):", isFolder: true, expanded: true,
+                                children: [
+                                    { title: "Doh" },
+                                ]
+                            },
+                            { title: "Subtitle(s):", isFolder: true, expanded: true,
                                 children: [
                                     { title: "Doh" },
                                 ]
@@ -52,24 +56,18 @@
 {% if json_metadata %}
 <div id="movie_detail">
     {% if data_background_image is none %}
-    <img alt="fs_bg_image"
-         src="{{ url_for('static', filename='images/movie_ticket.png') }}"
-         id="fs_bg_image">
+    <img alt="fs_bg_image" src="{{ url_for('static', filename='images/movie_ticket.png') }}" id="fs_bg_image">
     {% else %}
-    <img alt="fs_bg_image"
-         src="{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}"
-         id="fs_bg_image">
+    <img alt="fs_bg_image" src="{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" id="fs_bg_image">
     {% endif %}
     <form name="video_play_stat_form" method="post">
         <div class="row">
             <div class="col-sm-2">
                 <div id="movie_image_div" class="table-responsive">
                     {% if data_poster_image is none %}
-                    <img class="center"
-                         src="{{ url_for('static', filename='images/Movie-icon.png') }}">
+                    <img class="center" src="{{ url_for('static', filename='images/Movie-icon.png') }}">
                     {% else %}
-                    <img class="center"
-                         src="{{ url_for('static', filename='meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}">
+                    <img class="center" src="{{ url_for('static', filename='meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}">
                     {% endif %}
                 </div>
             </div>
