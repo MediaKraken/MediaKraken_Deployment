@@ -3,14 +3,10 @@
 <body id="data_background">
 <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}"
-          media="all" type="text/css"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}"
-          media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='fancytree/skin-bootstrap/ui.fancytree.min.css') }}">
     <script type="text/javascript">
         $(function () {
@@ -69,7 +65,7 @@
     <form name="video_play_stat_form" method="post">
         <div class="row">
             <div class="col-sm-2">
-                <div id="movie_image_div" class="table-responsive">
+                <div class="table-responsive">
                     {% if data_poster_image is none %}
                     <img class="center" src="{{ url_for('static', filename='images/Movie-icon.png') }}">
                     {% else %}
@@ -86,11 +82,9 @@
                     <div class="col-sm">
                         <ul class="list-group">
                             {% for playback_device in data_playback_device %}
-                                <li class="list-group-item">{{playback_device}}
-                                </li>
+                                <li class="list-group-item">{{playback_device}}</li>
                             {% endfor %}
-                            <li class="list-group-item">Web Viewer
-                            </li>
+                            <li class="list-group-item">Web Viewer</li>
                         </ul>
                     </div>
                 </div>
