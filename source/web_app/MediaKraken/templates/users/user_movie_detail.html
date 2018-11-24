@@ -90,12 +90,10 @@
                 </div>
                 <div class="row">
                     <div id="movie_detail_div" class="table-responsive">
-                        <div id="textbox">
-                            <p>Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</p>
-                            <p class="alignright">Release Date:
-                                {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</p>
-                        </div>
-                        <div style="clear: both;"></div>
+                        <p>
+                            <span style="float: left">Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</span>
+                            <span style="float: right">Release Date: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</span>
+                        </p>
                         <div id="tag_title">
                             {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] and
                             json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
@@ -103,13 +101,12 @@
                             {% endif %}
                             {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] and
                             json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
-                            <BR><p>Alternate Title:
-                                {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
+                            <BR><p>Alternate Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
                             {% endif %}
                         </div>
                         <div style="clear: both;"></div>
                         <div id="textbox_gen">
-                           <BR><p><input id="movie_rating_stars"
+                           <BR><p class="alignleft"><input id="movie_rating_stars"
                                                          value={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}
                                                          type="number" class="rating" min=0 max=10
                                                          step=0.1
