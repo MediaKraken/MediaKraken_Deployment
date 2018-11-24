@@ -30,5 +30,8 @@ def com_inter_number_format(number_to_format, country_code='en_US'):
 
 
 def com_inter_country_name(country_code='eng'):
-    lang = pycountry.languages.get(alpha_3=country_code)
+    try:
+        lang = pycountry.languages.get(alpha_3=country_code)
+    except KeyError:
+        return country_code
     return lang.name
