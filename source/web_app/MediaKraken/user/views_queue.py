@@ -40,7 +40,7 @@ def user_queue_page():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/user_tv_page.html', media=media,
+    return render_template('users/user_queue.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
