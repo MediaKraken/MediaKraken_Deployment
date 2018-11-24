@@ -89,54 +89,48 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div id="movie_detail_div" class="table-responsive">
-                        <p>
-                            <span style="float: left">Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</span>
-                            <span style="float: right">Release Date: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</span>
+                    <p>
+                        <span style="float: left">Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</span>
+                        <span style="float: right">Release Date: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</span>
+                    </p>
+                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] and
+                    json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
+                    <p>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline']}}</p>
+                    {% endif %}
+                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] and
+                    json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
+                    <p>Alternate Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
+                    {% endif %}
+                    <div id="textbox_gen">
+                       <p class="alignleft"><input id="movie_rating_stars"
+                                                     value={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}
+                                                     type="number" class="rating" min=0 max=10
+                                                     step=0.1
+                                                     data-size="xx" data-stars="10"></p>
+                        {% for genre in data_genres %}
+                        <button type="button" class="btn">{{genre}}</button>
+                        {% endfor %}
+                        <p class="alignright">
+                            {% if data_watched_status == True %}
+                            <input class="btn btn-default btn-submit" type="submit"
+                                   name="status"
+                                   value="Watched">
+                            {% else %}
+                            <input class="btn btn-default btn-submit" type="submit"
+                                   name="status"
+                                   value="Unwatched">
+                            {% endif %}
+                            {% if data_sync_status == False %}
+                            <input class="btn btn-default btn-submit" type="submit"
+                                   name="status"
+                                   value="Sync">
+                            {% endif %}
                         </p>
-                        <div id="tag_title">
-                            {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] and
-                            json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
-                            <BR><p>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline']}}</p>
-                            {% endif %}
-                            {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] and
-                            json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
-                            <BR><p>Alternate Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
-                            {% endif %}
-                        </div>
-                        <div style="clear: both;"></div>
-                        <div id="textbox_gen">
-                           <BR><p class="alignleft"><input id="movie_rating_stars"
-                                                         value={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}
-                                                         type="number" class="rating" min=0 max=10
-                                                         step=0.1
-                                                         data-size="xx" data-stars="10"></p>
-                            {% for genre in data_genres %}
-                            <button type="button" class="btn">{{genre}}</button>
-                            {% endfor %}
-                            <p class="alignright">
-                                {% if data_watched_status == True %}
-                                <input class="btn btn-default btn-submit" type="submit"
-                                       name="status"
-                                       value="Watched">
-                                {% else %}
-                                <input class="btn btn-default btn-submit" type="submit"
-                                       name="status"
-                                       value="Unwatched">
-                                {% endif %}
-                                {% if data_sync_status == False %}
-                                <input class="btn btn-default btn-submit" type="submit"
-                                       name="status"
-                                       value="Sync">
-                                {% endif %}
-                            </p>
-                            {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage'] %}
-                            <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}</a>
-                            </p>
-                            {% endif %}
-                        </div>
-                        <div style="clear: both;"></div>
+                        {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage'] %}
+                        <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
+                        {% endif %}
                     </div>
+                    <div style="clear: both;"></div>
                 </div>
             </div>
         </div>
@@ -146,9 +140,7 @@
                     Overview
                 </div>
                 <div class="card-body">
-                    <p class="card-text">
-                        {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['overview']}}
-                    <p>
+                    <p class="card-text">{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['overview']}}<p>
                 </div>
             </div>
         </div>
