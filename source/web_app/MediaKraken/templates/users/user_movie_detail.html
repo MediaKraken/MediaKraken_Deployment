@@ -89,12 +89,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div id="textbox">
+                    <div class="table-responsive">
                         <p>
                             <span style="float: left">Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</span>
                             <span style="float: right">Release Date: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</span>
                         </p>
-                    </div
+                    </div>
                     {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] and
                     json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
                     <p>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline']}}</p>
