@@ -57,12 +57,6 @@
         <button class="dropdown-btn">Cloud
             <i class="fa fa-caret-down"></i>
         </button>
-        <div class="dropdown-container">
-            <a href="{{ url_for('admins.admin_cloud_aws_s3') }}" id="admin_navmenu_aws">AWS S3</a>
-            <a href="{{ url_for('admins.admin_cloud_google_drive') }}" id="admin_navmenu_google_drive">Google Drive</a>
-            <a href="{{ url_for('admins.admin_cloud_dropbox') }}" id="admin_navmenu_dropbox">Dropbox</a>
-            <a href="{{ url_for('admins.admin_cloud_onedrive') }}" id="admin_navmenu_onedrive">OneDrive</a>
-        </div>
 
         <a href="{{ url_for('admins.admin_database_statistics') }}" id="admin_navmenu_database_stats"><i class="fa fa-database"></i> DB Statistics</a>
         <a href="{{ url_for('admins_docker.docker_stat') }}" id="admin_navmenu_docker_stats"><i class="fa fa-anchor"></i> Docker Statistics</a>
