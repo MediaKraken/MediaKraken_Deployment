@@ -80,12 +80,12 @@
                         </div>
                     </div>
                     <div class="col-sm">
-                        <ul class="list-group">
+                        <div class="list-group">
                             {% for playback_device in data_playback_device %}
-                                <li class="list-group-item">{{playback_device}}</li>
+                                <a href="#" class="list-group-item list-group-item-action">{{playback_device}}</a>
                             {% endfor %}
-                            <li class="list-group-item">Web Viewer</li>
-                        </ul>
+                            <a href="#" class="list-group-item list-group-item-action">Web Viewer</a>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
