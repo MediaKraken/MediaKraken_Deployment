@@ -80,11 +80,11 @@
                         </div>
                     </div>
                     <div class="col-sm">
-                        <div class="list-group">
+                        <div class="btn-group-vertical">
                             {% for playback_device in data_playback_device %}
-                                <a href="#" class="list-group-item list-group-item-action">{{playback_device}}</a>
+                                <input class="btn btn-default btn-submit" type="submit" name="playback" value="{{playback_device}}">
                             {% endfor %}
-                            <a href="#" class="list-group-item list-group-item-action">Web Viewer</a>
+                            <input class="btn btn-default btn-submit" type="submit" name="playback" value="Web Viewer">
                         </div>
                     </div>
                 </div>
