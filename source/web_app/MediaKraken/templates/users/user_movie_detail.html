@@ -22,13 +22,13 @@
                     return data.node.isFolder();
                 },
                 multi: {
-                    mode: "sameParent"  // Restrict range selection behavior
+                    mode: "sameType"  // Restrict range selection behavior
                 },
                 source: [
                 {% for stream_uuid in data_ffprobe_data %}
                     { title: "{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}", isFolder: true, expanded: true,
                         children: [
-                            { title: "Audio Stream(s):", isFolder: true, expanded: true,
+                            { title: "Audio Stream(s):", isFolder: true, expanded: true, unselectableStatus: true,
                                 children: [
                                     {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
                                         { title: "{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}" },
@@ -36,7 +36,7 @@
                                 ]
                             },
                             {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
-                                { title: "Subtitle(s):", isFolder: true, expanded: true,
+                                { title: "Subtitle(s):", isFolder: true, expanded: true, unselectableStatus: true,
                                     children: [
                                         {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
                                             { title: "{{subtitle_stream}}" },
