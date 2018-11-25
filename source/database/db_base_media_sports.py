@@ -201,7 +201,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -213,7 +213,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -227,7 +227,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -250,7 +250,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -282,7 +282,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
@@ -291,7 +291,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
@@ -301,7 +301,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
@@ -318,7 +318,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
@@ -337,7 +337,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name as name,'
-                                               ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
+                                               ' mm_media_guid as guid, mm_metadata_sports_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metajson,'
                                                ' mm_media_path as mediapath from mm_media,'
                                                ' mm_metadata_sports where mm_media_class_guid = %s'
@@ -353,7 +353,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name as name,'
-                                               ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
+                                               ' mm_media_guid as guid, mm_metadata_sports_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metajson,'
                                                ' mm_media_path as mediapath from mm_media,'
                                                ' mm_metadata_sports where mm_media_class_guid = %s'
@@ -370,7 +370,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name as name,'
-                                               ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
+                                               ' mm_media_guid as guid, mm_metadata_sports_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metaimagejson,'
                                                ' mm_media_path as mediapath'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
@@ -388,7 +388,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name as name,'
-                                               ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
+                                               ' mm_media_guid as guid, mm_metadata_sports_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metaimagejson,'
                                                ' mm_media_path as mediapath'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
@@ -410,7 +410,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -425,7 +425,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -441,7 +441,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -467,7 +467,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -499,7 +499,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
@@ -510,7 +510,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
@@ -523,7 +523,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
@@ -543,7 +543,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_sports_user_json, mm_metadata_localimage_json, mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
