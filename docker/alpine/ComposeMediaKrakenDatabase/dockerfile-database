@@ -24,22 +24,12 @@ ENV LANG en_US.utf8
 
 RUN mkdir /docker-entrypoint-initdb.d
 
-ENV PG_MAJOR 10
-#ENV PG_VERSION 10.2
-#ENV PG_SHA256 fe32009b62ddb97f7f014307ce9d0edb6972f5a698e63cb531088e147d145bad
-#ENV PG_VERSION 10.3
-#ENV PG_SHA256 6ea268780ee35e88c65cdb0af7955ad90b7d0ef34573867f223f14e43467931a
-#ENV PG_VERSION 10.4
-#ENV PG_SHA256 1b60812310bd5756c62d93a9f93de8c28ea63b0df254f428cd1cf1a4d9020048
-#ENV PG_VERSION 10.5
-#ENV PG_SHA256 6c8e616c91a45142b85c0aeb1f29ebba4a361309e86469e0fb4617b6a73c4011
-ENV PG_VERSION 10.6
-ENV PG_SHA256 68a8276f08bda8fbefe562faaf8831cb20664a7a1d3ffdbbcc5b83e08637624b  
-
+ENV PG_MAJOR 11
+ENV PG_VERSION 11.1
+ENV PG_SHA256 90815e812874831e9a4bf6e1136bf73bc2c5a0464ef142e2dfea40cda206db08
 
 RUN set -ex \
-	\
-	&& sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+        && sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
         && apk add --no-cache --virtual .fetch-deps \
 		ca-certificates \
 		openssl \
