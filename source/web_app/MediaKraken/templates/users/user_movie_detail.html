@@ -17,6 +17,13 @@
                     // page is reloaded.
                     alert("You activated " + node.data.title);
                 },
+                extensions: ["multi"],
+                unselectable: function(event, data) {
+                    return data.node.isFolder();
+                },
+                multi: {
+                    mode: "sameParent"  // Restrict range selection behavior
+                },
                 source: [
                 {% for stream_uuid in data_ffprobe_data %}
                     { title: "{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}", isFolder: true, expanded: true,

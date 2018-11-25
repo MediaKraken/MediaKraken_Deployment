@@ -32,8 +32,11 @@ def movie_detail(guid):
     Display move detail page
     """
     if request.method == 'POST':
-        # do NOT need to check for play video here,
-        # it's routed by the event itself in the html via the 'action' clause
+        if request.form['playback'] == 'Web Viewer':
+            return redirect(url_for('user_playback.user_video_player_videojs', mtype='hls',
+                                    guid=request.form['Video_Track'], chapter=1,
+                                    audio=request.form['Video_Play_Audio_Track'],
+                                    sub=request.form['Video_Play_Subtitles']))
         if request.form['status'] == 'Watched':
             g.db_connection.db_meta_movie_status_update(
                 guid, current_user.get_id(), False)
@@ -54,15 +57,9 @@ def movie_detail(guid):
             # launch ffmpeg to ffserver procecss
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    g.db_connection.db_media_path_by_uuid(
-                                                       media_guid_index)[
-                                                       0] + '\" http://localhost/stream.ffm'))
+                                                       media_guid_index)[0] + '\" http://localhost/stream.ffm'))
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
-        elif request.form['status'] == 'WebPlay':
-            return redirect(url_for('user_playback.user_video_player_videojs', mtype='hls',
-                                    guid=request.form['Video_Track'], chapter=1,
-                                    audio=request.form['Video_Play_Audio_Track'],
-                                    sub=request.form['Video_Play_Subtitles']))
     else:
         metadata_data = g.db_connection.db_meta_movie_by_media_uuid(guid)
         # fields returned
@@ -205,7 +202,6 @@ def movie_detail(guid):
         return render_template('users/user_movie_detail.html',
                                json_metadata=metadata_data,
                                data_genres=genres_list,
-                               data_playback_url='/users/playvideo_videojs/hls/',
                                data_poster_image=data_poster_image,
                                data_background_image=data_background_image,
                                data_json_media_chapters=data_json_media_chapters,
