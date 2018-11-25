@@ -73,7 +73,8 @@ CREATE TABLE public.mm_cron (
     mm_cron_enabled boolean,
     mm_cron_schedule text,
     mm_cron_last_run timestamp without time zone,
-    mm_cron_file_path text
+    mm_cron_file_path text,
+    mm_cron_json jsonb
 );
 
 
@@ -530,23 +531,6 @@ CREATE TABLE public.mm_sync (
 
 ALTER TABLE public.mm_sync OWNER TO metamanpg;
 
---
--- Name: mm_task; Type: TABLE; Schema: public; Owner: metamanpg
---
-
-CREATE TABLE public.mm_task (
-    mm_task_guid uuid NOT NULL,
-    mm_task_name text,
-    mm_task_description text,
-    mm_task_enabled boolean,
-    mm_task_schedule text,
-    mm_task_last_run timestamp without time zone,
-    mm_task_file_path text,
-    mm_task_json jsonb
-);
-
-
-ALTER TABLE public.mm_task OWNER TO metamanpg;
 
 --
 -- Name: mm_tv_schedule; Type: TABLE; Schema: public; Owner: metamanpg
@@ -708,7 +692,22 @@ COPY public.mm_channel (mm_channel_guid, mm_channel_name, mm_channel_media_id, m
 -- Data for Name: mm_cron; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_cron (mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path) FROM stdin;
+COPY public.mm_cron (mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path, mm_cron_json) FROM stdin;
+cbb42a96-f95f-4616-a0bb-e635e7b6d9ca	Anime	Match anime via Scudlee data	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_match_anime_id_scudlee.py	{"task": "anime", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
+00bcb1b1-7f16-4e90-8c55-77ce4c1ac86a	Collections	Create and update collection(s)	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_update_create_collections.py	{"task": "collection", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
+2345b078-c1d9-4f11-bd95-a625105c28f3	Create Chapter Image	Create chapter images for all media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_create_chapter_images.py	{"task": "chapter", "route_key": "mkque", "exchange_key": "mkque_ex"}
+9f60a368-4b07-4475-af34-df1e3eed2a1e	Roku Thumb	Generate Roku thumbnail images	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_roku_thumbnail_generate.py	{"task": "rokuthumbnail", "route_key": "mkque", "exchange_key": "mkque_ex"}
+7be16469-e0e5-44fd-8727-90ec21cae1c4	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_schedules_direct_updates.py	{"task": "update", "route_key": "schedulesdirect", "exchange_key": "mkque_metadata_ex"}
+e8d1169b-8b02-48cb-94a8-6219c09c7556	Subtitle	Download missing subtitles for media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_subtitle_downloader.py	{"task": "subtitle", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
+7831b403-408b-49db-8658-f565af581245	The Movie Database	Grab updated movie metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tmdb_updates.py	{"task": "update", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
+93ffc7eb-5560-4c49-91a6-da319851f13b	TheTVDB Update	Grab updated TheTVDB metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_thetvdb_updates.py	{"task": "update", "route_key": "thetvdb", "exchange_key": "mkque_metadata_ex"}
+c3eb29fc-140b-4933-ab27-3d2ca950b961	TVmaze Update	Grab updated TVmaze metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tvmaze_updates.py	{"task": "update", "route_key": "tvmaze", "exchange_key": "mkque_metadata_ex"}
+de9b4b9b-8cd2-482a-bfa1-14c298f27aef	Trailer	Download new trailers	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_trailer_download.py	{"task": "trailer", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
+950ec436-d010-44fb-a653-ef019bf05cc4	Backup	Backup Postgresql DB	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_backup.py	{"task": "dbbackup", "route_key": "mkque", "exchange_key": "mkque_ex"}
+ac093b30-f4ff-4e97-bb08-8ebb2b1e38d5	DB Vacuum	Postgresql Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_vacuum.py	{"task": "dbvacuum", "route_key": "mkque", "exchange_key": "mkque_ex"}
+e5b0d4dd-f8ce-4bc2-85b8-fccf5dfea202	iRadio Scan	Scan for iRadio stations	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_iradio_channels.py	{"task": "iradio", "route_key": "mkque", "exchange_key": "mkque_ex"}
+4974d078-cab7-4e37-8922-2a2c2202fb33	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_file_scan.py	{"task": "scan", "route_key": "mkque", "exchange_key": "mkque_ex"}
+144feb59-e15c-491c-8eb9-3a81cc62febe	Sync	Sync/Transcode media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_sync.py	{"task": "sync", "route_key": "mkque", "exchange_key": "mkque_ex"}
 \.
 
 
@@ -988,29 +987,6 @@ COPY public.mm_review (mm_review_guid, mm_review_metadata_id, mm_review_metadata
 --
 
 COPY public.mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_options_json) FROM stdin;
-\.
-
-
---
--- Data for Name: mm_task; Type: TABLE DATA; Schema: public; Owner: metamanpg
---
-
-COPY public.mm_task (mm_task_guid, mm_task_name, mm_task_description, mm_task_enabled, mm_task_schedule, mm_task_last_run, mm_task_file_path, mm_task_json) FROM stdin;
-cbb42a96-f95f-4616-a0bb-e635e7b6d9ca	Anime	Match anime via Scudlee data	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_match_anime_id_scudlee.py	{"task": "anime", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-00bcb1b1-7f16-4e90-8c55-77ce4c1ac86a	Collections	Create and update collection(s)	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_update_create_collections.py	{"task": "collection", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
-2345b078-c1d9-4f11-bd95-a625105c28f3	Create Chapter Image	Create chapter images for all media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_create_chapter_images.py	{"task": "chapter", "route_key": "mkque", "exchange_key": "mkque_ex"}
-9f60a368-4b07-4475-af34-df1e3eed2a1e	Roku Thumb	Generate Roku thumbnail images	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_roku_thumbnail_generate.py	{"task": "rokuthumbnail", "route_key": "mkque", "exchange_key": "mkque_ex"}
-7be16469-e0e5-44fd-8727-90ec21cae1c4	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_schedules_direct_updates.py	{"task": "update", "route_key": "schedulesdirect", "exchange_key": "mkque_metadata_ex"}
-e8d1169b-8b02-48cb-94a8-6219c09c7556	Subtitle	Download missing subtitles for media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_subtitle_downloader.py	{"task": "subtitle", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-7831b403-408b-49db-8658-f565af581245	The Movie Database	Grab updated movie metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tmdb_updates.py	{"task": "update", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
-93ffc7eb-5560-4c49-91a6-da319851f13b	TheTVDB Update	Grab updated TheTVDB metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_thetvdb_updates.py	{"task": "update", "route_key": "thetvdb", "exchange_key": "mkque_metadata_ex"}
-c3eb29fc-140b-4933-ab27-3d2ca950b961	TVmaze Update	Grab updated TVmaze metadata	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tvmaze_updates.py	{"task": "update", "route_key": "tvmaze", "exchange_key": "mkque_metadata_ex"}
-de9b4b9b-8cd2-482a-bfa1-14c298f27aef	Trailer	Download new trailers	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_trailer_download.py	{"task": "trailer", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-950ec436-d010-44fb-a653-ef019bf05cc4	Backup	Backup Postgresql DB	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_backup.py	{"task": "dbbackup", "route_key": "mkque", "exchange_key": "mkque_ex"}
-ac093b30-f4ff-4e97-bb08-8ebb2b1e38d5	DB Vacuum	Postgresql Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_vacuum.py	{"task": "dbvacuum", "route_key": "mkque", "exchange_key": "mkque_ex"}
-e5b0d4dd-f8ce-4bc2-85b8-fccf5dfea202	iRadio Scan	Scan for iRadio stations	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_iradio_channels.py	{"task": "iradio", "route_key": "mkque", "exchange_key": "mkque_ex"}
-4974d078-cab7-4e37-8922-2a2c2202fb33	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_file_scan.py	{"task": "scan", "route_key": "mkque", "exchange_key": "mkque_ex"}
-144feb59-e15c-491c-8eb9-3a81cc62febe	Sync	Sync/Transcode media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_sync.py	{"task": "sync", "route_key": "mkque", "exchange_key": "mkque_ex"}
 \.
 
 
