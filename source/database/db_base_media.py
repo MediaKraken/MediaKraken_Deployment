@@ -298,7 +298,7 @@ def db_read_media_path_like(self, media_path):
         return None
 
 
-def db_read_media_new_count(self, days_old=7):
+def db_read_media_new_count(self, search_value=None, days_old=7):
     """
     # new media count
     """
@@ -312,7 +312,7 @@ def db_read_media_new_count(self, days_old=7):
     return self.db_cursor.fetchone()[0]
 
 
-def db_read_media_new(self, days_old=7, offset=None, records=None):
+def db_read_media_new(self, offset=None, records=None, search_value=None, days_old=7):
     """
     # new media
     """

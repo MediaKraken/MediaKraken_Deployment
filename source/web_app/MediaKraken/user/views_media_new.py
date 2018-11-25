@@ -26,18 +26,18 @@ def user_newmedia_page():
     Display new media
     """
     page, per_page, offset = common_pagination.get_page_items()
-    # TODO replace with new media queries
     session['search_page'] = 'new_media'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=0,
+                                                  total=g.db_connection.db_read_media_new_count(session['search_text'],
+                                                                                                days_old=7),
                                                   record_name='new media',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
     return render_template('users/user_newmedia.html',
-                           media=g.db_connection.db_meta_person_list(offset, per_page,
-                                                                     session['search_text']),
+                           media=g.db_connection.db_read_media_new(offset, per_page,
+                                                                   session['search_text'], days_old=7),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
