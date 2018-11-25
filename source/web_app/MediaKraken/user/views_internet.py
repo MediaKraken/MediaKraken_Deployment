@@ -17,7 +17,7 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
 from common import common_google
-from common import common_network_twitch
+from common import common_network_twitchv5
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base
@@ -102,27 +102,32 @@ def user_internet_twitch():
     """
     Display twitchtv page
     """
-    twitch_api = common_network_twitch.CommonNetworkTwitch()
+    twitch_api = common_network_twitchv5.CommonNetworkTwitchV5(option_config_json)
     twitch_media = []
-    for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
-        common_global.es_inst.com_elastic_index('info', {"stream": stream_data})
-        try:
-            if stream_data['stream']['game'] is None:
-                twitch_media.append((stream_data['stream']['name'],
-                                     stream_data['stream']['preview']['medium'], 'Not Available'))
-            else:
-                twitch_media.append((stream_data['stream']['name'],
-                                     stream_data['stream']['preview']['medium'],
-                                     stream_data['stream']['game']))
-        except:
-            if stream_data['stream']['channel']['game'] is None:
-                twitch_media.append((stream_data['stream']['channel']['name'],
-                                     stream_data['stream']['preview']['medium'],
-                                     'Not Available'))
-            else:
-                twitch_media.append((stream_data['stream']['channel']['name'],
-                                     stream_data['stream']['preview']['medium'],
-                                     stream_data['stream']['channel']['game']))
+    for stream_data in twitch_api.com_net_twitch_get_featured():
+        pass
+
+    # twitch_api = common_network_twitch.CommonNetworkTwitch()
+    # twitch_media = []
+    # for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
+    #     common_global.es_inst.com_elastic_index('info', {"stream": stream_data})
+    #     try:
+    #         if stream_data['stream']['game'] is None:
+    #             twitch_media.append((stream_data['stream']['name'],
+    #                                  stream_data['stream']['preview']['medium'], 'Not Available'))
+    #         else:
+    #             twitch_media.append((stream_data['stream']['name'],
+    #                                  stream_data['stream']['preview']['medium'],
+    #                                  stream_data['stream']['game']))
+    #     except:
+    #         if stream_data['stream']['channel']['game'] is None:
+    #             twitch_media.append((stream_data['stream']['channel']['name'],
+    #                                  stream_data['stream']['preview']['medium'],
+    #                                  'Not Available'))
+    #         else:
+    #             twitch_media.append((stream_data['stream']['channel']['name'],
+    #                                  stream_data['stream']['preview']['medium'],
+    #                                  stream_data['stream']['channel']['game']))
     return render_template("users/user_internet_twitch.html", media=twitch_media)
 
 

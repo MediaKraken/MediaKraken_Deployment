@@ -19,7 +19,7 @@ soundcloud
 pyexcel
 natsort
 PyVimeo
-python-twitch
+python-twitch-client
 transmissionrpc
 passwordmeter
 cssmin

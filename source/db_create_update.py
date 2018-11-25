@@ -836,6 +836,8 @@ db_connection.db_opt_status_insert(json.dumps({'Backup': {'BackupType': 'local',
                                                'Trakt': {'ApiKey': None,
                                                          'ClientID': None,
                                                          'SecretKey': None},
+                                               'Twitch': {'ClientID': None,
+                                                          'OAuth': None},
                                                'SD': {'User': None,
                                                       'Password': None},
                                                }), json.dumps({'thetvdb_Updated_Epoc': 0}))
