@@ -22,7 +22,7 @@
                     return data.node.isFolder();
                 },
                 multi: {
-                    mode: "sameType"  // Restrict range selection behavior
+                    mode: "sameParent"  // Restrict range selection behavior
                 },
                 source: [
                 {% for stream_uuid in data_ffprobe_data %}
