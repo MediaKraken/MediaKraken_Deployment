@@ -30,7 +30,6 @@ from . import metadata_music_video
 from . import metadata_periodicals
 from . import metadata_person
 from . import metadata_sports
-from . import metadata_tv
 from . import metadata_tv_tvdb
 from . import metadata_tv_tvmaze
 
@@ -163,9 +162,7 @@ def metadata_search(thread_db, provider_name, download_data):
                 set_fetch = True
     elif provider_name == 'thesportsdb':
         metadata_uuid, match_result = metadata_sports.metadata_sports_lookup(thread_db,
-                                                                             download_data['mdq_download_json']['Path'],
-                                                                             download_data,
-                                                                             download_data['mdq_id'])
+                                                                             download_data)
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'themoviedb'
@@ -278,11 +275,11 @@ def metadata_fetch(thread_db, provider_name, download_data):
             pass
     elif provider_name == 'thetvdb':
         metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
-                                       download_data['mdq_download_json']['ProviderMetaID'])
+                                            download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'tvmaze':
         metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
-                                         download_data['mdq_download_json']['ProviderMetaID'])
+                                                download_data['mdq_download_json']['ProviderMetaID'])
         thread_db.db_download_delete(download_data['mdq_id'])
 
 

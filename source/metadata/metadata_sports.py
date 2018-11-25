@@ -33,12 +33,12 @@ else:
     THESPORTSDB_CONNECTION = None
 
 
-def metadata_sports_lookup(db_connection, media_file_path, download_que_json, download_que_id):
+def metadata_sports_lookup(db_connection, download_data):
     """
     Lookup sporting event by name
     """
     stripped_name = os.path.basename(
-        media_file_path.replace('_', ' ').rsplit('(', 1)[0].strip())
+        download_data['mdq_download_json']['Path'].replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
         common_global.es_inst.com_elastic_index('info', {"searching": stripped_name})
@@ -50,7 +50,7 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_json, do
         if thesportsdb_data is not None:
             thesportsdb_data = json.loads(thesportsdb_data)
             if thesportsdb_data['event'] is not None:
-                # TODO "find" the rigth event by name?  if multiples?
+                # TODO "find" the right event by name?  if multiples?
                 metadata_uuid = db_connection.db_meta_sports_guid_by_thesportsdb(
                     thesportsdb_data['event'][0]['idEvent'])
                 if metadata_uuid is None:
@@ -65,5 +65,5 @@ def metadata_sports_lookup(db_connection, media_file_path, download_que_json, do
                                                             json.dumps(
                                                                 thesportsdb_data),
                                                             json.dumps(image_json))
-                    db_connection.db_download_delete(download_que_id)
+                    db_connection.db_download_delete(download_data['mdq_id'])
     return metadata_uuid
