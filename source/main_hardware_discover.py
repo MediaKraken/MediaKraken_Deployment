@@ -36,6 +36,19 @@ common_signal.com_signal_set_break()
 
 media_devices = []
 
+# chromecast discover
+for chromecast_ip, data_value in common_hardware_chromecast.com_hard_chrome_discover():
+    # common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
+    media_devices.append({'Chromecast': {'Chrome IP': chromecast_ip,
+                                         'Chrome Model': data_value[0],
+                                         'Chrome Name': data_value[1]}})
+
+# dlna devices
+for dlna_devices in common_network_dlna.com_net_dlna_discover():
+    if dlna_devices == 'No compatible devices found.':
+        break
+    media_devices.append({'DLNA': dlna_devices})
+
 # hdhomerun tuner discovery
 tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 tuner_api.com_hdhomerun_discover()
@@ -52,12 +65,9 @@ for row_tuner in tuner_api.com_hdhomerun_list():
                                         'Active': True,
                                         'Channels': {}}})
 
-# chromecast discover
-for chromecast_ip, data_value in common_hardware_chromecast.com_hard_chrome_discover():
-    # common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
-    media_devices.append({'Chromecast': {'Chrome IP': chromecast_ip,
-                                         'Chrome Model': data_value[0],
-                                         'Chrome Name': data_value[1]}})
+# phillips hue discover
+hue_inst = common_hardware_hue.CommonHardwareHue()
+media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
 
 # roku discover
 for roku in common_hardware_roku_network.com_roku_network_discovery():
@@ -69,15 +79,8 @@ for soco in common_hardware_soco.common_hardware_soco():
     # common_global.es_inst.com_elastic_index('info', {'soco out': soco})
     media_devices.append({'Soco': soco})
 
-# phillips hue discover
-hue_inst = common_hardware_hue.CommonHardwareHue()
-media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
-
-# scan for dlna devices
-for dlna_devices in common_network_dlna.com_net_dlna_discover():
-    if dlna_devices == 'No compatible devices found.':
-        break
-    media_devices.append({'DLNA': dlna_devices})
-
-common_file.com_file_save_data('/mediakraken/devices/device_scan.txt',
-                               media_devices, True, False, None)
+common_file.com_file_save_data(file_name='/mediakraken/devices/device_scan.txt',
+                               data_block=media_devices,
+                               as_pickle=True,
+                               with_timestamp=False,
+                               file_ext=None)

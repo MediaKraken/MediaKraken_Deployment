@@ -19,9 +19,11 @@
 import os
 import subprocess
 import sys
+import time
 
 from common import common_config_ini
 from common import common_docker
+from common import common_file
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_share
@@ -113,6 +115,41 @@ if option_config_json['Docker Instances']['transmission']:
 
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
+
+# sleep for minute so hardware scan has time to run
+time.sleep(60)
+for hardware_device in common_file.com_file_load_data(
+        file_name='/mediakraken/devices/device_scan.txt', as_pickle=True):
+    if 'Chromecast' in hardware_device:
+        # TODO make sure this particular device not in DB
+        db_connection.db_hardware_insert(manufacturer='Chromecast',
+                                         model_name=hardware_device['Chromecast']['Chrome Model'],
+                                         json_data=hardware_device)
+    elif 'DLNA' in hardware_device:
+        # TODO make sure this particular device not in DB
+        db_connection.db_hardware_insert(manufacturer='DLNA',
+                                         model_name=hardware_device,
+                                         json_data=hardware_device)
+    elif 'HDHomeRun' in hardware_device:
+        # TODO make sure this particular device not in DB
+        db_connection.db_hardware_insert(manufacturer='HDHomeRun',
+                                         model_name=hardware_device['HDHomeRun']['HWModel'],
+                                         json_data=hardware_device)
+    elif 'Phue' in hardware_device:
+        # TODO make sure this particular device not in DB
+        db_connection.db_hardware_insert(manufacturer='Phue',
+                                         model_name=hardware_device,
+                                         json_data=hardware_device)
+    elif 'Roku' in hardware_device:
+        # TODO make sure this particular device not in DB
+        db_connection.db_hardware_insert(manufacturer='Roku',
+                                         model_name=hardware_device,
+                                         json_data=hardware_device)
+    elif 'Soco' in hardware_device:
+        # TODO make sure this particular device not in DB
+        db_connection.db_hardware_insert(manufacturer='Soco',
+                                         model_name=hardware_device,
+                                         json_data=hardware_device)
 
 # commit
 db_connection.db_commit()
