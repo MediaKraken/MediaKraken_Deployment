@@ -88,7 +88,10 @@ class CommonMetadataTMDB(object):
                         return 'info', self.com_tmdb_metadata_by_id(res.id)
                     else:
                         return 'idonly', res.id  # , s['title']
-            return 're', search.results
+            return None, None
+            # TODO multimatch......handle better!
+            # TODO so, returning None, None for now
+            # return 're', search.results
         else:
             return None, None
 
