@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+import json
 import os
 import subprocess
 import sys
@@ -124,32 +125,32 @@ for hardware_device in common_file.com_file_load_data(
         # TODO make sure this particular device not in DB
         db_connection.db_hardware_insert(manufacturer='Chromecast',
                                          model_name=hardware_device['Chromecast']['Chrome Model'],
-                                         json_data=hardware_device)
+                                         json_data=json.dumps(hardware_device))
     elif 'DLNA' in hardware_device:
         # TODO make sure this particular device not in DB
         db_connection.db_hardware_insert(manufacturer='DLNA',
                                          model_name=hardware_device,
-                                         json_data=hardware_device)
+                                         json_data=json.dumps(hardware_device))
     elif 'HDHomeRun' in hardware_device:
         # TODO make sure this particular device not in DB
         db_connection.db_hardware_insert(manufacturer='HDHomeRun',
                                          model_name=hardware_device['HDHomeRun']['HWModel'],
-                                         json_data=hardware_device)
+                                         json_data=json.dumps(hardware_device))
     elif 'Phue' in hardware_device:
         # TODO make sure this particular device not in DB
         db_connection.db_hardware_insert(manufacturer='Phue',
                                          model_name=hardware_device,
-                                         json_data=hardware_device)
+                                         json_data=json.dumps(hardware_device))
     elif 'Roku' in hardware_device:
         # TODO make sure this particular device not in DB
         db_connection.db_hardware_insert(manufacturer='Roku',
                                          model_name=hardware_device,
-                                         json_data=hardware_device)
+                                         json_data=json.dumps(hardware_device))
     elif 'Soco' in hardware_device:
         # TODO make sure this particular device not in DB
         db_connection.db_hardware_insert(manufacturer='Soco',
                                          model_name=hardware_device,
-                                         json_data=hardware_device)
+                                         json_data=json.dumps(hardware_device))
 
 # commit
 db_connection.db_commit()
