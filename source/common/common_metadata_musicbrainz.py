@@ -46,7 +46,7 @@ class CommonMetadataMusicbrainz(object):
                                      "spootdev@gmail.com "
                                      "https://https://github.com/MediaKraken/MediaKraken_Deployment")
         # If you are connecting to a development server
-        if option_config_json['MusicBrainz']['Host'] != None:
+        if option_config_json['MusicBrainz']['Host'] is not None:
             if option_config_json['MusicBrainz']['Host'] != 'Docker':
                 musicbrainzngs.set_hostname(option_config_json['MusicBrainz']['Host'] + ':'
                                             + option_config_json['MusicBrainz']['Port'])
@@ -98,7 +98,6 @@ class CommonMetadataMusicbrainz(object):
             return None
         else:
             for (idx, release) in enumerate(result['recording-list']):
-                common_global.es_inst.com_elastic_index('info', {"match #{}:".format(idx
-                                                                                     + 1)})
+                common_global.es_inst.com_elastic_index('info', {"match #{}:".format(idx + 1)})
                 self.show_release_details(release)
             return release['id']

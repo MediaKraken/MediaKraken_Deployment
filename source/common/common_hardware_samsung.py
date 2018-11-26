@@ -54,6 +54,7 @@ class CommonHardwareSamsung(object):
     def com_hardware_close(self):
         pass
 
+
 """
 Keycodes
 

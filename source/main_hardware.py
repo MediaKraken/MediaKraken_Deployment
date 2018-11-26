@@ -24,6 +24,7 @@ from common import common_global
 from common import common_hardware_hue
 from common import common_logging_elasticsearch
 from common import common_signal
+
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware')
 
@@ -158,7 +159,8 @@ def main():
     common_signal.com_signal_set_break()
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672'], shell=False)
+                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                                shell=False)
     wait_pid.wait()
     mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:

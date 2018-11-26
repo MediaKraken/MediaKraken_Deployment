@@ -17,6 +17,8 @@
 '''
 
 # https://github.com/MediaKraken-Dependancies/dosage
+import subprocess
+from shlex import split
 
 '''
 positional arguments:
@@ -47,6 +49,7 @@ optional arguments:
 '''
 
 
+# TODO allow set of base paths
 class CommonMetadataComicStrip(object):
     """
     Class for snagging comic strips
@@ -54,3 +57,21 @@ class CommonMetadataComicStrip(object):
 
     def __init__(self):
         pass
+
+    def com_meta_com_list_strips(self, adult_access=False):
+        if adult_access:
+            return subprocess.check_output(split('dosage --singlelist --adult'))
+        else:
+            return subprocess.check_output(split('dosage --singlelist'))
+
+    def com_meta_com_fetch_strip(self, strip_name, adult_access=False):
+        if adult_access:
+            return subprocess.check_output(split('dosage %s', (strip_name,)))
+        else:
+            return subprocess.check_output(split('dosage %s --adult', (strip_name,)))
+
+    def com_meta_com_current_fetch(self, adult_access=False):
+        if adult_access:
+            return subprocess.check_output(split('dosage @'))
+        else:
+            return subprocess.check_output(split('dosage @ --adult'))

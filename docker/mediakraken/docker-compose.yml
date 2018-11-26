@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 # MediaKraken
 
 # Volumes are HOST directory and then CONTAINER directory
@@ -23,7 +23,7 @@ services:
       # server will generate ssl key for use by web/nginx
       - ./data/certs:/mediakraken/key
       # if swarmip init
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - mediakraken_network
 
@@ -36,7 +36,7 @@ services:
       - "9101:9101"
     volumes:
       # needs socket for running image list
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     # needs to run as host so clients can see it on their subnet
     network_mode: host
     restart: unless-stopped
@@ -103,7 +103,7 @@ services:
       - rabbit
     entrypoint: python3 subprogram_ffprobe_metadata.py
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -138,7 +138,7 @@ services:
       - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server_metadata_api.py
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
       # stores posters/etc so webserver can present
       - static-volume:/mediakraken/web_app/MediaKraken/static
       # stores the xml/json xref files for anime match
@@ -154,8 +154,8 @@ services:
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     volumes:
       - ./data/nginx:/var/log/mediakraken/nginx
-      - ./data/certs:/etc/nginx/certs
-      - static-volume:/mediakraken/web_app/MediaKraken/static
+      - ./data/certs:/etc/nginx/certs:ro
+      - static-volume:/mediakraken/web_app/MediaKraken/static:ro
     ports:
       - "8900:8900"
     networks:
@@ -214,11 +214,11 @@ services:
       - "8903:8903"
     volumes:
       # for start of SSL server
-      - ./data/certs:/mediakraken/key
+      - ./data/certs:/mediakraken/key:ro
       - ./data/backup:/mediakraken/backup
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -243,7 +243,7 @@ services:
       - rabbit
     entrypoint: python3 subprogram_roku_thumbnail_generate.py
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -264,14 +264,16 @@ services:
       - nginx
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     volumes:
-      - ./data/directories:/mediakraken/mnt
+      - ./mkmount:/mediakraken/mnt
       - static-volume:/mediakraken/web_app/MediaKraken/static
       - ./data/webkey:/mediakraken/key
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       # hold log files
       - ./data/log:/mediakraken/log
+      # this stores the "push button" key
+      - ./data/phue:/mediakraken/phue        
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -281,6 +283,7 @@ networks:
   # Twisted, Database and AMQP communications network
   mediakraken_network:
     driver: bridge
+    name: mk_mediakraken_network
 
 volumes:
      static-volume:

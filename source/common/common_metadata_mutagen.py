@@ -41,6 +41,7 @@ def com_meta_mutagen_lenbit(file_name):
     audio = MP3(file_name)
     print((audio.info.length))
     print((audio.info.bitrate))
+    return audio
 
 
 def com_meta_mutagen_remove_id(file_name):

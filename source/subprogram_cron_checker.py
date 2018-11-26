@@ -37,7 +37,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # fire off wait for it script to allow rabbitmq connection
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+                             'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                            shell=False)
 wait_pid.wait()
 
 # start loop for cron checks
@@ -48,10 +49,9 @@ while 1:
         if row_data['mm_cron_name'] in pid_dict:
             pass
         else:
-            pid_dict[row_data['mm_cron_name']] = - \
-                9999999  # fake pid so it can't be found
+            pid_dict[row_data['mm_cron_name']] = -9999999  # fake pid so it can't be found
         time_frame = None
-        if row_data['mm_cron_schedule'] == "Weekly":  # chedule
+        if row_data['mm_cron_schedule'] == "Weekly":  # schedule
             time_frame = datetime.timedelta(weeks=1)
         elif row_data['mm_cron_schedule'].split(' ', 1)[0] == "Days":
             time_frame = datetime.timedelta(
@@ -63,7 +63,7 @@ while 1:
             time_frame = datetime.timedelta(
                 minutes=int(row_data['mm_cron_schedule'].split(' ', 1)[1]))
         date_check = datetime.datetime.now() - time_frame
-        # check to see if cron need to process
+        # check to see if cron needs to process
         if row_data['mm_cron_last_run'] < date_check:
             if not psutil.pid_exists(pid_dict[row_data['mm_cron_name']]):
                 if row_data['mm_cron_file_path'][-3:] == '.py':
@@ -72,9 +72,9 @@ while 1:
                 else:
                     proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                             shell=False)
-                    common_global.es_inst.com_elastic_index('info',
-                                                            {'cron': row_data['mm_cron_name'],
-                                                             'pid': proc.pid})
+                common_global.es_inst.com_elastic_index('info',
+                                                        {'cron': row_data['mm_cron_name'],
+                                                         'pid': proc.pid})
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
                 pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match

@@ -1,3 +1,10 @@
+.list-group{
+    max-height: 300px;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
 .pagination-page-info {
     padding: .6em;
     padding-left: 0;
@@ -111,11 +118,9 @@ img.center {
     float: right;
 }
 
-
 #data_background {
     background-color: rgb(136,136,136);
 }
-
 
 .neon {
   margin:20px 0 20px 0;
@@ -129,7 +134,6 @@ img.center {
              0 0 100px #228DFF,
              0 0 150px #228DFF;
 }
-
 
 #general_text {
     color: rgb(0,0,0);
@@ -149,7 +153,6 @@ img.center {
 }
 
 #movie_detail_div {
-    margin-left:101px;
     font-family: "Times New Roman", Times, serif;
     font-size: 170%;
 }
@@ -164,12 +167,6 @@ img.center {
     float:left;
     color:#F0F5F5;
     font-size: 150%;
-}
-
-#meta_detail_div {
-    margin-left:101px;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 170%;
 }
 
 div.transbox {
@@ -199,4 +196,3 @@ div.transbox {
 [class*='col-'] {
   float: left;
 }
-

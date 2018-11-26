@@ -24,7 +24,8 @@ from soco import SoCo
 def com_hardware_soco_discover():
     return soco.discover()
 
-#def com_hardware_soco_mute(self, zone, mute_status):
+
+# def com_hardware_soco_mute(self, zone, mute_status):
 #        zone_list[zone].mute = mute_status
 
 class CommonHardwareSoco(object):

@@ -1,173 +1,201 @@
 {% extends "layout.html" %}
 {% block content %}
 <body id="data_background">
-    <head>
-        <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/star-rating.min.css') }}" media="all" type="text/css"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" type="text/css"/>
-    </head>
-    {% if data %}
-    <div id="movie_detail">
-        <form name="video_play_stat_form" method="post">
-        {% if data_background_image is none %}
-        <img alt="fs_bg_image" src="{{ url_for('static', filename='/static/images/movie_ticket.png') }}" id="fs_bg_image" >
-        {% else %}
-        <img alt="fs_bg_image" src= "{{ url_for('static', filename='/static/meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" id="fs_bg_image" >
-        {% endif %}
-        <div id="movie_image_div" class="table-responsive">
-            {% if data_poster_image is none %}
-            <img class="center" src="{{ url_for('static', filename='/static/images/Movie-icon.png') }}">
-            {% else %}
-            <img class="center" src="{{ url_for('static', filename='/static/meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" >
-            {% endif %}
-            <table class="table table-hover">
-                <tbody>
-                    <tr>
-                        <div id="textbox">
-                            <p class="alignleft"> {{data_runtime}}</p>
-                            <p class="alignright">Rating: TODO </p>
-                        </div>
-                        <div style="clear: both;"></div>
-                        <div id="textbox">
-                            <p class="alignleft"> {{data_resolution}}</p>
-                            <p class="alignright">{{data_aspect}} </p>
-                        </div>
-                        <div style="clear: both;"></div>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div id="movie_detail_div" class="table-responsive">
-            <div id="textbox">
-                <p class="alignleft">Title: {{data}}</p>
-                <p class="alignright">Release Date: {{json_metadata['Meta']['themoviedb']['Meta']['release_date']}}</p>
-            </div>
-            <div style="clear: both;"></div>
-            <div id="tag_title">
-                {% if json_metadata['Meta']['themoviedb']['Meta']['tagline'] and json_metadata['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
-                <p>{{json_metadata['Meta']['themoviedb']['Meta']['tagline']}}</p>
-                {% endif %}
-                {% if json_metadata['Meta']['themoviedb']['Meta']['original_title'] and json_metadata['Meta']['themoviedb']['Meta']['original_title'] != data %}
-                <p>Alternate Title: {{json_metadata['Meta']['themoviedb']['Meta']['original_title']}}</p>
-                {% endif %}
-            </div>
-            <div style="clear: both;"></div>
-            <div id="textbox_gen">
-                {% if data_genres %}
-                <p class="alignleft">Genres: {{data_genres}}</p>
-                {% endif %}
-                <p class="alignright">
-                    {% if data_watched_status == True %}
-                    <input class="btn btn-default btn-submit" type="submit" name="status" value="Watched">
-                    {% else %}
-                    <input class="btn btn-default btn-submit" type="submit" name="status" value="Unwatched">
-                    {% endif %}
-                    {% if data_sync_status == False %}
-                    <input class="btn btn-default btn-submit" type="submit" name="status" value="Sync">
-                    {% endif %}
-                    {% if data_cast == True %}
-                    <a href= "{{ url_for('user_chromecast.user_cast', action='base', guid=data_guid) }}" >
-                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='/static/images/chromecast.png') }}">
-                    </a>
-                    {% endif %}
-                </p>
-            </div>
-            <div style="clear: both;"></div>
-            <div id="textbox">
-                <p class="alignleft">User Rating Avg: {{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}} with {{data_vote_count}} vote(s)</p>
-                <p class="alignright"><input id="movie_rating_stars" value={{json_metadata['Meta']['themoviedb']['Meta']['vote_average']}} type="number" class="rating" min=0 max=10 step=0.1 data-size="xx" data-stars="10"></p>
-            </div>
-            <div style="clear: both;"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p>Version(s):</p>
-                        <p>
-                            <select name="Video_Track", id="video_track">
-                                {% for video_data in data_vid_versions %}
-                                <option value={{video_data[1]}}>{{video_data[0]}}</option>
-                                {% endfor %}
-                            </select>
-                        </p>
-                        <p><input class="btn btn-default btn-submit" type="submit" name="status" value ="WebPlay"></p>
-                    </div>
-                    <div class="col-md-3">
-                        <p>Audio track(s):</p>
-                        <p>
-                            <select name="Video_Play_Audio_Track", id="video_play_audio_track">
-                                {% for audio_data in data_audio_track %}
-                                <option value={{audio_data[0]}}>{{audio_data[1]}}</option>
-                                {% endfor %}
-                            </select>
-                        </p>
-                        <p>
-                            Subtitle(s):
-                            <select name="Video_Play_Subtitles", id="video_play_subtitles">
-                                {% for sub_data in data_sub_track %}
-                                <option value={{sub_data[0]}}>{{sub_data[1]}}</option>
-                                {% endfor %}
-                            </select>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div style="clear: both;"></div>
-            {% if data_budget != "0" %}
-            <p>Budget: {{data_budget}}</p>
-            {% endif %}
-            {% if data_revenue != "0" %}
-            <p>Revenue: {{data_revenue}}</p>
-            {% endif %}
-            {% if json_metadata['Meta']['themoviedb']['Meta']['homepage'] %}
-            <p>Homepage: <a href = {{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
-            {% endif %}
-            {% if data_production %}
-            <p>Production Companies: {{data_production}}</p>
-            {% endif %}
-            {% if data_review %}
-            <p>Reviews: <button data-toggle="collapse" data-target="#review_collapse">Toggle</button></p>
-            <div id="review_collapse" class="collapse">
-                {% for review_info in data_review %}
-                <p>{{ review_info[0] + ": " + review_info[2] }}</p>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='fancytree/skin-bootstrap/ui.fancytree.min.css') }}">
+    <script type="text/javascript">
+        $(function () {
+            $("#tree").fancytree({
+                onActivate: function (node) {
+                    // A DynaTreeNode object is passed to the activation handler
+                    // Note: we also get this event, if persistence is on, and the
+                    // page is reloaded.
+                    alert("You activated " + node.data.title);
+                },
+                extensions: ["multi"],
+                unselectable: function(event, data) {
+                    return data.node.isFolder();
+                },
+                multi: {
+                    mode: "sameParent"  // Restrict range selection behavior
+                },
+                source: [
+                {% for stream_uuid in data_ffprobe_data %}
+                    { title: "{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}", isFolder: true, expanded: true,
+                        children: [
+                            { title: "Audio Stream(s):", isFolder: true, expanded: true, unselectableStatus: true,
+                                children: [
+                                    {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
+                                        { title: "{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}" },
+                                    {% endfor %}
+                                ]
+                            },
+                            {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
+                                { title: "Subtitle(s):", isFolder: true, expanded: true, unselectableStatus: true,
+                                    children: [
+                                        {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
+                                            { title: "{{subtitle_stream}}" },
+                                        {% endfor %}
+                                    ]
+                                },
+                            {% endif %}
+                        ]
+                    },
                 {% endfor %}
-            </div>
-            {% endif %}
-
-
-        </div>
-        <p>Overview: {{json_metadata['Meta']['themoviedb']['Meta']['overview']}}</p>
-        {% if data_json_media_chapters %}
-        <p>Chapters:</p>
-        <div id="container">
-            <div class="grid">
-                {% for chapter_info in data_json_media_chapters %}
-                <div class="col-1-4">
-                    <a href= "{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}" >
-                    <img class="b-lazy"
-                         src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/meta/images/' + chapter_info[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="150" width="150">
-                    </a>
-                    <p>{{chapter_info[0]}}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-        </form>
-    </div>
-    {% else %}
-    <p>No info found. ERROR! You should never see this message.</p>
-    {% endif %}
-    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='/static/js/star-rating.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
-    <script>
-        ;(function() {
-            // Initialize
-            var bLazy = new Blazy();
-        })();
+                ]
+            });
+        });
     </script>
+    <style>
+        body {
+          padding-top: 100px;
+        }
+        @media (max-width: 980px) {
+            body {
+              padding-top: 0;
+            }
+        }
+    </style>
+</head>
+{% if json_metadata %}
+<div id="movie_detail">
+    {% if data_background_image is none %}
+    <img alt="fs_bg_image" src="{{ url_for('static', filename='images/movie_ticket.png') }}" id="fs_bg_image">
+    {% else %}
+    <img alt="fs_bg_image" src="{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" id="fs_bg_image">
+    {% endif %}
+    <form name="video_play_stat_form" method="post">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="table-responsive">
+                    {% if data_poster_image is none %}
+                    <img class="center" src="{{ url_for('static', filename='images/Movie-icon.png') }}">
+                    {% else %}
+                    <img class="center" src="{{ url_for('static', filename='meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="row">
+                    <div class="col-sm">
+                        <div id="tree">
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="btn-group-vertical">
+                            {% for playback_device in data_playback_device %}
+                                <input class="btn btn-default btn-submit" type="submit" name="playback" value="{{playback_device}}">
+                            {% endfor %}
+                            <input class="btn btn-default btn-submit" type="submit" name="playback" value="Web Viewer">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="table-responsive">
+                        <p>
+                            <span style="float: left">Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</span>
+                            <span style="float: right">Release Date: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</span>
+                        </p>
+                    </div>
+                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] and
+                    json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
+                    <p>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline']}}</p>
+                    {% endif %}
+                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] and
+                    json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
+                    <p>Alternate Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
+                    {% endif %}
+                    <div id="textbox_gen">
+                       <p class="alignleft"><input id="movie_rating_stars"
+                                                     value={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}
+                                                     type="number" class="rating" min=0 max=10
+                                                     step=0.1
+                                                     data-size="xx" data-stars="10"></p>
+                        {% for genre in data_genres %}
+                        <button type="button" class="btn">{{genre}}</button>
+                        {% endfor %}
+                        <p class="alignright">
+                            {% if data_watched_status == True %}
+                            <input class="btn btn-default btn-submit" type="submit"
+                                   name="status"
+                                   value="Watched">
+                            {% else %}
+                            <input class="btn btn-default btn-submit" type="submit"
+                                   name="status"
+                                   value="Unwatched">
+                            {% endif %}
+                            {% if data_sync_status == False %}
+                            <input class="btn btn-default btn-submit" type="submit"
+                                   name="status"
+                                   value="Sync">
+                            {% endif %}
+                        </p>
+                        {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage'] %}
+                        <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
+                        {% endif %}
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    Overview
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['overview']}}<p>
+                </div>
+            </div>
+        </div>
+        {% if data_json_media_chapters %}
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    Chapters
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                    <div class="grid">
+                        {% for chapter_info in data_json_media_chapters %}
+                        <div class="col-1-4">
+                            <a href="{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}">
+                                <img class="b-lazy"
+                                     src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+                                     data-src="{{ url_for('static', filename='meta/images/' + chapter_info[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}"
+                                     height="150" width="150">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% else %}
+<p>No info found. ERROR! You should never see this message.</p>
+{% endif %}
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/star-rating.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+<script src="{{ url_for('static', filename='fancytree/jquery.fancytree-all-deps.min.js') }}"></script>
+<script src="{{ url_for('static', filename='fancytree/modules/jquery.fancytree.ui-deps.js') }}"></script>
+<script src="{{ url_for('static', filename='fancytree/modules/jquery.fancytree.multi.js') }}"></script>
+<script>
+    ;(function() {
+        // Initialize
+        var bLazy = new Blazy();
+    })();
+</script>
 </body>
 {% endblock %}

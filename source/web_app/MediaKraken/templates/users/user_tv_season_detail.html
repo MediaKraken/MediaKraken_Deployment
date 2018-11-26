@@ -3,21 +3,21 @@
 <body id="data_background">
   <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/star-rating.min.css') }}" media="all" type="text/css"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
   </head>
 {% if data %}
   <div id="movie_detail">
       {% if data_background_image is not none %}
-          <img alt="fs_bg_image" src= "{{ url_for('static', filename='/static/meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" id="fs_bg_image" >
+          <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" id="fs_bg_image" >
       {% endif %}
       <div id="movie_image_div" class="table-responsive">
           {% if data_poster_image is none %}
-              <img class="center" src= "{{ url_for('static', filename='/static/images/missing_icon.jpg') }}">
+              <img class="center" src= "{{ url_for('static', filename='images/missing_icon.jpg') }}">
           {% else %}
-              <img class="center" src= "{{ url_for('static', filename='/static/meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" >
+              <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" >
           {% endif %}
         <table class="table table-hover">
         <tbody>
@@ -65,9 +65,9 @@
                     <div class="wrapper">
                       <a href= "{{ url_for('user_tv.user_tv_episode_detail_page', guid=data_guid, season=None, episode=data_episode_count[episode_info][2] ) }}" >
                       {% if data_episode_count[episode_info][1] == "missing_icon.jpg" %}
-                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/images/missing_icon.jpg') }}" alt= "{{ url_for('static', filename='/static/meta/images/missing_icon.jpg') }}" height="200" width="300">
+                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/missing_icon.jpg') }}" alt= "{{ url_for('static', filename='meta/images/missing_icon.jpg') }}" height="200" width="300">
                       {% else %}
-                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" alt= "{{ url_for('static', filename='/static/meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="210" width="350">
+                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" alt= "{{ url_for('static', filename='meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="210" width="350">
                       {% endif %}
                       </a>
                         <div class="description">
@@ -82,10 +82,10 @@
 {% else %}
 <p>No info found. ERROR! You should never see this message.</p>
   {% endif %}
-  <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}" type="text/javascript"></script>
-<script src="{{ url_for('static', filename='/static/js/star-rating.min.js') }}" type="text/javascript"></script>
-<script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/star-rating.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
 <script>
     ;(function() {
         // Initialize

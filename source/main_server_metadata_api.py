@@ -28,16 +28,12 @@ from common import common_signal
 
 # TODO should be using env variables
 # build image directories if needed
-if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
-    pass
-else:
+if not os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/images/backdrop/a'):
     build_image_dirs()
 
 # TODO should be using env variables
 # build trailer directories if needed
-if os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/a'):
-    pass
-else:
+if not os.path.isdir('/mediakraken/web_app/MediaKraken/static/meta/trailers/trailer/a'):
     build_trailer_dirs()
 
 # start logging
@@ -49,7 +45,8 @@ common_signal.com_signal_set_break()
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkrabbitmq', '-p', ' 5672'], shell=False)
+                             'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                            shell=False)
 wait_pid.wait()
 
 # fire up the workers for each provider

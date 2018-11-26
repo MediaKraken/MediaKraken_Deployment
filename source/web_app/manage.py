@@ -3,6 +3,7 @@
 
 
 import os
+import subprocess
 
 from MediaKraken.app import create_app
 from MediaKraken.database import db
@@ -40,4 +41,8 @@ manager.add_command("urls", ShowUrls())
 manager.add_command("clean", Clean())
 
 if __name__ == '__main__':
+    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
+                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                                shell=False)
+    wait_pid.wait()
     manager.run()

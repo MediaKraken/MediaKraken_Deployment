@@ -17,17 +17,17 @@
 '''
 
 import subprocess
-from datetime import timedelta
-
 from concurrent.futures import ThreadPoolExecutor
+from datetime import timedelta
+from shlex import split
 
 from common import common_cloud
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_xfer
 from common import common_signal
-from shlex import split
+from common import common_xfer
+
 
 def worker(row_data):
     """

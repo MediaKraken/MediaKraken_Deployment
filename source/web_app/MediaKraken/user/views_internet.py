@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, request, session
+from flask import Blueprint, render_template, g, session
 from flask_login import login_required
 
 blueprint = Blueprint("user_internet", __name__, url_prefix='/users',
@@ -17,7 +17,7 @@ sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
 from common import common_google
-from common import common_network_twitch
+from common import common_network_twitchv5
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base
@@ -85,6 +85,7 @@ def user_internet_vimeo():
     """
     return render_template("users/user_internet_vimeo.html")
 
+
 @blueprint.route('/internet/internet_vimeo_detail/<guid>')
 @login_required
 def user_internet_vimeo_detail(guid):
@@ -93,6 +94,7 @@ def user_internet_vimeo_detail(guid):
     """
     pass
 
+
 # twitch tv
 @blueprint.route('/internet/internet_twitch')
 @login_required
@@ -100,27 +102,32 @@ def user_internet_twitch():
     """
     Display twitchtv page
     """
-    twitch_api = common_network_twitch.CommonNetworkTwitch()
+    twitch_api = common_network_twitchv5.CommonNetworkTwitchV5(option_config_json)
     twitch_media = []
-    for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
-        common_global.es_inst.com_elastic_index('info', {"stream": stream_data})
-        try:
-            if stream_data['stream']['game'] is None:
-                twitch_media.append((stream_data['stream']['name'],
-                                     stream_data['stream']['preview']['medium'], 'Not Available'))
-            else:
-                twitch_media.append((stream_data['stream']['name'],
-                                     stream_data['stream']['preview']['medium'],
-                                     stream_data['stream']['game']))
-        except:
-            if stream_data['stream']['channel']['game'] is None:
-                twitch_media.append((stream_data['stream']['channel']['name'],
-                                     stream_data['stream']['preview']['medium'],
-                                     'Not Available'))
-            else:
-                twitch_media.append((stream_data['stream']['channel']['name'],
-                                     stream_data['stream']['preview']['medium'],
-                                     stream_data['stream']['channel']['game']))
+    for stream_data in twitch_api.com_net_twitch_get_featured():
+        pass
+
+    # twitch_api = common_network_twitch.CommonNetworkTwitch()
+    # twitch_media = []
+    # for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
+    #     common_global.es_inst.com_elastic_index('info', {"stream": stream_data})
+    #     try:
+    #         if stream_data['stream']['game'] is None:
+    #             twitch_media.append((stream_data['stream']['name'],
+    #                                  stream_data['stream']['preview']['medium'], 'Not Available'))
+    #         else:
+    #             twitch_media.append((stream_data['stream']['name'],
+    #                                  stream_data['stream']['preview']['medium'],
+    #                                  stream_data['stream']['game']))
+    #     except:
+    #         if stream_data['stream']['channel']['game'] is None:
+    #             twitch_media.append((stream_data['stream']['channel']['name'],
+    #                                  stream_data['stream']['preview']['medium'],
+    #                                  'Not Available'))
+    #         else:
+    #             twitch_media.append((stream_data['stream']['channel']['name'],
+    #                                  stream_data['stream']['preview']['medium'],
+    #                                  stream_data['stream']['channel']['game']))
     return render_template("users/user_internet_twitch.html", media=twitch_media)
 
 
@@ -172,6 +179,7 @@ def user_iradio_list():
         mediadata = g.db_connection.db_iradio_list(offset, per_page)
     return render_template("users/user_iradio_list.html")
 
+
 @blueprint.route('/iradio_detail/<guid>')
 @login_required
 def user_iradio_detail(guid):
@@ -179,6 +187,7 @@ def user_iradio_detail(guid):
     Display main page for internet radio
     """
     pass
+
 
 @blueprint.before_request
 def before_request():

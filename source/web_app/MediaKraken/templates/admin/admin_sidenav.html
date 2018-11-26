@@ -57,12 +57,6 @@
         <button class="dropdown-btn">Cloud
             <i class="fa fa-caret-down"></i>
         </button>
-        <div class="dropdown-container">
-            <a href="{{ url_for('admins.admin_cloud_aws_s3') }}" id="admin_navmenu_aws">AWS S3</a>
-            <a href="{{ url_for('admins.admin_cloud_google_drive') }}" id="admin_navmenu_google_drive">Google Drive</a>
-            <a href="{{ url_for('admins.admin_cloud_dropbox') }}" id="admin_navmenu_dropbox">Dropbox</a>
-            <a href="{{ url_for('admins.admin_cloud_onedrive') }}" id="admin_navmenu_onedrive">OneDrive</a>
-        </div>
 
         <a href="{{ url_for('admins.admin_database_statistics') }}" id="admin_navmenu_database_stats"><i class="fa fa-database"></i> DB Statistics</a>
         <a href="{{ url_for('admins_docker.docker_stat') }}" id="admin_navmenu_docker_stats"><i class="fa fa-anchor"></i> Docker Statistics</a>
@@ -99,17 +93,15 @@
         <a href="{{ url_for('admins.admin_server_settings') }}" id="admin_navmenu_server_settings"><i class="glyphicon glyphicon-cog"></i> Server</a>
         <a href="{{ url_for('admins_link.admin_server_link_server') }}" id="admin_navmenu_server_link"><i class="glyphicon glyphicon-link"></i>Server Links</a>
         <a href="{{ url_for('admins_share.admin_share') }}" id="admin_navmenu_share"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a>
-        <a href="{{ url_for('admins_task.admin_task_display_all') }}" id="admin_navmenu_task"><i class="glyphicon glyphicon-tasks"></i>Task</a>
 
         {% if data_transmission_active %}
         <a href="{{ url_for('admins_transmission.admin_transmission') }}" id="admin_navmenu_transmission"><i class="glyphicon glyphicon-globe"></i>Transmission</a>
         {% endif %}
         <a href="{{ url_for('admins_users.admin_users') }}" id="admin_navmenu_users"><i class="glyphicon glyphicon-user"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
         <a href="{{ url_for('admins.admin_server_zfs') }}" id="admin_navmenu_zfs"><i class="fa fa-database"></i>ZFS</a>
-
     </div>
-    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script>
         var dropdown = document.getElementsByClassName("dropdown-btn");
         var i;

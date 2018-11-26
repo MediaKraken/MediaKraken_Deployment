@@ -19,13 +19,47 @@
 import os
 from datetime import date
 
+from gevent import monkey  # pylint: disable=import-error
+
+monkey.patch_all()
 import libcloud
-from gevent import monkey
 
 from . import common_global
 from . import common_internationalization
 
-monkey.patch_all()
+supported_providers = {
+    'Aliyun OSS': 'ALIYUN_OSS',
+    'PCextreme AuroraObjects': 'AURORAOBJECTS',
+    'Microsoft Azure (blobs)': 'AZURE_BLOBS',
+    'Backblaze B2': 'BACKBLAZE_B2',
+    'CloudFiles': 'CLOUDFILES',
+    'DigitalOcean Spaces': 'DIGITALOCEAN_SPACES',
+    'Google Cloud Storage': 'GOOGLE_STORAGE',
+    'KTUCloud Storage': 'KTUCLOUD',
+    'Local Storage': 'LOCAL',
+    'Nimbus.io': 'NIMBUS',
+    'Ninefold': 'NINEFOLD',
+    'OpenStack Swift': 'OPENSTACK_SWIFT',
+    'Amazon S3 (us-east-1)': 'S3',
+    'Amazon S3 (ap-northeast)': 'S3_AP_NORTHEAST',
+    'Amazon S3 (ap-northeast-1)': 'S3_AP_NORTHEAST1',
+    'Amazon S3 (ap-northeast-2)': 'S3_AP_NORTHEAST2',
+    'Amazon S3 (ap-south-1)': 'S3_AP_SOUTH',
+    'Amazon S3 (ap-southeast-1)': 'S3_AP_SOUTHEAST',
+    'Amazon S3 (ap-southeast-2)': 'S3_AP_SOUTHEAST2',
+    'Amazon S3 (ca-central-1)': 'S3_CA_CENTRAL',
+    'Amazon S3 (cn-north-1)': 'S3_CN_NORTH',
+    'Amazon S3 (eu-central-1)': 'S3_EU_CENTRAL',
+    'Amazon S3 (eu-west-1)': 'S3_EU_WEST',
+    'Amazon S3 (eu-west-2)': 'S3_EU_WEST2',
+    'Ceph RGW': 'S3_RGW',
+    'RGW Outscale': 'S3_RGW_OUTSCALE',
+    'Amazon S3 (sa-east-1)': 'S3_SA_EAST',
+    'Amazon S3 (us-east-2)': 'S3_US_EAST2',
+    'Amazon S3 (us-gov-west-1)': 'S3_US_GOV_WEST',
+    'Amazon S3 (us-west-1)': 'S3_US_WEST',
+    'Amazon S3 (us-west-2)': 'S3_US_WEST_OREGON',
+}
 
 
 class CommonLibCloud(object):
@@ -34,10 +68,9 @@ class CommonLibCloud(object):
     """
 
     def __init__(self, option_config_json, cloud_provider):
-        self.cls = libcloud.get_driver(libcloud.DriverType.COMPUTE,
-                                       libcloud.DriverType.COMPUTE.RACKSPACE)
-        self.driver = self.cls(option_config_json['Cloud'][cloud_provider]['User'],
-                               option_config_json['Cloud'][cloud_provider]['API_Key'])
+        self.cls = libcloud.get_driver(supported_providers[cloud_provider])
+        self.driver = self.cls(key=option_config_json['Cloud'][cloud_provider]['User'],
+                               secret=option_config_json['Cloud'][cloud_provider]['API_Key'])
         self.user = option_config_json['Cloud'][cloud_provider]['User']
 
     def com_net_cloud_upload(self, container_name, input_file_name, output_file_name):

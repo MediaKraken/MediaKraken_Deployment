@@ -30,14 +30,14 @@ def metadata_music_video_list():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_music_video_count(
-                                                      None, session['search_text'] ),
+                                                      None, session['search_text']),
                                                   record_name='music video(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
     return render_template('users/metadata/meta_music_video_list.html',
                            media=g.db_connection.db_meta_music_video_list(offset, per_page,
-                                                             session['search_text']),
+                                                                          session['search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

@@ -24,6 +24,7 @@ from common import common_global
 from common import common_hardware_roku_bif
 from common import common_logging_elasticsearch
 from common import common_signal
+
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_roku_thumbnail_generate')
@@ -113,11 +114,10 @@ class MKConsumer(object):
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
         if body is not None:
-            common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
-            if json_message['Type'] == 'Roku':
-                if json_message['Subtype'] == 'Thumbnail':
-                    common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
+            common_global.es_inst.com_elastic_index('info', {'msg body': json_message})
+            if json_message['Type'] == 'Roku' and json_message['Subtype'] == 'Thumbnail':
+                common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
@@ -149,7 +149,8 @@ class MKConsumer(object):
 def main():
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672'], shell=False)
+                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                                shell=False)
     wait_pid.wait()
     mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     # set signal exit breaks

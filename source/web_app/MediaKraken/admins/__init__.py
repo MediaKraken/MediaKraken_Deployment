@@ -11,7 +11,6 @@ from . import views_link
 from . import views_messages
 from . import views_reports
 from . import views_share
-from . import views_task
 from . import views_transmission
 from . import views_tvtuners
 from . import views_users

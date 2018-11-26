@@ -332,8 +332,7 @@ option_config_json, thread_db = common_config_ini.com_config_read()
 # table the class_text into a dict...will lessen the db calls
 class_text_dict = {}
 for class_data in thread_db.db_media_class_list(None, None):
-    class_text_dict[class_data['mm_media_class_guid']
-    ] = class_data['mm_media_class_type']
+    class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
 
 # pika rabbitmq connection
 parameters = pika.ConnectionParameters('mkrabbitmq',
@@ -342,10 +341,13 @@ connection = pika.BlockingConnection(parameters)
 
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_metadata_ex", exchange_type="direct",
+exchange = channel.exchange_declare(exchange="mkque_metadata_ex",
+                                    exchange_type="direct",
                                     durable=True)
-queue = channel.queue_declare(queue=content_providers, durable=True)
-channel.queue_bind(exchange="mkque_metadata_ex", queue=content_providers)
+queue = channel.queue_declare(queue=content_providers,
+                              durable=True)
+channel.queue_bind(exchange="mkque_metadata_ex",
+                   queue=content_providers)
 channel.basic_qos(prefetch_count=1)
 # channel.basic_consume(on_message, queue=content_providers, no_ack=False)
 # channel.start_consuming(inactivity_timeout=1)
@@ -355,11 +357,10 @@ metadata_last_id = None
 metadata_last_title = None
 metadata_last_year = None
 while True:
-    # common_global.es_inst.com_elastic_index('info', {'stuff':'worker thread before read provider %s', content_providers)
+    # grab new batch of records to process by content provider
     for row_data in thread_db.db_download_read_provider(content_providers):
-        common_global.es_inst.com_elastic_index('info', {"worker meta api row":
-                                                             row_data})
-        # mdq_id,mdq_download_json
+        common_global.es_inst.com_elastic_index('info', {"worker meta api row": row_data})
+        # checking each provider like this to send through the limiter decorator
         if content_providers == 'anidb':
             anidb(thread_db, row_data)
         elif content_providers == 'chart_lyrics':
@@ -400,6 +401,7 @@ while True:
             tvmaze(thread_db, row_data)
         elif content_providers == 'tvshowtime':
             tvshowtime(thread_db, row_data)
+        # Z records are the start of all lookups
         elif content_providers == 'Z':
             common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
                                                                  class_text_dict[row_data[
@@ -409,61 +411,48 @@ while True:
                                                              'dl json': row_data[
                                                                  'mdq_download_json']})
             metadata_uuid = None
-            # check for book/etc
-            if class_text_dict[row_data['mdq_download_json']['ClassID']] == 'Book':
-                # begin id process
-                metadata_uuid = metadata_identification.metadata_identification(thread_db,
-                                                                                class_text_dict[
-                                                                                    row_data[
-                                                                                        'mdq_download_json'][
-                                                                                        'ClassID']],
-                                                                                row_data[
-                                                                                    'mdq_download_json'],
-                                                                                row_data['mdq_id'],
-                                                                                None)
-            else:
-                # check for dupes by name/year
-                file_name = guessit(row_data['mdq_download_json']['Path'])
-                if type(file_name['title']) == list:
-                    file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-                common_global.es_inst.com_elastic_index('info', {'worker Z filename':
-                                                                     str(file_name)})
-                if 'title' in file_name:
-                    if 'year' in file_name:
-                        if type(file_name['year']) == list:
-                            file_name['year'] = file_name['year'][0]
-                        if file_name['title'] == metadata_last_title \
-                                and file_name['year'] == metadata_last_year:
-                            thread_db.db_download_delete(row_data['mdq_id'])
-                            metadata_uuid = metadata_last_id
-                    elif file_name['title'] == metadata_last_title:
+            # check for dupes by name/year
+            file_name = guessit(row_data['mdq_download_json']['Path'])
+            if type(file_name['title']) == list:
+                file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
+            common_global.es_inst.com_elastic_index('info', {'worker Z filename': str(file_name)})
+            if 'title' in file_name:
+                if 'year' in file_name:
+                    if type(file_name['year']) == list:
+                        file_name['year'] = file_name['year'][0]
+                    if file_name['title'].lower() == metadata_last_title \
+                            and file_name['year'] == metadata_last_year:
+                        # matches last media scanned, so set with that metadata id
                         thread_db.db_download_delete(row_data['mdq_id'])
                         metadata_uuid = metadata_last_id
-                    common_global.es_inst.com_elastic_index('info', {"worker Z meta api uuid":
-                                                                         metadata_uuid,
-                                                                     'filename': str(file_name)})
-                    if metadata_uuid is None:
-                        # begin id process
-                        metadata_uuid = metadata_identification.metadata_identification(thread_db,
-                                                                                        class_text_dict[
-                                                                                            row_data[
-                                                                                                'mdq_download_json'][
-                                                                                                'ClassID']],
+                elif file_name['title'].lower() == metadata_last_title:
+                    # matches last media scanned, so set with that metadata id
+                    thread_db.db_download_delete(row_data['mdq_id'])
+                    metadata_uuid = metadata_last_id
+                common_global.es_inst.com_elastic_index('info', {"worker Z meta api uuid": metadata_uuid,
+                                                                 'filename': str(file_name)})
+                # doesn't match the last file, so set the file to be id'd
+                if metadata_uuid is None:
+                    # begin id process
+                    metadata_uuid = metadata_identification.metadata_identification(thread_db,
+                                                                                    class_text_dict[
                                                                                         row_data[
-                                                                                            'mdq_download_json'],
-                                                                                        row_data[
-                                                                                            'mdq_id'],
-                                                                                        file_name)
-                    # allow NONE to be set so, unmatched stuff can work for skipping
-                    metadata_last_id = metadata_uuid
-                    metadata_last_title = file_name['title']
-                    try:
-                        metadata_last_year = file_name['year']
-                    except:
-                        metadata_last_year = None
-                else:  # invalid guessit guess so set to ZZ to skip for now
-                    thread_db.db_download_update_provider(
-                        'ZZ', row_data['mdq_id'])
+                                                                                            'mdq_download_json'][
+                                                                                            'ClassID']],
+                                                                                    row_data[
+                                                                                        'mdq_download_json'],
+                                                                                    row_data[
+                                                                                        'mdq_id'],
+                                                                                    file_name)
+                # allow NONE to be set so, unmatched stuff can work for skipping
+                metadata_last_id = metadata_uuid
+                metadata_last_title = file_name['title'].lower()
+                try:
+                    metadata_last_year = file_name['year']
+                except KeyError:
+                    metadata_last_year = None
+            else:  # invalid guessit guess so set to ZZ to skip for now
+                thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
             # update the media row with the json media id AND THE proper NAME!!!
             if metadata_uuid is not None:
                 common_global.es_inst.com_elastic_index('info', {"worker Z meta api update":
@@ -471,13 +460,13 @@ while True:
                                                                      row_data[
                                                                          'mdq_download_json'][
                                                                          'MediaID']})
+                # commit occurs in following function
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                                              metadata_uuid)
     time.sleep(1)
     # grab message from rabbitmq if available
     try:  # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(
-            queue=content_providers, no_ack=False)
+        method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
         on_message(channel, method_frame, header_frame, body)
     except:
         pass

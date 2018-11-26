@@ -31,11 +31,9 @@ class CommonMetadataOpenSubtitles(object):
 
     def com_meta_opensub_search(self, file_name):
         f = File(file_name)
-        hash = f.get_hash()
-        size = f.size
         return self.opensubtitles_inst.search_subtitles([{'sublanguageid': 'all',
-                                                          'moviehash': hash,
-                                                          'moviebytesize': size}])
+                                                          'moviehash': f.get_hash(),
+                                                          'moviebytesize': f.size}])
 
     def com_meta_opensub_ping(self):
         self.opensubtitles_inst.no_operation()

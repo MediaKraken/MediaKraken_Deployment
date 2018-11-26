@@ -245,8 +245,6 @@ if db_connection.db_version_check() == 19:
     db_connection.db_version_update(20)
     db_connection.db_commit()
 
-
-
 # TODO add mm_metadata_album_image to mm_metadata_album
 
 # TODO add mm_metadata_tvshow_user_json to mm_metadata_tvshow
@@ -258,7 +256,7 @@ if db_connection.db_version_check() == 19:
 
 # ("Comic", "Publication", True),
 # ("Comic Strip", "Publication", True),
-#db_connection.db_media_class_insert(
+# db_connection.db_media_class_insert(
 #            media_class[0], media_class[1], media_class[2])
 
 '''
@@ -274,7 +272,6 @@ db_connection.db_query('create table IF NOT EXISTS mm_game_category (gc_id uuid'
 if db_connection.db_table_index_check('gc_category_idx_name') is None:
     db_connection.db_query('CREATE INDEX gc_category_idx_name'
                            ' ON mm_game_category(gc_category)')
-
 
 # add mm_metadata_localimage_json to mm_metadata_game_software_info
 # add mm_metadata_localimage_json to mm_metadata_game_systems_info

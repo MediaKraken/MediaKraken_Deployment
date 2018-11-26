@@ -21,6 +21,20 @@ import json
 from common import common_global
 
 
+def db_meta_movie_by_media_uuid(self, media_guid):
+    """
+    # read in metadata via media id
+    """
+    self.db_cursor.execute('select mm_metadata_json,mm_metadata_localimage_json '
+                           'from mm_media, mm_metadata_movie'
+                           ' where mm_media_metadata_guid = mm_metadata_guid'
+                           ' and mm_media_guid = %s', (media_guid,))
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
+
+
 # poster, backdrop, etc
 def db_meta_movie_image_random(self, return_image_type='Poster'):
     """

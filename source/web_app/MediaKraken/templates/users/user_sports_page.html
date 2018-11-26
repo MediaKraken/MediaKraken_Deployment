@@ -3,9 +3,9 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/context/jquery.contextmenu.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/listnav.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='context/jquery.contextmenu.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/listnav.css') }}">
     </head>
     {% if media %}
     {{ pagination.info }}
@@ -16,7 +16,7 @@
         <a href= "{{ url_for('user_sports.user_sports_detail_page', guid=row_data[0]) }}" > {{row_data[1]}}</a>
         {% else %}
         <a href= "{{ url_for('user_sports.user_sports_detail_page', guid=row_data[0]) }}" >
-        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='/static/meta/images/' + row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="200" width="132">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="200" width="132">
         </a>
         {% endif %}
         {% endfor %}
@@ -25,10 +25,10 @@
     {% else %}
     <p id="general_text">No sporting events found.</p>
     {% endif %}
-    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/context/jquery.contextmenu.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/base_webapp.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/blazy.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='context/jquery.contextmenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
     <script>
         ;(function() {
             // Initialize

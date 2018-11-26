@@ -27,7 +27,9 @@ def com_ffmpeg_media_attr(file_path):
     """
     try:
         media_json = subprocess.check_output(
-            split('ffprobe -show_format -show_streams -show_chapters -print_format json \"' + file_path + '\"'))
+            split('ffprobe -hide_banner -show_format -show_streams'
+                  ' -show_chapters -print_format json \"'
+                  + file_path + '\"'))
     except:
         return None
     return media_json.decode('utf-8')

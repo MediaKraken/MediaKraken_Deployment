@@ -24,7 +24,8 @@ def user_hardware():
     """
     Display hardware page
     """
-    return render_template("users/user_hardware.html")
+    return render_template("users/user_hardware.html",
+                           phue=db_connection.db_device_count('Phue'))
 
 
 @blueprint.before_request

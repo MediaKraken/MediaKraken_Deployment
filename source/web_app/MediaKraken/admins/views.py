@@ -290,44 +290,14 @@ def admin_server_zfs():
                            data_zpool=common_zfs.com_zfs_zpool_list())
 
 
-@blueprint.route("/cloud_google_drive")
-@login_required
-@admin_required
-def admin_cloud_google_drive():
-    """
-    browse google drive
-    """
-    return render_template("admin/cloud/cloud_google_drive.html")
-
-
-@blueprint.route("/cloud_onedrive")
-@login_required
-@admin_required
-def admin_cloud_onedrive():
-    """
-    browse onedrive
-    """
-    return render_template("admin/cloud/cloud_onedrive.html")
-
-
-@blueprint.route("/cloud_aws_s3")
-@login_required
-@admin_required
-def admin_cloud_aws_s3():
-    """
-    browse aws
-    """
-    return render_template("admin/cloud/cloud_aws_s3.html")
-
-
-@blueprint.route("/cloud_dropbox")
+@blueprint.route("/cloud")
 @login_required
 @admin_required
 def admin_cloud_dropbox():
     """
-    browse dropbox
+    browse cloud via libcloud
     """
-    return render_template("admin/cloud/cloud_dropbox.html")
+    return render_template("admin/admin_cloud.html")
 
 
 @blueprint.route("/chart_browser")

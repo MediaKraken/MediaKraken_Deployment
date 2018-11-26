@@ -86,7 +86,7 @@ def read(queue_object):
             cron_pid = subprocess.Popen(split('python3 ' + json_message['Data']))
         elif json_message['Type'] == 'Library Scan':
             # TODO launch a container to do this.....so, if it gets stuck the others still go
-            scan_pid = subprocess.Popen(['python3', './subprogram_file_scan.py'])
+            scan_pid = subprocess.Popen(['python3', '/mediakraken/subprogram_file_scan.py'])
         elif json_message['Type'] == 'Pause':
             if json_message['Subtype'] == 'Cast':
                 pass
@@ -203,7 +203,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
 if __name__ == '__main__':
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672'], shell=False)
+                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                                shell=False)
     wait_pid.wait()
 
     # start logging

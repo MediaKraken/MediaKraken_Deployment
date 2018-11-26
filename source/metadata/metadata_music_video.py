@@ -35,16 +35,16 @@ else:
     IMVDB_CONNECTION = None
 
 
-# imvdb look
-def imvdb_lookup(db_connection, file_name):
+# imvdb lookup
+def metadata_music_video_lookup(db_connection, file_name):
     """
     Lookup by name on music video database
     """
     # check for same variables
-    if not hasattr(imvdb_lookup, "metadata_last_id"):
-        imvdb_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
-        imvdb_lookup.metadata_last_band = None
-        imvdb_lookup.metadata_last_song = None
+    if not hasattr(metadata_music_video_lookup, "metadata_last_id"):
+        metadata_music_video_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
+        metadata_music_video_lookup.metadata_last_band = None
+        metadata_music_video_lookup.metadata_last_song = None
     common_global.es_inst.com_elastic_index('info', {'mv file': file_name})
     # determine names
     if file_name.find('-') != -1:
@@ -59,9 +59,9 @@ def imvdb_lookup(db_connection, file_name):
         song_name = song_name.strip().replace(' ', '-')
         common_global.es_inst.com_elastic_index('info', {'mv title': band_name, 'song': song_name})
         # if same as last, return last id and save lookup
-        if band_name == imvdb_lookup.metadata_last_band \
-                and song_name == imvdb_lookup.metadata_last_song:
-            return imvdb_lookup.metadata_last_id
+        if band_name == metadata_music_video_lookup.metadata_last_band \
+                and song_name == metadata_music_video_lookup.metadata_last_song:
+            return metadata_music_video_lookup.metadata_last_id
         metadata_uuid = db_connection.db_meta_music_video_lookup(
             band_name, song_name)
         common_global.es_inst.com_elastic_index('info', {"uuid": metadata_uuid})
@@ -98,20 +98,12 @@ def imvdb_lookup(db_connection, file_name):
                     if metadata_uuid == []:
                         metadata_uuid = None
         # set last values to negate lookups for same song
-        imvdb_lookup.metadata_last_id = metadata_uuid
-        imvdb_lookup.metadata_last_band = band_name
-        imvdb_lookup.metadata_last_song = song_name
+        metadata_music_video_lookup.metadata_last_id = metadata_uuid
+        metadata_music_video_lookup.metadata_last_band = band_name
+        metadata_music_video_lookup.metadata_last_song = song_name
         return metadata_uuid
     else:
         return None
-
-
-def metadata_music_video_lookup(db_connection, file_name):
-    """
-    Music Video lookup
-    """
-    metadata_uuid = imvdb_lookup(db_connection, file_name)
-    return metadata_uuid
 
 
 def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):

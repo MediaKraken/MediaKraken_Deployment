@@ -51,10 +51,6 @@ class TestDatabaseMetadataTV(object):
     # def db_metaTV_guid_by_tvmaze(self, tvmaze_uuid):
     #        self.db_connection.db_rollback()
 
-    # metadata guid by tvrage id
-    # def db_metatv_guid_by_tvrage(self, tvrage_uuid):
-    #        self.db_connection.db_rollback()
-
     def test_db_meta_tvshow_list_count(self):
         """
         # tvshow count

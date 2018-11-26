@@ -3,9 +3,9 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/font-awesome/css/font-awesome.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='/static/css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
     </head>
     {% if media %}
     {{ pagination.info }}
@@ -23,7 +23,7 @@
                 {% for row_data in media %}
                 <tr>
                     <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td><a href =" {{ url_for('admins_report.report_duplicate_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
+                    <td><a href =" {{ url_for('admins_report.report_display_all_duplicates_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
                     <td>{{ row_data[2] }}</td>
                 </tr>
                 {% endfor %}
@@ -34,7 +34,7 @@
     {% else %}
     <p id="general_text">No duplicate media found.</p>
     {% endif %}
-    <script src="{{ url_for('static', filename='/static/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/static/js/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}" type="text/javascript"></script>
 </body>
 {% endblock %}

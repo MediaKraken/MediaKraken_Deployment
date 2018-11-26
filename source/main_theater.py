@@ -31,7 +31,8 @@ from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_network_mpv
 from common import common_signal
-from common import common_theater
+
+# from common import common_theater
 
 logging.getLogger('twisted').setLevel(logging.ERROR)
 from functools import partial
@@ -227,7 +228,7 @@ class MediaKrakenApp(App):
             self._keyboard_closed, self.root)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
-        self.common_remote = common_theater.main_remote_control_event_process
+        # self.common_remote = common_theater.main_remote_control_event_process
         self.mpv_connection = None
         return root
 
@@ -241,7 +242,7 @@ class MediaKrakenApp(App):
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
                 common_global.es_inst.com_elastic_index('info', {'server list':
                                                                      server_list})
-                host_ip = server_list[0].decode() # as this is returned as bytes
+                host_ip = server_list[0].decode()  # as this is returned as bytes
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
                                 host_ip.split(':')[0])

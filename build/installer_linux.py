@@ -20,6 +20,7 @@ import platform
 import subprocess
 import sys
 from shlex import split
+
 LINUX_VERSIONS = {
     'alpine': (3.6, 'apk add'),
     'debian': (8.4, 'apt_get -y install'),

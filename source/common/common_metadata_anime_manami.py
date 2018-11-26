@@ -38,7 +38,6 @@ def mk_manami_fetch_json():
             './cache/anime-manami-list.json')
 
 
-
 def mk_manami_anime_list_parse(file_name='./cache/anime-manami-list.json'):
     """
     Parse the anime list
@@ -48,7 +47,7 @@ def mk_manami_anime_list_parse(file_name='./cache/anime-manami-list.json'):
     itemlist = json.loads(file_handle.read())
     file_handle.close()
     for anime_data in itemlist['data']:
-         common_global.es_inst.com_elastic_index('info', {'data': anime_data})
+        common_global.es_inst.com_elastic_index('info', {'data': anime_data})
     #     common_global.es_inst.com_elastic_index('info', {'key': list(anime_data.keys())})
 
     # data chunks below

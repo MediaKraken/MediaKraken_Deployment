@@ -25,13 +25,16 @@ class CommonNetworkTwitchV5(object):
     Class for interfacing with TwitchTV V5 api
     """
 
-    def __init__(self, client_api_id, client_oauth=None):
-        if client_oauth is None:
-            self.twitch_inst = TwitchClient(client_api_id)
-        else:
-            self.twitch_inst = TwitchClient(client_api_id, client_oauth)
+    def __init__(self, option_config_json):
+        self.twitch_inst = TwitchClient(client_id=option_config_json['Twitch']['ClientID'],
+                                        oauth_token=option_config_json['Twitch']['OAuth'])
 
     # chat
+    def com_net_twitch_chat_badges(self, channel_id):
+        return self.twitch_inst.get_badges_by_channel(channel_id)
+
+    def com_net_twitch_chat_emoticons(self):
+        return self.twitch_inst.get_all_emoticons()
 
     # channel feed
 
@@ -51,8 +54,25 @@ class CommonNetworkTwitchV5(object):
         """
         return self.twitch_inst.clips.get_by_slug(slug_id)
 
-        # get_top(channel, cursor, game, language, limit, period, trending
-        # followed()
+    def com_net_twitch_top_channels(self, channel, cursor, game, language, limit, period, trending):
+        """
+        channel (string) – Channel name. If this is specified, top clips for only this channel are returned; otherwise, top clips for all channels are returned. If both channel and game are specified, game is ignored.
+        cursor (string) – Tells the server where to start fetching the next set of results, in a multi-page response.
+        game (string) – Game name. (Game names can be retrieved with the Search Games endpoint.) If this is specified, top clips for only this game are returned; otherwise, top clips for all games are returned. If both channel and game are specified, game is ignored.
+        language (string) – Comma-separated list of languages, which constrains the languages of videos returned. Examples: es, en,es,th. If no language is specified, all languages are returned.
+        limit (int) – Maximum number of most-recent objects to return. Default: 10. Maximum: 100.
+        period (string) – The window of time to search for clips. Valid values: day, week, month, all. Default: week.
+        trending (boolean) – If True, the clips returned are ordered by popularity; otherwise, by viewcount. Default: False.
+        """
+        return self.twitch_inst.get_top()
+
+    def com_net_twitch_followed(self, limit, cursor, trending):
+        """
+        limit (int) – Maximum number of most-recent objects to return. Default: 10. Maximum: 100.
+        cursor (string) – Tells the server where to start fetching the next set of results, in a multi-page response.
+        trending (boolean) – If true, the clips returned are ordered by popularity; otherwise, by viewcount. Default: false.
+        """
+        return self.twitch_inst.followed()
 
     # communities
 
@@ -65,6 +85,9 @@ class CommonNetworkTwitchV5(object):
     # search
 
     # streams
+
+    def com_net_twitch_get_featured(self, limit=100, offset=0):
+        return self.twitch_inst.get_featured(limit, offset)
 
     # teams
 

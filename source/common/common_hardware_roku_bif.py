@@ -15,6 +15,7 @@ Modified to use ffprobe: Quinn D Granfor
 """
 
 import array
+import json
 import os
 import shutil
 import struct
@@ -28,22 +29,18 @@ def getfileinfo(filename):
     """
     Get info about the video
     """
-    for stream in common_ffmpeg.com_ffmpeg_media_attr(filename):
-        if stream['type'] == 'Video':
-            resolution = stream['resolution'].split('x')
-            video_aspect_ratio = float(resolution[0]) / float(resolution[1])
-            if video_aspect_ratio > 1.5:
-                if float(resolution[1] >= 720):
-                    return "320x180", 'HD'  # HD 16:9 ~ 1.7 ratio
-                else:
-                    return "240x136", 'SD'  # SD 16:9 ~ 1.7 ratio
-            else:
-                if float(resolution[1] >= 720):
-                    return "320x240", 'HD'  # HD 4:3 ~ 1.3 ratio
-                else:
-                    return "240x180", 'SD'  # SD 4:3 ~ 1.3 ratio
-    # catchall resolution
-    return "240x180", 'SD'  # SD 4:3 ~ 1.3 ratio
+    json_ffmpeg = json.loads(common_ffmpeg.com_ffmpeg_media_attr(filename))
+    video_aspect_ratio = float(json_ffmpeg['streams'][0]['width']) / float(json_ffmpeg['streams'][0]['height'])
+    if video_aspect_ratio > 1.5:
+        if float(json_ffmpeg['streams'][0]['height'] >= 720):
+            return "320x180", 'HD'  # HD 16:9 ~ 1.7 ratio
+        else:
+            return "240x136", 'SD'  # SD 16:9 ~ 1.7 ratio
+    else:
+        if float(json_ffmpeg['streams'][0]['height'] >= 720):
+            return "320x240", 'HD'  # HD 4:3 ~ 1.3 ratio
+        else:
+            return "240x180", 'SD'  # SD 4:3 ~ 1.3 ratio
 
 
 def extractimages(videofile, directory, interval, resolution, offset=0):
@@ -111,12 +108,12 @@ def com_roku_create_bif(videofile, first_image_offset=7, image_interval=10):
     Create BIF
     """
     # Get info about the video file
-    size, res_extention = getfileinfo(videofile)
+    size, res_extension = getfileinfo(videofile)
     tmpdirectory = tempfile.mkdtemp()
     # Extract jpg images from the video file
     extractimages(videofile, tmpdirectory, image_interval,
                   size, first_image_offset)
-    biffile = "%s-%s.bif" % (os.path.basename(videofile).rsplit('.', 1)[0], res_extention)
+    biffile = "%s-%s.bif" % (os.path.basename(videofile).rsplit('.', 1)[0], res_extension)
     # Create the BIF file
     makebif(biffile, tmpdirectory, image_interval)
     # Clean up the temporary directory

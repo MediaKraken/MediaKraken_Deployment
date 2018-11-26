@@ -17,11 +17,8 @@
 '''
 
 import subprocess
-import sys
-import time
 
 from common import common_network_ssh
-from common import common_network_vm_proxmox
 
 # # start the postgres if not up on pve
 # prox_inst = common_network_vm_proxmox.CommonNetworkProxMox('pve', 'metaman', 'metaman')

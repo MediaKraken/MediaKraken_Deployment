@@ -25,6 +25,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from threading import Thread
+from uuid import getnode
 
 from . import common_file
 from . import common_global
@@ -69,7 +70,6 @@ def mk_network_get_mac():
     """
     Get MAC address
     """
-    from uuid import getnode
     return ':'.join(("%012X" % getnode())[i:i + 2] for i in range(0, 12, 2))
 
 
@@ -77,10 +77,8 @@ def mk_network_get_outside_ip():
     """
     Get outside ip addy
     """
-    # whatismyip = 'http://checkip.dyndns.org/'
-    # return urllib.urlopen(whatismyip).readlines()[0].split(':')[1].split('<')[0]
-    import ipgetter
-    return ipgetter.myip()
+    url_data = str(urllib.request.urlopen('http://checkip.dyndns.org/').read())
+    return url_data.split(':')[1].split('<')[0].strip()
 
 
 def mk_network_get_default_ip():

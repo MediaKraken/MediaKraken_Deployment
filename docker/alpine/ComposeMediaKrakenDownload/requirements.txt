@@ -1,9 +1,14 @@
+apache-libcloud
 pika
 youtube-dl
 docker
-boto
 pysmb
-dropbox
-onedrivesdk
 dosage
 xmltodict
+colorama
+lxml
+pbr
+requests
+six
+cssselect
+argcomplete

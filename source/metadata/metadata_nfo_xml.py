@@ -30,7 +30,7 @@ def nfo_xml_file(media_file_path):
     """
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
-    try:  # pull the "real" extention
+    try:  # pull the "real" extension
         ext_check = media_file_path[-4:].lower().split(".")[-1]
     except:
         ext_check = None
@@ -38,22 +38,19 @@ def nfo_xml_file(media_file_path):
         # need to chop off the lang too, the split works even with no .lang in name
         nfo_file_check = media_file_path.rsplit('.', 2)[0] + '.nfo'
         xml_file_name = media_file_path.rsplit('.', 2)[0] + '.xml'
-    else:
+    else:  # not a subtitle, should be a "normal" file
         nfo_file_check = media_file_path.rsplit('.', 1)[0] + '.nfo'
         xml_file_name = media_file_path.rsplit('.', 1)[0] + '.xml'
     if os.path.isfile(nfo_file_check):  # check for nfo
         common_global.es_inst.com_elastic_index('info', {'nfo file found': nfo_file_check})
-        nfo_data = xmltodict.parse(
-            common_file.com_file_load_data(nfo_file_check, False))
+        nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
     else:
         nfo_data = None
         # only check for xml if nfo doesn't exist
         if os.path.isfile(xml_file_name):  # check for xml
             common_global.es_inst.com_elastic_index('info', {'xml file found': xml_file_name})
-            xml_data = xmltodict.parse(
-                common_file.com_file_load_data(xml_file_name, False))
-        elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)),
-                                         'movie.xml')):
+            xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
+        elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml')):
             common_global.es_inst.com_elastic_index('info', {'movie xml file found': xml_file_name})
             xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(
                 os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))

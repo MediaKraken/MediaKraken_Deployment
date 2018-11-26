@@ -143,6 +143,8 @@ docker run --network=alpine_mediakraken-dbnetwork --env POSTGRES_HOST=10.0.0.194
 docker run -v /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images -v /var/log/mediakraken:/mediakraken/log --network=alpine_mediakraken-dbnetwork --env POSTGRES_HOST=10.0.0.194 --env=POSTGRES_DB=metamandb --env=POSTGRES_USER=metamanpg --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpinemetadata795876 alpine_metadata
 
 
+# do fresh/force rebuild
+docker-compose build --no-cache webapp
 
 
 docker run --net=host -itd --name=alpine_devicescan449 alpine_devicescan

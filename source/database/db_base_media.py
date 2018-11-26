@@ -298,7 +298,7 @@ def db_read_media_path_like(self, media_path):
         return None
 
 
-def db_read_media_new_count(self, days_old=7):
+def db_read_media_new_count(self, search_value=None, days_old=7):
     """
     # new media count
     """
@@ -312,7 +312,7 @@ def db_read_media_new_count(self, days_old=7):
     return self.db_cursor.fetchone()[0]
 
 
-def db_read_media_new(self, days_old=7, offset=None, records=None):
+def db_read_media_new(self, offset=None, records=None, search_value=None, days_old=7):
     """
     # new media
     """
@@ -380,5 +380,17 @@ def db_unmatched_list(self, offset=None, list_limit=None):
 
 def db_ffprobe_data(self, guid):
     self.db_cursor.execute('select mm_media_ffprobe_json from mm_media'
-                           ' where mm_media_guid = %s' % guid)
+                           ' where mm_media_guid = %s', (guid,))
     return self.db_cursor.fetchone()[0]
+
+
+def db_ffprobe_all_media_guid(self, media_uuid, media_class_uuid):
+    """
+    # fetch all media with METADATA match
+    """
+    self.db_cursor.execute('select mm_media_guid,mm_media_ffprobe_json from mm_media,mm_metadata_movie'
+                           ' where mm_media_metadata_guid = '
+                           '(select mm_media_metadata_guid from mm_media where mm_media_guid = %s)'
+                           ' and mm_media_class_guid = %s',
+                           (media_uuid, media_class_uuid))
+    return self.db_cursor.fetchall()

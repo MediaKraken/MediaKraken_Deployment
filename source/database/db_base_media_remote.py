@@ -79,8 +79,6 @@ def db_known_remote_media_count(self):
 #                metadata_guid = db_metatv_guid_by_tvdb(row_data[3]['thetvdb'])
 #            if metadata_guid is None and 'tvmaze' in row_data[3]:
 #                metadata_guid = db_metaTV_guid_by_tvmaze(row_data[3]['tvmaze'])
-#            if metadata_guid is None and 'TVRage' in row_data[3]:
-#                metadata_guid = db_metatv_guid_by_tvrage(row_data[3]['TVRage'])
 #        elif row_data[1] == 'Sports':
 #            pass
 #        elif row_data[1] == 'Music':

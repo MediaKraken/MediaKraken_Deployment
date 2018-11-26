@@ -24,7 +24,6 @@ def db_meta_song_list(self, offset=None, records=None, search_value=None):
     # return songs metadatalist
     """
     # TODO, only grab the poster local from json
-
     return self.db_cursor.fetchall()
 
 

@@ -42,7 +42,7 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     if offset is None:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                    ' from mm_metadata_person where mmp_person_name %% %s'
                                    ' order by mmp_person_name', (search_value,))
         else:
@@ -52,13 +52,13 @@ def db_meta_person_list(self, offset=None, records=None, search_value=None):
     else:
         if search_value is not None:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                    ' from mm_metadata_person where mmp_person_name %% %s'
                                    ' order by mmp_person_name offset %s limit %s',
                                    (search_value, offset, records))
         else:
             self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
-                                   'mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                    ' from mm_metadata_person order by mmp_person_name'
                                    ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
@@ -69,12 +69,10 @@ def db_meta_person_by_guid(self, guid):
     # return person data
     """
     self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
-                           ' mmp_person_image, mmp_person_name from mm_metadata_person'
-                           ' where mmp_id = %s', (guid,))
-    try:
-        return self.db_cursor.fetchone()
-    except:
-        return None
+                           ' mmp_person_image, mmp_person_name,'
+                           ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                           ' from mm_metadata_person where mmp_id = %s', (guid,))
+    return self.db_cursor.fetchone()
 
 
 def db_meta_person_by_name(self, person_name):
@@ -84,10 +82,7 @@ def db_meta_person_by_name(self, person_name):
     self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
                            ' mmp_person_image, mmp_person_name from mm_metadata_person'
                            ' where mmp_person_name = %s', (person_name,))
-    try:
-        return self.db_cursor.fetchone()
-    except:
-        return None
+    return self.db_cursor.fetchone()
 
 
 def db_meta_person_id_count(self, host_type, guid):
@@ -143,7 +138,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     # batch insert from json of crew/cast
     """
     common_global.es_inst.com_elastic_index('info', {
-        'db person insert cast crew': meta_type, 'person': person_json})
+        'db_meta_person_insert_cast_crew': meta_type, 'person': person_json})
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     multiple_person = False
     try:
@@ -173,8 +168,12 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                    common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
+                    common_global.es_inst.com_elastic_index('info', {
+                        'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
+                    # Shouldn't need to verify fetch doesn't exist as the person insert
+                    # is right below.  As then the next person record read will find
+                    # the inserted record.
                     # insert download record for bio/info
                     self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
                                                                       "ProviderMetaID": str(
@@ -205,6 +204,9 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
                 common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
             else:
+                # Shouldn't need to verify fetch doesn't exist as the person insert
+                # is right below.  As then the next person record read will find
+                # the inserted record.
                 # insert download record for bio/info
                 self.db_download_insert(meta_type, 3, json.dumps({"Status": "Fetch",
                                                                   "ProviderMetaID": str(

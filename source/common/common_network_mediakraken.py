@@ -20,10 +20,15 @@ import socket
 import sys
 import time
 
-from . import common_global
+# from . import common_global
+
+'''
+ Can't use the logging here!  Since this is launched from the theater apps
+ which won't have access to mkelk
+'''
 
 
-def com_net_mediakraken_find_server(server_seconds=1):
+def com_net_mediakraken_find_server(server_seconds=2):
     """
     # create dictionary containing
     # Address = Id, Name
@@ -36,23 +41,23 @@ def com_net_mediakraken_find_server(server_seconds=1):
         # allow broadcast otherwise you'll get permission denied 10013 error
         search_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     except socket.error:
-        common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server: Failed to '
-                                                             'create socket'})
+        # common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server: Failed to '
+        #                                                      'create socket'})
         sys.exit()
     server_hosts_found = []
-    common_global.es_inst.com_elastic_index('info', {"end time": t_end})
+    # common_global.es_inst.com_elastic_index('info', {"end time": t_end})
     while time.time() < t_end:
         try:
             search_socket.sendto(
                 b"who is MediaKrakenServer?", ('<broadcast>', 9101))
             server_reply = search_socket.recvfrom(1024)[0]
-            common_global.es_inst.com_elastic_index('info', {'Server reply': server_reply})
+            # common_global.es_inst.com_elastic_index('info', {'Server reply': server_reply})
             if server_reply not in server_hosts_found:
                 server_hosts_found.append(server_reply)
         except socket.error as msg:
-            common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server Error '
-                                                                 'Code': str(msg[0])
-                                                                         + ' Message ' + msg[1]})
+            # common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server Error '
+            #                                                      'Code': str(msg[0])
+            #                                                              + ' Message ' + msg[1]})
             sys.exit()
-    common_global.es_inst.com_elastic_index('info', {"hosts found": server_hosts_found})
+    # common_global.es_inst.com_elastic_index('info', {"hosts found": server_hosts_found})
     return server_hosts_found

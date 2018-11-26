@@ -11,6 +11,8 @@ class MKServerDatabase(object):
         db_query, \
         db_parallel_workers, \
         db_drop_table
+    from database.db_base_3d import db_3d_list_count, \
+        db_3d_list
     from database.db_base_activity import db_activity_insert, \
         db_activity_purge
     from database.db_base_audit import db_audit_path_status, \
@@ -95,7 +97,8 @@ class MKServerDatabase(object):
         db_media_ffmeg_update, \
         db_unmatched_list_count, \
         db_unmatched_list, \
-        db_ffprobe_data
+        db_ffprobe_data, \
+        db_ffprobe_all_media_guid
     from database.db_base_media_books import db_media_book_list_count, \
         db_media_book_list
     from database.db_base_media_class import db_media_class_list_count, \
@@ -129,6 +132,12 @@ class MKServerDatabase(object):
         db_read_remote_media, \
         db_known_remote_media_count, \
         db_media_remote_read_new
+    from database.db_base_media_sports import db_media_sports_random, \
+        db_media_sports_count_by_genre, \
+        db_media_sports_list_count, \
+        db_media_sports_list, \
+        db_read_media_metadata_sports_both, \
+        db_read_media_sports_list_by_uuid
     from database.db_base_media_tv import db_web_tvmedia_list, \
         db_web_tvmedia_list_count
     from database.db_base_metadata import db_read_media_metadata, \
@@ -180,7 +189,8 @@ class MKServerDatabase(object):
     from database.db_base_metadata_movie import db_meta_movie_update_castcrew, \
         db_meta_movie_status_update, \
         db_meta_movie_json_update, \
-        db_meta_movie_image_random
+        db_meta_movie_image_random, \
+        db_meta_movie_by_media_uuid
     from database.db_base_metadata_music import db_meta_song_list, \
         db_music_lookup, \
         db_meta_musician_by_guid, \
@@ -261,12 +271,6 @@ class MKServerDatabase(object):
         db_sync_insert, \
         db_sync_delete, \
         db_sync_progress_update
-    from database.db_base_task import db_task_list_count, \
-        db_task_list, \
-        db_task_time_update, \
-        db_task_insert, \
-        db_task_delete, \
-        db_task_info
     from database.db_base_tv_schedule import db_tv_stations_read, \
         db_tv_stations_read_stationid_list, \
         db_tv_station_insert, \

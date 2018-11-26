@@ -2,7 +2,7 @@ crochet
 pyopenssl
 service_identity
 setuptools
-pycdio
+#pycdio
 lcdproc
 python-lirc
 py-irsend
