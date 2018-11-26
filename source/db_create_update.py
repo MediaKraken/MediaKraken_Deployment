@@ -581,9 +581,10 @@ base_cron = [
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
      '/mediakraken/subprogram_schedules_direct_updates.py',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update'}),
-    ('Subtitle', 'Download missing subtitles for media',
-     '/mediakraken/subprogram_subtitle_downloader.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
+    # since file scan could do this
+    # ('Subtitle', 'Download missing subtitles for media',
+    #  '/mediakraken/subprogram_subtitle_downloader.py',
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
     ('The Movie Database', 'Grab updated metadata for movie(s) and TV show(s)',
      '/mediakraken/subprogram_metadata_tmdb_updates.py',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
