@@ -199,6 +199,15 @@ def movie_detail(guid):
         #                                          json_media['ChapterImages'][chap_data]))
         # except:
         #     pass
+
+        # find all devices to playback media on
+        # TODO have reactor return client list?
+        playback_devices = []
+        for device_item in g.db_connection.db_device_list():
+            if device_item['mm_device_type'] == 'Chromecast':
+                playback_devices.append(device_item['Chrome Name'])
+            elif device_item['mm_device_type'] == 'Roku':
+                playback_devices.append(device_item)
         return render_template('users/user_movie_detail.html',
                                json_metadata=metadata_data,
                                data_genres=genres_list,
@@ -206,6 +215,7 @@ def movie_detail(guid):
                                data_background_image=data_background_image,
                                data_json_media_chapters=data_json_media_chapters,
                                data_ffprobe_data=ffprobe_data,
+                               data_playback_device=playback_devices,
                                # data_watched_status=watched_status,
                                # data_sync_status=sync_status
                                )

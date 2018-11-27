@@ -123,34 +123,28 @@ for hardware_device in common_file.com_file_load_data(
         file_name='/mediakraken/devices/device_scan.txt', as_pickle=True):
     if 'Chromecast' in hardware_device:
         # TODO make sure this particular device not in DB
-        db_connection.db_hardware_insert(manufacturer='Chromecast',
-                                         model_name=hardware_device['Chromecast']['Chrome Model'],
-                                         json_data=json.dumps(hardware_device))
+        db_connection.db_device_insert(device_type='Chromecast',
+                                       device_json=json.dumps(hardware_device))
     elif 'DLNA' in hardware_device:
         # TODO make sure this particular device not in DB
-        db_connection.db_hardware_insert(manufacturer='DLNA',
-                                         model_name=hardware_device,
-                                         json_data=json.dumps(hardware_device))
+        db_connection.db_device_insert(device_type='DLNA',
+                                       device_json=json.dumps(hardware_device))
     elif 'HDHomeRun' in hardware_device:
         # TODO make sure this particular device not in DB
-        db_connection.db_hardware_insert(manufacturer='HDHomeRun',
-                                         model_name=hardware_device['HDHomeRun']['HWModel'],
-                                         json_data=json.dumps(hardware_device))
+        db_connection.db_device_insert(device_type='HDHomeRun',
+                                       device_json=json.dumps(hardware_device))
     elif 'Phue' in hardware_device:
         # TODO make sure this particular device not in DB
-        db_connection.db_hardware_insert(manufacturer='Phue',
-                                         model_name=hardware_device,
-                                         json_data=json.dumps(hardware_device))
+        db_connection.db_device_insert(device_type='Phue',
+                                       device_json=json.dumps(hardware_device))
     elif 'Roku' in hardware_device:
         # TODO make sure this particular device not in DB
-        db_connection.db_hardware_insert(manufacturer='Roku',
-                                         model_name=hardware_device,
-                                         json_data=json.dumps(hardware_device))
+        db_connection.db_device_insert(device_type='Roku',
+                                       device_json=json.dumps(hardware_device))
     elif 'Soco' in hardware_device:
         # TODO make sure this particular device not in DB
-        db_connection.db_hardware_insert(manufacturer='Soco',
-                                         model_name=hardware_device,
-                                         json_data=json.dumps(hardware_device))
+        db_connection.db_device_insert(device_type='Soco',
+                                       device_json=json.dumps(hardware_device))
 
 # commit
 db_connection.db_commit()
