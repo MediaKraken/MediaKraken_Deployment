@@ -21,11 +21,15 @@ import os
 import re
 import socket
 import ssl
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from threading import Thread
 from uuid import getnode
+
+# needed for catching imcomplete error
+import httplib
 
 from . import common_file
 from . import common_global
@@ -47,7 +51,11 @@ def mk_network_fetch_from_url(url, directory=None):
                 # create missing directory structure
                 common_file.com_mkdir_p(directory)
                 localfile = open(directory, 'wb')
-            localfile.write(datafile.read())
+            try:
+                localfile.write(datafile.read())
+            except httplib.IncompleteRead:
+                time.sleep(30)
+                mk_network_fetch_from_url(url, directory)
             datafile.close()
             localfile.close()
     except urllib.error.URLError as err_code:
