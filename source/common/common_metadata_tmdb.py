@@ -18,6 +18,7 @@
 
 import json
 import os
+import time
 
 import requests
 import tmdbsimple as tmdb
@@ -102,25 +103,37 @@ class CommonMetadataTMDB(object):
         if tmdb_id[0:2].lower() == 'tt':
             # imdb id......so, run find and then do the requests
             tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
-        return requests.get('https://api.themoviedb.org/3/movie/%s'
-                            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
-                            (tmdb_id, self.API_KEY))
+        try:
+            return requests.get('https://api.themoviedb.org/3/movie/%s'
+                                '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
+                                (tmdb_id, self.API_KEY))
+        except ConnectionError:
+            time.sleep(10)
+            self.com_tmdb_metadata_by_id(tmdb_id)
 
     def com_tmdb_metadata_tv_by_id(self, tmdb_id):
         """
         Fetch all metadata by id to reduce calls
         """
-        return requests.get('https://api.themoviedb.org/3/tv/%s'
-                            '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
-                            (tmdb_id, self.API_KEY))
+        try:
+            return requests.get('https://api.themoviedb.org/3/tv/%s'
+                                '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
+                                (tmdb_id, self.API_KEY))
+        except ConnectionError:
+            time.sleep(10)
+            self.com_tmdb_metadata_tv_by_id(tmdb_id)
 
     def com_tmdb_metadata_bio_by_id(self, tmdb_id):
         """
         Fetch all metadata bio by id to reduce calls
         """
-        return requests.get('https://api.themoviedb.org/3/person/%s'
-                            '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
-                            (tmdb_id, self.API_KEY))
+        try:
+            return requests.get('https://api.themoviedb.org/3/person/%s'
+                                '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
+                                (tmdb_id, self.API_KEY))
+        except ConnectionError:
+            time.sleep(10)
+            self.com_tmdb_metadata_bio_by_id(tmdb_id)
 
     def com_tmdb_meta_bio_image_build(self, thread_db, result_json):
         """
