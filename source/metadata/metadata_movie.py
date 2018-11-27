@@ -106,9 +106,15 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             if 'crew' in result_json['credits']:
                 db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['crew'])
-    elif result_json.status_code == 502:
+    # 429	Your request count (#) is over the allowed limit of (40).
+    elif result_json.status_code == 429:
+        time.sleep(10)
+        # redo fetch due to 504
+        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+    # 504	Your request to the backend server timed out. Try again.
+    elif result_json.status_code == 504:
         time.sleep(300)
-        # redo fetch due to 502
+        # redo fetch due to 504
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         # TODO handle 404's better
