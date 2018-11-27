@@ -28,9 +28,6 @@ import urllib.request
 from threading import Thread
 from uuid import getnode
 
-# needed for catching imcomplete error
-import httplib
-
 from . import common_file
 from . import common_global
 from . import wol
@@ -53,7 +50,7 @@ def mk_network_fetch_from_url(url, directory=None):
                 localfile = open(directory, 'wb')
             try:
                 localfile.write(datafile.read())
-            except httplib.IncompleteRead:
+            except urllib.error.HTTPError:
                 time.sleep(30)
                 mk_network_fetch_from_url(url, directory)
             datafile.close()
