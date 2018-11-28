@@ -17,6 +17,7 @@
 '''
 
 import json
+import sys
 import time
 
 from common import common_config_ini
@@ -87,6 +88,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
     common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code})
+    sys.stderr.write(result_json.headers['X-RateLimit'])
     if result_json.status_code == 200:
         common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
                                                              result_json.json()})
