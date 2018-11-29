@@ -19,7 +19,7 @@
 import json
 import os
 import sys
-from datetime import datetime
+import time
 
 from elasticsearch import Elasticsearch
 
@@ -46,14 +46,14 @@ class CommonElasticsearch(object):
                 self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
                                    body={"text": {"type": log_type,
                                                   "data": json.dumps(body_data),
-                                                  "timestamp": datetime.now()}})
+                                                  "timestamp": time.strftime("%Y%m%d%H%M%S")}})
             except:
                 print((log_type, body_data))
         # write log to host syslog
         elif self.debug == 'sys':
             sys.stdout.write({"type": log_type,
                               "data": json.dumps(body_data),
-                              "timestamp": datetime.now()})
+                              "timestamp": time.strftime("%Y%m%d%H%M%S")})
 
     def com_elastic_get(self, id):
         self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)
