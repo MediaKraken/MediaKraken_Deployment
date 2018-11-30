@@ -51,9 +51,13 @@ class CommonElasticsearch(object):
                 print((log_type, body_data))
         # write log to host syslog
         elif self.debug == 'sys':
-            sys.stdout.write(str({"type": log_type,
-                              "data": json.dumps(body_data),
-                              "timestamp": time.strftime("%Y%m%d%H%M%S")}))
+            try:
+                sys.stdout.write(str({"type": log_type,
+                                      "data": json.dumps(body_data),
+                                      "timestamp": time.strftime("%Y%m%d%H%M%S")}))
+            except:
+                sys.stdout.write(str({"type": log_type,
+                                      "timestamp": time.strftime("%Y%m%d%H%M%S")}))
 
     def com_elastic_get(self, id):
         self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)
