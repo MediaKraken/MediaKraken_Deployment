@@ -184,6 +184,7 @@ services:
   # rabbit
   rabbit:
     image: mediakraken/mkrabbitmq:latest
+    hostname: mkrabbitmq
     container_name: mkrabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=guest

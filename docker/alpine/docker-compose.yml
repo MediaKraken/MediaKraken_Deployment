@@ -240,6 +240,7 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     container_name: mkrabbitmq
+    hostname: mkrabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
