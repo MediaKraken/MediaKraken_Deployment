@@ -55,9 +55,8 @@ def mk_network_fetch_from_url(url, directory=None):
                 mk_network_fetch_from_url(url, directory)
             datafile.close()
             localfile.close()
-    except urllib.error.URLError as err_code:
-        common_global.es_inst.com_elastic_index('error', {'you got an error with the code':
-                                                              err_code})
+    except urllib.error.URLError:
+        common_global.es_inst.com_elastic_index('error', {'mk_network_fetch_from_url'})
         return None
     if directory is None:
         return datafile.read()
