@@ -107,7 +107,7 @@ class CommonMetadataTMDB(object):
             return requests.get('https://api.themoviedb.org/3/movie/%s'
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
-        except ConnectionError:
+        except requests.exceptions.ConnectionError:
             time.sleep(10)
             self.com_tmdb_metadata_by_id(tmdb_id)
 
@@ -119,7 +119,7 @@ class CommonMetadataTMDB(object):
             return requests.get('https://api.themoviedb.org/3/tv/%s'
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
-        except ConnectionError:
+        except requests.exceptions.ConnectionError:
             time.sleep(10)
             self.com_tmdb_metadata_tv_by_id(tmdb_id)
 
@@ -131,7 +131,7 @@ class CommonMetadataTMDB(object):
             return requests.get('https://api.themoviedb.org/3/person/%s'
                                 '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
                                 (tmdb_id, self.API_KEY))
-        except ConnectionError:
+        except requests.exceptions.ConnectionError:
             time.sleep(10)
             self.com_tmdb_metadata_bio_by_id(tmdb_id)
 
