@@ -88,7 +88,12 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
     common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code,
                                                      "limit": result_json.headers['X-RateLimit']})
-    if result_json.status_code == 200:
+    # 504	Your request to the backend server timed out. Try again.
+    if result_json is None or result_json.status_code == 504:
+        time.sleep(60)
+        # redo fetch due to 504
+        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+    elif result_json.status_code == 200:
         common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
                                                              result_json.json()})
         series_id_json, result_json, image_json \
@@ -110,11 +115,6 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
         time.sleep(10)
-        # redo fetch due to 504
-        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
-    # 504	Your request to the backend server timed out. Try again.
-    elif result_json.status_code == 504:
-        time.sleep(300)
         # redo fetch due to 504
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
