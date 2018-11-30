@@ -108,7 +108,7 @@ class CommonMetadataTMDB(object):
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(10)
+            time.sleep(20)
             self.com_tmdb_metadata_by_id(tmdb_id)
 
     def com_tmdb_metadata_tv_by_id(self, tmdb_id):
@@ -120,7 +120,7 @@ class CommonMetadataTMDB(object):
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(10)
+            time.sleep(20)
             self.com_tmdb_metadata_tv_by_id(tmdb_id)
 
     def com_tmdb_metadata_bio_by_id(self, tmdb_id):
@@ -132,7 +132,7 @@ class CommonMetadataTMDB(object):
                                 '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(10)
+            time.sleep(20)
             self.com_tmdb_metadata_bio_by_id(tmdb_id)
 
     def com_tmdb_meta_bio_image_build(self, thread_db, result_json):
