@@ -64,4 +64,5 @@ def roku_discover(service="roku:ecp", timeout=5, retries=1, mx=3):
                 responses[response.location] = response
             except socket.timeout:
                 break
+        sock.close()
     return list(responses.values())
