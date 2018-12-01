@@ -34,6 +34,7 @@ def com_hard_chrome_discover(timeout=5, retries=1):
     """
     Discover chromecast devices
     """
+    group = ("239.255.255.250", 1900)
     message = "\r\n".join(['M-SEARCH * HTTP/1.1',
                            'HOST: 239.255.255.250:1900',
                            'MAN: "ssdp:discover"',
@@ -47,11 +48,12 @@ def com_hard_chrome_discover(timeout=5, retries=1):
         ssdp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         ssdp_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         ssdp_sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
-        ssdp_sock.sendto(message, ("239.255.255.250", 1900))
+        message_bytes = message.format(*group).encode('utf-8')
+        ssdp_sock.sendto(message_bytes, group)
         while True:
             try:
                 response = ssdp_sock.recv(1024)
-                if common_global.es_inst != None:
+                if common_global.es_inst is not None:
                     common_global.es_inst.com_elastic_index('info', {'response body': response})
                 for line in response.split("\r\n"):
                     if line.find('LOCATION') == 0:
@@ -65,7 +67,7 @@ def com_hard_chrome_discover(timeout=5, retries=1):
                             chrome_info['root']['device']['modelName'],
                             chrome_info['root']['device']['friendlyName'])
             except socket.timeout:
-                if common_global.es_inst != None:
+                if common_global.es_inst is not None:
                     common_global.es_inst.com_elastic_index('error', {'socket timeout'})
                 break
         ssdp_sock.close()
@@ -81,7 +83,7 @@ def com_hard_chrome_info(ip_addr):
     http_resp = http_conn.getresponse()
     if http_resp.status == 200:
         status_doc = http_resp.read()
-        if common_global.es_inst != None:
+        if common_global.es_inst is not None:
             common_global.es_inst.com_elastic_index('info', {'name data': status_doc})
         return xmltodict.parse(status_doc)
     else:
@@ -92,14 +94,14 @@ def com_hard_chrome_play_youtube(youtube_video_guid, ip_addr, port=8008):
     response = requests.post(('http://%s:%s/apps/YouTube' % (ip_addr, port)),
                              data={'v': youtube_video_guid})
     if response.status_code != 200:
-        if common_global.es_inst != None:
+        if common_global.es_inst is not None:
             common_global.es_inst.com_elastic_index('info', {'yt play guid': youtube_video_guid})
 
 
 def com_hard_chrome_youtube_stop(ip_addr, port=8008):
     response = requests.delete('http://%s:%s/apps/YouTube' % (ip_addr, port))
     if response.status_code != 200:
-        if common_global.es_inst != None:
+        if common_global.es_inst is not None:
             common_global.es_inst.com_elastic_index('info', {'yt stop ip_addr': ip_addr})
 
 # TODO http://CHROMECAST_IP:8008/ssdp/device-desc.xml
