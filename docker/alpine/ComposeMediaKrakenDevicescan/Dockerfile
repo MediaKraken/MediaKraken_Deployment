@@ -12,9 +12,6 @@ ADD requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
-# add hdhomerun lib to install
-ADD PyHdHomeRun /mediakraken/PyHdHomeRun
-
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
