@@ -1,0 +1,3 @@
+from common import common_hardware_chromecast
+
+print(common_hardware_chromecast.com_hard_chrome_discover())

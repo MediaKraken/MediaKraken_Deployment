@@ -39,12 +39,15 @@ class SSDPResponse(object):
     def __repr__(self):
         return "<SSDPResponse({location}, {st}, {usn})>".format(**self.__dict__)
 
+
 """
 device, ST, MX
 phue urn:schemas-upnp-org:device:basic:1 - 3
 roku roku:ecp - 3
 chromecast urn:dial-multiscreen-org:service:dial:1 - 1
 """
+
+
 def ssdp_discover(service, timeout=5, retries=1, mx=3):
     """
     Discover SSDP devices
@@ -66,8 +69,8 @@ def ssdp_discover(service, timeout=5, retries=1, mx=3):
         while True:
             try:
                 response = SSDPResponse(sock.recv(1024))
-                responses[response.location] = response
+                responses[response.location] = (response.st, response.usn)
             except socket.timeout:
                 break
         sock.close()
-    return list(responses.values())
+    return responses

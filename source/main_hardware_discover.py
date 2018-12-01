@@ -37,11 +37,11 @@ common_signal.com_signal_set_break()
 media_devices = []
 
 # chromecast discover
-for chromecast_ip, data_value in common_hardware_chromecast.com_hard_chrome_discover():
+for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_hard_chrome_discover():
     # common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
     media_devices.append({'Chromecast': {'Chrome IP': chromecast_ip,
-                                         'Chrome Model': data_value[0],
-                                         'Chrome Name': data_value[1]}})
+                                         'Chrome Model': model_name,
+                                         'Chrome Name': friendly_name}})
 
 # dlna devices
 for dlna_devices in common_network_dlna.com_net_dlna_discover():
