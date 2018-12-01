@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-import http.client
-
 import requests
 import xmltodict
 
@@ -34,36 +32,31 @@ def com_hard_chrome_discover(timeout=5, retries=1):
     """
     Discover chromecast devices
     """
+    device_list = common_network_ssdp.ssdp_discover(service='urn:dial-multiscreen-org:service:dial:1',
+                                                    timeout=timeout,
+                                                    retries=retries, mx=1)
     devices_found = []
-    for ssdp_device in common_network_ssdp.ssdp_discover(service='urn:dial-multiscreen-org:service:dial:1', timeout=timeout, retries=retries, mx=1):
-        print(ssdp_device)
-        # if line.find('LOCATION') == 0:
-        #     # pull out the ip
-        #     device_location = line.split(':', 1)[1].strip()[7:].split(':', 1)[0]
-        # elif line.find('ST') == 0 and line.find(
-        #         'urn:dial-multiscreen-org:service:dial:1') != -1:
-        #     # this is a chromecast device so grab the model and name
-        #     chrome_info = com_hard_chrome_info(device_location)
-        #     devices_found[device_location] = (
-        #         chrome_info['root']['device']['modelName'],
-        #         chrome_info['root']['device']['friendlyName'])
+    for ssdp_device_location in device_list:
+        chrome_info = com_hard_chrome_info(ssdp_device_location)
+        print(ssdp_device_location)
+        # print(type(chrome_info))
+        # print(chrome_info['root'])
+        # print(chrome_info['root']['device'])
+        # print(chrome_info['root']['device']['deviceType'])
+        # print(chrome_info['root']['device']['modelName'])
+        # print(chrome_info['root']['device']['friendlyName'])
+        devices_found.append((ssdp_device_location.rsplit(':', 1)[0].split('//', 1)[1],
+                              chrome_info['root']['device']['modelName'],
+                              chrome_info['root']['device']['friendlyName']))
     return devices_found
 
 
-def com_hard_chrome_info(ip_addr):
+def com_hard_chrome_info(ssdp_device_location):
     """
     get info of chromecast
     """
-    http_conn = http.client.HTTPConnection(ip_addr + ":8008")
-    http_conn.request("GET", "/ssdp/device-desc.xml")
-    http_resp = http_conn.getresponse()
-    if http_resp.status == 200:
-        status_doc = http_resp.read()
-        if common_global.es_inst is not None:
-            common_global.es_inst.com_elastic_index('info', {'name data': status_doc})
-        return xmltodict.parse(status_doc)
-    else:
-        return None
+    chrome_data = requests.get(ssdp_device_location)
+    return xmltodict.parse(chrome_data.text)
 
 
 def com_hard_chrome_play_youtube(youtube_video_guid, ip_addr, port=8008):
@@ -83,5 +76,3 @@ def com_hard_chrome_youtube_stop(ip_addr, port=8008):
 # TODO http://CHROMECAST_IP:8008/ssdp/device-desc.xml
 # TODO http://CHROMECAST_IP:8008/apps/ChromeCast
 # TODO http://CHROMECAST_IP:8008/apps/
-
-com_hard_chrome_discover()
