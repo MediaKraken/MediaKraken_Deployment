@@ -42,4 +42,3 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 ADD src /mediakraken
 
 CMD ["/bin/ash"]
-
