@@ -45,7 +45,7 @@ phue urn:schemas-upnp-org:device:basic:1 - 3
 roku roku:ecp - 3
 chromecast urn:dial-multiscreen-org:service:dial:1 - 1
 """
-def ssdp_discover(service="", timeout=5, retries=1, mx=3):
+def ssdp_discover(service, timeout=5, retries=1, mx=3):
     """
     Discover SSDP devices
     """
