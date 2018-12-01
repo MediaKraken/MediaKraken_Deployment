@@ -23,6 +23,7 @@ from . import common_global
 
 
 # https://github.com/dsoprea/PyHdHomeRun - forked to MK
+# this is what's included in the source in device scan image build
 
 class CommonHardwareHDHomeRunPY(object):
     """
@@ -34,7 +35,7 @@ class CommonHardwareHDHomeRunPY(object):
 
     def com_hdhomerun_discover(self):
         """
-        Look for hdhomerun divices
+        Look for hdhomerun devices
         """
         self.devices = HdhrUtility.discover_find_devices_custom()
 
