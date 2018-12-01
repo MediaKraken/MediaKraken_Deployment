@@ -49,21 +49,21 @@ for dlna_devices in common_network_dlna.com_net_dlna_discover():
         break
     media_devices.append({'DLNA': dlna_devices})
 
-# hdhomerun tuner discovery
-tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
-tuner_api.com_hdhomerun_discover()
-for row_tuner in tuner_api.com_hdhomerun_list():
-    # common_global.es_inst.com_elastic_index('info', {
-    #     'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
-    media_devices.append({'HDHomeRun': {'Model': row_tuner.get_var(item='/sys/model'),
-                                        'HWModel': row_tuner.get_var(item='/sys/hwmodel'),
-                                        'Name': row_tuner.get_name(),
-                                        'ID': str(hex(row_tuner.get_device_id())),
-                                        'IP': common_string.com_string_ip_int_to_ascii(
-                                            row_tuner.get_device_ip()),
-                                        'Firmware': row_tuner.get_version(),
-                                        'Active': True,
-                                        'Channels': {}}})
+# # hdhomerun tuner discovery
+# tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
+# tuner_api.com_hdhomerun_discover()
+# for row_tuner in tuner_api.com_hdhomerun_list():
+#     # common_global.es_inst.com_elastic_index('info', {
+#     #     'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
+#     media_devices.append({'HDHomeRun': {'Model': row_tuner.get_var(item='/sys/model'),
+#                                         'HWModel': row_tuner.get_var(item='/sys/hwmodel'),
+#                                         'Name': row_tuner.get_name(),
+#                                         'ID': str(hex(row_tuner.get_device_id())),
+#                                         'IP': common_string.com_string_ip_int_to_ascii(
+#                                             row_tuner.get_device_ip()),
+#                                         'Firmware': row_tuner.get_version(),
+#                                         'Active': True,
+#                                         'Channels': {}}})
 
 # phillips hue discover
 hue_inst = common_hardware_hue.CommonHardwareHue()
