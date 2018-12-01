@@ -17,12 +17,12 @@
 '''
 
 import http.client
-import socket
 
 import requests
 import xmltodict
 
 from . import common_global
+from . import common_network_ssdp
 
 CAST_PLAYER_APPID = "CC1AD845"
 
@@ -34,43 +34,19 @@ def com_hard_chrome_discover(timeout=5, retries=1):
     """
     Discover chromecast devices
     """
-    group = ("239.255.255.250", 1900)
-    message = "\r\n".join(['M-SEARCH * HTTP/1.1',
-                           'HOST: 239.255.255.250:1900',
-                           'MAN: "ssdp:discover"',
-                           'MX: 1',
-                           'ST: urn:dial-multiscreen-org:service:dial:1',
-                           '', ''])
-    socket.setdefaulttimeout(timeout)
-    # do the actual ssdp calls
-    devices_found = {}
-    for _ in range(retries):
-        ssdp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        ssdp_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        ssdp_sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
-        message_bytes = message.format(*group).encode('utf-8')
-        ssdp_sock.sendto(message_bytes, group)
-        while True:
-            try:
-                response = ssdp_sock.recv(1024)
-                if common_global.es_inst is not None:
-                    common_global.es_inst.com_elastic_index('info', {'response body': response})
-                for line in response.split("\r\n"):
-                    if line.find('LOCATION') == 0:
-                        # pull out the ip
-                        device_location = line.split(':', 1)[1].strip()[7:].split(':', 1)[0]
-                    elif line.find('ST') == 0 and line.find(
-                            'urn:dial-multiscreen-org:service:dial:1') != -1:
-                        # this is a chromecast device so grab the model and name
-                        chrome_info = com_hard_chrome_info(device_location)
-                        devices_found[device_location] = (
-                            chrome_info['root']['device']['modelName'],
-                            chrome_info['root']['device']['friendlyName'])
-            except socket.timeout:
-                if common_global.es_inst is not None:
-                    common_global.es_inst.com_elastic_index('error', {'socket timeout'})
-                break
-        ssdp_sock.close()
+    devices_found = []
+    for ssdp_device in common_network_ssdp.ssdp_discover(service='urn:dial-multiscreen-org:service:dial:1', timeout=timeout, retries=retries, mx=1):
+        print(ssdp_device)
+        # if line.find('LOCATION') == 0:
+        #     # pull out the ip
+        #     device_location = line.split(':', 1)[1].strip()[7:].split(':', 1)[0]
+        # elif line.find('ST') == 0 and line.find(
+        #         'urn:dial-multiscreen-org:service:dial:1') != -1:
+        #     # this is a chromecast device so grab the model and name
+        #     chrome_info = com_hard_chrome_info(device_location)
+        #     devices_found[device_location] = (
+        #         chrome_info['root']['device']['modelName'],
+        #         chrome_info['root']['device']['friendlyName'])
     return devices_found
 
 
@@ -107,3 +83,5 @@ def com_hard_chrome_youtube_stop(ip_addr, port=8008):
 # TODO http://CHROMECAST_IP:8008/ssdp/device-desc.xml
 # TODO http://CHROMECAST_IP:8008/apps/ChromeCast
 # TODO http://CHROMECAST_IP:8008/apps/
+
+com_hard_chrome_discover()
