@@ -117,6 +117,9 @@ if option_config_json['Docker Instances']['transmission']:
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
 
+# fire off the hardware scanner
+docker_inst.com_docker_run_device_scan()
+
 # sleep for minute so hardware scan has time to run
 time.sleep(60)
 if os.path.exists('/mediakraken/devices/device_scan.txt'):
