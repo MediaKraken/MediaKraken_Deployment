@@ -1,4 +1,4 @@
-#   Copyright 2014 Dan Krause, Python 3 hack 2016 Adam Baxter
+#   Copyright 2014 Dan Krause, Python 3 hack 2016 Adam Baxter, List devices 2018 Quinn Granfor
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -39,10 +39,15 @@ class SSDPResponse(object):
     def __repr__(self):
         return "<SSDPResponse({location}, {st}, {usn})>".format(**self.__dict__)
 
-
-def roku_discover(service="roku:ecp", timeout=5, retries=1, mx=3):
+"""
+device, ST, MX
+phue urn:schemas-upnp-org:device:basic:1 - 3
+roku roku:ecp - 3
+chromecast urn:dial-multiscreen-org:service:dial:1 - 1
+"""
+def ssdp_discover(service="", timeout=5, retries=1, mx=3):
     """
-    Discover Roku devices
+    Discover SSDP devices
     """
     group = ("239.255.255.250", 1900)
     message = "\r\n".join([
