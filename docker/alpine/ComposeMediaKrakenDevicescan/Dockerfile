@@ -19,6 +19,7 @@ ADD PyHdHomeRun /mediakraken/PyHdHomeRun
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   alpine-sdk \
+  git \
   libhdhomerun \
   py3-requests \
   py3-setuptools \
@@ -27,9 +28,15 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && python3 setup.py install \
   && cd .. \
   && rm -R PyHdHomeRun \
+  && get https://github.com/MediaKraken/phue \
+  && cd phue \
+  && python3 setup.py install \
+  && cd .. \
   && apk del alpine-sdk \
+  git \
   python3-dev \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && rm -rf phue \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/*
 
