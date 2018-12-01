@@ -50,10 +50,10 @@ for dlna_devices in common_network_dlna.com_net_dlna_discover():
     media_devices.append({'DLNA': dlna_devices})
 
 # hdhomerun tuner discovery
-tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
-tuner_api.com_hdhomerun_discover()
-for row_tuner in tuner_api.com_hdhomerun_list():
-    print(row_tuner)
+# tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
+# tuner_api.com_hdhomerun_discover()
+# for row_tuner in tuner_api.com_hdhomerun_list():
+#     print(row_tuner)
 # tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 # tuner_api.com_hdhomerun_discover()
 # for row_tuner in tuner_api.com_hdhomerun_list():
