@@ -22,6 +22,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-setuptools \
   python3-dev \
   && git clone https://github.com/MediaKraken/PyHdHomeRun \
+  && cd PyHdHomeRun \
   && python3 setup.py install \
   && cd .. \
   && rm -R PyHdHomeRun \
