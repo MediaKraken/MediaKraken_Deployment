@@ -28,7 +28,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && python3 setup.py install \
   && cd .. \
   && rm -R PyHdHomeRun \
-  && get https://github.com/MediaKraken/phue \
+  && git clone https://github.com/MediaKraken/phue \
   && cd phue \
   && python3 setup.py install \
   && cd .. \
