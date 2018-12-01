@@ -146,6 +146,8 @@ if os.path.exists('/mediakraken/devices/device_scan.txt'):
             # TODO make sure this particular device not in DB
             db_connection.db_device_insert(device_type='Soco',
                                            device_json=json.dumps(hardware_device))
+else:
+    common_global.es_inst.com_elastic_index('error', {'no device_scan file found'})
 
 # commit
 db_connection.db_commit()
