@@ -22,8 +22,7 @@ from pyhdhomerun.constants import MAP_US_BCAST
 from . import common_global
 
 
-# https://github.com/dsoprea/PyHdHomeRun - forked to MK
-# this is what's included in the source in device scan image build
+# https://github.com/MediaKraken/PyHdHomeRun
 
 class CommonHardwareHDHomeRunPY(object):
     """
