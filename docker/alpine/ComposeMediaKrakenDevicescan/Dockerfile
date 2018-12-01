@@ -7,6 +7,9 @@ LABEL Description="This image scans for new hardware devices"
 ARG ALPMIRROR
 ARG PIPMIRROR
 
+# copy PIP requirements
+ADD requirements.txt /mediakraken
+
 WORKDIR /mediakraken
 
 # add hdhomerun lib to install
@@ -26,6 +29,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm -R PyHdHomeRun \
   && apk del alpine-sdk \
   python3-dev \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && rm requirements.txt \
   && rm -rf /var/cache/apk/*
 
 # Copy the source files for the app
