@@ -152,7 +152,6 @@ services:
     volumes:
       # this stores the "push button" key
       - ./data/phue:/mediakraken/phue
-      - ./data/devices:/mediakraken/devices
     container_name: mkhardware
     depends_on:
       - rabbit

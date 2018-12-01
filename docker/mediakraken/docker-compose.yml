@@ -121,7 +121,6 @@ services:
     volumes:
       # this stores the "push button" key
       - ./data/phue:/mediakraken/phue
-      - ./data/devices:/mediakraken/devices
     networks:
       - mediakraken_network
     restart: unless-stopped
