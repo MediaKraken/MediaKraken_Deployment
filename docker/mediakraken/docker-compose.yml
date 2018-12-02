@@ -24,6 +24,7 @@ services:
       - ./data/certs:/mediakraken/key
       # if swarmip init
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # so can read the device scan output
       - ./data/devices:/mediakraken/devices
     networks:
       - mediakraken_network
