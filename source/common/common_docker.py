@@ -188,7 +188,12 @@ class CommonDocker(object):
                                        detach=True,
                                        command='python3 main_hardware_discover.py',
                                        name='mkdevicescan',
-                                       network_mode='host')
+                                       network_mode='host',
+                                       volumes={'./data/devices':
+                                                    {'bind': '/mediakraken/devices',
+                                                     'mode': 'rw'}
+                                                },
+                                       )
 
     def com_docker_run_elk(self):
         self.com_docker_delete_container('mkelk')
@@ -198,7 +203,7 @@ class CommonDocker(object):
                                        ports={"5044": 5044, "5601": 5601, "9200": 9200},
                                        name='mkelk',
                                        network='mk_mediakraken_network',
-                                       volumes={'/var/log/mediakraken/elk':
+                                       volumes={'./data/elk':
                                                     {'bind': '/var/lib/elasticsearch',
                                                      'mode': 'rw'}
                                                 },
@@ -216,7 +221,7 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network',
                                        command=container_command,
                                        detach=True,
-                                       volumes={'/var/opt/mediakraken/emulation':
+                                       volumes={'./data/emulation':
                                                     {'bind': '/mediakraken/emulation',
                                                      'mode': 'rw'}
                                                 },
@@ -264,9 +269,9 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network',
                                        ports={"5000": 5000},
                                        environment={'BRAINZCODE': brainzcode},
-                                       volumes={'/mediakraken/mbrainz/config':
+                                       volumes={'./data/mbrainz/config':
                                                     {'bind': '/config', 'mode': 'rw'},
-                                                '/mediakraken/mbrainz/data':
+                                                './data/mbrainz/data':
                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self):
@@ -275,7 +280,7 @@ class CommonDocker(object):
                                        detach=True,
                                        ports={"64738": 64738},
                                        name='mkmumble',
-                                       volumes={'/var/opt/mediakraken/mumble':
+                                       volumes={'./data/mumble':
                                                     {'bind': '/etc/mumble',
                                                      'mode': 'rw'}
                                                 }
@@ -287,10 +292,10 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkopenldap',
                                        ports={"389": 389, "636": 636},
-                                       volumes={'/var/opt/mediakraken/openldap/conf':
+                                       volumes={'./data/openldap/conf':
                                                     {'bind': '/etc/openldap',
                                                      'mode': 'rw'},
-                                                '/var/opt/mediakraken/openldap/data': {
+                                                './data/openldap/data': {
                                                     'bind': '/var/lib/openldap/openldap-data',
                                                     'mode': 'rw'}},
                                        network='mk_mediakraken_network')
@@ -315,7 +320,7 @@ class CommonDocker(object):
                                        volumes={'/var/run/docker.sock':
                                                     {'bind': '/var/run/docker.sock',
                                                      'mode': 'ro'},
-                                                '/var/opt/mediakraken/data':
+                                                './data/portainer':
                                                     {'bind': '/ data', 'mode': 'rw'}})
 
     def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command):
@@ -346,7 +351,7 @@ class CommonDocker(object):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
-                                       volumes={'/var/opt/mediakraken/teamspeak/data':
+                                       volumes={'./data/teamspeak/data':
                                                     {'bind': '/opt/teamspeak',
                                                      'mode': 'rw'},
                                                 },
@@ -363,10 +368,10 @@ class CommonDocker(object):
                                        ports={"9091": 9091, "51413/tcp": 51413,
                                               "51413/udp": 51413},
                                        command='/start-transmission.sh',
-                                       volumes={'/var/opt/mediakraken/transmission/downloads':
+                                       volumes={'./data/transmission/downloads':
                                                     {'bind': '/transmission/downloads',
                                                      'mode': 'rw'},
-                                                '/var/opt/mediakraken/transmission/incomplete':
+                                                './data/transmission/incomplete':
                                                     {'bind': '/transmission/incomplete',
                                                      'mode': 'rw'}
                                                 },
