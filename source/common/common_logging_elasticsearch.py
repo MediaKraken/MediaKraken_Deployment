@@ -66,6 +66,7 @@ class CommonElasticsearch(object):
                            "timestamp": time.strftime("%Y%m%d%H%M%S")}))
             except:
                 print(str({"type": log_type,
+                           "data": str(body_data),
                            "timestamp": time.strftime("%Y%m%d%H%M%S")}))
 
     def com_elastic_get(self, id):
