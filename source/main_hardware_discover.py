@@ -19,14 +19,10 @@
 from common import common_file
 from common import common_global
 from common import common_hardware_chromecast
-from common import common_hardware_hdhomerun_py
-from common import common_hardware_hue
 from common import common_hardware_roku_network
 from common import common_hardware_soco
-from common import common_network_dlna
-from common import common_signal
 from common import common_logging_elasticsearch
-from common import common_string
+from common import common_signal
 
 # start logging - REMOVED SINCE RUNS AS HOST NETWORK
 # can use now that I'm doing sys logging
@@ -45,7 +41,6 @@ for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_h
     media_devices.append({'Chromecast': {'Chrome IP': chromecast_ip,
                                          'Chrome Model': model_name,
                                          'Chrome Name': friendly_name}})
-
 
 common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 
