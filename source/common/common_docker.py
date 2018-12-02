@@ -189,7 +189,7 @@ class CommonDocker(object):
                                        command='python3 main_hardware_discover.py',
                                        name='mkdevicescan',
                                        network_mode='host',
-                                       volumes={'./data/devices':
+                                       volumes={os.path.join(os.getcwd() + '/data/devices'):
                                                     {'bind': '/mediakraken/devices',
                                                      'mode': 'rw'}
                                                 },
@@ -203,7 +203,7 @@ class CommonDocker(object):
                                        ports={"5044": 5044, "5601": 5601, "9200": 9200},
                                        name='mkelk',
                                        network='mk_mediakraken_network',
-                                       volumes={'./data/elk':
+                                       volumes={os.path.join(os.getcwd() + '/data/elk'):
                                                     {'bind': '/var/lib/elasticsearch',
                                                      'mode': 'rw'}
                                                 },
@@ -221,7 +221,7 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network',
                                        command=container_command,
                                        detach=True,
-                                       volumes={'./data/emulation':
+                                       volumes={os.path.join(os.getcwd() + '/data/emulation'):
                                                     {'bind': '/mediakraken/emulation',
                                                      'mode': 'rw'}
                                                 },
@@ -269,9 +269,9 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network',
                                        ports={"5000": 5000},
                                        environment={'BRAINZCODE': brainzcode},
-                                       volumes={'./data/mbrainz/config':
+                                       volumes={os.path.join(os.getcwd() + '/data/mbrainz/config'):
                                                     {'bind': '/config', 'mode': 'rw'},
-                                                './data/mbrainz/data':
+                                                os.path.join(os.getcwd() + '/data/mbrainz/data'):
                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self):
@@ -280,7 +280,7 @@ class CommonDocker(object):
                                        detach=True,
                                        ports={"64738": 64738},
                                        name='mkmumble',
-                                       volumes={'./data/mumble':
+                                       volumes={os.path.join(os.getcwd() + '/data/mumble'):
                                                     {'bind': '/etc/mumble',
                                                      'mode': 'rw'}
                                                 }
@@ -292,12 +292,12 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkopenldap',
                                        ports={"389": 389, "636": 636},
-                                       volumes={'./data/openldap/conf':
+                                       volumes={os.path.join(os.getcwd() + '/data/openldap/conf'):
                                                     {'bind': '/etc/openldap',
                                                      'mode': 'rw'},
-                                                './data/openldap/data': {
-                                                    'bind': '/var/lib/openldap/openldap-data',
-                                                    'mode': 'rw'}},
+                                                os.path.join(os.getcwd() + '/data/openldap/data'):
+                                                    {'bind': '/var/lib/openldap/openldap-data',
+                                                     'mode': 'rw'}},
                                        network='mk_mediakraken_network')
 
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
@@ -320,7 +320,7 @@ class CommonDocker(object):
                                        volumes={'/var/run/docker.sock':
                                                     {'bind': '/var/run/docker.sock',
                                                      'mode': 'ro'},
-                                                './data/portainer':
+                                                os.path.join(os.getcwd() + '/data/portainer'):
                                                     {'bind': '/ data', 'mode': 'rw'}})
 
     def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command):
@@ -351,7 +351,7 @@ class CommonDocker(object):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
-                                       volumes={'./data/teamspeak/data':
+                                       volumes={os.path.join(os.getcwd() + '/data/teamspeak/data'):
                                                     {'bind': '/opt/teamspeak',
                                                      'mode': 'rw'},
                                                 },
@@ -368,10 +368,10 @@ class CommonDocker(object):
                                        ports={"9091": 9091, "51413/tcp": 51413,
                                               "51413/udp": 51413},
                                        command='/start-transmission.sh',
-                                       volumes={'./data/transmission/downloads':
+                                       volumes={os.path.join(os.getcwd() + '/data/transmission/downloads'):
                                                     {'bind': '/transmission/downloads',
                                                      'mode': 'rw'},
-                                                './data/transmission/incomplete':
+                                                os.path.join(os.getcwd() + '/data/transmission/incomplete'):
                                                     {'bind': '/transmission/incomplete',
                                                      'mode': 'rw'}
                                                 },
