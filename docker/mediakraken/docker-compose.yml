@@ -268,7 +268,8 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     volumes:
       - ./mkmount:/mediakraken/mnt
-      - mkvol-static:/mediakraken/web_app/MediaKraken/static:ro
+      # must not be read only as it stores cache here
+      - mkvol-static:/mediakraken/web_app/MediaKraken/static
       - ./data/webkey:/mediakraken/key
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
@@ -290,6 +291,11 @@ networks:
 
 volumes:
      mkvol-device:
+#        driver: local
+#        driver_opts:
+#          type: none
+#          o: bind
+#          device: ./data/devices
      mkvol-elk:
      mkvol-emulation:
      mkvol-mbrainz:
