@@ -62,11 +62,11 @@ class CommonElasticsearch(object):
         elif self.debug == 'print':
             try:
                 print(str({"type": log_type,
-                                      "data": json.dumps(body_data),
-                                      "timestamp": time.strftime("%Y%m%d%H%M%S")}))
+                           "data": json.dumps(body_data),
+                           "timestamp": time.strftime("%Y%m%d%H%M%S")}))
             except:
                 print(str({"type": log_type,
-                                      "timestamp": time.strftime("%Y%m%d%H%M%S")}))
+                           "timestamp": time.strftime("%Y%m%d%H%M%S")}))
 
     def com_elastic_get(self, id):
         self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)

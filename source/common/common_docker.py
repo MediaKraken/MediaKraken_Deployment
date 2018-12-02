@@ -193,6 +193,7 @@ class CommonDocker(object):
                                                     {'bind': '/mediakraken/devices',
                                                      'mode': 'rw'}
                                                 },
+                                       environment={'DEBUG': os.environ['DEBUG']},
                                        )
 
     def com_docker_run_elk(self):
@@ -227,8 +228,8 @@ class CommonDocker(object):
                                                 },
                                        environment={'POSTGRES_DB': os.environ['POSTGRES_DB'],
                                                     'POSTGRES_USER': os.environ['POSTGRES_USER'],
-                                                    'POSTGRES_PASSWORD': os.environ[
-                                                        'POSTGRES_PASSWORD'],
+                                                    'POSTGRES_PASSWORD': os.environ['POSTGRES_PASSWORD'],
+                                                    'DEBUG': os.environ['DEBUG'],
                                                     },
                                        name='mkgamedata')
 
@@ -391,6 +392,7 @@ class CommonDocker(object):
                                                {'bind': '/mediakraken/mnt',
                                                 'mode': 'rw'}
                                        },
+                                       environment={'DEBUG': os.environ['DEBUG']},
                                        name='mktwitchrecorduser_' + twitch_user)
 
     def com_docker_run_wireshark(self):
