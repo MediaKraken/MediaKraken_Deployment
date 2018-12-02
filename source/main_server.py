@@ -125,6 +125,7 @@ time.sleep(60)
 if os.path.exists('/mediakraken/devices/device_scan.txt'):
     for hardware_device in common_file.com_file_load_data(
             file_name='/mediakraken/devices/device_scan.txt', as_pickle=True):
+        common_global.es_inst.com_elastic_index('info', {'hardware_device': hardware_device})
         if 'Chromecast' in hardware_device:
             # TODO make sure this particular device not in DB
             db_connection.db_device_insert(device_type='Chromecast',
