@@ -149,7 +149,7 @@ def _get_port(location):
 
 
 def _get_control_urls(xml):
-    """ Extract AVTransport contol url from device description xml
+    """ Extract AVTransport control url from device description xml
 
     xml -- device description xml
     return -- control url or empty string if wasn't found
@@ -158,8 +158,13 @@ def _get_control_urls(xml):
         return {i['serviceType']: i['controlURL'] for i in
                 xml['root']['device']['serviceList']['service']}
     except:
-        return
-
+        pass
+    try:
+        return {i['serviceType']: i['controlURL'] for i in
+                xml['root']['device']['deviceList']['device']['serviceList']['service']}
+    except:
+        pass
+    return
 
 @contextmanager
 def _send_udp(to, packet):
@@ -225,20 +230,20 @@ class DlnapDevice:
             self.__raw = raw.decode()
             self.location = _get_location_url(self.__raw)
             self.__logger.info('location: {}'.format(self.location))
-            print(self.location)
+
             self.port = _get_port(self.location)
             self.__logger.info('port: {}'.format(self.port))
 
             raw_desc_xml = urlopen(self.location, timeout=5).read().decode()
-            print(raw_desc_xml)
+
             desc_dict = xmltodict.parse(raw_desc_xml)
             self.__logger.debug('description xml: {}'.format(desc_dict))
-            print(desc_dict)
+
             self.name = _get_friendly_name(desc_dict)
             self.__logger.info('friendlyName: {}'.format(self.name))
-            print(self.name)
+
             services_url = _get_control_urls(desc_dict)
-            print(services_url)
+
             self.control_url = services_url[URN_AVTransport]
             self.__logger.info('control_url: {}'.format(self.control_url))
 

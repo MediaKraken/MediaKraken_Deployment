@@ -43,11 +43,11 @@ for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_h
                                          'Chrome Model': model_name,
                                          'Chrome Name': friendly_name}})
 
-# dlna devices
-for dlna_devices in common_network_dlna.com_net_dlna_discover():
-    if dlna_devices == 'No compatible devices found.':
-        break
-    media_devices.append({'DLNA': dlna_devices})
+# # dlna devices
+# for dlna_devices in common_network_dlna.com_net_dlna_discover():
+#     if dlna_devices == 'No compatible devices found.':
+#         break
+#     media_devices.append({'DLNA': dlna_devices})
 
 # hdhomerun tuner discovery
 # tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
