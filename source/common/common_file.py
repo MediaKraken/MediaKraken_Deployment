@@ -52,11 +52,15 @@ def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=Fa
     Save data as file
     """
     file_handle = None
+    if as_pickle:
+        write_type = 'wb'
+    else:
+        write_type = 'w+'
     if with_timestamp:
         file_handle = open(file_name + '_' +
-                           time.strftime("%Y%m%d%H%M%S") + file_ext, 'w+')
+                           time.strftime("%Y%m%d%H%M%S") + file_ext, write_type)
     else:
-        file_handle = open(file_name, 'w+')
+        file_handle = open(file_name, write_type)
     if as_pickle:
         pickle.dump(data_block, file_handle)
     else:
@@ -68,7 +72,11 @@ def com_file_load_data(file_name, as_pickle=False):
     """
     Load data from file as ascii or pickle
     """
-    file_handle = open(file_name, "r")
+    if as_pickle:
+        read_type = 'rb'
+    else:
+        read_type = 'r'
+    file_handle = open(file_name, read_type)
     if as_pickle:
         data_block = pickle.loads(file_handle.read())
     else:
