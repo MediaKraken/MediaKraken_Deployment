@@ -69,9 +69,9 @@ for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_h
 #                                         'Active': True,
 #                                         'Channels': {}}})
 
-# phillips hue discover
-hue_inst = common_hardware_hue.CommonHardwareHue()
-media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
+# # phillips hue discover
+# hue_inst = common_hardware_hue.CommonHardwareHue()
+# media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
 
 # roku discover
 for roku in common_hardware_roku_network.com_roku_network_discovery():
