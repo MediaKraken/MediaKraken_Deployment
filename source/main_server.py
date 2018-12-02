@@ -125,6 +125,7 @@ docker_inst.com_docker_run_device_scan()
 # sleep for minute so hardware scan has time to run
 time.sleep(60)
 if os.path.exists('/mediakraken/devices/device_scan.txt'):
+    common_global.es_inst.com_elastic_index('info', {'hardware_device': 'file exists'})
     for hardware_device in common_file.com_file_load_data(
             file_name='/mediakraken/devices/device_scan.txt', as_pickle=True):
         common_global.es_inst.com_elastic_index('info', {'hardware_device': hardware_device})
