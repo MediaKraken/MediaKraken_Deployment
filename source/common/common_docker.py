@@ -189,7 +189,7 @@ class CommonDocker(object):
                                        command='python3 main_hardware_discover.py',
                                        name='mkdevicescan',
                                        network_mode='host',
-                                       volumes={os.path.join(os.getcwd() + '/data/devices'):
+                                       volumes={'mkvol-device':
                                                     {'bind': '/mediakraken/devices',
                                                      'mode': 'rw'}
                                                 },

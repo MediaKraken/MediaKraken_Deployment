@@ -25,7 +25,7 @@ services:
       # if swarmip init
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # so can read the device scan output
-      - ./data/devices:/mediakraken/devices
+      - mkvol-device:/mediakraken/devices
     networks:
       - mediakraken_network
 
@@ -142,7 +142,7 @@ services:
     volumes:
       - ./mkmount:/mediakraken/mnt
       # stores posters/etc so webserver can present
-      - static-volume:/mediakraken/web_app/MediaKraken/static
+      - mkvol-static:/mediakraken/web_app/MediaKraken/static
       # stores the xml/json xref files for anime match
       - ./data/cache:/mediakraken/cache
     networks:
@@ -157,7 +157,7 @@ services:
     volumes:
       - ./data/nginx:/var/log/mediakraken/nginx
       - ./data/certs:/etc/nginx/certs:ro
-      - static-volume:/mediakraken/web_app/MediaKraken/static:ro
+      - mkvol-static:/mediakraken/web_app/MediaKraken/static:ro
     ports:
       - "8900:8900"
     networks:
@@ -268,7 +268,7 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     volumes:
       - ./mkmount:/mediakraken/mnt
-      - static-volume:/mediakraken/web_app/MediaKraken/static
+      - mkvol-static:/mediakraken/web_app/MediaKraken/static:ro
       - ./data/webkey:/mediakraken/key
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
@@ -289,4 +289,13 @@ networks:
     name: mk_mediakraken_network
 
 volumes:
-     static-volume:
+     mkvol-device:
+     mkvol-elk:
+     mkvol-emulation:
+     mkvol-mbrainz:
+     mkvol-mumble:
+     mkvol-openldap:
+     mkvol-portainer:
+     mkvol-static:
+     mkvol-teamspeak:
+     mkvol-transmission:
