@@ -17,7 +17,7 @@
 '''
 
 from common import common_file
-# from common import common_global
+from common import common_global
 from common import common_hardware_chromecast
 from common import common_hardware_hdhomerun_py
 from common import common_hardware_hue
@@ -25,11 +25,12 @@ from common import common_hardware_roku_network
 from common import common_hardware_soco
 from common import common_network_dlna
 from common import common_signal
-# from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch
 from common import common_string
 
 # start logging - REMOVED SINCE RUNS AS HOST NETWORK
-# common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
+# can use now that I'm doing sys logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -38,7 +39,7 @@ media_devices = []
 
 # chromecast discover
 for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_hard_chrome_discover():
-    # common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
+    common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
     media_devices.append({'Chromecast': {'Chrome IP': chromecast_ip,
                                          'Chrome Model': model_name,
                                          'Chrome Name': friendly_name}})
@@ -75,15 +76,17 @@ for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_h
 
 # roku discover
 for roku in common_hardware_roku_network.com_roku_network_discovery():
-    # common_global.es_inst.com_elastic_index('info', {'roku out': roku})
+    common_global.es_inst.com_elastic_index('info', {'roku out': roku})
     media_devices.append({'Roku': roku})
 
 # soco discover
 soco_devices = common_hardware_soco.com_hardware_soco_discover()
 if soco_devices is not None:
     for soco in soco_devices:
-        # common_global.es_inst.com_elastic_index('info', {'soco out': soco})
+        common_global.es_inst.com_elastic_index('info', {'soco out': soco})
         media_devices.append({'Soco': soco})
+
+common_global.es_inst.com_elastic_index('info', {'devices': media_devices})
 
 common_file.com_file_save_data(file_name='/mediakraken/devices/device_scan.txt',
                                data_block=media_devices,
