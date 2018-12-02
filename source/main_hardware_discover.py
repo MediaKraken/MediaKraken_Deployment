@@ -79,9 +79,11 @@ for roku in common_hardware_roku_network.com_roku_network_discovery():
     media_devices.append({'Roku': roku})
 
 # soco discover
-for soco in common_hardware_soco.com_hardware_soco_discover():
-    # common_global.es_inst.com_elastic_index('info', {'soco out': soco})
-    media_devices.append({'Soco': soco})
+soco_devices = common_hardware_soco.com_hardware_soco_discover()
+if soco_devices is not None:
+    for soco in soco_devices:
+        # common_global.es_inst.com_elastic_index('info', {'soco out': soco})
+        media_devices.append({'Soco': soco})
 
 common_file.com_file_save_data(file_name='/mediakraken/devices/device_scan.txt',
                                data_block=media_devices,
