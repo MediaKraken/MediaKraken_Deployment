@@ -54,6 +54,8 @@ if not os.path.isfile('./key/cacert.pem'):
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # check db version
+common_global.es_inst.com_elastic_index('info', {'db1': db_connection.db_version_check()})
+common_global.es_inst.com_elastic_index('info', {'db2': common_version.DB_VERSION})
 if db_connection.db_version_check() != common_version.DB_VERSION:
     common_global.es_inst.com_elastic_index('info',
                                             {'stuff': 'Database upgrade in progress...'})
