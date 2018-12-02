@@ -272,6 +272,8 @@ db_connection.db_query('create table IF NOT EXISTS mm_game_category (gc_id uuid'
 if db_connection.db_table_index_check('gc_category_idx_name') is None:
     db_connection.db_query('CREATE INDEX gc_category_idx_name'
                            ' ON mm_game_category(gc_category)')
+    db_connection.db_version_update(22)
+    db_connection.db_commit()
 
 # add mm_metadata_localimage_json to mm_metadata_game_software_info
 # add mm_metadata_localimage_json to mm_metadata_game_systems_info
