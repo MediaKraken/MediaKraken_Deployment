@@ -37,17 +37,20 @@ def com_hard_chrome_discover(timeout=5, retries=1):
                                                     retries=retries, mx=1)
     devices_found = []
     for ssdp_device_location in device_list:
+        # get the info via request and xmltodict
         chrome_info = com_hard_chrome_info(ssdp_device_location)
-        print(ssdp_device_location)
-        # print(type(chrome_info))
-        # print(chrome_info['root'])
-        # print(chrome_info['root']['device'])
-        # print(chrome_info['root']['device']['deviceType'])
-        # print(chrome_info['root']['device']['modelName'])
-        # print(chrome_info['root']['device']['friendlyName'])
-        devices_found.append((ssdp_device_location.rsplit(':', 1)[0].split('//', 1)[1],
-                              chrome_info['root']['device']['modelName'],
-                              chrome_info['root']['device']['friendlyName']))
+        # verify that it is indeed a chromecast
+        if chrome_info['root']['device']['deviceType'] == 'urn:dial-multiscreen-org:service:dial:1':
+            print(ssdp_device_location)
+            # print(type(chrome_info))
+            # print(chrome_info['root'])
+            # print(chrome_info['root']['device'])
+            # print(chrome_info['root']['device']['deviceType'])
+            # print(chrome_info['root']['device']['modelName'])
+            # print(chrome_info['root']['device']['friendlyName'])
+            devices_found.append((ssdp_device_location.rsplit(':', 1)[0].split('//', 1)[1],
+                                  chrome_info['root']['device']['modelName'],
+                                  chrome_info['root']['device']['friendlyName']))
     return devices_found
 
 
