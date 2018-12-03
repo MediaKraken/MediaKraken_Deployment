@@ -74,12 +74,12 @@ common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 # hue_inst = common_hardware_hue.CommonHardwareHue()
 # media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
 
-# roku discover
-for roku in common_hardware_roku_network.com_roku_network_discovery():
-    common_global.es_inst.com_elastic_index('info', {'roku out': roku})
-    media_devices.append({'Roku': roku})
-
-common_global.es_inst.com_elastic_index('info', {'after roku'})
+# # roku discover
+# for roku in common_hardware_roku_network.com_roku_network_discovery():
+#     common_global.es_inst.com_elastic_index('info', {'roku out': roku})
+#     media_devices.append({'Roku': roku})
+#
+# common_global.es_inst.com_elastic_index('info', {'after roku'})
 
 # soco discover
 soco_devices = common_hardware_soco.com_hardware_soco_discover()
