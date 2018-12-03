@@ -95,34 +95,39 @@ for link_data in db_connection.db_link_list():
     common_global.es_inst.com_elastic_index('info', {'Link PID': proc_link.pid})
     link_pid[link_data[0]] = proc_link.pid
 
+# get current working directory from host maps
+# this is used so ./data can be used for all the containers launched from docker-py
+current_host_working_directory = docker_inst.com_docker_container_bind(container_name='/mkserver',
+                                                                       bind_match='/data/devices')
+
 # start up other docker containers if needed
 if option_config_json['Docker Instances']['mumble']:
-    docker_inst.com_docker_run_mumble()
+    docker_inst.com_docker_run_mumble(current_host_working_directory)
 
 if option_config_json['Docker Instances']['musicbrainz']:
     if option_config_json['API']['musicbrainz'] is not None:
-        docker_inst.com_docker_run_musicbrainz(option_config_json['API']['musicbrainz'])
+        docker_inst.com_docker_run_musicbrainz(current_host_working_directory,
+                                               option_config_json['API']['musicbrainz'])
 
 if option_config_json['Docker Instances']['portainer']:
-    docker_inst.com_docker_run_portainer()
+    docker_inst.com_docker_run_portainer(current_host_working_directory)
 
 # if option_config_json['Docker Instances']['smtp']:
 #     docker_inst.com_docker_run_container()
 
 if option_config_json['Docker Instances']['teamspeak']:
-    docker_inst.com_docker_run_teamspeak()
+    docker_inst.com_docker_run_teamspeak(current_host_working_directory)
 
 if option_config_json['Docker Instances']['transmission']:
-    docker_inst.com_docker_run_transmission(option_config_json['Transmission']['Username'],
+    docker_inst.com_docker_run_transmission(current_host_working_directory,
+                                            option_config_json['Transmission']['Username'],
                                             option_config_json['Transmission']['Password'])
 
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
 
-docker_inst.com_docker_container_bind()
-
 # fire off the hardware scanner
-docker_inst.com_docker_run_device_scan()
+docker_inst.com_docker_run_device_scan(current_host_working_directory)
 
 # sleep for minute so hardware scan has time to run
 time.sleep(60)

@@ -25,7 +25,7 @@ services:
       # if swarmip init
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # so can read the device scan output
-      - mkvol-device:/mediakraken/devices
+      - ./data/devices:/mediakraken/devices
     networks:
       - mediakraken_network
 
@@ -290,18 +290,18 @@ networks:
     name: mk_mediakraken_network
 
 volumes:
-     mkvol-device:
+#     mkvol-device:
 #        driver: local
 #        driver_opts:
 #          type: none
 #          o: bind
 #          device: ./data/devices
-     mkvol-elk:
-     mkvol-emulation:
-     mkvol-mbrainz:
-     mkvol-mumble:
-     mkvol-openldap:
-     mkvol-portainer:
+#     mkvol-elk:
+#     mkvol-emulation:
+#     mkvol-mbrainz:
+#     mkvol-mumble:
+#     mkvol-openldap:
+#     mkvol-portainer:
      mkvol-static:
-     mkvol-teamspeak:
-     mkvol-transmission:
+#     mkvol-teamspeak:
+#     mkvol-transmission:
