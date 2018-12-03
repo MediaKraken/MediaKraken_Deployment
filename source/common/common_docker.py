@@ -186,10 +186,10 @@ class CommonDocker(object):
         self.com_docker_delete_container('mkdevicescan')
         return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                        detach=True,
-                                       command='python3 main_hardware_discover.py',
+                                       command='python3 /mediakraken/main_hardware_discover.py',
                                        name='mkdevicescan',
                                        network_mode='host',
-                                       volumes={'mkvol-device':
+                                       volumes={os.path.join(os.environ['PWD'], 'data/devices'):
                                                     {'bind': '/mediakraken/devices',
                                                      'mode': 'rw'}
                                                 },
@@ -213,7 +213,7 @@ class CommonDocker(object):
                                                     'KIBANA_START': 1}
                                        )
 
-    def com_docker_run_game_data(self, container_command='python3 ./subprogram_metadata_games.py'):
+    def com_docker_run_game_data(self, container_command='python3 /mediakraken/subprogram_metadata_games.py'):
         """
         Launch container for game data load
         """
