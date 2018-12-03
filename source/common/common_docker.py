@@ -119,7 +119,7 @@ class CommonDocker(object):
         """
         list docker volumes
         """
-        return self.cli.volumes()
+        return self.cli_api.volumes()
 
     def com_docker_run_command(self, container_id, docker_command):
         """
