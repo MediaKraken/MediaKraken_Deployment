@@ -40,6 +40,10 @@ class CommonDocker(object):
         """
         return self.cli_api.containers()
 
+    def com_docker_container_bind(self, container_name='mkserver', bind_match='data/devices'):
+        for container_inst in self.com_docker_container_list():
+            common_global.es_inst.com_elastic_index('info', {'container_inst': container_inst})
+
     def com_docker_info(self):
         """
         docker info on host

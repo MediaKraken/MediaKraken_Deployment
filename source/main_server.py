@@ -119,7 +119,7 @@ if option_config_json['Docker Instances']['transmission']:
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
 
-common_global.es_inst.com_elastic_index('info', {'volumes': docker_inst.com_docker_volume_list()})
+docker_inst.com_docker_container_bind()
 
 # fire off the hardware scanner
 docker_inst.com_docker_run_device_scan()
