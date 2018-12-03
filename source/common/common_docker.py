@@ -183,6 +183,7 @@ class CommonDocker(object):
         return self.cli.networks.prune()
 
     def com_docker_run_device_scan(self):
+        common_global.es_inst.com_elastic_index('info', {'path': os.path.join(os.environ['PWD'], 'data/devices')})
         self.com_docker_delete_container('mkdevicescan')
         return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                        detach=True,
