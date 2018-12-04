@@ -65,7 +65,7 @@ def admin_chromecast():
         docker_inst.com_docker_run_device_scan()
         flash("Scheduled Chromecast scan.")
     device_list = []
-    for row_data in g.db_connection.db_device_list('cast'):
+    for row_data in g.db_connection.db_device_list('Chromecast'):
         device_list.append((row_data['mm_device_id'], row_data['mm_device_json']['Name'],
                             row_data['mm_device_json']['Model'],
                             row_data['mm_device_json']['IP'], True))

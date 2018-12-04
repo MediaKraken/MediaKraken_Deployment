@@ -38,9 +38,9 @@ common_global.es_inst.com_elastic_index('info', {'before chromecast'})
 # chromecast discover
 for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_hard_chrome_discover():
     common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
-    media_devices.append({'Chromecast': {'Chrome IP': chromecast_ip,
-                                         'Chrome Model': model_name,
-                                         'Chrome Name': friendly_name}})
+    media_devices.append({'Chromecast': {'IP': chromecast_ip,
+                                         'Model': model_name,
+                                         'Name': friendly_name}})
 
 common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 
