@@ -110,7 +110,7 @@
                     json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
                     <p>Alternate Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
                     {% endif %}
-                    <p><input id="movie_rating_stars" class="rating rating-loading" value="{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}" data-min="0" data-max="10" data-step="0.5" data-size="md"></p>
+                    <BR>
                     {% for genre in data_genres %}
                     <button type="button" class="btn">{{genre}}</button>
                     {% endfor %}
@@ -133,6 +133,7 @@
                     {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage'] %}
                     <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
                     {% endif %}
+                    <p><input id="movie_rating_stars" class="rating rating-loading" value="{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}" data-min="0" data-max="10" data-step="0.5" data-size="md"></p>
                 </div>
             </div>
         </div>
