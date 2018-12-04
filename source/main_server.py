@@ -138,27 +138,27 @@ if os.path.exists('/mediakraken/devices/device_scan.txt'):
         common_global.es_inst.com_elastic_index('info', {'hardware_device': hardware_device})
         if 'Chromecast' in hardware_device:
             # TODO make sure this particular device not in DB
-            db_connection.db_device_insert(device_type='Chromecast',
+            db_connection.db_device_upsert(device_type='Chromecast',
                                            device_json=json.dumps(hardware_device))
         elif 'DLNA' in hardware_device:
             # TODO make sure this particular device not in DB
-            db_connection.db_device_insert(device_type='DLNA',
+            db_connection.db_device_upsert(device_type='DLNA',
                                            device_json=json.dumps(hardware_device))
         elif 'HDHomeRun' in hardware_device:
             # TODO make sure this particular device not in DB
-            db_connection.db_device_insert(device_type='HDHomeRun',
+            db_connection.db_device_upsert(device_type='HDHomeRun',
                                            device_json=json.dumps(hardware_device))
         elif 'Phue' in hardware_device:
             # TODO make sure this particular device not in DB
-            db_connection.db_device_insert(device_type='Phue',
+            db_connection.db_device_upsert(device_type='Phue',
                                            device_json=json.dumps(hardware_device))
         elif 'Roku' in hardware_device:
             # TODO make sure this particular device not in DB
-            db_connection.db_device_insert(device_type='Roku',
+            db_connection.db_device_upsert(device_type='Roku',
                                            device_json=json.dumps(hardware_device))
         elif 'Soco' in hardware_device:
             # TODO make sure this particular device not in DB
-            db_connection.db_device_insert(device_type='Soco',
+            db_connection.db_device_upsert(device_type='Soco',
                                            device_json=json.dumps(hardware_device))
     os.remove('/mediakraken/devices/device_scan.txt')
 else:

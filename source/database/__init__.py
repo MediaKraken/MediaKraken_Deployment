@@ -51,7 +51,8 @@ class MKServerDatabase(object):
         db_device_update, \
         db_device_delete, \
         db_device_read, \
-        db_device_check
+        db_device_check, \
+        db_device_upsert
     from database.db_base_download import db_download_insert, \
         db_download_read_provider, \
         db_download_delete, \
