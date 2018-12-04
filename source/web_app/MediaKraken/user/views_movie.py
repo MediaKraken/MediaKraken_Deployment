@@ -203,7 +203,7 @@ def movie_detail(guid):
         playback_devices = []
         for device_item in g.db_connection.db_device_list():
             if device_item['mm_device_type'] == 'Chromecast':
-                playback_devices.append(device_item['Name'])
+                playback_devices.append(device_item['mm_device_json']['Name'])
             elif device_item['mm_device_type'] == 'Roku':
                 playback_devices.append(device_item)
         return render_template('users/user_movie_detail.html',
