@@ -87,7 +87,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
     common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code,
-                                                     "limit": result_json.headers['X-RateLimit']})
+                                                     "header": result_json.headers})
     # 504	Your request to the backend server timed out. Try again.
     if result_json is None or result_json.status_code == 504:
         time.sleep(60)
