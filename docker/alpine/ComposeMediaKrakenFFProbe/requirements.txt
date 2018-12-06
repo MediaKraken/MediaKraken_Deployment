@@ -1,5 +1,5 @@
-cffi
-service_identity
+service_identity==17.0.0
+cryptography==2.3.1
 pyopenssl
 setuptools
 docker
