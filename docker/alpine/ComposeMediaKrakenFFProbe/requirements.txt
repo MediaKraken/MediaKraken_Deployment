@@ -1,3 +1,4 @@
+cffi
 service_identity
 pyopenssl
 setuptools
