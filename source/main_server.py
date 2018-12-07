@@ -16,12 +16,15 @@
   MA 02110-1301, USA.
 '''
 
+import json
 import os
 import subprocess
 import sys
+import time
 
 from common import common_config_ini
 from common import common_docker
+from common import common_file
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_share
@@ -51,6 +54,8 @@ if not os.path.isfile('./key/cacert.pem'):
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # check db version
+common_global.es_inst.com_elastic_index('info', {'db1': db_connection.db_version_check()})
+common_global.es_inst.com_elastic_index('info', {'db2': common_version.DB_VERSION})
 if db_connection.db_version_check() != common_version.DB_VERSION:
     common_global.es_inst.com_elastic_index('info',
                                             {'stuff': 'Database upgrade in progress...'})
@@ -90,29 +95,68 @@ for link_data in db_connection.db_link_list():
     common_global.es_inst.com_elastic_index('info', {'Link PID': proc_link.pid})
     link_pid[link_data[0]] = proc_link.pid
 
+# get current working directory from host maps
+# this is used so ./data can be used for all the containers launched from docker-py
+current_host_working_directory = docker_inst.com_docker_container_bind(container_name='/mkserver',
+                                                                       bind_match='/data/devices')
+
 # start up other docker containers if needed
 if option_config_json['Docker Instances']['mumble']:
-    docker_inst.com_docker_run_mumble()
+    docker_inst.com_docker_run_mumble(current_host_working_directory)
 
 if option_config_json['Docker Instances']['musicbrainz']:
     if option_config_json['API']['musicbrainz'] is not None:
-        docker_inst.com_docker_run_musicbrainz(option_config_json['API']['musicbrainz'])
+        docker_inst.com_docker_run_musicbrainz(current_host_working_directory,
+                                               option_config_json['API']['musicbrainz'])
 
 if option_config_json['Docker Instances']['portainer']:
-    docker_inst.com_docker_run_portainer()
+    docker_inst.com_docker_run_portainer(current_host_working_directory)
 
 # if option_config_json['Docker Instances']['smtp']:
 #     docker_inst.com_docker_run_container()
 
 if option_config_json['Docker Instances']['teamspeak']:
-    docker_inst.com_docker_run_teamspeak()
+    docker_inst.com_docker_run_teamspeak(current_host_working_directory)
 
 if option_config_json['Docker Instances']['transmission']:
-    docker_inst.com_docker_run_transmission(option_config_json['Transmission']['Username'],
+    docker_inst.com_docker_run_transmission(current_host_working_directory,
+                                            option_config_json['Transmission']['Username'],
                                             option_config_json['Transmission']['Password'])
 
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
+
+# fire off the hardware scanner
+docker_inst.com_docker_run_device_scan(current_host_working_directory)
+
+# sleep for minute so hardware scan has time to run
+time.sleep(60)
+if os.path.exists('/mediakraken/devices/device_scan.txt'):
+    common_global.es_inst.com_elastic_index('info', {'hardware_device': 'file exists'})
+    for hardware_device in common_file.com_file_load_data(
+            file_name='/mediakraken/devices/device_scan.txt', as_pickle=True):
+        common_global.es_inst.com_elastic_index('info', {'hardware_device': hardware_device})
+        if 'Chromecast' in hardware_device:
+            db_connection.db_device_upsert(device_type='Chromecast',
+                                           device_json=json.dumps(hardware_device))
+        elif 'DLNA' in hardware_device:
+            db_connection.db_device_upsert(device_type='DLNA',
+                                           device_json=json.dumps(hardware_device))
+        elif 'HDHomeRun' in hardware_device:
+            db_connection.db_device_upsert(device_type='HDHomeRun',
+                                           device_json=json.dumps(hardware_device))
+        elif 'Phue' in hardware_device:
+            db_connection.db_device_upsert(device_type='Phue',
+                                           device_json=json.dumps(hardware_device))
+        elif 'Roku' in hardware_device:
+            db_connection.db_device_upsert(device_type='Roku',
+                                           device_json=json.dumps(hardware_device))
+        elif 'Soco' in hardware_device:
+            db_connection.db_device_upsert(device_type='Soco',
+                                           device_json=json.dumps(hardware_device))
+    os.remove('/mediakraken/devices/device_scan.txt')
+else:
+    common_global.es_inst.com_elastic_index('error', {'no device_scan file found'})
 
 # commit
 db_connection.db_commit()

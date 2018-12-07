@@ -94,10 +94,24 @@ def db_device_read(self, guid):
         return None
 
 
-def db_device_check(self, device_name, device_ip):
+def db_device_check(self, device_type, device_name, device_ip):
     """
     Check to see if device exists already on db
     """
-    self.db_cursor.execute('select count(*) from mm_device where mm_device_json->\'Name\' ? %s'
-                           ' and mm_device_json->\'IP\' ? %s', (device_name, device_ip))
+    self.db_cursor.execute(
+        'select count(*) from mm_device where mm_device_type = %s mm_device_json->\'Name\' ? %s'
+        ' and mm_device_json->\'IP\' ? %s', (device_type, device_name, device_ip))
     return self.db_cursor.fetchone()[0]
+
+
+def db_device_upsert(self, device_type, device_json):
+    """
+    Upsert a device into the database
+    """
+    new_guid = str(uuid.uuid4())
+    self.db_cursor.execute('INSERT INTO mm_device (mm_device_id, mm_device_type,'
+                           ' mm_device_json) VALUES (%s, %s, %s)'
+                           ' ON CONFLICT ((mm_device_json->>"IP"))'
+                           ' DO UPDATE SET mm_device_type = %s, mm_device_json = %s',
+                           (new_guid, device_type, device_json, device_type, device_json))
+    return new_guid

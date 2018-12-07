@@ -46,7 +46,10 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
         #                                                      result_json.status_code})
         # common_global.es_inst.com_elastic_index('info', {"meta person save fetch result":
         #                                                      result_json.json()})
-        if result_json.status_code == 200:
+        if result_json is None or result_json.status_code == 502:
+            time.sleep(60)
+            metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
+        elif result_json.status_code == 200:
             thread_db.db_meta_person_update(provider_name,
                                             download_data['mdq_download_json']['ProviderMetaID'],
                                             result_json.json(),
@@ -54,6 +57,4 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
                                                                                           result_json.json()))
             # commit happens in download delete
             thread_db.db_download_delete(download_data['mdq_id'])
-        elif result_json.status_code == 502:
-            time.sleep(60)
-            metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
+

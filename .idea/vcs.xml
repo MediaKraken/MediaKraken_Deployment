@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../PyHdHomeRun" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../igdb_api_python" vcs="Git" />
   </component>
 </project>

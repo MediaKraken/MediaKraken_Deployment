@@ -22,7 +22,7 @@ from pyhdhomerun.constants import MAP_US_BCAST
 from . import common_global
 
 
-# https://github.com/dsoprea/PyHdHomeRun - forked to MK
+# https://github.com/MediaKraken/PyHdHomeRun
 
 class CommonHardwareHDHomeRunPY(object):
     """
@@ -34,7 +34,7 @@ class CommonHardwareHDHomeRunPY(object):
 
     def com_hdhomerun_discover(self):
         """
-        Look for hdhomerun divices
+        Look for hdhomerun devices
         """
         self.devices = HdhrUtility.discover_find_devices_custom()
 

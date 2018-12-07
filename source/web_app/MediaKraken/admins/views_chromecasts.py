@@ -65,10 +65,16 @@ def admin_chromecast():
         docker_inst.com_docker_run_device_scan()
         flash("Scheduled Chromecast scan.")
     device_list = []
-    for row_data in g.db_connection.db_device_list('cast'):
-        device_list.append((row_data['mm_device_id'], row_data['mm_device_json']['Name'],
-                            row_data['mm_device_json']['Model'],
-                            row_data['mm_device_json']['IP'], True))
+    for row_data in g.db_connection.db_device_list('Chromecast'):
+        if row_data['mm_device_json']['Model'] == 'Eureka Dongle':
+            device_model = 'Chromecast'
+        else:
+            device_model = row_data['mm_device_json']['Model']
+        device_list.append((row_data['mm_device_id'],
+                            row_data['mm_device_json']['Name'],
+                            device_model,
+                            row_data['mm_device_json']['IP'],
+                            True))
     return render_template("admin/admin_chromecasts.html", data_chromecast=device_list)
 
 

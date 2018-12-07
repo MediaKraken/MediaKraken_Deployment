@@ -86,8 +86,14 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     common_global.es_inst.com_elastic_index('info', {"meta movie tmdb save fetch": tmdb_id})
     # fetch and save json data via tmdb id
     result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
-    common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code})
-    if result_json.status_code == 200:
+    common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code,
+                                                     "header": result_json.headers})
+    # 504	Your request to the backend server timed out. Try again.
+    if result_json is None or result_json.status_code == 504:
+        time.sleep(60)
+        # redo fetch due to 504
+        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+    elif result_json.status_code == 200:
         common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
                                                              result_json.json()})
         series_id_json, result_json, image_json \
@@ -106,9 +112,10 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             if 'crew' in result_json['credits']:
                 db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['crew'])
-    elif result_json.status_code == 502:
-        time.sleep(300)
-        # redo fetch due to 502
+    # 429	Your request count (#) is over the allowed limit of (40).
+    elif result_json.status_code == 429:
+        time.sleep(10)
+        # redo fetch due to 504
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         # TODO handle 404's better

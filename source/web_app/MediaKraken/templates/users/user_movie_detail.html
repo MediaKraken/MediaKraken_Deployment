@@ -5,9 +5,10 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='fancytree/skin-bootstrap/ui.fancytree.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='jqwidgets/styles/jqx.base.css') }}">
     <script type="text/javascript">
         $(function () {
             $("#tree").fancytree({
@@ -51,6 +52,75 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare the data
+            var ordersSource =
+            {
+                datatype: "xml",
+                datafields: [
+                    { name: 'ShippedDate', map: 'm\\:properties>d\\:ShippedDate', type: 'date' },
+                    { name: 'Freight', map: 'm\\:properties>d\\:Freight', type: 'float' },
+                    { name: 'ShipName', map: 'm\\:properties>d\\:ShipName', type: 'string' },
+                    { name: 'ShipAddress', map: 'm\\:properties>d\\:ShipAddress', type: 'string' },
+                    { name: 'ShipCity', map: 'm\\:properties>d\\:ShipCity', type: 'string' },
+                    { name: 'ShipCountry', map: 'm\\:properties>d\\:ShipCountry', type: 'string' }
+                ],
+                root: "entry",
+                record: "content",
+                id: 'm\\:properties>d\\:OrderID',
+                url: "../sampledata/orders.xml",
+                pager: function (pagenum, pagesize, oldpagenum) {
+                    // callback called when a page or page size is changed.
+                },
+                updaterow: function (rowid, rowdata, result) {
+                    // synchronize with the server - send update command
+                    // call result with parameter true if the synchronization with the server is successful
+                    // and with parameter false if the synchronization failder.
+                    result(true);
+                }
+            };
+            var ordersAdapter = new $.jqx.dataAdapter(ordersSource);
+            $("#grid").jqxGrid(
+            {
+                width: getWidth('Grid'),
+                source: ordersAdapter,
+                selectionmode: 'singlecell',
+                editable: true,
+                pageable: true,
+                autoheight: true,
+                columns: [
+                    {
+                        text: 'Ship City', datafield: 'ShipCity', width: 150, columntype: 'combobox',
+                        createeditor: function (row, column, editor) {
+                            // assign a new data source to the combobox.
+                            var list = ['Stuttgart', 'Rio de Janeiro', 'Strasbourg'];
+                            editor.jqxComboBox({ autoDropDownHeight: true, source: list, promptText: "Please Choose:" });
+                        },
+                        // update the editor's value before saving it.
+                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+                            // return the old value, if the new value is empty.
+                            if (newvalue == "") return oldvalue;
+                        }
+                    },
+                    {
+                        text: 'Ship Country', datafield: 'ShipCountry', width: 150, columntype: 'dropdownlist',
+                        createeditor: function (row, column, editor) {
+                            // assign a new data source to the dropdownlist.
+                            var list = ['Germany', 'Brazil', 'France'];
+                            editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
+                        },
+                        // update the editor's value before saving it.
+                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
+                            // return the old value, if the new value is empty.
+                            if (newvalue == "") return oldvalue;
+                        }
+                    },
+                    { text: 'Ship Name', datafield: 'ShipName', columntype: 'combobox' }
+                ]
+            });
+        });
+    </script>
     <style>
         body {
           padding-top: 100px;
@@ -83,7 +153,7 @@
             <div class="col-sm">
                 <div class="row">
                     <div class="col-sm">
-                        <div id="tree">
+                        <div id="grid">
                         </div>
                     </div>
                     <div class="col-sm">
@@ -110,36 +180,30 @@
                     json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
                     <p>Alternate Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
                     {% endif %}
-                    <div id="textbox_gen">
-                       <p class="alignleft"><input id="movie_rating_stars"
-                                                     value={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}
-                                                     type="number" class="rating" min=0 max=10
-                                                     step=0.1
-                                                     data-size="xx" data-stars="10"></p>
-                        {% for genre in data_genres %}
-                        <button type="button" class="btn">{{genre}}</button>
-                        {% endfor %}
-                        <p class="alignright">
-                            {% if data_watched_status == True %}
-                            <input class="btn btn-default btn-submit" type="submit"
-                                   name="status"
-                                   value="Watched">
-                            {% else %}
-                            <input class="btn btn-default btn-submit" type="submit"
-                                   name="status"
-                                   value="Unwatched">
-                            {% endif %}
-                            {% if data_sync_status == False %}
-                            <input class="btn btn-default btn-submit" type="submit"
-                                   name="status"
-                                   value="Sync">
-                            {% endif %}
-                        </p>
-                        {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage'] %}
-                        <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
+                    <BR>
+                    {% for genre in data_genres %}
+                    <button type="button" class="btn">{{genre}}</button>
+                    {% endfor %}
+                    <p>
+                        {% if data_watched_status == True %}
+                        <input class="btn btn-default btn-submit" type="submit"
+                               name="status"
+                               value="Watched">
+                        {% else %}
+                        <input class="btn btn-default btn-submit" type="submit"
+                               name="status"
+                               value="Unwatched">
                         {% endif %}
-                    </div>
-                    <div style="clear: both;"></div>
+                        {% if data_sync_status == False %}
+                        <input class="btn btn-default btn-submit" type="submit"
+                               name="status"
+                               value="Sync">
+                        {% endif %}
+                    </p>
+                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage'] %}
+                    <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
+                    {% endif %}
+                    <p><input id="movie_rating_stars" class="rating rating-loading" value="{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}" data-min="0" data-max="10" data-step="0.5" data-size="md"></p>
                 </div>
             </div>
         </div>
@@ -191,6 +255,20 @@
 <script src="{{ url_for('static', filename='fancytree/jquery.fancytree-all-deps.min.js') }}"></script>
 <script src="{{ url_for('static', filename='fancytree/modules/jquery.fancytree.ui-deps.js') }}"></script>
 <script src="{{ url_for('static', filename='fancytree/modules/jquery.fancytree.multi.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxcore.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxdata.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxbuttons.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxscrollbar.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxmenu.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.selection.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.pager.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxlistbox.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.edit.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxdropdownlist.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxcombobox.js') }}"></script>
+<script src="{{ url_for('static', filename='jqwidgets/jqxpanel.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/demos.js') }}"></script>
 <script>
     ;(function() {
         // Initialize
