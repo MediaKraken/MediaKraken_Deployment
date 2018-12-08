@@ -60,9 +60,10 @@
                                     </td>
                                     <td>
                                         <select name="subtitle" >
+                                            <option value="None">None</option>
                                             {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
                                                 {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
-                                                    <option="{{subtitle_stream}}">{{subtitle_stream}}</option>
+                                                    <option value="{{subtitle_stream}}">{{subtitle_stream}}</option>
                                                 {% endfor %}
                                             {% endif %}
                                         </select>
