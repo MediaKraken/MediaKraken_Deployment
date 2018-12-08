@@ -52,22 +52,20 @@
                                     <td>{{data_ffprobe_data[stream_uuid][0]}}</td>
                                     <td>{{data_ffprobe_data[stream_uuid][1]}}</td>
                                     <td>
-                                        <input type=text list=audio >
-                                        <datalist id=audio >
+                                        <select name="audio" >
                                             {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
-                                                <option>{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}
+                                                <option value="{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}">{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}</option>
                                             {% endfor %}
-                                        </datalist>
+                                        </select>
                                     </td>
                                     <td>
-                                        <input type=text list=subtitle >
-                                        <datalist id=subtitle >
+                                        <select name="subtitle" >
                                             {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
                                                 {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
-                                                    <option>{{subtitle_stream}}
+                                                    <option="{{subtitle_stream}}">{{subtitle_stream}}</option>
                                                 {% endfor %}
                                             {% endif %}
-                                        </datalist>
+                                        </select>
                                     </td>
                                 </tr>
                             {% endfor %}
