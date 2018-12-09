@@ -153,64 +153,62 @@ def metadata_identification(db_connection, class_text, download_que_json,
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Sports":
         metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection,
-                                                               download_que_json['Path'],
-                                                               download_que_json,
-                                                               download_que_id)
-    elif class_text == "TV Extras":
-        # include end slash so media doesn't get chopped up
-        metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-            download_que_json['Path'].replace('/extras/', '/').rsplit('/', 1)[0]))
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
-        else:
-            metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-                                                           download_que_json['Path'],
-                                                           download_que_json,
-                                                           download_que_id,
-                                                           guessit_file_name)
+                                                               download_que_json)
+    # elif class_text == "TV Extras":
+    #     # include end slash so media doesn't get chopped up
+    #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
+    #         download_que_json['Path'].replace('/extras/', '/').rsplit('/', 1)[0]))
+    #     if metadata_uuid is not None:
+    #         db_connection.db_download_delete(download_que_id)
+    #     else:
+    #         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
+    #                                                        download_que_json['Path'],
+    #                                                        download_que_json,
+    #                                                        download_que_id,
+    #                                                        guessit_file_name)
     elif class_text == "TV Show":
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
                                                        download_que_json['Path'],
                                                        download_que_json,
                                                        download_que_id,
                                                        guessit_file_name)
-    elif class_text == "TV Theme":
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident'})
-        # include end slash so theme.mp3 doesn't get chopped up
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 2'})
-        metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-            download_que_json['Path'].replace(
-                '/theme/', '/').replace('/backdrops/', '/')
-                .rsplit('/', 1)[0]))
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 3'})
-        if metadata_uuid is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 4'})
-            db_connection.db_download_delete(download_que_id)
-        else:
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 5'})
-            metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-                                                           download_que_json['Path'],
-                                                           download_que_json,
-                                                           download_que_id,
-                                                           guessit_file_name)
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 6'})
-            if metadata_uuid is None:
-                common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 7'})
-                # TODO so, the show hasn't been fetched yet.....so, no path match
-                db_connection.db_download_update_provider(
-                    'ZZ', download_que_id)
-    elif class_text == "TV Trailer":
-        # include end slash so theme.mp3 doesn't get chopped up
-        metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-            download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
-        else:
-            metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-                                                           download_que_json['Path'],
-                                                           download_que_json,
-                                                           download_que_id,
-                                                           guessit_file_name)
+    # elif class_text == "TV Theme":
+    #     common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident'})
+    #     # include end slash so theme.mp3 doesn't get chopped up
+    #     common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 2'})
+    #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
+    #         download_que_json['Path'].replace(
+    #             '/theme/', '/').replace('/backdrops/', '/')
+    #             .rsplit('/', 1)[0]))
+    #     common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 3'})
+    #     if metadata_uuid is not None:
+    #         common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 4'})
+    #         db_connection.db_download_delete(download_que_id)
+    #     else:
+    #         common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 5'})
+    #         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
+    #                                                        download_que_json['Path'],
+    #                                                        download_que_json,
+    #                                                        download_que_id,
+    #                                                        guessit_file_name)
+    #         common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 6'})
+    #         if metadata_uuid is None:
+    #             common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 7'})
+    #             # TODO so, the show hasn't been fetched yet.....so, no path match
+    #             db_connection.db_download_update_provider(
+    #                 'ZZ', download_que_id)
+    # elif class_text == "TV Trailer":
+    #     # include end slash so theme.mp3 doesn't get chopped up
+    #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
+    #         download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
+    #     if metadata_uuid is not None:
+    #         db_connection.db_download_delete(download_que_id)
+    #     else:
+    #         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
+    #                                                        download_que_json['Path'],
+    #                                                        download_que_json,
+    #                                                        download_que_id,
+    #                                                        guessit_file_name)
     elif class_text == "Video Game":
         metadata_uuid = metadata_game.metadata_game_lookup(db_connection,
                                                            download_que_json['Path'],
