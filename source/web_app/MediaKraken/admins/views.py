@@ -98,17 +98,15 @@ def admins():
             data_alerts.append((row_data['mm_notification_guid'],
                                 row_data['mm_notification_text'], row_data['mm_notification_time']))
     data_transmission_active = False
-    if g.db_connection.db_opt_status_read()['mm_options_json']['Transmission']['Host'] != None:
+    if g.db_connection.db_opt_status_read()['mm_options_json']['Transmission']['Host'] is not None:
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
     scanning_json = g.db_connection.db_opt_status_read()['mm_status_json']
     if 'Status' in scanning_json:
-        data_scan_info.append(
-            ('System', scanning_json['Status'], scanning_json['Pct']))
+        data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in g.db_connection.db_audit_path_status():
-        data_scan_info.append(
-            (dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
+        data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     return render_template("admin/admins.html",
                            data_user_count=common_internationalization.com_inter_number_format(
                                g.db_connection.db_user_list_name_count()),
@@ -350,9 +348,12 @@ def admin_database_statistics():
     Display database statistics page
     """
     db_stats_count = []
+    db_stats_total = 0
     for row_data in g.db_connection.db_pgsql_row_count():
+        db_stats_total += row_data[2]
         db_stats_count.append((row_data[1],
                                common_internationalization.com_inter_number_format(row_data[2])))
+    db_stats_count.append(('Total records:', common_internationalization.com_inter_number_format(db_stats_total)))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=g.db_connection.db_pgsql_table_sizes(),
                            data_db_count=db_stats_count,

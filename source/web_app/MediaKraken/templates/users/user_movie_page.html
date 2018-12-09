@@ -13,20 +13,20 @@
             <button type="submit" value="movie_genre">Genre</button>
             Rating:
             <select name="movie_rating", id="movie_rating">
-                <option value=All>All</option>
-                <option value=G>G</option>
-                <option value=PG>PG</option>
-                <option value=PG-13>PG-13</option>
-                <option value=R>R</option>
-                <option value=NR-17>NR-17</option>
-                <option value=X>X</option>
+                <option value="All">All</option>
+                <option value="G">G</option>
+                <option value="PG">PG</option>
+                <option value="PG-13">PG-13</option>
+                <option value="R">R</option>
+                <option value="NR-17">NR-17</option>
+                <option value="X">X</option>
             </select>
             Status:
-            <select name "movie_status", id="movie_status">
-                <option value=All>All</option>
-                <option value=Unwatched>Unwatched</option>
-                <option value=Watched>Watched</option>
-                <option value=In Progress>In Progress</option>
+            <select name="movie_status", id="movie_status">
+                <option value="All">All</option>
+                <option value="Unwatched">Unwatched</option>
+                <option value="Watched">Watched</option>
+                <option value="In Progress">In Progress</option>
             </select>
             </p>
         </form>
@@ -49,7 +49,7 @@
                     <img class="synced_icon" src="{{ url_for('static', filename='images/synced.jpg') }}" height="20" width="20">
                     {% endif %}
                     {% if row_data[5] != None %}
-                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
+                    <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
                     {% endif %}
                     {% if row_data[6] == True %}
                     <img class="exclamation_icon" src="{{ url_for('static', filename='images/exclamation-circle-frame.png') }}" height="20" width="20">
@@ -67,7 +67,7 @@
                     <img class="synced_icon" src="{{ url_for('static', filename='images/synced.jpg') }}" height="20" width="20">
                     {% endif %}
                     {% if row_data[5] != None %}
-                    <img class="rating_icon" src={{row_data[5]}} height="20" width="20">
+                    <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
                     {% endif %}
                     {% if row_data[6] == True %}
                     <img class="exclamation_icon" src="{{ url_for('static', filename='images/exclamation-circle-frame.png') }}" height="20" width="20">

@@ -7,120 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='fancytree/skin-bootstrap/ui.fancytree.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='jqwidgets/styles/jqx.base.css') }}">
-    <script type="text/javascript">
-        $(function () {
-            $("#tree").fancytree({
-                onActivate: function (node) {
-                    // A DynaTreeNode object is passed to the activation handler
-                    // Note: we also get this event, if persistence is on, and the
-                    // page is reloaded.
-                    alert("You activated " + node.data.title);
-                },
-                extensions: ["multi"],
-                unselectable: function(event, data) {
-                    return data.node.isFolder();
-                },
-                multi: {
-                    mode: "sameParent"  // Restrict range selection behavior
-                },
-                source: [
-                {% for stream_uuid in data_ffprobe_data %}
-                    { title: "{{data_ffprobe_data[stream_uuid][0] + ' ' + data_ffprobe_data[stream_uuid][1]}}", isFolder: true, expanded: true,
-                        children: [
-                            { title: "Audio Stream(s):", isFolder: true, expanded: true, unselectableStatus: true,
-                                children: [
-                                    {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
-                                        { title: "{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}" },
-                                    {% endfor %}
-                                ]
-                            },
-                            {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
-                                { title: "Subtitle(s):", isFolder: true, expanded: true, unselectableStatus: true,
-                                    children: [
-                                        {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
-                                            { title: "{{subtitle_stream}}" },
-                                        {% endfor %}
-                                    ]
-                                },
-                            {% endif %}
-                        ]
-                    },
-                {% endfor %}
-                ]
-            });
-        });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            // prepare the data
-            var ordersSource =
-            {
-                datatype: "xml",
-                datafields: [
-                    { name: 'ShippedDate', map: 'm\\:properties>d\\:ShippedDate', type: 'date' },
-                    { name: 'Freight', map: 'm\\:properties>d\\:Freight', type: 'float' },
-                    { name: 'ShipName', map: 'm\\:properties>d\\:ShipName', type: 'string' },
-                    { name: 'ShipAddress', map: 'm\\:properties>d\\:ShipAddress', type: 'string' },
-                    { name: 'ShipCity', map: 'm\\:properties>d\\:ShipCity', type: 'string' },
-                    { name: 'ShipCountry', map: 'm\\:properties>d\\:ShipCountry', type: 'string' }
-                ],
-                root: "entry",
-                record: "content",
-                id: 'm\\:properties>d\\:OrderID',
-                url: "../sampledata/orders.xml",
-                pager: function (pagenum, pagesize, oldpagenum) {
-                    // callback called when a page or page size is changed.
-                },
-                updaterow: function (rowid, rowdata, result) {
-                    // synchronize with the server - send update command
-                    // call result with parameter true if the synchronization with the server is successful
-                    // and with parameter false if the synchronization failder.
-                    result(true);
-                }
-            };
-            var ordersAdapter = new $.jqx.dataAdapter(ordersSource);
-            $("#grid").jqxGrid(
-            {
-                width: getWidth('Grid'),
-                source: ordersAdapter,
-                selectionmode: 'singlecell',
-                editable: true,
-                pageable: true,
-                autoheight: true,
-                columns: [
-                    {
-                        text: 'Ship City', datafield: 'ShipCity', width: 150, columntype: 'combobox',
-                        createeditor: function (row, column, editor) {
-                            // assign a new data source to the combobox.
-                            var list = ['Stuttgart', 'Rio de Janeiro', 'Strasbourg'];
-                            editor.jqxComboBox({ autoDropDownHeight: true, source: list, promptText: "Please Choose:" });
-                        },
-                        // update the editor's value before saving it.
-                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
-                            // return the old value, if the new value is empty.
-                            if (newvalue == "") return oldvalue;
-                        }
-                    },
-                    {
-                        text: 'Ship Country', datafield: 'ShipCountry', width: 150, columntype: 'dropdownlist',
-                        createeditor: function (row, column, editor) {
-                            // assign a new data source to the dropdownlist.
-                            var list = ['Germany', 'Brazil', 'France'];
-                            editor.jqxDropDownList({ autoDropDownHeight: true, source: list });
-                        },
-                        // update the editor's value before saving it.
-                        cellvaluechanging: function (row, column, columntype, oldvalue, newvalue) {
-                            // return the old value, if the new value is empty.
-                            if (newvalue == "") return oldvalue;
-                        }
-                    },
-                    { text: 'Ship Name', datafield: 'ShipName', columntype: 'combobox' }
-                ]
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='jqwidgets/styles/jqx.base.css') }}" type="text/css">
     <style>
         body {
           padding-top: 100px;
@@ -153,8 +40,37 @@
             <div class="col-sm">
                 <div class="row">
                     <div class="col-sm">
-                        <div id="grid">
-                        </div>
+                        <table style="width:100%">
+                            <tr>
+                                <th>Resolution</th>
+                                <th>Runtime</th>
+                                <th>Audio</th>
+                                <th>Subtitle</th>
+                            </tr>
+                            {% for stream_uuid in data_ffprobe_data %}
+                                <tr>
+                                    <td>{{data_ffprobe_data[stream_uuid][0]}}</td>
+                                    <td>{{data_ffprobe_data[stream_uuid][1]}}</td>
+                                    <td>
+                                        <select name="audio" >
+                                            {% for audio_stream in data_ffprobe_data[stream_uuid][2] %}
+                                                <option value="{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}">{{audio_stream[2] + ' (' + audio_stream[0] + ') ' + audio_stream[1]}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="subtitle" >
+                                            <option value="None">None</option>
+                                            {% if data_ffprobe_data[stream_uuid][3]|length > 0 %}
+                                                {% for subtitle_stream in data_ffprobe_data[stream_uuid][3] %}
+                                                    <option value="{{subtitle_stream}}">{{subtitle_stream}}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
                     </div>
                     <div class="col-sm">
                         <div class="btn-group-vertical">
@@ -252,23 +168,6 @@
 <script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='js/star-rating.min.js') }}" type="text/javascript"></script>
 <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
-<script src="{{ url_for('static', filename='fancytree/jquery.fancytree-all-deps.min.js') }}"></script>
-<script src="{{ url_for('static', filename='fancytree/modules/jquery.fancytree.ui-deps.js') }}"></script>
-<script src="{{ url_for('static', filename='fancytree/modules/jquery.fancytree.multi.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxcore.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxdata.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxbuttons.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxscrollbar.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxmenu.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.selection.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.pager.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxlistbox.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxgrid.edit.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxdropdownlist.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxcombobox.js') }}"></script>
-<script src="{{ url_for('static', filename='jqwidgets/jqxpanel.js') }}"></script>
-<script src="{{ url_for('static', filename='scripts/demos.js') }}"></script>
 <script>
     ;(function() {
         // Initialize

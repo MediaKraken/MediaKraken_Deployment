@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+# https://github.com/MediaKraken-Dependancies/pyinsane
 import pyinsane2
 from common import common_file
 

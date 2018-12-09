@@ -1,0 +1,15 @@
+python 3.7.1
+python -m pip install --upgrade pip
+pip3 install pyopenssl
+pip3 install kivy
+pip3 install elasticsearch
+
+https://visualstudio.microsoft.com/
+download the community edition
+windows desktop and linux build
+
+pip3 install crochet
+pip3 install service-identity
+pip3 install pillow
+pip3 install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.glew
+

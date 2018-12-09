@@ -245,12 +245,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for row_data in media_dir %}
+                                {% for row_data in data_scan_info %}
                                 <tr>
                                     <td>{{ loop.index + (page - 1) * per_page }}</td>
                                     <td>{{ row_data[0] }}</td>
                                     <td>{{ row_data[1] }}</td>
-                                    <td>{{ row_data[1] }}</td>
+                                    <td>{{ row_data[2] }}</td>
                                 </tr>
                                 {% endfor %}
                                 </tbody>
