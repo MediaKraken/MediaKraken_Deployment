@@ -69,7 +69,12 @@ def nfo_xml_file_tv(media_file_path):
         common_global.es_inst.com_elastic_index('info', {'nfo tv file found': nfo_file_check})
         nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
     else:
-        nfo_data = None
+        nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvshow.nfo'
+        if os.path.isfile(nfo_file_check):  # check for nfo
+            common_global.es_inst.com_elastic_index('info', {'nfo tv file found2': nfo_file_check})
+            nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+        else:
+            nfo_data = None
     return nfo_data, xml_data
 
 
