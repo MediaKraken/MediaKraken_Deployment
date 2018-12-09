@@ -36,13 +36,16 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
         metadata_tv_lookup.metadata_last_id = None
         metadata_tv_lookup.metadata_last_imdb = None
         metadata_tv_lookup.metadata_last_tvdb = None
+        metadata_tv_lookup.metadata_last_tmdb = None
         metadata_tv_lookup.metadata_last_rt = None
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'metadata_tv_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(download_que_json['Path'])
-    imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
-    common_global.es_inst.com_elastic_index('info', {"tv look": imdb_id, 'tbdb': tvdb_id,
+    imdb_id, tvdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
+    common_global.es_inst.com_elastic_index('info', {"tv look": imdb_id,
+                                                     'tbdb': tvdb_id,
+                                                     'tmdb': tmdb_id,
                                                      'rtid': rt_id})
     # if same as last, return last id and save lookup
     # check these dupes as the nfo/xml files might not exist to pull the metadata id from
@@ -54,6 +57,10 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
         db_connection.db_download_delete(download_que_id)
         # don't need to set last......since they are equal
         return metadata_tv_lookup.metadata_last_id
+    if tmdb_id is not None and tmdb_id == metadata_tv_lookup.metadata_last_tmdb:
+        db_connection.db_download_delete(download_que_id)
+        # don't need to set last......since they are equal
+        return metadata_tv_lookup.metadata_last_id
     if rt_id is not None and rt_id == metadata_tv_lookup.metadata_last_rt:
         db_connection.db_download_delete(download_que_id)
         # don't need to set last......since they are equal
@@ -61,6 +68,8 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
     # if ids from nfo/xml, query local db to see if exist
     if tvdb_id is not None:
         metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
+    if tmdb_id is not None:
+        metadata_uuid = db_connection.db_metatv_guid_by_tmdb(tmdb_id)
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_metatv_guid_by_imdb(imdb_id)
     if rt_id is not None and metadata_uuid is None:
@@ -131,5 +140,6 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
     metadata_tv_lookup.metadata_last_id = metadata_uuid
     metadata_tv_lookup.metadata_last_imdb = imdb_id
     metadata_tv_lookup.metadata_last_tvdb = tvdb_id
+    metadata_tv_lookup.metadata_last_tmdb = tmdb_id
     metadata_tv_lookup.metadata_last_rt = rt_id
     return metadata_uuid

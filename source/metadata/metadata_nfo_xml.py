@@ -152,7 +152,8 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                         rt_id = None
                 except:
                     pass
-    common_global.es_inst.com_elastic_index('info', {'nfo/xml imdb': imdb_id, 'tmdb': tmdb_id,
+    common_global.es_inst.com_elastic_index('info', {'nfo/xml imdb': imdb_id,
+                                                     'tmdb': tmdb_id,
                                                      'rt': rt_id})
     return (imdb_id, tmdb_id, rt_id)
 
@@ -163,6 +164,7 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
     """
     imdb_id = None
     tvdb_id = None
+    tmdb_id = None
     rt_id = None
     # load both fields for more data in media_id_json on db
     if nfo_data is not None:
@@ -170,6 +172,12 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
             tvdb_id = nfo_data['episodedetails']['tvdbid']
             if len(tvdb_id) == 0:
                 tvdb_id = None
+        except:
+            pass
+        try:
+            tmdb_id = nfo_data['episodedetails']['tmdbid']
+            if len(tmdb_id) == 0:
+                tmdb_id = None
         except:
             pass
         try:
@@ -193,6 +201,12 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
         except:
             pass
         try:
+            tmdb_id = xml_data['episodedetails']['tmdbid']
+            if len(tmdb_id) == 0:
+                tmdb_id = None
+        except:
+            pass
+        try:
             imdb_id = xml_data['episodedetails']['imdbid']
             if len(imdb_id) == 0:
                 imdb_id = None
@@ -205,6 +219,8 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
                 rt_id = None
         except:
             pass
-    common_global.es_inst.com_elastic_index('info', {'nfo/xml tv imdb': imdb_id, 'tvdb': tvdb_id,
+    common_global.es_inst.com_elastic_index('info', {'nfo/xml tv imdb': imdb_id,
+                                                     'tvdb': tvdb_id,
+                                                     'tmdb': tmdb_id,
                                                      'rt': rt_id})
-    return (imdb_id, tvdb_id, rt_id)
+    return (imdb_id, tvdb_id, tmdb_id, rt_id)
