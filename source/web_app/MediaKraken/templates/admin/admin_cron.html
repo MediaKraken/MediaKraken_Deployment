@@ -43,10 +43,10 @@
                     <td>{{ row_data[4] }}</td>
                     <td>{{ row_data[5] }}</td>
                     <td>{{ row_data[6] }}</td>
+                    <td>
+                        <p><a href="{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}"><i class="glyphicon glyphicon-play-circle"></i></a>
+                    </td>
                     <div class="pull-right action-buttons">
-                        <td>
-                            <p><a href="{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}"><span class="glyphicon glyphicon-play-circle"></span></a>
-                        </td>
                         <td>
                             <p><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editCronModal" onclick="EditCron(this)" ><span class="glyphicon glyphicon-pencil"></span></button></a>
                         </td>
