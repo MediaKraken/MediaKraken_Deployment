@@ -44,7 +44,7 @@
                     <td>{{ row_data[5] }}</td>
                     <td>{{ row_data[6] }}</td>
                     <td>
-                        <p><a href="{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}"><i class="glyphicon glyphicon-play-circle"></i></a>
+                        <a href="{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}"><span class="glyphicon glyphicon-play-circle"></span></a>
                     </td>
                     <div class="pull-right action-buttons">
                         <td>
