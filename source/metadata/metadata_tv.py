@@ -26,7 +26,7 @@ from . import metadata_nfo_xml
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-def metadata_tv_lookup(db_connection, media_file_path, download_que_json, download_que_id, file_name):
+def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_name):
     """
     Lookup tv metadata
     """
@@ -40,7 +40,7 @@ def metadata_tv_lookup(db_connection, media_file_path, download_que_json, downlo
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'metadata_tv_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
-    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(media_file_path)
+    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(download_que_json['Path'])
     imdb_id, tvdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
     common_global.es_inst.com_elastic_index('info', {"tv look": imdb_id, 'tbdb': tvdb_id,
                                                      'rtid': rt_id})

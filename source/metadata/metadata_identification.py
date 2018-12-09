@@ -168,7 +168,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #                                                        guessit_file_name)
     elif class_text == "TV Show":
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-                                                       download_que_json['Path'],
                                                        download_que_json,
                                                        download_que_id,
                                                        guessit_file_name)
