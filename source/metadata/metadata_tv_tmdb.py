@@ -1,5 +1,5 @@
 '''
-  Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -21,9 +21,8 @@ import json
 import pika
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_thetvdb
+from common import common_metadata_tmdb
 from common import common_string
-from common import common_thetvdb
 from guessit import guessit
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -34,74 +33,74 @@ parameters = pika.ConnectionParameters('mkrabbitmq',
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_cloud_ex", exchange_type="direct",
+exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
                                     durable=True)
-queue = channel.queue_declare(queue='mkcloud', durable=True)
-channel.queue_bind(exchange="mkque_cloud_ex", queue='mkcloud')
+queue = channel.queue_declare(queue='mkdownload', durable=True)
+channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
-# verify thetvdb key exists for search
-if option_config_json['API']['thetvdb'] is not None:
-    THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
-    # tvshow xml downloader and general api interface
-    THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
+# verify themoviedb key exists
+if option_config_json['API']['themoviedb'] is not None:
+    # setup the thmdb class
+    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(
+        option_config_json)
 else:
-    THETVDB_CONNECTION = None
+    TMDB_CONNECTION = None
 
 
-def tv_search_tvdb(db_connection, file_name, lang_code='en'):
+def tv_search_tmdb(db_connection, file_name, lang_code='en'):
     """
-    # tvdb search
+    # tmdb search
     """
     file_name = guessit(file_name)
     if type(file_name['title']) == list:
         file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-    common_global.es_inst.com_elastic_index('info', {"meta tv search tvdb": str(file_name)})
+    common_global.es_inst.com_elastic_index('info', {"meta tv search tmdb": str(file_name)})
     metadata_uuid = None
-    tvdb_id = None
-    if THETVDB_CONNECTION is not None:
+    tmdb_id = None
+    if TMDB_CONNECTION is not None:
         if 'year' in file_name:
-            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
+            tmdb_id = str(TMDB_CONNECTION.com_thetmdb_search(file_name['title'],
                                                                 file_name['year'], lang_code, True))
         else:
-            tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
+            tmdb_id = str(TMDB_CONNECTION.com_thetmdb_search(file_name['title'],
                                                                 None, lang_code, True))
-        common_global.es_inst.com_elastic_index('info', {"response": tvdb_id})
-        if tvdb_id is not None:
+        common_global.es_inst.com_elastic_index('info', {"response": tmdb_id})
+        if tmdb_id is not None:
             #            # since there has been NO match whatsoever.....can "wipe" out everything
-            #            media_id_json = json.dumps({'thetvdb': tvdb_id})
+            #            media_id_json = json.dumps({'thetmdb': tmdb_id})
             #            common_global.es_inst.com_elastic_index('info', {'stuff':"dbjson: %s", media_id_json)
-            # check to see if metadata exists for TVDB id
-            metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
+            # check to see if metadata exists for tmdb id
+            metadata_uuid = db_connection.db_metatv_guid_by_tmdb(tmdb_id)
             common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
     common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
-                                                     'tvdb': tvdb_id})
-    return metadata_uuid, tvdb_id
+                                                     'tmdb': tmdb_id})
+    return metadata_uuid, tmdb_id
 
 
-def tv_fetch_save_tvdb(db_connection, tvdb_id):
+def tv_fetch_save_tmdb(db_connection, tmdb_id):
     """
-    # tvdb data fetch
+    # tmdb data fetch
     """
-    common_global.es_inst.com_elastic_index('info', {"meta tv tvdb save fetch": tvdb_id})
+    common_global.es_inst.com_elastic_index('info', {"meta tv tmdb save fetch": tmdb_id})
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data \
-        = THETVDB_API.com_meta_thetvdb_get_zip_by_id(tvdb_id)
-    common_global.es_inst.com_elastic_index('info', {'tv fetch save tvdb show': xml_show_data})
+        = TMDB_CONNECTION.com_meta_thetmdb_get_zip_by_id(tmdb_id)
+    common_global.es_inst.com_elastic_index('info', {'tv fetch save tmdb show': xml_show_data})
     if xml_show_data is not None:
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert'})
         # insert
-        image_json = {'Images': {'thetvdb': {
+        image_json = {'Images': {'thetmdb': {
             'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],
-                                     'thetvdb': str(tvdb_id),
+                                     'tmdb': str(tmdb_id),
                                      'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 2'})
-        metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,
+        metadata_uuid = db_connection.db_metatmdb_insert(series_id_json,
                                                          xml_show_data['Data']['Series'][
                                                              'SeriesName'],
-                                                         json.dumps({'Meta': {'thetvdb':
+                                                         json.dumps({'Meta': {'thetmdb':
                                                                                   {'Meta':
                                                                                        xml_show_data[
                                                                                            'Data'],
@@ -111,7 +110,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 3'})
         # insert cast info
         if xml_actor_data is not None:
-            db_connection.db_meta_person_insert_cast_crew('thetvdb',
+            db_connection.db_meta_person_insert_cast_crew('tmdb',
                                                           xml_actor_data['Actor'])
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 4'})
         # save rows for episode image fetch
@@ -120,16 +119,16 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             try:
                 print(('len %s', len(xml_show_data['Data']['Episode'][0]['id'])))
                 if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
-                    # thetvdb is Episode
+                    # thetmdb is Episode
                     for episode_info in xml_show_data['Data']['Episode']:
                         common_global.es_inst.com_elastic_index('info', {'eps info': episode_info})
                         if episode_info['filename'] is not None:
-                            # thetvdb
+                            # tmdb
                             channel.basic_publish(exchange='mkque_cloud_ex',
                                                   routing_key='mkcloud',
                                                   body=json.dumps(
                                                       {'Type': 'download', 'Subtype': 'image',
-                                                       'url': 'https://thetvdb.com/banners/'
+                                                       'url': 'https://thetmdb.com/banners/'
                                                               + episode_info['filename'],
                                                        'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
                                                                 + episode_info['filename']}),
@@ -138,12 +137,12 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                       delivery_mode=1))
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
-                        # thetvdb
+                        # tmdb
                         channel.basic_publish(exchange='mkque_cloud_ex',
                                               routing_key='mkcloud',
                                               body=json.dumps(
                                                   {'Type': 'download', 'Subtype': 'image',
-                                                   'url': 'https://thetvdb.com/banners/'
+                                                   'url': 'https://thetmdb.com/banners/'
                                                           + xml_show_data['Data']['Episode'][
                                                               'filename'],
                                                    'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
@@ -154,12 +153,12 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                   delivery_mode=1))
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
-                    # thetvdb
-                    channel.basic_publish(exchange='mkque_cloud_ex',
-                                          routing_key='mkcloud',
+                    # tmdb
+                    channel.basic_publish(exchange='mkque_download_ex',
+                                          routing_key='mkdownload',
                                           body=json.dumps(
                                               {'Type': 'download', 'Subtype': 'image',
-                                               'url': 'https://thetvdb.com/banners/'
+                                               'url': 'https://thetmdb.com/banners/'
                                                       + xml_show_data['Data'][
                                                           'Episode']['filename'],
                                                'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
