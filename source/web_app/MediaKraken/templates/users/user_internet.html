@@ -17,20 +17,18 @@
             }
         </style>
     </head>
-    <p>
-        <a href="{{url_for('user_internet.user_internet_youtube')}}" id="user_internet_youtube_page">
-        <img class="b-lazy" src="{{ url_for('static', filename='images/youtube-logo.png') }}" alt="YouTube" height="200" width="200">
-        </a>
-        <a href="{{url_for('user_internet.user_internet_vimeo')}}" id="user_internet_vimeo_page">
-        <img class="b-lazy" src="{{ url_for('static', filename='images/vimeo_icon_white_on_blue_rounded.png') }}" alt="Vimeo" height="200" width="200">
-        </a>
-        <a href="{{url_for('user_internet.user_internet_twitch')}}" id="user_internet_twitch_page">
-        <img class="b-lazy" src="{{ url_for('static', filename='images/twitch.png') }}" alt="Twitch TV" height="200" width="200">
-        </a>
-        <a href="{{url_for('user_internet.user_internet_flickr')}}" id="user_internet_flickr_page">
-        <img class="b-lazy" src="{{ url_for('static', filename='images/flickr.png') }}" alt="Flickr" height="200" width="200">
-        </a>
-    </p>
+    <a href="{{url_for('user_internet.user_internet_youtube')}}" id="user_internet_youtube_page">
+    <img class="b-lazy" src="{{ url_for('static', filename='images/youtube-logo.png') }}" alt="YouTube" height="200" width="200">
+    </a>
+    <a href="{{url_for('user_internet.user_internet_vimeo')}}" id="user_internet_vimeo_page">
+    <img class="b-lazy" src="{{ url_for('static', filename='images/vimeo_icon_white_on_blue_rounded.png') }}" alt="Vimeo" height="200" width="200">
+    </a>
+    <a href="{{url_for('user_internet.user_internet_twitch')}}" id="user_internet_twitch_page">
+    <img class="b-lazy" src="{{ url_for('static', filename='images/twitch.png') }}" alt="Twitch TV" height="200" width="200">
+    </a>
+    <a href="{{url_for('user_internet.user_internet_flickr')}}" id="user_internet_flickr_page">
+    <img class="b-lazy" src="{{ url_for('static', filename='images/flickr.png') }}" alt="Flickr" height="200" width="200">
+    </a>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
