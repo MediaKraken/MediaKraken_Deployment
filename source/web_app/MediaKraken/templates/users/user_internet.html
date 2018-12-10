@@ -6,10 +6,20 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <style>
+            body {
+              padding-top: 100px;
+            }
+            @media (max-width: 980px) {
+                body {
+                  padding-top: 0;
+                }
+            }
+        </style>
     </head>
     <p>
         <a href="{{url_for('user_internet.user_internet_youtube')}}" id="user_internet_youtube_page">
-        <img src="{{ url_for('static', filename='images/youtube-logo.png') }}" alt="YouTube" height="200" width="200">
+        <img class="b-lazy" src="{{ url_for('static', filename='images/youtube-logo.png') }}" alt="YouTube" height="200" width="200">
         </a>
         <a href="{{url_for('user_internet.user_internet_vimeo')}}" id="user_internet_vimeo_page">
         <img class="b-lazy" src="{{ url_for('static', filename='images/vimeo_icon_white_on_blue_rounded.png') }}" alt="Vimeo" height="200" width="200">
