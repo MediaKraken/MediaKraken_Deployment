@@ -34,10 +34,10 @@ parameters = pika.ConnectionParameters('mkrabbitmq',
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue
 channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_cloud_ex", exchange_type="direct",
+exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
                                     durable=True)
-queue = channel.queue_declare(queue='mkcloud', durable=True)
-channel.queue_bind(exchange="mkque_cloud_ex", queue='mkcloud')
+queue = channel.queue_declare(queue='mkdownload', durable=True)
+channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
 # verify thetvdb key exists for search
@@ -125,8 +125,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                         common_global.es_inst.com_elastic_index('info', {'eps info': episode_info})
                         if episode_info['filename'] is not None:
                             # thetvdb
-                            channel.basic_publish(exchange='mkque_cloud_ex',
-                                                  routing_key='mkcloud',
+                            channel.basic_publish(exchange='mkque_download_ex',
+                                                  routing_key='mkdownload',
                                                   body=json.dumps(
                                                       {'Type': 'download', 'Subtype': 'image',
                                                        'url': 'https://thetvdb.com/banners/'
@@ -139,8 +139,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
                         # thetvdb
-                        channel.basic_publish(exchange='mkque_cloud_ex',
-                                              routing_key='mkcloud',
+                        channel.basic_publish(exchange='mkque_download_ex',
+                                              routing_key='mkdownload',
                                               body=json.dumps(
                                                   {'Type': 'download', 'Subtype': 'image',
                                                    'url': 'https://thetvdb.com/banners/'
@@ -155,8 +155,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
                     # thetvdb
-                    channel.basic_publish(exchange='mkque_cloud_ex',
-                                          routing_key='mkcloud',
+                    channel.basic_publish(exchange='mkque_download_ex',
+                                          routing_key='mkdownload',
                                           body=json.dumps(
                                               {'Type': 'download', 'Subtype': 'image',
                                                'url': 'https://thetvdb.com/banners/'
