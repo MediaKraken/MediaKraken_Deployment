@@ -18,7 +18,6 @@
 
 import os
 import uuid
-
 from common import common_global
 from common import common_hash
 
@@ -54,7 +53,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
             db_connection.db_download_delete(download_que_id)
     elif class_text == "Book":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                         download_que_json['Path'],
                                                                          download_que_json,
                                                                          download_que_id)
         if metadata_uuid is not None:
@@ -84,7 +82,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
         metadata_uuid = str(uuid.uuid4())
     elif class_text == "Magazine":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                         download_que_json['Path'],
                                                                          download_que_json,
                                                                          download_que_id)
         if metadata_uuid is not None:
@@ -95,7 +92,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
             or class_text == "Movie Theme" \
             or class_text == "Movie Trailer":
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
-                                                             download_que_json['Path'],
                                                              download_que_json,
                                                              download_que_id,
                                                              guessit_file_name)
@@ -118,7 +114,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #         db_connection.db_download_delete(download_que_id)
     #     else:
     #         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
-    #                                                              download_que_json['Path'],
     #                                                              download_que_json,
     #                                                              download_que_id,
     #                                                              guessit_file_name)
@@ -131,7 +126,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #         db_connection.db_download_delete(download_que_id)
     #     else:
     #         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
-    #                                                              download_que_json['Path'],
     #                                                              download_que_json,
     #                                                              download_que_id,
     #                                                              guessit_file_name)
@@ -162,7 +156,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #         db_connection.db_download_delete(download_que_id)
     #     else:
     #         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-    #                                                        download_que_json['Path'],
     #                                                        download_que_json,
     #                                                        download_que_id,
     #                                                        guessit_file_name)
@@ -186,7 +179,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #     else:
     #         common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident 5'})
     #         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-    #                                                        download_que_json['Path'],
     #                                                        download_que_json,
     #                                                        download_que_id,
     #                                                        guessit_file_name)
@@ -204,13 +196,11 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #         db_connection.db_download_delete(download_que_id)
     #     else:
     #         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-    #                                                        download_que_json['Path'],
     #                                                        download_que_json,
     #                                                        download_que_id,
     #                                                        guessit_file_name)
     elif class_text == "Video Game":
         metadata_uuid = metadata_game.metadata_game_lookup(db_connection,
-                                                           download_que_json['Path'],
                                                            download_que_json,
                                                            download_que_id)
     elif class_text == "Video Game Intro":

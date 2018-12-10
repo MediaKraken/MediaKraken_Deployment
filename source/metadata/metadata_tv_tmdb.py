@@ -42,41 +42,12 @@ channel.basic_qos(prefetch_count=1)
 # verify themoviedb key exists
 if option_config_json['API']['themoviedb'] is not None:
     # setup the thmdb class
-    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(
-        option_config_json)
+    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 else:
     TMDB_CONNECTION = None
 
 
-def tv_search_tmdb(db_connection, file_name, lang_code='en'):
-    """
-    # tmdb search
-    """
-    file_name = guessit(file_name)
-    if type(file_name['title']) == list:
-        file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-    common_global.es_inst.com_elastic_index('info', {"meta tv search tmdb": str(file_name)})
-    metadata_uuid = None
-    tmdb_id = None
-    if TMDB_CONNECTION is not None:
-        if 'year' in file_name:
-            tmdb_id = str(TMDB_CONNECTION.com_thetmdb_search(file_name['title'],
-                                                                file_name['year'], lang_code, True))
-        else:
-            tmdb_id = str(TMDB_CONNECTION.com_thetmdb_search(file_name['title'],
-                                                                None, lang_code, True))
-        common_global.es_inst.com_elastic_index('info', {"response": tmdb_id})
-        if tmdb_id is not None:
-            #            # since there has been NO match whatsoever.....can "wipe" out everything
-            #            media_id_json = json.dumps({'thetmdb': tmdb_id})
-            #            common_global.es_inst.com_elastic_index('info', {'stuff':"dbjson: %s", media_id_json)
-            # check to see if metadata exists for tmdb id
-            metadata_uuid = db_connection.db_metatv_guid_by_tmdb(tmdb_id)
-            common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
-    common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
-                                                     'tmdb': tmdb_id})
-    return metadata_uuid, tmdb_id
-
+# the tv search tmdb is part of
 
 def tv_fetch_save_tmdb(db_connection, tmdb_id):
     """
@@ -100,7 +71,7 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id):
         metadata_uuid = db_connection.db_metatmdb_insert(series_id_json,
                                                          xml_show_data['Data']['Series'][
                                                              'SeriesName'],
-                                                         json.dumps({'Meta': {'thetmdb':
+                                                         json.dumps({'Meta': {'tmdb':
                                                                                   {'Meta':
                                                                                        xml_show_data[
                                                                                            'Data'],
