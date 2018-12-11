@@ -53,25 +53,26 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id):
     """
     # tmdb data fetch
     """
-    common_global.es_inst.com_elastic_index('info', {"meta tv tmdb save fetch": tmdb_id})
+    common_global.es_inst.com_elastic_index('info', {"meta tv themoviedb save fetch": tmdb_id})
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data \
         = TMDB_CONNECTION.com_meta_thetmdb_get_zip_by_id(tmdb_id)
-    common_global.es_inst.com_elastic_index('info', {'tv fetch save tmdb show': xml_show_data})
+    common_global.es_inst.com_elastic_index('info',
+                                            {'tv fetch save themoviedb show': xml_show_data})
     if xml_show_data is not None:
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert'})
         # insert
-        image_json = {'Images': {'thetmdb': {
+        image_json = {'Images': {'themoviedb': {
             'Characters': {}, 'Episodes': {}, "Redo": True}}}
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],
-                                     'tmdb': str(tmdb_id),
+                                     'themoviedb': str(tmdb_id),
                                      'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 2'})
         metadata_uuid = db_connection.db_metatmdb_insert(series_id_json,
                                                          xml_show_data['Data']['Series'][
                                                              'SeriesName'],
-                                                         json.dumps({'Meta': {'tmdb':
+                                                         json.dumps({'Meta': {'themoviedb':
                                                                                   {'Meta':
                                                                                        xml_show_data[
                                                                                            'Data'],
@@ -81,7 +82,7 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id):
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 3'})
         # insert cast info
         if xml_actor_data is not None:
-            db_connection.db_meta_person_insert_cast_crew('tmdb',
+            db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                           xml_actor_data['Actor'])
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 4'})
         # save rows for episode image fetch
