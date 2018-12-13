@@ -38,9 +38,6 @@ from crochet import wait_for, setup
 
 setup()
 from kivy.config import Config
-Config.set('graphics', 'width', 800)
-Config.set('graphics', 'height', 480)
-Config.set('graphics', 'fullscreen', 'fake')
 
 from kivy.lang import Builder
 from twisted.internet import reactor, protocol
@@ -878,6 +875,16 @@ if __name__ == '__main__':
     # set signal exit breaks
     common_signal.com_signal_set_break()
 
+    # so the raspberry pi doesn't crash
+    if os.uname()[4][:3] != 'arm':
+        Window.fullscreen = 'auto'
+    else:
+        # TODO find real resolution
+        # TODO this is currently set to the "official" raspberry pi touchscreen
+        Config.set('graphics', 'width', 800)
+        Config.set('graphics', 'height', 480)
+        Config.set('graphics', 'fullscreen', 'fake')
+
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_controller/kivy_layouts/main.kv')
     Builder.load_file(
@@ -886,7 +893,4 @@ if __name__ == '__main__':
     Builder.load_file(
         'theater_resources/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
-    # so the raspberry pi doesn't crash
-    if os.uname()[4][:3] != 'arm':
-        Window.fullscreen = 'auto'
     MediaKrakenApp().run()
