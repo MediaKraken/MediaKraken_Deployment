@@ -27,6 +27,7 @@ import uuid
 from shlex import split
 
 from common import common_global
+from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_network_mpv
@@ -224,6 +225,8 @@ class MediaKrakenApp(App):
         common_global.es_inst.com_elastic_index('info', {"len total": len(server_msg)})
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
+            # Send a uuid for this connection. This way same installs can be copied, etc.
+            # and not run into each other.
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
                                                          'UUID': str(uuid.uuid4()),
                                                          'Platform': platform.node()}))
