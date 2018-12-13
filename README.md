@@ -7,9 +7,6 @@ This program is still quite alpha.<BR>
 <BR>
 Please see the WIKI for documentation.<BR>
 <BR>
-<div class="row-fluid">
-  <div class="col-sm-12">
-    <div class="col-sm-8 col-sm-offset-2">
     <h2 style="color:white;">Why does this app exist?</h2>
     <p style="color:white;" class="indent">I've tried many media managers and streamers. They all seemed to lack one thing....one cohesive environment. Plugin's for this and that...some update, some don't. Biggest issue I had was plugins only supporting one patch level and trying to keep everything in sync across my servers and workstations along with 100% linux support. As they say the rest is history and I starting cutting code......</p>
 <h2 style="color:white;">Features (in progress):</h2>
@@ -40,10 +37,6 @@ Please see the WIKI for documentation.<BR>
 <li>Offsite Storage Support
 </u>
 </UL>
-<BR>
-<h2 style="color:white";>Privacy Policy can be read <a href="http://www.mediakraken.org/privacy.html">here</a></h2>
-    </div>
-  </div>
-</div>
+</ul>
+<h2 style="color:white";>Privacy Policy: This program collects NO data on users.</h2>
 <h1 align="center" style="color:white;">Feel like donating for inspiration and pizza?  <a href="http://PayPal.Me/SpootDev">Paypal</a></h1>
-</div>
