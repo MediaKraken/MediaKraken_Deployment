@@ -25,7 +25,6 @@ import sys
 import uuid
 
 from common import common_global
-from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_signal
