@@ -47,6 +47,7 @@ from twisted.python import log
 import kivy
 from kivy.app import App
 from kivy.config import Config
+
 # moving here before anything is setup for Kivy or it doesn't work
 if os.uname()[4][:3] == 'arm':
     # TODO find real resolution
@@ -54,7 +55,6 @@ if os.uname()[4][:3] == 'arm':
     Config.set('graphics', 'width', 800)
     Config.set('graphics', 'height', 480)
     Config.set('graphics', 'fullscreen', 'fake')
-
 
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
@@ -72,12 +72,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import BooleanProperty, ObjectProperty
 from theater import MediaKrakenSettings
 
-
-
 twisted_connection = None
 mk_app = None
 
 kivy.require('1.10.0')
+
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
