@@ -39,7 +39,7 @@ from crochet import wait_for, setup
 setup()
 from kivy.config import Config
 Config.set('graphics', 'width', 800)
-Config.set('Graphics', 'height', 480)
+Config.set('graphics', 'height', 480)
 Config.set('graphics', 'fullscreen', 'fake')
 
 from kivy.lang import Builder
