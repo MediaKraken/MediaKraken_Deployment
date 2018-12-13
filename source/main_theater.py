@@ -94,8 +94,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def refresh_view_attrs(self, rv, index, data):
         ''' Catch and handle the view changes '''
         self.index = index
-        return super(SelectableLabel, self).refresh_view_attrs(
-            rv, index, data)
+        return super(SelectableLabel, self).refresh_view_attrs(rv, index, data)
 
     def on_touch_down(self, touch):
         ''' Add selection on touch down '''
@@ -108,10 +107,13 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            print(("selection changed to {0}".format(rv.data[index])))
-            MKFactory.protocol.sendline_data(twisted_connection,
-                                             json.dumps({'Type': 'Media', 'Subtype': 'Detail',
-                                                         'UUID': rv.data[index]['uuid']}))
+            common_global.es_inst.com_elastic_index('info',
+                                                    {'stuff': "selection changed to {0}".format(
+                                                        rv.data[index])})
+            if twisted_connection is not None:
+                MKFactory.protocol.sendline_data(twisted_connection,
+                                                 json.dumps({'Type': 'Media', 'Subtype': 'Detail',
+                                                             'UUID': rv.data[index]['uuid']}))
             common_global.es_inst.com_elastic_index('info', {'stuff': rv.data[index]['path']})
             MediaKrakenApp.media_path = rv.data[index]['path']
 
