@@ -22,12 +22,12 @@ import sys
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from crochet import wait_for, setup
 
 from common import common_global
 from common import common_hardware_arduino_usb_serial
 from common import common_logging_elasticsearch
 from common import common_signal
-from crochet import wait_for, setup
 
 setup()
 
@@ -319,7 +319,8 @@ class MediaKrakenApp(App):
 
 if __name__ == '__main__':
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('ripper_pi')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('ripper_pi',
+                                                                             debug_override='sys')
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined
