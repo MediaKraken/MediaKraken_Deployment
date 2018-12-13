@@ -55,7 +55,7 @@ class CommonMetadataTMDB(object):
                 search = self.movie.search(media_title.replace('\\u25ba', ''))
             except:
                 search = self.movie.search(media_title.encode('utf-8'))
-        else:
+        else:  # defaulting to TV search then
             try:
                 search = self.tv.search(media_title.replace('\\u25ba', ''))
             except:

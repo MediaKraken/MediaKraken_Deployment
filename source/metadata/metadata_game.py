@@ -39,14 +39,14 @@ def game_system_update():
         break
 
 
-def metadata_game_lookup(db_connection, media_file_path, download_que_json, download_que_id):
+def metadata_game_lookup(db_connection, download_que_json, download_que_id):
     """
     Lookup game metadata
     """
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'game filename': media_file_path})
+    common_global.es_inst.com_elastic_index('info', {'game filename': download_que_json['Path']})
     # TODO determine short name/etc
-    for row_data in db_connection.db_meta_game_by_name(media_file_path):
+    for row_data in db_connection.db_meta_game_by_name(download_que_json['Path']):
         # TODO handle more than one match
         metadata_uuid = row_data['gi_id']
         break

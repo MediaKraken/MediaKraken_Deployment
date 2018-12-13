@@ -212,8 +212,7 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
         return 0  # to add totals later
 
 
-def metadata_movie_lookup(db_connection, media_file_path, download_que_json, download_que_id,
-                          file_name):
+def metadata_movie_lookup(db_connection, download_que_json, download_que_id, file_name):
     """
     Movie lookup
     This is the main function called from metadata_identification
@@ -228,7 +227,7 @@ def metadata_movie_lookup(db_connection, media_file_path, download_que_json, dow
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'metadata_movie_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
-    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(media_file_path)
+    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(download_que_json['Path'])
     imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
     if imdb_id is not None or tmdb_id is not None or rt_id is not None:
         common_global.es_inst.com_elastic_index('info', {"meta movie look": imdb_id,

@@ -238,7 +238,6 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>Directory</th>
                                     <th>Status</th>
                                     <th>File(s)</th>
@@ -247,7 +246,6 @@
                                 <tbody>
                                 {% for row_data in data_scan_info %}
                                 <tr>
-                                    <td>{{ loop.index + (page - 1) * per_page }}</td>
                                     <td>{{ row_data[0] }}</td>
                                     <td>{{ row_data[1] }}</td>
                                     <td>{{ row_data[2] }}</td>

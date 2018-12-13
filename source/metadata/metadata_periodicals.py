@@ -58,8 +58,7 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     return metadata_uuid, match_result
 
 
-def metadata_periodicals_lookup(db_connection, media_file_path,
-                                download_que_json, download_que_id):
+def metadata_periodicals_lookup(db_connection, download_que_json, download_que_id):
     """
     Lookup via isbn and then name
     """
@@ -72,16 +71,15 @@ def metadata_periodicals_lookup(db_connection, media_file_path,
     else:
         # try to pull isbn out..might not be long enough, so try
         try:
-            metadata_uuid = db_connection.db_meta_book_guid_by_isbn(media_file_path[-10:],
-                                                                    media_file_path[-13:])
+            metadata_uuid = db_connection.db_meta_book_guid_by_isbn(download_que_json['Path'][-10:],
+                                                                    download_que_json['Path'][-13:])
         except:
             pass
     if metadata_uuid is None:
         if download_que_json['ProviderMetaID'] is None:
             lookup_name = os.path.basename(
-                os.path.splitext(media_file_path)[0]).replace('_', ' ')
-            metadata_uuid = db_connection.db_meta_book_guid_by_name(
-                lookup_name)
+                os.path.splitext(download_que_json['Path'])[0]).replace('_', ' ')
+            metadata_uuid = db_connection.db_meta_book_guid_by_name(lookup_name)
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Search'})
             # save the updated status

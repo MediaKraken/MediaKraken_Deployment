@@ -46,8 +46,16 @@ from twisted.python import log
 
 import kivy
 from kivy.app import App
+from kivy.config import Config
 
-kivy.require('1.10.0')
+# moving here before anything is setup for Kivy or it doesn't work
+if os.uname()[4][:3] == 'arm':
+    # TODO find real resolution
+    # TODO this is currently set to the "official" raspberry pi touchscreen
+    Config.set('graphics', 'width', 800)
+    Config.set('graphics', 'height', 480)
+    Config.set('graphics', 'fullscreen', 'fake')
+
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
@@ -66,6 +74,8 @@ from theater import MediaKrakenSettings
 
 twisted_connection = None
 mk_app = None
+
+kivy.require('1.10.0')
 
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
@@ -390,7 +400,7 @@ class MediaKrakenApp(App):
                     f.write(base64.b64decode(json_message['Data'].encode()))
                     f.close()
                     self.demo_media_id = json_message['UUID']
-                    if self.first_image_demo == False:
+                    if self.first_image_demo is False:
                         common_global.es_inst.com_elastic_index('info', {'stuff': 'boom'})
                         # self.root.ids.main_home_demo_image.reload()
                         common_global.es_inst.com_elastic_index('info', {'stuff': 'boom2'})
@@ -873,6 +883,7 @@ if __name__ == '__main__':
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
     common_signal.com_signal_set_break()
+
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_controller/kivy_layouts/main.kv')
     Builder.load_file(
