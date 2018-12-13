@@ -37,17 +37,6 @@ from functools import partial
 from crochet import wait_for, setup
 
 setup()
-from kivy.config import Config
-# so the raspberry pi doesn't crash
-# moving here before anything is setup for kivy or it doesnt' work
-if os.uname()[4][:3] != 'arm':
-    Window.fullscreen = 'auto'
-else:
-    # TODO find real resolution
-    # TODO this is currently set to the "official" raspberry pi touchscreen
-    Config.set('graphics', 'width', 800)
-    Config.set('graphics', 'height', 480)
-    Config.set('graphics', 'fullscreen', 'fake')
 
 from kivy.lang import Builder
 from twisted.internet import reactor, protocol
@@ -74,6 +63,18 @@ from kivy.loader import Loader
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import BooleanProperty, ObjectProperty
 from theater import MediaKrakenSettings
+from kivy.config import Config
+
+# so the raspberry pi doesn't crash
+# moving here before anything is setup for kivy or it doesnt' work
+if os.uname()[4][:3] != 'arm':
+    Window.fullscreen = 'auto'
+else:
+    # TODO find real resolution
+    # TODO this is currently set to the "official" raspberry pi touchscreen
+    Config.set('graphics', 'width', 800)
+    Config.set('graphics', 'height', 480)
+    Config.set('graphics', 'fullscreen', 'fake')
 
 twisted_connection = None
 mk_app = None
