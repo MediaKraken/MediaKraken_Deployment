@@ -46,8 +46,16 @@ from twisted.python import log
 
 import kivy
 from kivy.app import App
+from kivy.config import Config
+# moving here before anything is setup for kivy or it doesnt' work
+if os.uname()[4][:3] == 'arm':
+    # TODO find real resolution
+    # TODO this is currently set to the "official" raspberry pi touchscreen
+    Config.set('graphics', 'width', 800)
+    Config.set('graphics', 'height', 480)
+    Config.set('graphics', 'fullscreen', 'fake')
 
-kivy.require('1.10.0')
+
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
@@ -63,22 +71,13 @@ from kivy.loader import Loader
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import BooleanProperty, ObjectProperty
 from theater import MediaKrakenSettings
-from kivy.config import Config
 
-# so the raspberry pi doesn't crash
-# moving here before anything is setup for kivy or it doesnt' work
-if os.uname()[4][:3] != 'arm':
-    Window.fullscreen = 'auto'
-else:
-    # TODO find real resolution
-    # TODO this is currently set to the "official" raspberry pi touchscreen
-    Config.set('graphics', 'width', 800)
-    Config.set('graphics', 'height', 480)
-    Config.set('graphics', 'fullscreen', 'fake')
+
 
 twisted_connection = None
 mk_app = None
 
+kivy.require('1.10.0')
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
@@ -894,4 +893,7 @@ if __name__ == '__main__':
     Builder.load_file(
         'theater_resources/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
+    # so the raspberry pi doesn't crash
+    if os.uname()[4][:3] != 'arm':
+        Window.fullscreen = 'auto'
     MediaKrakenApp().run()
