@@ -390,7 +390,7 @@ class MediaKrakenApp(App):
                     f.write(base64.b64decode(json_message['Data'].encode()))
                     f.close()
                     self.demo_media_id = json_message['UUID']
-                    if self.first_image_demo == False:
+                    if self.first_image_demo is False:
                         common_global.es_inst.com_elastic_index('info', {'stuff': 'boom'})
                         # self.root.ids.main_home_demo_image.reload()
                         common_global.es_inst.com_elastic_index('info', {'stuff': 'boom2'})
@@ -884,4 +884,6 @@ if __name__ == '__main__':
     # so the raspberry pi doesn't crash
     if os.uname()[4][:3] != 'arm':
         Window.fullscreen = 'auto'
+    else:
+        Window.fullscreen = True
     MediaKrakenApp().run()
