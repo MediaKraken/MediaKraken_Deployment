@@ -47,7 +47,7 @@ from twisted.python import log
 import kivy
 from kivy.app import App
 from kivy.config import Config
-# moving here before anything is setup for kivy or it doesnt' work
+# moving here before anything is setup for Kivy or it doesn't work
 if os.uname()[4][:3] == 'arm':
     # TODO find real resolution
     # TODO this is currently set to the "official" raspberry pi touchscreen
