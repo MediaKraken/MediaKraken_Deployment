@@ -133,6 +133,8 @@ class MKEcho(basic.LineReceiver):
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
+        global twisted_connection
+        twisted_connection = None
         common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
@@ -271,13 +273,15 @@ class MediaKrakenApp(App):
         """
         Send message via twisted reactor
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def send_twisted_message_thread(self, message):
         """
         Send message via twisted reactor from the crochet thread
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def process_message(self, server_msg):
         """

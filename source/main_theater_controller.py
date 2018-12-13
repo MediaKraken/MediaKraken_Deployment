@@ -56,6 +56,7 @@ if os.uname()[4][:3] == 'arm':
     Config.set('graphics', 'height', 480)
     Config.set('graphics', 'fullscreen', 'fake')
 
+kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
@@ -74,8 +75,6 @@ from theater import MediaKrakenSettings
 
 twisted_connection = None
 mk_app = None
-
-kivy.require('1.10.0')
 
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
@@ -132,6 +131,8 @@ class MKEcho(basic.LineReceiver):
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
+        global twisted_connection
+        twisted_connection = None
         common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
@@ -270,13 +271,15 @@ class MediaKrakenApp(App):
         """
         Send message via twisted reactor
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def send_twisted_message_thread(self, message):
         """
         Send message via twisted reactor from the crochet thread
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def process_message(self, server_msg):
         """
@@ -798,38 +801,48 @@ class MediaKrakenApp(App):
             # refreshs for movie stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'Demo', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Demo',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'Movie', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Movie',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'New Movie', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'New Movie',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'In Progress', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'In Progress',
+                                                  'Image Type': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
-                                                  'Image Media Type': 'TV', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'TV',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
-                                                  'Image Media Type': 'Live TV', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Live TV',
+                                                  'Image Type': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Game',
-                                                  'Image Media Type': 'Game', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Game',
+                                                  'Image Type': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Book',
-                                                  'Image Media Type': 'Book', 'Image Type': 'Cover'}))
+                                                  'Image Media Type': 'Book',
+                                                  'Image Type': 'Cover'}))
             # refresh music stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
-                                                  'Image Media Type': 'Album', 'Image Type': 'Cover'}))
+                                                  'Image Media Type': 'Album',
+                                                  'Image Type': 'Cover'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
-                                                  'Image Media Type': 'Video', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Video',
+                                                  'Image Type': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
             # self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
