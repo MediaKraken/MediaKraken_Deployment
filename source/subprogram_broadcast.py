@@ -18,8 +18,7 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(address)
 
 docker_inst = common_docker.CommonDocker()
-# it returns a dict, not a json
-mediakraken_ip = docker_inst.com_docker_info()['Swarm']['NodeAddr']
+mediakraken_ip = socket.gethostbyname('host.docker.internal')
 
 common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip})
 
