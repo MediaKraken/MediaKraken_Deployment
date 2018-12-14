@@ -19,7 +19,6 @@
 import os
 import socket
 import subprocess
-from shlex import split
 
 import docker
 from . import common_global
@@ -29,7 +28,7 @@ from . import common_global
 
 # the following function is used in ALPINE until socket.gethostbyname('host.docker.internal') is valid
 def com_docker_host_ip():
-    return subprocess.check_output(split("ip route | awk 'NR==1 {print $3}'"))
+    return subprocess.check_output(['ip', '-4', 'route', 'show', 'default']).decode("utf-8").split(' ')[2]
 
 
 class CommonDocker(object):
