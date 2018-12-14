@@ -18,12 +18,19 @@
 
 import os
 import socket
+import subprocess
+from shlex import split
 
 import docker
 from . import common_global
 
 
 # https://docker-py.readthedocs.io/en/stable/
+
+# the following function is used in ALPINE until socket.gethostbyname('host.docker.internal') is valid
+def com_docker_host_ip():
+    return subprocess.check_output(split("ip route | awk 'NR==1 {print $3}'"))
+
 
 class CommonDocker(object):
     """
@@ -388,7 +395,7 @@ class CommonDocker(object):
                                                         '/data/transmission/incomplete'):
                                                {'bind': '/transmission/incomplete',
                                                 'mode': 'rw'}
-                                           },
+                                       },
                                        name='mktransmission',
                                        environment={'USERNAME': username,
                                                     'PASSWORD': password})

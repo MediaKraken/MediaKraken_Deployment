@@ -18,7 +18,7 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(address)
 
 docker_inst = common_docker.CommonDocker()
-mediakraken_ip = socket.gethostbyname('host.docker.internal')
+mediakraken_ip = common_docker.com_docker_host_ip()
 
 common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip})
 

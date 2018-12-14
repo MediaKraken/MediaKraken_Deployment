@@ -112,7 +112,7 @@ def admins():
                            data_user_count=common_internationalization.com_inter_number_format(
                                g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
-                           data_host_ip=socket.gethostbyname('host.docker.internal'),
+                           data_host_ip=common_docker.com_docker_host_ip(),
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port=option_config_json[
                                'MediaKrakenServer']['ListenPort'],
