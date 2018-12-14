@@ -806,7 +806,8 @@ def on_config_change(self, config, section, key, value):
 
         freeze_support()
         # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater')
+        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater',
+                                                                                 debug_override='print')
         log.startLogging(sys.stdout)  # for twisted
         # set signal exit breaks
         common_signal.com_signal_set_break()

@@ -7,7 +7,7 @@ from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_broadcast',
-                                                                         debug_override='sys')
+                                                                         debug_override='print')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

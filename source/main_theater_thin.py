@@ -408,7 +408,7 @@ if __name__ == '__main__':
     freeze_support()
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'main_theater_thin')
+        'main_theater_thin', debug_override='print')
 
     # set signal exit breaks
     common_signal.com_signal_set_break()
