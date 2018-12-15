@@ -107,11 +107,15 @@ def admins():
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in g.db_connection.db_audit_path_status():
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
+    if os.environ['SWARMIP'] is not None:
+        mediakraken_ip = os.environ['SWARMIP']
+    else:
+        mediakraken_ip = os.environ['HOST_IP']
     return render_template("admin/admins.html",
                            data_user_count=common_internationalization.com_inter_number_format(
                                g.db_connection.db_user_list_name_count()),
                            data_server_info_server_name=data_server_info_server_name,
-                           data_host_ip=os.environ['HOST_IP'],
+                           data_host_ip=mediakraken_ip,
                            data_server_info_server_ip=nic_data,
                            data_server_info_server_port=option_config_json[
                                'MediaKrakenServer']['ListenPort'],

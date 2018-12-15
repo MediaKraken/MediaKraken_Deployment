@@ -43,7 +43,7 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     environment:
-      - HOST_IP=${HOST_IP}
+      - HOST_IP=hostname -I | awk '{print $1}'
     container_name: mkbroadcast
     entrypoint: python3 subprogram_broadcast.py
     ports:
@@ -339,7 +339,7 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
-      - HOST_IP=${HOST_IP}
+      - HOST_IP=hostname -I | awk '{print $1}'
     container_name: mkwebapp
     depends_on:
       - pgbounce

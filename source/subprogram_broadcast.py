@@ -19,8 +19,12 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(address)
 
 docker_inst = common_docker.CommonDocker()
+if os.environ['SWARMIP'] is not None:
+    mediakraken_ip = os.environ['SWARMIP']
+else:
+    mediakraken_ip = os.environ['HOST_IP']
 
-common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': os.environ['HOST_IP']})
+common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip})
 
 # begin loop to respond to all broadcast messages
 while True:
@@ -34,4 +38,4 @@ while True:
                 break
         common_global.es_inst.com_elastic_index('info', {'addr': str(addr),
                                                          'data': str(recv_data)})
-        server_socket.sendto((os.environ['HOST_IP'] + ":" + docker_port).encode(), addr)
+        server_socket.sendto((mediakraken_ip + ":" + docker_port).encode(), addr)
