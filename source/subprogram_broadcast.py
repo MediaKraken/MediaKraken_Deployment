@@ -1,3 +1,4 @@
+import os
 import socket
 
 from common import common_docker
@@ -18,9 +19,8 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(address)
 
 docker_inst = common_docker.CommonDocker()
-mediakraken_ip = common_docker.com_docker_host_ip()
 
-common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip})
+common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': os.environ['HOST_IP']})
 
 # begin loop to respond to all broadcast messages
 while True:
@@ -30,9 +30,8 @@ while True:
         for container_json in docker_inst.com_docker_container_list():
             # grab ports for server
             if container_json['Names'][0] == '/mkreactor':
-                docker_port = str(
-                    docker_inst.com_docker_port(container_json['Id'], 8903)[0]['HostPort'])
+                docker_port = str(docker_inst.com_docker_port(container_json['Id'], 8903)[0]['HostPort'])
                 break
         common_global.es_inst.com_elastic_index('info', {'addr': str(addr),
                                                          'data': str(recv_data)})
-        server_socket.sendto((mediakraken_ip + ":" + docker_port).encode(), addr)
+        server_socket.sendto((os.environ['HOST_IP'] + ":" + docker_port).encode(), addr)

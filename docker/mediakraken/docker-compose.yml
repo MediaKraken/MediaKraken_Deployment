@@ -32,6 +32,8 @@ services:
   # start broadcast server (so clients can find server)
   broadcast:
     image: mediakraken/mkbroadcast:latest
+    environment:
+      - HOST_IP=${HOST_IP}
     container_name: mkbroadcast
     entrypoint: python3 subprogram_broadcast.py
     ports:
@@ -259,6 +261,7 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
+      - HOST_IP=${HOST_IP}
     container_name: mkwebapp
     depends_on:
       - pgbounce
