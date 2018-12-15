@@ -28,6 +28,7 @@ from . import common_global
 
 # the following function is used in ALPINE until socket.gethostbyname('host.docker.internal') is valid
 def com_docker_host_ip():
+    # this doesn't work from a container!  it'll just give the route ip to the host  ie 172.x.x.x
     return subprocess.check_output(['ip', '-4', 'route', 'show', 'default']).decode("utf-8").split(' ')[2]
 
 
