@@ -19,7 +19,7 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(address)
 
 docker_inst = common_docker.CommonDocker()
-if os.environ['SWARMIP'] is not None:
+if os.environ['SWARMIP'] != 'None':
     mediakraken_ip = os.environ['SWARMIP']
 else:
     mediakraken_ip = os.environ['HOST_IP']
