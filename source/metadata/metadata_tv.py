@@ -82,7 +82,7 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
         # id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or tvdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 2,
                                                                'themoviedb', str(tmdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
@@ -97,7 +97,7 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
             elif tvdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 2,
                                                                'thetvdb', str(tvdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
@@ -112,7 +112,7 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
             else:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 0,
+                dl_meta = db_connection.db_download_que_exists(download_que_id, 2,
                                                                'thetvdb', imdb_id)
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
