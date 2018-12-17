@@ -17,13 +17,13 @@
 '''
 
 import json
-
 import pika
+from guessit import guessit
+
 from common import common_config_ini
 from common import common_global
 from common import common_metadata_tmdb
 from common import common_string
-from guessit import guessit
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -51,7 +51,7 @@ else:
 
 def tv_fetch_save_tmdb(db_connection, tmdb_id):
     """
-    # tmdb data fetch
+    # tmdb data fetch for tv
     """
     common_global.es_inst.com_elastic_index('info', {"meta tv themoviedb save fetch": tmdb_id})
     metadata_uuid = None
@@ -89,7 +89,9 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id):
         if 'Episode' in xml_show_data['Data']:
             # checking id instead of filename as id should always exist
             try:
-                print(('len %s', len(xml_show_data['Data']['Episode'][0]['id'])))
+                common_global.es_inst.com_elastic_index('info',
+                                                        {len(xml_show_data['Data']['Episode'][0][
+                                                                 'id'])})
                 if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
                     # thetmdb is Episode
                     for episode_info in xml_show_data['Data']['Episode']:

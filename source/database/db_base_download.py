@@ -84,6 +84,7 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     """
     See if download que record exists for provider and id and type
         still need this as records could be from different threads or not in order
+        and themoviedb "reuses" media id records for tv/movie
     """
     # include search to find OTHER records besides the row that's
     # doing the query itself
@@ -99,9 +100,6 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
                                ' and mdq_download_json->>\'Status\' <> \'Search\''
                                ' and mdq_download_json->>\'Status\' is not NULL limit 1',
                                (provider_name, download_que_type, provider_id))
-        # why do I care about the download que id?
-        #            ' and mdq_id <> %s and mdq_download_json->>\'Status\' <> \'Search\' limit 1',
-        #            (provider_name, download_que_type, provider_id, download_que_uuid))
     else:
         self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
                                ' where mdq_provider = %s and mdq_que_type = %s'

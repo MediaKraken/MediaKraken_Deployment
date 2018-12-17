@@ -17,11 +17,11 @@
 '''
 
 import json
+from guessit import guessit
+
 from common import common_global
 from common import common_metadata_chart_lyrics
 from common import common_metadata_tv_theme
-from guessit import guessit
-
 from . import metadata_anime
 from . import metadata_movie
 from . import metadata_music
@@ -29,6 +29,7 @@ from . import metadata_music_video
 from . import metadata_periodicals
 from . import metadata_person
 from . import metadata_sports
+from . import metadata_tv_tmdb
 from . import metadata_tv_tvdb
 from . import metadata_tv_tvmaze
 
@@ -262,26 +263,17 @@ def metadata_fetch(thread_db, provider_name, download_data):
                 thread_db, provider_name, download_data)
         elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1:  # movie
             # removing the imdb check.....as com_tmdb_metadata_by_id converts it
-            # if download_data['mdq_download_json']['ProviderMetaID'][0:2] == 'tt':  # imdb id check
-            #     tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(
-            #         download_data['mdq_download_json']['ProviderMetaID'])
-            #     if tmdb_id is not None:
-            #         download_data['mdq_download_json'].update(
-            #             {'ProviderMetaID': str(tmdb_id)})
-            #         thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
-            #                                      download_data['mdq_id'])
-            #     else:
-            #         # TODO this is kinda bad if you have a valid id
-            #         thread_db.db_download_update_provider(
-            #             'ZZ', download_data['mdq_id'])
-            # else:
             metadata_movie.movie_fetch_save_tmdb(thread_db,
                                                  download_data['mdq_download_json'][
                                                      'ProviderMetaID'],
                                                  download_data['mdq_download_json']['MetaNewID'])
             thread_db.db_download_delete(download_data['mdq_id'])
-        else:  # tv
-            pass
+        elif download_data['mdq_que_type'] == 2:  # tv
+            metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
+                                                    download_data['mdq_download_json'][
+                                                        'ProviderMetaID'],
+                                                    download_data['mdq_download_json']['MetaNewID'])
+            thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'thetvdb':
         metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
                                             download_data['mdq_download_json']['ProviderMetaID'])
