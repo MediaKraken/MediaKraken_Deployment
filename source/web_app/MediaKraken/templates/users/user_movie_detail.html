@@ -53,6 +53,8 @@
                                             <th>Runtime</th>
                                             <th>Audio</th>
                                             <th>Subtitle</th>
+                                            <th>Device</th>
+                                            <th>Playback</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -77,20 +79,23 @@
                                                             {% endif %}
                                                         </select>
                                                     </td>
+                                                    <td>
+                                                        <select name="playback_device" >
+                                                            <option value="web_viewer">Web Viewer</option>
+                                                            {% for playback_device in data_playback_device %}
+                                                                <option value="{{playback_device}}">{{playback_device}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}"><span class="glyphicon glyphicon-play-circle"></span></a>
+                                                    </td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="btn-group-vertical">
-                            {% for playback_device in data_playback_device %}
-                                <input class="btn btn-default btn-submit" type="submit" name="playback" value="{{playback_device}}">
-                            {% endfor %}
-                            <input class="btn btn-default btn-submit" type="submit" name="playback" value="Web Viewer">
                         </div>
                     </div>
                 </div>
