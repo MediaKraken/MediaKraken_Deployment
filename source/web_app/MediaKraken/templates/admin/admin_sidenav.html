@@ -51,29 +51,29 @@
         </style>
     </head>
     <div class="sidenav">
-        <a href="{{ url_for('admins_backup.admin_backup') }} " id="admin_navmenu_backup"><i class="fas hdd"></i>Backup</a>
-        <a href="{{ url_for('admins.admin_books_add') }}" id="admin_navmenu_book_add"><i class="fas book"></i> Book (add) <span class="badge badge-info"></span></a>
-        <a href="{{ url_for('admins_cron.admin_cron_display_all') }} " id="admin_navmenu_cron"><i class="fas tasks"></i>Cron</a>
+        <a href="{{ url_for('admins_backup.admin_backup') }} " id="admin_navmenu_backup"><i class="fas fa-hdd"></i>Backup</a>
+        <a href="{{ url_for('admins.admin_books_add') }}" id="admin_navmenu_book_add"><i class="fas fa-book"></i> Book (add) <span class="badge badge-info"></span></a>
+        <a href="{{ url_for('admins_cron.admin_cron_display_all') }} " id="admin_navmenu_cron"><i class="fas fa-tasks"></i>Cron</a>
 
         <button class="dropdown-btn">Cloud
             <i class="fa fa-caret-down"></i>
         </button>
 
-        <a href="{{ url_for('admins.admin_database_statistics') }}" id="admin_navmenu_database_stats"><i class="fa fa-database"></i> DB Statistics</a>
-        <a href="{{ url_for('admins_docker.docker_stat') }}" id="admin_navmenu_docker_stats"><i class="fa fa-anchor"></i> Docker Statistics</a>
+        <a href="{{ url_for('admins.admin_database_statistics') }}" id="admin_navmenu_database_stats"><i class="fas fa-database"></i> DB Statistics</a>
+        <a href="{{ url_for('admins_docker.docker_stat') }}" id="admin_navmenu_docker_stats"><i class="fas fa-anchor"></i> Docker Statistics</a>
 
-        <a href="{{ url_for('admins_game.game_metadata') }}" id="admin_navmenu_game_metadata"><i class="fa fa-gamepad"></i> Game Metadata</a>
+        <a href="{{ url_for('admins_game.game_metadata') }}" id="admin_navmenu_game_metadata"><i class="fas fa-gamepad"></i> Game Metadata</a>
 
         <button class="dropdown-btn">Hardware
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="{{ url_for('admins_chromecasts.admin_chromecast') }}" id="admin_navmenu_chromecast"><i class="fa fa-sun-o"></i> Chromecasts</a>
-            <a href="{{ url_for('admins_tvtuners.admin_tvtuners') }}" id="admin_navmenu_tvtuner"><i class="fas tv"></i> TV Tuners</a>
+            <a href="{{ url_for('admins_chromecasts.admin_chromecast') }}" id="admin_navmenu_chromecast"><i class="fas fa-sun-o"></i> Chromecasts</a>
+            <a href="{{ url_for('admins_tvtuners.admin_tvtuners') }}" id="admin_navmenu_tvtuner"><i class="fas fa-tv"></i> TV Tuners</a>
         </div>
 
-        <a href="{{ url_for('admins_library.admin_library') }}" id="admin_navmenu_library"><i class="fas video"></i>Library <span class="badge badge-info"> {{ data_library }}</span></a>
-        <a href="{{ url_for('admins.admin_messages') }}" id="admin_navmenu_messages"><i class="fas envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a>
+        <a href="{{ url_for('admins_library.admin_library') }}" id="admin_navmenu_library"><i class="fas fa-video"></i>Library <span class="badge badge-info"> {{ data_library }}</span></a>
+        <a href="{{ url_for('admins.admin_messages') }}" id="admin_navmenu_messages"><i class="fas fa-envelope"></i> Messages <span class="badge badge-info"> {{ data_messages }}</span></a>
 
         <button class="dropdown-btn">Reports
             <i class="fa fa-caret-down"></i>
@@ -91,15 +91,15 @@
             <a href="{{ url_for('admins_report.report_top10', mtype=4) }}" id="admin_navmenu_top10_tveps">Top 10 TV Episodes</a>
         </div>
 
-        <a href="{{ url_for('admins.admin_server_settings') }}" id="admin_navmenu_server_settings"><i class="fas cogs"></i> Server</a>
-        <a href="{{ url_for('admins_link.admin_server_link_server') }}" id="admin_navmenu_server_link"><i class="fas link"></i>Server Links</a>
-        <a href="{{ url_for('admins_share.admin_share') }}" id="admin_navmenu_share"><i class="fa fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a>
+        <a href="{{ url_for('admins.admin_server_settings') }}" id="admin_navmenu_server_settings"><i class="fas fa-cogs"></i> Server</a>
+        <a href="{{ url_for('admins_link.admin_server_link_server') }}" id="admin_navmenu_server_link"><i class="fas fa-link"></i>Server Links</a>
+        <a href="{{ url_for('admins_share.admin_share') }}" id="admin_navmenu_share"><i class="fas fa-share-alt"></i> Share <span class="badge badge-info"> {{ data_share }}</span></a>
 
         {% if data_transmission_active %}
-        <a href="{{ url_for('admins_transmission.admin_transmission') }}" id="admin_navmenu_transmission"><i class="fas globe"></i>Transmission</a>
+        <a href="{{ url_for('admins_transmission.admin_transmission') }}" id="admin_navmenu_transmission"><i class="fas fa-globe"></i>Transmission</a>
         {% endif %}
-        <a href="{{ url_for('admins_users.admin_users') }}" id="admin_navmenu_users"><i class="fas user-alt"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
-        <a href="{{ url_for('admins.admin_server_zfs') }}" id="admin_navmenu_zfs"><i class="fas database"></i>ZFS</a>
+        <a href="{{ url_for('admins_users.admin_users') }}" id="admin_navmenu_users"><i class="fas fa-user-alt"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
+        <a href="{{ url_for('admins.admin_server_zfs') }}" id="admin_navmenu_zfs"><i class="fas fa-database"></i>ZFS</a>
     </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
