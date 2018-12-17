@@ -11,7 +11,7 @@
         <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
         <![endif]-->
         <link href="{{ url_for('static', filename='css/style.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='font-awesome/css/fontawesome.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
     </head>
     {% if data_nas %}
@@ -35,10 +35,10 @@
                     <td>{{ row_data[3] }}</td>
                     <div class="pull-right action-buttons">
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editNASModal" onclick="EditNAS(this)" ><span class="glyphicon glyphicon-pencil"></span></button></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editNASModal" onclick="EditNAS(this)" ><span class="fas pencil-alt"></span></button></a>
                         </td>
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] }} onclick="ConfirmNASDelete(this)" ><span class="glyphicon glyphicon-trash"></span></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] }} onclick="ConfirmNASDelete(this)" ><span class="fas trash-alt"></span></a>
                         </td>
                     </div>
                     {% endfor %}
