@@ -46,8 +46,7 @@ if not os.path.isfile('./key/cacert.pem'):
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
-                                                {
-                                                    'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+                                                {'stuff': 'Cannot generate SSL certificate. Exiting.....'})
         sys.exit()
 
 # open the database
@@ -104,10 +103,10 @@ current_host_working_directory = docker_inst.com_docker_container_bind(container
 if option_config_json['Docker Instances']['mumble']:
     docker_inst.com_docker_run_mumble(current_host_working_directory)
 
-if option_config_json['Docker Instances']['musicbrainz']:
-    if option_config_json['API']['musicbrainz'] is not None:
-        docker_inst.com_docker_run_musicbrainz(current_host_working_directory,
-                                               option_config_json['API']['musicbrainz'])
+if option_config_json['Docker Instances']['musicbrainz'] \
+        and option_config_json['API']['musicbrainz'] is not None:
+    docker_inst.com_docker_run_musicbrainz(current_host_working_directory,
+                                           option_config_json['API']['musicbrainz'])
 
 if option_config_json['Docker Instances']['portainer']:
     docker_inst.com_docker_run_portainer(current_host_working_directory)
