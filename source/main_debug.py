@@ -38,8 +38,9 @@ docker_inst = common_docker.CommonDocker()
 
 # get current working directory from host maps
 # this is used so ./data can be used for all the containers launched from docker-py
-current_host_working_directory = docker_inst.com_docker_container_bind(container_name='/mkserver',
-                                                                       bind_match='/data/devices')
+# using reactor since it should always be running
+current_host_working_directory = docker_inst.com_docker_container_bind(container_name='/mkreactor',
+                                                                       bind_match='/data/certs')
 
 docker_inst.com_docker_network_prune()
 docker_inst.com_docker_network_create()
