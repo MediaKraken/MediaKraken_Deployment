@@ -35,8 +35,14 @@ if max_map_count < 262144:
     sys.exit()
 
 docker_inst = common_docker.CommonDocker()
-docker_inst.com_docker_network_prune()
-docker_inst.com_docker_network_create()
-docker_inst.com_docker_run_elk()
-docker_inst.com_docker_run_pgadmin()
-docker_inst.com_docker_run_portainer()
+
+# get current working directory from host maps
+# this is used so ./data can be used for all the containers launched from docker-py
+current_host_working_directory = docker_inst.com_docker_container_bind(container_name='/mkserver',
+                                                                       bind_match='/data/devices')
+
+docker_inst.com_docker_network_prune(current_host_working_directory)
+docker_inst.com_docker_network_create(current_host_working_directory)
+docker_inst.com_docker_run_elk(current_host_working_directory)
+docker_inst.com_docker_run_pgadmin(current_host_working_directory)
+docker_inst.com_docker_run_portainer(current_host_working_directory)
