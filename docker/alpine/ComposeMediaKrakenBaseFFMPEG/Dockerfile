@@ -15,6 +15,8 @@ ARG OPENMPT_VERSION=0.2.8760-beta27
 COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
 COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
+RUN mkdir /mediakraken/cuda
+ADD cuda /mediakraken/cuda
 
 RUN buildDeps="autoconf \
         automake \
@@ -90,6 +92,9 @@ RUN buildDeps="autoconf \
     /mediakraken/kvazaar.sh && \
     /mediakraken/openh264.sh && \
     /mediakraken/vidstab.sh && \
+    # Make the run file executable and extract
+    chmod +x /mediakraken/cuda_*_linux.run && \
+    /mediakraken/cuda_*_linux.run --tar mxvf && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -103,6 +108,8 @@ RUN buildDeps="autoconf \
         --enable-avfilter \
         --enable-avresample \
         --enable-fontconfig \
+        --enable-cuda \
+        --enable-cuvid \
         --enable-gpl \
         --enable-libass \
         --enable-libfdk_aac \
@@ -111,6 +118,7 @@ RUN buildDeps="autoconf \
         --enable-libkvazaar \
         --enable-libmodplug \
         --enable-libmp3lame \
+        --enable-libnpp \
         --enable-libopenh264 \
         --enable-libopenjpeg \
         --enable-libopenmpt \
@@ -129,6 +137,7 @@ RUN buildDeps="autoconf \
         --enable-libx265 \
         --enable-libxvid \
         --enable-nonfree \
+        --enable-nvenc \
         --enable-postproc \
         --enable-pthreads \
         --enable-shared \
