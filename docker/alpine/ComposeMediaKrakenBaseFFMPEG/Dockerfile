@@ -39,6 +39,7 @@ RUN buildDeps="autoconf \
         rtmpdump-dev \
         libtheora-dev \
         libtool \
+        libvdpau-dev \
         libvorbis-dev \
         libvpx-dev \
         libwebp-dev \
@@ -130,6 +131,7 @@ RUN buildDeps="autoconf \
         --enable-pthreads \
         --enable-shared \
         --enable-small \
+        --enable-vdpau \
         --enable-version3 \
         --enable-zlib \
         --disable-debug \
@@ -148,7 +150,7 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --update samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx librtmp && \
+    soxr fontconfig libvpx librtmp libvdpau && \
     ffmpeg -buildconf
 
 CMD ["--help"]
