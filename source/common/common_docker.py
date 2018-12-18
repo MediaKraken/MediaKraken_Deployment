@@ -332,7 +332,7 @@ class CommonDocker(object):
 
     def com_docker_run_portainer(self, current_host_working_directory):
         self.com_docker_delete_container('mkportainer')
-        return self.cli.containers.run(image='portainer/portainer',
+        return self.cli.containers.run(image='portainer/portainer:latest',
                                        detach=True,
                                        name='mkportainer',
                                        ports={"9000": 9000},
