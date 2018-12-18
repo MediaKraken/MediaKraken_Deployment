@@ -41,8 +41,8 @@ docker_inst = common_docker.CommonDocker()
 current_host_working_directory = docker_inst.com_docker_container_bind(container_name='/mkserver',
                                                                        bind_match='/data/devices')
 
-docker_inst.com_docker_network_prune(current_host_working_directory)
-docker_inst.com_docker_network_create(current_host_working_directory)
+docker_inst.com_docker_network_prune()
+docker_inst.com_docker_network_create()
 docker_inst.com_docker_run_elk(current_host_working_directory)
 docker_inst.com_docker_run_pgadmin(current_host_working_directory)
 docker_inst.com_docker_run_portainer(current_host_working_directory)
