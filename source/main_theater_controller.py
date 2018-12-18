@@ -374,17 +374,11 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "User":
             pass
 
-        elif json_message['Type'] == "Device Cast List":
-            cast_list = ['This Device']
-            for cast_device in json_message['Data']:
-                cast_list.append(cast_device[2]['Name'])
-            self.root.ids.theater_media_video_play_local_spinner.values = cast_list
-
         elif json_message['Type'] == "Device Play List":
-            cast_list = ['This Device']
-            for cast_device in json_message['Data']:
-                cast_list.append(cast_device[2])  # name of device
-            self.root.ids.theater_media_video_play_local_spinner.values = cast_list
+            play_list = ['This Device']
+            for play_device in json_message['Data']:
+                play_list.append(play_device[2])  # name of device
+            self.root.ids.theater_media_video_play_local_spinner.values = play_list
 
         elif json_message['Type'] == "Genre List":
             common_global.es_inst.com_elastic_index('info', {'stuff': "gen"})
