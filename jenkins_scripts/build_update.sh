@@ -29,10 +29,6 @@ cd ../
 cd ../ComposeMediaKrakenBase38Py3
 docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
-# Build the base cuda from alpine
-#cd ../ComposeMediaKrakenBaseCuda
-#docker build -t mediakraken/mkbasecuda .
-
 # Build the base FFMPEG from base images
 # Image that simply has ffmpeg and ffprobe for use by other containers.
 cd ../ComposeMediaKrakenBaseFFMPEG
@@ -76,25 +72,6 @@ docker build -t mediakraken/mktwitchrecorduser --build-arg ALPMIRROR=10.0.0.122 
 cd ../ComposeMediaKrakenCastImage
 docker build -t mediakraken/mkcastimage --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
-#cd ../ComposeMediaKrakenSlaveNvidia
-#docker build -t mediakraken/mkslavenvidia .
-
-#cd ../ComposeMediaKrakenSlaveNvidiaDebian
-#docker build -t mediakraken/mkslavenvidiadebian .
-
-# Build the base Nvidia Cuda
-#cd ../ComposeMediaKrakenBaseNvidia
-#docker build -t mediakraken/mkbasenvidia .
-
-#cd ../ComposeMediaKrakenBaseNvidiaDebian
-#docker build -t mediakraken/mkbasenvidiadebian .
-
-#cd ../ComposeMediaKrakenBaseFFMPEGNvidia
-#docker build -t mediakraken/mkbaseffmpegnvidia .
-
-#cd ../ComposeMediaKrakenBaseFFMPEGNvidiaDebian
-#docker build -t mediakraken/mkbaseffmpegnvidiadebian .
-
 # move here so all the "deps" are built first
 docker-compose build
 
@@ -120,10 +97,6 @@ docker build -t mediakraken/mkpgadmin --build-arg ALPMIRROR=10.0.0.122 --build-a
 cd ../ComposeMediaKrakenInotify
 docker build -t mediakraken/mkinotify --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
-# build the stream container
-#cd ../ComposeMediaKrakenStream
-#docker build -t mediakraken/mkstream .
-
 # build the teamspeak
 cd ../ComposeMediaKrakenTeamspeak
 docker build -t mediakraken/mkteamspeak --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
@@ -135,10 +108,6 @@ docker build -t mediakraken/mktransmission --build-arg ALPMIRROR=10.0.0.122 --bu
 # build the wireshark
 cd ../ComposeMediaKrakenWireshark
 docker build -t mediakraken/mkwireshark --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
-
-# build the tvheadend
-#cd ../ComposeMediaKrakenTvheadend
-#docker build -t mediakraken/mktvheadend .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh

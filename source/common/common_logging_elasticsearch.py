@@ -29,14 +29,18 @@ class CommonElasticsearch(object):
     Class for interfacing with Elasticsearch or docker logging directly
     """
 
-    def __init__(self, index_type='mediakraken', es_host='mkelk', es_port=9200):
-        if 'DEBUG' in os.environ:
+    def __init__(self, index_type='mediakraken', es_host='mkelk', es_port=9200,
+                 debug_override=None):
+        if 'DEBUG' in os.environ and debug_override is None:
             self.debug = os.environ['DEBUG'].lower()
             if self.debug == 'es':
                 self.es_inst = Elasticsearch([{'host': es_host, 'port': es_port}])
                 self.es_index = index_type
         else:
-            self.debug = None
+            if debug_override is None:
+                self.debug = None
+            else:
+                self.debug = debug_override
 
     def com_elastic_index(self, log_type, body_data):
         # write log to elk

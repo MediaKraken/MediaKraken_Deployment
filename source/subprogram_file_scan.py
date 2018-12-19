@@ -171,7 +171,7 @@ def worker(audit_directory):
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None, media_json)
                 # verify ffprobe and bif should run on the data
-                if ffprobe_bif_data:
+                if ffprobe_bif_data and file_extension[1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG:
                     # Send a message so ffprobe runs
                     channel.basic_publish(exchange='mkque_ffmpeg_ex',
                                           routing_key='mkffmpeg',
@@ -180,15 +180,16 @@ def worker(audit_directory):
                                                'Media Path': file_name}),
                                           properties=pika.BasicProperties(content_type='text/plain',
                                                                           delivery_mode=1))
-                    # Send a message so roku thumbnail is generated
-                    channel.basic_publish(exchange='mkque_roku_ex',
-                                          routing_key='mkroku',
-                                          body=json.dumps(
-                                              {'Type': 'Roku', 'Subtype': 'Thumbnail',
-                                               'Media UUID': media_id,
-                                               'Media Path': file_name}),
-                                          properties=pika.BasicProperties(content_type='text/plain',
-                                                                          delivery_mode=1))
+                    if new_class_type_uuid != class_text_dict['Music']:
+                        # Send a message so roku thumbnail is generated
+                        channel.basic_publish(exchange='mkque_roku_ex',
+                                              routing_key='mkroku',
+                                              body=json.dumps(
+                                                  {'Type': 'Roku', 'Subtype': 'Thumbnail',
+                                                   'Media UUID': media_id,
+                                                   'Media Path': file_name}),
+                                              properties=pika.BasicProperties(content_type='text/plain',
+                                                                              delivery_mode=1))
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert

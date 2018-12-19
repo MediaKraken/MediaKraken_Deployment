@@ -32,6 +32,10 @@ services:
   # start broadcast server (so clients can find server)
   broadcast:
     image: mediakraken/mkbroadcast:latest
+    environment:
+      # so it knows what ip to broadcast on
+      - SWARMIP=${SWARMIP}
+      - HOST_IP=${HOST_IP}
     container_name: mkbroadcast
     entrypoint: python3 subprogram_broadcast.py
     ports:
@@ -259,6 +263,8 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
+      - SWARMIP=${SWARMIP}
+      - HOST_IP=${HOST_IP}
     container_name: mkwebapp
     depends_on:
       - pgbounce

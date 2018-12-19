@@ -19,13 +19,14 @@
 from common import common_file
 from common import common_global
 from common import common_hardware_chromecast
+from common import common_hardware_crestron
 from common import common_hardware_soco
 from common import common_logging_elasticsearch
 from common import common_signal
 
-# start logging - REMOVED SINCE RUNS AS HOST NETWORK
-# can use now that I'm doing sys logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover')
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover',
+                                                                         debug_override='sys')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -86,6 +87,13 @@ if soco_devices is not None:
     for soco in soco_devices:
         common_global.es_inst.com_elastic_index('info', {'soco out': soco})
         media_devices.append({'Soco': soco})
+
+# crestron device discover
+crestron_devices = common_hardware_crestron.com_hardware_crestron_discover()
+if crestron_devices is not None:
+    for crestron in crestron_devices:
+        common_global.es_inst.com_elastic_index('info', {'soco out': crestron})
+        media_devices.append({'Crestron': crestron})
 
 common_global.es_inst.com_elastic_index('info', {'devices': media_devices})
 

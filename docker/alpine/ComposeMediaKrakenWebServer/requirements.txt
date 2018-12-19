@@ -1,3 +1,4 @@
+ldap3
 apache-libcloud
 pycountry
 gevent
@@ -12,6 +13,7 @@ Flask-Assets
 Flask-SQLAlchemy
 Flask-KVSession
 Flask-uWSGI-WebSocket
+flask-ldap3-login
 uwsgi
 pygal
 pdfkit

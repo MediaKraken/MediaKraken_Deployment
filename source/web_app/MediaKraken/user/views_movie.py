@@ -185,8 +185,7 @@ def movie_detail(guid):
                     subtitle_streams.append(common_internationalization.com_inter_country_name(
                         stream_info['tags']['language']))
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
-                                                            "%02dH:%02dM:%02dS" % (
-                                                                hours, minutes, seconds),
+                                                            "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
                                                             audio_streams,
                                                             subtitle_streams)
         # do chapter stuff here so I can sort

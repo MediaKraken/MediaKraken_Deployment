@@ -71,10 +71,10 @@ def read(queue_object):
     docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkslavenvidiadebian
 
     --device /dev/nvidia0:/dev/nvidia0 \
-	--device /dev/nvidiactl:/dev/nvidiactl \
+    --device /dev/nvidiactl:/dev/nvidiactl \
 
-	wget http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_surround.avi
-	The minimum required Nvidia driver for nvenc is 378.13 or newer from ffmpeg error
+    wget http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_surround.avi
+    The minimum required Nvidia driver for nvenc is 378.13 or newer from ffmpeg error
     """
 
     if body:
@@ -135,6 +135,13 @@ def read(queue_object):
                 docker_inst.com_docker_run_cast(hwaccel=hwaccel,
                                                 name_container=name_container,
                                                 container_command=container_command)
+            elif json_message['Subtype'] == 'HDHomerun':
+                # stream from hdhomerun
+                container_command = "ffmpeg -i http://" + json_message['IP'] \
+                                    + ":5004/auto/v" + json_message['Channel'] \
+                                    + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
+                                    + "./static/streams/" + \
+                                    json_message['Channel'] + ".m3u8"
             elif json_message['Subtype'] == 'HLS':
                 # stream to hls
                 # TODO take the video codec into account
@@ -144,6 +151,8 @@ def read(queue_object):
                                     + json_message['Audio Track'] \
                                     + '-vf ' + json_message['Subtitle Track'] + ' yadif=0:0:0 ' \
                                     + json_message['Target UUID']
+            elif json_message['Subtype'] == 'Roku':
+                pass
             elif json_message['Subtype'] == 'Web':
                 # stream to web
                 container_command = "ffmpeg -v fatal {ss_string}" \
@@ -157,13 +166,6 @@ def read(queue_object):
                                       " -shortest -f mpegts" \
                                       " -output_ts_offset {output_ts_offset:.6f}" \
                                       " -t {t:.6f} pipe:%d.ts".format(**locals())
-            elif json_message['Subtype'] == 'HDHomerun':
-                # stream from hdhomerun
-                container_command = "ffmpeg -i http://" + json_message['IP'] \
-                                    + ":5004/auto/v" + json_message['Channel'] \
-                                    + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
-                                    + "./static/streams/" + \
-                                    json_message['Channel'] + ".m3u8"
             else:
                 common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
             if container_command is not None:
@@ -195,6 +197,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for twisted connections!'})
         for cast_devices in self.db_connection.db_device_list(device_type='cast'):
             common_global.client_devices.append(('cast', cast_devices))
+        for cast_devices in self.db_connection.db_device_list(device_type='roku'):
+            common_global.client_devices.append(('roku', cast_devices))
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

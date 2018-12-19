@@ -18,12 +18,19 @@
 
 import os
 import socket
+import subprocess
 
 import docker
 from . import common_global
 
 
 # https://docker-py.readthedocs.io/en/stable/
+
+# the following function is used in ALPINE until socket.gethostbyname('host.docker.internal') is valid
+def com_docker_host_ip():
+    # this doesn't work from a container!  it'll just give the route ip to the host  ie 172.x.x.x
+    return subprocess.check_output(['ip', '-4', 'route', 'show', 'default']).decode("utf-8").split(' ')[2]
+
 
 class CommonDocker(object):
     """
@@ -325,7 +332,7 @@ class CommonDocker(object):
 
     def com_docker_run_portainer(self, current_host_working_directory):
         self.com_docker_delete_container('mkportainer')
-        return self.cli.containers.run(image='portainer/portainer',
+        return self.cli.containers.run(image='portainer/portainer:latest',
                                        detach=True,
                                        name='mkportainer',
                                        ports={"9000": 9000},
@@ -388,7 +395,7 @@ class CommonDocker(object):
                                                         '/data/transmission/incomplete'):
                                                {'bind': '/transmission/incomplete',
                                                 'mode': 'rw'}
-                                           },
+                                       },
                                        name='mktransmission',
                                        environment={'USERNAME': username,
                                                     'PASSWORD': password})

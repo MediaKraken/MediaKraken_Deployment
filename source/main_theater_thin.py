@@ -27,6 +27,7 @@ import uuid
 from shlex import split
 
 from common import common_global
+from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_network_mpv
@@ -46,6 +47,16 @@ from twisted.python import log
 
 import kivy
 from kivy.app import App
+
+from kivy.config import Config
+
+# moving here before anything is setup for Kivy or it doesn't work
+if os.uname()[4][:3] == 'arm':
+    # TODO find real resolution
+    # TODO this is currently set to the "official" raspberry pi touchscreen
+    Config.set('graphics', 'width', 800)
+    Config.set('graphics', 'height', 480)
+    Config.set('graphics', 'fullscreen', 'fake')
 
 kivy.require('1.10.0')
 from kivy.uix.boxlayout import BoxLayout
@@ -79,6 +90,8 @@ class MKEcho(basic.LineReceiver):
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
+        global twisted_connection
+        twisted_connection = None
         common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
@@ -184,13 +197,15 @@ class MediaKrakenApp(App):
         """
         Send message via twisted reactor
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def send_twisted_message_thread(self, message):
         """
         Send message via twisted reactor from the crochet thread
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def process_message(self, server_msg):
         """
@@ -210,6 +225,8 @@ class MediaKrakenApp(App):
         common_global.es_inst.com_elastic_index('info', {"len total": len(server_msg)})
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
+            # Send a uuid for this connection. This way same installs can be copied, etc.
+            # and not run into each other.
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
                                                          'UUID': str(uuid.uuid4()),
                                                          'Platform': platform.node()}))
@@ -391,7 +408,7 @@ if __name__ == '__main__':
     freeze_support()
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'main_theater_thin')
+        'main_theater_thin', debug_override='print')
 
     # set signal exit breaks
     common_signal.com_signal_set_break()

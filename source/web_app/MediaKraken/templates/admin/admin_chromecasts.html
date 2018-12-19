@@ -6,12 +6,12 @@
         <meta charset="utf-8">
         <meta name="generator" content="Bootply" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        {{ fontawesome_html() }}
         <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <!--[if lt IE 9]>
         <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
         <![endif]-->
         <link href="{{ url_for('static', filename='css/style.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
     </head>
     {% if data_chromecast %}
@@ -36,10 +36,10 @@
                     <td>{{ row_data[4] }}</td>
                     <div class="pull-right action-buttons">
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editChromecastModal" onclick="EditChromecast(this)" ><span class="glyphicon glyphicon-pencil"></span></button></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editChromecastModal" onclick="EditChromecast(this)" ><span class="fas pencil-alt"></span></button></a>
                         </td>
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] }} onclick="ConfirmChromecastDelete(this)" ><span class="glyphicon glyphicon-trash"></span></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] }} onclick="ConfirmChromecastDelete(this)" ><span class="fas trash-alt"></span></a>
                         </td>
                     </div>
                     {% endfor %}

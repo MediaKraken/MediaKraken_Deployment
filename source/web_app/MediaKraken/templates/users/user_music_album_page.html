@@ -4,7 +4,6 @@
     <head>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
     </head>
     {% if media %}
@@ -18,13 +17,13 @@
                     {% if row_data[3] == None %}
                     <td>
                         <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1]) }}" }} >
-                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} alt= {{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
+                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" alt= {{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
                         </a>
                     </td>
                     {% else %}
                     <td>
                         <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1]) }}" >
-                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= {{ row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} alt= {{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
+                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" alt= {{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
                         </a>
                     </td>
                     {% endif %}

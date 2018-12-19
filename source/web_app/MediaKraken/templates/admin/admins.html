@@ -14,8 +14,7 @@
     <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
     <![endif]-->
     <link href="{{ url_for('static', filename='css/style.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}"
-          rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/all.min.css') }}">
     <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all"
           rel="stylesheet" type="text/css">
     <link href="{{ url_for('static', filename='css/base_webapp_flex.css') }}" media="all"
@@ -54,9 +53,9 @@
                             <small>
                                 <b>Docker IP Internal:</b>
                                 {% for nic_data in data_server_info_server_ip %}
-                        <p class="tab">{{ nic_data }}</p>
-                        {% endfor %}
-                        </small>
+                                    <p class="tab">{{ nic_data }}</p>
+                                {% endfor %}
+                            </small>
                         </p>
                         <p>
                             <small><b>Port:</b> {{ data_server_info_server_port }}
@@ -171,7 +170,7 @@
                                                 <button class="btn btn-danger btn-xs"
                                                 <a data-id={{ row_data[4] }}
                                                    onclick="ConfirmLibraryDelete(this)"><span
-                                                        class="glyphicon glyphicon-trash"></span></a>
+                                                        class="fas trash-alt"></span></a>
                                         </td>
                                     </div>
                                 </tr>
@@ -215,7 +214,7 @@
                                                 <button class="btn btn-danger btn-xs"
                                                 <a data-id={{ row_data[4] }}
                                                    onclick="ConfirmLibraryDelete(this)"><span
-                                                        class="glyphicon glyphicon-trash"></span></a>
+                                                        class="fas trash-alt"></span></a>
                                         </td>
                                     </div>
                                 </tr>

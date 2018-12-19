@@ -56,6 +56,7 @@ if os.uname()[4][:3] == 'arm':
     Config.set('graphics', 'height', 480)
     Config.set('graphics', 'fullscreen', 'fake')
 
+kivy.require('1.10.0')
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
@@ -75,8 +76,6 @@ from theater import MediaKrakenSettings
 twisted_connection = None
 mk_app = None
 
-kivy.require('1.10.0')
-
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
@@ -92,8 +91,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def refresh_view_attrs(self, rv, index, data):
         ''' Catch and handle the view changes '''
         self.index = index
-        return super(SelectableLabel, self).refresh_view_attrs(
-            rv, index, data)
+        return super(SelectableLabel, self).refresh_view_attrs(rv, index, data)
 
     def on_touch_down(self, touch):
         ''' Add selection on touch down '''
@@ -106,10 +104,13 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            print(("selection changed to {0}".format(rv.data[index])))
-            MKFactory.protocol.sendline_data(twisted_connection,
-                                             json.dumps({'Type': 'Media', 'Subtype': 'Detail',
-                                                         'UUID': rv.data[index]['uuid']}))
+            common_global.es_inst.com_elastic_index('info',
+                                                    {'stuff': "selection changed to {0}".format(
+                                                        rv.data[index])})
+            if twisted_connection is not None:
+                MKFactory.protocol.sendline_data(twisted_connection,
+                                                 json.dumps({'Type': 'Media', 'Subtype': 'Detail',
+                                                             'UUID': rv.data[index]['uuid']}))
             common_global.es_inst.com_elastic_index('info', {'stuff': rv.data[index]['path']})
             MediaKrakenApp.media_path = rv.data[index]['path']
             MediaKrakenApp.media_uuid = rv.data[index]['uuid']
@@ -132,6 +133,8 @@ class MKEcho(basic.LineReceiver):
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
+        global twisted_connection
+        twisted_connection = None
         common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
@@ -270,13 +273,15 @@ class MediaKrakenApp(App):
         """
         Send message via twisted reactor
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def send_twisted_message_thread(self, message):
         """
         Send message via twisted reactor from the crochet thread
         """
-        MKFactory.protocol.sendline_data(twisted_connection, message)
+        if twisted_connection is not None:
+            MKFactory.protocol.sendline_data(twisted_connection, message)
 
     def process_message(self, server_msg):
         """
@@ -295,6 +300,8 @@ class MediaKrakenApp(App):
         common_global.es_inst.com_elastic_index('info', {"len total": len(server_msg)})
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
+            # Send a uuid for this connection. This way same installs can be copied, etc.
+            # and not run into each other.
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
                                                          'UUID': str(uuid.uuid4()),
                                                          'Platform': platform.node()}))
@@ -367,17 +374,11 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "User":
             pass
 
-        elif json_message['Type'] == "Device Cast List":
-            cast_list = ['This Device']
-            for cast_device in json_message['Data']:
-                cast_list.append(cast_device[2]['Name'])
-            self.root.ids.theater_media_video_play_local_spinner.values = cast_list
-
         elif json_message['Type'] == "Device Play List":
-            cast_list = ['This Device']
-            for cast_device in json_message['Data']:
-                cast_list.append(cast_device[2])  # name of device
-            self.root.ids.theater_media_video_play_local_spinner.values = cast_list
+            play_list = ['This Device']
+            for play_device in json_message['Data']:
+                play_list.append(play_device[2])  # name of device
+            self.root.ids.theater_media_video_play_local_spinner.values = play_list
 
         elif json_message['Type'] == "Genre List":
             common_global.es_inst.com_elastic_index('info', {'stuff': "gen"})
@@ -798,38 +799,48 @@ class MediaKrakenApp(App):
             # refreshs for movie stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'Demo', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Demo',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'Movie', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Movie',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'New Movie', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'New Movie',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
-                                                  'Image Media Type': 'In Progress', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'In Progress',
+                                                  'Image Type': 'Backdrop'}))
             # refreshs for tv stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
-                                                  'Image Media Type': 'TV', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'TV',
+                                                  'Image Type': 'Backdrop'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
-                                                  'Image Media Type': 'Live TV', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Live TV',
+                                                  'Image Type': 'Backdrop'}))
             # refreshs for game stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Game',
-                                                  'Image Media Type': 'Game', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Game',
+                                                  'Image Type': 'Backdrop'}))
             # refreshs for books stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Book',
-                                                  'Image Media Type': 'Book', 'Image Type': 'Cover'}))
+                                                  'Image Media Type': 'Book',
+                                                  'Image Type': 'Cover'}))
             # refresh music stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
-                                                  'Image Media Type': 'Album', 'Image Type': 'Cover'}))
+                                                  'Image Media Type': 'Album',
+                                                  'Image Type': 'Cover'}))
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
-                                                  'Image Media Type': 'Video', 'Image Type': 'Backdrop'}))
+                                                  'Image Media Type': 'Video',
+                                                  'Image Type': 'Backdrop'}))
             # refresh image stuff
             # request main screen background refresh
             # self.send_twisted_message("IMAGE IMAGE IMAGE None Backdrop")
@@ -878,7 +889,7 @@ class MediaKrakenApp(App):
 if __name__ == '__main__':
     # start logging
     common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'main_theater_controller')
+        'main_theater_controller', debug_override='print')
 
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks
@@ -886,11 +897,9 @@ if __name__ == '__main__':
 
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_controller/kivy_layouts/main.kv')
-    Builder.load_file(
-        'theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
     Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
-    Builder.load_file(
-        'theater_resources/kivy_layouts/KV_Layout_Notification.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
     Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
     # so the raspberry pi doesn't crash
     if os.uname()[4][:3] != 'arm':
