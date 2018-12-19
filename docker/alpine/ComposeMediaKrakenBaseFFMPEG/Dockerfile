@@ -93,8 +93,8 @@ RUN buildDeps="autoconf \
     /mediakraken/openh264.sh && \
     /mediakraken/vidstab.sh && \
     # Make the run file executable and extract
-    chmod +x /mediakraken/cuda_*_linux.run && \
-    /mediakraken/cuda_*_linux.run --tar mxvf && \
+    chmod +x /mediakraken/cuda/cuda_*_linux.run && \
+    /mediakraken/cuda/cuda_*_linux.run --tar mxvf && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
