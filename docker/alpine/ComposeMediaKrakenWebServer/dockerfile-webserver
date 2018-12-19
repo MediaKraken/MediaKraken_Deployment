@@ -19,6 +19,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   git \
   gcc \
   jpeg-dev \
+  libffi-dev \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
