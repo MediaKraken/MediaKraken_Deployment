@@ -19,6 +19,7 @@
 from common import common_file
 from common import common_global
 from common import common_hardware_chromecast
+from common import common_hardware_crestron
 from common import common_hardware_soco
 from common import common_logging_elasticsearch
 from common import common_signal
@@ -86,6 +87,13 @@ if soco_devices is not None:
     for soco in soco_devices:
         common_global.es_inst.com_elastic_index('info', {'soco out': soco})
         media_devices.append({'Soco': soco})
+
+# crestron device discover
+crestron_devices = common_hardware_crestron.com_hardware_crestron_discover()
+if crestron_devices is not None:
+    for crestron in crestron_devices:
+        common_global.es_inst.com_elastic_index('info', {'soco out': crestron})
+        media_devices.append({'Crestron': crestron})
 
 common_global.es_inst.com_elastic_index('info', {'devices': media_devices})
 
