@@ -102,7 +102,7 @@ RUN buildDeps="autoconf \
     chmod +x /mediakraken/cuda/cuda_*_linux.run && \
     cd /mediakraken/cuda && \
     ./cuda_*_linux.run --tar mxvf && \
-    ./cuda-installer.pl --silent --driver --toolkit --no-opengl-libs --no-man-page && \
+    ./cuda-installer.pl --silent --toolkit --no-opengl-libs --no-man-page && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -167,16 +167,14 @@ FROM alpine:3.8
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
-COPY --from=builder /mediakraken/cuda/cuda_*_linux.run /home/cuda_*_linux.run
+COPY --from=builder /mediakraken/cuda/NVIDIA-Linux-x86_64-*.run /home/NVIDIA-Linux-x86_64.run
 
 RUN apk add --update bash samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
     soxr fontconfig libvpx librtmp libva libvdpau xz \
     libva-intel-driver && \
-    chmod +x /home/cuda_*_linux.run && \
-    cd /home && \
-    ./cuda_*_linux.run --tar mxvf && \
-    ./cuda-installer.pl --silent --driver --no-opengl-libs --no-man-page && \
+    chmod +x /home/NVIDIA-Linux-x86_64.run && \
+    ./NVIDIA-Linux-x86_64.run -s -N --no-kernel-module
     rm -Rf /home/* && \
     ffmpeg -buildconf
 
