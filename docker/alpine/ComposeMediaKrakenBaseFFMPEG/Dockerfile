@@ -174,7 +174,7 @@ RUN apk add --update bash samba-client lame libass libmodplug libogg \
     soxr fontconfig libvpx librtmp libva libvdpau xz \
     libva-intel-driver && \
     chmod +x /home/NVIDIA-Linux-x86_64.run && \
-    ./NVIDIA-Linux-x86_64.run -s -N --no-kernel-module
+    ./NVIDIA-Linux-x86_64.run -s -N --no-kernel-module && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
 
