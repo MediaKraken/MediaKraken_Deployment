@@ -99,8 +99,9 @@ RUN buildDeps="autoconf \
     make install && \
     # Make the run file executable and extract
     chmod +x /mediakraken/cuda/cuda_*_linux.run && \
-    /mediakraken/cuda/cuda_*_linux.run --tar mxvf && \
-    ./mediakraken/cuda/cuda-installer.pl --silent --driver --toolkit --no-opengl-libs --no-man-page && \
+    cd /mediakraken/cuda && \
+    ./cuda_*_linux.run --tar mxvf && \
+    ./cuda-installer.pl --silent --driver --toolkit --no-opengl-libs --no-man-page && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
