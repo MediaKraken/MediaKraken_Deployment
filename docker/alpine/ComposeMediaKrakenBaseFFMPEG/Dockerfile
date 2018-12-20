@@ -92,9 +92,15 @@ RUN buildDeps="autoconf \
     /mediakraken/kvazaar.sh && \
     /mediakraken/openh264.sh && \
     /mediakraken/vidstab.sh && \
+    # nvenc headers for ffmpeg
+    git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git && \
+    cd nv-codec-headers && \
+    make -j`getconf _NPROCESSORS_ONLN` && \
+    make install && \
     # Make the run file executable and extract
     chmod +x /mediakraken/cuda/cuda_*_linux.run && \
     /mediakraken/cuda/cuda_*_linux.run --tar mxvf && \
+    ./mediakraken/cuda/cuda-installer.pl --silent --driver --toolkit --no-opengl-libs --no-man-page && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -104,6 +110,8 @@ RUN buildDeps="autoconf \
         --extra-libs=-ldl \
         --extra-cflags="-I${SRC}/include" \
         --extra-ldflags="-L${SRC}/lib" \
+        --extra-cflags="-I/usr/local/cuda-10.0/include/" \
+        --extra-ldflags=-L/usr/local/cuda-10.0/lib64/ \
         --prefix="${SRC}" \
         --enable-avfilter \
         --enable-avresample \
