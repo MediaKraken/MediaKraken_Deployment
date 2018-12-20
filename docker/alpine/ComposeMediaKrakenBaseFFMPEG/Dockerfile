@@ -56,6 +56,7 @@ RUN buildDeps="autoconf \
         soxr-dev \
         tar \
         xvidcore-dev \
+        xz \
         yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
