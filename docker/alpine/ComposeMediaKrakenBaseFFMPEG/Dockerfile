@@ -167,7 +167,7 @@ FROM alpine:3.8
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
-COPY --from-builder /mediakraken/cuda/cuda_*_linux.run /home/cuda_*_linux.run
+COPY --from=builder /mediakraken/cuda/cuda_*_linux.run /home/cuda_*_linux.run
 
 # Make the run file executable and extract
 RUN chmod +x /home/cuda_*_linux.run && \
