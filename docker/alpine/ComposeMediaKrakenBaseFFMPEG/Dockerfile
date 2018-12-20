@@ -169,16 +169,14 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 COPY --from=builder /mediakraken/cuda/cuda_*_linux.run /home/cuda_*_linux.run
 
-# Make the run file executable and extract
-RUN chmod +x /home/cuda_*_linux.run && \
-  cd /home && \
-  ./cuda_*_linux.run --tar mxvf && \
-  ./cuda-installer.pl --silent --driver --no-opengl-libs --no-man-page && \
-  rm -Rf /home/*
-
-RUN apk add --update samba-client lame libass libmodplug libogg \
+RUN apk add --update bash samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
     soxr fontconfig libvpx librtmp libva libvdpau && \
+    chmod +x /home/cuda_*_linux.run && \
+    cd /home && \
+    ./cuda_*_linux.run --tar mxvf && \
+    ./cuda-installer.pl --silent --driver --no-opengl-libs --no-man-page && \
+    rm -Rf /home/* && \
     ffmpeg -buildconf
 
 CMD ["--help"]
