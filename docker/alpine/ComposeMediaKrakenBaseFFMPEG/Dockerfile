@@ -171,11 +171,10 @@ COPY --from=builder /mediakraken/cuda/cuda_*_linux.run /home/cuda_*_linux.run
 
 RUN apk add --update bash samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx librtmp libva libvdpau && \
+    soxr fontconfig libvpx librtmp libva libvdpau xz && \
     chmod +x /home/cuda_*_linux.run && \
     cd /home && \
-    ./cuda_*_linux.run --tar mxvf && \
-    ./cuda-installer.pl --silent --driver --no-opengl-libs --no-man-page && \
+    ./cuda_*_linux.run --silent --driver --no-opengl-libs --no-man-page && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
 
