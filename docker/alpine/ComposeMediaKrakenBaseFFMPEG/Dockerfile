@@ -118,7 +118,6 @@ RUN buildDeps="autoconf \
         --enable-libkvazaar \
         --enable-libmodplug \
         --enable-libmp3lame \
-        --enable-libnpp \
         --enable-libopenh264 \
         --enable-libopenjpeg \
         --enable-libopenmpt \
