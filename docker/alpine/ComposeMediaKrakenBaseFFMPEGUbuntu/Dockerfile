@@ -15,7 +15,7 @@ COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
 COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
 RUN mkdir /mediakraken/cuda
-#ADD cuda /mediakraken/cuda
+ADD cuda /mediakraken/cuda
 
 # will need to add/comipile by hand as dev version doesn't exist
 # rtmpdump-dev \
@@ -51,7 +51,7 @@ RUN buildDeps="autoconf \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apt update && \
     apt -y upgrade && \
-    apt install --update ${buildDeps} libgcc1 ca-certificates && \
+    apt -y install apt-utils ${buildDeps} libgcc1 ca-certificates && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
