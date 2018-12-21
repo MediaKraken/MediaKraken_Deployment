@@ -165,7 +165,7 @@ RUN apt update && \
     apt -y install smbclient lame libass9 libmodplug1 libogg0 \
         libtheora0 libvorbis0a libopus0 libspeex1 libxvidcore4 \
         libfreetype6 libopenjp2-7-dev webp libsoxr0 fontconfig \
-        libvpx5 libva2 libvdpau1 xz-utils && \
+        libvpx5 libva2 libvdpau1 xz-utils libva-drm2 && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
 
