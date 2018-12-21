@@ -167,7 +167,8 @@ RUN apt update && \
     apt -y install smbclient lame libass9 libmodplug1 libogg0 \
         libtheora0 libvorbis0a libopus0 libspeex1 libxvidcore4 \
         libfreetype6 libopenjp2-7-dev webp libsoxr0 fontconfig \
-        libvpx5 libva2 libvdpau1 xz-utils libva-drm2 libvorbisfile3 && \
+        libvpx5 libva2 libvdpau1 xz-utils libva-drm2 libvorbisfile3 \
+        kmod && \
     chmod +x /mediakraken/NVIDIA-Linux-x86_64-*.run && \
     cd /mediakraken && \
     ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run -s -N --no-kernel-module && \
