@@ -15,8 +15,6 @@ ARG OPENMPT_VERSION=0.2.8760-beta27
 COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
 COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
-RUN mkdir /mediakraken/cuda
-ADD cuda /mediakraken/cuda
 
 RUN buildDeps="autoconf \
         automake \
@@ -117,8 +115,6 @@ RUN buildDeps="autoconf \
         --enable-avfilter \
         --enable-avresample \
         --enable-fontconfig \
-        --enable-cuda \
-        --enable-cuvid \
         --enable-gpl \
         --enable-libass \
         --enable-libfdk_aac \
@@ -145,7 +141,6 @@ RUN buildDeps="autoconf \
         --enable-libx265 \
         --enable-libxvid \
         --enable-nonfree \
-        --enable-nvenc \
         --enable-postproc \
         --enable-pthreads \
         --enable-shared \
@@ -167,22 +162,12 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN mkdir /mediakraken/driver
-ADD driver /mediakraken/driver
-
 RUN apk add --update bash samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx librtmp libva libvdpau xz \
+    soxr fontconfig libvpx librtmp libva libvdpau \
     libva-intel-driver && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
-
-#    chmod +x /mediakraken/driver/NVIDIA-Linux-x86_64-*.run && \
-#    cd /mediakraken/driver && \
-#    ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run --extract-only && \
-#    cd NVIDIA-Linux-x86_64-${NVIDIA_DRIVER} && \
-#    chmod +x * && \
-#    ./nvida-installer -s -N --no-kernel-module && \
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg
