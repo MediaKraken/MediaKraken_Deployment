@@ -26,7 +26,6 @@ RUN buildDeps="autoconf \
         cmake \
         curl \
         coreutils \
-        fontconfig-dev \
         g++ \
         gcc \
         git \
