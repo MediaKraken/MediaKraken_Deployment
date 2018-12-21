@@ -46,7 +46,6 @@ RUN groupadd --gid 1000 node \
     && apt-get purge -y --auto-remove $buildDeps \
     && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-
 ENV YARN_VERSION 1.12.3
 
 RUN set -ex \
@@ -65,6 +64,5 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-
 
 CMD [ "node" ]
