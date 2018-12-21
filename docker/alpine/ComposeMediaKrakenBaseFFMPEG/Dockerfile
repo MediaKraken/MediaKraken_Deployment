@@ -95,11 +95,6 @@ RUN buildDeps="autoconf \
     cd nv-codec-headers && \
     make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
-    # Make the run file executable and extract
-    chmod +x /mediakraken/cuda/cuda_*_linux.run && \
-    cd /mediakraken/cuda && \
-    ./cuda_*_linux.run --tar mxvf && \
-    ./cuda-installer.pl --silent --toolkit --no-opengl-libs --no-man-page && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
