@@ -42,7 +42,7 @@ RUN buildDeps="autoconf \
         nasm \
         libopenjp2-7-dev \
         libopus-dev \
-        libsmbclient-devel \
+        libsmbclient-dev \
         python3-dev \
         samba-dev \
         libspeex-dev \
