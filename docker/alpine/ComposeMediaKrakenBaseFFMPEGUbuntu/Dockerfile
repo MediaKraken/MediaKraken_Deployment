@@ -151,7 +151,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM ubunut:18.10
+FROM ubuntu:18.10
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
