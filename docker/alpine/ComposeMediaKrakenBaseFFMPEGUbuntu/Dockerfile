@@ -165,16 +165,13 @@ RUN apt update && \
     apt -y install smbclient lame libass9 libmodplug1 libogg0 \
         libtheora0 libvorbis0a libopus0 libspeex1 libxvidcore4 \
         libfreetype6 libopenjp2-7-dev webp libsoxr0 fontconfig \
-        libvpx5 libva2 libvdpau1 xz-utils libva-drm2 && \
-    rm -Rf /home/* && \
+        libvpx5 libva2 libvdpau1 xz-utils libva-drm2 libvorbisfile3 && \
+    chmod +x /mediakraken/NVIDIA-Linux-x86_64-*.run && \
+    cd /mediakraken && \
+    ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run -s -N --no-kernel-module && \
+    rm -Rf /mediakraken && \
+    rm -rf /var/lib/apt/lists/* && \
     ffmpeg -buildconf
-
-#    chmod +x /mediakraken/NVIDIA-Linux-x86_64-*.run && \
-#    cd /mediakraken && \
-#    ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run --extract-only && \
-#    cd NVIDIA-Linux-x86_64-${NVIDIA_DRIVER} && \
-#    chmod +x * && \
-#    ./nvida-installer -s -N --no-kernel-module && \
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg
