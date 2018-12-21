@@ -11,7 +11,6 @@ ARG X264_VERSION=20181217-2245-stable
 ARG X265_VERSION=2.9
 ARG FFMPEG_VERSION="4.1"
 ARG OPENMPT_VERSION=0.2.8760-beta27
-ARG NVIDIA_DRIVER=415.25
 
 COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
@@ -165,24 +164,26 @@ RUN buildDeps="autoconf \
     
 FROM alpine:3.8
 
-ARG NVIDIA_DRIVER=415.25
-
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
-COPY --from=builder /mediakraken/cuda/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run /home/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run
+
+RUN mkdir /mediakraken/driver
+ADD driver /mediakraken/driver
 
 RUN apk add --update bash samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
     soxr fontconfig libvpx librtmp libva libvdpau xz \
     libva-intel-driver && \
-    chmod +x /home/NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run && \
-    cd /home && \
-    ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run --extract-only && \
-    cd NVIDIA-Linux-x86_64-${NVIDIA_DRIVER} && \
-    ./nvida-installer -s -N --no-kernel-module && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
+
+#    chmod +x /mediakraken/driver/NVIDIA-Linux-x86_64-*.run && \
+#    cd /mediakraken/driver && \
+#    ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run --extract-only && \
+#    cd NVIDIA-Linux-x86_64-${NVIDIA_DRIVER} && \
+#    chmod +x * && \
+#    ./nvida-installer -s -N --no-kernel-module && \
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg
