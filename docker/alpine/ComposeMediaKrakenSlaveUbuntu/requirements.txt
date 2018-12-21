@@ -1,0 +1,4 @@
+streamlink
+docker
+pika
+elasticsearch
