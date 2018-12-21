@@ -157,8 +157,8 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN mkdir /mediakraken/driver
-ADD driver /mediakraken/driver
+RUN mkdir /mediakraken
+ADD driver /mediakraken
 
 RUN apk add --update samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
@@ -166,8 +166,8 @@ RUN apk add --update samba-client lame libass libmodplug libogg \
     rm -Rf /home/* && \
     ffmpeg -buildconf
 
-#    chmod +x /mediakraken/driver/NVIDIA-Linux-x86_64-*.run && \
-#    cd /mediakraken/driver && \
+#    chmod +x /mediakraken/NVIDIA-Linux-x86_64-*.run && \
+#    cd /mediakraken && \
 #    ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run --extract-only && \
 #    cd NVIDIA-Linux-x86_64-${NVIDIA_DRIVER} && \
 #    chmod +x * && \
