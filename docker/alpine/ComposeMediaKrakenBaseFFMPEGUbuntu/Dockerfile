@@ -20,6 +20,7 @@ ADD cuda /mediakraken/cuda
 RUN buildDeps="autoconf \
         automake \
         binutils \
+        build-essential \
         bzip2 \
         cmake \
         curl \
