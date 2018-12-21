@@ -161,10 +161,11 @@ RUN mkdir /mediakraken
 ADD driver /mediakraken
 
 RUN apt update && \
-    apt -y upgrade && 
-    aot -y install samba-client lame libass libmodplug libogg \
-    libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx librtmp libva libvdpau xz libsmbclient && \
+    apt -y upgrade && \
+    apt -y install smbclient lame libass9 libmodplug1 libogg0 \
+        libtheora0 libvorbis0a libopus0 libspeex1 libxvidcore4 \
+        libfreetype6 libopenjp2-7-dev webp libsoxr0 fontconfig \
+        libvpx5 libva2 libvdpau1 xz-utils && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
 
