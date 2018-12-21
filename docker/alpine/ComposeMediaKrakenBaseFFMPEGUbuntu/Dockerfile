@@ -42,6 +42,7 @@ RUN buildDeps="autoconf \
         nasm \
         libopenjp2-7-dev \
         libopus-dev \
+        libsmbclient-devel \
         python3-dev \
         samba-dev \
         libspeex-dev \
@@ -161,7 +162,7 @@ ADD driver /mediakraken/driver
 
 RUN apk add --update samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx librtmp libva libvdpau xz && \
+    soxr fontconfig libvpx librtmp libva libvdpau xz libsmbclient && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
 
