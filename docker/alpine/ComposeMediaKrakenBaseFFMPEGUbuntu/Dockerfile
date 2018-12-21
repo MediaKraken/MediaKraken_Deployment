@@ -160,7 +160,9 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 RUN mkdir /mediakraken
 ADD driver /mediakraken
 
-RUN apk add --update samba-client lame libass libmodplug libogg \
+RUN apt update && \
+    apt -y upgrade && 
+    aot -y install samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
     soxr fontconfig libvpx librtmp libva libvdpau xz libsmbclient && \
     rm -Rf /home/* && \
