@@ -94,6 +94,7 @@ RUN buildDeps="autoconf \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
+#         --enable-librtmp 
    ./configure \
 	--target-os=linux \
         --bindir="${SRC}/bin" \
@@ -120,7 +121,6 @@ RUN buildDeps="autoconf \
         --enable-libopenjpeg \
         --enable-libopenmpt \
         --enable-libopus \
-        --enable-librtmp \
         --enable-libsoxr \
         --enable-libsmbclient \
         --enable-libspeex \
