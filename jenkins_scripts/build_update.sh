@@ -34,6 +34,10 @@ docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 --build
 cd ../ComposeMediaKrakenBaseFFMPEG
 docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
+# this will include the nvidia cuda/nvec/driver
+cd ../ComposeMediaKrakenBaseFFMPEGUbuntu
+docker build -t mediakraken/mkbaseffmpegubuntu --build-arg --build-arg PIPMIRROR=pypi.python.org 
+
 # build the base node
 # Adds NODE to the base ffmpeg and ffprobe.
 cd ../ComposeMediaKrakenBaseNodeFFMPEG
