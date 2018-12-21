@@ -15,29 +15,23 @@ COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
 COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
 RUN mkdir /mediakraken/cuda
-ADD cuda /mediakraken/cuda
+#ADD cuda /mediakraken/cuda
+
+# will need to add/comipile by hand as dev version doesn't exist
+# rtmpdump-dev \
 
 RUN buildDeps="autoconf \
         automake \
-        binutils \
         build-essential \
-        bzip2 \
         cmake \
         curl \
-        coreutils \
-        fontconfig-dev \
-        g++ \
-        gcc \
+        libfontconfig1-dev \
         git \
-        gnupg \
         gnutls-dev \
-        fontconfig-dev \
-        freetype-dev \
-        lame-dev \
+        libmp3lame-dev \
         libass-dev \
         libmodplug-dev \
         libogg-dev \
-        rtmpdump-dev \
         libtheora-dev \
         libtool \
         libva-dev \
@@ -45,23 +39,19 @@ RUN buildDeps="autoconf \
         libvorbis-dev \
         libvpx-dev \
         libwebp-dev \
-        make \
         nasm \
-        openjpeg-dev \
-        opus-dev \
+        libopenjp2-7-dev \
+        libopus-dev \
         python3-dev \
         samba-dev \
-        speex-dev \
-        soxr-dev \
-        tar \
-        xvidcore-dev \
-        xz \
-        yasm \
-        zlib-dev" && \
+        libspeex-dev \
+        libsoxr-dev \
+        libxvidcore-dev \
+        yasm" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apt update && \
-    apt upgrade && \
-    apt install --update ${buildDeps} libgcc libstdc++ ca-certificates && \
+    apt -y upgrade && \
+    apt install --update ${buildDeps} libgcc1 ca-certificates && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
@@ -169,7 +159,7 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 RUN mkdir /mediakraken/driver
 ADD driver /mediakraken/driver
 
-RUN apk add --update bash samba-client lame libass libmodplug libogg \
+RUN apk add --update samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
     soxr fontconfig libvpx librtmp libva libvdpau xz && \
     rm -Rf /home/* && \
@@ -184,3 +174,4 @@ RUN apk add --update bash samba-client lame libass libmodplug libogg \
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg
+
