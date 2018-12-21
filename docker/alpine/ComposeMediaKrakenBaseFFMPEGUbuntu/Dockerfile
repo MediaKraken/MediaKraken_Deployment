@@ -157,6 +157,8 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
+ARG NVIDIA_DRIVER=415.25
+
 RUN mkdir /mediakraken
 ADD driver /mediakraken
 
