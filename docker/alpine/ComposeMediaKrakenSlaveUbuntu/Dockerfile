@@ -39,7 +39,7 @@ RUN apt update \
   linux-headers-generic \
   python3-dev \
   && apt -y install \
-  py-setuptools \
+  python-setuptools \
   && rm requirements.txt \
   && rm -r /root/.npm \
   && update-rc.d netmount defaults \
