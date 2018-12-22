@@ -23,6 +23,7 @@ RUN apt update \
   libxml2-dev \
   libxslt1-dev \
   linux-headers-generic \
+  nginx \
   openssl \
   python3 \
   python3-dev \
