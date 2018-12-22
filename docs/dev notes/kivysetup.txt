@@ -1,3 +1,8 @@
+windows
+pip3 install kivy-garden
+garden install filebrowser
+
+
 kivy
 ***********************
 new custom build
