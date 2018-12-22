@@ -14,7 +14,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apt update \
-  && apt install \
+  && apt -y install \
   python \
   cifs-utils \
   libnfs11 \
@@ -26,23 +26,24 @@ RUN apt update \
   openssl \
   python3 \
   python3-dev \
+  python3-pip \
   python3-service-identity \
   python3-setuptools \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && npm install -g castnow \
-  && apt remove \
+  && apt -y remove \
   build-essential \
   libffi-dev \
   libxml2-dev \
   libxslt1-dev \
   linux-headers-generic \
   python3-dev \
-  && apt install \
+  && apt -y install \
   py-setuptools \
   && rm requirements.txt \
   && rm -r /root/.npm \
-  && service add netmount \
-  && service add rpcbind
+  && update-rc.d netmount defaults \
+  && update-rc.d rpcbind defaults
 
 # Forward logs to Docker
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
