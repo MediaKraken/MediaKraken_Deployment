@@ -75,3 +75,20 @@
             Button:
                 text: "Save"
                 on_release: root.save(filechooser.path, text_input.text)
+
+<CustomDropDown>:
+    Button:
+        text: 'Movie'
+        size_hint_y: None
+        height: 44
+        on_release: root.select('movie')
+    Button:
+        text: 'TV Show'
+        size_hint_y: None
+        height: 44
+        on_release: root.select('tv')
+    Button:
+        text: 'Music'
+        size_hint_y: None
+        height: 44
+        on_release: root.select('music')

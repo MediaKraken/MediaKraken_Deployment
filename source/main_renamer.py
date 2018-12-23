@@ -8,6 +8,7 @@ from kivy.garden.filebrowser import FileBrowser
 from kivy.properties import BooleanProperty
 from kivy.properties import ObjectProperty
 from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.dropdown import DropDown
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
@@ -54,6 +55,10 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             # common_global.es_inst.com_elastic_index('info', {'stuff': rv.data[index]['path']})
             MainRenamer.media_path = rv.data[index]['path']
             MainRenamer.media_uuid = rv.data[index]['uuid']
+
+
+class CustomDropDown(DropDown):
+    pass
 
 
 class SaveDialog(FloatLayout):
