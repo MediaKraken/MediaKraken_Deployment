@@ -7,3 +7,4 @@ onkyo-eiscp
 soco
 pyatv
 xmltodict
+tripplite
