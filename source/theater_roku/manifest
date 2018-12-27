@@ -1,4 +1,4 @@
-title=Meta-Man
+title=MediaKraken
 mm_icon_focus_hd=pkg:/images/home-tile-mm-hd.png
 mm_icon_side_hd=pkg:/images/side-tile-mm-hd.png
 mm_icon_focus_sd=pkg:/images/home-tile-mm-sd.png
@@ -11,4 +11,4 @@ minor_version=1
 build_version=0
 splash_min_time=3000
 screensaver_private=0
-screensaver_title=Meta-Man
+screensaver_title=MediaKraken
