@@ -84,11 +84,11 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
                            data_mtype=mtype)
 
 
-@blueprint.route('/playback/<action>/<guid>')
+@blueprint.route('/playback/<action>/<guid>/<device>')
 @login_required
-def user_playback(action, guid):
+def user_playback(action, guid, device):
     """
-    Display chromecast actions page
+    Display actions page
     """
     common_global.es_inst.com_elastic_index('info', {'user_playback action': action,
                                                      'case user': current_user.get_id()})
@@ -101,13 +101,13 @@ def user_playback(action, guid):
     elif action == 'stop':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Stop', 'Subtype': 'Cast',
+                         body=json.dumps({'Type': 'Stop', 'Subtype': device,
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     elif action == 'play':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Play', 'Subtype': 'Cast',
+                         body=json.dumps({'Type': 'Play', 'Subtype': device,
                                           'User': current_user.get_id(),
                                           'Data': g.db_connection.db_read_media(guid)[
                                               'mm_media_path'],
@@ -116,7 +116,7 @@ def user_playback(action, guid):
     elif action == 'pause':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Pause', 'Subtype': 'Cast',
+                         body=json.dumps({'Type': 'Pause', 'Subtype': device,
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     #    elif action == 'ff':
@@ -126,23 +126,22 @@ def user_playback(action, guid):
     elif action == 'mute':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Mute', 'Subtype': 'Cast',
+                         body=json.dumps({'Type': 'Mute', 'Subtype': device,
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     elif action == 'vol_up':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Volume Up', 'Subtype': 'Cast',
+                         body=json.dumps({'Type': 'Volume Up', 'Subtype': device,
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
     elif action == 'vol down':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Volume Down', 'Subtype': 'Cast',
+                         body=json.dumps({'Type': 'Volume Down', 'Subtype': device,
                                           'User': current_user.get_id()}))
         fpika.return_channel(ch)
-    return render_template("users/user_playback.html", data_guid=guid,
-                           data_chromecast=db_connection.db_device_list('cast'))
+    return render_template("users/user_playback.html")
 
 
 @blueprint.before_request
