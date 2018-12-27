@@ -21,9 +21,9 @@
 {% if json_metadata %}
 <div id="movie_detail">
     {% if data_background_image is none %}
-    <img alt="fs_bg_image" src="{{ url_for('static', filename='images/movie_ticket.png') }}" id="fs_bg_image">
+    <img alt="fs_bg_image" src="{{ url_for('static', filename='images/movie_ticket.png') }}">
     {% else %}
-    <img alt="fs_bg_image" src="{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" id="fs_bg_image">
+    <img alt="fs_bg_image" src="{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}">
     {% endif %}
     <form name="video_play_stat_form" method="post">
         <div class="row">
