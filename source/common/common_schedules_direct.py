@@ -212,4 +212,4 @@ class CommonSchedulesDirect(object):
 
 # TODO retrieve image
 
-# TODO retrieve celbrity image
+# TODO retrieve celebrity image
