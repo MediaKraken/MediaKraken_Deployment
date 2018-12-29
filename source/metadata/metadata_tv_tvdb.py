@@ -29,7 +29,7 @@ from guessit import guessit
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkrabbitmq',
+parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue

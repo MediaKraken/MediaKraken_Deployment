@@ -236,7 +236,7 @@ wait_pid.wait()
 common_signal.com_signal_set_break()
 
 # Open a connection to RabbitMQ
-parameters = pika.ConnectionParameters('mkrabbitmq',
+parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 
