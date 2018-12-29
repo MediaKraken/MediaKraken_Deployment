@@ -171,7 +171,8 @@ def worker(audit_directory):
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None, media_json)
                 # verify ffprobe and bif should run on the data
-                if ffprobe_bif_data and file_extension[1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG:
+                if ffprobe_bif_data and file_extension[1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                        and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
                     # Send a message so ffprobe runs
                     channel.basic_publish(exchange='mkque_ffmpeg_ex',
                                           routing_key='mkffmpeg',
