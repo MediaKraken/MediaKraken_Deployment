@@ -48,6 +48,8 @@ def nfo_xml_file(media_file_path):
             nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
         except xml.parsers.expat.ExpatError:
             pass
+        except UnicodeDecodeError:
+            pass
     else:
         # only check for xml if nfo doesn't exist
         if os.path.isfile(xml_file_name):  # check for xml
@@ -56,12 +58,16 @@ def nfo_xml_file(media_file_path):
                 xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
             except xml.parsers.expat.ExpatError:
                 pass
+            except UnicodeDecodeError:
+                pass
         elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml')):
             common_global.es_inst.com_elastic_index('info', {'movie xml file found': xml_file_name})
             try:
                 xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(
                     os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
             except xml.parsers.expat.ExpatError:
+                pass
+            except UnicodeDecodeError:
                 pass
     return nfo_data, xml_data
 
@@ -81,6 +87,8 @@ def nfo_xml_file_tv(media_file_path):
             nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
         except xml.parsers.expat.ExpatError:
             pass
+        except UnicodeDecodeError:
+            pass
     else:
         nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvshow.nfo'
         if os.path.isfile(nfo_file_check):  # check for nfo
@@ -88,6 +96,8 @@ def nfo_xml_file_tv(media_file_path):
             try:
                 nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
             except xml.parsers.expat.ExpatError:
+                pass
+            except UnicodeDecodeError:
                 pass
     return nfo_data, xml_data
 
