@@ -17,7 +17,7 @@
 '''
 
 import os
-
+import xml
 import xmltodict
 from common import common_file
 from common import common_file_extentions
@@ -28,6 +28,7 @@ def nfo_xml_file(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
+    nfo_data = None
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
     try:  # pull the "real" extension
@@ -43,17 +44,25 @@ def nfo_xml_file(media_file_path):
         xml_file_name = media_file_path.rsplit('.', 1)[0] + '.xml'
     if os.path.isfile(nfo_file_check):  # check for nfo
         common_global.es_inst.com_elastic_index('info', {'nfo file found': nfo_file_check})
-        nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+        try:
+            nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+        except xml.parsers.expat.ExpatError:
+            pass
     else:
-        nfo_data = None
         # only check for xml if nfo doesn't exist
         if os.path.isfile(xml_file_name):  # check for xml
             common_global.es_inst.com_elastic_index('info', {'xml file found': xml_file_name})
-            xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
+            try:
+                xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
+            except xml.parsers.expat.ExpatError:
+                pass
         elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml')):
             common_global.es_inst.com_elastic_index('info', {'movie xml file found': xml_file_name})
-            xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(
-                os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
+            try:
+                xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(
+                    os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
+            except xml.parsers.expat.ExpatError:
+                pass
     return nfo_data, xml_data
 
 
@@ -61,20 +70,25 @@ def nfo_xml_file_tv(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
+    nfo_data = None
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
     # TODO should check for one dir back too I suppose
     nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
     if os.path.isfile(nfo_file_check):  # check for nfo
         common_global.es_inst.com_elastic_index('info', {'nfo tv file found': nfo_file_check})
-        nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+        try:
+            nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+        except xml.parsers.expat.ExpatError:
+            pass
     else:
         nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvshow.nfo'
         if os.path.isfile(nfo_file_check):  # check for nfo
             common_global.es_inst.com_elastic_index('info', {'nfo tv file found2': nfo_file_check})
-            nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
-        else:
-            nfo_data = None
+            try:
+                nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
+            except xml.parsers.expat.ExpatError:
+                pass
     return nfo_data, xml_data
 
 
