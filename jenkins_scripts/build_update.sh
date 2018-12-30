@@ -39,6 +39,15 @@ docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=10.0.0.122 --buil
 cd ../ComposeMediaKrakenBaseNodeFFMPEG
 docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
+# this will include the nvidia cuda/nvec/driver
+cd ../ComposeMediaKrakenBaseFFMPEGUbuntu
+docker build -t mediakraken/mkbaseffmpegubuntu --build-arg PIPMIRROR=pypi.python.org 
+
+# build the base node for ubuntu
+# Adds NODE to the base ffmpeg and ffprobe for ubuntu
+cd ../ComposeMediaKrakenBaseNodeFFMPEGUbuntu
+docker build -t mediakraken/mkbasenodeffmpegubuntu --build-arg PIPMIRROR=pypi.python.org .
+
 # build the device scan
 # When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
 cd ../ComposeMediaKrakenDevicescan
@@ -63,6 +72,10 @@ docker build -t mediakraken/mkgamedata --build-arg ALPMIRROR=10.0.0.122 --build-
 # Build the base slave images from other base images (basenodeffmpeg)
 cd ../ComposeMediaKrakenSlave
 docker build -t mediakraken/mkslave --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+
+# Build the base slave images from other base images (basenodeffmpeg) for ubuntu
+cd ../ComposeMediaKrakenSlaveUbuntu
+docker build -t mediakraken/mkslaveubuntu --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the base twitch recorder
 cd ../ComposeMediaKrakenTwitchRecordUser

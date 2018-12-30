@@ -19,6 +19,7 @@
 import json
 import time
 
+import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_metadata
@@ -102,16 +103,21 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         meta_json = ({'Meta': {'themoviedb': {'Meta': result_json}}})
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
-        db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
-                                          result_json['title'], json.dumps(meta_json),
-                                          json.dumps(image_json))
-        if 'credits' in result_json:  # cast/crew doesn't exist on all media
-            if 'cast' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                              result_json['credits']['cast'])
-            if 'crew' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                              result_json['credits']['crew'])
+        try:
+            db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
+                                              result_json['title'], json.dumps(meta_json),
+                                              json.dumps(image_json))
+            if 'credits' in result_json:  # cast/crew doesn't exist on all media
+                if 'cast' in result_json['credits']:
+                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                  result_json['credits']['cast'])
+                if 'crew' in result_json['credits']:
+                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                  result_json['credits']['crew'])
+        # this except is to check duplicate keys for mm_metadata_pk
+        except psycopg2.IntegrityError:
+            # TODO technically I could be missing cast/crew if the above doesn't finish after the insert
+            pass
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
         time.sleep(10)

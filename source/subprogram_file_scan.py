@@ -171,7 +171,8 @@ def worker(audit_directory):
                 media_id = str(uuid.uuid4())
                 thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None, media_json)
                 # verify ffprobe and bif should run on the data
-                if ffprobe_bif_data and file_extension[1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG:
+                if ffprobe_bif_data and file_extension[1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                        and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
                     # Send a message so ffprobe runs
                     channel.basic_publish(exchange='mkque_ffmpeg_ex',
                                           routing_key='mkffmpeg',
@@ -235,7 +236,7 @@ wait_pid.wait()
 common_signal.com_signal_set_break()
 
 # Open a connection to RabbitMQ
-parameters = pika.ConnectionParameters('mkrabbitmq',
+parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 

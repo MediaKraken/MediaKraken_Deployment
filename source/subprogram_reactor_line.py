@@ -218,8 +218,8 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
     # pika rabbitmq connection
     cc = protocol.ClientCreator(reactor, twisted_connection.TwistedProtocolConnection,
-                                pika.ConnectionParameters(
-                                    credentials=pika.PlainCredentials('guest', 'guest')))
+                                pika.ConnectionParameters(socket_timeout=30,
+                                                          credentials=pika.PlainCredentials('guest', 'guest')))
     pika_instance = cc.connectTCP('mkrabbitmq', 5672)
     pika_instance.addCallback(lambda protocol: protocol.ready)
     pika_instance.addCallback(run)

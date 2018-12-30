@@ -1,0 +1,11 @@
+*.a
+*.o
+*.pc
+*.so
+*.so.*
+*~
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt

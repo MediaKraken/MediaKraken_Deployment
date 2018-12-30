@@ -1,3 +1,11 @@
+windows
+pip3 install kivy-garden
+garden install filebrowser
+pip3 install pillow
+
+windows 7 and 10 require different sdl libs found in source/theater_resources
+
+
 kivy
 ***********************
 new custom build

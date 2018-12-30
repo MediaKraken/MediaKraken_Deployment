@@ -13,10 +13,12 @@ WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
+  eudev-dev \
   gcc \
   git \
   linux-headers \
   libffi-dev \
+  libusb-dev \
   musl-dev \
   openssl-dev \
   python \

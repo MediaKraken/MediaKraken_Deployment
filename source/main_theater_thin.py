@@ -27,7 +27,6 @@ import uuid
 from shlex import split
 
 from common import common_global
-from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network_mediakraken
 from common import common_network_mpv
@@ -414,8 +413,7 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
 
     log.startLogging(sys.stdout)  # for twisted
-    # set signal exit breaks
-    common_signal.com_signal_set_break()
+
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_thin/kivy_layouts/main.kv')
     Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')

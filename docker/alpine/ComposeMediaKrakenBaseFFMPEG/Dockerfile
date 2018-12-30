@@ -15,8 +15,6 @@ ARG OPENMPT_VERSION=0.2.8760-beta27
 COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
 COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
-RUN mkdir /mediakraken/cuda
-ADD cuda /mediakraken/cuda
 
 RUN buildDeps="autoconf \
         automake \
@@ -26,7 +24,6 @@ RUN buildDeps="autoconf \
         cmake \
         curl \
         coreutils \
-        fontconfig-dev \
         g++ \
         gcc \
         git \
@@ -56,6 +53,7 @@ RUN buildDeps="autoconf \
         soxr-dev \
         tar \
         xvidcore-dev \
+        xz \
         yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
@@ -92,9 +90,11 @@ RUN buildDeps="autoconf \
     /mediakraken/kvazaar.sh && \
     /mediakraken/openh264.sh && \
     /mediakraken/vidstab.sh && \
-    # Make the run file executable and extract
-    chmod +x /mediakraken/cuda_*_linux.run && \
-    /mediakraken/cuda_*_linux.run --tar mxvf && \
+    # nvenc headers for ffmpeg
+    git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git && \
+    cd nv-codec-headers && \
+    make -j`getconf _NPROCESSORS_ONLN` && \
+    make install && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
@@ -104,12 +104,12 @@ RUN buildDeps="autoconf \
         --extra-libs=-ldl \
         --extra-cflags="-I${SRC}/include" \
         --extra-ldflags="-L${SRC}/lib" \
+        --extra-cflags="-I/usr/local/cuda-10.0/include/" \
+        --extra-ldflags=-L/usr/local/cuda-10.0/lib64/ \
         --prefix="${SRC}" \
         --enable-avfilter \
         --enable-avresample \
         --enable-fontconfig \
-        --enable-cuda \
-        --enable-cuvid \
         --enable-gpl \
         --enable-libass \
         --enable-libfdk_aac \
@@ -118,7 +118,6 @@ RUN buildDeps="autoconf \
         --enable-libkvazaar \
         --enable-libmodplug \
         --enable-libmp3lame \
-        --enable-libnpp \
         --enable-libopenh264 \
         --enable-libopenjpeg \
         --enable-libopenmpt \
@@ -137,7 +136,6 @@ RUN buildDeps="autoconf \
         --enable-libx265 \
         --enable-libxvid \
         --enable-nonfree \
-        --enable-nvenc \
         --enable-postproc \
         --enable-pthreads \
         --enable-shared \
@@ -159,9 +157,11 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN apk add --update samba-client lame libass libmodplug libogg \
+RUN apk add --update bash samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
-    soxr fontconfig libvpx librtmp libva libvdpau && \
+    soxr fontconfig libvpx librtmp libva libvdpau \
+    libva-intel-driver && \
+    rm -Rf /home/* && \
     ffmpeg -buildconf
 
 CMD ["--help"]

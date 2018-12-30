@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+# https://github.com/MediaKraken-Dependancies/xbox
 import xbox
 
 
@@ -35,3 +36,14 @@ class CommonNetworkXboxLive(object):
 
     def com_net_xboxlive_gamerpic(self):
         return self.gt.gamerpic
+
+    def com_net_xboxlive_clips(self):
+        '''
+        clip.media_url
+            'http://gameclipscontent-d2005.xboxlive.com/asset-886c5b78-8876-4823-b31b-fbc77d8caa67/GameClip-Original.MP4?sv=2012-02-12&st=2014-09-03T22%3A40%3A58Z&se=2014-09-03T23%3A45%3A58Z&sr=c&sp=r&sig=Q5qvyDvFRM2Bn2tztJ%2F%2BEf9%2FQOpkTPuFniByvE%2Bc9cc%3D&__gda__=1409787958_f22b516f9d29da56911b7cac03f15d05'
+        clip.views
+        clip.state
+        clip.duration
+        clip.thumbnails.large
+        '''
+        return self.gt.clips()

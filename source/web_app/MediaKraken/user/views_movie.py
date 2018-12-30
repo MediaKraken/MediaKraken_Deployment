@@ -161,29 +161,30 @@ def movie_detail(guid):
             # audio and sub streams
             audio_streams = []
             subtitle_streams = []
-            for stream_info in video_version['mm_media_ffprobe_json']['streams']:
-                if stream_info['codec_type'] == 'audio':
-                    try:
-                        stream_language = common_internationalization.com_inter_country_name(
-                            stream_info['tags']['language'])  # eng, spa and so on
-                    except KeyError:
-                        stream_language = 'NA'
-                    try:
-                        stream_title = stream_info['tags']['title']  # Surround 5.1 and so on
-                    except KeyError:
-                        stream_title = 'NA'
-                    if 'codec_long_name' in stream_info and stream_info[
-                        'codec_long_name'] != 'unknown':
-                        stream_codec = stream_info['codec_long_name']
-                    else:
+            if video_version['mm_media_ffprobe_json'] is not None:
+                for stream_info in video_version['mm_media_ffprobe_json']['streams']:
+                    if stream_info['codec_type'] == 'audio':
                         try:
-                            stream_codec = stream_info['codec_name']
+                            stream_language = common_internationalization.com_inter_country_name(
+                                stream_info['tags']['language'])  # eng, spa and so on
                         except KeyError:
-                            stream_codec = 'NA'
-                    audio_streams.append((stream_codec, stream_language, stream_title))
-                elif stream_info['codec_type'] == 'subtitle':
-                    subtitle_streams.append(common_internationalization.com_inter_country_name(
-                        stream_info['tags']['language']))
+                            stream_language = 'NA'
+                        try:
+                            stream_title = stream_info['tags']['title']  # Surround 5.1 and so on
+                        except KeyError:
+                            stream_title = 'NA'
+                        if 'codec_long_name' in stream_info and stream_info[
+                            'codec_long_name'] != 'unknown':
+                            stream_codec = stream_info['codec_long_name']
+                        else:
+                            try:
+                                stream_codec = stream_info['codec_name']
+                            except KeyError:
+                                stream_codec = 'NA'
+                        audio_streams.append((stream_codec, stream_language, stream_title))
+                    elif stream_info['codec_type'] == 'subtitle':
+                        subtitle_streams.append(common_internationalization.com_inter_country_name(
+                            stream_info['tags']['language']))
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
                                                             "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
                                                             audio_streams,
