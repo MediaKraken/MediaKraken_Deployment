@@ -16,25 +16,25 @@
         <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 = watched or not -->
         <div class="main_photo">
             <div data-id={{row_data[1]}}>
-                {% if row_data[7] == 'movie' %}
+                {% if row_data[0] == 'movie' %}
                     <a href= "{{ url_for('user_movie.movie_detail', guid=row_data[1]) }}">
                 {% else %}
-                    {% if row_data[7] == 'tvshow' %}
+                    {% if row_data[0] == 'tvshow' %}
                         <a href= "{{ url_for('user_tv.user_tv_show_detail_page', guid=row_data[1]) }}">
                     {% else %}
-                        {% if row_data[7] == 'music' %}
+                        {% if row_data[0] == 'music' %}
                             <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1]) }}">
                         {% else %}
-                            {% if row_data[7] == 'game' %}
+                            {% if row_data[0] == 'game' %}
                                 <a href= "{{ url_for('user_games.user_games_detail', guid=row_data[1]) }}">
                             {% else %}
-                                {% if row_data[7] == 'book' %}
+                                {% if row_data[0] == 'book' %}
                                     <a href= "{{ url_for('user_periodicals.user_books_detail', guid=row_data[1]) }}">
                                 {% else %}
-                                    {% if row_data[7] == 'musicvideo' %}
+                                    {% if row_data[0] == 'musicvideo' %}
                                         <a href= "{{ url_for('user_music_video.user_music_video_detail', guid=row_data[1]) }}">
                                     {% else %}
-                                        {% if row_data[7] == 'sports' %}
+                                        {% if row_data[0] == 'sports' %}
                                             <a href= "{{ url_for('user_sports.user_sports_detail_page', guid=row_data[1]) }}">
                                         {% endif %}
                                     {% endif %}
@@ -59,7 +59,7 @@
                     {% endif %}
                     </a>
                     <div class="description">
-                        <p class="description_content_left">{{row_data[0]}}</p>
+                        <p class="description_content_left">{{row_data[1]}}</p>
                     </div>
                 {% else %}
                     <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
