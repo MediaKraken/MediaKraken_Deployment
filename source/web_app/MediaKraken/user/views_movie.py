@@ -161,7 +161,7 @@ def movie_detail(guid):
             # audio and sub streams
             audio_streams = []
             subtitle_streams = []
-            if video_version['mm_media_ffprobe_json']['streams'] is not None:
+            if video_version['mm_media_ffprobe_json'] is not None:
                 for stream_info in video_version['mm_media_ffprobe_json']['streams']:
                     if stream_info['codec_type'] == 'audio':
                         try:
