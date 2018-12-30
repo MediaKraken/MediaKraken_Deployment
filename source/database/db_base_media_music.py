@@ -22,12 +22,16 @@ def db_media_album_count(self, search_value=None):
     Album count
     """
     if search_value is not None:
+        # this could possibly return null since search hence the try/catch below
         self.db_cursor.execute('select count(*) from mm_metadata_album, mm_media'
                                ' where mm_media_metadata_guid = mm_metadata_album_guid '
                                ' and mm_metadata_album_name %% %s'
                                ' group by mm_metadata_album_guid',
                                (search_value,))
-        return self.db_cursor.fetchone()[0]
+        try:
+            return self.db_cursor.fetchone()[0]
+        except TypeError:
+            return 0
     else:
         # this could possibly return null in the distinct hence the try/catch below
         self.db_cursor.execute('select count(*) from (select distinct mm_metadata_album_guid'
@@ -35,7 +39,7 @@ def db_media_album_count(self, search_value=None):
                                ' where mm_media_metadata_guid = mm_metadata_album_guid) as temp')
         try:
             return self.db_cursor.fetchone()[0]
-        except:
+        except TabError:
             return 0
 
 
