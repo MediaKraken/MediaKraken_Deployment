@@ -14,7 +14,6 @@ Flask-SQLAlchemy
 Flask-KVSession
 Flask-uWSGI-WebSocket
 flask-ldap3-login
-flask-fontawesome
 uwsgi
 pygal
 pdfkit

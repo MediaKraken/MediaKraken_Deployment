@@ -23,7 +23,7 @@
                     <meta name="author" content="{% block meta_author %}{% endblock %}">
                     <!-- Mobile viewport optimized: h5bp.com/viewport -->
                     <meta name="viewport" content="width=device-width">
-                    {{ fontawesome_html() }}
+                    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome-free-5.6.3-web/css/all.min.css') }}">
                     {% assets "css_all" %}
                     <link rel="stylesheet" href="{{ ASSET_URL }}">
                     {% endassets %}
