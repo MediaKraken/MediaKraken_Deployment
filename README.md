@@ -34,8 +34,8 @@ Please see the WIKI for documentation.<BR>
     <li>OVA for Proxmox VE 5.x
     <li>64-bit ISO/img for install on dedicated server hardware
     </ul>
+</ul>
 <li>Offsite Storage Support
-</u>
 </UL>
 </ul>
 <h2 style="color:white";>Privacy Policy: This program collects NO data on users.</h2>
