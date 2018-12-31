@@ -3,3 +3,4 @@ twisted
 pika
 docker
 pysmb
+cryptography

@@ -26,13 +26,15 @@ from common import common_config_ini
 from common import common_docker
 from common import common_file
 from common import common_global
+from common import common_hash
 from common import common_logging_elasticsearch
 from common import common_network_share
 from common import common_signal
 from common import common_version
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_server')
+common_global.es_inst = common_logging_ecom_hash_gen_crypt_encodelasticsearch.CommonElasticsearch(
+    'main_server')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -46,8 +48,15 @@ if not os.path.isfile('./key/cacert.pem'):
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
-                                                {'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+                                                {
+                                                    'stuff': 'Cannot generate SSL certificate. Exiting.....'})
         sys.exit()
+
+# create crypto keys if needed
+if not os.path.isfile('./key/data.zip'):
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'data.zip not found, generating.'})
+    data = common_hash.CommonHashCrypto()
+    common_file.com_file_save_data('./key/data.zip', data.com_hash_gen_crypt_key())
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()

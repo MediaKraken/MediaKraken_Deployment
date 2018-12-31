@@ -21,16 +21,34 @@ import os
 import struct
 import zipfile
 import zlib
+from cryptography.fernet import Fernet
 from functools import reduce
 
 from . import common_global
 from . import common_hash_c_code
 
 
-# import compression mods
+class CommonHashCrypto(object):
+    """
+    Class for interfacing with crypto
+    """
 
-# if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-#     from py7zlib import Archive7z
+    def __init__(self):
+        self.hash_key = None
+        self.fernet = None
+
+    def com_hash_gen_crypt_key(self):
+        self.hash_key = Fernet.generate_key()
+        self.fernet = Fernet(self.hash_key)
+        return self.hash_key
+
+    def com_hash_gen_crypt_encode(self, encode_string):
+        # encode, since it needs bytes
+        return self.fernet.encrypt(encode_string.encode())
+
+    def com_hash_gen_crypt_decode(self, decode_string):
+        # encode, since it needs bytes
+        return self.fernet.decrypt(decode_string.encode())
 
 
 def com_hash_sha1_by_filename(file_name):
