@@ -30,14 +30,6 @@
         <h1>Metadata</h1>
         <form id="settingsmetadataForm" class="form form-settingsmetadata" method="POST" action="" role="form">
             {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{form.metadata_download_metadata.label}}
-                {{form.metadata_download_metadata(placeholder="Download artwork and metadata from the internet", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_artwork_metadata.label}}
-                {{form.metadata_artwork_metadata(placeholder="Artwork and metadata with media", class_="form-control")}}
-            </div>
             <p>Preferred download language</p>
             <select name="Meta_Lang", id="meta_lang">
                 {% for lang_data in data_lang %}
@@ -51,14 +43,6 @@
                 {% endfor %}
             </select>
             <div class="form-group">
-                {{form.metadata_image_bio_person.label}}
-                {{form.metadata_image_bio_person(placeholder="Download images and bio for persons", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_path.label}}
-                {{form.metadata_path(placeholder="Metadata Path", class_="form-control")}}
-            </div>
-            <div class="form-group">
                 {{form.metadata_with_media.label}}
                 {{form.metadata_with_media(placeholder="Save metadata with media", class_="form-control")}}
             </div>
@@ -68,12 +52,8 @@
         <form id="settingsmetadatasubtitlesForm" class="form form-settingsmetadatasubtitles" method="POST" action="" role="form">
             {{ form.hidden_tag() }}
             <div class="form-group">
-                {{form.metadata_sub_movie_down.label}}
-                {{form.metadata_sub_movie_down(placeholder="Movies", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_sub_episode_down.label}}
-                {{form.metadata_sub_episode_down(placeholder="Episodes", class_="form-control")}}
+                {{form.metadata_sub_media_down.label}}
+                {{form.metadata_sub_media_down(placeholder="Media", class_="form-control")}}
             </div>
             <select name="Meta_Subtitle_Lang", id="meta_subtitle_lang">
                 {% for lang_data in data_lang %}
@@ -85,63 +65,7 @@
                 {{form.metadata_sub_skip_if_audio(placeholder="Skip if audio track in media", class_="form-control")}}
             </div>
         </form>
-        <h1>Metadata Downloads</h1>
-        <form id="settingsmetadatadownloadsForm" class="form form-settingsmetadatadownloads" method="POST" action="" role="form">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{form.metadata_source_down_tvmaze.label}}
-                {{form.metadata_source_down_tvmaze(placeholder="TVMaze", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_tmdb.label}}
-                {{form.metadata_source_down_tmdb(placeholder="theMovieDB", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_tvdb.label}}
-                {{form.metadata_source_down_tvdb(placeholder="theTVdb", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_freedb.label}}
-                {{form.metadata_source_down_freedb(placeholder="FreeDB", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_mbrainz.label}}
-                {{form.metadata_source_down_mbrainz(placeholder="MusicBrainz", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_anidb.label}}
-                {{form.metadata_source_down_anidb(placeholder="AniDb", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_chartlyrics.label}}
-                {{form.metadata_source_down_chartlyrics(placeholder="ChartLyrics", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_opensub.label}}
-                {{form.metadata_source_down_opensub(placeholder="OpenSubitles", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_pitchfork.label}}
-                {{form.metadata_source_down_pitchfork(placeholder="Pitchfork", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_imvdb.label}}
-                {{form.metadata_source_down_imvdb(placeholder="IMVDb", class_="form-control")}}
-            </div>
-            <div class="form-group">
-                {{form.metadata_source_down_omdb.label}}
-                {{form.metadata_source_down_omdb(placeholder="OMDB", class_="form-control")}}
-            </div>
-        </form>
-        <h1>Sync</h1>
-        <form id="settingsmetadatasyncForm" class="form form-settingsmetadatasync" method="POST" action="" role="form">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{form.metadata_sync_path.label}}
-                {{form.metadata_sync_path(placeholder="Sync temp path", class_="form-control")}}
-            </div>
-            <p><input class="btn btn-default btn-submit" type="submit" value="Update"></p>
-        </form>
+        <h1>Docker containers</h1>
         <form id="settingsdockerForm" class="form form-settingsdockersync" method="POST" action="" role="form">
             {{ form.hidden_tag() }}
             <div class="form-group">

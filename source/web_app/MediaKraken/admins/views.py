@@ -208,20 +208,6 @@ def admin_server_settings():
     if request.method == 'POST':
         settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
         settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
-
-        settings_json['Metadata']['Source']['tvmaze'] = request.form['metadata_source_down_tvmaze']
-        settings_json['Metadata']['Source']['tmdb'] = request.form['metadata_source_down_tmdb']
-        settings_json['Metadata']['Source']['tvdb'] = request.form['metadata_source_down_tvdb']
-        settings_json['Metadata']['Source']['musicbrainz'] = request.form[
-            'metadata_source_down_mbrainz']
-        settings_json['Metadata']['Source']['anidb'] = request.form['metadata_source_down_anidb']
-        settings_json['Metadata']['Source']['chartlyrics'] = request.form[
-            'metadata_source_down_chartlyrics']
-        settings_json['Metadata']['Source'][''] = request.form['metadata_source_down_opensub']
-        settings_json['Metadata']['Source']['pitchfork'] = request.form[
-            'metadata_source_down_pitchfork']
-        settings_json['Metadata']['Source']['imvdb'] = request.form['metadata_source_down_imvdb']
-        settings_json['Metadata']['Source']['omdb'] = request.form['metadata_source_down_omdb']
         settings_json['Docker Instances']['mumble'] = request.form['docker_mumble']
         settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
         settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
@@ -231,12 +217,7 @@ def admin_server_settings():
         settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
         settings_json['Docker Instances']['wireshark'] = request.form['docker_wireshark']
         g.db_connection.db_opt_update(settings_json)
-
     '''
-    server_bind_addr = TextField('Bind Addr', validators=[
-        Length(min=7, max=15)])
-    server_bind_port = TextField(
-        'Bind Port', validators=[Length(min=4, max=5)])
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
                                           choices=[('Never', 'Never'), ('1 Day', '1 Day'),
                                                    ('Week', 'Week'), ('Month',
@@ -247,28 +228,18 @@ def admin_server_settings():
     user_password_lock = SelectField('Lock account after failed attempts',
                                      choices=[('Never', 'Never'), ('3', '3'), ('5', '5'),
                                               ('10', '10')])
-    metadata_download_metadata = BooleanField('Download Metadata')
-    metadata_artwork_metadata = BooleanField('Download Artwork')
     # language = SelectField('Interval', choices=[('Hours', 'Hours'),
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
     # country = SelectField('Interval', choices=[('Hours', 'Hours'),
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
-    metadata_image_bio_person = BooleanField('Download Image/BIO of person(s)')
-    metadata_path = TextField('Metadata Path', validators=[DataRequired(),
-                                                           Length(min=1, max=250)])
     metadata_with_media = BooleanField('Metadata with Media')
-    metadata_sub_movie_down = BooleanField('Download Movie Subtitle')
-    metadata_sub_episode_down = BooleanField('Download TV Subtitle')
+    metadata_sub_down = BooleanField('Download Media Subtitle')
     # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
-    metadata_sub_skip_if_audio = BooleanField(
-        'Skip subtitle if lang in audio track')
-
+    metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
     docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
                                                                   Length(min=1, max=250)])
-
-'''
-
+    '''
     return render_template("admin/admin_server_settings.html",
                            form=AdminSettingsForm(request.form),
                            settings_json=settings_json)
