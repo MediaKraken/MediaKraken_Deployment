@@ -54,6 +54,8 @@
             <div class="form-group">
                 {{form.metadata_sub_media_down.label}}
                 {{form.metadata_sub_media_down(placeholder="Media", class_="form-control")}}
+                {{form.metadata_sub_code.label}}
+                {{form.metadata_sub_code(placeholder="OpenSubtitles", class_="form-control")}}
             </div>
             <select name="Meta_Subtitle_Lang", id="meta_subtitle_lang">
                 {% for lang_data in data_lang %}

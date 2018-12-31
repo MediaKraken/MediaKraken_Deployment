@@ -2,10 +2,9 @@
 
 import json
 import os
+import pygal
 import sys
 import uuid
-
-import pygal
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
@@ -26,6 +25,7 @@ from MediaKraken.admins.forms import BookAddForm
 from common import common_config_ini
 from common import common_internationalization
 from common import common_global
+from common import common_hash
 from common import common_network
 from common import common_string
 from common import common_system
@@ -205,9 +205,26 @@ def admin_server_settings():
     Display server settings page
     """
     settings_json = g.db_connection.db_opt_status_read()[0]
-    if request.method == 'POST':
-        settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
-        settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
+    # setup the crypto
+    data = common_hash.CommonHashCrypto()
+    if request.method == 'GET':
+        if settings_json['API']['musicbrainz'] is not None:
+            mediabrainz_api_key = data.com_hash_gen_crypt_decode(
+                settings_json['API']['musicbrainz'])
+        else:
+            mediabrainz_api_key = None
+        if settings_json['API']['opensubtitles'] is not None:
+            opensubtitles_api_key = data.com_hash_gen_crypt_decode(
+                settings_json['API']['opensubtitles'])
+        else:
+            opensubtitles_api_key = None
+    elif request.method == 'POST':
+        # api info
+        settings_json['API']['musicbrainz'] = data.com_hash_gen_crypt_encode(
+            request.form['docker_musicbrainz_code'])
+        settings_json['API']['opensubtitles'] = data.com_hash_gen_crypt_encode(
+            request.form['metadata_sub_code'])
+        # Docker instances info
         settings_json['Docker Instances']['mumble'] = request.form['docker_mumble']
         settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
         settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
@@ -216,6 +233,10 @@ def admin_server_settings():
         settings_json['Docker Instances']['teamspeak'] = request.form['docker_teamspeak']
         settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
         settings_json['Docker Instances']['wireshark'] = request.form['docker_wireshark']
+        # main server info
+        settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
+        settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
+        # save updated info
         g.db_connection.db_opt_update(settings_json)
     '''
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
@@ -242,7 +263,10 @@ def admin_server_settings():
     '''
     return render_template("admin/admin_server_settings.html",
                            form=AdminSettingsForm(request.form),
-                           settings_json=settings_json)
+                           settings_json=settings_json,
+                           mediabrainz_api_key=mediabrainz_api_key,
+                           opensubtitles_api_key=opensubtitles_api_key
+                           )
 
 
 @blueprint.route("/zfs")
