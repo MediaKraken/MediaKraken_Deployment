@@ -44,7 +44,9 @@
                     <td>{{ row_data[5] }}</td>
                     <td>{{ row_data[6] }}</td>
                     <td>
-                        <a href="{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}"><span class="fas play-circle"></span></a>
+                        <a href= "{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}" id="play_button">
+                            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/play.png') }}" height="20" width="20">
+                        </a>
                     </td>
                     <div class="pull-right action-buttons">
                         <td>
