@@ -2,9 +2,10 @@
 
 import json
 import os
-import pygal
 import sys
 import uuid
+
+import pygal
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
@@ -24,7 +25,6 @@ from MediaKraken.admins.forms import BookAddForm
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_docker
 from common import common_global
 from common import common_network
 from common import common_string
@@ -78,9 +78,6 @@ def admins():
     global outside_ip
     if outside_ip is None:
         outside_ip = common_network.mk_network_get_outside_ip()
-    # grab docker info for host ip
-    docker_inst = common_docker.CommonDocker()
-    docker_info = docker_inst.com_docker_info()
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
@@ -117,8 +114,6 @@ def admins():
                            data_server_info_server_name=data_server_info_server_name,
                            data_host_ip=mediakraken_ip,
                            data_server_info_server_ip=nic_data,
-                           data_server_info_server_port=option_config_json[
-                               'MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version=common_version.APP_VERSION,
                            data_server_uptime=common_system.com_system_uptime(),
@@ -269,8 +264,6 @@ def admin_server_settings():
     metadata_sub_skip_if_audio = BooleanField(
         'Skip subtitle if lang in audio track')
 
-    metadata_sync_path = TextField('Metadata Sync Path',
-                                   validators=[DataRequired(), Length(min=1, max=250)])
     docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
                                                                   Length(min=1, max=250)])
 
