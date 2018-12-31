@@ -207,17 +207,15 @@ def admin_server_settings():
     settings_json = g.db_connection.db_opt_status_read()[0]
     # setup the crypto
     data = common_hash.CommonHashCrypto()
+    mediabrainz_api_key = None
+    opensubtitles_api_key = None
     if request.method == 'GET':
         if settings_json['API']['musicbrainz'] is not None:
             mediabrainz_api_key = data.com_hash_gen_crypt_decode(
                 settings_json['API']['musicbrainz'])
-        else:
-            mediabrainz_api_key = None
         if settings_json['API']['opensubtitles'] is not None:
             opensubtitles_api_key = data.com_hash_gen_crypt_decode(
                 settings_json['API']['opensubtitles'])
-        else:
-            opensubtitles_api_key = None
     elif request.method == 'POST':
         # api info
         settings_json['API']['musicbrainz'] = data.com_hash_gen_crypt_encode(
