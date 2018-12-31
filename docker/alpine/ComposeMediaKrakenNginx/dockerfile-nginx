@@ -1,3 +1,4 @@
+# https://github.com/nginxinc/docker-nginx
 FROM alpine:3.8
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
@@ -5,7 +6,7 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 ARG ALPMIRROR
 ARG PIPMIRROR
 
-ENV NGINX_VERSION 1.15.6
+ENV NGINX_VERSION 1.15.8
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
         && GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
