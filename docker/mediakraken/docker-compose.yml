@@ -12,6 +12,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - SECURE=${SECURE}
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
       - DEBUG=${DEBUG}
@@ -26,6 +27,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # so can read the device scan output
       - ./data/devices:/mediakraken/devices
+      # server will generate salt/key
+      - /var/opt/mediakraken/secure:/mediakraken/secure
     networks:
       - mediakraken_network
 
@@ -262,6 +265,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - SECURE=${SECURE}
       - DEBUG=${DEBUG}
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}
@@ -284,6 +288,8 @@ services:
       - ./data/log:/mediakraken/log
       # this stores the "push button" key
       - ./data/phue:/mediakraken/phue        
+      # server will generate salt/key
+      - /var/opt/mediakraken/secure:/mediakraken/secure:ro
     networks:
       - mediakraken_network
     restart: unless-stopped

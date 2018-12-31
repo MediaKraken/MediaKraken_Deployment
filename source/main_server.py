@@ -53,11 +53,15 @@ if not os.path.isfile('./key/cacert.pem'):
         sys.exit()
 
 # create crypto keys if needed
-if not os.path.isfile('./key/data.zip'):
+if not os.path.isfile('./secure/data.zip'):
     common_global.es_inst.com_elastic_index('info', {'stuff': 'data.zip not found, generating.'})
     data = common_hash.CommonHashCrypto()
-    common_file.com_file_save_data('./key/data.zip', data.com_hash_gen_crypt_key())
-
+    data.com_hash_gen_crypt_key()
+    if not os.path.isfile('./secure/data.zip'):
+        common_global.es_inst.com_elastic_index('critical',
+                                                {
+                                                    'stuff': 'Cannot generate crypto. Exiting.....'})
+        sys.exit()
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 

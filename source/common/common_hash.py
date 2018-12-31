@@ -22,6 +22,10 @@ import struct
 import zipfile
 import zlib
 from cryptography.fernet import Fernet
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from functools import reduce
 
 from . import common_global
@@ -38,9 +42,21 @@ class CommonHashCrypto(object):
         self.fernet = None
 
     def com_hash_gen_crypt_key(self):
-        self.hash_key = Fernet.generate_key()
+        if not os.path.isfile('./secure/data.zip'):
+            salt = os.urandom(16)
+            common_file.com_file_save_data(file_name='./secure/data.zip', data_block=salt,
+                                           as_pickle=True)
+        else:
+            salt = common_file.com_file_load_data(file_name='./secure/data.zip', as_pickle=True)
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=100000,
+            backend=default_backend()
+        )
+        self.hash_key = base64.urlsafe_b64encode(kdf.derive(os.environ['SECURE']))
         self.fernet = Fernet(self.hash_key)
-        return self.hash_key
 
     def com_hash_gen_crypt_encode(self, encode_string):
         # encode, since it needs bytes
