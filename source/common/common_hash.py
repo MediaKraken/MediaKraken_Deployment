@@ -48,7 +48,8 @@ class CommonHashCrypto(object):
 
     def com_hash_gen_crypt_decode(self, decode_string):
         # encode, since it needs bytes
-        return self.fernet.decrypt(decode_string.encode())
+        # then decode, otherwise it return bytes
+        return self.fernet.decrypt(decode_string.encode()).decode()
 
 
 def com_hash_sha1_by_filename(file_name):
