@@ -27,6 +27,7 @@ from common import common_internationalization
 from common import common_docker
 from common import common_global
 from common import common_network
+from common import common_string
 from common import common_system
 from common import common_version
 from common import common_zfs
