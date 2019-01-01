@@ -165,6 +165,7 @@ class AdminSettingsForm(Form):
 
     metadata_with_media = BooleanField('Metadata with Media')
     metadata_sub_media_down = BooleanField('Download Movie/TV Subtitle')
+    metadata_sub_code = TextField('OpenSubtitles Key', validators=[Length(min=0, max=250)])
     # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
