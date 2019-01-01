@@ -148,10 +148,6 @@ class AdminSettingsForm(Form):
     servername = TextField('Server Name', validators=[
         DataRequired(), Length(min=3, max=250)])
     servermotd = TextField('Server MOTD', validators=[Length(min=0, max=250)])
-    server_bind_addr = TextField('Bind Addr', validators=[
-        Length(min=7, max=15)])
-    server_bind_port = TextField(
-        'Bind Port', validators=[Length(min=4, max=5)])
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
                                           choices=[('Never', 'Never'), ('1 Day', '1 Day'),
                                                    ('Week', 'Week'), ('Month',
@@ -162,33 +158,16 @@ class AdminSettingsForm(Form):
     user_password_lock = SelectField('Lock account after failed attempts',
                                      choices=[('Never', 'Never'), ('3', '3'), ('5', '5'),
                                               ('10', '10')])
-    metadata_download_metadata = BooleanField('Download Metadata')
-    metadata_artwork_metadata = BooleanField('Download Artwork')
     # language = SelectField('Interval', choices=[('Hours', 'Hours'),
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
     # country = SelectField('Interval', choices=[('Hours', 'Hours'),
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
-    metadata_image_bio_person = BooleanField('Download Image/BIO of person(s)')
-    metadata_path = TextField('Metadata Path', validators=[DataRequired(),
-                                                           Length(min=1, max=250)])
+
     metadata_with_media = BooleanField('Metadata with Media')
-    metadata_sub_movie_down = BooleanField('Download Movie Subtitle')
-    metadata_sub_episode_down = BooleanField('Download TV Subtitle')
+    metadata_sub_down = BooleanField('Download Movie/TV Subtitle')
     # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
-    metadata_sub_skip_if_audio = BooleanField(
-        'Skip subtitle if lang in audio track')
-    metadata_source_down_tvmaze = BooleanField('tvmaze')
-    metadata_source_down_tmdb = BooleanField('themoviedb')
-    metadata_source_down_tvdb = BooleanField('thetvdb')
-    metadata_source_down_freedb = BooleanField('FreeDB')
-    metadata_source_down_mbrainz = BooleanField('Music Brainz')
-    metadata_source_down_anidb = BooleanField('AnimeDB')
-    metadata_source_down_chartlyrics = BooleanField('Chart Lyrics')
-    metadata_source_down_opensub = BooleanField('OpenSubtitles')
-    metadata_source_down_pitchfork = BooleanField('pitchfork')
-    metadata_source_down_imvdb = BooleanField('imvdb')
-    metadata_source_down_omdb = BooleanField('omdb')
+    metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
     docker_musicbrainz = BooleanField(
         'Start MusicBrainz (brainzcode required https://lime-technology.com/forums/topic/42909-support-linuxserverio-musicbrainz/)')
     docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
