@@ -107,10 +107,11 @@ class MKConsumer(object):
         if body is not None:
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'ffprobe': json_message})
-            ffprobe_data = json.loads(common_ffmpeg.com_ffmpeg_media_attr(json_message['Media '
-                                                                                       'Path']))
+            ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
             common_global.es_inst.com_elastic_index('info', {'ffprobe_data': ffprobe_data})
-            if ffprobe_data != None:
+            # check for none first as it might be invalid json
+            if ffprobe_data is not None:
+                ffprobe_data = json.loads(ffprobe_data)
                 # begin image generation
                 chapter_image_list = {}
                 chapter_count = 0
@@ -121,7 +122,7 @@ class MKConsumer(object):
                         chapter_count += 1
                         # file path, time, output name
                         # check image save option whether to save this in media folder or metadata folder
-                        if option_config_json['Metadata']['MetadataImageLocal'] == False:
+                        if option_config_json['Metadata']['MetadataImageLocal'] is False:
                             image_file_path = os.path.join(
                                 common_metadata.com_meta_image_file_path(json_message['Media Path'],
                                                                          'chapter'),
