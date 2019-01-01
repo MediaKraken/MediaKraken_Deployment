@@ -14,6 +14,7 @@ WORKDIR /mediakraken
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   alpine-sdk \
+  libffi-dev \
   python3-dev \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk add \
@@ -22,7 +23,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   cifs-utils \
   curl-dev \
   nfs-utils \
-  libffi-dev \
   openldap-dev \
   jpeg-dev \
   libxml2-dev \
