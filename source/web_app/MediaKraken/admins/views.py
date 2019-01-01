@@ -351,7 +351,7 @@ def admin_database_statistics():
         db_size_total += row_data['total_size']
         db_size_data.append(
             (row_data['relation'], common_string.com_string_bytes2human(row_data['total_size'])))
-    db_size_data.append(('Total Size:', common_string.com_string_bytes2human(db_stats_total)))
+    db_size_data.append(('Total Size:', common_string.com_string_bytes2human(db_size_total)))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=db_size_data,
                            data_db_count=db_stats_count,
