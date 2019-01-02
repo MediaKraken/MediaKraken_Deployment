@@ -80,8 +80,10 @@ while 1:
                 else:
                     if row_data['mm_cron_file_path'] is None:
                         # row_data['mm_cron_json']['exchange_key']
-                        channel.basic_publish(exchange=row_data['mm_cron_json']['exchange_key'], routing_key=row_data['mm_cron_json']['route_key'],
-                                              body=json.dumps({'Type': 'Stop', 'Subtype': row_data['mm_cron_json']['HDTrailers']}))
+                        channel.basic_publish(exchange=row_data['mm_cron_json']['exchange_key'],
+                                              routing_key=row_data['mm_cron_json']['route_key'],
+                                              body=json.dumps(
+                                                  {'Type': 'Stop', 'Subtype': row_data['mm_cron_json']['HDTrailers']}))
                     else:
                         proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                                 shell=False)
