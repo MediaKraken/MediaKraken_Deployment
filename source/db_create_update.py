@@ -596,8 +596,8 @@ base_cron = [
     # ('TVmaze Update', 'Grab updated TVmaze metadata',
     #  '/mediakraken/subprogram_metadata_tvmaze_updates.py',
     #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update'}),
-    ('Trailer', 'Download new trailer(s)', '/mediakraken/subprogram_metadata_trailer_download.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'trailer'}),
+    ('Trailer', 'Download new trailer(s)', None,
+     {'exchange_key': 'mkque_download_ex', 'route_key': 'mkdownload', 'task': 'HDTrailers'}),
     # normal subprograms
     ('Backup', 'Backup PostgreSQL DB', '/mediakraken/subprogram_postgresql_backup.py',
      {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbbackup'}),

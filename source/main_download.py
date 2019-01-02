@@ -103,43 +103,44 @@ class MKConsumer(object):
         if body is not None:
             common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
-            if json_message['Type'] == 'Download':
-                # file, image, etc
-                if json_message['Subtype'] == 'File':
-                    common_network.mk_network_fetch_from_url(json_message['URL'],
-                                                             json_message['Local Save Path'])
-                elif json_message['Subtype'] == 'Youtube':
-                    dl_pid = subprocess.Popen(split(
-                        'youtube-dl -i --download-archive /mediakraken/yt_dl_archive.txt ' +
-                        json_message['URL']))
-                    dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
-                elif json_message['Subtype'] == 'HDTrailers':
-                    data = xmltodict.parse(common_network.mk_network_fetch_from_url(
-                        "http://feeds.hd-trailers.net/hd-trailers", None))
-                    if data is not None:
-                        for item in data['item']:
-                            common_global.es_inst.com_elastic_index('info', {'item': item})
-                            download_link = None
-                            if ('(Trailer' in data['item']['title']
-                                and option_config_json['Trailer']['Trailer'] is True) \
-                                    or ('(Behind' in data['item']['title']
-                                        and option_config_json['Trailer']['Behind'] is True) \
-                                    or ('(Clip' in data['item']['title']
-                                        and option_config_json['Trailer']['Clip'] is True) \
-                                    or ('(Featurette' in data['item']['title']
-                                        and option_config_json['Trailer']['Featurette'] is True) \
-                                    or ('(Carpool' in data['item']['title']
-                                        and option_config_json['Trailer']['Carpool'] is True):
-                                for trailer_url in data['item']['enclosure url']:
-                                    if '1080p' in trailer_url:
-                                        download_link = data['item']['enclosure url']
-                                        break
-                            if download_link is not None:
-                                # TODO let the metadata fetch program grab these
-                                # TODO verify this trailer has not been downloaded before
-                                # TODO so only insert db dl records
-                                common_network.mk_network_fetch_from_url(
-                                    download_link, '/static/meta/trailer')
+            # no reason to check for download.....it has to be to get into this program
+            # if json_message['Type'] == 'Download':
+            # file, image, etc
+            if json_message['Subtype'] == 'File':
+                common_network.mk_network_fetch_from_url(json_message['URL'],
+                                                         json_message['Local Save Path'])
+            elif json_message['Subtype'] == 'Youtube':
+                dl_pid = subprocess.Popen(split(
+                    'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt ' +
+                    json_message['URL']))
+                dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
+            elif json_message['Subtype'] == 'HDTrailers':
+                data = xmltodict.parse(common_network.mk_network_fetch_from_url(
+                    "http://feeds.hd-trailers.net/hd-trailers", None))
+                if data is not None:
+                    for item in data['item']:
+                        common_global.es_inst.com_elastic_index('info', {'item': item})
+                        download_link = None
+                        if ('(Trailer' in data['item']['title']
+                            and option_config_json['Trailer']['Trailer'] is True) \
+                                or ('(Behind' in data['item']['title']
+                                    and option_config_json['Trailer']['Behind'] is True) \
+                                or ('(Clip' in data['item']['title']
+                                    and option_config_json['Trailer']['Clip'] is True) \
+                                or ('(Featurette' in data['item']['title']
+                                    and option_config_json['Trailer']['Featurette'] is True) \
+                                or ('(Carpool' in data['item']['title']
+                                    and option_config_json['Trailer']['Carpool'] is True):
+                            for trailer_url in data['item']['enclosure url']:
+                                if '1080p' in trailer_url:
+                                    download_link = data['item']['enclosure url']
+                                    break
+                        if download_link is not None:
+                            # TODO let the metadata fetch program grab these
+                            # TODO verify this trailer has not been downloaded before
+                            # TODO so only insert db dl records
+                            common_network.mk_network_fetch_from_url(
+                                download_link, '/static/meta/trailer')
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
