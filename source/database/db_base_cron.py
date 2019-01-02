@@ -103,6 +103,6 @@ def db_cron_info(self, cron_uuid):
     """
     self.db_cursor.execute('select mm_cron_guid, mm_cron_name,'
                            ' mm_cron_description, mm_cron_enabled, mm_cron_schedule,'
-                           ' mm_cron_last_run, mm_cron_file_path from mm_cron'
+                           ' mm_cron_last_run, mm_cron_file_path, mm_cron_json from mm_cron'
                            ' where mm_cron_guid = %s', (cron_uuid,))
     return self.db_cursor.fetchone()

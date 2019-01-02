@@ -88,10 +88,13 @@ def admin_cron_run(guid):
     Run cron jobs
     """
     common_global.es_inst.com_elastic_index('info', {'admin cron run': guid})
-    cron_file_path = g.db_connection.db_cron_info(guid)['mm_cron_file_path']
+    cron_job_data = g.db_connection.db_cron_info(guid)
     route_key = 'mkque'
     exchange_key = 'mkque_ex'
+    message_type = None
+    message_subtype = None
     # no need to do the check since default
+    # TODO what the heck do I mean with 'since default'?
     # if cron_file_path == './subprogram_postgresql_backup.py'\
     #     or cron_file_path == './subprogram_create_chapter_images.py':
     #     elif cron_file_path == './subprogram_postgresql_vacuum.py':
@@ -100,39 +103,28 @@ def admin_cron_run(guid):
     #     elif cron_file_path == './subprogram_sync.py':
     #     pass
 
-    if cron_file_path == './subprogram_update_create_collections.py' \
-            or cron_file_path == './subprogram_tmdb_updates.py':
-        route_key = 'themoviedb'
-        exchange_key = 'mkque_metadata_ex'
+    # TODO these should feed into metadata program
+    # if cron_job_data['mm_cron_file_path'] == './subprogram_update_create_collections.py' \
+    #         or cron_job_data['mm_cron_file_path'] == './subprogram_tmdb_updates.py':
+    #     route_key = 'themoviedb'
+    #     exchange_key = 'mkque_metadata_ex'
+    #
+    # if cron_job_data['mm_cron_file_path'] == './subprogram_schedules_direct_updates.py':
+    #     route_key = 'mkque_metadata'
+    #     exchange_key = 'mkque_metadata_ex'
 
-    if cron_file_path == './subprogram_schedules_direct_updates.py':
-        # TODO
-        route_key = 'mkque_metadata'
-        exchange_key = 'mkque_metadata_ex'
+    if cron_job_data['mm_cron_file_path'] is None:
+        exchange_key = cron_job_data['mm_cron_json']['exchange_key']
+        route_key = cron_job_data['mm_cron_json']['route_key']
+        message_type = cron_job_data['mm_cron_json']['type']
+        message_subtype = cron_job_data['mm_cron_json']['task']
 
-    if cron_file_path == './subprogram_subtitle_downloader.py':
-        # TODO
-        route_key = 'mkque_metadata'
-        exchange_key = 'mkque_metadata_ex'
-
-    if cron_file_path == './subprogram_tvmaze_updates.py':
-        route_key = 'tvmaze'
-        exchange_key = 'mkque_metadata_ex'
-
-    if cron_file_path == './subprogram_thetvdb_updates.py':
-        route_key = 'thetvdb'
-        exchange_key = 'mkque_metadata_ex'
-
-    if cron_file_path == './subprogram_metadata_trailer_download.py':
-        # TODO
-        route_key = 'mkque_metadata'
-        exchange_key = 'mkque_metadata_ex'
     # submit the message
     ch = fpika.channel()
     ch.basic_publish(exchange=exchange_key, routing_key=route_key,
                      body=json.dumps(
-                         {'Type': 'Cron Run',
-                          'Data': cron_file_path,
+                         {'Type': message_type,
+                          'Subtype': message_subtype,
                           'User': current_user.get_id()}))
     fpika.return_channel(ch)
     return render_template('admin/admin_cron.html')
