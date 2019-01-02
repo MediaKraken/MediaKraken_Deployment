@@ -17,6 +17,7 @@
 '''
 
 import json
+import struct
 import subprocess
 
 import pika
@@ -117,7 +118,10 @@ class MKConsumer(object):
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'msg body': json_message})
             if json_message['Type'] == 'Roku' and json_message['Subtype'] == 'Thumbnail':
-                common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
+                try:
+                    common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
+                except struct.error:
+                    common_global.es_inst.com_elastic_index('error', {'fail bif': json_message})
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
