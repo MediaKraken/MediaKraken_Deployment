@@ -146,6 +146,7 @@ def admin_cron_edit(guid):
             # request.form['interval']
             # request.form['time']
             # request.form['script_path']
+            # request.form['json']
             # common_global.es_inst.com_elastic_index('info', {'stuff':'cron edit info: %s %s %s', (addr, share, path))
             pass
     return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
