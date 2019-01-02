@@ -183,8 +183,11 @@ def movie_detail(guid):
                                 stream_codec = 'NA'
                         audio_streams.append((stream_codec, stream_language, stream_title))
                     elif stream_info['codec_type'] == 'subtitle':
-                        subtitle_streams.append(common_internationalization.com_inter_country_name(
-                            stream_info['tags']['language']))
+                        try:
+                            subtitle_streams.append(common_internationalization.com_inter_country_name(
+                                stream_info['tags']['language']))
+                        except KeyError:
+                            subtitle_streams.append('Unknown')
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
                                                             "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
                                                             audio_streams,
