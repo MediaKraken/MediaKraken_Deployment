@@ -133,5 +133,12 @@
     <script src="{{ url_for('static', filename='js/base_webapp_delete.js') }}"></script>
     <script src="{{ url_for('static', filename='js/base_webapp_update.js') }}"></script>
     <script src="{{ url_for('static', filename='js/base_webapp_run.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
 </body>
 {% endblock %}
