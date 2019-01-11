@@ -73,6 +73,8 @@ def worker(audit_directory):
         if file_name in global_known_media:
             pass
         else:
+            # add to global so next scan won't do again
+            global_known_media.append(file_name)
             # set lower here so I can remove alot of .lower() in the code below
             filename_base, file_extension = os.path.splitext(file_name.lower())
             # checking subtitles for parts as need multiple files for multiple media files
