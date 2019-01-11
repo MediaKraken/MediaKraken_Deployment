@@ -1,6 +1,5 @@
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome-free-5.6.3-web/css/all.min.css') }}">
         <style>
             .sidenav {
               z-index: 1;
@@ -99,7 +98,6 @@
         <a href="{{ url_for('admins_transmission.admin_transmission') }}" id="admin_navmenu_transmission"><i class="fas fa-globe"></i>Transmission</a>
         {% endif %}
         <a href="{{ url_for('admins_users.admin_users') }}" id="admin_navmenu_users"><i class="fas fa-user-alt"></i> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
-        <a href="{{ url_for('admins.admin_server_zfs') }}" id="admin_navmenu_zfs"><i class="fas fa-database"></i>ZFS</a>
     </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
