@@ -68,20 +68,16 @@ def movie_detail(guid):
 
         # poster image
         try:
-            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster'] is not None:
-                data_poster_image = \
-                    metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
-            else:
-                data_poster_image = None
+            # don't bother checking for NONE as that's valid
+            data_poster_image = \
+                metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
         except:
             data_poster_image = None
         # background image
         try:
-            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop'] is not None:
-                data_background_image = \
-                    metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
-            else:
-                data_background_image = None
+            # don't bother checking for NONE as that's valid
+            data_background_image = \
+                metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
         except:
             data_background_image = None
 
