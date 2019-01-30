@@ -33,8 +33,7 @@ from common import common_signal
 from common import common_version
 
 # start logging
-common_global.es_inst = common_logging_ecom_hash_gen_crypt_encodelasticsearch.CommonElasticsearch(
-    'main_server')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_server')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
