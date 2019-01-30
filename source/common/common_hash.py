@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+import base64
 import hashlib
 import os
 import struct
@@ -45,10 +46,10 @@ class CommonHashCrypto(object):
     def com_hash_gen_crypt_key(self):
         if not os.path.isfile('./secure/data.zip'):
             salt = os.urandom(16)
-            common_file.com_file_save_data(file_name='./secure/data.zip', data_block=salt,
+            common_file.com_file_save_data(file_name='/mediakraken/secure/data.zip', data_block=salt,
                                            as_pickle=True)
         else:
-            salt = common_file.com_file_load_data(file_name='./secure/data.zip', as_pickle=True)
+            salt = common_file.com_file_load_data(file_name='/mediakraken/secure/data.zip', as_pickle=True)
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,

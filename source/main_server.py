@@ -61,6 +61,7 @@ if not os.path.isfile('./secure/data.zip'):
                                                 {
                                                     'stuff': 'Cannot generate crypto. Exiting.....'})
         sys.exit()
+
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
