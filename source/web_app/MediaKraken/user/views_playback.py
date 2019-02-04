@@ -5,7 +5,7 @@ User view in webapp
 from MediaKraken.extensions import (
     fpika,
 )
-from flask import Blueprint, render_template, g
+from flask import Blueprint, render_template, g, request
 from flask_login import login_required, current_user
 
 blueprint = Blueprint("user_playback", __name__,
@@ -84,14 +84,20 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
                            data_mtype=mtype)
 
 
-@blueprint.route('/playback/<action>/<guid>/<device>')
+@blueprint.route('/playback/<action>/<guid>')
 @login_required
-def user_playback(action, guid, device):
+def user_playback(action, guid):
     """
     Display actions page
     """
     common_global.es_inst.com_elastic_index('info', {'user_playback action': action,
                                                      'case user': current_user.get_id()})
+    # pull the media stats
+    request_id = request.form['id']
+    audio_track = request.form['audio|%s' % request_id]
+    subtitle_track = request.form['subtitle|%s' % request_id]
+    playback_device = request.form['playback_device|%s' % request_id]
+
     if action == 'base':
         pass
     elif action == 'back':
@@ -107,11 +113,12 @@ def user_playback(action, guid, device):
     elif action == 'play':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                         body=json.dumps({'Type': 'Play', 'Subtype': device,
+                         body=json.dumps({'Type': 'Play',
                                           'User': current_user.get_id(),
-                                          'Data': g.db_connection.db_read_media(guid)[
-                                              'mm_media_path'],
-                                          'Target': '10.0.0.220'}))
+                                          'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
+                                          'Audio': audio_track,
+                                          'Subtitle': subtitle_track,
+                                          'Target': playback_device}))
         fpika.return_channel(ch)
     elif action == 'pause':
         ch = fpika.channel()

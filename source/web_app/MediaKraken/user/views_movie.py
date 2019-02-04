@@ -169,8 +169,7 @@ def movie_detail(guid):
                             stream_title = stream_info['tags']['title']  # Surround 5.1 and so on
                         except KeyError:
                             stream_title = 'NA'
-                        if 'codec_long_name' in stream_info and stream_info[
-                            'codec_long_name'] != 'unknown':
+                        if 'codec_long_name' in stream_info and stream_info['codec_long_name'] != 'unknown':
                             stream_codec = stream_info['codec_long_name']
                         else:
                             try:

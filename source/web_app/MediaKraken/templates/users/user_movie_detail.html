@@ -86,7 +86,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <a href= "{{ url_for('user_playback.user_playback', action='play', guid=stream_uuid, device=1) }}" id={{"play_button|" + loop.index|string}}>
+                                                        <a href= "{{ url_for('user_playback.user_playback', action='play', guid=stream_uuid) }}" id={{loop.index|string}}>
                                                             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/play.png') }}" height="20" width="20">
                                                         </a>
                                                     </td>
