@@ -84,7 +84,7 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
                            data_mtype=mtype)
 
 
-@blueprint.route('/playback/<action>/<guid>')
+@blueprint.route('/playback/<action>/<guid>', methods=['GET', 'POST'])
 @login_required
 def user_playback(action, guid):
     """
