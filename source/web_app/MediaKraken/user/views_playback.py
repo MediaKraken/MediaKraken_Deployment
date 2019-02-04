@@ -93,6 +93,7 @@ def user_playback(action, guid):
     common_global.es_inst.com_elastic_index('info', {'user_playback action': action,
                                                      'case user': current_user.get_id()})
     # pull the media stats
+    common_global.es_inst.com_elastic_index('info', {'args': request.args})
     request_id = request.form['id']
     audio_track = request.form['audio|%s' % request_id]
     subtitle_track = request.form['subtitle|%s' % request_id]
