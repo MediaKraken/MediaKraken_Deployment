@@ -191,5 +191,30 @@
         var bLazy = new Blazy();
     })();
 </script>
+<script type="text/javascript">
+    {% for stream_uuid in data_ffprobe_data %}
+        $(function () {
+            $("#btnGet1").click(function () {
+                var selectedAudioText = $("#{{"audio|" + loop.index|string }}").find("option:selected").text();
+                var selectedAudioValue = $("#{{"audio|" + loop.index|string }}").val();
+
+                var selectedSubtitleText = $("#{{"subtitle|" + loop.index|string }}").find("option:selected").text();
+                var selectedSubtitleValue = $("#{{"subtitle|" + loop.index|string }}").val();
+
+                var selectedDeviceText = $("#{{"playback_device|" + loop.index|string }}").find("option:selected").text();
+                var selectedDeviceValue = $("#{{"playback_device|" + loop.index|string }}").val();
+
+                $.post('/jquery/submitData',
+                    { myData: 'This is my data.' },
+                    function(data, status, jqXHR) {
+                        $('p').append('status: ' + status + ', data: ' + data);
+                    })
+                alert("Selected Text: " + selectedAudioText + " Value: " + selectedAudioValue +
+                    " Selected Text: " + selectedSubtitleText + " Value: " + selectedSubtitleValue +
+                    " Selected Text: " + selectedDeviceText + " Value: " + selectedDeviceValue);
+            });
+        });
+    {% endfor %}
+</script>
 </body>
 {% endblock %}
