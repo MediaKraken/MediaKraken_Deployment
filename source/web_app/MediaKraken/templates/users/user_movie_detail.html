@@ -86,9 +86,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <a href= "{{ url_for('user_playback.user_playback', action='play', guid=stream_uuid) }}" id={{loop.index|string}}>
-                                                            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/play.png') }}" height="20" width="20">
-                                                        </a>
+                                                        <input type="button" id={{"play" + loop.index|string}} value="Play" />
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -194,21 +192,18 @@
 <script type="text/javascript">
     {% for stream_uuid in data_ffprobe_data %}
         $(function () {
-            $("#btnGet1").click(function () {
-                var selectedAudioText = $("#{{"audio|" + loop.index|string }}").find("option:selected").text();
-                var selectedAudioValue = $("#{{"audio|" + loop.index|string }}").val();
+            $({{"#play" + loop.index|string}}).click(function () {
+                var selectedAudioText = $({{"#audio|" + loop.index|string }}).find("option:selected").text();
+                var selectedAudioValue = $({{"#audio|" + loop.index|string }}).val();
 
-                var selectedSubtitleText = $("#{{"subtitle|" + loop.index|string }}").find("option:selected").text();
-                var selectedSubtitleValue = $("#{{"subtitle|" + loop.index|string }}").val();
+                var selectedSubtitleText = $({{"#subtitle|" + loop.index|string }}).find("option:selected").text();
+                var selectedSubtitleValue = $({{"#subtitle|" + loop.index|string }}).val();
 
-                var selectedDeviceText = $("#{{"playback_device|" + loop.index|string }}").find("option:selected").text();
-                var selectedDeviceValue = $("#{{"playback_device|" + loop.index|string }}").val();
+                var selectedDeviceText = $({{"#playback_device|" + loop.index|string }}).find("option:selected").text();
+                var selectedDeviceValue = $({{"#playback_device|" + loop.index|string }}).val();
 
-                $.post('/jquery/submitData',
-                    { myData: 'This is my data.' },
-                    function(data, status, jqXHR) {
-                        $('p').append('status: ' + status + ', data: ' + data);
-                    })
+                $.post('{{ url_for('user_playback.user_playback', action='play', guid=stream_uuid) }}',
+                    { audio: selectedAudioValue, subtitle: selectedSubtitleValue, device: selectedDeviceValue })
                 alert("Selected Text: " + selectedAudioText + " Value: " + selectedAudioValue +
                     " Selected Text: " + selectedSubtitleText + " Value: " + selectedSubtitleValue +
                     " Selected Text: " + selectedDeviceText + " Value: " + selectedDeviceValue);
