@@ -35,7 +35,7 @@ def db_open(self, db_prod=True):
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
-    if db_prod == True:
+    if db_prod is True:
         self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"
                                           % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
                                              'mkpgbounce', 6432, os.environ['POSTGRES_PASSWORD']))
@@ -64,7 +64,7 @@ def db_close(self):
     """
     # close main db file
     """
-    # common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
     self.sql3_conn.close()
 
 
@@ -88,8 +88,7 @@ def db_table_index_check(self, resource_name):
     """
     # check for table or index
     """
-    self.db_cursor.execute(
-        'SELECT to_regclass(\'public.%s\')' % (resource_name,))
+    self.db_cursor.execute('SELECT to_regclass(\'public.%s\')' % (resource_name,))
     return self.db_cursor.fetchone()[0]
 
 
@@ -108,8 +107,7 @@ def db_drop_table(self, table_name):
     drop a table
     """
     # TODO little bobby tables
-    self.db_cursor.execute('DROP TABLE IF EXISTS ' +
-                           table_name)  # can't %s due to ' inserted
+    self.db_cursor.execute('DROP TABLE IF EXISTS ' + table_name)  # can't %s due to ' inserted
 
 
 def db_query(self, query_string):
