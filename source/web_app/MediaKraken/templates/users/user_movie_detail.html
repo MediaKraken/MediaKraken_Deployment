@@ -202,7 +202,7 @@
                 var selectedDeviceText = $("{{"#playback_device" + loop.index|string }}").find("option:selected").text();
                 var selectedDeviceValue = $("{{"#playback_device" + loop.index|string }}").val();
 
-                $.post('{{ url_for('user_playback.user_playback', action='play', guid=stream_uuid) }}',
+                $.post("{{ url_for('user_playback.user_playback', action='play', guid=stream_uuid) }}",
                     { audio: selectedAudioValue, subtitle: selectedSubtitleValue, device: selectedDeviceValue })
                 alert("Selected Text: " + selectedAudioText + " Value: " + selectedAudioValue +
                     " Selected Text: " + selectedSubtitleText + " Value: " + selectedSubtitleValue +
