@@ -34,7 +34,8 @@ def com_net_share_mount(share_list):
         if os.path.isdir('./mnt/' + share['mm_media_share_guid']):
             pass
         else:
-            proc_dir = subprocess.Popen(split('mkdir ./mnt/\"' + share['mm_media_share_guid'] + '\"'))
+            proc_dir = subprocess.Popen(
+                split('mkdir ./mnt/\"' + share['mm_media_share_guid'] + '\"'))
             proc_dir.wait()
         mount_command = []
         mount_command.append('mount')
