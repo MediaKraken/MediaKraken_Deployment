@@ -53,7 +53,7 @@ def db_notification_read(self, offset=None, records=None):
 
 def db_notification_delete(self, notification_uuid):
     """
-    # remove noticications
+    # remove notifications
     """
     self.db_cursor.execute('delete from mm_notification where mm_notification_guid = %s',
                            (notification_uuid,))
