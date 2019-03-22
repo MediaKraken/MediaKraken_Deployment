@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import json
 import time
 
+import json
 import psycopg2
 from common import common_config_ini
 from common import common_global

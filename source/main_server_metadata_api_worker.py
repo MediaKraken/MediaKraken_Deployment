@@ -17,12 +17,13 @@
 '''
 
 import datetime
-import json
-import subprocess
 import sys
-import time
 
+import json
 import pika
+import subprocess
+from guessit import guessit
+
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -30,7 +31,6 @@ from common import common_metadata_limiter
 from common import common_signal
 from common import common_string
 from common.common_metadata_limiter import *
-from guessit import guessit
 from metadata import metadata_general
 from metadata import metadata_identification
 
@@ -165,6 +165,18 @@ def pitchfork(thread_db, download_data):
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'pitchfork', download_data)
+
+
+@ratelimited(common_metadata_limiter.API_LIMIT['pornhub'][0]
+             / common_metadata_limiter.API_LIMIT['pornhub'][1])
+def pornhub(thread_db, download_data):
+    """
+    Rate limiter for pornhub
+    """
+    common_global.es_inst.com_elastic_index('info', {"here i am in pornhub rate":
+        datetime.datetime.now().strftime(
+            "%H:%M:%S.%f")})
+    metadata_general.metadata_process(thread_db, 'pornhub', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]
@@ -381,6 +393,8 @@ while True:
             omdb(thread_db, row_data)
         elif content_providers == 'pitchfork':
             pitchfork(thread_db, row_data)
+        elif content_providers == 'pornhub':
+            pornhub(thread_db, row_data)
         elif content_providers == 'televisiontunes':
             televisiontunes(thread_db, row_data)
         elif content_providers == 'theaudiodb':
@@ -429,8 +443,9 @@ while True:
                     # matches last media scanned, so set with that metadata id
                     thread_db.db_download_delete(row_data['mdq_id'])
                     metadata_uuid = metadata_last_id
-                common_global.es_inst.com_elastic_index('info', {"worker Z meta api uuid": metadata_uuid,
-                                                                 'filename': str(file_name)})
+                common_global.es_inst.com_elastic_index('info',
+                                                        {"worker Z meta api uuid": metadata_uuid,
+                                                         'filename': str(file_name)})
                 # doesn't match the last file, so set the file to be id'd
                 if metadata_uuid is None:
                     # begin id process
