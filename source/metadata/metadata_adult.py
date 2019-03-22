@@ -19,7 +19,7 @@
 import json
 from common import common_global
 
-from metadata import metadata_nfo_xml
+from . import metadata_nfo_xml
 
 
 def metadata_adult_lookup(db_connection, download_que_json, download_que_id, file_name):
