@@ -21,6 +21,7 @@ import uuid
 from common import common_global
 from common import common_hash
 
+from . import metadata_adult
 from . import metadata_anime
 from . import metadata_game
 from . import metadata_movie
@@ -43,7 +44,12 @@ def metadata_identification(db_connection, class_text, download_que_json,
     metadata_uuid = None
     # find data by class type
     if class_text == "Adult":
-        pass
+        metadata_uuid = metadata_adult.metadata_adult_lookup(db_connection,
+                                                             download_que_json,
+                                                             download_que_id,
+                                                             guessit_file_name)
+        if metadata_uuid is not None:
+            db_connection.db_download_delete(download_que_id)
     elif class_text == "Anime":
         metadata_uuid = metadata_anime.metadata_anime_lookup(db_connection,
                                                              download_que_json,

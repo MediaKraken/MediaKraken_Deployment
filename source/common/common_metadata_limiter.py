@@ -24,6 +24,7 @@ API_LIMIT = {
     'omdb': (20, 1),  # 7/29/2016 says 20 concurrent connections
     'openlibrary': (100, 300),  # 1/14/2017 100 every 5 minutes
     'pitchfork': (9999, 1),  # no mention of limits 7/29/2016
+    'pornhub': (1, 1),  # TODO check limits
     'televisiontunes': (1, 1),  # since I'm scraping
     'theaudiodb': (9999, 1),  # no mention of limits 7/29/2016
     'thegamesdb': (9999, 1),  # no mention of limits 7/29/2016
