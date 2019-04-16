@@ -90,7 +90,7 @@ def admin_backup():
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    local_file_backups = common_file.com_file_dir_list('/ mediakraken/backup',
+    local_file_backups = common_file.com_file_dir_list('/mediakraken/backup',
                                                        'dump', False, False, True)
     if local_file_backups is not None:
         for backup_local in local_file_backups:
