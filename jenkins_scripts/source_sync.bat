@@ -58,7 +58,7 @@ xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /
 xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /y /e /h
 xcopy ..\source\bulk_tvmaze_netfetch.py ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /y /e /h
 
-::# reactor
+:: reactor
 xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
 xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
 xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
