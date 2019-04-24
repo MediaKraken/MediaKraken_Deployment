@@ -86,23 +86,16 @@ def db_audit_dir_timestamp_update(self, dir_path):
                            ' where mm_media_dir_path = %s', (datetime.datetime.now(), dir_path))
 
 
-def db_audit_paths(self, offset=None, records=None):
+def db_audit_paths(self, offset=0, records='ALL'):
     """
     # read the paths to audit
     """
-    if offset is None:
-        self.db_cursor.execute('select mm_media_dir_path, mm_media_class_type,'
-                               ' mm_media_dir_last_scanned, mm_media_class_guid,'
-                               ' mm_media_dir_guid from mm_media_dir, mm_media_class'
-                               ' where mm_media_dir_class_type = mm_media_class_guid'
-                               ' order by mm_media_class_type, mm_media_dir_path')
-    else:
-        self.db_cursor.execute('select mm_media_dir_path, mm_media_class_type,'
-                               ' mm_media_dir_last_scanned, mm_media_class_guid,'
-                               ' mm_media_dir_guid from mm_media_dir, mm_media_class'
-                               ' where mm_media_dir_class_type = mm_media_class_guid'
-                               ' order by mm_media_class_type, mm_media_dir_path'
-                               ' offset %s limit %s', (offset, records))
+    self.db_cursor.execute('select mm_media_dir_path, mm_media_class_type,'
+                           ' mm_media_dir_last_scanned, mm_media_class_guid,'
+                           ' mm_media_dir_guid from mm_media_dir, mm_media_class'
+                           ' where mm_media_dir_class_type = mm_media_class_guid'
+                           ' order by mm_media_class_type, mm_media_dir_path'
+                           ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -118,22 +111,15 @@ def db_audit_path_by_uuid(self, dir_id):
         return None
 
 
-def db_audit_shares(self, offset=None, records=None):
+def db_audit_shares(self, offset=0, records='ALL'):
     """
     # read the shares list
     """
-    if offset is None:
-        self.db_cursor.execute('select mm_media_share_guid, mm_media_share_type,'
-                               ' mm_media_share_user, mm_media_share_password,'
-                               ' mm_media_share_server, mm_media_share_path from mm_media_share'
-                               ' order by mm_media_share_type, mm_media_share_server,'
-                               ' mm_media_share_path')
-    else:
-        self.db_cursor.execute('select mm_media_share_guid, mm_media_share_type,'
-                               ' mm_media_share_user, mm_media_share_password,'
-                               ' mm_media_share_server, mm_media_share_path from mm_media_share'
-                               ' order by mm_media_share_type, mm_media_share_server,'
-                               ' mm_media_share_path offset %s limit %s', (offset, records))
+    self.db_cursor.execute('select mm_media_share_guid, mm_media_share_type,'
+                           ' mm_media_share_user, mm_media_share_password,'
+                           ' mm_media_share_server, mm_media_share_path from mm_media_share'
+                           ' order by mm_media_share_type, mm_media_share_server,'
+                           ' mm_media_share_path offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 

@@ -31,28 +31,20 @@ def db_link_list_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_link_list(self, offset=None, records=None, search_value=None):
+def db_link_list(self, offset=0, records='ALL', search_value=None):
     """
     Return list of linked server
     Complete list for admins
     """
-    if offset is None:
-        if search_value is not None:
-            self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json'
-                                   ' from mm_link where mm_link_name %% %s', (search_value,))
-        else:
-            self.db_cursor.execute(
-                'select mm_link_guid, mm_link_name, mm_link_json from mm_link')
+    if search_value is not None:
+        self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'
+                               ' where mm_link_guid in (select mm_link_guid'
+                               ' from mm_link where mm_link_name %% %s offset %s limit %s)',
+                               (search_value, offset, records))
     else:
-        if search_value is not None:
-            self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'
-                                   ' where mm_link_guid in (select mm_link_guid'
-                                   ' from mm_link where mm_link_name %% %s offset %s limit %s)',
-                                   (search_value, offset, records))
-        else:
-            self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'
-                                   ' where mm_link_guid in (select mm_link_guid from mm_link'
-                                   ' offset %s limit %s)', (offset, records))
+        self.db_cursor.execute('select mm_link_guid, mm_link_name, mm_link_json from mm_link'
+                               ' where mm_link_guid in (select mm_link_guid from mm_link'
+                               ' offset %s limit %s)', (offset, records))
     return self.db_cursor.fetchall()
 
 

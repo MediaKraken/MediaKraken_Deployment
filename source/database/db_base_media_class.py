@@ -40,21 +40,16 @@ def db_media_class_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_media_class_list(self, offset=None, records=None):
+def db_media_class_list(self, offset=0, records='ALL'):
     """
     List media class
     """
-    if offset is None:
-        self.db_cursor.execute('select mm_media_class_type,mm_media_class_guid,'
-                               'mm_media_class_display from mm_media_class'
-                               ' order by LOWER(mm_media_class_type)')
-    else:
-        self.db_cursor.execute('select mm_media_class_type,mm_media_class_guid,'
-                               'mm_media_class_display from mm_media_class'
-                               ' where mm_media_class_guid'
-                               ' in (select mm_media_class_guid from mm_media_class'
-                               ' order by LOWER(mm_media_class_type) offset %s limit %s)'
-                               ' order by LOWER(mm_media_class_type)', (offset, records))
+    self.db_cursor.execute('select mm_media_class_type,mm_media_class_guid,'
+                           'mm_media_class_display from mm_media_class'
+                           ' where mm_media_class_guid'
+                           ' in (select mm_media_class_guid from mm_media_class'
+                           ' order by LOWER(mm_media_class_type) offset %s limit %s)'
+                           ' order by LOWER(mm_media_class_type)', (offset, records))
     return self.db_cursor.fetchall()
 
 

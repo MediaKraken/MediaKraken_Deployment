@@ -28,18 +28,14 @@ def db_user_list_name_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_user_list_name(self, offset=None, records=None):
+def db_user_list_name(self, offset=0, records='ALL'):
     """
     # return user list
     """
-    if offset is None:
-        self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'
-                               ' from mm_user order by LOWER(username)')
-    else:
-        self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'
-                               ' from mm_user where id in (select id from mm_user'
-                               ' order by LOWER(username)'
-                               ' offset %s limit %s) order by LOWER(username)', (offset, records))
+    self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'
+                           ' from mm_user where id in (select id from mm_user'
+                           ' order by LOWER(username)'
+                           ' offset %s limit %s) order by LOWER(username)', (offset, records))
     return self.db_cursor.fetchall()
 
 

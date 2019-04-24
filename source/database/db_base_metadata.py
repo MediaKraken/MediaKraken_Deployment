@@ -58,21 +58,15 @@ def db_meta_genre_list_count(self):
     return len(self.db_cursor.fetchall())
 
 
-def db_meta_genre_list(self, offset=None, records=None):
+def db_meta_genre_list(self, offset=0, records='ALL'):
     """
     # grab all the generes
     """
-    if offset is None:
-        self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                               '->\'Meta\'->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'
-                               ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'themoviedb\''
-                               '->\'Meta\'->\'genres\')::jsonb')
-    else:
-        self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                               '->\'Meta\'->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'
-                               ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'themoviedb\''
-                               '->\'Meta\'->\'genres\')::jsonb offset %s limit %s',
-                               (offset, records))
+    self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
+                           '->\'Meta\'->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'
+                           ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'themoviedb\''
+                           '->\'Meta\'->\'genres\')::jsonb offset %s limit %s',
+                           (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -169,43 +163,27 @@ def db_meta_movie_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_movie_list(self, offset=None, records=None, search_value=None):
+def db_meta_movie_list(self, offset=0, records='ALL', search_value=None):
     """
     # return list of movies
     """
-    if offset is None:
-        if search_value is not None:
-            self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-                                   'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                   'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json from mm_metadata_movie '
-                                   'where mm_media_name %% %s '
-                                   'order by LOWER(mm_media_name), mm_date',
-                                   (search_value,))
-        else:
-            self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-                                   'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                   'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json from mm_metadata_movie'
-                                   ' order by LOWER(mm_media_name), mm_date')
+    if search_value is not None:
+        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
+                               'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
+                               'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+                               'mm_metadata_user_json'
+                               ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                               ' from mm_metadata_movie where mm_media_name %% %s'
+                               ' order by mm_media_name offset %s limit %s)'
+                               ' order by mm_media_name, mm_date', (search_value, offset, records))
     else:
-        if search_value is not None:
-            self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-                                   'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                   'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json'
-                                   ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
-                                   ' from mm_metadata_movie where mm_media_name %% %s'
-                                   ' order by mm_media_name offset %s limit %s)'
-                                   ' order by mm_media_name, mm_date', (search_value, offset, records))
-        else:
-            self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-                                   'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                   'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json'
-                                   ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
-                                   ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
-                                   ' order by mm_media_name, mm_date', (offset, records))
+        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
+                               'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
+                               'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+                               'mm_metadata_user_json'
+                               ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                               ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
+                               ' order by mm_media_name, mm_date', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -330,59 +308,33 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
                                                                            'mm_metadata_tvshow_guid']))
 
 
-def db_meta_queue_list(self, user_id, offset=None, records=None, search_value=None):
+def db_meta_queue_list(self, user_id, offset=0, records='ALL', search_value=None):
     # TODO sort by release date as well
     # TODO use the search value
-    if offset is None:
-        self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'
-                               ' from mm_metadata_movie'
-                               ' where mm_metadata_user_json->\'UserStats\'->%s->>\'queue\' = \'True\''
-                               ' order by LOWER(mm_media_name))'
-                               ' UNION ALL '
-                               '(select mm_metadata_tvshow_guid, mm_metadata_tvshow_name'
-                               ' from mm_metadata_tvshow '
-                               ' where mm_metadata_tvshow_user_json->\'UserStats\'->%s->>\'queue\' '
-                               '= \'True\''
-                               ' order by LOWER(mm_metadata_tvshow_name))'
-                               ' UNION ALL '
-                               '(select mm_metadata_music_guid, mm_metadata_music_name'
-                               ' from mm_metadata_music '
-                               ' where mm_metadata_music_user_json->\'UserStats\'->%s->>\'queue\' '
-                               '= \'True\''
-                               ' order by LOWER(mm_metadata_music_name))'
-                               ' UNION ALL '
-                               '(select mm_metadata_music_video_guid, mm_media_music_video_band'
-                               ' from mm_metadata_music_video '
-                               ' where '
-                               'mm_metadata_music_video_user_json->\'UserStats\'->%s->>\'queue\' '
-                               '= \'True\''
-                               ' order by LOWER(mm_media_music_video_band))',
-                               (user_id, user_id, user_id, user_id,))
-    else:
-        self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'
-                               ' from mm_metadata_movie '
-                               ' where mm_metadata_user_json->\'UserStats\'->%s->>\'queue\' = '
-                               '\'True\''
-                               ' order by LOWER(mm_media_name))'
-                               ' UNION ALL '
-                               '(select mm_metadata_tvshow_guid, mm_metadata_tvshow_name'
-                               ' from mm_metadata_tvshow '
-                               ' where mm_metadata_tvshow_user_json->\'UserStats\'->%s->>\'queue\' '
-                               '= \'True\''
-                               ' order by LOWER(mm_metadata_tvshow_name))'
-                               ' UNION ALL '
-                               '(select mm_metadata_music_guid, mm_metadata_music_name'
-                               ' from mm_metadata_music '
-                               ' where mm_metadata_music_user_json->\'UserStats\'->%s->>\'queue\' '
-                               '= \'True\''
-                               ' order by LOWER(mm_metadata_music_name))'
-                               ' UNION ALL '
-                               '(select mm_metadata_music_video_guid, mm_media_music_video_band'
-                               ' from mm_metadata_music_video '
-                               ' where '
-                               'mm_metadata_music_video_user_json->\'UserStats\'->%s->>\'queue\' '
-                               '= \'True\''
-                               ' order by LOWER(mm_media_music_video_band))'
-                               ' offset %s limit %s',
-                               (user_id, user_id, user_id, user_id, offset, records))
+    self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'
+                           ' from mm_metadata_movie '
+                           ' where mm_metadata_user_json->\'UserStats\'->%s->>\'queue\' = '
+                           '\'True\''
+                           ' order by LOWER(mm_media_name))'
+                           ' UNION ALL '
+                           '(select mm_metadata_tvshow_guid, mm_metadata_tvshow_name'
+                           ' from mm_metadata_tvshow '
+                           ' where mm_metadata_tvshow_user_json->\'UserStats\'->%s->>\'queue\' '
+                           '= \'True\''
+                           ' order by LOWER(mm_metadata_tvshow_name))'
+                           ' UNION ALL '
+                           '(select mm_metadata_music_guid, mm_metadata_music_name'
+                           ' from mm_metadata_music '
+                           ' where mm_metadata_music_user_json->\'UserStats\'->%s->>\'queue\' '
+                           '= \'True\''
+                           ' order by LOWER(mm_metadata_music_name))'
+                           ' UNION ALL '
+                           '(select mm_metadata_music_video_guid, mm_media_music_video_band'
+                           ' from mm_metadata_music_video '
+                           ' where '
+                           'mm_metadata_music_video_user_json->\'UserStats\'->%s->>\'queue\' '
+                           '= \'True\''
+                           ' order by LOWER(mm_media_music_video_band))'
+                           ' offset %s limit %s',
+                           (user_id, user_id, user_id, user_id, offset, records))
     return self.db_cursor.fetchall()

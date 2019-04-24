@@ -31,26 +31,18 @@ def db_device_count(self, device_type=None, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_device_list(self, device_type=None, offset=None, records=None, search_value=None):
+def db_device_list(self, device_type=None, offset=0, records='ALL', search_value=None):
     """
     Return list of devices in database
     """
     if device_type is None:
-        if offset is None:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
-                                   ' from mm_device order by mm_device_type')
-        else:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
-                                   ' from mm_device order by mm_device_type'
-                                   ' offset %s limit %s', (offset, records))
+        self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
+                               ' from mm_device order by mm_device_type'
+                               ' offset %s limit %s', (offset, records))
     else:
-        if offset is None:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
-                                   ' from mm_device where mm_device_type = %s', (device_type,))
-        else:
-            self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
-                                   ' from mm_device where mm_device_type = %s offset %s limit %s',
-                                   (device_type, offset, records))
+        self.db_cursor.execute('select mm_device_id, mm_device_type, mm_device_json'
+                               ' from mm_device where mm_device_type = %s offset %s limit %s',
+                               (device_type, offset, records))
     return self.db_cursor.fetchall()
 
 

@@ -31,7 +31,7 @@ def db_music_video_list_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_music_video_list(self, offset=None, per_page=None, search_value=None):
+def db_music_video_list(self, offset=0, per_page='ALL', search_value=None):
     """
     music video list
     """

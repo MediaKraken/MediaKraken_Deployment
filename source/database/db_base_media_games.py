@@ -24,7 +24,7 @@ def db_media_game_system_list_count(self, search_value=None):
     pass
 
 
-def db_media_game_system_list(self, offset=None, records=None, search_value=None):
+def db_media_game_system_list(self, offset=0, records='ALL', search_value=None):
     """
     Audited system list
     """
@@ -38,7 +38,7 @@ def db_media_game_list_by_system_count(self, system_id, search_value=None):
     pass
 
 
-def db_media_game_list_by_system(self, system_id, offset=None, records=None, search_value=None):
+def db_media_game_list_by_system(self, system_id, offset=0, records='ALL', search_value=None):
     """
     Audited game list by system
     """
@@ -52,7 +52,7 @@ def db_media_game_list_count(self, search_value=None):
     pass
 
 
-def db_media_game_list(self, offset=None, records=None, search_value=None):
+def db_media_game_list(self, offset=0, records='ALL', search_value=None):
     """
     Audited games list
     """

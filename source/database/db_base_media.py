@@ -17,6 +17,7 @@
 '''
 
 import datetime
+
 import json
 
 from common import common_global
@@ -65,17 +66,13 @@ def db_known_media_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_known_media(self, offset=None, records=None):
+def db_known_media(self, offset=0, records='ALL'):
     """
     # find all known media
     """
-    if offset is None:
-        self.db_cursor.execute(
-            'select mm_media_path from mm_media order by mm_media_path')
-    else:
-        self.db_cursor.execute('select mm_media_path from mm_media where mm_media_guid'
-                               ' in (select mm_media_guid from mm_media order by mm_media_path'
-                               ' offset %s limit %s) order by mm_media_path', (offset, records))
+    self.db_cursor.execute('select mm_media_path from mm_media where mm_media_guid'
+                           ' in (select mm_media_guid from mm_media order by mm_media_path'
+                           ' offset %s limit %s) order by mm_media_path', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -97,19 +94,15 @@ def db_known_media_all_unmatched_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_known_media_all_unmatched(self, offset=None, records=None):
+def db_known_media_all_unmatched(self, offset=0, records='ALL'):
     """
     # read all media that is NULL for metadata match
     """
-    if offset is None:
-        self.db_cursor.execute('select mm_media_guid, mm_media_class_guid, mm_media_path'
-                               ' from mm_media where mm_media_metadata_guid is NULL')
-    else:
-        self.db_cursor.execute('select mm_media_guid, mm_media_class_guid, mm_media_path'
-                               ' from mm_media where mm_media_guid'
-                               ' in (select mm_media_guid from mm_media'
-                               ' where mm_media_metadata_guid is NULL offset %s limit %s)'
-                               ' order by mm_media_path', (offset, records))
+    self.db_cursor.execute('select mm_media_guid, mm_media_class_guid, mm_media_path'
+                           ' from mm_media where mm_media_guid'
+                           ' in (select mm_media_guid from mm_media'
+                           ' where mm_media_metadata_guid is NULL offset %s limit %s)'
+                           ' order by mm_media_path', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -124,26 +117,18 @@ def db_media_duplicate_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_media_duplicate(self, offset=None, records=None):
+def db_media_duplicate(self, offset=0, records='ALL'):
     """
     # list duplicates
     """
     # TODO technically this will "dupe" things like subtitles atm
-    if offset is None:
-        self.db_cursor.execute('select mm_media_metadata_guid,mm_media_name,count(*)'
-                               ' from mm_media,mm_metadata_movie'
-                               ' where mm_media_metadata_guid is not null'
-                               ' and mm_media_metadata_guid = mm_metadata_guid'
-                               ' group by mm_media_metadata_guid,'
-                               'mm_media_name HAVING count(*) > 1 order by LOWER(mm_media_name)')
-    else:
-        self.db_cursor.execute('select mm_media_metadata_guid,mm_media_name,count(*)'
-                               ' from mm_media,mm_metadata_movie'
-                               ' where mm_media_metadata_guid is not null'
-                               ' and mm_media_metadata_guid = mm_metadata_guid'
-                               ' group by mm_media_metadata_guid,'
-                               ' mm_media_name HAVING count(*) > 1 order by LOWER(mm_media_name)'
-                               ' offset %s limit %s', (offset, records))
+    self.db_cursor.execute('select mm_media_metadata_guid,mm_media_name,count(*)'
+                           ' from mm_media,mm_metadata_movie'
+                           ' where mm_media_metadata_guid is not null'
+                           ' and mm_media_metadata_guid = mm_metadata_guid'
+                           ' group by mm_media_metadata_guid,'
+                           ' mm_media_name HAVING count(*) > 1 order by LOWER(mm_media_name)'
+                           ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -156,19 +141,15 @@ def db_media_duplicate_detail_count(self, guid):
     return self.db_cursor.fetchall()
 
 
-def db_media_duplicate_detail(self, guid, offset=None, records=None):
+def db_media_duplicate_detail(self, guid, offset=0, records='ALL'):
     """
     # list duplicate detail
     """
-    if offset is None:
-        self.db_cursor.execute('select mm_media_guid,mm_media_path,mm_media_ffprobe_json'
-                               ' from mm_media where mm_media_metadata_guid = %s', (guid,))
-    else:
-        self.db_cursor.execute('select mm_media_guid,mm_media_path,mm_media_ffprobe_json'
-                               ' from mm_media where mm_media_guid'
-                               ' in (select mm_media_guid from mm_media'
-                               ' where mm_media_metadata_guid = %s offset %s limit %s)',
-                               (guid, offset, records))
+    self.db_cursor.execute('select mm_media_guid,mm_media_path,mm_media_ffprobe_json'
+                           ' from mm_media where mm_media_guid'
+                           ' in (select mm_media_guid from mm_media'
+                           ' where mm_media_metadata_guid = %s offset %s limit %s)',
+                           (guid, offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -366,15 +347,11 @@ def db_unmatched_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_unmatched_list(self, offset=None, list_limit=None):
-    if offset is None:
-        self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
-                               ' where mm_media_metadata_guid is NULL order by mm_media_path')
-    else:
-        self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
-                               ' where mm_media_metadata_guid is NULL'
-                               ' order by mm_media_path offset %s limit %s',
-                               (offset, list_limit))
+def db_unmatched_list(self, offset=0, list_limit='ALL'):
+    self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
+                           ' where mm_media_metadata_guid is NULL'
+                           ' order by mm_media_path offset %s limit %s',
+                           (offset, list_limit))
     return self.db_cursor.fetchall()
 
 
@@ -388,9 +365,10 @@ def db_ffprobe_all_media_guid(self, media_uuid, media_class_uuid):
     """
     # fetch all media with METADATA match
     """
-    self.db_cursor.execute('select mm_media_guid,mm_media_ffprobe_json from mm_media,mm_metadata_movie'
-                           ' where mm_media_metadata_guid = '
-                           '(select mm_media_metadata_guid from mm_media where mm_media_guid = %s)'
-                           ' and mm_media_class_guid = %s',
-                           (media_uuid, media_class_uuid))
+    self.db_cursor.execute(
+        'select mm_media_guid,mm_media_ffprobe_json from mm_media,mm_metadata_movie'
+        ' where mm_media_metadata_guid = '
+        '(select mm_media_metadata_guid from mm_media where mm_media_guid = %s)'
+        ' and mm_media_class_guid = %s',
+        (media_uuid, media_class_uuid))
     return self.db_cursor.fetchall()

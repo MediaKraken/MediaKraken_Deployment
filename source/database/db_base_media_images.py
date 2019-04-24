@@ -27,19 +27,13 @@ def db_media_images_list_count(self, search_value=None):
                            ' and mm_media_class_type = \'Picture\'')
 
 
-def db_media_images_list(self, offset=None, records=None, search_value=None):
+def db_media_images_list(self, offset=0, records='ALL', search_value=None):
     """
     Images list
     """
-    if offset is None:
-        self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'
-                               ' where mm_media.mm_media_class_guid'
-                               ' = mm_media_class.mm_media_class_guid'
-                               ' and mm_media_class_type = \'Picture\'')
-    else:
-        self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'
-                               ' where mm_media.mm_media_class_guid'
-                               ' = mm_media_class.mm_media_class_guid'
-                               ' and mm_media_class_type = \'Picture\' offset %s limit %s',
-                               (offset, records))
+    self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'
+                           ' where mm_media.mm_media_class_guid'
+                           ' = mm_media_class.mm_media_class_guid'
+                           ' and mm_media_class_type = \'Picture\' offset %s limit %s',
+                           (offset, records))
     return self.db_cursor.fetchall()
