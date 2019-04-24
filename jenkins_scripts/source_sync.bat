@@ -1,94 +1,94 @@
-# broadcast
-cp ../source/subprogram_broadcast.py ../docker/alpine/ComposeMediaKrakenBroadcast/src/.
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenBroadcast/src/.
+:: broadcast
+xcopy ..\source\subprogram_broadcast.py ..\docker\alpine\ComposeMediaKrakenBroadcast\src\. /y /e /h
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenBroadcast\src\. /y /e /h
 
-# cast images
-cp ../../castpy/cast.py ../docker/alpine/ComposeMediaKrakenCastImage/src/.
+:: cast images
+xcopy ..\..\castpy\cast.py ..\docker\alpine\ComposeMediaKrakenCastImage\src\. /y /e /h
 
-# cron
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenCron/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenCron/src/.
-cp -R ../source/network ../docker/alpine/ComposeMediaKrakenCron/src/.
-cp ../source/subprogram_cron_checker.py ../docker/alpine/ComposeMediaKrakenCron/src/.
+:: cron
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenCron\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenCron\src\. /y /e /h
+xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenCron\src\. /y /e /h
+xcopy ..\source\subprogram_cron_checker.py ..\docker\alpine\ComposeMediaKrakenCron\src\. /y /e /h
 
-# devicescanner
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenDevicescan/src/.
-cp ../source/main_hardware_discover.py ../docker/alpine/ComposeMediaKrakenDevicescan/src/.
+:: devicescanner
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenDevicescan\src\. /y /e /h
+xcopy ..\source\main_hardware_discover.py ..\docker\alpine\ComposeMediaKrakenDevicescan\src\. /y /e /h
 
-# download
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenDownload/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenDownload/src/.
-cp -R ../source/network ../docker/alpine/ComposeMediaKrakenDownload/src/.
-cp ../source/main_download.py ../docker/alpine/ComposeMediaKrakenDownload/src/.
+:: download
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenDownload\src\/. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenDownload\src\. /y /e /h
+xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenDownload\src\. /y /e /h
+xcopy ..\source\main_download.py ..\docker\alpine\ComposeMediaKrakenDownload\src\. /y /e /h
 
-# ffprobe
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenFFProbe/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenFFProbe/src/.
-cp ../source/subprogram_ffprobe_metadata.py ../docker/alpine/ComposeMediaKrakenFFProbe/src/.
+:: ffprobe
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenFFProbe\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenFFProbe\src\. /y /e /h
+xcopy ..\source\subprogram_ffprobe_metadata.py ..\docker\alpine\ComposeMediaKrakenFFProbe\src\. /y /e /h
 
-# load game/metadata
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenGameData/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenGameData/src/.
-cp ../source/subprogram_metadata_games.py ../docker/alpine/ComposeMediaKrakenGameData/src/.
+:: load game/metadata
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenGameData\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenGameData\src\. /y /e /h
+xcopy ..\source\subprogram_metadata_games.py ..\docker\alpine\ComposeMediaKrakenGameData\src\. /y /e /h
 
-# hardware
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenHardware/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenHardware/src/.
-cp -R ../source/network ../docker/alpine/ComposeMediaKrakenHardware/src/.
-cp ../source/main_hardware.py ../docker/alpine/ComposeMediaKrakenHardware/src/.
+:: hardware
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenHardware\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenHardware\src\. /y /e /h
+xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenHardware\src\. /y /e /h
+xcopy ..\source\main_hardware.py ..\docker\alpine\ComposeMediaKrakenHardware\src\. /y /e /h
 
-# metadata
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp -R ../source/metadata ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp ../source/main_server_metadata_api.py ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp ../source/main_server_metadata_api_worker.py ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp ../source/build_image_directory.py ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp ../source/build_trailer_directory.py ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp ../source/subprogram*.py ../docker/alpine/ComposeMediaKrakenMetadata/src/.
-cp ../source/bulk_themoviedb_netfetch.py ../docker/alpine/ComposeMediaKrakenMetadata/src/.
+:: metadata
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
+xcopy ..\source\metadata ..\docker\alpine\ComposeMediaKrakenMetadata\src/. /y /e /h
+xcopy ..\source\main_server_metadata_api.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
+xcopy ..\source\main_server_metadata_api_worker.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
+xcopy ..\source\build_image_directory.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
+xcopy ..\source\build_trailer_directory.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
+xcopy ..\source\subprogram*.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
+xcopy ..\source\bulk_themoviedb_netfetch.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
 
-# prefetch tmdb
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenPrefetchTMDB/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenPrefetchTMDB/src/.
-cp ../source/bulk_themoviedb_netfetch.py ../docker/alpine/ComposeMediaKrakenPrefetchTMDB/src/.
+:: prefetch tmdb
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenPrefetchTMDB\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenPrefetchTMDB\src\. /y /e /h
+xcopy ..\source\bulk_themoviedb_netfetch.py ..\docker\alpine\ComposeMediaKrakenPrefetchTMDB\src\. /y /e /h
 
-# prefetch tvmaze
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
-cp ../source/bulk_tvmaze_netfetch.py ../docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
+:: prefetch tvmaze
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /y /e /h
+xcopy ..\source\bulk_tvmaze_netfetch.py ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /y /e /h
 
-# reactor
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenReactor/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenReactor/src/.
-cp -R ../source/network ../docker/alpine/ComposeMediaKrakenReactor/src/.
-cp ../source/subprogram*.py  ../docker/alpine/ComposeMediaKrakenReactor/src/.
+::# reactor
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
+xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
+xcopy ..\source\subprogram*.py  ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
 
-# ripper
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenRipper/src/.
-cp ../source/main_ripper.py ../docker/alpine/ComposeMediaKrakenRipper/src/.
+:: ripper
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenRipper\src\. /y /e /h
+xcopy ..\source\main_ripper.py ..\docker\alpine\ComposeMediaKrakenRipper\src\. /y /e /h
 
-# roku thumb
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenRokuThumb/src/.
-cp ../source/subprogram_roku_thumbnail_generate.py ../docker/alpine/ComposeMediaKrakenRokuThumb/src/.
+:: roku thumb
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenRokuThumb\src\. /y /e /h
+xcopy ..\source\subprogram_roku_thumbnail_generate.py ..\docker\alpine\ComposeMediaKrakenRokuThumb\src\. /y /e /h
 
-# server
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenServer/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenServer/src/.
-cp -R ../source/network ../docker/alpine/ComposeMediaKrakenServer/src/.
-cp ../source/db_create_update.py ../docker/alpine/ComposeMediaKrakenServer/src/.
-cp ../source/db_update_version.py ../docker/alpine/ComposeMediaKrakenServer/src/.
-cp ../source/main_server.py ../docker/alpine/ComposeMediaKrakenServer/src/.
-cp ../source/main_server_link.py ../docker/alpine/ComposeMediaKrakenServer/src/.
-cp ../source/subprogram*.py  ../docker/alpine/ComposeMediaKrakenServer/src/.
+:: server
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
+xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
+xcopy ..\source\db_create_update.py ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
+xcopy ..\source\db_update_version.py ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
+xcopy ..\source\main_server.py ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
+xcopy ..\source\main_server_link.py ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
+xcopy ..\source\subprogram*.py  ..\docker\alpine\ComposeMediaKrakenServer\src\. /y /e /h
 
-# slave
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenSlave/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenSlave/src/.
-cp ../source/main_server_slave.py ../docker/alpine/ComposeMediaKrakenSlave/src/.
+:: slave
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenSlave\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenSlave\src\. /y /e /h
+xcopy ..\source\main_server_slave.py ..\docker\alpine\ComposeMediaKrakenSlave\src\. /y /e /h
 
-# webserver
-cp -R ../source/common ../docker/alpine/ComposeMediaKrakenWebServer/src/.
-cp -R ../source/database ../docker/alpine/ComposeMediaKrakenWebServer/src/.
-cp -R ../source/network ../docker/alpine/ComposeMediaKrakenWebServer/src/.
-cp -R ../source/web_app ../docker/alpine/ComposeMediaKrakenWebServer/src/.
+:: webserver
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenWebServer\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenWebServer\src\. /y /e /h
+xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenWebServer\src\. /y /e /h
+xcopy ..\source\web_app ..\docker\alpine\ComposeMediaKrakenWebServer\src\. /y /e /h

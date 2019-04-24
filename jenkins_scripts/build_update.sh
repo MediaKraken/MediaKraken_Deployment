@@ -17,17 +17,12 @@ cd ComposeMediaKrakenBasePYPY/2
 # needs to be here to exit out of 2/3 level
 cd ../
 
-# base python 2 images
-#cd ../ComposeMediaKrakenBase37
-#docker build -t mediakraken/mkbase37 .
-
-# base python 3 images
-#cd ../ComposeMediaKrakenBase37Py3
-#docker build -t mediakraken/mkbase37py3 .
-
 # base python 3 images
 cd ../ComposeMediaKrakenBase38Py3
 docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+
+cd ../ComposeMediaKrakenBase39Py3
+docker build -t mediakraken/mkbase39py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the base FFMPEG from base images
 # Image that simply has ffmpeg and ffprobe for use by other containers.
