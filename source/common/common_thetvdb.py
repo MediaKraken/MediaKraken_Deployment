@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 '''
 
+import os
 from pytvdbapi import api
 
 # from xml.dom import minidom
@@ -28,6 +29,7 @@ class CommonTheTVDB(object):
     """
 
     def __init__(self, option_config_json):
+        os.remove('/tmp/pytvdbapi')
         self.tvdb_connection = api.TVDB(option_config_json['API']['thetvdb'], actors=True,
                                         ignore_case=True)
 
