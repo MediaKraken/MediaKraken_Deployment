@@ -1,5 +1,5 @@
 git pull
-source_sync.sh
+call source_sync.bat
 :: .\webcode_minify\minify-web-scripts.sh
 
 :: must move base dir so the docker-compose commands work
