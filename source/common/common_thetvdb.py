@@ -29,7 +29,10 @@ class CommonTheTVDB(object):
     """
 
     def __init__(self, option_config_json):
-        os.remove('/tmp/pytvdbapi')
+        try:
+            os.remove('/tmp/pytvdbapi')
+        except FileNotFoundError:
+            pass
         self.tvdb_connection = api.TVDB(option_config_json['API']['thetvdb'], actors=True,
                                         ignore_case=True)
 
