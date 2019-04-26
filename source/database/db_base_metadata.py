@@ -58,7 +58,7 @@ def db_meta_genre_list_count(self):
     return len(self.db_cursor.fetchall())
 
 
-def db_meta_genre_list(self, offset=0, records='ALL'):
+def db_meta_genre_list(self, offset=0, records=None):
     """
     # grab all the generes
     """
@@ -163,7 +163,7 @@ def db_meta_movie_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_movie_list(self, offset=0, records='ALL', search_value=None):
+def db_meta_movie_list(self, offset=0, records=None, search_value=None):
     """
     # return list of movies
     """
@@ -308,7 +308,7 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
                                                                            'mm_metadata_tvshow_guid']))
 
 
-def db_meta_queue_list(self, user_id, offset=0, records='ALL', search_value=None):
+def db_meta_queue_list(self, user_id, offset=0, records=None, search_value=None):
     # TODO sort by release date as well
     # TODO use the search value
     self.db_cursor.execute('(select mm_metadata_guid, mm_media_name'

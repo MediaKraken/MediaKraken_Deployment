@@ -43,7 +43,7 @@ def db_media_album_count(self, search_value=None):
             return 0
 
 
-def db_media_album_list(self, offset=0, per_page='ALL', search_value=None):
+def db_media_album_list(self, offset=0, per_page=None, search_value=None):
     """
     Album list
     """

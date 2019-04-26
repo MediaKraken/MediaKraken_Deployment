@@ -27,7 +27,7 @@ def db_media_images_list_count(self, search_value=None):
                            ' and mm_media_class_type = \'Picture\'')
 
 
-def db_media_images_list(self, offset=0, records='ALL', search_value=None):
+def db_media_images_list(self, offset=0, records=None, search_value=None):
     """
     Images list
     """

@@ -33,7 +33,7 @@ def db_meta_game_list_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_game_list(self, offset=0, records='ALL', search_value=None):
+def db_meta_game_list(self, offset=0, records=None, search_value=None):
     """
     # return list of games
     """
@@ -80,7 +80,7 @@ def db_meta_game_by_system_count(self, guid):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_game_by_system(self, guid, offset=0, records='ALL'):
+def db_meta_game_by_system(self, guid, offset=0, records=None):
     """
     # game list by system count
     """

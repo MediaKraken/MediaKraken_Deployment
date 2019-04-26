@@ -17,7 +17,7 @@
 '''
 
 
-def db_web_tvmedia_list(self, genre_type=None, list_limit='ALL',
+def db_web_tvmedia_list(self, genre_type=None, list_limit=None,
                         group_collection=False, offset=0, search_value=None):
     """
     # grab tv data

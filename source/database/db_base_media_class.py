@@ -40,7 +40,7 @@ def db_media_class_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_media_class_list(self, offset=0, records='ALL'):
+def db_media_class_list(self, offset=0, records=None):
     """
     List media class
     """

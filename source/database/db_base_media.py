@@ -66,7 +66,7 @@ def db_known_media_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_known_media(self, offset=0, records='ALL'):
+def db_known_media(self, offset=0, records=None):
     """
     # find all known media
     """
@@ -94,7 +94,7 @@ def db_known_media_all_unmatched_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_known_media_all_unmatched(self, offset=0, records='ALL'):
+def db_known_media_all_unmatched(self, offset=0, records=None):
     """
     # read all media that is NULL for metadata match
     """
@@ -117,7 +117,7 @@ def db_media_duplicate_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_media_duplicate(self, offset=0, records='ALL'):
+def db_media_duplicate(self, offset=0, records=None):
     """
     # list duplicates
     """
@@ -141,7 +141,7 @@ def db_media_duplicate_detail_count(self, guid):
     return self.db_cursor.fetchall()
 
 
-def db_media_duplicate_detail(self, guid, offset=0, records='ALL'):
+def db_media_duplicate_detail(self, guid, offset=0, records=None):
     """
     # list duplicate detail
     """
@@ -347,7 +347,7 @@ def db_unmatched_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_unmatched_list(self, offset=0, list_limit='ALL'):
+def db_unmatched_list(self, offset=0, list_limit=None):
     self.db_cursor.execute('select mm_media_guid, mm_media_path from mm_media'
                            ' where mm_media_metadata_guid is NULL'
                            ' order by mm_media_path offset %s limit %s',

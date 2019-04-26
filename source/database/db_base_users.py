@@ -28,7 +28,7 @@ def db_user_list_name_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_user_list_name(self, offset=0, records='ALL'):
+def db_user_list_name(self, offset=0, records=None):
     """
     # return user list
     """

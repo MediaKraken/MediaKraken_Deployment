@@ -19,7 +19,7 @@
 import uuid
 
 
-def db_meta_song_list(self, offset=0, records='ALL', search_value=None):
+def db_meta_song_list(self, offset=0, records=None, search_value=None):
     """
     # return songs metadatalist
     """
@@ -131,7 +131,7 @@ def db_meta_songs_by_album_guid(self, guid):
     return self.db_cursor.fetchall()
 
 
-def db_meta_album_list(self, offset=0, records='ALL', search_value=None):
+def db_meta_album_list(self, offset=0, records=None, search_value=None):
     """
     # return albums metadatalist
     """
@@ -153,7 +153,7 @@ def db_meta_album_list(self, offset=0, records='ALL', search_value=None):
     return self.db_cursor.fetchall()
 
 
-def db_meta_muscian_list(self, offset=0, records='ALL', search_value=None):
+def db_meta_muscian_list(self, offset=0, records=None, search_value=None):
     """
     # return muscian metadatalist
     """

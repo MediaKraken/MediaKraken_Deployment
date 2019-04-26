@@ -86,7 +86,7 @@ def db_audit_dir_timestamp_update(self, dir_path):
                            ' where mm_media_dir_path = %s', (datetime.datetime.now(), dir_path))
 
 
-def db_audit_paths(self, offset=0, records='ALL'):
+def db_audit_paths(self, offset=0, records=None):
     """
     # read the paths to audit
     """
@@ -111,7 +111,7 @@ def db_audit_path_by_uuid(self, dir_id):
         return None
 
 
-def db_audit_shares(self, offset=0, records='ALL'):
+def db_audit_shares(self, offset=0, records=None):
     """
     # read the shares list
     """

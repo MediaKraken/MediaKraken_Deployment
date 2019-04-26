@@ -31,7 +31,7 @@ def db_media_book_list_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_media_book_list(self, offset=0, records='ALL', search_value=None):
+def db_media_book_list(self, offset=0, records=None, search_value=None):
     """
     book list
     """

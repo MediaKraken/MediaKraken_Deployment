@@ -33,7 +33,7 @@ def db_notification_insert(self, notification_data, notification_dismissable):
     return new_guid
 
 
-def db_notification_read(self, offset=0, records='ALL'):
+def db_notification_read(self, offset=0, records=None):
     """
     # read all notifications
     """

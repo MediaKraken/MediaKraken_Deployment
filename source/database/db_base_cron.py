@@ -46,7 +46,7 @@ def db_cron_list_count(self, enabled_only=False):
     return self.db_cursor.fetchone()[0]
 
 
-def db_cron_list(self, enabled_only=False, offset=0, records='ALL'):
+def db_cron_list(self, enabled_only=False, offset=0, records=None):
     """
     Return cron list
     """

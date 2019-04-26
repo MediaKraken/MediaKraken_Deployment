@@ -27,7 +27,7 @@ def db_sync_list_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_sync_list(self, offset=0, records='ALL', user_guid=None):
+def db_sync_list(self, offset=0, records=None, user_guid=None):
     """
     # return list of sync jobs
     """

@@ -31,7 +31,7 @@ def db_device_count(self, device_type=None, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_device_list(self, device_type=None, offset=0, records='ALL', search_value=None):
+def db_device_list(self, device_type=None, offset=0, records=None, search_value=None):
     """
     Return list of devices in database
     """
