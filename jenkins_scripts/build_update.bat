@@ -43,6 +43,10 @@ docker build -t mediakraken/mkbaseffmpegubuntu --build-arg PIPMIRROR=pypi.python
 cd ..\ComposeMediaKrakenBaseNodeFFMPEGUbuntu
 docker build -t mediakraken/mkbasenodeffmpegubuntu --build-arg PIPMIRROR=pypi.python.org .
 
+# build the base NODE image from alpine 3.9
+cd ..\ComposeMediaKrakenBaseNodeJS
+docker build -t mediakraken/mkbasenode --build-arg PIPMIRROR=pypi.python.org .
+
 :: build the device scan
 :: When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
 cd ..\ComposeMediaKrakenDevicescan

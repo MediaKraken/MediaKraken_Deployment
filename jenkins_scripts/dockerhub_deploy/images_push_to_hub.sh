@@ -4,6 +4,7 @@ docker push mediakraken/mkbase39py3:latest
 docker push mediakraken/mkbaseffmpeg:latest
 #docker push mediakraken/mkbaseffmpegnvidia:latest
 #docker push mediakraken/mkbaseffmpegnvidiadebian:latest
+docker push mediakraken/mkbasemode:latest
 docker push mediakraken/mkbasenodeffmpeg:latest
 #docker push mediakraken/mkbasenvidiadebain:latest
 docker push mediakraken/mkbroadcast:latest
