@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-import os
+import shutil
 from pytvdbapi import api
 
 # from xml.dom import minidom
@@ -30,8 +30,8 @@ class CommonTheTVDB(object):
 
     def __init__(self, option_config_json):
         try:
-            os.remove('/tmp/pytvdbapi')
-        except FileNotFoundError:
+            shutil.rmtree('/tmp/pytvdbapi')
+        except OSError:
             pass
         self.tvdb_connection = api.TVDB(option_config_json['API']['thetvdb'], actors=True,
                                         ignore_case=True)
