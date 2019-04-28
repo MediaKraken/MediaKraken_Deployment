@@ -2,7 +2,7 @@
 FROM mediakraken/mkbasenode:latest
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the GrapesJS app"
+LABEL Description="This image holds the GrapesJS app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -42,4 +42,4 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm -rf /var/cache/apk/* \
   && rm -r /root/.npm
 
-CMD ["/bin/ash"]
+CMD [ "node" ]
