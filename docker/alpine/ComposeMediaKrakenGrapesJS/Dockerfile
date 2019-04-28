@@ -2,7 +2,7 @@
 FROM mediakraken/mkbasenode:latest
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the GrapeJS app"
+LABEL Description="This image holds the GrapesJS app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR

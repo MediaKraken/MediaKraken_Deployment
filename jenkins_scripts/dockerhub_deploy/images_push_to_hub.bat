@@ -15,6 +15,7 @@ docker push mediakraken/mkdevicescan:latest
 docker push mediakraken/mkdownload:latest
 docker push mediakraken/mkelk:latest
 docker push mediakraken/mkffprobe:latest
+docker push mediakraken/mkgrapesjs:latest
 docker push mediakraken/mkhardware:latest
 docker push mediakraken/mkinotify:latest
 docker push mediakraken/mkmetadata:latest
