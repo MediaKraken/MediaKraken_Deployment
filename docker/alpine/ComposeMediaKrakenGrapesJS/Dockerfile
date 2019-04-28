@@ -18,4 +18,4 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm -rf /var/cache/apk/* \
   && rm -r /root/.npm
 
-CMD [ "node" ]
+CMD ["/bin/ash"]
