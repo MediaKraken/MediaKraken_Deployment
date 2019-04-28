@@ -85,7 +85,7 @@ cd ../ComposeMediaKrakenCastImage
 docker build -t mediakraken/mkcastimage --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the grapesjs
-cd ../ComposeMediaKrakenGrapeJS
+cd ../ComposeMediaKrakenGrapesJS
 docker build -t mediakraken/mkgrapesjs --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 # move here so all the "deps" are built first
