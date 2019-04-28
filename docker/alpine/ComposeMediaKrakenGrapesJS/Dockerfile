@@ -14,31 +14,7 @@ WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
-  python \
-  bash \
-  alpine-sdk \
-  libffi-dev \
-  libxml2-dev \
-  libxslt-dev \
-  linux-headers \
-  libressl \
-  musl-dev \
-  python3 \
-  python3-dev \
-  openrc \
-  py3-service_identity \
-  py3-setuptools \
   && npm install -g grapesjs \
-  && apk del \
-  alpine-sdk \
-  libffi-dev \
-  libxml2-dev \
-  libxslt-dev \
-  linux-headers \
-  musl-dev \
-  python3-dev \
-  && apk add \
-  py-setuptools \
   && rm -rf /var/cache/apk/* \
   && rm -r /root/.npm
 
