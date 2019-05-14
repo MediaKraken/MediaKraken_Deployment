@@ -88,6 +88,7 @@ def register_blueprints(app):
     app.register_blueprint(admins.views_game_metadata.blueprint)
     app.register_blueprint(admins.views_library.blueprint)
     app.register_blueprint(admins.views_link.blueprint)
+    app.register_blueprint(admins.views_media_import.blueprint)
     app.register_blueprint(admins.views_messages.blueprint)
     app.register_blueprint(admins.views_reports.blueprint)
     app.register_blueprint(admins.views_share.blueprint)
