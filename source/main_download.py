@@ -140,8 +140,7 @@ class MKConsumer(object):
                             # TODO let the metadata fetch program grab these
                             # TODO verify this trailer has not been downloaded before
                             # TODO so only insert db dl records
-                            common_network.mk_network_fetch_from_url(
-                                download_link, '/static/meta/trailer')
+                            common_network.mk_network_fetch_from_url(download_link, '/static/meta/trailer')
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
