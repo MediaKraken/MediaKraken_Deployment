@@ -19,20 +19,20 @@ cd ../
 
 # base python 3 images
 cd ../ComposeMediaKrakenBase38Py3
-docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=dl-cdn.alpinelinux.org/alpine --build-arg PIPMIRROR=pypi.python.org .
 
 cd ../ComposeMediaKrakenBase39Py3
-docker build -t mediakraken/mkbase39py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkbase39py3 --build-arg ALPMIRROR=dl-cdn.alpinelinux.org/alpine --build-arg PIPMIRROR=pypi.python.org .
 
 # Build the base FFMPEG from base images
 # Image that simply has ffmpeg and ffprobe for use by other containers.
 cd ../ComposeMediaKrakenBaseFFMPEG
-docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkbaseffmpeg --build-arg ALPMIRROR=dl-cdn.alpinelinux.org/alpine --build-arg PIPMIRROR=pypi.python.org .
 
 # build the base node
 # Adds NODE to the base ffmpeg and ffprobe.
 cd ../ComposeMediaKrakenBaseNodeFFMPEG
-docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkbasenodeffmpeg --build-arg ALPMIRROR=dl-cdn.alpinelinux.org/alpine --build-arg PIPMIRROR=pypi.python.org .
 
 # this will include the nvidia cuda/nvec/driver
 cd ../ComposeMediaKrakenBaseFFMPEGUbuntu
@@ -50,7 +50,7 @@ docker build -t mediakraken/mkbasenode --build-arg PIPMIRROR=pypi.python.org .
 # build the device scan
 # When run it will scan the HOST network for HDHomerun, Chromecast and Roku devices.
 cd ../ComposeMediaKrakenDevicescan
-docker build -t mediakraken/mkdevicescan --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkdevicescan --build-arg ALPMIRROR=dl-cdn.alpinelinux.org/alpine --build-arg PIPMIRROR=pypi.python.org .
 
 # build the openldap
 #cd ../ComposeMediaKrakenOpenLDAP
