@@ -1,0 +1,8 @@
+*.md~
+*.pyc
+*.common_network_ssh.py.un~
+*.py~
+*.common_network_kodi.py.un~
+*.py
+/ImageData.txt
+/README.md
