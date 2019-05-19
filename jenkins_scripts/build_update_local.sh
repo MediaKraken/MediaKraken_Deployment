@@ -1,4 +1,8 @@
-git pull
+# rsync the git checkout to local code (so dont' have to commit, etc)
+rsync -r ../../MediaKraken_Deployment/* ../../MediaKraken_Docker_Build
+
+cd ../../MediaKraken_Docker_Build/jenkins_scripts
+
 ./source_sync.sh
 # ./webcode_minify/minify-web-scripts.sh
 
