@@ -5,7 +5,7 @@ User view in webapp
 
 from MediaKraken.user.forms import SyncEditForm
 from flask import Blueprint, render_template, g, request, \
-    redirect, url_for
+    redirect, url_for, flash
 from flask_login import login_required
 
 blueprint = Blueprint("user_sync", __name__,
@@ -20,6 +20,18 @@ from common import common_pagination
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
+
+
+def flash_errors(form):
+    """
+    Display each error on top of form
+    """
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash("Error in the %s field - %s" % (
+                getattr(form, field).label.text,
+                error
+            ))
 
 
 @blueprint.route('/sync')
@@ -71,6 +83,8 @@ def sync_edit(guid):
     form = SyncEditForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
+    else:
+        flash_errors(form)
     return render_template('users/user_sync_edit.html', guid=guid, form=form)
 
 
