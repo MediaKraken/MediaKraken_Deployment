@@ -218,8 +218,11 @@ def admin_server_settings():
                 settings_json['API']['opensubtitles'])
     elif request.method == 'POST':
         # api info
-        settings_json['API']['musicbrainz'] = data.com_hash_gen_crypt_encode(
-            request.form['docker_musicbrainz_code'])
+        if request.form['docker_musicbrainz_code']:
+            settings_json['API']['musicbrainz'] = data.com_hash_gen_crypt_encode(
+                request.form['docker_musicbrainz_code'])
+        else:
+            settings_json['API']['musicbrainz'] = None
         settings_json['API']['opensubtitles'] = data.com_hash_gen_crypt_encode(
             request.form['metadata_sub_code'])
         # Docker instances info

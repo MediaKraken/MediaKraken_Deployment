@@ -3,8 +3,24 @@
 from decimal import ROUND_UP
 
 from flask_wtf import Form
-from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
+from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField, Required
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+
+
+class RequiredIf(Required):
+    # a validator which makes a field required if
+    # another field is set and has a truthy value
+
+    def __init__(self, other_field_name, *args, **kwargs):
+        self.other_field_name = other_field_name
+        super(RequiredIf, self).__init__(*args, **kwargs)
+
+    def __call__(self, form, field):
+        other_field = form._fields.get(self.other_field_name)
+        if other_field is None:
+            raise Exception('no field named "%s" in form' % self.other_field_name)
+        if bool(other_field.data):
+            super(RequiredIf, self).__call__(form, field)
 
 
 class ShareAddEditForm(Form):
@@ -171,7 +187,7 @@ class AdminSettingsForm(Form):
     metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
     docker_musicbrainz = BooleanField(
         'Start MusicBrainz (brainzcode required https://lime-technology.com/forums/topic/42909-support-linuxserverio-musicbrainz/)')
-    docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
+    docker_musicbrainz_code = TextField('Brainzcode', validators=[RequiredIf('docker_musicbrainz'),
                                                                   Length(min=1, max=250)])
 
     docker_mumble = BooleanField('Start Mumble (chat server)')
