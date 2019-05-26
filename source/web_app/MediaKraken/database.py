@@ -5,7 +5,6 @@ utilities.
 
 from sqlalchemy.orm import relationship
 
-from .compat import basestring
 from .extensions import db
 
 # Alias common SQLAlchemy names
@@ -61,7 +60,7 @@ class SurrogatePK(object):
     @classmethod
     def get_by_id(cls, id):
         if any(
-                (isinstance(id, basestring) and id.isdigit(),
+                (isinstance(id, (str, bytes)) and id.isdigit(),
                  isinstance(id, (int, float))),
         ):
             return cls.query.get(int(id))
