@@ -46,8 +46,7 @@ class MKConsumer(object):
 
     def connect(self):
         return pika.SelectConnection(pika.URLParameters(self._url),
-                                     self.on_connection_open,
-                                     stop_ioloop_on_close=False)
+                                     self.on_connection_open)
 
     def on_connection_open(self, unused_connection):
         self.add_on_connection_close_callback()
