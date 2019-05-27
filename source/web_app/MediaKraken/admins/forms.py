@@ -3,8 +3,8 @@
 from decimal import ROUND_UP
 
 from flask_wtf import Form
-from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField, Required
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms import TextField, PasswordField, TextAreaField, BooleanField, SelectField, DecimalField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Required
 
 
 class RequiredIf(Required):
