@@ -8,6 +8,7 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_metadata_periodical", __name__, url_prefix='/users',
                       static_folder="../static")
+import isbn
 import sys
 
 sys.path.append('..')
