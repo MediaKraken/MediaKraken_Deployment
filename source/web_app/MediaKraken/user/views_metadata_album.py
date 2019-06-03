@@ -24,7 +24,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 @login_required
 def metadata_music_song_list():
     """
-    Display metdata music song list
+    Display metadata music song list
     """
     page, per_page, offset = common_pagination.get_page_items()
     session['search_page'] = 'meta_music_song'

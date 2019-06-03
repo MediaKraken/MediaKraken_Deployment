@@ -74,7 +74,7 @@ def metadata_movie_detail(guid):
                            data_poster_image=data_poster_image,
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
-                           data_budget=common_internationalization.com_inter_number_format( \
+                           data_budget=common_internationalization.com_inter_number_format(
                                json_metadata['Meta']['themoviedb']['Meta']['budget'])
                            )
 
