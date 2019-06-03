@@ -1,3 +1,6 @@
+Durable does NOT changes messages, only the exchange and queue will be redone
+on boot
+
 exchange_declare
 queue_declare
 
