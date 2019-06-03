@@ -46,9 +46,7 @@ def get_pagination(**kwargs):
     Return pagination headers for flask
     """
     kwargs.setdefault('record_name', 'records')
-    return Pagination(format_total=True,
-                      format_number=True,
-                      css_framework=get_css_framework(),
+    return Pagination(css_framework=get_css_framework(),
                       link_size=get_link_size(),
                       show_single_page=show_single_page_or_not(),
                       **kwargs
