@@ -106,7 +106,8 @@ class MKConsumer(object):
         self._channel.exchange_declare(
             exchange=exchange_name,
             exchange_type=self.EXCHANGE_TYPE,
-            callback=cb)
+            callback=cb,
+            durable=True)
 
     def on_exchange_declareok(self, _unused_frame, userdata):
         common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Exchange declared: %s', userdata)})
@@ -115,7 +116,7 @@ class MKConsumer(object):
     def setup_queue(self, queue_name):
         common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Declaring queue %s', queue_name)})
         cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
-        self._channel.queue_declare(queue=queue_name, callback=cb)
+        self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
