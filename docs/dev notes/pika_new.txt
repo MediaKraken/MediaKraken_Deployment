@@ -1,0 +1,19 @@
+exchange_declare
+queue_declare
+
+durable=True
+
+# fixed
+subprogram_ffprobe_metadata
+subprogram_roku_thumbnail_generate
+main_download
+main_hardware
+main_server_slave
+
+add_ffprobe_to_media - deliverymode
+metadata_tv_tmdb - deliverymode
+metadata_tv_tvdb - deliverymode
+subprogram_file_scan - deliverymode
+
+main_server_metadata_api_worker, durable...no send
+subprogram_reactor_line, durable..no send

@@ -123,6 +123,6 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
                                            'local': '/mediakraken/web_app/MediaKraken/static/meta/images/episodes/'
                                                     + str(episode_info['id']) + '.jpg'}),
                                       properties=pika.BasicProperties(content_type='text/plain',
-                                                                      delivery_mode=1))
+                                                                      delivery_mode=2))
         db_connection.db_commit()
     return metadata_uuid

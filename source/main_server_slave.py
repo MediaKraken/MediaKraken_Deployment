@@ -16,12 +16,15 @@
   MA 02110-1301, USA.
 '''
 
+import signal
+import time
+
+import functools
 import json
 import os
-import signal
+import pika
 import subprocess
 
-import pika
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
@@ -35,165 +38,148 @@ class MKConsumer(object):
     ROUTING_KEY = 'mkque'
 
     def __init__(self, amqp_url):
+        self.should_reconnect = False
+        self.was_consuming = False
         self._connection = None
         self._channel = None
         self._closing = False
         self._consumer_tag = None
         self._url = amqp_url
+        self._consuming = False
+        # In production, experiment with higher prefetch values
+        # for higher consumer throughput
+        self._prefetch_count = 1
 
     def connect(self):
-        common_global.es_inst.com_elastic_index('info', {'Connecting to': self._url})
-        return pika.SelectConnection(pika.URLParameters(self._url),
-                                     self.on_connection_open,
-                                     stop_ioloop_on_close=False)
+        return pika.SelectConnection(
+            parameters=pika.URLParameters(self._url),
+            on_open_callback=self.on_connection_open,
+            on_open_error_callback=self.on_connection_open_error,
+            on_close_callback=self.on_connection_closed)
 
-    def on_connection_open(self, unused_connection):
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Connection opened'})
-        self.add_on_connection_close_callback()
+    def close_connection(self):
+        self._consuming = False
+        if self._connection.is_closing or self._connection.is_closed:
+            common_global.es_inst.com_elastic_index('info', {
+                'ffprobe': 'Connection is closing or already closed'})
+        else:
+            common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Closing connection'})
+            self._connection.close()
+
+    def on_connection_open(self, _unused_connection):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Closing opened'})
         self.open_channel()
 
-    def add_on_connection_close_callback(self):
+    def on_connection_open_error(self, _unused_connection, err):
         common_global.es_inst.com_elastic_index('info',
-                                                {'stuff': 'Adding connection close callback'})
-        self._connection.add_on_close_callback(self.on_connection_closed)
+                                                {'ffprobe': ('Connection open failed: %s', err)})
+        self.reconnect()
 
-    def on_connection_closed(self, connection, reply_code, reply_text):
-        """This method is invoked by pika when the connection to RabbitMQ is
-        closed unexpectedly. Since it is unexpected, we will reconnect to
-        RabbitMQ if it disconnects.
-        """
+    def on_connection_closed(self, _unused_connection, reason):
         self._channel = None
         if self._closing:
             self._connection.ioloop.stop()
         else:
             common_global.es_inst.com_elastic_index('info',
-                                                    {'code': reply_code, 'reply': reply_text})
-            self._connection.add_timeout(5, self.reconnect)
+                                                    {'ffprobe': (
+                                                        'Connection closed, reconnect necessary: %s',
+                                                        reason)})
+            self.reconnect()
 
     def reconnect(self):
-        """Will be invoked by the IOLoop timer if the connection is
-        closed. See the on_connection_closed method.
-
-        """
-        # This is the old connection IOLoop instance, stop its ioloop
-        self._connection.ioloop.stop()
-
-        if not self._closing:
-            # Create a new connection
-            self._connection = self.connect()
-
-            # There is now a new connection, needs a new ioloop to run
-            self._connection.ioloop.start()
+        self.should_reconnect = True
+        self.stop()
 
     def open_channel(self):
-        """Open a new channel with RabbitMQ by issuing the Channel.Open RPC
-        command. When RabbitMQ responds that the channel is open, the
-        on_channel_open callback will be invoked by pika.
-
-        """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Creating a new channel'})
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Creating a new channel'})
         self._connection.channel(on_open_callback=self.on_channel_open)
 
     def on_channel_open(self, channel):
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Channel opened'})
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Channel opened'})
         self._channel = channel
         self.add_on_channel_close_callback()
         self.setup_exchange(self.EXCHANGE)
 
     def add_on_channel_close_callback(self):
-        """This method tells pika to call the on_channel_closed method if
-        RabbitMQ unexpectedly closes the channel.
-
-        """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Adding channel close callback'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'ffprobe': 'Adding channel close callback'})
         self._channel.add_on_close_callback(self.on_channel_closed)
 
-    def on_channel_closed(self, channel, reply_code, reply_text):
-        """Invoked by pika when RabbitMQ unexpectedly closes the channel.
-        Channels are usually closed if you attempt to do something that
-        violates the protocol, such as re-declare an exchange or queue with
-        different parameters. In this case, we'll close the connection
-        to shutdown the object.
-
-        :param pika.channel.Channel: The closed channel
-        :param int reply_code: The numeric reason the channel was closed
-        :param str reply_text: The text reason the channel was closed
-
-        """
-        self._connection.close()
+    def on_channel_closed(self, channel, reason):
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('Channel %i was closed: %s', channel, reason)})
+        self.close_connection()
 
     def setup_exchange(self, exchange_name):
-        self._channel.exchange_declare(self.on_exchange_declareok,
-                                       exchange_name,
-                                       self.EXCHANGE_TYPE)
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('Declaring exchange: %s', exchange_name)})
+        # Note: using functools.partial is not required, it is demonstrating
+        # how arbitrary data can be passed to the callback when it is called
+        cb = functools.partial(
+            self.on_exchange_declareok, userdata=exchange_name)
+        self._channel.exchange_declare(
+            exchange=exchange_name,
+            exchange_type=self.EXCHANGE_TYPE,
+            callback=cb,
+            durable=True)
 
-    def on_exchange_declareok(self, unused_frame):
+    def on_exchange_declareok(self, _unused_frame, userdata):
+        common_global.es_inst.com_elastic_index('info',
+                                                {'ffprobe': ('Exchange declared: %s', userdata)})
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        self._channel.queue_declare(self.on_queue_declareok, queue_name)
+        common_global.es_inst.com_elastic_index('info',
+                                                {'ffprobe': ('Declaring queue %s', queue_name)})
+        cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
+        self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
-    def on_queue_declareok(self, method_frame):
-        """Method invoked by pika when the Queue.Declare RPC call made in
-        setup_queue has completed. In this method we will bind the queue
-        and exchange together with the routing key by issuing the Queue.Bind
-        RPC command. When this command is complete, the on_bindok method will
-        be invoked by pika.
+    def on_queue_declareok(self, _unused_frame, userdata):
+        queue_name = userdata
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Binding %s to %s with %s',
+                                                                     self.EXCHANGE, queue_name,
+                                                                     self.ROUTING_KEY)})
+        cb = functools.partial(self.on_bindok, userdata=queue_name)
+        self._channel.queue_bind(
+            queue_name,
+            self.EXCHANGE,
+            routing_key=self.ROUTING_KEY,
+            callback=cb)
 
-        :param pika.frame.Method method_frame: The Queue.DeclareOk frame
+    def on_bindok(self, _unused_frame, userdata):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Queue bound: %s', userdata)})
+        self.set_qos()
 
-        """
-        self._channel.queue_bind(self.on_bindok, self.QUEUE,
-                                 self.EXCHANGE, self.ROUTING_KEY)
+    def set_qos(self):
+        self._channel.basic_qos(
+            prefetch_count=self._prefetch_count, callback=self.on_basic_qos_ok)
 
-    def on_bindok(self, unused_frame):
-        """Invoked by pika when the Queue.Bind method has completed. At this
-        point we will start consuming messages by calling start_consuming
-        which will invoke the needed RPC commands to start the process.
-
-        :param pika.frame.Method unused_frame: The Queue.BindOk response frame
-
-        """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Queue bound'})
+    def on_basic_qos_ok(self, _unused_frame):
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('QOS set to: %d', self._prefetch_count)})
         self.start_consuming()
 
     def start_consuming(self):
-        """This method sets up the consumer by first calling
-        add_on_cancel_callback so that the object is notified if RabbitMQ
-        cancels the consumer. It then issues the Basic.Consume RPC command
-        which returns the consumer tag that is used to uniquely identify the
-        consumer with RabbitMQ. We keep the value to use it when we want to
-        cancel consuming. The on_message method is passed in as a callback pika
-        will invoke when a message is fully received.
-
-        """
-        common_global.es_inst.com_elastic_index('info',
-                                                {'stuff': 'Issuing consumer related RPC commands'})
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
-        self._consumer_tag = self._channel.basic_consume(self.on_message,
-                                                         self.QUEUE)
+        self._consumer_tag = self._channel.basic_consume(
+            self.QUEUE, self.on_message)
+        self.was_consuming = True
+        self._consuming = True
 
     def add_on_cancel_callback(self):
-        """Add a callback that will be invoked if RabbitMQ cancels the consumer
-        for some reason. If RabbitMQ does cancel the consumer,
-        on_consumer_cancelled will be invoked by pika.
-
-        """
-        common_global.es_inst.com_elastic_index('info',
-                                                {'stuff': 'Adding consumer cancellation callback'})
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
-        """Invoked by pika when RabbitMQ sends a Basic.Cancel for a consumer
-        receiving messages.
-
-        :param pika.frame.Method method_frame: The Basic.Cancel frame
-
-        """
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('Consumer was cancelled remotely, shutting down: %r', method_frame)})
         if self._channel:
             self._channel.close()
 
-    def on_message(self, unused_channel, basic_deliver, properties, body):
+    def on_message(self, _unused_channel, basic_deliver, properties, body):
         """Invoked by pika when a message is delivered from RabbitMQ. The
         channel is passed for your convenience. The basic_deliver object that
         is passed in carries the exchange, routing key, delivery tag and
@@ -287,65 +273,82 @@ class MKConsumer(object):
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
-        common_global.es_inst.com_elastic_index('info', {'Acknowledging message': delivery_tag})
+        common_global.es_inst.com_elastic_index('error', {
+            'ffprobe null': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
-        """Tell RabbitMQ that you would like to stop consuming by sending the
-        Basic.Cancel RPC command.
-
-        """
         if self._channel:
-            self._channel.basic_cancel(self.on_cancelok, self._consumer_tag)
+            common_global.es_inst.com_elastic_index('error',
+                                                    {
+                                                        'ffprobe null': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+            cb = functools.partial(
+                self.on_cancelok, userdata=self._consumer_tag)
+            self._channel.basic_cancel(self._consumer_tag, cb)
 
-    def on_cancelok(self, unused_frame):
-        """This method is invoked by pika when RabbitMQ acknowledges the
-        cancellation of a consumer. At this point we will close the channel.
-        This will invoke the on_channel_closed method once the channel has been
-        closed, which will in-turn close the connection.
-
-        :param pika.frame.Method unused_frame: The Basic.CancelOk frame
-
-        """
+    def on_cancelok(self, _unused_frame, userdata):
+        self._consuming = False
         common_global.es_inst.com_elastic_index('info', {
-            'stuff': 'RabbitMQ acknowledged the cancellation of the consumer'})
+            'ffprobe': ('RabbitMQ acknowledged the cancellation of the consumer: %s', userdata)})
         self.close_channel()
 
     def close_channel(self):
-        """Call to close the channel with RabbitMQ cleanly by issuing the
-        Channel.Close RPC command.
-
-        """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Closing the channel'})
+        common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Closing the channel'})
         self._channel.close()
 
     def run(self):
-        """Run the example consumer by connecting to RabbitMQ and then
-        starting the IOLoop to block and allow the SelectConnection to operate.
-
-        """
         self._connection = self.connect()
         self._connection.ioloop.start()
 
     def stop(self):
-        """Cleanly shutdown the connection to RabbitMQ by stopping the consumer
-        with RabbitMQ. When RabbitMQ confirms the cancellation, on_cancelok
-        will be invoked by pika, which will then closing the channel and
-        connection. The IOLoop is started again because this method is invoked
-        when CTRL-C is pressed raising a KeyboardInterrupt exception. This
-        exception stops the IOLoop which needs to be running for pika to
-        communicate with RabbitMQ. All of the commands issued prior to starting
-        the IOLoop will be buffered but not processed.
+        if not self._closing:
+            self._closing = True
+            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopping'})
+            if self._consuming:
+                self.stop_consuming()
+                self._connection.ioloop.start()
+            else:
+                self._connection.ioloop.stop()
+            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopped'})
 
+    class ReconnectingExampleConsumer(object):
+        """This is an example consumer that will reconnect if the nested
+        ExampleConsumer indicates that a reconnect is necessary.
         """
-        self._closing = True
-        self.stop_consuming()
-        self._connection.ioloop.start()
 
-    def close_connection(self):
-        """This method closes the connection to RabbitMQ."""
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Closing connection'})
-        self._connection.close()
+        def __init__(self, amqp_url):
+            self._reconnect_delay = 0
+            self._amqp_url = amqp_url
+            self._consumer = MKConsumer(self._amqp_url)
+
+        def run(self):
+            while True:
+                try:
+                    self._consumer.run()
+                except KeyboardInterrupt:
+                    self._consumer.stop()
+                    break
+                self._maybe_reconnect()
+
+        def _maybe_reconnect(self):
+            if self._consumer.should_reconnect:
+                self._consumer.stop()
+                reconnect_delay = self._get_reconnect_delay()
+                common_global.es_inst.com_elastic_index('error',
+                                                        {'ffprobe': (
+                                                            'Reconnecting after %d seconds',
+                                                            reconnect_delay)})
+                time.sleep(reconnect_delay)
+                self._consumer = MKConsumer(self._amqp_url)
+
+        def _get_reconnect_delay(self):
+            if self._consumer.was_consuming:
+                self._reconnect_delay = 0
+            else:
+                self._reconnect_delay += 1
+            if self._reconnect_delay > 30:
+                self._reconnect_delay = 30
+            return self._reconnect_delay
 
 
 def main():
