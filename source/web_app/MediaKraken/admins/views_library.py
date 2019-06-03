@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import sys
+
 import json
 import os
-import sys
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
@@ -73,14 +74,18 @@ def admin_library():
             # submit the message
             ch = fpika.channel()
             ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                             body=json.dumps({'Type': 'Library Scan'}))
+                             body=json.dumps({'Type': 'Library Scan'}),
+                             properties=fpika.BasicProperties(content_type='text/plain',
+                                                              delivery_mode=2)
+                             )
             fpika.return_channel(ch)
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_media_dir'),
+                                                  total=g.db_connection.db_table_count(
+                                                      'mm_media_dir'),
                                                   record_name='library dir(s)',
                                                   format_total=True,
                                                   format_number=True,

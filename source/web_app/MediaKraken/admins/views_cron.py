@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import json
 import sys
+
+import json
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash
@@ -125,7 +126,10 @@ def admin_cron_run(guid):
                      body=json.dumps(
                          {'Type': message_type,
                           'Subtype': message_subtype,
-                          'User': current_user.get_id()}))
+                          'User': current_user.get_id()}),
+                     properties=fpika.BasicProperties(content_type='text/plain',
+                                                      delivery_mode=2)
+                     )
     fpika.return_channel(ch)
     return render_template('admin/admin_cron.html')
 

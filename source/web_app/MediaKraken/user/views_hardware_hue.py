@@ -59,7 +59,9 @@ def user_hardware_hue_on():
                      body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
                                       'Hardware': 'Hue', 'Action': 'OnOff',
                                       'Setting': True, 'Target': '10.0.0.225',
-                                      'LightList': (1, 2, 3)}))
+                                      'LightList': (1, 2, 3)}),
+                     properties=fpika.BasicProperties(content_type='text/plain',
+                                                      delivery_mode=2))
     fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 
@@ -75,7 +77,9 @@ def user_hardware_hue_off():
                      body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
                                       'Hardware': 'Hue', 'Action': 'OnOff',
                                       'Setting': False, 'Target': '10.0.0.225',
-                                      'LightList': (1, 2, 3)}))
+                                      'LightList': (1, 2, 3)}),
+                     properties=fpika.BasicProperties(content_type='text/plain',
+                                                      delivery_mode=2))
     fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 

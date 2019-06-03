@@ -70,7 +70,9 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
                                           'Audio Track': atracks,
                                           'Subtitle Track': subtracks,
                                           'Target UUID': target_uuid,
-                                          'User': current_user.get_id()}))
+                                          'User': current_user.get_id()}),
+                         properties=fpika.BasicProperties(content_type='text/plain',
+                                                          delivery_mode=2))
         fpika.return_channel(ch)
 
         # TODO how to know what to return here.....slave could be anywhere on swarm
@@ -110,23 +112,30 @@ def user_playback(action, guid):
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'Type': 'Stop', 'Subtype': device,
-                                          'User': current_user.get_id()}))
+                                          'User': current_user.get_id()}),
+                         properties=fpika.BasicProperties(content_type='text/plain',
+                                                          delivery_mode=2))
         fpika.return_channel(ch)
     elif action == 'play':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'Type': 'Play',
                                           'User': current_user.get_id(),
-                                          'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
+                                          'Data': g.db_connection.db_read_media(guid)[
+                                              'mm_media_path'],
                                           'Audio': audio_track,
                                           'Subtitle': subtitle_track,
-                                          'Target': playback_device}))
+                                          'Target': playback_device}),
+                         properties=fpika.BasicProperties(content_type='text/plain',
+                                                          delivery_mode=2))
         fpika.return_channel(ch)
     elif action == 'pause':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'Type': 'Pause', 'Subtype': device,
-                                          'User': current_user.get_id()}))
+                                          'User': current_user.get_id()}),
+                         properties=fpika.BasicProperties(content_type='text/plain',
+                                                          delivery_mode=2))
         fpika.return_channel(ch)
     #    elif action == 'ff':
     #        pass
@@ -136,19 +145,25 @@ def user_playback(action, guid):
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'Type': 'Mute', 'Subtype': device,
-                                          'User': current_user.get_id()}))
+                                          'User': current_user.get_id()}),
+                         properties=fpika.BasicProperties(content_type='text/plain',
+                                                          delivery_mode=2))
         fpika.return_channel(ch)
     elif action == 'vol_up':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'Type': 'Volume Up', 'Subtype': device,
-                                          'User': current_user.get_id()}))
+                                          'User': current_user.get_id()}),
+                         properties=fpika.BasicProperties(content_type='text/plain',
+                                                          delivery_mode=2))
         fpika.return_channel(ch)
     elif action == 'vol down':
         ch = fpika.channel()
         ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
                          body=json.dumps({'Type': 'Volume Down', 'Subtype': device,
-                                          'User': current_user.get_id()}))
+                                          'User': current_user.get_id()}),
+                         properties=fpika.BasicProperties(content_type='text/plain',
+                                                          delivery_mode=2))
         fpika.return_channel(ch)
     return render_template("users/user_playback.html")
 

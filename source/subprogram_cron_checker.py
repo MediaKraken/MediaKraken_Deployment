@@ -84,7 +84,11 @@ while 1:
                                               routing_key=row_data['mm_cron_json']['route_key'],
                                               body=json.dumps(
                                                   {'Type': row_data['mm_cron_json']['type'],
-                                                   'Subtype': row_data['mm_cron_json']['HDTrailers']}))
+                                                   'Subtype': row_data['mm_cron_json']['HDTrailers']}),
+                                              properties=pika.BasicProperties(
+                                                  content_type='text/plain',
+                                                  delivery_mode=2)
+                                              )
                     else:
                         proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
                                                 shell=False)
