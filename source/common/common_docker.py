@@ -16,11 +16,11 @@
   MA 02110-1301, USA.
 '''
 
+import docker
 import os
 import socket
 import subprocess
 
-import docker
 from . import common_global
 
 
@@ -29,7 +29,9 @@ from . import common_global
 # the following function is used in ALPINE until socket.gethostbyname('host.docker.internal') is valid
 def com_docker_host_ip():
     # this doesn't work from a container!  it'll just give the route ip to the host  ie 172.x.x.x
-    return subprocess.check_output(['ip', '-4', 'route', 'show', 'default']).decode("utf-8").split(' ')[2]
+    return \
+        subprocess.check_output(['ip', '-4', 'route', 'show', 'default']).decode("utf-8").split(
+            ' ')[2]
 
 
 class CommonDocker(object):
@@ -199,14 +201,17 @@ class CommonDocker(object):
 
     def com_docker_run_device_scan(self, current_host_working_directory):
         common_global.es_inst.com_elastic_index('info',
-                                                {'path': os.path.join(current_host_working_directory, 'data/devices')})
+                                                {'path': os.path.join(
+                                                    current_host_working_directory,
+                                                    'data/devices')})
         self.com_docker_delete_container('mkdevicescan')
         return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                        detach=True,
                                        command='python3 /mediakraken/main_hardware_discover.py',
                                        name='mkdevicescan',
                                        network_mode='host',
-                                       volumes={os.path.join(current_host_working_directory, 'data/devices'):
+                                       volumes={os.path.join(current_host_working_directory,
+                                                             'data/devices'):
                                                     {'bind': '/mediakraken/devices',
                                                      'mode': 'rw'}
                                                 },
@@ -221,10 +226,11 @@ class CommonDocker(object):
                                        ports={"5044": 5044, "5601": 5601, "9200": 9200},
                                        name='mkelk',
                                        network='mk_mediakraken_network',
-                                       volumes={os.path.join(current_host_working_directory, 'data/elk'):
-                                                    {'bind': '/var/lib/elasticsearch',
-                                                     'mode': 'rw'}
-                                                },
+                                       volumes={
+                                           os.path.join(current_host_working_directory, 'data/elk'):
+                                               {'bind': '/var/lib/elasticsearch',
+                                                'mode': 'rw'}
+                                       },
                                        environment={'ELASTICSEARCH_START': 1,
                                                     'LOGSTASH_START': 0,
                                                     'KIBANA_START': 1}
@@ -240,13 +246,15 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network',
                                        command=container_command,
                                        detach=True,
-                                       volumes={os.path.join(current_host_working_directory, 'data/emulation'):
+                                       volumes={os.path.join(current_host_working_directory,
+                                                             'data/emulation'):
                                                     {'bind': '/mediakraken/emulation',
                                                      'mode': 'rw'}
                                                 },
                                        environment={'POSTGRES_DB': os.environ['POSTGRES_DB'],
                                                     'POSTGRES_USER': os.environ['POSTGRES_USER'],
-                                                    'POSTGRES_PASSWORD': os.environ['POSTGRES_PASSWORD'],
+                                                    'POSTGRES_PASSWORD': os.environ[
+                                                        'POSTGRES_PASSWORD'],
                                                     'DEBUG': os.environ['DEBUG'],
                                                     },
                                        name='mkgamedata')
@@ -288,9 +296,11 @@ class CommonDocker(object):
                                        network='mk_mediakraken_network',
                                        ports={"5000": 5000},
                                        environment={'BRAINZCODE': brainzcode},
-                                       volumes={os.path.join(current_host_working_directory, 'data/mbrainz/config'):
+                                       volumes={os.path.join(current_host_working_directory,
+                                                             'data/mbrainz/config'):
                                                     {'bind': '/config', 'mode': 'rw'},
-                                                os.path.join(current_host_working_directory, 'data/mbrainz/data'):
+                                                os.path.join(current_host_working_directory,
+                                                             'data/mbrainz/data'):
                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self, current_host_working_directory):
@@ -299,7 +309,8 @@ class CommonDocker(object):
                                        detach=True,
                                        ports={"64738": 64738},
                                        name='mkmumble',
-                                       volumes={os.path.join(current_host_working_directory, 'data/mumble'):
+                                       volumes={os.path.join(current_host_working_directory,
+                                                             'data/mumble'):
                                                     {'bind': '/etc/mumble',
                                                      'mode': 'rw'}
                                                 }
@@ -311,10 +322,12 @@ class CommonDocker(object):
                                        detach=True,
                                        name='mkopenldap',
                                        ports={"389": 389, "636": 636},
-                                       volumes={os.path.join(current_host_working_directory, 'data/openldap/conf'):
+                                       volumes={os.path.join(current_host_working_directory,
+                                                             'data/openldap/conf'):
                                                     {'bind': '/etc/openldap',
                                                      'mode': 'rw'},
-                                                os.path.join(current_host_working_directory, 'data/openldap/data'):
+                                                os.path.join(current_host_working_directory,
+                                                             'data/openldap/data'):
                                                     {'bind': '/var/lib/openldap/openldap-data',
                                                      'mode': 'rw'}},
                                        network='mk_mediakraken_network')
@@ -339,10 +352,12 @@ class CommonDocker(object):
                                        volumes={'/var/run/docker.sock':
                                                     {'bind': '/var/run/docker.sock',
                                                      'mode': 'ro'},
-                                                os.path.join(current_host_working_directory, 'data/portainer'):
+                                                os.path.join(current_host_working_directory,
+                                                             'data/portainer'):
                                                     {'bind': '/ data', 'mode': 'rw'}})
 
-    def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command):
+    def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command,
+                             ram_disk=False):
         """
         Launch container for slave play
         """
@@ -350,19 +365,26 @@ class CommonDocker(object):
             image_name = 'mediakraken/mkslavenvidiadebian'
         else:
             image_name = 'mediakraken/mkslave'
+        mount_volumes = {'/var/run/docker.sock':
+                             {'bind': '/var/run/docker.sock',
+                              'mode': 'ro'},
+                         '/mediakraken/nfsmount':
+                             {'bind': '/mediakraken/mnt',
+                              'mode': 'ro'}
+                         }
+        if ram_disk:
+            mount_volumes['tmpfs'] = {'bind': '/mediakraken/ramdisk'}
+        """
+            tmpfs:
+             - /my-run:size=10M
+        """
         self.com_docker_delete_container(image_name.replace('mediakraken/', ''))
         return self.cli.containers.run(image=image_name,
                                        ports=port_mapping,
                                        network='mk_mediakraken_network',
                                        command=container_command,
                                        detach=True,
-                                       volumes={'/var/run/docker.sock':
-                                                    {'bind': '/var/run/docker.sock',
-                                                     'mode': 'ro'},
-                                                '/mediakraken/nfsmount':
-                                                    {'bind': '/mediakraken/mnt',
-                                                     'mode': 'ro'}
-                                                },
+                                       volumes=mount_volumes,
                                        name=name_container)
 
     def com_docker_run_teamspeak(self, current_host_working_directory):
@@ -370,7 +392,8 @@ class CommonDocker(object):
         return self.cli.containers.run(image='mediakraken/mkteamspeak',
                                        ports={"9987/upd": 9987, "10011": 10011,
                                               "30033": 30033},
-                                       volumes={os.path.join(current_host_working_directory, 'data/teamspeak/data'):
+                                       volumes={os.path.join(current_host_working_directory,
+                                                             'data/teamspeak/data'):
                                                     {'bind': '/opt/teamspeak',
                                                      'mode': 'rw'},
                                                 },
@@ -388,7 +411,8 @@ class CommonDocker(object):
                                               "51413/udp": 51413},
                                        command='/start-transmission.sh',
                                        volumes={
-                                           os.path.join(current_host_working_directory, 'data/transmission/downloads'):
+                                           os.path.join(current_host_working_directory,
+                                                        'data/transmission/downloads'):
                                                {'bind': '/transmission/downloads',
                                                 'mode': 'rw'},
                                            os.path.join(current_host_working_directory,
