@@ -97,6 +97,10 @@ docker-compose build
 
 # containers here and later are "standalone" with no deps
 
+# build the dosbox
+cd ../ComposeMediaKrakenDosBox
+docker build -t mediakraken/mkdosbox --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=th-pypi-1 .
+
 # build the elk
 cd ../ComposeMediaKrakenELK
 docker build -t mediakraken/mkelk --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=th-pypi-1 .
