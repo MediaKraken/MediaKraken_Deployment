@@ -31,7 +31,7 @@ pysmb
 python-stdnum
 Babel
 docker
-isbn
+isbntools
 beautifulsoup4
 appdirs==1.4.3
 appnope==0.1.0

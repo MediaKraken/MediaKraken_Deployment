@@ -51,7 +51,7 @@ def com_isbn_cover(isbn_string):
     return isbnlib.cover(isbn_string)
 
 
-def com_isbn_mastk(isbn_string, isbn_seperator='-'):
+def com_isbn_mask(isbn_string, isbn_seperator='-'):
     """
     Mask (hyphenate) a canonical ISBN.
     """
