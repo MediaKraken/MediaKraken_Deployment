@@ -60,7 +60,7 @@ if TMDB_API_CONNECTION is not None:
                                                                           "MetaNewID": str(
                                                                               uuid.uuid4())}))
 
-    # start up the range fetchs for tv
+    # start up the range fetches for tv
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_tv_id_max()):
         # check to see if we already have it
         if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
