@@ -218,17 +218,16 @@ class CommonDocker(object):
                                        environment={'DEBUG': os.environ['DEBUG']},
                                        )
 
-    def com_docker_run_dosbox(self, current_user_uuid, current_host_working_directory,
-                              game_file_name):
+    def com_docker_run_dosbox(self, current_user_uuid, current_host_working_directory, game_uuid):
         common_global.es_inst.com_elastic_index('info',
                                                 {'path': os.path.join(
                                                     current_host_working_directory,
                                                     'dosbox')})
         self.com_docker_delete_container(('mkdosbox' + current_user_uuid.replace('-', ''))[:30])
         self.com_docker_network_create('mk_mediakraken_game_network')
-        # create user dir for dosbox
+        # create user dir for dosbox, game_uuid is used to not lose installs/game saves
         user_host_dir = os.path.join(current_host_working_directory, 'data/dosbox',
-                                     current_user_uuid)
+                                     current_user_uuid, game_uuid)
         if not os.path.exists(user_host_dir):
             os.makedirs(user_host_dir)
         return self.cli.containers.run(image='mediakraken/mkdosbox',
