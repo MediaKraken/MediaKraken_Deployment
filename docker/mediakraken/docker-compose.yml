@@ -330,6 +330,10 @@ networks:
   mediakraken_network:
     driver: bridge
     name: mk_mediakraken_network
+  # Game network for dosbox, etc
+  mediakraken_game_network:
+    driver: bridge
+    name: mk_mediakraken_game_network
 
 volumes:
 #     mkvol-device:
