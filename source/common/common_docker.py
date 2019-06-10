@@ -225,6 +225,7 @@ class CommonDocker(object):
                                                     current_host_working_directory,
                                                     'dosbox')})
         self.com_docker_delete_container(('mkdosbox' + current_user_uuid.replace('-', ''))[:30])
+        self.com_docker_network_create('mk_mediakraken_game_network')
         # create user dir for dosbox
         user_host_dir = os.path.join(current_host_working_directory, 'data/dosbox',
                                      current_user_uuid)
