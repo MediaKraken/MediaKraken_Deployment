@@ -93,7 +93,11 @@ docker-compose build
 
 # containers here and later are "standalone" with no deps
 
-# build the dosbox
+# build the retroarch web
+cd ../ComposeMediaKrakenRetroArch
+docker build -t mediakraken/mkretroarch --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
+
+# build the dosbox web
 cd ../ComposeMediaKrakenDosBox
 docker build -t mediakraken/mkdosbox --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
