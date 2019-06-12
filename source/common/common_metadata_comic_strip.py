@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-# https://github.com/MediaKraken-Dependancies/dosage
+# https://github.com/MediaKraken-Dep/dosage
 import subprocess
 from shlex import split
 
@@ -35,7 +35,7 @@ optional arguments:
   -c, --continue        traverse and retrieve comic strips until an existing
                         one is found
   -b PATH, --basepath PATH
-                        set the path to create invidivual comic directories
+                        set the path to create individual comic directories
                         in, default is Comics
   --baseurl PATH        the base URL of your comics directory (for RSS, HTML,
                         etc.); this should correspond to --base-path
@@ -49,29 +49,28 @@ optional arguments:
 '''
 
 
-# TODO allow set of base paths
 class CommonMetadataComicStrip(object):
     """
     Class for snagging comic strips
     """
 
-    def __init__(self):
-        pass
+    def __init__(self, base_path):
+        self.base_path = base_path
 
     def com_meta_com_list_strips(self, adult_access=False):
         if adult_access:
-            return subprocess.check_output(split('dosage --singlelist --adult'))
+            return subprocess.check_output(split('dosage -b %s --singlelist --adult', (self.base_path,)))
         else:
-            return subprocess.check_output(split('dosage --singlelist'))
+            return subprocess.check_output(split('dosage -b %s --singlelist', (self.base_path,)))
 
     def com_meta_com_fetch_strip(self, strip_name, adult_access=False):
         if adult_access:
-            return subprocess.check_output(split('dosage %s', (strip_name,)))
+            return subprocess.check_output(split('dosage -b %b %s', (self.base_path, strip_name,)))
         else:
-            return subprocess.check_output(split('dosage %s --adult', (strip_name,)))
+            return subprocess.check_output(split('dosage -b %s %s --adult', (self.base_path, strip_name,)))
 
     def com_meta_com_current_fetch(self, adult_access=False):
         if adult_access:
-            return subprocess.check_output(split('dosage @'))
+            return subprocess.check_output(split('dosage -b %s @', (self.base_path,)))
         else:
-            return subprocess.check_output(split('dosage @ --adult'))
+            return subprocess.check_output(split('dosage -b %s @ --adult', (self.base_path,)))
