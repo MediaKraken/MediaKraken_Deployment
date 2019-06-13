@@ -40,9 +40,10 @@ def com_file_modification_timestamp(file_name):
     """
     Return file modification date in datetime format
     """
-    if os.path.exists(file_name):
+    # do try except as it'll lessen the fs calls to one
+    try:
         return os.path.getmtime(file_name)
-    else:
+    except FileNotFoundError:
         return None
 
 
@@ -86,7 +87,7 @@ def com_file_load_data(file_name, as_pickle=False):
 
 
 def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,
-                      directory_only=False):
+                      directory_only=False, file_modified=False):
     """
     Find all filtered files in directory
     """
@@ -124,11 +125,24 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
         if file_size:
             match_list_size = []
             for row_data in match_list:
-                match_list_size.append((row_data,
-                                        common_string.com_string_bytes2human(
-                                            os.path.getsize(row_data))))
+                if file_modified:
+                    match_list_size.append((row_data,
+                                            common_string.com_string_bytes2human(
+                                                os.path.getsize(row_data))))
+                else:
+                    match_list_size.append((row_data,
+                                            common_string.com_string_bytes2human(
+                                                os.path.getsize(row_data)),
+                                            com_file_modification_timestamp(row_data)))
             return match_list_size
-        return match_list
+        if file_modified:
+            match_list_modified = []
+            for row_data in match_list:
+                match_list_modified.append((row_data,
+                                            com_file_modification_timestamp(row_data)))
+            return match_list_modified
+        else:
+            return match_list
     else:
         return None
 
