@@ -37,7 +37,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 libretro_current_core = common_file.com_file_dir_list_dict('/mediakraken/emulation/cores',
                                                            filter_text=None, walk_dir=None,
                                                            skip_junk=False, file_size=False,
-                                                           directory_only=False, file_modified=True)
+                                                           directory_only=False,
+                                                           file_modified=True)
 
 libtro_url = 'http://buildbot.libretro.com/nightly/linux/x86_64/latest/'
 # date md5 core_filename.zip
