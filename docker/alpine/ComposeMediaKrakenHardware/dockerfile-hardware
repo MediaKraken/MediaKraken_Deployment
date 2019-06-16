@@ -19,6 +19,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   linux-headers \
   libffi-dev \
   libusb-dev \
+  libxml2-dev \
+  libxslt-dev \
   musl-dev \
   openssl-dev \
   python \
