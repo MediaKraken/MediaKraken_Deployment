@@ -2,9 +2,6 @@
 User view in webapp
 """
 # -*- coding: utf-8 -*-
-from MediaKraken.extensions import (
-    fpika,
-)
 from flask import Blueprint, render_template, g
 from flask_login import login_required
 
@@ -17,6 +14,7 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_file
+from common import common_network_pika
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -54,15 +52,22 @@ def user_hardware_hue_on():
     """
     Hue on
     """
-    ch = fpika.channel()
-    ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
-                     body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
-                                      'Hardware': 'Hue', 'Action': 'OnOff',
-                                      'Setting': True, 'Target': '10.0.0.225',
-                                      'LightList': (1, 2, 3)}),
-                     properties=fpika.BasicProperties(content_type='text/plain',
-                                                      delivery_mode=2))
-    fpika.return_channel(ch)
+    common_network_pika.com_net_pika_send({'Type': 'Hardware', 'Subtype': 'Lights',
+                                           'Hardware': 'Hue', 'Action': 'OnOff',
+                                           'Setting': True, 'Target': '10.0.0.225',
+                                           'LightList': (1, 2, 3)},
+                                          rabbit_host_name='mkrabbitmq',
+                                          exchange_name='mkque_hardware_ex',
+                                          route_key='mkhardware')
+    # ch = fpika.channel()
+    # ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
+    #                  body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
+    #                                   'Hardware': 'Hue', 'Action': 'OnOff',
+    #                                   'Setting': True, 'Target': '10.0.0.225',
+    #                                   'LightList': (1, 2, 3)}),
+    #                  properties=fpika.BasicProperties(content_type='text/plain',
+    #                                                   delivery_mode=2))
+    # fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 
 
@@ -72,15 +77,22 @@ def user_hardware_hue_off():
     """
     Hue off
     """
-    ch = fpika.channel()
-    ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
-                     body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
-                                      'Hardware': 'Hue', 'Action': 'OnOff',
-                                      'Setting': False, 'Target': '10.0.0.225',
-                                      'LightList': (1, 2, 3)}),
-                     properties=fpika.BasicProperties(content_type='text/plain',
-                                                      delivery_mode=2))
-    fpika.return_channel(ch)
+    common_network_pika.com_net_pika_send({'Type': 'Hardware', 'Subtype': 'Lights',
+                                           'Hardware': 'Hue', 'Action': 'OnOff',
+                                           'Setting': False, 'Target': '10.0.0.225',
+                                           'LightList': (1, 2, 3)},
+                                          rabbit_host_name='mkrabbitmq',
+                                          exchange_name='mkque_hardware_ex',
+                                          route_key='mkhardware')
+    # ch = fpika.channel()
+    # ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
+    #                  body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
+    #                                   'Hardware': 'Hue', 'Action': 'OnOff',
+    #                                   'Setting': False, 'Target': '10.0.0.225',
+    #                                   'LightList': (1, 2, 3)}),
+    #                  properties=fpika.BasicProperties(content_type='text/plain',
+    #                                                   delivery_mode=2))
+    # fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 
 
