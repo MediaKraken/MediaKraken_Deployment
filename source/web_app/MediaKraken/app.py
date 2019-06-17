@@ -9,7 +9,7 @@ from MediaKraken.extensions import (
     bcrypt,
     db,
     login_manager,
-    fpika,
+    # fpika,
 )
 from MediaKraken.settings import ProdConfig
 from flask import Flask, render_template
