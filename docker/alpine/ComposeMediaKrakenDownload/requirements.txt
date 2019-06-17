@@ -3,7 +3,6 @@ pika
 youtube-dl
 docker
 pysmb
-dosage
 xmltodict
 colorama
 lxml

@@ -19,5 +19,19 @@
 import pyexcel
 
 
-def com_excel_save(dataset, file_name):
-    pyexcel.save_as(records=dataset, dest_file_name=file_name)
+class CommandExcel(object):
+    """
+    Class for interfacing with excel
+    """
+
+    def __init__(self):
+        pass
+
+    def com_excel_save(self, dataset, file_name):
+        pyexcel.save_as(records=dataset, dest_file_name=file_name)
+
+    def com_excel_load(self, file_name):
+        return pyexcel.iget_records(file_name=file_name)
+
+    def com_excel_free(self):
+        pyexcel.free_resources()

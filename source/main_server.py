@@ -26,6 +26,7 @@ from common import common_config_ini
 from common import common_docker
 from common import common_file
 from common import common_global
+from common import common_hash
 from common import common_logging_elasticsearch
 from common import common_network_share
 from common import common_signal
@@ -46,7 +47,19 @@ if not os.path.isfile('./key/cacert.pem'):
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
-                                                {'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+                                                {
+                                                    'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+        sys.exit()
+
+# create crypto keys if needed
+if not os.path.isfile('./secure/data.zip'):
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'data.zip not found, generating.'})
+    data = common_hash.CommonHashCrypto()
+    data.com_hash_gen_crypt_key()
+    if not os.path.isfile('./secure/data.zip'):
+        common_global.es_inst.com_elastic_index('critical',
+                                                {
+                                                    'stuff': 'Cannot generate crypto. Exiting.....'})
         sys.exit()
 
 # open the database

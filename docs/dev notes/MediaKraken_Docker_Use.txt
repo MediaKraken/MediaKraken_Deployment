@@ -48,6 +48,8 @@ docker build -t mediakraken/mkdatabaseupgrade .
 
 docker exec -it [container-id] /bin/ash
 
+docker run -it --rm mediakraken/mkgrapesjs /bin/ash
+
 
 docker build -t mediakraken/mkbasenvidia .
 

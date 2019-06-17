@@ -135,6 +135,8 @@ def metadata_search(thread_db, provider_name, download_data):
         lookup_halt = True
     elif provider_name == 'pitchfork':
         lookup_halt = True
+    elif provider_name == 'pornhub':
+        lookup_halt = True
     elif provider_name == 'televisiontunes':
         # if download succeeds remove dl
         # TODO....handle list return for title?

@@ -9,11 +9,10 @@ from MediaKraken.extensions import (
     bcrypt,
     db,
     login_manager,
-    fpika,
+    # fpika,
 )
 from MediaKraken.settings import ProdConfig
 from flask import Flask, render_template
-from flask_fontawesome import FontAwesome
 from flask_kvsession import KVSessionExtension
 from flask_uwsgi_websocket import GeventWebSocket
 from simplekv.memory.redisstore import RedisStore
@@ -29,7 +28,6 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     websocket = GeventWebSocket(app)
-    fa = FontAwesome(app)
     return app
 
 
@@ -38,7 +36,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    fpika.init_app(app)
+#    fpika.init_app(app)
     return None
 
 
@@ -90,6 +88,7 @@ def register_blueprints(app):
     app.register_blueprint(admins.views_game_metadata.blueprint)
     app.register_blueprint(admins.views_library.blueprint)
     app.register_blueprint(admins.views_link.blueprint)
+    app.register_blueprint(admins.views_media_import.blueprint)
     app.register_blueprint(admins.views_messages.blueprint)
     app.register_blueprint(admins.views_reports.blueprint)
     app.register_blueprint(admins.views_share.blueprint)

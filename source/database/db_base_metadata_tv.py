@@ -133,31 +133,22 @@ def db_meta_tvshow_list_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_tvshow_list(self, offset=None, records=None, search_value=None):
+def db_meta_tvshow_list(self, offset=0, records=None, search_value=None):
     """
     # return list of tvshows
     """
     # TODO order by release date
     # COALESCE - priority over one column
-    if offset is None:
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-                               ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
-                               ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
-                               '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
-                               ' order by LOWER(mm_metadata_tvshow_name)')
-    else:
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-                               ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
-                               ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
-                               '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
-                               ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
-                               ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
-                               ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)',
-                               (offset, records))
+    self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
+                           ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
+                           ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
+                           '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+                           '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
+                           '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
+                           ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
+                           ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
+                           ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)',
+                           (offset, records))
     return self.db_cursor.fetchall()
 
 

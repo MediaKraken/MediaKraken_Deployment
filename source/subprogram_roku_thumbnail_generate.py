@@ -16,8 +16,11 @@
   MA 02110-1301, USA.
 '''
 
+import functools
 import json
+import struct
 import subprocess
+import time
 
 import pika
 from common import common_global
@@ -37,100 +40,165 @@ class MKConsumer(object):
     ROUTING_KEY = 'mkroku'
 
     def __init__(self, amqp_url):
+        self.should_reconnect = False
+        self.was_consuming = False
         self._connection = None
         self._channel = None
         self._closing = False
         self._consumer_tag = None
         self._url = amqp_url
+        self._consuming = False
+        # In production, experiment with higher prefetch values
+        # for higher consumer throughput
+        self._prefetch_count = 1
 
     def connect(self):
-        return pika.SelectConnection(pika.URLParameters(self._url),
-                                     self.on_connection_open,
-                                     stop_ioloop_on_close=False)
+        return pika.SelectConnection(
+            parameters=pika.URLParameters(self._url),
+            on_open_callback=self.on_connection_open,
+            on_open_error_callback=self.on_connection_open_error,
+            on_close_callback=self.on_connection_closed)
 
-    def on_connection_open(self, unused_connection):
-        self.add_on_connection_close_callback()
+    def close_connection(self):
+        self._consuming = False
+        if self._connection.is_closing or self._connection.is_closed:
+            common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Connection is closing or already closed'})
+        else:
+            common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Closing connection'})
+            self._connection.close()
+
+    def on_connection_open(self, _unused_connection):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Closing opened'})
         self.open_channel()
 
-    def add_on_connection_close_callback(self):
-        self._connection.add_on_close_callback(self.on_connection_closed)
+    def on_connection_open_error(self, _unused_connection, err):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Connection open failed: %s', err)})
+        self.reconnect()
 
-    def on_connection_closed(self, connection, reply_code, reply_text):
+    def on_connection_closed(self, _unused_connection, reason):
         self._channel = None
         if self._closing:
             self._connection.ioloop.stop()
         else:
-            self._connection.add_timeout(5, self.reconnect)
+            common_global.es_inst.com_elastic_index('info',
+                                                    {'ffprobe': ('Connection closed, reconnect necessary: %s', reason)})
+            self.reconnect()
 
     def reconnect(self):
-        self._connection.ioloop.stop()
-        if not self._closing:
-            self._connection = self.connect()
-            self._connection.ioloop.start()
+        self.should_reconnect = True
+        self.stop()
 
     def open_channel(self):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Creating a new channel'})
         self._connection.channel(on_open_callback=self.on_channel_open)
 
     def on_channel_open(self, channel):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Channel opened'})
         self._channel = channel
         self.add_on_channel_close_callback()
         self.setup_exchange(self.EXCHANGE)
 
     def add_on_channel_close_callback(self):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Adding channel close callback'})
         self._channel.add_on_close_callback(self.on_channel_closed)
 
-    def on_channel_closed(self, channel, reply_code, reply_text):
-        self._connection.close()
+    def on_channel_closed(self, channel, reason):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Channel %i was closed: %s', channel, reason)})
+        self.close_connection()
 
     def setup_exchange(self, exchange_name):
-        self._channel.exchange_declare(self.on_exchange_declareok,
-                                       exchange_name,
-                                       self.EXCHANGE_TYPE, durable=True)
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Declaring exchange: %s', exchange_name)})
+        # Note: using functools.partial is not required, it is demonstrating
+        # how arbitrary data can be passed to the callback when it is called
+        cb = functools.partial(
+            self.on_exchange_declareok, userdata=exchange_name)
+        self._channel.exchange_declare(
+            exchange=exchange_name,
+            exchange_type=self.EXCHANGE_TYPE,
+            callback=cb,
+            durable=True)
 
-    def on_exchange_declareok(self, unused_frame):
+    def on_exchange_declareok(self, _unused_frame, userdata):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Exchange declared: %s', userdata)})
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        self._channel.queue_declare(self.on_queue_declareok, queue_name, durable=True)
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Declaring queue %s', queue_name)})
+        cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
+        self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
-    def on_queue_declareok(self, method_frame):
-        self._channel.queue_bind(self.on_bindok, self.QUEUE,
-                                 self.EXCHANGE, self.ROUTING_KEY)
+    def on_queue_declareok(self, _unused_frame, userdata):
+        queue_name = userdata
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Binding %s to %s with %s',
+                                                                     self.EXCHANGE, queue_name, self.ROUTING_KEY)})
+        cb = functools.partial(self.on_bindok, userdata=queue_name)
+        self._channel.queue_bind(
+            queue_name,
+            self.EXCHANGE,
+            routing_key=self.ROUTING_KEY,
+            callback=cb)
 
-    def on_bindok(self, unused_frame):
+    def on_bindok(self, _unused_frame, userdata):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Queue bound: %s', userdata)})
+        self.set_qos()
+
+    def set_qos(self):
+        self._channel.basic_qos(
+            prefetch_count=self._prefetch_count, callback=self.on_basic_qos_ok)
+
+    def on_basic_qos_ok(self, _unused_frame):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('QOS set to: %d', self._prefetch_count)})
         self.start_consuming()
 
     def start_consuming(self):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
-        self._consumer_tag = self._channel.basic_consume(self.on_message,
-                                                         self.QUEUE)
+        self._consumer_tag = self._channel.basic_consume(
+            self.QUEUE, self.on_message)
+        self.was_consuming = True
+        self._consuming = True
 
     def add_on_cancel_callback(self):
+        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('Consumer was cancelled remotely, shutting down: %r', method_frame)})
         if self._channel:
             self._channel.close()
 
-    def on_message(self, unused_channel, basic_deliver, properties, body):
+    def on_message(self, _unused_channel, basic_deliver, properties, body):
         if body is not None:
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'msg body': json_message})
             if json_message['Type'] == 'Roku' and json_message['Subtype'] == 'Thumbnail':
-                common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
+                try:
+                    common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
+                except struct.error:
+                    common_global.es_inst.com_elastic_index('error', {'fail bif': json_message})
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
+        common_global.es_inst.com_elastic_index('error', {'ffprobe null': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
-            self._channel.basic_cancel(self.on_cancelok, self._consumer_tag)
+            common_global.es_inst.com_elastic_index('error',
+                                                    {'ffprobe null': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+            cb = functools.partial(
+                self.on_cancelok, userdata=self._consumer_tag)
+            self._channel.basic_cancel(self._consumer_tag, cb)
 
-    def on_cancelok(self, unused_frame):
+    def on_cancelok(self, _unused_frame, userdata):
+        self._consuming = False
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('RabbitMQ acknowledged the cancellation of the consumer: %s', userdata)})
         self.close_channel()
 
     def close_channel(self):
+        common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Closing the channel'})
         self._channel.close()
 
     def run(self):
@@ -138,12 +206,52 @@ class MKConsumer(object):
         self._connection.ioloop.start()
 
     def stop(self):
-        self._closing = True
-        self.stop_consuming()
-        self._connection.ioloop.start()
+        if not self._closing:
+            self._closing = True
+            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopping'})
+            if self._consuming:
+                self.stop_consuming()
+                self._connection.ioloop.start()
+            else:
+                self._connection.ioloop.stop()
+            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopped'})
 
-    def close_connection(self):
-        self._connection.close()
+    class ReconnectingExampleConsumer(object):
+        """This is an example consumer that will reconnect if the nested
+        ExampleConsumer indicates that a reconnect is necessary.
+        """
+
+        def __init__(self, amqp_url):
+            self._reconnect_delay = 0
+            self._amqp_url = amqp_url
+            self._consumer = MKConsumer(self._amqp_url)
+
+        def run(self):
+            while True:
+                try:
+                    self._consumer.run()
+                except KeyboardInterrupt:
+                    self._consumer.stop()
+                    break
+                self._maybe_reconnect()
+
+        def _maybe_reconnect(self):
+            if self._consumer.should_reconnect:
+                self._consumer.stop()
+                reconnect_delay = self._get_reconnect_delay()
+                common_global.es_inst.com_elastic_index('error',
+                                                        {'ffprobe': ('Reconnecting after %d seconds', reconnect_delay)})
+                time.sleep(reconnect_delay)
+                self._consumer = MKConsumer(self._amqp_url)
+
+        def _get_reconnect_delay(self):
+            if self._consumer.was_consuming:
+                self._reconnect_delay = 0
+            else:
+                self._reconnect_delay += 1
+            if self._reconnect_delay > 30:
+                self._reconnect_delay = 30
+            return self._reconnect_delay
 
 
 def main():

@@ -135,7 +135,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                                 + episode_info['filename']}),
                                                   properties=pika.BasicProperties(
                                                       content_type='text/plain',
-                                                      delivery_mode=1))
+                                                      delivery_mode=2))
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
                         # thetvdb
@@ -151,7 +151,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                             ['Episode']['filename']}),
                                               properties=pika.BasicProperties(
                                                   content_type='text/plain',
-                                                  delivery_mode=1))
+                                                  delivery_mode=2))
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
                     # thetvdb
@@ -166,6 +166,6 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                         + xml_show_data['Data']
                                                         ['Episode']['filename']}),
                                           properties=pika.BasicProperties(content_type='text/plain',
-                                                                          delivery_mode=1))
+                                                                          delivery_mode=2))
         db_connection.db_commit()
     return metadata_uuid

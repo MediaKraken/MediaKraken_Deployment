@@ -19,6 +19,7 @@
 import os
 import pickle
 import time
+import zipfile
 from os import walk  # pylint: disable=C0412
 
 from . import common_string
@@ -40,9 +41,10 @@ def com_file_modification_timestamp(file_name):
     """
     Return file modification date in datetime format
     """
-    if os.path.exists(file_name):
+    # do try except as it'll lessen the fs calls to one
+    try:
         return os.path.getmtime(file_name)
-    else:
+    except FileNotFoundError:
         return None
 
 
@@ -85,8 +87,18 @@ def com_file_load_data(file_name, as_pickle=False):
     return data_block
 
 
+def com_file_dir_list_dict(dir_name, file_modified=False):
+    """
+    Find all files in dir with less "rules"
+    """
+    match_dict = {}
+    for file_name in os.listdir(dir_name):
+        match_dict[os.path.basename(file_name) + '.zip'] = com_file_modification_timestamp(
+            file_name)
+
+
 def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,
-                      directory_only=False):
+                      directory_only=False, file_modified=False):
     """
     Find all filtered files in directory
     """
@@ -124,11 +136,24 @@ def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size
         if file_size:
             match_list_size = []
             for row_data in match_list:
-                match_list_size.append((row_data,
-                                        common_string.com_string_bytes2human(
-                                            os.path.getsize(row_data))))
+                if file_modified:
+                    match_list_size.append((row_data,
+                                            common_string.com_string_bytes2human(
+                                                os.path.getsize(row_data))))
+                else:
+                    match_list_size.append((row_data,
+                                            common_string.com_string_bytes2human(
+                                                os.path.getsize(row_data)),
+                                            com_file_modification_timestamp(row_data)))
             return match_list_size
-        return match_list
+        if file_modified:
+            match_list_modified = []
+            for row_data in match_list:
+                match_list_modified.append((row_data,
+                                            com_file_modification_timestamp(row_data)))
+            return match_list_modified
+        else:
+            return match_list
     else:
         return None
 
@@ -172,3 +197,15 @@ def com_mkdir_p(filename):
         return True
     except:
         return False
+
+
+def com_file_unzip(target_zip_file, target_destination_directory=None, remove_zip=False):
+    zip_ref = zipfile.ZipFile(target_zip_file, 'r')
+    if target_destination_directory is None:
+        # will then just unzip in directory of the target zip file
+        zip_ref.extractall()
+    else:
+        zip_ref.extractall(target_destination_directory)
+    zip_ref.close()
+    if remove_zip:
+        os.remove(target_zip_file)

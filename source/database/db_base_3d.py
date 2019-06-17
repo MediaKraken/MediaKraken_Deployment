@@ -18,15 +18,6 @@
 
 
 def db_3d_list_count(self, search_value=None):
-    # if search_value is not None:
-    #     self.db_cursor.execute('select count(*)'
-    #                            ' from mm_metadata_collection'
-    #                            ' where mm_metadata_collection_name %% %s',
-    #                            (search_value, ))
-    # else:
-    #     self.db_cursor.execute('select count(*)'
-    #                            ' from mm_metadata_collection')
-    # return self.db_cursor.fetchone()[0]
     return 0
 
 
@@ -34,44 +25,4 @@ def db_3d_list(self, offset=None, records=None, search_value=None):
     """
     Return collections list from the database
     """
-    # if offset is None:
-    #     if search_value is not None:
-    #         self.db_cursor.execute('select mm_metadata_collection_guid,'
-    #                                'mm_metadata_collection_name,'
-    #                                'mm_metadata_collection_imagelocal_json'
-    #                                ' from mm_metadata_collection'
-    #                                ' where mm_metadata_collection_name %% %s'
-    #                                ' order by mm_metadata_collection_name',
-    #                                (search_value,))
-    #     else:
-    #         self.db_cursor.execute('select mm_metadata_collection_guid,'
-    #                                'mm_metadata_collection_name,'
-    #                                'mm_metadata_collection_imagelocal_json'
-    #                                ' from mm_metadata_collection'
-    #                                ' order by mm_metadata_collection_name')
-    # else:
-    #     if search_value is not None:
-    #         self.db_cursor.execute('select mm_metadata_collection_guid,'
-    #                                'mm_metadata_collection_name,'
-    #                                'mm_metadata_collection_imagelocal_json'
-    #                                ' from mm_metadata_collection'
-    #                                ' where mm_metadata_collection_guid'
-    #                                ' in (select mm_metadata_collection_guid'
-    #                                ' from mm_metadata_collection'
-    #                                ' where mm_metadata_collection_name %% %s'
-    #                                ' order by mm_metadata_collection_name'
-    #                                ' offset %s limit %s) order by mm_metadata_collection_name',
-    #                                (search_value, offset, records))
-    #     else:
-    #         self.db_cursor.execute('select mm_metadata_collection_guid,'
-    #                                'mm_metadata_collection_name,'
-    #                                'mm_metadata_collection_imagelocal_json'
-    #                                ' from mm_metadata_collection'
-    #                                ' where mm_metadata_collection_guid'
-    #                                ' in (select mm_metadata_collection_guid'
-    #                                ' from mm_metadata_collection'
-    #                                ' order by mm_metadata_collection_name'
-    #                                ' offset %s limit %s) order by mm_metadata_collection_name',
-    #                                (offset, records))
-    # return self.db_cursor.fetchall()
     return None

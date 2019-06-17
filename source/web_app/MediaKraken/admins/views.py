@@ -24,9 +24,10 @@ from MediaKraken.admins.forms import BookAddForm
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_docker
 from common import common_global
+from common import common_hash
 from common import common_network
+from common import common_string
 from common import common_system
 from common import common_version
 from common import common_zfs
@@ -77,9 +78,6 @@ def admins():
     global outside_ip
     if outside_ip is None:
         outside_ip = common_network.mk_network_get_outside_ip()
-    # grab docker info for host ip
-    docker_inst = common_docker.CommonDocker()
-    docker_info = docker_inst.com_docker_info()
     data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
@@ -116,8 +114,6 @@ def admins():
                            data_server_info_server_name=data_server_info_server_name,
                            data_host_ip=mediakraken_ip,
                            data_server_info_server_ip=nic_data,
-                           data_server_info_server_port=option_config_json[
-                               'MediaKrakenServer']['ListenPort'],
                            data_server_info_server_ip_external=outside_ip,
                            data_server_info_server_version=common_version.APP_VERSION,
                            data_server_uptime=common_system.com_system_uptime(),
@@ -209,23 +205,27 @@ def admin_server_settings():
     Display server settings page
     """
     settings_json = g.db_connection.db_opt_status_read()[0]
-    if request.method == 'POST':
-        settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
-        settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
-
-        settings_json['Metadata']['Source']['tvmaze'] = request.form['metadata_source_down_tvmaze']
-        settings_json['Metadata']['Source']['tmdb'] = request.form['metadata_source_down_tmdb']
-        settings_json['Metadata']['Source']['tvdb'] = request.form['metadata_source_down_tvdb']
-        settings_json['Metadata']['Source']['musicbrainz'] = request.form[
-            'metadata_source_down_mbrainz']
-        settings_json['Metadata']['Source']['anidb'] = request.form['metadata_source_down_anidb']
-        settings_json['Metadata']['Source']['chartlyrics'] = request.form[
-            'metadata_source_down_chartlyrics']
-        settings_json['Metadata']['Source'][''] = request.form['metadata_source_down_opensub']
-        settings_json['Metadata']['Source']['pitchfork'] = request.form[
-            'metadata_source_down_pitchfork']
-        settings_json['Metadata']['Source']['imvdb'] = request.form['metadata_source_down_imvdb']
-        settings_json['Metadata']['Source']['omdb'] = request.form['metadata_source_down_omdb']
+    # setup the crypto
+    data = common_hash.CommonHashCrypto()
+    mediabrainz_api_key = None
+    opensubtitles_api_key = None
+    if request.method == 'GET':
+        if settings_json['API']['musicbrainz'] is not None:
+            mediabrainz_api_key = data.com_hash_gen_crypt_decode(
+                settings_json['API']['musicbrainz'])
+        if settings_json['API']['opensubtitles'] is not None:
+            opensubtitles_api_key = data.com_hash_gen_crypt_decode(
+                settings_json['API']['opensubtitles'])
+    elif request.method == 'POST':
+        # api info
+        if request.form['docker_musicbrainz_code']:
+            settings_json['API']['musicbrainz'] = data.com_hash_gen_crypt_encode(
+                request.form['docker_musicbrainz_code'])
+        else:
+            settings_json['API']['musicbrainz'] = None
+        settings_json['API']['opensubtitles'] = data.com_hash_gen_crypt_encode(
+            request.form['metadata_sub_code'])
+        # Docker instances info
         settings_json['Docker Instances']['mumble'] = request.form['docker_mumble']
         settings_json['Docker Instances']['musicbrainz'] = request.form['docker_musicbrainz']
         settings_json['Docker Instances']['pgadmin'] = request.form['docker_pgadmin']
@@ -234,13 +234,12 @@ def admin_server_settings():
         settings_json['Docker Instances']['teamspeak'] = request.form['docker_teamspeak']
         settings_json['Docker Instances']['transmission'] = request.form['docker_transmission']
         settings_json['Docker Instances']['wireshark'] = request.form['docker_wireshark']
+        # main server info
+        settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
+        settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
+        # save updated info
         g.db_connection.db_opt_update(settings_json)
-
     '''
-    server_bind_addr = TextField('Bind Addr', validators=[
-        Length(min=7, max=15)])
-    server_bind_port = TextField(
-        'Bind Port', validators=[Length(min=4, max=5)])
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
                                           choices=[('Never', 'Never'), ('1 Day', '1 Day'),
                                                    ('Week', 'Week'), ('Month',
@@ -251,33 +250,24 @@ def admin_server_settings():
     user_password_lock = SelectField('Lock account after failed attempts',
                                      choices=[('Never', 'Never'), ('3', '3'), ('5', '5'),
                                               ('10', '10')])
-    metadata_download_metadata = BooleanField('Download Metadata')
-    metadata_artwork_metadata = BooleanField('Download Artwork')
     # language = SelectField('Interval', choices=[('Hours', 'Hours'),
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
     # country = SelectField('Interval', choices=[('Hours', 'Hours'),
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
-    metadata_image_bio_person = BooleanField('Download Image/BIO of person(s)')
-    metadata_path = TextField('Metadata Path', validators=[DataRequired(),
-                                                           Length(min=1, max=250)])
     metadata_with_media = BooleanField('Metadata with Media')
-    metadata_sub_movie_down = BooleanField('Download Movie Subtitle')
-    metadata_sub_episode_down = BooleanField('Download TV Subtitle')
+    metadata_sub_down = BooleanField('Download Media Subtitle')
     # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
-    metadata_sub_skip_if_audio = BooleanField(
-        'Skip subtitle if lang in audio track')
-
-    metadata_sync_path = TextField('Metadata Sync Path',
-                                   validators=[DataRequired(), Length(min=1, max=250)])
+    metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
     docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
                                                                   Length(min=1, max=250)])
-
-'''
-
+    '''
     return render_template("admin/admin_server_settings.html",
                            form=AdminSettingsForm(request.form),
-                           settings_json=settings_json)
+                           settings_json=settings_json,
+                           mediabrainz_api_key=mediabrainz_api_key,
+                           opensubtitles_api_key=opensubtitles_api_key
+                           )
 
 
 @blueprint.route("/zfs")
@@ -364,7 +354,7 @@ def admin_database_statistics():
         db_size_total += row_data['total_size']
         db_size_data.append(
             (row_data['relation'], common_string.com_string_bytes2human(row_data['total_size'])))
-    db_size_data.append(('Total Size:', common_string.com_string_bytes2human(db_stats_total)))
+    db_size_data.append(('Total Size:', common_string.com_string_bytes2human(db_size_total)))
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=db_size_data,
                            data_db_count=db_stats_count,

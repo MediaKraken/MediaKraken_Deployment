@@ -16,16 +16,17 @@
   MA 02110-1301, USA.
 '''
 
+import shlex
 # https://github.com/MediaKraken-Dependancies/Crestron-List-Devices-On-Network
 import subprocess
 
 
 def com_hardware_crestron_discover(ip_addr=None):
     if ip_addr is None:
-        return subprocess.check_output(split(
+        return subprocess.check_output(shlex.split(
             'python3 /mediakraken/common/Crestron-List-Devices-On-Network/List_Crestron_Devices -alc'))
     else:
         return subprocess.check_output(
-            split(
+            shlex.split(
                 'python3 /mediakraken/common/Crestron-List-Devices-On-Network/List_Crestron_Devices -ala %s' %
                 ip_addr.rsplit('.', 1)[0]))

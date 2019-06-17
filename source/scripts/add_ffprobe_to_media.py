@@ -54,7 +54,7 @@ for media in db_connection.db_read_media():
                               body=json.dumps(
                                   {'Type': 'FFMPEG', 'Data': media['mm_media_guid']}),
                               properties=pika.BasicProperties(content_type='text/plain',
-                                                              delivery_mode=1))
+                                                              delivery_mode=2))
 
 # Cancel the consumer and return any pending messages
 channel.cancel()

@@ -1,0 +1,31 @@
+<html><head><title></title></head>
+
+<style type="text/css">
+img {
+   display: block; 
+   margin-left: 
+   auto; margin-right: 
+   auto; max-width: 100%; 
+   max-height: 100%; 
+}
+</style>
+
+<body onload="nextOne(); setInterval('nextOne();',$$1);">
+
+<script type="text/javascript">
+   var imgList=[ 
+      $$2
+   ];
+   var ctr=0;
+   function nextOne() {
+      ctr++;
+      ctr%=imgList.length;
+      document.getElementById("theImg").src=
+         imgList[ctr];
+   }
+
+</script>
+
+<img id="theImg">
+
+</body></html>

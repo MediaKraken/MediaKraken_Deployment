@@ -73,6 +73,8 @@ def worker(audit_directory):
         if file_name in global_known_media:
             pass
         else:
+            # add to global so next scan won't do again
+            global_known_media.append(file_name)
             # set lower here so I can remove alot of .lower() in the code below
             filename_base, file_extension = os.path.splitext(file_name.lower())
             # checking subtitles for parts as need multiple files for multiple media files
@@ -180,7 +182,7 @@ def worker(audit_directory):
                                               {'Type': 'FFProbe', 'Media UUID': media_id,
                                                'Media Path': file_name}),
                                           properties=pika.BasicProperties(content_type='text/plain',
-                                                                          delivery_mode=1))
+                                                                          delivery_mode=2))
                     if new_class_type_uuid != class_text_dict['Music']:
                         # Send a message so roku thumbnail is generated
                         channel.basic_publish(exchange='mkque_roku_ex',
@@ -190,7 +192,7 @@ def worker(audit_directory):
                                                    'Media UUID': media_id,
                                                    'Media Path': file_name}),
                                               properties=pika.BasicProperties(content_type='text/plain',
-                                                                              delivery_mode=1))
+                                                                              delivery_mode=2))
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert

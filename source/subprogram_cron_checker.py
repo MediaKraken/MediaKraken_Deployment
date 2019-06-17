@@ -17,9 +17,11 @@
 '''
 
 import datetime
+import json
 import subprocess
 import time
 
+import pika
 import psutil
 from common import common_config_ini
 from common import common_global
@@ -40,6 +42,11 @@ wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                              'mkrabbitmq', '-p', ' 5672', '-t', '30'],
                             shell=False)
 wait_pid.wait()
+
+credentials = pika.PlainCredentials('guest', 'guest')
+parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30, credentials=credentials)
+connection = pika.BlockingConnection(parameters)
+channel = connection.channel()
 
 # start loop for cron checks
 pid_dict = {}  # pylint: disable=C0103
@@ -69,18 +76,30 @@ while 1:
                 if row_data['mm_cron_file_path'][-3:] == '.py':
                     proc = subprocess.Popen(['python3', row_data['mm_cron_file_path']],
                                             shell=False)
+                    pid_dict[row_data['mm_cron_name']] = proc.pid
                 else:
-                    proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
-                                            shell=False)
-                common_global.es_inst.com_elastic_index('info',
-                                                        {'cron': row_data['mm_cron_name'],
-                                                         'pid': proc.pid})
+                    if row_data['mm_cron_file_path'] is None:
+                        # row_data['mm_cron_json']['exchange_key']
+                        channel.basic_publish(exchange=row_data['mm_cron_json']['exchange_key'],
+                                              routing_key=row_data['mm_cron_json']['route_key'],
+                                              body=json.dumps(
+                                                  {'Type': row_data['mm_cron_json']['type'],
+                                                   'Subtype': row_data['mm_cron_json']['HDTrailers']}),
+                                              properties=pika.BasicProperties(
+                                                  content_type='text/plain',
+                                                  delivery_mode=2)
+                                              )
+                    else:
+                        proc = subprocess.Popen(['/usr/sbin', row_data['mm_cron_file_path']],
+                                                shell=False)
+                        pid_dict[row_data['mm_cron_name']] = proc.pid
                 db_connection.db_cron_time_update(row_data['mm_cron_name'])
-                pid_dict[row_data['mm_cron_name']] = proc.pid
             # commit off each match
             db_connection.db_commit()
             common_global.es_inst.com_elastic_index('info', {'data': row_data})
     time.sleep(60)  # sleep for 60 seconds
 
+# close the pika connection
+connection.close()
 # close the database
 db_connection.db_close()

@@ -13,6 +13,7 @@
     margin-left: 0;
     font-size: 12px;
 }
+
 .pagination-page-info b {
     color: black;
     background: #6aa6ed;
@@ -45,6 +46,7 @@ div.wrapper{
     float:left; /* important */
     position:relative; /* important(so we can absolutely position the description div */
 }
+
 div.description{
     position:absolute; /* absolute position (so we can position it where we want)*/
     bottom:0px; /* position will be on bottom */
@@ -58,11 +60,13 @@ div.description{
     opacity:0.6; /* transparency */
     filter:alpha(opacity=60); /* IE transparency */
 }
+
 p.description_content{
     padding:10px;
     margin:0px;
     float: right;
 }
+
 p.description_content_left{
     padding:10px;
     margin:0px;

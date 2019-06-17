@@ -45,54 +45,36 @@ def db_meta_game_system_list_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_game_system_list(self, offset=None, records=None, search_value=None):
+def db_meta_game_system_list(self, offset=0, records=None, search_value=None):
     """
     # return list of game systems
     """
     # TODO might need to sort by release year as well for machines with multiple released
-    if offset is None:
-        if search_value is not None:
-            self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                                   'gs_game_system_json->\'description\','
-                                   'gs_game_system_json->\'year\''
-                                   ' from mm_metadata_game_systems_info'
-                                   ' where gs_game_system_json->\'@isdevice\''
-                                   ' ? \'yes\' and gs_game_system_name %% %s '
-                                   'order by gs_game_system_json->\'description\'',
-                                   (search_value,))
-        else:
-            self.db_cursor.execute('select gs_id,gs_game_system_json->\'@name\','
-                                   'gs_game_system_json->\'description\','
-                                   'gs_game_system_json->\'year\''
-                                   ' from mm_metadata_game_systems_info'
-                                   ' where gs_game_system_json->\'@isdevice\''
-                                   ' ? \'yes\' order by gs_game_system_json->\'description\'')
+    if search_value is not None:
+        self.db_cursor.execute('select gs_id,gs_game_system_name,'
+                               'gs_game_system_json->\'description\','
+                               'gs_game_system_json->\'year\''
+                               ' from mm_metadata_game_systems_info'
+                               ' where gs_id in (select gs_id'
+                               ' from mm_metadata_game_systems_info'
+                               ' where gs_game_system_json->\'@isdevice\''
+                               ' ? \'yes\' and gs_game_system_name %% %s '
+                               'order by gs_game_system_json->\'description\''
+                               ' offset %s limit %s)'
+                               ' order by gs_game_system_json->\'description\'',
+                               (search_value, offset, records))
     else:
-        if search_value is not None:
-            self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                                   'gs_game_system_json->\'description\','
-                                   'gs_game_system_json->\'year\''
-                                   ' from mm_metadata_game_systems_info'
-                                   ' where gs_id in (select gs_id'
-                                   ' from mm_metadata_game_systems_info'
-                                   ' where gs_game_system_json->\'@isdevice\''
-                                   ' ? \'yes\' and gs_game_system_name %% %s '
-                                   'order by gs_game_system_json->\'description\''
-                                   ' offset %s limit %s)'
-                                   ' order by gs_game_system_json->\'description\'',
-                                   (search_value, offset, records))
-        else:
-            self.db_cursor.execute('select gs_id,gs_game_system_name,'
-                                   'gs_game_system_json->\'description\','
-                                   'gs_game_system_json->\'year\''
-                                   ' from mm_metadata_game_systems_info'
-                                   ' where gs_id in (select gs_id'
-                                   ' from mm_metadata_game_systems_info'
-                                   ' where gs_game_system_json->\'@isdevice\''
-                                   ' ? \'yes\' order by gs_game_system_json->\'description\''
-                                   ' offset %s limit %s)'
-                                   ' order by gs_game_system_json->\'description\'',
-                                   (offset, records))
+        self.db_cursor.execute('select gs_id,gs_game_system_name,'
+                               'gs_game_system_json->\'description\','
+                               'gs_game_system_json->\'year\''
+                               ' from mm_metadata_game_systems_info'
+                               ' where gs_id in (select gs_id'
+                               ' from mm_metadata_game_systems_info'
+                               ' where gs_game_system_json->\'@isdevice\''
+                               ' ? \'yes\' order by gs_game_system_json->\'description\''
+                               ' offset %s limit %s)'
+                               ' order by gs_game_system_json->\'description\'',
+                               (offset, records))
     return self.db_cursor.fetchall()
 
 

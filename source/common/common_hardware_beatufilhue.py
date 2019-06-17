@@ -36,8 +36,7 @@ class CommonHardwareBeatifulHue(object):
         while not created:
             resource = {'user': {'devicetype': 'MediaKraken',
                                  'name': '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m'}}
-            response = self.beatifulhue_inst.config.create(resource)[
-                'resource']
+            response = self.beatifulhue_inst.config.create(resource)['resource']
             if 'error' in response[0]:
                 if response[0]['error']['type'] != 101:
                     print('Unhandled error creating configuration on the Hue')

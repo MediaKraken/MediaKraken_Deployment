@@ -19,15 +19,13 @@
 import os
 import time
 
-from common import common_cloud
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_postgresql_backup')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_postgresql_backup')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -45,14 +43,14 @@ os.system('PGPASSWORD=' + os.environ['POSTGRES_PASSWORD']
           + os.environ['POSTGRES_DB'] + ' -F c -f '
           + os.path.join('/mediakraken/backup', backup_file_name))
 
-cloud_handle = common_cloud.CommonCloud(option_config_json)
-# grab settings and options
-option_json = db_connection.db_opt_status_read()['mm_options_json']
-if option_json['Backup']['BackupType'] != 'local':
-    cloud_handle.com_cloud_file_store(option_json['Backup']['BackupType'],
-                                      os.path.join(
-                                          option_config_json['MediaKrakenServer']['BackupLocal'],
-                                          backup_file_name), backup_file_name, True)
+# cloud_handle = common_cloud.CommonCloud(option_config_json)
+# # grab settings and options
+# option_json = db_connection.db_opt_status_read()['mm_options_json']
+# if option_json['Backup']['BackupType'] != 'local':
+#     cloud_handle.com_cloud_file_store(option_json['Backup']['BackupType'],
+#                                       os.path.join(
+#                                           option_config_json['MediaKrakenServer']['BackupLocal'],
+#                                           backup_file_name), backup_file_name, True)
 
 # commit records
 db_connection.db_commit()

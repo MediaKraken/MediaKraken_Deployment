@@ -35,7 +35,7 @@ def db_opt_update(self, option_json):
     """
     # no need for where clause as it's only the one record
     self.db_cursor.execute('update mm_options_and_status set mm_options_json = %s',
-                           (option_json))
+                           (option_json,))
     self.db_commit()
 
 

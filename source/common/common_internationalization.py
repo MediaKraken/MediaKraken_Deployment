@@ -34,4 +34,6 @@ def com_inter_country_name(country_code='eng'):
         lang = pycountry.languages.get(alpha_3=country_code)
     except KeyError:
         return country_code
+    if lang is None:
+        return country_code
     return lang.name

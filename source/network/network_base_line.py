@@ -127,7 +127,7 @@ class NetworkEvents(basic.LineReceiver):
             else:
                 user_data = []
                 for user in self.db_connection.db_user_list_name():
-                    if user['active'] == True:
+                    if user['active'] is True:
                         user_data.append((user['id'], user['username']))
                 msg = json.dumps({'Type': 'User', 'Data': user_data})
         elif json_message['Type'] == "Image":

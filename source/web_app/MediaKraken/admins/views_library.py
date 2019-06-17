@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import sys
+
 import json
 import os
-import sys
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
@@ -15,14 +16,12 @@ blueprint = Blueprint("admins_library", __name__,
 import flask
 from flask_login import current_user
 from functools import wraps
-from MediaKraken.extensions import (
-    fpika,
-)
 from MediaKraken.admins.forms import LibraryAddEditForm
 
 from common import common_config_ini
 from common import common_global
 from common import common_network_cifs
+from common import common_network_pika
 from common import common_pagination
 from common import common_string
 import database as database_base
@@ -71,16 +70,24 @@ def admin_library():
         common_global.es_inst.com_elastic_index('info', {'lib': request.form})
         if "scan" in request.form:
             # submit the message
-            ch = fpika.channel()
-            ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-                             body=json.dumps({'Type': 'Library Scan'}))
-            fpika.return_channel(ch)
+            common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
+                                                  rabbit_host_name='mkrabbitmq',
+                                                  exchange_name='mkque_ex',
+                                                  route_key='mkque')
+            # ch = fpika.channel()
+            # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
+            #                  body=json.dumps({'Type': 'Library Scan'}),
+            #                  properties=fpika.BasicProperties(content_type='text/plain',
+            #                                                   delivery_mode=2)
+            #                  )
+            # fpika.return_channel(ch)
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_table_count('mm_media_dir'),
+                                                  total=g.db_connection.db_table_count(
+                                                      'mm_media_dir'),
                                                   record_name='library dir(s)',
                                                   format_total=True,
                                                   format_number=True,

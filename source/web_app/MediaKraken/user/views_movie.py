@@ -68,20 +68,16 @@ def movie_detail(guid):
 
         # poster image
         try:
-            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster'] is not None:
-                data_poster_image = \
-                    metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
-            else:
-                data_poster_image = None
+            # don't bother checking for NONE as that's valid
+            data_poster_image = \
+                metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
         except:
             data_poster_image = None
         # background image
         try:
-            if metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop'] is not None:
-                data_background_image = \
-                    metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
-            else:
-                data_background_image = None
+            # don't bother checking for NONE as that's valid
+            data_background_image = \
+                metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
         except:
             data_background_image = None
 
@@ -173,8 +169,7 @@ def movie_detail(guid):
                             stream_title = stream_info['tags']['title']  # Surround 5.1 and so on
                         except KeyError:
                             stream_title = 'NA'
-                        if 'codec_long_name' in stream_info and stream_info[
-                            'codec_long_name'] != 'unknown':
+                        if 'codec_long_name' in stream_info and stream_info['codec_long_name'] != 'unknown':
                             stream_codec = stream_info['codec_long_name']
                         else:
                             try:
@@ -183,8 +178,11 @@ def movie_detail(guid):
                                 stream_codec = 'NA'
                         audio_streams.append((stream_codec, stream_language, stream_title))
                     elif stream_info['codec_type'] == 'subtitle':
-                        subtitle_streams.append(common_internationalization.com_inter_country_name(
-                            stream_info['tags']['language']))
+                        try:
+                            subtitle_streams.append(common_internationalization.com_inter_country_name(
+                                stream_info['tags']['language']))
+                        except KeyError:
+                            subtitle_streams.append('Unknown')
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
                                                             "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
                                                             audio_streams,

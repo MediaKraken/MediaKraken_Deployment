@@ -25,8 +25,8 @@ ENV LANG en_US.utf8
 RUN mkdir /docker-entrypoint-initdb.d
 
 ENV PG_MAJOR 11
-ENV PG_VERSION 11.1
-ENV PG_SHA256 90815e812874831e9a4bf6e1136bf73bc2c5a0464ef142e2dfea40cda206db08
+ENV PG_VERSION 11.3
+ENV PG_SHA256 2a85e082fc225944821dfd23990e32dfcd2284c19060864b0ad4ca537d30522d
 
 RUN set -ex \
         && sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \

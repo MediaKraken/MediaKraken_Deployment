@@ -14,6 +14,7 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
+from common import common_isbn
 from common import common_pagination
 import database as database_base
 
@@ -59,28 +60,27 @@ def metadata_periodical_detail(guid):
     json_metadata = g.db_connection.db_meta_book_by_uuid(guid)
     try:
         data_name = json_metadata['mm_metadata_book_json']['title']
-    except:
+    except KeyError:
         data_name = 'NA'
     try:
-        data_isbn = isbn.format(
-            json_metadata['mm_metadata_book_json']['isbn10'])
-    except:
+        data_isbn = common_isbn.com_isbn_mask(json_metadata['mm_metadata_book_json']['isbn10'])
+    except KeyError:
         data_isbn = 'NA'
     try:
         data_overview = json_metadata['mm_metadata_book_json']['summary']
-    except:
+    except KeyError:
         data_overview = 'NA'
     try:
         data_author = json_metadata['mm_metadata_book_json']['author_data'][0]['name']
-    except:
+    except KeyError:
         data_author = 'NA'
     try:
         data_publisher = json_metadata['mm_metadata_book_json']['publisher_name']
-    except:
+    except KeyError:
         data_publisher = 'NA'
     try:
         data_pages = json_metadata['mm_metadata_book_json']['physical_description_text']
-    except:
+    except KeyError:
         data_pages = 'NA'
     return render_template('users/metadata/meta_periodical_detail.html',
                            data_name=data_name,

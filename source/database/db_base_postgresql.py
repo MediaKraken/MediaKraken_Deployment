@@ -22,7 +22,7 @@ from common import common_global
 # query provided by postgresql wiki
 def db_pgsql_table_sizes(self):
     """
-    # return tables sizes (includex indexes, etc)
+    # return tables sizes (includes indexes, etc)
     """
     self.db_cursor.execute('SELECT nspname || \'.\' || relname AS "relation",'
                            ' pg_total_relation_size(C.oid) AS "total_size"'

@@ -17,6 +17,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - SECURE=${SECURE}
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
       - DEBUG=${DEBUG}
@@ -24,6 +25,8 @@ services:
     depends_on:
       - pgbounce
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     volumes:
       # server will generate ssl key for use by web/nginx
       - ./data/certs:/mediakraken/key
@@ -31,6 +34,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # so can read the device scan output
       - ./data/devices:/mediakraken/devices
+      # server will generate salt/key
+      - /var/opt/mediakraken/secure:/mediakraken/secure
     networks:
       - mediakraken_network
 
@@ -48,6 +53,8 @@ services:
       - HOST_IP=${HOST_IP}
     container_name: mkbroadcast
     entrypoint: python3 subprogram_broadcast.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     ports:
       - "9101:9101"
     volumes:
@@ -75,6 +82,8 @@ services:
     depends_on:
       - rabbit
     entrypoint: python3 subprogram_cron_checker.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -92,6 +101,8 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
     volumes:
       - ./data/postgresql:/var/lib/postgresql
     networks:
@@ -114,6 +125,8 @@ services:
     depends_on:
       - rabbit
     entrypoint: python3 main_download.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     volumes:
       - ./data/download:/mediakraken/download
     networks:
@@ -138,6 +151,8 @@ services:
     depends_on:
       - rabbit
     entrypoint: python3 subprogram_ffprobe_metadata.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     volumes:
       - ./mkmount:/mediakraken/mnt:ro
     networks:
@@ -161,6 +176,8 @@ services:
     depends_on:
       - rabbit
     entrypoint: python3 main_hardware.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -183,6 +200,8 @@ services:
       - pgbounce
       - rabbit
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_server_metadata_api.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     volumes:
       - ./mkmount:/mediakraken/mnt
       # stores posters/etc so webserver can present
@@ -203,6 +222,8 @@ services:
         PIPMIRROR: pypi.python.org
     container_name: mknginx
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
     volumes:
       - ./data/nginx:/var/log/mediakraken/nginx
       - ./data/certs:/etc/nginx/certs:ro
@@ -233,6 +254,8 @@ services:
     depends_on:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -250,6 +273,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
     ports:
 #      - "5671:5671"
       - "5672:5672"
@@ -280,6 +305,8 @@ services:
       - pgbounce
       - rabbit
     entrypoint: python3 subprogram_reactor_line.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     ports:
       - "8903:8903"
     volumes:
@@ -302,6 +329,8 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     container_name: mkredis
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
     ports:
       - "6379:6379"
     networks:
@@ -322,6 +351,8 @@ services:
     depends_on:
       - rabbit
     entrypoint: python3 subprogram_roku_thumbnail_generate.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     volumes:
       - ./mkmount:/mediakraken/mnt
     networks:
@@ -340,6 +371,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - SECURE=${SECURE}
       - DEBUG=${DEBUG}
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}
@@ -349,7 +381,9 @@ services:
       - rabbit
       - redis
       - nginx
-    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --disable-logging --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
     volumes:
       - ./mkmount:/mediakraken/mnt
       # must not be read only as it stores cache here
@@ -362,6 +396,8 @@ services:
       - ./data/log:/mediakraken/log
       # this stores the "push button" key
       - ./data/phue:/mediakraken/phue        
+      # server will generate salt/key
+      - /var/opt/mediakraken/secure:/mediakraken/secure:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -404,6 +440,10 @@ networks:
   mediakraken_network:
     driver: bridge
     name: mk_mediakraken_network
+  # Game network for dosbox, etc
+  mediakraken_game_network:
+    driver: bridge
+    name: mk_mediakraken_game_network
 
 volumes:
 #     mkvol-device:

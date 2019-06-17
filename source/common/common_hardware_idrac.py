@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-# https://github.com/MediaKraken-Dependancies/python-dracclient
+# https://github.com/MediaKraken-Dep/python-dracclient
 import dracclient.client
 
 
@@ -33,7 +33,7 @@ class CommonHardwareIDrac(object):
     def com_hard_idrac_power_state(self):
         return self.idrac_inst.get_power_state()
 
-    def com_hard_idrac_power_set(self, power_state=POWER_ON):
+    def com_hard_idrac_power_set(self, power_state='POWER_ON'):
         """
         POWER_ON, POWER_OFF and REBOOT
         """
@@ -45,8 +45,7 @@ class CommonHardwareIDrac(object):
     def com_hard_idrac_list_boot(self):
         return self.idrac_inst.list_boot_devices()
 
-    def com_hard_idrac_change_boot_order(self, boot_mode=boot_mode,
-                                         boot_device_list=boot_device_list):
+    def com_hard_idrac_change_boot_order(self, boot_mode, boot_device_list):
         '''
         Changes the boot device sequence for a boot mode.
         Required parameters:

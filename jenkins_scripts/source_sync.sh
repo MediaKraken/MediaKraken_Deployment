@@ -3,7 +3,7 @@ cp ../source/subprogram_broadcast.py ../docker/alpine/ComposeMediaKrakenBroadcas
 cp -R ../source/common ../docker/alpine/ComposeMediaKrakenBroadcast/src/.
 
 # cast images
-cp ../../castpy/cast.py ../docker/alpine/ComposeMediaKrakenCastImage/src/.
+cp ../source/castpy/cast.py ../docker/alpine/ComposeMediaKrakenCastImage/src/.
 
 # cron
 cp -R ../source/common ../docker/alpine/ComposeMediaKrakenCron/src/.

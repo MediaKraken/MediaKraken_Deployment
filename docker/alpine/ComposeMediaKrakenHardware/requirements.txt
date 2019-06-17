@@ -8,3 +8,4 @@ soco
 pyatv
 xmltodict
 tripplite
+onvif_zeep

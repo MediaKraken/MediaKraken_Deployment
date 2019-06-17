@@ -16,22 +16,23 @@
   MA 02110-1301, USA.
 '''
 
-import os
 import signal
 import sys
+
+import os
 
 from . import common_global
 
 
-def com_signal_receive(signum, frame, pid_dict=None):  # pylint: disable=W0613
+def com_signal_receive(signum, frame):  # pylint: disable=W0613
     """
-    Handle signal interupt
+    Handle signal interrupt
     """
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Application: Received USR1'})
-    if pid_dict is not None:
+    if common_global.pid_dict is not None:
         # term all running pids
-        for pid_data in pid_dict:
-            os.kill(pid_dict[pid_data], signal.SIGTERM)
+        for pid_data in common_global.pid_dict:
+            os.kill(common_global.pid_dict[pid_data], signal.SIGTERM)
     sys.stdout.flush()
     sys.exit(0)
 
@@ -44,3 +45,4 @@ def com_signal_set_break():
     else:
         signal.signal(signal.SIGTSTP, com_signal_receive)  # ctrl-z
         signal.signal(signal.SIGUSR1, com_signal_receive)  # ctrl-c
+        signal.signal(signal.SIGTERM, com_signal_receive)

@@ -45,34 +45,25 @@ def db_meta_sports_list_count(self, search_value=None):
     return self.db_cursor.fetchone()[0]
 
 
-def db_meta_sports_list(self, offset=None, records=None, search_value=None):
+def db_meta_sports_list(self, offset=0, records=None, search_value=None):
     """
     # return list of sporting events
     # TODO order by year
     """
-    if offset is None:
-        if search_value is not None:
-            self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
-                                   ' from mm_metadata_sports where mm_metadata_sports_name %% %s '
-                                   'order by mm_metadata_sports_name', (search_value,))
-        else:
-            self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
-                                   ' from mm_metadata_sports order by mm_metadata_sports_name')
+    if search_value is not None:
+        self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
+                               ' from mm_metadata_sports where mm_metadata_sports_guid'
+                               ' in (select mm_metadata_sports_guid from mm_metadata_sports'
+                               ' where mm_metadata_sports_name %% %s'
+                               ' order by mm_metadata_sports_name offset %s limit %s)'
+                               ' order by mm_metadata_sports_name',
+                               (search_value, offset, records))
     else:
-        if search_value is not None:
-            self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
-                                   ' from mm_metadata_sports where mm_metadata_sports_guid'
-                                   ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                                   ' where mm_metadata_sports_name %% %s'
-                                   ' order by mm_metadata_sports_name offset %s limit %s)'
-                                   ' order by mm_metadata_sports_name',
-                                   (search_value, offset, records))
-        else:
-            self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
-                                   ' from mm_metadata_sports where mm_metadata_sports_guid'
-                                   ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                                   ' order by mm_metadata_sports_name offset %s limit %s)'
-                                   ' order by mm_metadata_sports_name', (offset, records))
+        self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
+                               ' from mm_metadata_sports where mm_metadata_sports_guid'
+                               ' in (select mm_metadata_sports_guid from mm_metadata_sports'
+                               ' order by mm_metadata_sports_name offset %s limit %s)'
+                               ' order by mm_metadata_sports_name', (offset, records))
     return self.db_cursor.fetchall()
 
 

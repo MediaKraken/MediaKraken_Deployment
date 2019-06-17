@@ -1,3 +1,4 @@
+pika
 ldap3
 apache-libcloud
 pycountry
@@ -8,13 +9,12 @@ Flask
 Flask-Login
 Flask-Bcrypt
 Flask-WTF
-Flask-Paginate>=0.5.1
 Flask-Assets
 Flask-SQLAlchemy
 Flask-KVSession
 Flask-uWSGI-WebSocket
 flask-ldap3-login
-flask-fontawesome
+cryptography
 uwsgi
 pygal
 pdfkit
@@ -31,6 +31,7 @@ pysmb
 python-stdnum
 Babel
 docker
+isbntools
 beautifulsoup4
 appdirs==1.4.3
 appnope==0.1.0

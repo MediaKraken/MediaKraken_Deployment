@@ -17,6 +17,7 @@ WORKDIR /mediakraken
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   gcc \
+  git \
   libxml2-dev \
   linux-headers \
   musl-dev \
@@ -25,8 +26,10 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   xmlsec-dev \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && pip3 install -e git+https://github.com/MediaKraken-Dep/dosage#egg=dosage \
   && apk del \
   gcc \
+  git \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 
