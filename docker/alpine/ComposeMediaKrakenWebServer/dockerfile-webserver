@@ -41,6 +41,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && pip3 install git+https://github.com/MediaKraken/flask-pika \
+  && pip3 install git+https://github.com/MediaKraken/flask-paginate \
   && apk del \
   gcc \
   git \

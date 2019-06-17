@@ -4,11 +4,10 @@ pycountry
 gevent
 simplekv>=0.11.2
 cython
-Flask==0.12.4
+Flask
 Flask-Login
 Flask-Bcrypt
 Flask-WTF
-Flask-Paginate>=0.5.1
 Flask-Assets
 Flask-SQLAlchemy
 Flask-KVSession
