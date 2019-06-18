@@ -308,9 +308,9 @@ def on_message(channel, method_frame, header_frame, body):
         common_global.es_inst.com_elastic_index('info', {"Message body", body})
         json_message = json.loads(body)
         if json_message['Type'] == 'Update Metadata':
+            # this check is just in case there is a tv/etc collection later
             if json_message['Subtype'] == 'themoviedb':
-                subprocess.Popen(['python3',
-                                  '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
+                subprocess.Popen(['python3', json_message['JSON']['program']], shell=False)
             # elif content_providers == 'thetvdb':
             #     subprocess.Popen(['python3',
             #                       '/mediakraken/subprogram_metadata_thetvdb_updates.py'],
@@ -319,12 +319,10 @@ def on_message(channel, method_frame, header_frame, body):
             #     subprocess.Popen(['python3',
             #                       '/mediakraken/subprogram_metadata_tvmaze_updates.py'],
             #                      shell=False)
-        elif json_message['Type'] == 'Update Collection Metadata':
+        elif json_message['Type'] == 'Update Collection':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
-                subprocess.Popen(['python3',
-                                  '/mediakraken/subprogram_metadata_update_create_collections.py'],
-                                 shell=False)
+                subprocess.Popen(['python3', json_message['JSON']['program']], shell=False)
         # TODO add record for activity/etc for the user who ran this
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 

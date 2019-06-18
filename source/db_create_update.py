@@ -571,9 +571,9 @@ base_cron = [
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime',
       'program': '/mediakraken/subprogram_match_anime_id.py'}),
 
-    # TODO CODE
+    # will run within the metadata_api_worker by provider
     ('Collections', 'Create and update collection(s)',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'collection',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Collection',
       'program': '/mediakraken/subprogram_metadata_update_create_collections.py'}),
 
     # TODO CODE
@@ -586,9 +586,9 @@ base_cron = [
     #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle',
     #  'program': '/mediakraken/subprogram_subtitle_downloader.py'}),
 
-    # TODO CODE
+    # will run within the metadata_api_worker by provider
     ('The Movie Database', 'Grab updated metadata for movie(s) and TV show(s)',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Metadata',
       'program': '/mediakraken/subprogram_metadata_tmdb_updates.py'}),
 
     # ('TheTVDB Update', 'Grab updated TheTVDB metadata',
