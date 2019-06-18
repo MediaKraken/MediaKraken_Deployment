@@ -46,7 +46,6 @@ xcopy ..\source\main_server_metadata_api_worker.py ..\docker\alpine\ComposeMedia
 xcopy ..\source\build_image_directory.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
 xcopy ..\source\build_trailer_directory.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
 xcopy ..\source\subprogram*.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
-xcopy ..\source\bulk_themoviedb_netfetch.py ..\docker\alpine\ComposeMediaKrakenMetadata\src\. /y /e /h
 
 :: prefetch tmdb
 xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenPrefetchTMDB\src\. /y /e /h
