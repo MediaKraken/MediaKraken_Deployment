@@ -127,8 +127,8 @@ class MKConsumer(object):
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
         common_global.es_inst.com_elastic_index('info', {'download': ('Binding %s to %s with %s',
-                                                                     self.EXCHANGE, queue_name,
-                                                                     self.ROUTING_KEY)})
+                                                                      self.EXCHANGE, queue_name,
+                                                                      self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -173,8 +173,7 @@ class MKConsumer(object):
         if body is not None:
             common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
-            # no reason to check for download.....it has to be to get into this program
-            # if json_message['Type'] == 'Download':
+            # no reason to check for type download.....it has to be to get into this program
             # file, image, etc
             if json_message['Subtype'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
@@ -182,8 +181,8 @@ class MKConsumer(object):
             elif json_message['Subtype'] == 'Youtube':
                 # TODO little bobby tables
                 dl_pid = subprocess.Popen(split(
-                    'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt ' +
-                    json_message['URL']))
+                    'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
+                    + json_message['URL']))
                 dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
             elif json_message['Subtype'] == 'HDTrailers':
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(

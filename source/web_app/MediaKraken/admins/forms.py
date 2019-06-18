@@ -218,8 +218,6 @@ class CronEditForm(Form):
     interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
                                                 ('Days', 'Days'), ('Weekly', 'Weekly')])
     time = DecimalField('Time', places=2, rounding=ROUND_UP)
-    script_path = TextField('Script Path', validators=[
-        DataRequired(), Length(min=1, max=255)])
 
     def __init__(self, *args, **kwargs):
         super(CronEditForm, self).__init__(*args, **kwargs)

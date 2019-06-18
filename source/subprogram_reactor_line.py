@@ -83,10 +83,14 @@ def read(queue_object):
         json_message = json.loads(body)
         common_global.es_inst.com_elastic_index('info', {'json body': json_message})
         if json_message['Type'] == 'Cron Run':
-            cron_pid = subprocess.Popen(split('python3 ' + json_message['Data']))
+            if json_message['JSON']['program'][-3:] == '.py':
+                subprocess.Popen(['python3', json_message['JSON']['program']], shell=False)
+            else:
+                subprocess.Popen(['/usr/sbin', json_message['JSON']['program']], shell=False)
         elif json_message['Type'] == 'Library Scan':
+            # This is split out since can be done via admin website and cron jobs
             # TODO launch a container to do this.....so, if it gets stuck the others still go
-            scan_pid = subprocess.Popen(['python3', '/mediakraken/subprogram_file_scan.py'])
+            subprocess.Popen(['python3', '/mediakraken/subprogram_file_scan.py'], shell=False)
         elif json_message['Type'] == 'Pause':
             if json_message['Subtype'] == 'Cast':
                 pass
@@ -181,7 +185,7 @@ def read(queue_object):
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
             common_global.es_inst.com_elastic_index('info', {'user stop':
-                                                    mk_containers[json_message['User']]})
+                                                                 mk_containers[json_message['User']]})
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
     yield ch.basic_ack(delivery_tag=method.delivery_tag)

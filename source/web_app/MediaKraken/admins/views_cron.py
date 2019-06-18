@@ -67,15 +67,13 @@ def admin_cron_display_all():
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_cron_list_count(
-                                                      False),
+                                                  total=g.db_connection.db_cron_list_count(False),
                                                   record_name='Cron Jobs',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
     return render_template('admin/admin_cron.html',
-                           media_cron=g.db_connection.db_cron_list(
-                               False, offset, per_page),
+                           media_cron=g.db_connection.db_cron_list(False, offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -95,7 +93,7 @@ def admin_cron_run(guid):
     common_network_pika.com_net_pika_send({'Type': cron_job_data['mm_cron_json']['type'],
                                            'Subtype': cron_job_data['mm_cron_json']['task'],
                                            'User': current_user.get_id(),
-                                           'Program': cron_job_data['mm_cron_json']['mm_cron_file_path']},
+                                           'JSON': cron_job_data['mm_cron_json']},
                                           exchange_name=cron_job_data['mm_cron_json']['exchange_key'],
                                           route_key=cron_job_data['mm_cron_json']['route_key'])
     return render_template('admin/admin_cron.html')
@@ -116,7 +114,6 @@ def admin_cron_edit(guid):
             request.form['enabled']
             request.form['interval']
             request.form['time']
-            request.form['script_path']
             request.form['json']
     return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 
