@@ -91,53 +91,13 @@ def admin_cron_run(guid):
     """
     common_global.es_inst.com_elastic_index('info', {'admin cron run': guid})
     cron_job_data = g.db_connection.db_cron_info(guid)
-    route_key = 'mkque'
-    exchange_key = 'mkque_ex'
-    message_type = None
-    message_subtype = None
-    # no need to do the check since default
-    # TODO what the heck do I mean with 'since default'?
-    # if cron_file_path == './subprogram_postgresql_backup.py'\
-    #     or cron_file_path == './subprogram_create_chapter_images.py':
-    #     elif cron_file_path == './subprogram_postgresql_vacuum.py':
-    #     elif cron_file_path == './subprogram_file_scan.py':
-    #     elif cron_file_path == './subprogram_roku_thumbnail_generate.py':
-    #     elif cron_file_path == './subprogram_sync.py':
-    #     pass
-
-    # TODO these should feed into metadata program
-    # if cron_job_data['mm_cron_file_path'] == './subprogram_update_create_collections.py' \
-    #         or cron_job_data['mm_cron_file_path'] == './subprogram_tmdb_updates.py':
-    #     route_key = 'themoviedb'
-    #     exchange_key = 'mkque_metadata_ex'
-    #
-    # if cron_job_data['mm_cron_file_path'] == './subprogram_schedules_direct_updates.py':
-    #     route_key = 'mkque_metadata'
-    #     exchange_key = 'mkque_metadata_ex'
-
-    if cron_job_data['mm_cron_file_path'] is None:
-        exchange_key = cron_job_data['mm_cron_json']['exchange_key']
-        route_key = cron_job_data['mm_cron_json']['route_key']
-        message_type = cron_job_data['mm_cron_json']['type']
-        message_subtype = cron_job_data['mm_cron_json']['task']
-
     # submit the message
-    common_network_pika.com_net_pika_send({'Type': message_type,
-                                           'Subtype': message_subtype,
-                                           'User': current_user.get_id()},
-                                          rabbit_host_name='mkrabbitmq',
-                                          exchange_name=exchange_key,
-                                          route_key=route_key)
-    # ch = fpika.channel()
-    # ch.basic_publish(exchange=exchange_key, routing_key=route_key,
-    #                  body=json.dumps(
-    #                      {'Type': message_type,
-    #                       'Subtype': message_subtype,
-    #                       'User': current_user.get_id()}),
-    #                  properties=fpika.BasicProperties(content_type='text/plain',
-    #                                                   delivery_mode=2)
-    #                  )
-    # fpika.return_channel(ch)
+    common_network_pika.com_net_pika_send({'Type': cron_job_data['mm_cron_json']['type'],
+                                           'Subtype': cron_job_data['mm_cron_json']['task'],
+                                           'User': current_user.get_id(),
+                                           'Program': cron_job_data['mm_cron_json']['mm_cron_file_path']},
+                                          exchange_name=cron_job_data['mm_cron_json']['exchange_key'],
+                                          route_key=cron_job_data['mm_cron_json']['route_key'])
     return render_template('admin/admin_cron.html')
 
 

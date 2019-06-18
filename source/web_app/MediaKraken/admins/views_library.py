@@ -74,13 +74,6 @@ def admin_library():
                                                   rabbit_host_name='mkrabbitmq',
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
-            # ch = fpika.channel()
-            # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-            #                  body=json.dumps({'Type': 'Library Scan'}),
-            #                  properties=fpika.BasicProperties(content_type='text/plain',
-            #                                                   delivery_mode=2)
-            #                  )
-            # fpika.return_channel(ch)
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     page, per_page, offset = common_pagination.get_page_items()
