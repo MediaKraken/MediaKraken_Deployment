@@ -181,8 +181,7 @@ def read(queue_object):
         elif json_message['Type'] == 'Stop':
             # this will force stop the container and then delete it
             common_global.es_inst.com_elastic_index('info', {'user stop':
-                                                                 mk_containers[
-                                                                     json_message['User']]})
+                                                    mk_containers[json_message['User']]})
             docker_inst.com_docker_delete_container(
                 container_image_name=mk_containers[json_message['User']])
     yield ch.basic_ack(delivery_tag=method.delivery_tag)
