@@ -308,17 +308,17 @@ def on_message(channel, method_frame, header_frame, body):
         common_global.es_inst.com_elastic_index('info', {"Message body", body})
         json_message = json.loads(body)
         if json_message['Type'] == 'Update Metadata':
-            if content_providers == 'themoviedb':
+            if json_message['Subtype'] == 'themoviedb':
                 subprocess.Popen(['python3',
                                   '/mediakraken/subprogram_metadata_tmdb_updates.py'], shell=False)
-            elif content_providers == 'thetvdb':
-                subprocess.Popen(['python3',
-                                  '/mediakraken/subprogram_metadata_thetvdb_updates.py'],
-                                 shell=False)
-            elif content_providers == 'tvmaze':
-                subprocess.Popen(['python3',
-                                  '/mediakraken/subprogram_metadata_tvmaze_updates.py'],
-                                 shell=False)
+            # elif content_providers == 'thetvdb':
+            #     subprocess.Popen(['python3',
+            #                       '/mediakraken/subprogram_metadata_thetvdb_updates.py'],
+            #                      shell=False)
+            # elif content_providers == 'tvmaze':
+            #     subprocess.Popen(['python3',
+            #                       '/mediakraken/subprogram_metadata_tvmaze_updates.py'],
+            #                      shell=False)
         elif json_message['Type'] == 'Update Collection Metadata':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
