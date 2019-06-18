@@ -51,14 +51,14 @@ def db_cron_list(self, enabled_only=False, offset=0, records=None):
     """
     if not enabled_only:
         self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
+                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run'
                                ' from mm_cron where mm_cron_guid'
                                ' in (select mm_cron_guid from mm_cron'
                                ' order by mm_cron_name offset %s limit %s)'
                                ' order by mm_cron_name', (offset, records))
     else:
         self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
+                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run'
                                ' from mm_cron where mm_cron_guid'
                                ' in (select mm_cron_guid from mm_cron'
                                ' where mm_cron_enabled = true'
