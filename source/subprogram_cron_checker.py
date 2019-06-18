@@ -84,7 +84,7 @@ while 1:
                                               routing_key=row_data['mm_cron_json']['route_key'],
                                               body=json.dumps(
                                                   {'Type': row_data['mm_cron_json']['type'],
-                                                   'Subtype': row_data['mm_cron_json']['HDTrailers']}),
+                                                   'Subtype': row_data['mm_cron_json']['task']}),
                                               properties=pika.BasicProperties(
                                                   content_type='text/plain',
                                                   delivery_mode=2)
