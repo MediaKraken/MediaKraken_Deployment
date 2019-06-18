@@ -567,14 +567,17 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
 
 base_cron = [
     # metadata
+    # TODO CODE
     ('Anime', 'Match anime via Scudlee and Manami data',
      '/mediakraken/subprogram_match_anime_id.py',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime'}),
 
+    # TODO CODE
     ('Collections', 'Create and update collection(s)',
      '/mediakraken/subprogram_metadata_update_create_collections.py',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'collection'}),
 
+    # TODO CODE
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
      '/mediakraken/subprogram_schedules_direct_updates.py',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update'}),
@@ -584,6 +587,7 @@ base_cron = [
     #  '/mediakraken/subprogram_subtitle_downloader.py',
     #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
 
+    # TODO CODE
     ('The Movie Database', 'Grab updated metadata for movie(s) and TV show(s)',
      '/mediakraken/subprogram_metadata_tmdb_updates.py',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
@@ -596,13 +600,16 @@ base_cron = [
     #  '/mediakraken/subprogram_metadata_tvmaze_updates.py',
     #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update'}),
 
+    # All code to run this is in the download docker image
     ('Trailer', 'Download new trailer(s)', None,
      {'exchange_key': 'mkque_download_ex', 'route_key': 'mkdownload', 'type': 'Download', 'task': 'HDTrailers'}),
 
     # normal subprograms
+    # TODO CODE
     ('Backup', 'Backup PostgreSQL DB', '/mediakraken/subprogram_postgresql_backup.py',
      {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbbackup'}),
 
+    # TODO CODE
     ('DB Vacuum', 'PostgreSQL Vacuum Analyze all tables',
      '/mediakraken/subprogram_postgresql_vacuum.py',
      {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbvacuum'}),
@@ -610,10 +617,12 @@ base_cron = [
     # ('iRadio Scan', 'Scan for iRadio stations', '/mediakraken/subprogram_iradio_channels.py',
     #  {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'iradio'}),
 
+    # TODO CODE
     ('Media Scan', 'Scan for new media', '/mediakraken/subprogram_file_scan.py',
      {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'scan'}),
 
-    ('Sync', 'Sync/Transcode media', '/mediakraken/subprogram_sync.py',
+    # TODO CODE
+    ('Sync', 'Sync and transcode media', '/mediakraken/subprogram_sync.py',
      {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'sync'}),
 ]
 # create base cron entries
