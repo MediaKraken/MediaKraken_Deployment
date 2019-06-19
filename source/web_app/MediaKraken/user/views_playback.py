@@ -70,17 +70,6 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
                                               rabbit_host_name='mkrabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
-        # ch = fpika.channel()
-        # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-        #                  body=json.dumps({'Type': 'Play', 'Subtype': 'HLS',
-        #                                   'Input File': media_path,
-        #                                   'Audio Track': atracks,
-        #                                   'Subtitle Track': subtracks,
-        #                                   'Target UUID': target_uuid,
-        #                                   'User': current_user.get_id()}),
-        #                  properties=fpika.BasicProperties(content_type='text/plain',
-        #                                                   delivery_mode=2))
-        # fpika.return_channel(ch)
         # TODO how to know what to return here.....slave could be anywhere on swarm
         pass_guid = 'https://th-mediakraken-1' + '/' + vid_name
         # pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
@@ -116,20 +105,13 @@ def user_playback(action, guid):
     #    elif action == 'rewind':
     #        pass
     elif action == 'stop':
-        common_network_pika.com_net_pika_send({'Type': 'Stop', 'Subtype': device,
+        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Stop', 'Device': device,
                                                'User': current_user.get_id()},
                                               rabbit_host_name='mkrabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
-        # ch = fpika.channel()
-        # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-        #                  body=json.dumps({'Type': 'Stop', 'Subtype': device,
-        #                                   'User': current_user.get_id()}),
-        #                  properties=fpika.BasicProperties(content_type='text/plain',
-        #                                                   delivery_mode=2))
-        # fpika.return_channel(ch)
     elif action == 'play':
-        common_network_pika.com_net_pika_send({'Type': 'Play',
+        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Play', 'Device': device,
                                                'User': current_user.get_id(),
                                                'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
                                                'Audio': audio_track,
@@ -138,74 +120,32 @@ def user_playback(action, guid):
                                               rabbit_host_name='mkrabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
-        # ch = fpika.channel()
-        # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-        #                  body=json.dumps({'Type': 'Play',
-        #                                   'User': current_user.get_id(),
-        #                                   'Data': g.db_connection.db_read_media(guid)[
-        #                                       'mm_media_path'],
-        #                                   'Audio': audio_track,
-        #                                   'Subtitle': subtitle_track,
-        #                                   'Target': playback_device}),
-        #                  properties=fpika.BasicProperties(content_type='text/plain',
-        #                                                   delivery_mode=2))
-        # fpika.return_channel(ch)
     elif action == 'pause':
-        common_network_pika.com_net_pika_send({'Type': 'Pause', 'Subtype': device,
+        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Pause', 'Device': device,
                                                'User': current_user.get_id()},
                                               rabbit_host_name='mkrabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
-        # ch = fpika.channel()
-        # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-        #                  body=json.dumps({'Type': 'Pause', 'Subtype': device,
-        #                                   'User': current_user.get_id()}),
-        #                  properties=fpika.BasicProperties(content_type='text/plain',
-        #                                                   delivery_mode=2))
-        # fpika.return_channel(ch)
-    #    elif action == 'ff':
-    #        pass
     elif action == 'forward':
         pass
     elif action == 'mute':
-        common_network_pika.com_net_pika_send({'Type': 'Mute', 'Subtype': device,
+        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Mute', 'Device': device,
                                                'User': current_user.get_id()},
                                               rabbit_host_name='mkrabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
-        # ch = fpika.channel()
-        # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-        #                  body=json.dumps({'Type': 'Mute', 'Subtype': device,
-        #                                   'User': current_user.get_id()}),
-        #                  properties=fpika.BasicProperties(content_type='text/plain',
-        #                                                   delivery_mode=2))
-        # fpika.return_channel(ch)
     elif action == 'vol_up':
-        common_network_pika.com_net_pika_send({'Type': 'Volume Up', 'Subtype': device,
+        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Volume Up', 'Device': device,
                                                'User': current_user.get_id()},
                                               rabbit_host_name='mkrabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
-        # ch = fpika.channel()
-        # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-        #                  body=json.dumps({'Type': 'Volume Up', 'Subtype': device,
-        #                                   'User': current_user.get_id()}),
-        #                  properties=fpika.BasicProperties(content_type='text/plain',
-        #                                                   delivery_mode=2))
-        # fpika.return_channel(ch)
     elif action == 'vol down':
-        common_network_pika.com_net_pika_send({'Type': 'Volume Down', 'Subtype': device,
+        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Volume Down', 'Device': device,
                                                'User': current_user.get_id()},
                                               rabbit_host_name='mkrabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
-        # ch = fpika.channel()
-        # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-        #                  body=json.dumps({'Type': 'Volume Down', 'Subtype': device,
-        #                                   'User': current_user.get_id()}),
-        #                  properties=fpika.BasicProperties(content_type='text/plain',
-        #                                                   delivery_mode=2))
-        # fpika.return_channel(ch)
     return render_template("users/user_playback.html")
 
 
