@@ -91,7 +91,6 @@ def admin_cron_run(guid):
     cron_job_data = g.db_connection.db_cron_info(guid)
     # submit the message
     common_network_pika.com_net_pika_send({'Type': cron_job_data['mm_cron_json']['type'],
-                                           'Subtype': cron_job_data['mm_cron_json']['task'],
                                            'User': current_user.get_id(),
                                            'JSON': cron_job_data['mm_cron_json']},
                                           exchange_name=cron_job_data['mm_cron_json']['exchange_key'],
