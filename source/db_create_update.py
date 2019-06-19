@@ -632,7 +632,7 @@ if db_connection.db_query('select count(*) from mm_cron', fetch_all=False) == 0:
     for base_item in base_cron:
         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
                                      psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
-                                     base_item[2], json.dumps(base_item[3]))
+                                     json.dumps(base_item[2]))
 
 # create internet radio tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_radio (mm_radio_guid uuid'
