@@ -9,7 +9,6 @@ from MediaKraken.extensions import (
     bcrypt,
     db,
     login_manager,
-    # fpika,
 )
 from MediaKraken.settings import ProdConfig
 from flask import Flask, render_template
@@ -36,7 +35,6 @@ def register_extensions(app):
     bcrypt.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-#    fpika.init_app(app)
     return None
 
 

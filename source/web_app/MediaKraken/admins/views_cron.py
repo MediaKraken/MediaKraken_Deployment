@@ -14,9 +14,6 @@ blueprint = Blueprint("admins_cron", __name__,
 import flask
 from flask_login import current_user
 from functools import wraps
-# from MediaKraken.extensions import (
-#     fpika,
-# )
 from MediaKraken.admins.forms import CronEditForm
 
 from common import common_config_ini
@@ -48,8 +45,7 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                             current_user.get_id()})
+        common_global.es_inst.com_elastic_index('info', {"admin access attempt by": current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
