@@ -110,7 +110,7 @@ def db_drop_table(self, table_name):
     self.db_cursor.execute('DROP TABLE IF EXISTS ' + table_name)  # can't %s due to ' inserted
 
 
-def db_query(self, query_string):
+def db_query(self, query_string, fetch_all=True):
     """
     # general run anything
     """
@@ -118,7 +118,10 @@ def db_query(self, query_string):
     common_global.es_inst.com_elastic_index('info', {"query": query_string})
     self.db_cursor.execute(query_string)
     try:
-        return self.db_cursor.fetchall()
+        if fetch_all:
+            return self.db_cursor.fetchall()
+        else:
+            return self.db_cursor.fetchone()[0]
     except:
         return None
 

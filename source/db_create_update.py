@@ -628,8 +628,7 @@ base_cron = [
       'program': '/mediakraken/subprogram_sync.py'}),
 ]
 # create base cron entries
-db_connection.db_query('select count(*) from mm_cron')
-if db_connection.fetchone()[0] == 0:
+if db_connection.db_query('select count(*) from mm_cron', fetch_all=False) == 0:
     for base_item in base_cron:
         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
                                      psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
@@ -762,8 +761,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
                        ' CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
                        ' mm_options_json jsonb,'
                        ' mm_status_json jsonb)')
-db_connection.db_query('select count(*) from mm_options_and_status')
-if db_connection.fetchone()[0] == 0:
+if db_connection.db_query('select count(*) from mm_options_and_status', fetch_all=False) == 0:
     db_connection.db_opt_status_insert(json.dumps({
         'Account': {
             'ScheduleDirect': {'User': None,
