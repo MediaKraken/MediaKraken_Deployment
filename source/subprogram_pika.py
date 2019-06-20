@@ -18,6 +18,7 @@
 
 import functools
 import json
+import os
 import subprocess
 import uuid
 import time
@@ -199,7 +200,7 @@ class MKConsumer(object):
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'json body': json_message})
             if json_message['Type'] == 'Cron Run':
-                if json_message['JSON']['program'][-3:] == '.py':
+                if os.path.splitext(json_message['JSON']['program'])[1] == '.py':
                     subprocess.Popen(['python3', json_message['JSON']['program']], shell=False)
                 else:
                     subprocess.Popen(['/usr/sbin', json_message['JSON']['program']], shell=False)
