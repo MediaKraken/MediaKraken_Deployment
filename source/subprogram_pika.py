@@ -180,6 +180,19 @@ class MKConsumer(object):
             self._channel.close()
 
     def on_message(self, _unused_channel, basic_deliver, properties, body):
+        """
+        Do I actually launch a docker swarm container that checks for cuda
+        and then that launches the slave container with ffmpeg
+
+        # this is for the debian one
+        docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkslavenvidiadebian
+
+        --device /dev/nvidia0:/dev/nvidia0 \
+        --device /dev/nvidiactl:/dev/nvidiactl \
+
+        wget http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_surround.avi
+        The minimum required Nvidia driver for nvenc is 378.13 or newer from ffmpeg error
+        """
         if body is not None:
             common_global.es_inst.com_elastic_index('info', {"body": body})
             # network_base.NetworkEvents.ampq_message_received(body)
@@ -383,17 +396,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    """
-    Do I actually launch a docker swarm container that checks for cuda
-    and then that launches the slave container with ffmpeg
-
-    # this is for the debian one
-    docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') mediakraken/mkslavenvidiadebian
-
-    --device /dev/nvidia0:/dev/nvidia0 \
-    --device /dev/nvidiactl:/dev/nvidiactl \
-
-    wget http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_surround.avi
-    The minimum required Nvidia driver for nvenc is 378.13 or newer from ffmpeg error
-    """
