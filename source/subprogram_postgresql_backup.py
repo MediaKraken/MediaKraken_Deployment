@@ -25,7 +25,8 @@ from common import common_logging_elasticsearch
 from common import common_signal
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_postgresql_backup')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_postgresql_backup')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

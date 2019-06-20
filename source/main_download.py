@@ -1,13 +1,12 @@
-import time
-
 import functools
 import json
 import os
-import pika
 import subprocess
-import xmltodict
+import time
 from shlex import split
 
+import pika
+import xmltodict
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -174,7 +173,6 @@ class MKConsumer(object):
             common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
             # no reason to check for type download.....it has to be to get into this program
-            # file, image, etc
             if json_message['Subtype'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local Save Path'])
@@ -206,9 +204,11 @@ class MKConsumer(object):
                                     download_link = data['item']['enclosure url']
                                     break
                         if download_link is not None:
-                            file_save_name = os.path.join('/static/meta/trailer/', download_link.rsplit('/', 1))
+                            file_save_name = os.path.join('/static/meta/trailer/',
+                                                          download_link.rsplit('/', 1))
                             if not os.path.exists(file_save_name):
-                                common_network.mk_network_fetch_from_url(download_link, directory=file_save_name)
+                                common_network.mk_network_fetch_from_url(download_link,
+                                                                         directory=file_save_name)
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
