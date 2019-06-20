@@ -23,7 +23,7 @@ import json
 def com_net_pika_send(body_data, rabbit_host_name='mkrabbitmq', exchange_name='mkque_ex', route_key='mkque'):
     pika_inst = pika.BlockingConnection(pika.ConnectionParameters(host=rabbit_host_name))
     pika_channel = pika_inst.channel()
-    pika_channel.exchange_declare(exchange=exchange_name, exchange_type='topic', durable=True)
+    pika_channel.exchange_declare(exchange=exchange_name, exchange_type='direct', durable=True)
     pika_channel.basic_publish(exchange=exchange_name,
                                routing_key=route_key,
                                body=json.dumps(body_data),
