@@ -57,7 +57,7 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
             metadata_uuid = db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
             common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
     common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
-                                                     'tvbmaze': tvmaze_id})
+                                                     'tvmaze': tvmaze_id})
     return metadata_uuid, tvmaze_id
 
 
