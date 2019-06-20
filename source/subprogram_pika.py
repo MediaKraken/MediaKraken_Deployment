@@ -196,7 +196,6 @@ class MKConsumer(object):
         """
         if body is not None:
             common_global.es_inst.com_elastic_index('info', {"body": body})
-            # network_base.NetworkEvents.ampq_message_received(body)
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'json body': json_message})
             if json_message['Type'] == 'Cron Run':

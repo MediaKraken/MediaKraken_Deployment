@@ -25,7 +25,7 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
 from network import network_base_line as network_base
-from twisted.internet import reactor, protocol, defer, task
+from twisted.internet import reactor, protocol
 from twisted.internet import ssl
 
 mk_containers = {}
@@ -50,7 +50,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
 
 if __name__ == '__main__':
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_reactor_line')
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+        'subprogram_reactor_line')
     # set signal exit breaks
     common_signal.com_signal_set_break()
 
