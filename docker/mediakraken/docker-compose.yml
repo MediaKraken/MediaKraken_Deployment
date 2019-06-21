@@ -8,7 +8,6 @@ services:
   appserver:
     image: mediakraken/mkserver:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -58,7 +57,6 @@ services:
   cron:
     image: mediakraken/mkcron:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -112,7 +110,6 @@ services:
   ffprobe:
     image: mediakraken/mkffprobe:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -193,7 +190,7 @@ services:
   pgbounce:
     image: mediakraken/mkpgbounce:latest
     environment:
-      - DB_HOST=${DBHOST}
+      - DB_HOST=mkdatabase
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
       - POOL_MODE=transaction
@@ -232,7 +229,6 @@ services:
   reactor:
     image: mediakraken/mkreactor:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}

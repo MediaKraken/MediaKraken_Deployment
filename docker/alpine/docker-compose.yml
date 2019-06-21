@@ -13,7 +13,6 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -73,7 +72,6 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -142,7 +140,6 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -243,7 +240,7 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     environment:
-      - DB_HOST=${DBHOST}
+      - DB_HOST=mkdatabase
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
       - POOL_MODE=transaction
@@ -295,7 +292,6 @@ services:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}

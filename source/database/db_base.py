@@ -36,9 +36,9 @@ def db_open(self, db_prod=True):
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     if db_prod is True:
-        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"
+        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='mkpgbounce' port=6432 password='%s'"
                                           % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
-                                             'mkpgbounce', 6432, os.environ['POSTGRES_PASSWORD']))
+                                             os.environ['POSTGRES_PASSWORD']))
     else:
         self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
                                           " host='th-postgresql-1' port=5432 password='metamanpg'")

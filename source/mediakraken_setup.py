@@ -95,7 +95,6 @@ compose_text += "\n\n  # Main app server which controls the show\n" \
                 "  appserver:\n" \
                 "    image: mediakraken/mkserver:latest\n" \
                 "    environment:\n" \
-                "      - POSTGRES_DB_HOST=${DBHOST}\n" \
                 "      - POSTGRES_DB=${DBDATABASE}\n" \
                 "      - POSTGRES_USER=${DBUSER}\n" \
                 "      - POSTGRES_PASSWORD=${DBPASS}\n" \
