@@ -33,9 +33,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify themoviedb key exists
 if option_config_json['API']['themoviedb'] is not None:
-    # setup the thmdb class
-    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(
-        option_config_json)
+    # setup the tmdb class
+    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
 else:
     TMDB_CONNECTION = None
 
