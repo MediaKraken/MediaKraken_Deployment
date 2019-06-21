@@ -28,6 +28,9 @@ docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=10.0.0.122 --build
 cd ../ComposeMediaKrakenBase39Py3
 docker build -t mediakraken/mkbase39py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=th-pypi-1 .
 
+cd ../ComposeMediaKrakenBase310Py3
+docker build -t mediakraken/mkbase310py3 --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=th-pypi-1 .
+
 # Build the base FFMPEG from base images
 # Image that simply has ffmpeg and ffprobe for use by other containers.
 cd ../ComposeMediaKrakenBaseFFMPEG

@@ -24,6 +24,9 @@ docker build -t mediakraken/mkbase38py3 --build-arg ALPMIRROR=dl-cdn.alpinelinux
 cd ../ComposeMediaKrakenBase39Py3
 docker build -t mediakraken/mkbase39py3 --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
+cd ../ComposeMediaKrakenBase310Py3
+docker build -t mediakraken/mkbase310py3 --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
+
 # Build the base FFMPEG from base images
 # Image that simply has ffmpeg and ffprobe for use by other containers.
 cd ../ComposeMediaKrakenBaseFFMPEG
