@@ -16,6 +16,9 @@ from common import common_signal
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -291,8 +294,6 @@ class MKConsumer(object):
 
 
 def main():
-    # set signal exit breaks
-    common_signal.com_signal_set_break()
     # fire off wait for it script to allow rabbitmq connection
     wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                                  'mkrabbitmq', '-p', ' 5672', '-t', '30'],
