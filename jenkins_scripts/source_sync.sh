@@ -57,6 +57,12 @@ cp -R ../source/common ../docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
 cp -R ../source/database ../docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
 cp ../source/bulk_tvmaze_netfetch.py ../docker/alpine/ComposeMediaKrakenPrefetchTVMaze/src/.
 
+# pika
+cp -R ../source/common ../docker/alpine/ComposeMediaKrakenPika/src/.
+cp -R ../source/database ../docker/alpine/ComposeMediaKrakenPika/src/.
+cp -R ../source/network ../docker/alpine/ComposeMediaKrakenPika/src/.
+cp ../source/subprogram*.py  ../docker/alpine/ComposeMediaKrakenPika/src/.
+
 # reactor
 cp -R ../source/common ../docker/alpine/ComposeMediaKrakenReactor/src/.
 cp -R ../source/database ../docker/alpine/ComposeMediaKrakenReactor/src/.

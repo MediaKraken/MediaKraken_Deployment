@@ -28,6 +28,7 @@ docker push mediakraken/mknginx:latest
 #docker push mediakraken/mkopenldap:latest
 docker push mediakraken/mkpgadmin:latest
 docker push mediakraken/mkpgbounce:latest
+docker push mediakraken/mkpika:latest
 docker push mediakraken/mkprefetchtmdb:latest
 docker push mediakraken/mkprefetchtvmaze:latest
 docker push mediakraken/mkrabbitmq:latest

@@ -1,0 +1,8 @@
+service_identity
+pyopenssl
+ldap3
+pycountry
+twisted
+pika
+docker
+pysmb

@@ -57,6 +57,12 @@ xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /
 xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /y /e /h
 xcopy ..\source\bulk_tvmaze_netfetch.py ..\docker\alpine\ComposeMediaKrakenPrefetchTVMaze\src\. /y /e /h
 
+:: pika
+xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenPika\src\. /y /e /h
+xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenPika\src\. /y /e /h
+xcopy ..\source\network ..\docker\alpine\ComposeMediaKrakenPika\src\. /y /e /h
+xcopy ..\source\subprogram*.py  ..\docker\alpine\ComposeMediaKrakenPika\src\. /y /e /h
+
 :: reactor
 xcopy ..\source\common ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h
 xcopy ..\source\database ..\docker\alpine\ComposeMediaKrakenReactor\src\. /y /e /h

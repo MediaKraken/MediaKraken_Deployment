@@ -28,7 +28,7 @@ docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}
 
 testing
 
-
+docker run --env POSTGRES_PASSWORD=jf22j --env POSTGRES_DB=metamandb --env POSTGRES_USER=metamanpg -itd --name=alpine_fdsfs5550 mediakraken/mkdownload /bin/ash
 
 
 docker run --env POSTGRES_PASSWORD=jf22j --env POSTGRES_DB=metamandb --env POSTGRES_USER=metamanpg -itd --name=alpine_fdsfs5550 mediakraken/mkdatabase /bin/ash

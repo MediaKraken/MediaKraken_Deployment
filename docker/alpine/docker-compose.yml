@@ -235,6 +235,37 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  # pika
+  pika:
+    build:
+      context: ./ComposeMediaKrakenPika
+      dockerfile: dockerfile-pika
+      args:
+        ALPMIRROR: dl-cdn.alpinelinux.org
+        PIPMIRROR: pypi.python.org
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkpika
+    depends_on:
+      - pgbounce
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_pika.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      # for start of SSL server
+      - ./data/certs:/mediakraken/key:ro
+      - ./data/backup:/mediakraken/backup
+      - ./mkmount:/mediakraken/mnt
+      # so it can start docker containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
   # pgbouncer
   pgbounce:
     build:

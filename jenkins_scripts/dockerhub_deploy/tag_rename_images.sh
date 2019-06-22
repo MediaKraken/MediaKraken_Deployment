@@ -7,6 +7,7 @@ docker tag alpine_ffprobe mediakraken/mkffprobe:latest
 docker tag alpine_hardware mediakraken/mkhardware:latest
 docker tag alpine_metadata:latest mediakraken/mkmetadata:latest
 docker tag alpine_nginx:latest mediakraken/mknginx:latest
+docker tag alpine_pika:latest mediakraken/mkpika:latest
 docker tag alpine_pgbounce:latest mediakraken/mkpgbounce:latest
 docker tag alpine_rabbit:latest mediakraken/mkrabbitmq:latest
 docker tag alpine_reactor:latest mediakraken/mkreactor:latest
