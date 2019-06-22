@@ -5,7 +5,7 @@ import sys
 import json
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash
+from flask import Blueprint, render_template, g, request, flash, redirect, url_for
 from flask_login import login_required
 
 blueprint = Blueprint("admins_cron", __name__,
@@ -91,7 +91,8 @@ def admin_cron_run(guid):
                                            'JSON': cron_job_data['mm_cron_json']},
                                           exchange_name=cron_job_data['mm_cron_json']['exchange_key'],
                                           route_key=cron_job_data['mm_cron_json']['route_key'])
-    return render_template('admin/admin_cron.html')
+    g.db_connection.db_cron_time_update(cron_job_data['mm_cron_name'])
+    return redirect(url_for('admins_cron.admin_cron_display_all'))
 
 
 @blueprint.route('/cron_edit/<guid>', methods=['GET', 'POST'])
