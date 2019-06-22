@@ -63,8 +63,9 @@ services:
       - DEBUG=${DEBUG}
     container_name: mkcron
     depends_on:
+      - pgbounce
       - rabbit
-    entrypoint: python3 subprogram_cron_checker.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
@@ -96,8 +97,9 @@ services:
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
     depends_on:
+      - pgbounce
       - rabbit
-    entrypoint: python3 main_download.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_download.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -116,8 +118,9 @@ services:
       - DEBUG=${DEBUG}
     container_name: mkffprobe
     depends_on:
+      - pgbounce
       - rabbit
-    entrypoint: python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -237,7 +240,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: python3 subprogram_reactor_line.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_reactor_line.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
