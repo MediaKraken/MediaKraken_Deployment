@@ -38,6 +38,12 @@ from common import common_string
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')
 
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
+# open the database
+option_config_json, db_connection = common_config_ini.com_config_read()
+
 
 def worker(audit_directory):
     """
@@ -234,26 +240,10 @@ wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
                             shell=False)
 wait_pid.wait()
 
-# set signal exit breaks
-common_signal.com_signal_set_break()
-
-# Open a connection to RabbitMQ
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
-                                       credentials=pika.PlainCredentials('guest', 'guest'))
+credentials = pika.PlainCredentials('guest', 'guest')
+parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30, credentials=credentials)
 connection = pika.BlockingConnection(parameters)
-
-# Open the channel
 channel = connection.channel()
-
-# Declare the queue
-channel.queue_declare(queue="mkffmpeg", durable=True,
-                      exclusive=False, auto_delete=False)
-
-# Turn on delivery confirmations
-channel.confirm_delivery()
-
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 # load in all media from DB
 global_known_media = []  # pylint: disable=C0103
