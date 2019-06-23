@@ -282,14 +282,15 @@ for row_data in db_connection.db_audit_paths():
         smb_stuff.com_cifs_close()
     else:
         # make sure the path still exists
-        if not os.path.isdir(row_data['mm_media_dir_path']):
+        if not os.path.isdir(os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path'])):
             db_connection.db_notification_insert('Library path not found: %s'
                                                  % row_data['mm_media_dir_path'], True)
         else:
             # verify the directory inodes has changed
-            if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])),
-                                 "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
-                audit_directories.append((row_data['mm_media_dir_path'],
+            if datetime.strptime(
+                    time.ctime(os.path.getmtime(os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']))),
+                    "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+                audit_directories.append((os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']),
                                           str(row_data['mm_media_class_guid']),
                                           row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
