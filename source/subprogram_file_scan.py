@@ -302,15 +302,18 @@ db_connection.db_commit()
 
 # start processing the directories
 if len(audit_directories) > 0:
-    # switched to this since tracebacks work this method
-    with ThreadPoolExecutor(len(audit_directories)) as executor:
-        futures = [executor.submit(worker, n) for n in audit_directories]
-        for future in futures:
-            pass
-            # try:
-            #     common_global.es_inst.com_elastic_index('info', {'future': str(future.result())})
-            # except:
-            #     pass
+    # TODO Threading will exit.  Ran each dir seperate works.  Why?
+    for media_dir in audit_directories:
+        worker(media_dir)
+    # # switched to this since tracebacks work this method
+    # with ThreadPoolExecutor(len(audit_directories)) as executor:
+    #     futures = [executor.submit(worker, n) for n in audit_directories]
+    #     for future in futures:
+    #         pass
+    #         # try:
+    #         #     common_global.es_inst.com_elastic_index('info', {'future': str(future.result())})
+    #         # except:
+    #         #     pass
 
 # commit
 db_connection.db_commit()
