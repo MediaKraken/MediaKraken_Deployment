@@ -17,6 +17,7 @@
 '''
 
 import datetime
+import os
 import uuid
 
 import psycopg2
@@ -82,6 +83,8 @@ def db_audit_dir_timestamp_update(self, dir_path):
     """
     # update the timestamp for directory scans
     """
+    if dir_path[:1] != "\\":  # if not unc.....add the mnt
+        dir_path = os.path.join('/mediakraken/mnt', dir_path)
     self.db_cursor.execute('update mm_media_dir set mm_media_dir_last_scanned = %s'
                            ' where mm_media_dir_path = %s', (datetime.datetime.now(), dir_path))
 
