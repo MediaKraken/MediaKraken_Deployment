@@ -6,3 +6,4 @@ twisted
 pika
 docker
 pysmb
+tmdbsimple
