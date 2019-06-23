@@ -61,6 +61,7 @@ cp ../source/bulk_tvmaze_netfetch.py ../docker/alpine/ComposeMediaKrakenPrefetch
 cp -R ../source/common ../docker/alpine/ComposeMediaKrakenPika/src/.
 cp -R ../source/database ../docker/alpine/ComposeMediaKrakenPika/src/.
 cp -R ../source/network ../docker/alpine/ComposeMediaKrakenPika/src/.
+cp -R ../source/metadata ../docker/alpine/ComposeMediaKrakenMetadata/src/.
 cp ../source/subprogram*.py  ../docker/alpine/ComposeMediaKrakenPika/src/.
 
 # reactor
