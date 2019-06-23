@@ -72,19 +72,14 @@ class CommonMetadataTMDB:
                                                                  'date':
                                                                      res.release_date.split('-', 1)[
                                                                          0]})
-                if media_year is not None and (str(media_year) == res.release_date.split('-', 1)[0]
-                                               or str(int(media_year) - 1) ==
-                                               res.release_date.split('-', 1)[0]
-                                               or str(int(media_year) - 2) ==
-                                               res.release_date.split('-', 1)[0]
-                                               or str(int(media_year) - 3) ==
-                                               res.release_date.split('-', 1)[0]
-                                               or str(int(media_year) + 1) ==
-                                               res.release_date.split('-', 1)[0]
-                                               or str(int(media_year) + 2) ==
-                                               res.release_date.split('-', 1)[0]
-                                               or str(int(media_year) + 3) ==
-                                               res.release_date.split('-', 1)[0]):
+                if media_year is not None and type(media_year) is not list \
+                        and (str(media_year) == res.release_date.split('-', 1)[0]
+                             or str(int(media_year) - 1) == res.release_date.split('-', 1)[0]
+                             or str(int(media_year) - 2) == res.release_date.split('-', 1)[0]
+                             or str(int(media_year) - 3) == res.release_date.split('-', 1)[0]
+                             or str(int(media_year) + 1) == res.release_date.split('-', 1)[0]
+                             or str(int(media_year) + 2) == res.release_date.split('-', 1)[0]
+                             or str(int(media_year) + 3) == res.release_date.split('-', 1)[0]):
                     if not id_only:
                         return 'info', self.com_tmdb_metadata_by_id(res.id)
                     else:
@@ -103,7 +98,7 @@ class CommonMetadataTMDB:
         if tmdb_id[0:2].lower() == 'tt':
             # imdb id......so, run find and then do the requests
             # TODO
-            #tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
+            # tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
             pass
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'
