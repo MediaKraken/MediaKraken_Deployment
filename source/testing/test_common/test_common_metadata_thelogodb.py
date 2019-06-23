@@ -23,7 +23,7 @@ from common import common_config_ini
 from common import common_metadata_thelogodb
 
 
-class TestCommonthelogodb(object):
+class TestCommonthelogodb:
 
     @classmethod
     def setup_class(self):

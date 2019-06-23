@@ -19,7 +19,7 @@
 from imdbpie import Imdb
 
 
-class CommonMetadataIMDB(object):
+class CommonMetadataIMDB:
     """
     Class for interfacing with imdb
     """

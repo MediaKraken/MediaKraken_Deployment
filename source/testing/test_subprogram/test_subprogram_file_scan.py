@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramFileScan(object):
+class TestSubprogramFileScan:
     """
     Test file scan
     """

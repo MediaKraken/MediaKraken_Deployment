@@ -24,7 +24,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseMediaClass(object):
+class TestDatabaseMediaClass:
 
     @classmethod
     def setup_class(self):

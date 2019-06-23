@@ -20,7 +20,7 @@ from pythonopensubtitles.opensubtitles import OpenSubtitles
 from pythonopensubtitles.utils import File
 
 
-class CommonMetadataOpenSubtitles(object):
+class CommonMetadataOpenSubtitles:
     """
     Class for interfacing with Opensubtitles
     """

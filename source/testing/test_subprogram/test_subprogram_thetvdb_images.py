@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramTheTVDBImages(object):
+class TestSubprogramTheTVDBImages:
     """
     Test thetvdb images
     """

@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramMusicBrainzSync(object):
+class TestSubprogramMusicBrainzSync:
     """
     Test mb sync
     """

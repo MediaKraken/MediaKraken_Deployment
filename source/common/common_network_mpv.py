@@ -26,7 +26,7 @@ from . import common_global
 
 
 # https://mpv.io/manual/master/#json-ipc
-class CommonNetMPVSocat(object):
+class CommonNetMPVSocat:
     def __init__(self, sockfile='./mk_mpv.sock'):
         # allow time for mpv to setup the socket
         while True:
@@ -60,7 +60,7 @@ class CommonNetMPVSocat(object):
         os.remove(self.sockfile)
 
 
-class CommonNetMPV(object):
+class CommonNetMPV:
     def __init__(self, sockfile='./mk_mpv.sock'):
         # allow time for mpv to setup the socket
         while True:

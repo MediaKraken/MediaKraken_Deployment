@@ -222,7 +222,7 @@ ACTIVE = 'ACTIVE'
 INACTIVE = 'INACTIVE'
 REALLY_INACTIVE = 'REALLY_INACTIVE'
 
-class TelnetOption(object):
+class TelnetOption:
     """Manage a single telnet option, keeps track of DO/DONT WILL/WONT."""
 
     def __init__(self, connection, name, option, send_yes, send_no, ack_yes, ack_no, initial_state, activation_callback=None):
@@ -289,7 +289,7 @@ class TelnetOption(object):
                 raise ValueError('option in illegal state %r' % self)
 
 
-class TelnetSubnegotiation(object):
+class TelnetSubnegotiation:
     """\
     A object to handle subnegotiation of options. In this case actually
     sub-sub options for RFC 2217. It is used to track com port options.
@@ -899,7 +899,7 @@ else:
 #############################################################################
 # The following is code that helps implementing an RFC 2217 server.
 
-class PortManager(object):
+class PortManager:
     """\
     This class manages the state of Telnet and RFC 2217. It needs a serial
     instance and a connection to work with. Connection is expected to implement

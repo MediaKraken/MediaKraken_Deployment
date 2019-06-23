@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramLyricsDown(object):
+class TestSubprogramLyricsDown:
     """
     Test lyrics downloader
     """

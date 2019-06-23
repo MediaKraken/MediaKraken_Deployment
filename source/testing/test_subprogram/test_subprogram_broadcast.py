@@ -26,7 +26,7 @@ from common import common_global
 from common import common_network_mediakraken
 
 
-class TestSubprogramBroadcast(object):
+class TestSubprogramBroadcast:
     """
     Test broadcast
     """

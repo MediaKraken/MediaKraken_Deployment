@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_metadata_tvmaze
 
 
-class TestCommonMetadatatvmaze(object):
+class TestCommonMetadatatvmaze:
 
     @classmethod
     def setup_class(self):

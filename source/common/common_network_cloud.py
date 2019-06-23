@@ -62,7 +62,7 @@ supported_providers = {
 }
 
 
-class CommonLibCloud(object):
+class CommonLibCloud:
     """
     Class for interfacing with cloud
     """

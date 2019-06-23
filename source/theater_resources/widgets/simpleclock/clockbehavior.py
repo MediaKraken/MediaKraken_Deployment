@@ -3,7 +3,7 @@ from kivy.properties import ObjectProperty, AliasProperty, NumericProperty
 from kivy.clock import Clock
 
 
-class ClockBehavior(object):
+class ClockBehavior:
 
     # Current time. struct_tm object as returned by time.localtime()
     time = ObjectProperty(tm.localtime(), rebind=True)

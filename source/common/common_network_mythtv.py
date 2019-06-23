@@ -19,7 +19,7 @@
 import MythTV
 
 
-class CommonNetMythTV(object):
+class CommonNetMythTV:
     """
     Class for interfacing with mythtv
     """

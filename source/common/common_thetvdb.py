@@ -23,7 +23,7 @@ from pytvdbapi import api
 from . import common_global
 
 
-class CommonTheTVDB(object):
+class CommonTheTVDB:
     """
     Class for interfacing with thetvdb
     """

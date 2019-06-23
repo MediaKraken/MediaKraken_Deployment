@@ -25,7 +25,7 @@ from common import common_hash
 from common import common_version
 
 
-class CommonMetadataTheSubDB(object):
+class CommonMetadataTheSubDB:
     url = 'http://api.thesubdb.com/'
     headers = {
         "User-Agent": ("MediaKraken/1.0 "

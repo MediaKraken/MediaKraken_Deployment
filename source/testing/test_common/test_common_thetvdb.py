@@ -23,7 +23,7 @@ from common import common_config_ini
 from common import common_thetvdb
 
 
-class TestCommonTheTVDB(object):
+class TestCommonTheTVDB:
 
     @classmethod
     def setup_class(self):

@@ -35,7 +35,7 @@ def com_hard_atv_discover():
     print('Connecting to {0}'.format(atvs[0].address))
 
 
-class CommonHardwareAppleTV(object):
+class CommonHardwareAppleTV:
     """
     Class for interfacing with apple tv
     """

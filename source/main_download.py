@@ -23,7 +23,7 @@ common_signal.com_signal_set_break()
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-class MKConsumer(object):
+class MKConsumer:
     EXCHANGE = 'mkque_download_ex'
     EXCHANGE_TYPE = 'direct'
     QUEUE = 'mkdownload'
@@ -253,7 +253,7 @@ class MKConsumer(object):
                 self._connection.ioloop.stop()
             common_global.es_inst.com_elastic_index('error', {'download': 'Stopped'})
 
-    class ReconnectingExampleConsumer(object):
+    class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
         ExampleConsumer indicates that a reconnect is necessary.
         """

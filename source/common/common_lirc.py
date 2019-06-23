@@ -20,7 +20,7 @@
 import lirc
 
 
-class CommonLIRC(object):
+class CommonLIRC:
     """
     Class for interfacing with lirc
     """

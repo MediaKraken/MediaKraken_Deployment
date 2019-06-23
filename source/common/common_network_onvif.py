@@ -20,7 +20,7 @@
 from onvif import ONVIFCamera, ONVIFError
 
 
-class CommonNetOnvif(object):
+class CommonNetOnvif:
     def __init__(self, hostname="192.168.1.1", port=80, username="user",
                  password="password"):
         self.onvif_device = ONVIFCamera(hostname, port, username, password, '/etc/onvif/wsdl/')

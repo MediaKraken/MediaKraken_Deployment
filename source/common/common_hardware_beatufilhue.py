@@ -21,7 +21,7 @@ import sys
 from beautifulhue.api import Bridge
 
 
-class CommonHardwareBeatifulHue(object):
+class CommonHardwareBeatifulHue:
     """
     Class for interfacing with beatifulhue
     """

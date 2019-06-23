@@ -24,7 +24,7 @@ from . import common_global
 
 # https://github.com/MediaKraken/PyHdHomeRun
 
-class CommonHardwareHDHomeRunPY(object):
+class CommonHardwareHDHomeRunPY:
     """
     Class for interfacing with hdhomerun
     """

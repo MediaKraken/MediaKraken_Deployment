@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_network_twitch
 
 
-class TestCommonTwitch(object):
+class TestCommonTwitch:
 
     @classmethod
     def setup_class(self):

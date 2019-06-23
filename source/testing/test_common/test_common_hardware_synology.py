@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_hardware_synology
 
 
-class TestCommonSynology(object):
+class TestCommonSynology:
 
     @classmethod
     def setup_class(self):

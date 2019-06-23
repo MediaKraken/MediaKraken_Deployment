@@ -25,7 +25,7 @@ from RPi import GPIO
 
 # https://github.com/MediaKraken-Dependancies/RPLCD
 
-class CommonHardwarePIHD44780I2C(object):
+class CommonHardwarePIHD44780I2C:
     """
     Class for interfacing with pi lcd HD44780
     """
@@ -49,7 +49,7 @@ class CommonHardwarePIHD44780I2C(object):
         self.lcd_inst.close(clear=clear_screen)
 
 
-class CommonHardwarePIHD44780GPIO(object):
+class CommonHardwarePIHD44780GPIO:
     """
     Class for interfacing with pi lcd HD44780
     """
@@ -74,7 +74,7 @@ class CommonHardwarePIHD44780GPIO(object):
         self.lcd_inst.close(clear=clear_screen)
 
 
-class CommonHardwarePIHD44780POGPIO(object):
+class CommonHardwarePIHD44780POGPIO:
     """
     Class for interfacing with pi lcd HD44780
     """

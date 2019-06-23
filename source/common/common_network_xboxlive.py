@@ -20,7 +20,7 @@
 import xbox
 
 
-class CommonNetworkXboxLive(object):
+class CommonNetworkXboxLive:
     """
     Class for interfacing with xbox
     """

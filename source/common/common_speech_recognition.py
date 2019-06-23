@@ -22,7 +22,7 @@
 import speech_recognition as sr
 
 
-class CommonSpeechRec(object):
+class CommonSpeechRec:
     """
     Class for interfacing with speech recording/etc
     """

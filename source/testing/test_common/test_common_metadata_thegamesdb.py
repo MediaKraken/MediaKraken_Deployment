@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_metadata_thegamesdb
 
 
-class TestCommonMetadataGamesDB(object):
+class TestCommonMetadataGamesDB:
 
     @classmethod
     def setup_class(self):

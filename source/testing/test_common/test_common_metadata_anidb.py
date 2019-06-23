@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_metadata_anidb
 
 
-class TestCommonMetadataAnidb(object):
+class TestCommonMetadataAnidb:
 
     @classmethod
     def setup_class(self):

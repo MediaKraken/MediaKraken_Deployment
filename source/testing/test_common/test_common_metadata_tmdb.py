@@ -23,7 +23,7 @@ from common import common_config_ini
 from common import common_metadata_tmdb
 
 
-class TestCommonMetadataTMDB(object):
+class TestCommonMetadataTMDB:
 
     @classmethod
     def setup_class(self):

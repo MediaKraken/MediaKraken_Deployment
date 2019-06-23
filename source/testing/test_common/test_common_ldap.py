@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_ldap
 
 
-class TestCommonLDAP(object):
+class TestCommonLDAP:
 
     @classmethod
     def setup_class(self):

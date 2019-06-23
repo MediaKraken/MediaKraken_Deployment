@@ -19,7 +19,7 @@
 from feedgen.feed import FeedGenerator
 
 
-class CommonNetworkFeedgen(object):
+class CommonNetworkFeedgen:
     """
     For setting up rss feeds
     """

@@ -34,7 +34,7 @@ def com_docker_host_ip():
             ' ')[2]
 
 
-class CommonDocker(object):
+class CommonDocker:
     """
     Class for interfacing with docker
     """

@@ -33,7 +33,7 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
     'subprogram_roku_thumbnail_generate')
 
 
-class MKConsumer(object):
+class MKConsumer:
     EXCHANGE = 'mkque_roku_ex'
     EXCHANGE_TYPE = 'direct'
     QUEUE = 'mkroku'
@@ -216,7 +216,7 @@ class MKConsumer(object):
                 self._connection.ioloop.stop()
             common_global.es_inst.com_elastic_index('error', {'roku': 'Stopped'})
 
-    class ReconnectingExampleConsumer(object):
+    class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
         ExampleConsumer indicates that a reconnect is necessary.
         """

@@ -25,7 +25,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseTVSchedule(object):
+class TestDatabaseTVSchedule:
 
     @classmethod
     def setup_class(self):

@@ -62,7 +62,7 @@ class CommonWatchdogHandler(FileSystemEventHandler):
 
 
 # define watchdog class
-class CommonWatchdog(object):
+class CommonWatchdog:
     """
     Class for starting up watchdog
     """

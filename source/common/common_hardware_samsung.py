@@ -20,7 +20,7 @@ import base64
 import socket
 
 
-class CommonHardwareSamsung(object):
+class CommonHardwareSamsung:
     """
     Class for interfacing with samsung TV equipment over network connection
     """

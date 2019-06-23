@@ -20,7 +20,7 @@ import requests
 import xmltodict
 
 
-class CommonMetadataGamesDB(object):
+class CommonMetadataGamesDB:
     """
     Class for interfacing with theGamesDB
     """

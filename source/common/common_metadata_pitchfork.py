@@ -19,7 +19,7 @@
 import pitchfork
 
 
-class CommonMetadataPitchfork(object):
+class CommonMetadataPitchfork:
     """
     Class for interfacing with pitchfork
     """

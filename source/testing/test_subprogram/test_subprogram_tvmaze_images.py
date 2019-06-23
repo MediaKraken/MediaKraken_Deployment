@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramTVMazeImages(object):
+class TestSubprogramTVMazeImages:
     """
     Test tvmaze images
     """

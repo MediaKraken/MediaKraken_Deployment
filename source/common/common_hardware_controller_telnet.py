@@ -19,7 +19,7 @@
 from common import common_network_telnet
 
 
-class CommonHardwareControllerTelnet(object):
+class CommonHardwareControllerTelnet:
     """
     Class for interfacing with hardware from json specifications
     """

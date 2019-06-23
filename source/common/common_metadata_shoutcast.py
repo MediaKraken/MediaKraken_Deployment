@@ -21,7 +21,7 @@ import json
 from . import common_network
 
 
-class CommonMetadataShoutcast(object):
+class CommonMetadataShoutcast:
     """
     Class for interfacing with Shoutcast
     """

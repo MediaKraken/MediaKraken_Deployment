@@ -23,7 +23,7 @@ from common import common_config_ini
 from common import common_transmission
 
 
-class TestCommonTransmission(object):
+class TestCommonTransmission:
 
     @classmethod
     def setup_class(self):

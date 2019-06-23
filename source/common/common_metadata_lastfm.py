@@ -20,7 +20,7 @@
 import pylast
 
 
-class CommonMetadataLastFM(object):
+class CommonMetadataLastFM:
     """
     Class for interfacing with lastfm
     """

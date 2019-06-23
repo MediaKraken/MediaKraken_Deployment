@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_database_octmote
 
 
-class TestCommonDatabaseOctmote(object):
+class TestCommonDatabaseOctmote:
 
     @classmethod
     def setup_class(self):

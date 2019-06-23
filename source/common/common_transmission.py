@@ -20,7 +20,7 @@ import transmissionrpc
 
 
 # transmission class
-class CommonTransmission(object):
+class CommonTransmission:
     """
     Class for interfacing with transmission bitorrent server
     """

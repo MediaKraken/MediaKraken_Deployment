@@ -22,7 +22,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseMediaRemote(object):
+class TestDatabaseMediaRemote:
 
     @classmethod
     def setup_class(self):

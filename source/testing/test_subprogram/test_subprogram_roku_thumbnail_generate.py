@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramRokuThumbGen(object):
+class TestSubprogramRokuThumbGen:
     """
     Test roku thumb
     """

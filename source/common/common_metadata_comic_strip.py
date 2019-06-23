@@ -49,7 +49,7 @@ optional arguments:
 '''
 
 
-class CommonMetadataComicStrip(object):
+class CommonMetadataComicStrip:
     """
     Class for snagging comic strips
     """

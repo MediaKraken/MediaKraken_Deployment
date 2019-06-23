@@ -30,7 +30,7 @@ def com_net_eiscp_discovery(self):
     return eiscp.eISCP.discover(timeout=5)
 
 
-class CommonNetworkEISCP(object):
+class CommonNetworkEISCP:
     """
     Class for interfacing via Onkyo equipment
     """

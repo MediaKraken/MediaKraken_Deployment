@@ -22,7 +22,7 @@ sys.path.append('.')
 # from common import common_system_ios
 #
 #
-# class TestiOSHardwareInstance(object):
+# class TestiOSHardwareInstance:
 #
 #     @classmethod
 #     def setup_class(self):

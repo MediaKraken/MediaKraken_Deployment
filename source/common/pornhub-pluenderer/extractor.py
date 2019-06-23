@@ -5,7 +5,7 @@ VIEW_KEY_RE = r"a.+?href=\".+?viewkey=(.+?)\""
 INFO_RE = r"var flashvars_.+? = ({.+})"
 
 
-class Extractor(object):
+class Extractor:
     def __init__(self):
         self._viewkey_re = re.compile(VIEW_KEY_RE, re.MULTILINE)
         self._videoinfo_re = re.compile(INFO_RE, re.MULTILINE)

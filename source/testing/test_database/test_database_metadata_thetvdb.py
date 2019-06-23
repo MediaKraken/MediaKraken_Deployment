@@ -22,7 +22,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseMetadataThetvdb(object):
+class TestDatabaseMetadataThetvdb:
 
     @classmethod
     def setup_class(self):

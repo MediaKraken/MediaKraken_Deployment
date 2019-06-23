@@ -24,7 +24,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseMetadataMusic(object):
+class TestDatabaseMetadataMusic:
 
     @classmethod
     def setup_class(self):

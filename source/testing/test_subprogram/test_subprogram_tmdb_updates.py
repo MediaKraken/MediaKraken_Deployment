@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramTMDBUpdates(object):
+class TestSubprogramTMDBUpdates:
     """
     Test tmdb update
     """

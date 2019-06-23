@@ -20,7 +20,7 @@
 import dracclient.client
 
 
-class CommonHardwareIDrac(object):
+class CommonHardwareIDrac:
     """
     Class for Dell IDrac
     """

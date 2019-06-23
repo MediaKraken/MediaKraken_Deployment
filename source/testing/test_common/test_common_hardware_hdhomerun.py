@@ -22,7 +22,7 @@ sys.path.append('.')
 # from common import common_hardware_hdhomerun
 #
 #
-# class TestCommonHardwareHDHomeRun(object):
+# class TestCommonHardwareHDHomeRun:
 #
 #     @classmethod
 #     def setup_class(self):

@@ -26,7 +26,7 @@ from trakt.people import Person
 from trakt.tv import TVShow
 
 
-class CommonNetworkTrakt(object):
+class CommonNetworkTrakt:
     """
     Class for interfacing with Trakt
     """

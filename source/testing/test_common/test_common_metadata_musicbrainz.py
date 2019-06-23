@@ -23,7 +23,7 @@ from common import common_config_ini
 from common import common_metadata_musicbrainz
 
 
-class TestCommonMusicbrainz(object):
+class TestCommonMusicbrainz:
 
     @classmethod
     def setup_class(self):

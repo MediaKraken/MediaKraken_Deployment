@@ -21,7 +21,7 @@ import requests
 from . import common_network
 
 
-class CommonMetadataISBNdb(object):
+class CommonMetadataISBNdb:
     """
     Class for interfacing with isbndb
     """

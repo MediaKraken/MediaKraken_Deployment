@@ -10,7 +10,7 @@ sys.path.append('..')
 from common import common_file
 
 
-class Config(object):
+class Config:
     if os.path.exists('/mediakraken/key/web_secret_key.txt'):
         pass
     else:

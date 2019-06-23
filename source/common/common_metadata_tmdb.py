@@ -31,7 +31,7 @@ from . import common_metadata
 from . import common_network
 
 
-class CommonMetadataTMDB(object):
+class CommonMetadataTMDB:
     """
     Class for interfacing with TMDB
     """

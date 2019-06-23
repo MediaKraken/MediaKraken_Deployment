@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_schedules_direct
 
 
-class TestCommonSchedulesDirect(object):
+class TestCommonSchedulesDirect:
 
     @classmethod
     def setup_class(self):

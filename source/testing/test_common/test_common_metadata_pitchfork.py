@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_metadata_pitchfork
 
 
-class TestCommonpitchfork(object):
+class TestCommonpitchfork:
 
     @classmethod
     def setup_class(self):

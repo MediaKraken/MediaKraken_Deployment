@@ -89,7 +89,7 @@ def com_net_yt_top_tracks(playlist_type):
         return None, None, None
 
 
-class CommonNetworkYoutube(object):
+class CommonNetworkYoutube:
     """
     Class for interfacing with youtube
     """

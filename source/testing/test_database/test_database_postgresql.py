@@ -26,7 +26,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED  # the default
 
 
-class TestDatabasePostgresql(object):
+class TestDatabasePostgresql:
 
     @classmethod
     def setup_class(self):

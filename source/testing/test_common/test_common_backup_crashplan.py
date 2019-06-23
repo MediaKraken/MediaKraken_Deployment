@@ -21,7 +21,7 @@ import sys
 sys.path.append('.')
 
 
-class TestCommonBackupCrashplan(object):
+class TestCommonBackupCrashplan:
 
     @classmethod
     def setup_class(self):

@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_network_vimeo
 
 
-class TestCommonVimeo(object):
+class TestCommonVimeo:
 
     @classmethod
     def setup_class(self):

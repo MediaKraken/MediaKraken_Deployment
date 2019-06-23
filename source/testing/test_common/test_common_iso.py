@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_iso
 
 
-class TestCommonISO(object):
+class TestCommonISO:
 
     @classmethod
     def setup_class(self):

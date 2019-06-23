@@ -20,7 +20,7 @@
 from gmusicapi import Mobileclient
 
 
-class CommonNetworkGoogleMusic(object):
+class CommonNetworkGoogleMusic:
     """
     Class for interfacing with google music
     """

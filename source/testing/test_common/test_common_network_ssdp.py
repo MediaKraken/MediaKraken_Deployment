@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_network_ssdp
 
 
-class TestSSDPResponse(object):
+class TestSSDPResponse:
 
     @classmethod
     def setup_class(self):
@@ -32,7 +32,7 @@ class TestSSDPResponse(object):
     def teardown_class(self):
         pass
 
-# class SSDPResponse(object):
+# class SSDPResponse:
 #    class _FakeSocket(StringIO.StringIO):
 #        def makefile(self, *args, **kw):
 #            return self

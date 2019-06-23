@@ -19,7 +19,7 @@
 import requests
 
 
-class CommonMetadataIMVdb(object):
+class CommonMetadataIMVdb:
     """
     Class for interfacing with imvdb
     """

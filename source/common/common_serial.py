@@ -25,7 +25,7 @@ if platform != 'android':
     import serial
 
 
-class CommonSerial(object):
+class CommonSerial:
     """
     Class for interfacing via serial devices
     """

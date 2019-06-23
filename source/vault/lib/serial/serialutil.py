@@ -109,7 +109,7 @@ writeTimeoutError = SerialTimeoutException('Write timeout')
 portNotOpenError = SerialException('Attempting to use a port that is not open')
 
 
-class FileLike(object):
+class FileLike:
     """An abstract file like class.
 
     This class implements readline and readlines based on read and
@@ -218,7 +218,7 @@ class FileLike(object):
         return False
 
 
-class SerialBase(object):
+class SerialBase:
     """Serial port base class. Provides __init__ function and properties to
        get/set port settings."""
 

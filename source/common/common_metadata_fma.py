@@ -19,7 +19,7 @@
 
 # https://freemusicarchive.org/api
 
-class CommonMetadataFMA(object):
+class CommonMetadataFMA:
     """
     Class for interfacing with free music archive
     """

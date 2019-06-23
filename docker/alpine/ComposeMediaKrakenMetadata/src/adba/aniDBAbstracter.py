@@ -25,7 +25,7 @@ from .aniDBerrors import *
 
 
 
-class aniDBabstractObject(object):
+class aniDBabstractObject:
 
     def __init__(self, aniDB, load=False):
         self.laoded = False

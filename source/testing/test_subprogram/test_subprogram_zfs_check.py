@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramZFSCheck(object):
+class TestSubprogramZFSCheck:
     """
     Test zfs check
     """

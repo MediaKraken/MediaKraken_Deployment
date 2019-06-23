@@ -19,7 +19,7 @@
 import requests
 
 
-class CommonNetworkDirble(object):
+class CommonNetworkDirble:
     """
     Class for interfacing with Dirble
     """

@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramCommercialStrip(object):
+class TestSubprogramCommercialStrip:
     """
     Test commercial strip
     """

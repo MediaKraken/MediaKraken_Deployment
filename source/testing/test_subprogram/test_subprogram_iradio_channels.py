@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramIradioChannels(object):
+class TestSubprogramIradioChannels:
     """
     Test iradio channels
     """

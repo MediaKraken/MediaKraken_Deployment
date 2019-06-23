@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramLogoDown(object):
+class TestSubprogramLogoDown:
     """
     Test logo download
     """

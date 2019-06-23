@@ -21,7 +21,7 @@ import pornhub
 
 # https://github.com/MediaKraken-Dep/pornhub-api
 
-class CommonMetadataPornhub(object):
+class CommonMetadataPornhub:
     """
     Class for interfacing with pornhub
     """

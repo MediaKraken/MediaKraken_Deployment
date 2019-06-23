@@ -25,7 +25,7 @@ from common import common_config_ini
 from common import common_network_trakt
 
 
-class TestCommonTrakt(object):
+class TestCommonTrakt:
 
     @classmethod
     def setup_class(self):

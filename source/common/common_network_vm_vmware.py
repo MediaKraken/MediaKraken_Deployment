@@ -17,7 +17,7 @@
 '''
 
 
-class CommonNetworkVMWare(object):
+class CommonNetworkVMWare:
     """
     Class for interfacing via vmware
     """

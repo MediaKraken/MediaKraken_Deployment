@@ -19,7 +19,7 @@
 from common import common_serial
 
 
-class CommonHardwareControllerSerial(object):
+class CommonHardwareControllerSerial:
     """
     Class for interfacing with hardware from json specifications
     """

@@ -21,7 +21,7 @@ import socket
 from . import common_global
 
 
-class CommonHardwarePioneer(object):
+class CommonHardwarePioneer:
     """
     Class for interfacing with pioneer equipment over network connection
     """

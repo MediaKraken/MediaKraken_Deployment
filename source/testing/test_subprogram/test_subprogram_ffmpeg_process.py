@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramFFMPEG(object):
+class TestSubprogramFFMPEG:
     """
     Test ffmpeg
     """

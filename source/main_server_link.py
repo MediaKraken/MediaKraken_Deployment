@@ -76,7 +76,7 @@ class TheaterFactory(ClientFactory):
         return self.protocol
 
 
-class MediaKrakenApp(object):
+class MediaKrakenApp:
     connection = None
 
     def exit_program(self):

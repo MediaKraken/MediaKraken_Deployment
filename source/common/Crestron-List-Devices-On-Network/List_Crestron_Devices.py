@@ -51,7 +51,7 @@ UDP_MSG = \
     ("\x00" * 252)
 
 
-class CrestronDeviceFinder(object):
+class CrestronDeviceFinder:
     def __init__(self, args):
         """
         initialize internal properties

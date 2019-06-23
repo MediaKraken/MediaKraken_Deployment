@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_network_feedgen
 
 
-class TestCommonFeedgen(object):
+class TestCommonFeedgen:
 
     @classmethod
     def setup_class(self):

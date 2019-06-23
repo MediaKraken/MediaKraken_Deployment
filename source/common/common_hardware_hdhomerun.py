@@ -20,7 +20,7 @@
 from hdhomerun import Device
 
 
-class CommonHardwareHDHomeRun(object):
+class CommonHardwareHDHomeRun:
     """
     Class for interfacing with hdhomerun
     """

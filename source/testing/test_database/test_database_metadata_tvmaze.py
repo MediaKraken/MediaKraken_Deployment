@@ -25,7 +25,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseMetadatatvmaze(object):
+class TestDatabaseMetadatatvmaze:
 
     @classmethod
     def setup_class(self):

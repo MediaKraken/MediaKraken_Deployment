@@ -23,7 +23,7 @@ from common import common_config_ini
 from common import common_metadata_isbndb
 
 
-class TestCommonISBNdb(object):
+class TestCommonISBNdb:
 
     @classmethod
     def setup_class(self):

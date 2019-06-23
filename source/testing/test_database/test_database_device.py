@@ -25,7 +25,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseDevices(object):
+class TestDatabaseDevices:
 
     @classmethod
     def setup_class(self):

@@ -23,7 +23,7 @@ import lcddriver
 
 # https://github.com/MediaKraken-Dependancies/lcd
 
-class CommonHardwarePILCD16x2(object):
+class CommonHardwarePILCD16x2:
     """
     Class for interfacing with pi lcd 16x2
     """

@@ -19,7 +19,7 @@
 import soundcloud
 
 
-class CommonNetworkSoundcloud(object):
+class CommonNetworkSoundcloud:
     """
     Class for interfacing with Soundcloud
     """

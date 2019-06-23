@@ -29,7 +29,7 @@ def com_net_streamlink_streams(stream_url):
     return streamlink.streams(stream_url)
 
 
-class CommonNetworkStreamlink(object):
+class CommonNetworkStreamlink:
     """
     Class for interfacing via streamlink
     """

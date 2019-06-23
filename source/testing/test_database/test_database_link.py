@@ -25,7 +25,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseLink(object):
+class TestDatabaseLink:
 
     @classmethod
     def setup_class(self):

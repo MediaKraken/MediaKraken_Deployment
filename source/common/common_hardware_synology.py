@@ -21,7 +21,7 @@ from synolopy import NasApi
 from . import common_global
 
 
-class CommonHardwareSynology(object):
+class CommonHardwareSynology:
     """
     Class for interfacing with synology nas
     """

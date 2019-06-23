@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_network_telnet
 
 
-class TestCommonTelnet(object):
+class TestCommonTelnet:
 
     @classmethod
     def setup_class(self):

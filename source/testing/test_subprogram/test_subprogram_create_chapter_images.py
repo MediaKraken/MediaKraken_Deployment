@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramChapterImage(object):
+class TestSubprogramChapterImage:
     """
     Test create chapter image
     """

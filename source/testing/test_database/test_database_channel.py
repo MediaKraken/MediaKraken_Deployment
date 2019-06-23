@@ -22,7 +22,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseChannel(object):
+class TestDatabaseChannel:
 
     @classmethod
     def setup_class(self):

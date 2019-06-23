@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_serial
 
 
-class TestCommonSerial(object):
+class TestCommonSerial:
 
     @classmethod
     def setup_class(self):

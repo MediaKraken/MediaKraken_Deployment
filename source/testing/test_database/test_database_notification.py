@@ -24,7 +24,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseNotification(object):
+class TestDatabaseNotification:
 
     @classmethod
     def setup_class(self):

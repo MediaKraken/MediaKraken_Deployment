@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_network_flickr
 
 
-class TestCommonFlickr(object):
+class TestCommonFlickr:
 
     @classmethod
     def setup_class(self):

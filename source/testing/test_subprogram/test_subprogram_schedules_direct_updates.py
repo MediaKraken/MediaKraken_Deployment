@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramScheduleDirectUpdates(object):
+class TestSubprogramScheduleDirectUpdates:
     """
     Test sd updates
     """

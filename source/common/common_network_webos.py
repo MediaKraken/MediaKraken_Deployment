@@ -19,7 +19,7 @@
 from pylgtv import WebOsClient
 
 
-class CommonNetworkWebOS(object):
+class CommonNetworkWebOS:
     """
     Class for interfacing with webos
     """

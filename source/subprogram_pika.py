@@ -45,7 +45,7 @@ mk_containers = {}
 docker_inst = common_docker.CommonDocker()
 
 
-class MKConsumer(object):
+class MKConsumer:
     EXCHANGE = 'mkque_ex'
     EXCHANGE_TYPE = 'direct'
     QUEUE = 'mkque'
@@ -343,7 +343,7 @@ class MKConsumer(object):
                 self._connection.ioloop.stop()
             common_global.es_inst.com_elastic_index('error', {'pika': 'Stopped'})
 
-    class ReconnectingExampleConsumer(object):
+    class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
         ExampleConsumer indicates that a reconnect is necessary.
         """

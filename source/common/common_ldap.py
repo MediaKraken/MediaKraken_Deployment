@@ -19,7 +19,7 @@
 from ldap3 import Server, Connection, ALL
 
 
-class CommonLDAP(object):
+class CommonLDAP:
     """
     Class for interfacing with ldap server
     """
@@ -40,7 +40,7 @@ below is all python-ldap, moving to ldap3
 # from . import common_global
 #
 #
-# class CommonLDAP(object):
+# class CommonLDAP:
 #     """
 #     Class for interfacing with ldap server
 #     """

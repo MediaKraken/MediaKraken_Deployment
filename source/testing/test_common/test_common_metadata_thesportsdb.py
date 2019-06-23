@@ -25,7 +25,7 @@ from common import common_config_ini
 from common import common_metadata_thesportsdb
 
 
-class TestCommonMetadatathesportsdb(object):
+class TestCommonMetadatathesportsdb:
 
     @classmethod
     def setup_class(self):

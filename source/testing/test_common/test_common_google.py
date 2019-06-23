@@ -21,7 +21,7 @@ import sys
 sys.path.append('.')
 
 
-class TestCommonGoogle(object):
+class TestCommonGoogle:
 
     @classmethod
     def setup_class(self):

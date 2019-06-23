@@ -22,7 +22,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseOptionStatus(object):
+class TestDatabaseOptionStatus:
 
     @classmethod
     def setup_class(self):

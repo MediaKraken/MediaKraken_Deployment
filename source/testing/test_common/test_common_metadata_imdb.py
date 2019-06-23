@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_metadata_imdb
 
 
-class TestCommonimdb(object):
+class TestCommonimdb:
 
     @classmethod
     def setup_class(self):

@@ -34,7 +34,7 @@ from . import common_global
 from . import common_hash_c_code
 
 
-class CommonHashCrypto(object):
+class CommonHashCrypto:
     """
     Class for interfacing with crypto
     """

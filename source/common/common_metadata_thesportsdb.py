@@ -20,7 +20,7 @@ from . import common_network
 
 
 # http://www.thesportsdb.com/forum/viewtopic.php?f=6&t=5
-class CommonMetadataTheSportsDB(object):
+class CommonMetadataTheSportsDB:
     """
     Class for interfacing with thesportsdb
     """

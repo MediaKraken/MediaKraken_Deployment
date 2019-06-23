@@ -24,7 +24,7 @@ import time
 from elasticsearch import Elasticsearch
 
 
-class CommonElasticsearch(object):
+class CommonElasticsearch:
     """
     Class for interfacing with Elasticsearch or docker logging directly
     """

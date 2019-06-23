@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_hardware_chromecast
 
 
-class TestCommonHardwareChromecast(object):
+class TestCommonHardwareChromecast:
 
     @classmethod
     def setup_class(self):

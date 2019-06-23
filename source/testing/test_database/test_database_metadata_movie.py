@@ -24,7 +24,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseMetadataMovie(object):
+class TestDatabaseMetadataMovie:
 
     @classmethod
     def setup_class(self):

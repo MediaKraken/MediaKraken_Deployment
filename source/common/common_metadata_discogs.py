@@ -20,7 +20,7 @@ import discogs_client
 from common import common_version
 
 
-class CommonMetadataDiscogs(object):
+class CommonMetadataDiscogs:
     """
     Class for interfacing with discogs
     """

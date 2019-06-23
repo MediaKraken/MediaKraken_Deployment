@@ -21,7 +21,7 @@ import subprocess
 from common import common_global
 
 
-class TestSubprogramUpdateCreateCollections(object):
+class TestSubprogramUpdateCreateCollections:
     """
     Test collections
     """

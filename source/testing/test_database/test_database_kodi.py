@@ -22,7 +22,7 @@ sys.path.append('.')
 import database as database_base
 
 
-class TestDatabaseKodi(object):
+class TestDatabaseKodi:
 
     @classmethod
     def setup_class(self):

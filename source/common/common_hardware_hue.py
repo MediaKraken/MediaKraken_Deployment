@@ -19,7 +19,7 @@
 from phue import Bridge
 
 
-class CommonHardwareHue(object):
+class CommonHardwareHue:
     """
     Class for interfacing with hue
     """

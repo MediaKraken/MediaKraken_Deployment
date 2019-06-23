@@ -29,7 +29,7 @@ sys.path.append(".")
 import adba
 
 
-class CommonMetadataANIdb(object):
+class CommonMetadataANIdb:
     """
     Class for interfacing with anidb
     """

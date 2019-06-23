@@ -24,7 +24,7 @@ sys.path.append('.')
 from common import common_docker
 
 
-class TestCommonDocker(object):
+class TestCommonDocker:
 
     @classmethod
     def setup_class(self):

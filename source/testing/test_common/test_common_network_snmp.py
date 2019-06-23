@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_network_snmp
 
 
-class TestCommonSNMP(object):
+class TestCommonSNMP:
 
     @classmethod
     def setup_class(self):

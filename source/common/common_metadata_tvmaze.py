@@ -23,7 +23,7 @@ from . import common_network
 # http://www.tvmaze.com/api
 
 
-class CommonMetadatatvmaze(object):
+class CommonMetadatatvmaze:
     """
     Class for interfacing with tvmaze
     """

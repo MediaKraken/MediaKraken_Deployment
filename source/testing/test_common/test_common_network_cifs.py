@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_network_cifs
 
 
-class TestCommonCIFSShareURL(object):
+class TestCommonCIFSShareURL:
 
     @classmethod
     def setup_class(self):
@@ -42,7 +42,7 @@ class TestCommonCIFSShareURL(object):
 # def common_cifs_URL_Upload(self, file_path, connect_string):
 
 
-class TestCommonCIFSShare(object):
+class TestCommonCIFSShare:
 
     @classmethod
     def setup_class(self):

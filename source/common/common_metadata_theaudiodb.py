@@ -17,7 +17,7 @@
 '''
 
 
-class CommonMetadataTheAudiodb(object):
+class CommonMetadataTheAudiodb:
     """
     Class for interfacing with theaudiodb
     """

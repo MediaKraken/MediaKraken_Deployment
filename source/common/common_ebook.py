@@ -21,7 +21,7 @@ import ebooklib
 from ebooklib import epub
 
 
-class CommonEbookRead(object):
+class CommonEbookRead:
     """
     Class for interfacing with ebook
     """
@@ -32,7 +32,7 @@ class CommonEbookRead(object):
             print(image)
 
 
-class CommonEbookWrite(object):
+class CommonEbookWrite:
     """
     Class for interfacing with ebook
     """

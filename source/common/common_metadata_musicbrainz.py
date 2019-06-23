@@ -33,7 +33,7 @@ be linked to any number of tracks.
 '''
 
 
-class CommonMetadataMusicbrainz(object):
+class CommonMetadataMusicbrainz:
     """
     Class for interfacing with musicbrainz
     """

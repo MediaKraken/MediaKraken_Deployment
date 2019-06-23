@@ -19,7 +19,7 @@
 import paramiko
 
 
-class CommonNetworkSSH(object):
+class CommonNetworkSSH:
     """
     Class for interfacing via SSH
     """

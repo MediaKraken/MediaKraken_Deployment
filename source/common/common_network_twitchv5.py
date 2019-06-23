@@ -20,7 +20,7 @@
 from twitch import TwitchClient
 
 
-class CommonNetworkTwitchV5(object):
+class CommonNetworkTwitchV5:
     """
     Class for interfacing with TwitchTV V5 api
     """

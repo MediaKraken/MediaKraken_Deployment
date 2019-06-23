@@ -22,7 +22,7 @@ from time import sleep
 from picamera import PiCamera
 
 
-class CommonHardwarePICamera(object):
+class CommonHardwarePICamera:
     """
     Class for interfacing with pi camera
     """

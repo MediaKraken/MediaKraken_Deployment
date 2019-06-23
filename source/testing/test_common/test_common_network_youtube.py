@@ -26,7 +26,7 @@ from common import common_network_youtube
 # def com_meta_youtube_fetch_video_by_url(url_location, file_name):
 
 
-class TestCommonYoutube(object):
+class TestCommonYoutube:
 
     @classmethod
     def setup_class(self):

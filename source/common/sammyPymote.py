@@ -35,7 +35,7 @@ from network import \
 # app     = 'python'            # iphone..iapp.samsung
 # tv      = 'LE32C650'          # iphone.LE32C650.iapp.samsung
 
-class Remote(object):
+class Remote:
     def __init__(self, destination, model):
         network = Network()
         self.destination = destination

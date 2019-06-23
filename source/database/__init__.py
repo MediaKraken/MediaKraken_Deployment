@@ -1,4 +1,4 @@
-class MKServerDatabase(object):
+class MKServerDatabase:
     """
     Main database class for server
     """

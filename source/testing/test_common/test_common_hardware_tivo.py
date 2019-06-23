@@ -22,7 +22,7 @@ sys.path.append('.')
 from common import common_hardware_tivo
 
 
-class TestCommonTivo(object):
+class TestCommonTivo:
 
     @classmethod
     def setup_class(self):

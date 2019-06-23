@@ -25,7 +25,7 @@ from common import common_config_ini
 from common import common_metadata_imvdb
 
 
-class TestCommonimvdb(object):
+class TestCommonimvdb:
 
     @classmethod
     def setup_class(self):

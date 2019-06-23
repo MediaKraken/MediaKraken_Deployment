@@ -19,7 +19,7 @@
 import uuid
 
 
-# class ServerDatabaseUsers(object):
+# class ServerDatabaseUsers:
 def db_user_list_name_count(self):
     """
     # return user count

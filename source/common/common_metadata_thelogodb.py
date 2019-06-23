@@ -21,7 +21,7 @@ import json
 from . import common_network
 
 
-class CommonMetadataTheLogoDB(object):
+class CommonMetadataTheLogoDB:
     """
     Class for interfacing with thelogodb
     """

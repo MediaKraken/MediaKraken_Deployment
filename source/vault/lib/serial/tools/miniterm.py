@@ -93,7 +93,7 @@ global console
 
 if os.name == 'nt':
     import msvcrt
-    class Console(object):
+    class Console:
         def __init__(self):
             pass
 
@@ -117,7 +117,7 @@ if os.name == 'nt':
 
 elif os.name == 'posix':
     import termios, sys, os
-    class Console(object):
+    class Console:
         def __init__(self):
             self.fd = sys.stdin.fileno()
             self.old = None
@@ -165,7 +165,7 @@ LF_MODES = ('LF', 'CR', 'CR/LF')
 
 REPR_MODES = ('raw', 'some control', 'all control', 'hex')
 
-class Miniterm(object):
+class Miniterm:
     def __init__(self, port, baudrate, parity, rtscts, xonxoff, echo=False, convert_outgoing=CONVERT_CRLF, repr_mode=0):
         try:
             self.serial = serial.serial_for_url(port, baudrate, parity=parity, rtscts=rtscts, xonxoff=xonxoff, timeout=1)
