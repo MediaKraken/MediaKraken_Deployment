@@ -9,3 +9,4 @@ pysmb
 tmdbsimple
 guessit
 xmltodict
+tmdbv3api

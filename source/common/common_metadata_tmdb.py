@@ -22,7 +22,7 @@ import time
 
 import requests
 import tmdbsimple as tmdb
-from metadata import metadata_movie
+# TODO creates loop?  from metadata import metadata_movie
 from tmdbv3api import Movie
 from tmdbv3api import TMDb, TV
 
@@ -102,7 +102,9 @@ class CommonMetadataTMDB:
         """
         if tmdb_id[0:2].lower() == 'tt':
             # imdb id......so, run find and then do the requests
-            tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
+            # TODO
+            #tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
+            pass
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
