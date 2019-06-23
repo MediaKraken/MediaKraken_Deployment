@@ -1,4 +1,4 @@
-**pgAdmin4 in docker container - Version 3.4**
+**pgAdmin4 in docker container - Version 4.7**
 -
 
 [![](https://images.microbadger.com/badges/image/chorss/docker-pgadmin4.svg)](https://microbadger.com/images/chorss/docker-pgadmin4) [![](https://img.shields.io/docker/pulls/chorss/docker-pgadmin4.svg)](https://microbadger.com/images/chorss/docker-pgadmin4) [![](https://images.microbadger.com/badges/version/chorss/docker-pgadmin4.svg)](https://microbadger.com/images/chorss/docker-pgadmin4)
@@ -15,7 +15,6 @@
 | MAIL_USE_TLS           | Boolean    | NO*                            |
 | MAIL_USERNAME          | String     | NO*                            |
 | MAIL_PASSWORD          | String     | NO*                            |
-| MAIL_DEBUG             | Boolean    | NO                             |
 | UID                    | Integer    | NO                             |
 | GID                    | Integer    | NO                             |
 
@@ -29,13 +28,6 @@ Example commands
 `$ docker run -d -p 5050:5050 chorss/docker-pgadmin4`
 
 `$ docker run -d -p 5050:5050 -v $HOME/mydata:/data chorss/docker-pgadmin4`
-
-
-**Backup and restore in pgAdmin4 (pg_dump, pg_restore)**
-
-To use restore and backup you need to set the path in application
-
-`File -> Preferences -> Binary` the paths set to `/usr/bin`
 
 **Data storage outside of the container**
 
