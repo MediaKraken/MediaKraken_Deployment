@@ -74,6 +74,11 @@ else
         > ${ES_PATH_CONF}/jvm.options.new && mv ${ES_PATH_CONF}/jvm.options.new ${ES_PATH_CONF}/jvm.options
   fi
 
+  if [ ! -z "$ES_HEAP_DISABLE" ]; then
+    awk -v LINE="#-XX:+HeapDumpOnOutOfMemoryError" '{ sub(/^-XX:\+HeapDumpOnOutOfMemoryError.*/, LINE); print; }' ${ES_PATH_CONF}/jvm.options \
+        > ${ES_PATH_CONF}/jvm.options.new && mv ${ES_PATH_CONF}/jvm.options.new ${ES_PATH_CONF}/jvm.options
+  fi
+
   # override ES_JAVA_OPTS variable if set
   if [ ! -z "$ES_JAVA_OPTS" ]; then
     awk -v LINE="ES_JAVA_OPTS=\"$ES_JAVA_OPTS\"" '{ sub(/^#?ES_JAVA_OPTS=.*/, LINE); print; }' /etc/default/elasticsearch \
@@ -117,7 +122,7 @@ else
     echo "waiting for Elasticsearch to be up ($counter/$ES_CONNECT_RETRY)"
   done
   if [ ! "$(curl -k ${ELASTICSEARCH_URL} 2> /dev/null)" ]; then
-    echo "Couln't start Elasticsearch. Exiting."
+    echo "Couldn't start Elasticsearch. Exiting."
     echo "Elasticsearch log follows below."
     cat /var/log/elasticsearch/elasticsearch.log
     exit 1
@@ -131,10 +136,20 @@ else
     CLUSTER_NAME=$(curl -k ${ELASTICSEARCH_URL}/_cat/health?h=cluster 2> /dev/null | tr -d '[:space:]')
     echo "Waiting for Elasticsearch cluster to respond ($counter/30)"
   done
+
   if [ -z "$CLUSTER_NAME" ]; then
-    echo "Couln't get name of cluster. Exiting."
-    echo "Elasticsearch log follows below."
+    echo "Couldn't get name of cluster. Exiting."
+    echo "Elasticsearch log follows."
     cat /var/log/elasticsearch/elasticsearch.log
+    exit 1
+  elif [[ "$CLUSTER_NAME" =~ "master_not_discovered_exception" ]]; then
+    # If we got a JSON error back, don't treat it like the literal name of the cluster.
+    # Example of what this error looks like:
+    # [{"error":{"root_cause":[{"type":"master_not_discovered_exception","reason":null}]
+    # We don't know the cluster name, so we'll just glob it.
+    echo "Failed to contact a healthy master in cluster."
+    echo "Elasticsearch logs follow."
+    cat /var/log/elasticsearch/*.log
     exit 1
   fi
   OUTPUT_LOGFILES+="/var/log/elasticsearch/${CLUSTER_NAME}.log "
@@ -154,6 +169,11 @@ else
     awk -v LINE="-Xmx$LS_HEAP_SIZE" '{ sub(/^.Xmx.*/, LINE); print; }' ${LOGSTASH_PATH_SETTINGS}/jvm.options \
         > ${LOGSTASH_PATH_SETTINGS}/jvm.options.new && mv ${LOGSTASH_PATH_SETTINGS}/jvm.options.new ${LOGSTASH_PATH_SETTINGS}/jvm.options
     awk -v LINE="-Xms$LS_HEAP_SIZE" '{ sub(/^.Xms.*/, LINE); print; }' ${LOGSTASH_PATH_SETTINGS}/jvm.options \
+        > ${LOGSTASH_PATH_SETTINGS}/jvm.options.new && mv ${LOGSTASH_PATH_SETTINGS}/jvm.options.new ${LOGSTASH_PATH_SETTINGS}/jvm.options
+  fi
+
+  if [ ! -z "$LS_HEAP_DISABLE" ]; then
+    awk -v LINE="#-XX:+HeapDumpOnOutOfMemoryError" '{ sub(/^-XX:\+HeapDumpOnOutOfMemoryError.*/, LINE); print; }' ${LOGSTASH_PATH_SETTINGS}/jvm.options \
         > ${LOGSTASH_PATH_SETTINGS}/jvm.options.new && mv ${LOGSTASH_PATH_SETTINGS}/jvm.options.new ${LOGSTASH_PATH_SETTINGS}/jvm.options
   fi
 
@@ -200,7 +220,7 @@ if [ -x /usr/local/bin/elk-post-hooks.sh ]; then
   if [ "$KIBANA_START" -eq "1" ]; then
 
   ### ... then wait for Kibana to be up first to ensure that .kibana index is
-  ### created before the of post-hooks are executed
+  ### created before the post-hooks are executed
     # set number of retries (default: 30, override using KIBANA_CONNECT_RETRY env var)
     if ! [[ $KIBANA_CONNECT_RETRY =~ $re_is_numeric ]] ; then
        KIBANA_CONNECT_RETRY=30
@@ -217,7 +237,20 @@ if [ -x /usr/local/bin/elk-post-hooks.sh ]; then
       echo "waiting for Kibana to be up ($counter/$KIBANA_CONNECT_RETRY)"
     done
     if [ ! "$(curl ${KIBANA_URL} 2> /dev/null)" ]; then
-      echo "Couln't start Kibana. Exiting."
+      echo "Couldn't start Kibana. Exiting."
+      echo "Kibana log follows below."
+      cat /var/log/kibana/kibana5.log
+      exit 1
+    fi
+    # wait for Kibana to not only be up but to return 200 OK
+    counter=0
+    while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' ${KIBANA_URL}/api/status)" != "200" && $counter -lt 30 ]]; do
+      sleep 1
+      ((counter++))
+      echo "waiting for Kibana to respond ($counter/30)"
+    done
+    if [[ "$(curl -s -o /dev/null -w ''%{http_code}'' ${KIBANA_URL}/api/status)" != "200" ]]; then
+      echo "Timed out waiting for Kibana to respond. Exiting."
       echo "Kibana log follows below."
       cat /var/log/kibana/kibana5.log
       exit 1
