@@ -591,6 +591,15 @@ base_cron = [
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Metadata',
       'program': '/mediakraken/subprogram_metadata_tmdb_updates.py'}),
 
+    # will run within the pike container via "cron"
+    ('Retro game data', 'Grab updated metadata for retro game(s)',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+      'program': '/mediakraken/subprogram_metadata_games.py'}),
+
+    # ('Giantbomb Game Update', 'Grab updated Giantbomb game metadata',
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'giantbomb', 'task': 'update',
+    #  'program': '/mediakraken/subprogram_metadata_giantbomb.py'}),
+
     # ('TheTVDB Update', 'Grab updated TheTVDB metadata',
     #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'thetvdb', 'task': 'update',
     #  'program': '/mediakraken/subprogram_metadata_thetvdb_updates.py'}),
@@ -601,7 +610,8 @@ base_cron = [
 
     # All code to run this is in the download docker image
     ('Trailer', 'Download new trailer(s)',
-     {'exchange_key': 'mkque_download_ex', 'route_key': 'mkdownload', 'type': None, 'task': 'HDTrailers'}),
+     {'exchange_key': 'mkque_download_ex', 'route_key': 'mkdownload', 'type': None,
+      'task': 'HDTrailers'}),
 
     # normal subprograms
     # Will simply run in reactor with cron run

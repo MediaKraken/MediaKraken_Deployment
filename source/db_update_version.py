@@ -16,6 +16,9 @@
   MA 02110-1301, USA.
 '''
 
+import json
+
+import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -282,6 +285,18 @@ if db_connection.db_version_check() < 22:
 #         "MetadataImageLocal": false to metadata json options
 
 # add api for [api][dirble]
+
+if db_connection.db_version_check() < 23:
+    # retro update
+    db_connection.db_cron_insert('Retro game data', 'Grab updated metadata for retro game(s)',
+                                 False, 'Days 1', psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+                                 json.dumps({'exchange_key': 'mkque_ex', 'route_key': 'mkque',
+                                             'type': 'Cron Run',
+                                             'program': '/mediakraken/subprogram_metadata_games.py'}),
+
+                                 )
+    db_connection.db_version_update(23)
+    db_connection.db_commit()
 
 # close the database
 db_connection.db_close()
