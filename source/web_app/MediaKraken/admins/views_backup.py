@@ -25,8 +25,6 @@ import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-cloud_handle = common_network_cloud.CommonLibCloud(option_config_json)
-
 
 def flash_errors(form):
     """
@@ -100,10 +98,12 @@ def admin_backup():
             backup_files.append((backup_local[0], 'Local',
                                  common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
-    for backup_cloud in cloud_handle.com_net_cloud_list_data_in_container(
-            option_config_json['MediaKrakenServer']['BackupContainerName']):
-        backup_files.append((backup_cloud.name, backup_cloud.type,
-                             common_string.com_string_bytes2human(backup_cloud.size)))
+    if len(option_config_json['Cloud']) > 0:  # to see if the json has been populated
+        cloud_handle = common_network_cloud.CommonLibCloud(option_config_json)
+        for backup_cloud in cloud_handle.com_net_cloud_list_data_in_container(
+                option_config_json['MediaKrakenServer']['BackupContainerName']):
+            backup_files.append((backup_cloud.name, backup_cloud.type,
+                                 common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
@@ -115,7 +115,7 @@ def admin_backup():
     return render_template("admin/admin_backup.html", form=form,
                            backup_list=sorted(backup_files, reverse=True),
                            data_interval=('Hours', 'Days', 'Weekly'),
-                           data_class=cloud_handle.CLOUD_BACKUP_CLASS,
+                           data_class=None,
                            data_enabled=backup_enabled,
                            page=page,
                            per_page=per_page,
