@@ -115,7 +115,7 @@ def admin_backup():
     return render_template("admin/admin_backup.html", form=form,
                            backup_list=sorted(backup_files, reverse=True),
                            data_interval=('Hours', 'Days', 'Weekly'),
-                           data_class=None,
+                           data_class=common_network_cloud.supported_providers,
                            data_enabled=backup_enabled,
                            page=page,
                            per_page=per_page,
