@@ -67,7 +67,7 @@ class CommonLibCloud:
     Class for interfacing with cloud
     """
 
-    def __init__(self, option_config_json, cloud_provider='LOCAL'):
+    def __init__(self, option_config_json, cloud_provider='Local Storage'):
         self.cls = libcloud.get_driver(supported_providers[cloud_provider])
         self.driver = self.cls(key=option_config_json['Cloud'][cloud_provider]['User'],
                                secret=option_config_json['Cloud'][cloud_provider]['API_Key'])
