@@ -25,6 +25,8 @@ import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
+cloud_handle = common_network_cloud.CommonLibCloud(option_config_json)
+
 
 def flash_errors(form):
     """
@@ -65,8 +67,9 @@ def admin_backup_delete_page():
     file_path, file_type = request.form['id'].split('|')
     if file_type == "Local":
         os.remove(file_path)
-    elif file_type == "AWS" or file_type == "AWS S3":
-        CLOUD_HANDLE.com_cloud_file_delete('awss3', file_path, True)
+    else:
+        pass
+        # TODO, do the actual delete
     return json.dumps({'status': 'OK'})
 
 
@@ -97,7 +100,8 @@ def admin_backup():
             backup_files.append((backup_local[0], 'Local',
                                  common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
-    for backup_cloud in CLOUD_HANDLE.com_cloud_backup_list():
+    for backup_cloud in cloud_handle.com_net_cloud_list_data_in_container(
+            option_config_json['MediaKrakenServer']['BackupContainerName']):
         backup_files.append((backup_cloud.name, backup_cloud.type,
                              common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
@@ -111,7 +115,7 @@ def admin_backup():
     return render_template("admin/admin_backup.html", form=form,
                            backup_list=sorted(backup_files, reverse=True),
                            data_interval=('Hours', 'Days', 'Weekly'),
-                           data_class=common_cloud.CLOUD_BACKUP_CLASS,
+                           data_class=cloud_handle.CLOUD_BACKUP_CLASS,
                            data_enabled=backup_enabled,
                            page=page,
                            per_page=per_page,
