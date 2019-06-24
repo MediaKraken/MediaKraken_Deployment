@@ -60,6 +60,4 @@ ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
 ADD src /mediakraken
 
-EXPOSE 8903
-
 CMD ["/bin/ash"]
