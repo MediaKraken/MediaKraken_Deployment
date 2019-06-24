@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import sys
-
 import json
 import os
+import sys
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
