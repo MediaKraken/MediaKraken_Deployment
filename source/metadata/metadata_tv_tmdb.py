@@ -98,8 +98,8 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id):
                         common_global.es_inst.com_elastic_index('info', {'eps info': episode_info})
                         if episode_info['filename'] is not None:
                             # tmdb
-                            channel.basic_publish(exchange='mkque_cloud_ex',
-                                                  routing_key='mkcloud',
+                            channel.basic_publish(exchange='mkque_download_ex',
+                                                  routing_key='mkdownload',
                                                   body=json.dumps(
                                                       {'Type': 'download', 'Subtype': 'image',
                                                        'url': 'https://thetmdb.com/banners/'
@@ -112,8 +112,8 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id):
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
                         # tmdb
-                        channel.basic_publish(exchange='mkque_cloud_ex',
-                                              routing_key='mkcloud',
+                        channel.basic_publish(exchange='mkque_download_ex',
+                                              routing_key='mkdownload',
                                               body=json.dumps(
                                                   {'Type': 'download', 'Subtype': 'image',
                                                    'url': 'https://thetmdb.com/banners/'
