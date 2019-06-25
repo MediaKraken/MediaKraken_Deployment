@@ -21,7 +21,6 @@ from functools import wraps
 from functools import partial
 from MediaKraken.admins.forms import AdminSettingsForm
 from MediaKraken.admins.forms import BookAddForm
-
 from common import common_config_ini
 from common import common_internationalization
 from common import common_global
@@ -37,18 +36,6 @@ ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-
-def flash_errors(form):
-    """
-    Display errors from list
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
 
 
 def admin_required(fn):

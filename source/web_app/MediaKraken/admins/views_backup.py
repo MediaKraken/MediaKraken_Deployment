@@ -13,6 +13,7 @@ blueprint = Blueprint("admins_backup", __name__,
 # need the following three items for admin check
 import flask
 from flask_login import current_user
+from MediaKraken.utils import flash_errors
 from functools import wraps
 from MediaKraken.admins.forms import BackupEditForm
 from common import common_network_cloud
@@ -24,18 +25,6 @@ from common import common_string
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-
-def flash_errors(form):
-    """
-    Display errors from list
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
 
 
 def admin_required(fn):

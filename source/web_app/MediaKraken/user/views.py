@@ -21,18 +21,6 @@ import database as database_base
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-def flash_errors(form):
-    """
-    Display each error on top of form
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
-
-
 @blueprint.route("/")
 @login_required
 def members():
