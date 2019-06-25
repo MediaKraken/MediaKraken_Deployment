@@ -4,7 +4,8 @@
 
 import os
 import subprocess
-
+from common import common_global
+from common import common_logging_elasticsearch
 from MediaKraken.app import create_app
 from MediaKraken.database import db
 from MediaKraken.settings import ProdConfig
@@ -45,4 +46,7 @@ if __name__ == '__main__':
                                  'mkrabbitmq', '-p', ' 5672', '-t', '30'],
                                 shell=False)
     wait_pid.wait()
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'Creating webapp instance'})
     manager.run()
