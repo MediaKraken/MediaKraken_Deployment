@@ -35,32 +35,22 @@ from . import metadata_tv_tvmaze
 
 
 def metadata_process(thread_db, provider_name, download_data):
-    common_global.es_inst.com_elastic_index('info', {'metadata_process': download_data})
+    common_global.es_inst.com_elastic_index('info', {'metadata_process': {'provider': provider_name,
+                                                                          'dl json': download_data}})
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
-        common_global.es_inst.com_elastic_index('info', {'search': provider_name})
         metadata_search(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Update":
-        common_global.es_inst.com_elastic_index('info', {'update': provider_name,
-                                                         'meta': download_data['mdq_download_json'][
-                                                             'ProviderMetaID']})
         metadata_update(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        common_global.es_inst.com_elastic_index('info', {'fetch': provider_name,
-                                                         'meta': download_data['mdq_download_json'][
-                                                             'ProviderMetaID']})
         metadata_fetch(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
-        common_global.es_inst.com_elastic_index('info', {'fetchcastcrew': provider_name})
         metadata_castcrew(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
-        common_global.es_inst.com_elastic_index('info', {'fetchreview': provider_name})
         metadata_review(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchImage":
-        common_global.es_inst.com_elastic_index('info', {'fetchimage': provider_name})
         metadata_image(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
-        common_global.es_inst.com_elastic_index('info', {'fetchcollection': provider_name})
         metadata_collection(thread_db, provider_name, download_data)
 
 
@@ -265,19 +255,16 @@ def metadata_fetch(thread_db, provider_name, download_data):
             metadata_movie.movie_fetch_save_tmdb(thread_db,
                                                  download_data['mdq_download_json']['ProviderMetaID'],
                                                  download_data['mdq_download_json']['MetaNewID'])
-            thread_db.db_download_delete(download_data['mdq_id'])
         elif download_data['mdq_que_type'] == 2:  # tv
             metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
                                                 download_data['mdq_download_json']['ProviderMetaID'])
-            thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'thetvdb':
         metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
                                             download_data['mdq_download_json']['ProviderMetaID'])
-        thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'tvmaze':
         metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
                                                 download_data['mdq_download_json']['ProviderMetaID'])
-        thread_db.db_download_delete(download_data['mdq_id'])
+    thread_db.db_download_delete(download_data['mdq_id'])
 
 
 def metadata_castcrew(thread_db, provider_name, download_data):
