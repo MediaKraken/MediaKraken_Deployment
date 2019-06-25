@@ -60,6 +60,7 @@ def metadata_update(thread_db, provider_name, download_data):
     """
     common_global.es_inst.com_elastic_index('info', {'metadata_update': provider_name,
                                                      'dldata': download_data})
+    # TODO horribly broken.  Need to add the dlid, that to update, etc
 
 
 def metadata_search(thread_db, provider_name, download_data):
