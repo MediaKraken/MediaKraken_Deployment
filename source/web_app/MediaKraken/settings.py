@@ -8,6 +8,8 @@ import binascii
 
 sys.path.append('..')
 from common import common_file
+from common import common_global
+from common import common_logging_elasticsearch
 
 
 class Config:
@@ -26,6 +28,9 @@ class Config:
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'Creating webapp instance'})
 
 
 class ProdConfig(Config):

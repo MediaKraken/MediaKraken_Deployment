@@ -2,8 +2,6 @@
 """The app module, containing the app factory function."""
 
 import redis
-from common import common_global
-from common import common_logging_elasticsearch
 from MediaKraken import public, user, admins
 from MediaKraken.assets import assets
 from MediaKraken.extensions import (
@@ -28,9 +26,6 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     websocket = GeventWebSocket(app)
-    # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'Creating webapp instance'})
     return app
 
 
