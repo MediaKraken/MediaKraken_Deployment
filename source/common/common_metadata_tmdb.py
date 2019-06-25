@@ -132,7 +132,7 @@ class CommonMetadataTMDB:
             time.sleep(20)
             self.com_tmdb_metadata_bio_by_id(tmdb_id)
 
-    def com_tmdb_meta_bio_image_build(self, thread_db, result_json):
+    def com_tmdb_meta_bio_image_build(self, result_json):
         """
         # download info and set data to be ready for insert into database
         """
