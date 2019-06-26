@@ -36,7 +36,7 @@ else:
 
 
 # imvdb lookup
-def metadata_music_video_lookup(db_connection, file_name):
+def metadata_music_video_lookup(db_connection, file_name, download_que_id):
     """
     Lookup by name on music video database
     """

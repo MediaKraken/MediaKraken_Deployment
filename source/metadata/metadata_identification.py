@@ -101,40 +101,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                              download_que_json,
                                                              download_que_id,
                                                              guessit_file_name)
-    # elif class_text == "Movie Extras":
-    #     # include end slash so media doesn't get chopped up
-    #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-    #         download_que_json['Path'].replace('/extras/', '/').rsplit('/', 1)[0]))
-    #     if metadata_uuid is not None:
-    #         db_connection.db_download_delete(download_que_id)
-    #     else:
-    #         pass  # TODO lookup properly
-    # elif class_text == "Movie Theme":
-    #     # include end slash so theme.mp3 doesn't get chopped up
-    #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-    #         download_que_json['Path'].replace(
-    #             '/theme/', '/').replace('/backdrops/', '/')
-    #             .rsplit('/', 1)[0]))
-    #     common_global.es_inst.com_elastic_index('info', {'mtheme guid': metadata_uuid})
-    #     if metadata_uuid is not None:
-    #         db_connection.db_download_delete(download_que_id)
-    #     else:
-    #         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
-    #                                                              download_que_json,
-    #                                                              download_que_id,
-    #                                                              guessit_file_name)
-    # elif class_text == "Movie Trailer":
-    #     # include end slash so theme.mp3 doesn't get chopped up
-    #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
-    #         download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
-    #     common_global.es_inst.com_elastic_index('info', {'mtrailer guid': metadata_uuid})
-    #     if metadata_uuid is not None:
-    #         db_connection.db_download_delete(download_que_id)
-    #     else:
-    #         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
-    #                                                              download_que_json,
-    #                                                              download_que_id,
-    #                                                              guessit_file_name)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,
                                                              download_que_json,

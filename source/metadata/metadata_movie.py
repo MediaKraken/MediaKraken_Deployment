@@ -47,6 +47,7 @@ def movie_search_tmdb(db_connection, file_name):
         common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": str(file_name)})
     except:
         pass
+    # TODO aren't I doing two guessits per file name then?
     file_name = guessit(file_name)
     if type(file_name['title']) == list:
         file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
