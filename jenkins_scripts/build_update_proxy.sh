@@ -98,11 +98,11 @@ docker-compose build --build-arg http_proxy="http://proxyip:8080"
 
 # build the retroarch web
 cd ../ComposeMediaKrakenRetroArchWeb
-docker build -t mediakraken/mkretroarch --build-arg http_proxy="http://proxyip:8080" --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkretroarchweb --build-arg http_proxy="http://proxyip:8080" --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
 # build the dosbox web
 cd ../ComposeMediaKrakenDosBoxWeb
-docker build -t mediakraken/mkdosbox --build-arg http_proxy="http://proxyip:8080" --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkdosboxweb --build-arg http_proxy="http://proxyip:8080" --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
 # build the elk
 cd ../ComposeMediaKrakenELK
