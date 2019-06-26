@@ -204,6 +204,7 @@
 
                 $.post("{{ url_for('user_playback.user_playback', action='play', guid=stream_uuid) }}",
                     { audio: selectedAudioValue, subtitle: selectedSubtitleValue, device: selectedDeviceValue })
+
                 alert("Selected Text: " + selectedAudioText + " Value: " + selectedAudioValue +
                     " Selected Text: " + selectedSubtitleText + " Value: " + selectedSubtitleValue +
                     " Selected Text: " + selectedDeviceText + " Value: " + selectedDeviceValue);
