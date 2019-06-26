@@ -290,8 +290,12 @@ class CommonMetadataTMDB:
         """
         # common_global.es_inst.com_elastic_index('info', {'tmdb info build': result_json})
         # create file path for poster
-        image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
-                                                                   'poster')
+        if 'title' in result_json:  # movie
+            image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
+                                                                       'poster')
+        else:  # tv
+            image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
+                                                                       'poster')
         # common_global.es_inst.com_elastic_index('info', {'tmdb image path': image_file_path})
         poster_file_path = None
         if result_json['poster_path'] is not None:
@@ -302,8 +306,12 @@ class CommonMetadataTMDB:
                                                          image_file_path)
             poster_file_path = image_file_path
         # create file path for backdrop
-        image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
-                                                                   'backdrop')
+        if 'title' in result_json:  # movie
+            image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
+                                                                       'backdrop')
+        else:  # tv
+            image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
+                                                                       'backdrop')
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
             image_file_path += result_json['backdrop_path']
@@ -313,8 +321,11 @@ class CommonMetadataTMDB:
                                                          image_file_path)
             backdrop_file_path = image_file_path
         # its a number so make it a string just in case
-        series_id_json = json.dumps({'imdb': result_json['imdb_id'],
-                                     'themoviedb': str(result_json['id'])})
+        if 'imdb_id' in result_json:  # in movies only
+            series_id_json = json.dumps({'imdb': result_json['imdb_id'],
+                                         'themoviedb': str(result_json['id'])})
+        else:
+            series_id_json = json.dumps({'themoviedb': str(result_json['id'])})
         # set local image json
         image_json = ({'Images': {'themoviedb': {'Backdrop': backdrop_file_path,
                                                  'Poster': poster_file_path}}})
