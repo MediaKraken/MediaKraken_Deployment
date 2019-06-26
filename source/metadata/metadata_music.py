@@ -18,37 +18,8 @@
 
 import json
 
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_musicbrainz
 
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-if option_config_json['API']['musicbrainz'] is not None:
-    # setup the mediabrainz class
-    MBRAINZ_CONNECTION = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(option_config_json)
-else:
-    MBRAINZ_CONNECTION = None
-
-
-def music_search_musicbrainz(db_connection, download_que_json):
-    try:
-        common_global.es_inst.com_elastic_index('info', {"meta music search brainz": download_que_json})
-    except:
-        pass
-    metadata_uuid = None
-    if MBRAINZ_CONNECTION is not None:
-        # look at musicbrainz server
-        music_data = MBRAINZ_CONNECTION.com_mediabrainz_get_recordings(
-            ffmpeg_data_json['format']['tags']['ARTIST'],
-            ffmpeg_data_json['format']['tags']['ALBUM'],
-            ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)
-        if music_data is not None:
-            if metadata_uuid is None:
-                metadata_uuid = db_connection.db_meta_song_add(
-                    ffmpeg_data_json['format']['tags']['TITLE'],
-                    music_data['fakealbun_id'], json.dumps(music_data))
-    return metadata_uuid, music_data
 
 def metadata_music_lookup(db_connection, download_que_json, download_que_id):
     """
