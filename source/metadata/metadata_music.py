@@ -31,24 +31,6 @@ else:
     MBRAINZ_CONNECTION = None
 
 
-def music_search_musicbrainz(db_connection, file_name):
-    """
-    # search musicbrainz
-    """
-    try:
-        common_global.es_inst.com_elastic_index('info', {"meta music search musicbrainz": str(file_name)})
-    except:
-        pass
-    metadata_uuid = None
-    match_result = None
-    if MBRAINZ_CONNECTION is not None:
-        pass
-
-    common_global.es_inst.com_elastic_index('info', {'meta musicbrainz uuid': metadata_uuid,
-                                                     'result': match_result})
-    return metadata_uuid, match_result
-
-
 def metadata_music_lookup(db_connection, download_que_json, download_que_id):
     """
     Search musicbrainz
@@ -81,18 +63,17 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
                                                   ffmpeg_data_json['format']['tags']['TITLE'])
         if db_result is None:
             search_brainz = True
-            # if mbrainz_api_connection is not None:
-            #     # look at musicbrainz server
-            #     music_data = mbrainz_api_connection.com_mediabrainz_get_recordings(
-            #         ffmpeg_data_json['format']['tags']['ARTIST'],
-            #         ffmpeg_data_json['format']['tags']['ALBUM'],
-            #         ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)
-            #     if music_data is not None:
-            #         pass
-            #     # if metadata_uuid is None:
-            #     #     metadata_uuid = db_connection.db_meta_song_add(
-            #     #         ffmpeg_data_json['format']['tags']['TITLE'],
-            #     #         music_data['fakealbun_id'], json.dumps(music_data))
+            if MBRAINZ_CONNECTION is not None:
+                # look at musicbrainz server
+                music_data = MBRAINZ_CONNECTION.com_mediabrainz_get_recordings(
+                    ffmpeg_data_json['format']['tags']['ARTIST'],
+                    ffmpeg_data_json['format']['tags']['ALBUM'],
+                    ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)
+                if music_data is not None:
+                    if metadata_uuid is None:
+                        metadata_uuid = db_connection.db_meta_song_add(
+                            ffmpeg_data_json['format']['tags']['TITLE'],
+                            music_data['fakealbun_id'], json.dumps(music_data))
         else:
             metadata_uuid = db_result['mm_metadata_music_guid']
     else:
@@ -108,5 +89,6 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
                                          download_que_id)
         # set provider last so it's not picked up by the wrong thread
         db_connection.db_download_update_provider('musicbrainz', download_que_id)
-    common_global.es_inst.com_elastic_index('info', {"metadata_music_lookup return uuid": metadata_uuid})
+    common_global.es_inst.com_elastic_index('info',
+                                            {"metadata_music_lookup return uuid": metadata_uuid})
     return metadata_uuid

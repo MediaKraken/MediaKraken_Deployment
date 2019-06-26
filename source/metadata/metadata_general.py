@@ -17,11 +17,12 @@
 '''
 
 import json
-from guessit import guessit
 
 from common import common_global
 from common import common_metadata_chart_lyrics
 from common import common_metadata_tv_theme
+from guessit import guessit
+
 from . import metadata_anime
 from . import metadata_movie
 from . import metadata_music
@@ -112,9 +113,7 @@ def metadata_search(thread_db, provider_name, download_data):
         lookup_halt = True
     elif provider_name == 'musicbrainz':
         metadata_uuid, match_result = metadata_music.metadata_music_lookup(thread_db,
-                                                                              download_data[
-                                                                                  'mdq_download_json'][
-                                                                                  'Path'])
+                                                                           download_data)
         common_global.es_inst.com_elastic_index('info', {'metadata_uuid': metadata_uuid,
                                                          'result': match_result})
         if metadata_uuid is None:
@@ -239,12 +238,15 @@ def metadata_fetch(thread_db, provider_name, download_data):
     """
     Fetch main metadata for specified provider
     """
-    common_global.es_inst.com_elastic_index('info', {'metadata_fetch': provider_name, 'dldata': download_data})
+    common_global.es_inst.com_elastic_index('info', {'metadata_fetch': provider_name,
+                                                     'dldata': download_data})
     if provider_name == 'imvdb':
         common_global.es_inst.com_elastic_index('info', {'fetch imvdb': provider_name})
         imvdb_id = metadata_music_video.movie_fetch_save_imvdb(thread_db,
-                                                               download_data['mdq_download_json']['ProviderMetaID'],
-                                                               download_data['mdq_download_json']['MetaNewID'])
+                                                               download_data['mdq_download_json'][
+                                                                   'ProviderMetaID'],
+                                                               download_data['mdq_download_json'][
+                                                                   'MetaNewID'])
     elif provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == 3:  # person info
             common_global.es_inst.com_elastic_index('info', {'fetch person bio': provider_name})
@@ -253,18 +255,21 @@ def metadata_fetch(thread_db, provider_name, download_data):
         elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1:  # movie
             # removing the imdb check.....as com_tmdb_metadata_by_id converts it
             metadata_movie.movie_fetch_save_tmdb(thread_db,
-                                                 download_data['mdq_download_json']['ProviderMetaID'],
+                                                 download_data['mdq_download_json'][
+                                                     'ProviderMetaID'],
                                                  download_data['mdq_download_json']['MetaNewID'])
         elif download_data['mdq_que_type'] == 2:  # tv
             metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
-                                                download_data['mdq_download_json']['ProviderMetaID'],
+                                                download_data['mdq_download_json'][
+                                                    'ProviderMetaID'],
                                                 download_data['mdq_download_json']['MetaNewID'])
     elif provider_name == 'thetvdb':
         metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
                                             download_data['mdq_download_json']['ProviderMetaID'])
     elif provider_name == 'tvmaze':
         metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
-                                                download_data['mdq_download_json']['ProviderMetaID'])
+                                                download_data['mdq_download_json'][
+                                                    'ProviderMetaID'])
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
