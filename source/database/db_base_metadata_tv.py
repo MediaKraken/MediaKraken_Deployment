@@ -19,6 +19,20 @@
 from common import common_global
 
 
+def db_metatv_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
+                          data_image_json):
+    """
+    # insert metadata from themoviedb
+    """
+    self.db_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'
+                           ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name,'
+                           ' mm_metadata_tvshow_json,'
+                           ' mm_metadata_tvshow_localimage_json)'
+                           ' values (%s,%s,%s,%s,%s)', (uuid_id, series_id, data_title,
+                                                        data_json, data_image_json))
+    self.db_commit()
+
+
 def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
     """
     # metadata guid by name

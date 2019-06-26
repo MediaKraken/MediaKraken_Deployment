@@ -258,7 +258,8 @@ def metadata_fetch(thread_db, provider_name, download_data):
                                                  download_data['mdq_download_json']['MetaNewID'])
         elif download_data['mdq_que_type'] == 2:  # tv
             metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
-                                                download_data['mdq_download_json']['ProviderMetaID'])
+                                                download_data['mdq_download_json']['ProviderMetaID'],
+                                                download_data['mdq_download_json']['MetaNewID'])
     elif provider_name == 'thetvdb':
         metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
                                             download_data['mdq_download_json']['ProviderMetaID'])

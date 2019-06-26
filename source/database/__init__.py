@@ -238,6 +238,7 @@ class MKServerDatabase:
         db_meta_tvshow_detail, \
         db_read_tvmeta_episodes, \
         db_metatv_guid_by_tvshow_name, \
+        db_metatv_insert_tmdb, \
         db_meta_tvshow_update_image, \
         db_meta_tvshow_images_to_update, \
         db_read_tvmeta_eps_season, \
