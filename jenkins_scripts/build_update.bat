@@ -92,17 +92,17 @@ cd ..\ComposeMediaKrakenGrapesJS
 docker build -t mediakraken/mkgrapesjs --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 :: move here so all the "deps" are built first
-docker-compose build
+docker-compose build  --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 :: containers here and later are "standalone" with no deps
 
 :: build the retroarch web
 cd ..\ComposeMediaKrakenRetroArchWeb
-docker build -t mediakraken/mkretroarch --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkretroarchweb --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
 :: build the dosbox
 cd ..\ComposeMediaKrakenDosBoxWeb
-docker build -t mediakraken/mkdosbox --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
+docker build -t mediakraken/mkdosboxweb --build-arg ALPMIRROR=10.0.0.122 --build-arg PIPMIRROR=pypi.python.org .
 
 :: build the elk
 cd ..\ComposeMediaKrakenELK
