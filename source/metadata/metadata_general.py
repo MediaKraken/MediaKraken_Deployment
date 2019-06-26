@@ -75,7 +75,6 @@ def metadata_search(thread_db, provider_name, download_data):
     if provider_name == 'anidb':
         metadata_uuid = metadata_anime.metadata_anime_lookup(thread_db,
                                                              download_data,
-                                                             download_data['mdq_id'],
                                                              guessit(download_data['Path'])[
                                                                  'title'])
         if metadata_uuid is None:
@@ -112,7 +111,7 @@ def metadata_search(thread_db, provider_name, download_data):
     elif provider_name == 'lastfm':
         lookup_halt = True
     elif provider_name == 'musicbrainz':
-        metadata_uuid, match_result = metadata_music.music_search_musicbrainz(thread_db,
+        metadata_uuid, match_result = metadata_music.metadata_music_lookup(thread_db,
                                                                               download_data[
                                                                                   'mdq_download_json'][
                                                                                   'Path'])
