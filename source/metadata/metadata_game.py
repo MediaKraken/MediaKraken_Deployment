@@ -19,9 +19,9 @@
 import json
 
 from common import common_global
-from common import common_metadata_thegamesdb
+from common import common_metadata_provider_thegamesdb
 
-THEGAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
+THEGAMESDB_CONNECTION = common_metadata_provider_thegamesdb.CommonMetadataGamesDB()
 
 
 def game_system_update():

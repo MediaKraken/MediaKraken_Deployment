@@ -21,14 +21,14 @@ import os
 
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_thesportsdb
+from common import common_metadata_provider_thesportsdb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify thesportsdb key exists
 if option_config_json['API']['thesportsdb'] is not None:
     THESPORTSDB_CONNECTION \
-        = common_metadata_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
+        = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
 else:
     THESPORTSDB_CONNECTION = None
 

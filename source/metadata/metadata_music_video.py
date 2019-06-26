@@ -23,14 +23,14 @@ import uuid
 
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_imvdb
+from common import common_metadata_provider_imvdb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify imvdb key exists
 if option_config_json['API']['imvdb'] is not None:
     IMVDB_CONNECTION \
-        = common_metadata_imvdb.CommonMetadataIMVdb(option_config_json['API']['imvdb'])
+        = common_metadata_provider_imvdb.CommonMetadataIMVdb(option_config_json['API']['imvdb'])
 else:
     IMVDB_CONNECTION = None
 

@@ -20,13 +20,13 @@ import json
 
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_musicbrainz
+from common import common_metadata_provider_musicbrainz
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 if option_config_json['API']['musicbrainz'] is not None:
     # setup the mediabrainz class
-    MBRAINZ_CONNECTION = common_metadata_musicbrainz.CommonMetadataMusicbrainz(option_config_json)
+    MBRAINZ_CONNECTION = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(option_config_json)
 else:
     MBRAINZ_CONNECTION = None
 
