@@ -19,13 +19,13 @@
 import functools
 import json
 import struct
-import subprocess
 import time
 
 import pika
 from common import common_global
 from common import common_hardware_roku_bif
 from common import common_logging_elasticsearch
+from common import common_network
 from common import common_signal
 
 # start logging
@@ -84,8 +84,8 @@ class MKConsumer:
         else:
             common_global.es_inst.com_elastic_index('info',
                                                     {'roku': (
-                                                    'Connection closed, reconnect necessary: %s',
-                                                    reason)})
+                                                        'Connection closed, reconnect necessary: %s',
+                                                        reason)})
             self.reconnect()
 
     def reconnect(self):
@@ -270,11 +270,8 @@ class MKConsumer:
 
 
 def main():
-    # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-                                shell=False)
-    wait_pid.wait()
+    # fire off wait for it script to allow connection
+    common_network.mk_network_service_available('mkrabbitmq', '5672')
     mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     # set signal exit breaks
     common_signal.com_signal_set_break()

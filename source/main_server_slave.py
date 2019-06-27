@@ -25,6 +25,7 @@ from shlex import split
 import pika
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_network
 from common import common_signal
 
 
@@ -134,8 +135,8 @@ class MKConsumer:
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
         common_global.es_inst.com_elastic_index('info', {'slave': ('Binding %s to %s with %s',
-                                                                     self.EXCHANGE, queue_name,
-                                                                     self.ROUTING_KEY)})
+                                                                   self.EXCHANGE, queue_name,
+                                                                   self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -353,11 +354,8 @@ def main():
     # set signal exit breaks
     common_signal.com_signal_set_break()
 
-    # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(
-        ['/mediakraken/wait-for-it-ash.sh', '-h', 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-        shell=False)
-    wait_pid.wait()
+    # fire off wait for it script to allow connection
+    common_network.mk_network_service_available('mkrabbitmq', '5672')
 
     mkconsume = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:

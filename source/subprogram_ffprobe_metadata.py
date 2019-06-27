@@ -2,14 +2,16 @@ import functools
 import json
 import os
 import subprocess
-import uuid
 import time
+import uuid
+
 import pika
 from common import common_config_ini
 from common import common_ffmpeg
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata
+from common import common_network
 from common import common_signal
 
 # https://github.com/pika/pika/blob/master/examples/asynchronous_consumer_example.py
@@ -53,7 +55,8 @@ class MKConsumer:
     def close_connection(self):
         self._consuming = False
         if self._connection.is_closing or self._connection.is_closed:
-            common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Connection is closing or already closed'})
+            common_global.es_inst.com_elastic_index('info', {
+                'ffprobe': 'Connection is closing or already closed'})
         else:
             common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Closing connection'})
             self._connection.close()
@@ -63,7 +66,8 @@ class MKConsumer:
         self.open_channel()
 
     def on_connection_open_error(self, _unused_connection, err):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Connection open failed: %s', err)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'ffprobe': ('Connection open failed: %s', err)})
         self.reconnect()
 
     def on_connection_closed(self, _unused_connection, reason):
@@ -72,7 +76,9 @@ class MKConsumer:
             self._connection.ioloop.stop()
         else:
             common_global.es_inst.com_elastic_index('info',
-                                                    {'ffprobe': ('Connection closed, reconnect necessary: %s', reason)})
+                                                    {'ffprobe': (
+                                                    'Connection closed, reconnect necessary: %s',
+                                                    reason)})
             self.reconnect()
 
     def reconnect(self):
@@ -90,15 +96,18 @@ class MKConsumer:
         self.setup_exchange(self.EXCHANGE)
 
     def add_on_channel_close_callback(self):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Adding channel close callback'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'ffprobe': 'Adding channel close callback'})
         self._channel.add_on_close_callback(self.on_channel_closed)
 
     def on_channel_closed(self, channel, reason):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Channel %i was closed: %s', channel, reason)})
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('Channel %i was closed: %s', channel, reason)})
         self.close_connection()
 
     def setup_exchange(self, exchange_name):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Declaring exchange: %s', exchange_name)})
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('Declaring exchange: %s', exchange_name)})
         # Note: using functools.partial is not required, it is demonstrating
         # how arbitrary data can be passed to the callback when it is called
         cb = functools.partial(
@@ -110,18 +119,21 @@ class MKConsumer:
             durable=True)
 
     def on_exchange_declareok(self, _unused_frame, userdata):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Exchange declared: %s', userdata)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'ffprobe': ('Exchange declared: %s', userdata)})
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Declaring queue %s', queue_name)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'ffprobe': ('Declaring queue %s', queue_name)})
         cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
         self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
         common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Binding %s to %s with %s',
-                                                                     self.EXCHANGE, queue_name, self.ROUTING_KEY)})
+                                                                     self.EXCHANGE, queue_name,
+                                                                     self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -138,11 +150,13 @@ class MKConsumer:
             prefetch_count=self._prefetch_count, callback=self.on_basic_qos_ok)
 
     def on_basic_qos_ok(self, _unused_frame):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('QOS set to: %d', self._prefetch_count)})
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': ('QOS set to: %d', self._prefetch_count)})
         self.start_consuming()
 
     def start_consuming(self):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Issuing consumer related RPC commands'})
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
         self._consumer_tag = self._channel.basic_consume(
             self.QUEUE, self.on_message)
@@ -150,7 +164,8 @@ class MKConsumer:
         self._consuming = True
 
     def add_on_cancel_callback(self):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Adding consumer cancellation callback'})
+        common_global.es_inst.com_elastic_index('info', {
+            'ffprobe': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
@@ -224,13 +239,15 @@ class MKConsumer:
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
-        common_global.es_inst.com_elastic_index('error', {'ffprobe': ('Acknowledging message %s', delivery_tag)})
+        common_global.es_inst.com_elastic_index('error', {
+            'ffprobe': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
             common_global.es_inst.com_elastic_index('error',
-                                                    {'ffprobe': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+                                                    {
+                                                        'ffprobe': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
                 self.on_cancelok, userdata=self._consumer_tag)
             self._channel.basic_cancel(self._consumer_tag, cb)
@@ -284,7 +301,9 @@ class MKConsumer:
                 self._consumer.stop()
                 reconnect_delay = self._get_reconnect_delay()
                 common_global.es_inst.com_elastic_index('error',
-                                                        {'ffprobe': ('Reconnecting after %d seconds', reconnect_delay)})
+                                                        {'ffprobe': (
+                                                        'Reconnecting after %d seconds',
+                                                        reconnect_delay)})
                 time.sleep(reconnect_delay)
                 self._consumer = MKConsumer(self._amqp_url)
 
@@ -299,11 +318,8 @@ class MKConsumer:
 
 
 def main():
-    # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-                                shell=False)
-    wait_pid.wait()
+    # fire off wait for it script to allow connection
+    common_network.mk_network_service_available('mkrabbitmq', '5672')
     mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:
         mk_rabbit.run()

@@ -18,13 +18,13 @@
 
 import datetime
 import json
-import subprocess
 import time
 
 import pika
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
+from common import common_network
 from common import common_signal
 
 # start logging
@@ -36,11 +36,8 @@ common_signal.com_signal_set_break()
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# fire off wait for it script to allow rabbitmq connection
-wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-                            shell=False)
-wait_pid.wait()
+# fire off wait for it script to allow connection
+common_network.mk_network_service_available('mkrabbitmq', '5672')
 
 credentials = pika.PlainCredentials('guest', 'guest')
 parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30, credentials=credentials)

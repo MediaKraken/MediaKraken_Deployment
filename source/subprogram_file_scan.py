@@ -239,11 +239,8 @@ def worker(audit_directory):
 
 
 # don't need to check this as the subprogram_pika will do it
-# # fire off wait for it script to allow rabbitmq connection
-# wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-#                              'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-#                             shell=False)
-# wait_pid.wait()
+# fire off wait for it script to allow connection
+# common_network.mk_network_service_available('mkrabbitmq', '5672')
 
 credentials = pika.PlainCredentials('guest', 'guest')
 parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30, credentials=credentials)

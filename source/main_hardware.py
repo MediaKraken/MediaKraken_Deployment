@@ -16,16 +16,15 @@
   MA 02110-1301, USA.
 '''
 
-import time
-
 import functools
 import json
-import pika
-import subprocess
+import time
 
+import pika
 from common import common_global
 from common import common_hardware_hue
 from common import common_logging_elasticsearch
+from common import common_network
 from common import common_signal
 
 # start logging
@@ -83,8 +82,8 @@ class MKConsumer:
         else:
             common_global.es_inst.com_elastic_index('info',
                                                     {'hardware': (
-                                                    'Connection closed, reconnect necessary: %s',
-                                                    reason)})
+                                                        'Connection closed, reconnect necessary: %s',
+                                                        reason)})
             self.reconnect()
 
     def reconnect(self):
@@ -138,8 +137,8 @@ class MKConsumer:
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
         common_global.es_inst.com_elastic_index('info', {'hardware': ('Binding %s to %s with %s',
-                                                                     self.EXCHANGE, queue_name,
-                                                                     self.ROUTING_KEY)})
+                                                                      self.EXCHANGE, queue_name,
+                                                                      self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -261,8 +260,8 @@ class MKConsumer:
                 reconnect_delay = self._get_reconnect_delay()
                 common_global.es_inst.com_elastic_index('error',
                                                         {'hardware': (
-                                                        'Reconnecting after %d seconds',
-                                                        reconnect_delay)})
+                                                            'Reconnecting after %d seconds',
+                                                            reconnect_delay)})
                 time.sleep(reconnect_delay)
                 self._consumer = MKConsumer(self._amqp_url)
 
@@ -279,11 +278,8 @@ class MKConsumer:
 def main():
     # set signal exit breaks
     common_signal.com_signal_set_break()
-    # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-                                shell=False)
-    wait_pid.wait()
+    # fire off wait for it script to allow connection
+    common_network.mk_network_service_available('mkrabbitmq', '5672')
     mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
