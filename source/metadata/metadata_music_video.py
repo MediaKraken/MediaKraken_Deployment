@@ -78,9 +78,12 @@ def metadata_music_video_lookup(db_connection, file_name, download_que_id):
                         common_global.es_inst.com_elastic_index('info', {"vid data": video_data})
                         if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                             # need to submit a fetch record for limiter and rest of video data
-                            if db_connection.db_download_que_exists(None, 1, 'imvdb',
+                            if db_connection.db_download_que_exists(None,
+                                                                    common_global.DLMediaType.Movie.value,
+                                                                    'imvdb',
                                                                     str(video_data['id'])) is None:
-                                db_connection.db_download_insert('imvdb', 1,
+                                db_connection.db_download_insert('imvdb',
+                                                                 common_global.DLMediaType.Movie.value,
                                                                  json.dumps({"Status": "Fetch",
                                                                              "ProviderMetaID": str(
                                                                                  video_data['id']),

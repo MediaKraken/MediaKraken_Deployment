@@ -23,6 +23,7 @@ import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
 import database as database_base
+from common import common_global
 
 
 class TestDatabaseDownload:
@@ -42,7 +43,8 @@ class TestDatabaseDownload:
         # create/insert a download
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_download_insert('themovedb', 1,
+        self.new_guid = self.db_connection.db_download_insert('themovedb',
+                                                              common_global.DLMediaType.Movie.value,
                                                               json.dumps({'test': 234}))
 
     @pytest.mark.parametrize(("provider_name"), [

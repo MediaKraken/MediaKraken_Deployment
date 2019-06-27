@@ -18,10 +18,8 @@
 
 import json
 import os
-import subprocess
 import time
 import uuid
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime  # to handle threading
 
 import pika
@@ -140,13 +138,15 @@ def worker(audit_directory):
                         or file_name.find('/theme.mp4') != -1 \
                         or file_name.find('\\theme.mp4') != -1:
                     if media_class_text == 'Movie':
-                        if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
+                        if file_name.find('/trailers/') != -1 or file_name.find(
+                                '\\trailers\\') != -1:
                             new_class_type_uuid = class_text_dict['Movie Trailer']
                         else:
                             new_class_type_uuid = class_text_dict['Movie Theme']
                     elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
                             or media_class_text == 'TV Season':
-                        if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
+                        if file_name.find('/trailers/') != -1 or file_name.find(
+                                '\\trailers\\') != -1:
                             new_class_type_uuid = class_text_dict['TV Trailer']
                         else:
                             new_class_type_uuid = class_text_dict['TV Theme']
@@ -155,7 +155,8 @@ def worker(audit_directory):
                     if original_media_class == 'Movie':
                         new_class_type_uuid = class_text_dict['Movie Extras']
                     elif original_media_class == 'TV Show' \
-                            or thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Episode' \
+                            or thread_db.db_media_class_by_uuid(
+                        media_class_type_uuid) == 'TV Episode' \
                             or media_class_text == 'TV Season':
                         new_class_type_uuid = class_text_dict['TV Extras']
                 # set new media class for backdrops (usually themes)
@@ -177,9 +178,11 @@ def worker(audit_directory):
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
                 media_id = str(uuid.uuid4())
-                thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None, media_json)
+                thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
+                                          media_json)
                 # verify ffprobe and bif should run on the data
-                if ffprobe_bif_data and file_extension[1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                if ffprobe_bif_data and file_extension[
+                                        1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
                         and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
                     # Send a message so ffprobe runs
                     channel.basic_publish(exchange='mkque_ffmpeg_ex',
@@ -197,8 +200,9 @@ def worker(audit_directory):
                                                   {'Type': 'Roku', 'Subtype': 'Thumbnail',
                                                    'Media UUID': media_id,
                                                    'Media Path': file_name}),
-                                              properties=pika.BasicProperties(content_type='text/plain',
-                                                                              delivery_mode=2))
+                                              properties=pika.BasicProperties(
+                                                  content_type='text/plain',
+                                                  delivery_mode=2))
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert
@@ -288,11 +292,13 @@ for row_data in db_connection.db_audit_paths():
         else:
             # verify the directory inodes has changed
             if datetime.strptime(
-                    time.ctime(os.path.getmtime(os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']))),
+                    time.ctime(os.path.getmtime(
+                        os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']))),
                     "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
-                audit_directories.append((os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']),
-                                          str(row_data['mm_media_class_guid']),
-                                          row_data['mm_media_dir_guid']))
+                audit_directories.append(
+                    (os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']),
+                     str(row_data['mm_media_class_guid']),
+                     row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
                                                           json.dumps({'Status': 'Added to scan',
                                                                       'Pct': 100}))

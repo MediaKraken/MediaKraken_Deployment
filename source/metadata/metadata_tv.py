@@ -17,6 +17,7 @@
 '''
 
 import json
+
 from common import common_config_ini
 from common import common_global
 
@@ -85,7 +86,8 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
                 provider_id = str(tmdb_id)
             else:
                 provider_id = imdb_id
-            dl_meta = db_connection.db_download_que_exists(download_que_id, 2,
+            dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                           common_global.DLMediaType.TV.value,
                                                            'themoviedb', provider_id)
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']
@@ -99,7 +101,8 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
                 db_connection.db_download_delete(download_que_id)
                 metadata_uuid = dl_meta
         elif tvdb_id is not None:
-            dl_meta = db_connection.db_download_que_exists(download_que_id, 2,
+            dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                           common_global.DLMediaType.TV.value,
                                                            'thetvdb', str(tvdb_id))
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']

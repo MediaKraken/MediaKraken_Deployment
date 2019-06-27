@@ -41,11 +41,13 @@ if option_config_json['API']['tvmaze'] is not None:
             tvmaze_id = show_list_json[show_ndx]['id']
             # check to see if already downloaded
             if db_connection.db_metatv_guid_by_tvmaze(str(tvmaze_id)) is None:
-                if db_connection.db_download_que_exists(None, 2, 'tvmaze', str(tvmaze_id)) is None:
-                    db_connection.db_download_insert('tvmaze', 2, json.dumps({"Status": "Fetch",
-                                                                              "ProviderMetaID": str(
-                                                                                  tvmaze_id),
-                                                                              "MetaNewID": str(
-                                                                                  uuid.uuid4())}))
+                if db_connection.db_download_que_exists(None, common_global.DLMediaType.TV.value,
+                                                        'tvmaze', str(tvmaze_id)) is None:
+                    db_connection.db_download_insert('tvmaze', common_global.DLMediaType.TV.value,
+                                                     json.dumps({"Status": "Fetch",
+                                                                 "ProviderMetaID": str(
+                                                                     tvmaze_id),
+                                                                 "MetaNewID": str(
+                                                                     uuid.uuid4())}))
         # commit all changes
         db_connection.db_commit()

@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
+import json
 import time
 
-import json
 import psycopg2
 from common import common_config_ini
 from common import common_global
@@ -272,7 +272,9 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
                 provider_id = str(tmdb_id)
             else:
                 provider_id = imdb_id
-            dl_meta = db_connection.db_download_que_exists(download_que_id, 1, 'themoviedb',
+            dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                           common_global.DLMediaType.Movie.value,
+                                                           'themoviedb',
                                                            provider_id)
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']

@@ -88,7 +88,8 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
         # id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 1,
+                dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                               common_global.DLMediaType.Movie.value,
                                                                'themoviedb', str(tmdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
@@ -102,7 +103,8 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
             else:
-                dl_meta = db_connection.db_download_que_exists(download_que_id, 1,
+                dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                               common_global.DLMediaType.Movie.value,
                                                                'themoviedb', imdb_id)
                 if dl_meta is None:
                     metadata_uuid = download_que_json['MetaNewID']
@@ -116,7 +118,7 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
         # if metadata_uuid is None and tvmaze_id is not None:
-        #     dl_meta = db_connection.db_download_que_exists(download_que_id, 2,
+        #     dl_meta = db_connection.db_download_que_exists(download_que_id, common_global.DLMediaType.TV.value,
         #                                                    'tvmaze', str(anidb_id))
         #     if dl_meta is None:
         #         metadata_uuid = download_que_json['MetaNewID']
@@ -129,7 +131,7 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
         #         db_connection.db_download_delete(download_que_id)
         #         metadata_uuid = dl_meta
         # if metadata_uuid is None and thetvdb_id is not None:
-        #     dl_meta = db_connection.db_download_que_exists(download_que_id, 2,
+        #     dl_meta = db_connection.db_download_que_exists(download_que_id, common_global.DLMediaType.TV.value,
         #                                                    'thetvdb', str(anidb_id))
         #     if dl_meta is None:
         #         metadata_uuid = download_que_json['MetaNewID']
@@ -142,7 +144,8 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
         #         db_connection.db_download_delete(download_que_id)
         #         metadata_uuid = dl_meta
         if metadata_uuid is None and anidb_id is not None:
-            dl_meta = db_connection.db_download_que_exists(download_que_id, 1,
+            dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                           common_global.DLMediaType.Movie.value,
                                                            'anidb', str(anidb_id))
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']

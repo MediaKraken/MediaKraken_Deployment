@@ -2,9 +2,10 @@
 
 import json
 import os
-import pygal
 import sys
 import uuid
+
+import pygal
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
