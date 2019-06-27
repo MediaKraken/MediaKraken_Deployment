@@ -16,19 +16,18 @@
   MA 02110-1301, USA.
 '''
 
-import signal
-import time
-
 import functools
 import json
 import os
-import pika
+import signal
 import subprocess
+import time
+from shlex import split
 
+import pika
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
-from common import common_system
 
 
 class MKConsumer:
@@ -199,11 +198,10 @@ class MKConsumer:
         if json_message['Type'] != "Image":
             common_global.es_inst.com_elastic_index('info', {'Got Message': body})
         common_global.es_inst.com_elastic_index('info', {'len total': len(body)})
-
-        msg = None
-        if json_message['Type'] == "Play":
-            if json_message['Device Type'] == 'Cast':
-                pass
+        # no need to check types....as if it's here, it's a slave command
+        subprocess.Popen(split(json_message['Command']), shell=False)
+            # if json_message['Device Type'] == 'Cast':
+            #     pass
                 # if json_message['Command'] == "Chapter Back":
                 #     pass
                 # elif json_message['Command'] == "Chapter Forward":
@@ -212,76 +210,75 @@ class MKConsumer:
                 #     pass
                 # elif json_message['Command'] == "Mute":
                 #     subprocess.Popen(
-                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #         ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
                 #          '-devicename', json_message['Device'], '-mute'), shell=False)
                 # elif json_message['Command'] == "Pause":
                 #     subprocess.Popen(
-                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #         ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
                 #          '-devicename', json_message['Device'], '-pause'), shell=False)
                 # elif json_message['Command'] == "Rewind":
                 #     pass
                 # elif json_message['Command'] == 'Stop':
                 #     subprocess.Popen(
-                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #         ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
                 #          '-devicename', json_message['Device'], '-stop'), shell=False)
                 # elif json_message['Command'] == "Volume Down":
                 #     subprocess.Popen(
-                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #         ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
                 #          '-devicename', json_message['Device'], '-voldown'), shell=False)
                 # elif json_message['Command'] == "Volume Set":
                 #     subprocess.Popen(
-                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #         ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
                 #          '-devicename', json_message['Device'], '-setvol', json_message['Data']),
                 #         shell=False)
                 # elif json_message['Command'] == "Volume Up":
                 #     subprocess.Popen(
-                #         ('python', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                #         ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
                 #          '-devicename', json_message['Device'], '-volup'), shell=False)
-            elif json_message['Device Type'] == 'HDHomeRun':
-                pass
-            elif json_message['Device Type'] == 'Slave':
-                if json_message['Command'] == "Chapter Back":
-                    pass
-                elif json_message['Command'] == "Chapter Forward":
-                    pass
-                elif json_message['Command'] == "Fast Forward":
-                    pass
-                elif json_message['Command'] == "Pause":
-                    pass
-                elif json_message['Command'] == 'Play':
-                    self.proc_ffmpeg_stream = subprocess.Popen(
-                        (''), shell=False)
-                elif json_message['Command'] == "Rewind":
-                    pass
-                elif json_message['Command'] == 'Stop':
-                    os.killpg(self.proc_ffmpeg_stream.pid, signal.SIGTERM)
-        elif json_message['Type'] == "System":
-            if json_message['Subtype'] == 'CPU':
-                msg = json.dumps({'Type': 'System', 'Sub': 'CPU',
-                                  'Data': common_system.com_system_cpu_usage(False)})
-            elif json_message['Subtype'] == "Disk":
-                msg = json.dumps({'Type': 'System', 'Sub': 'Disk',
-                                  'Data': common_system.com_system_disk_usage_all(True)})
-            elif json_message['Subtype'] == "MEM":
-                msg = json.dumps({'Type': 'System', 'Sub': 'MEM',
-                                  'Data': common_system.com_system_virtual_memory(False)})
-            elif json_message['Subtype'] == "SYS":
-                msg = json.dumps({'Type': 'System', 'Action': 'SYS',
-                                  'Data': common_system.com_system_cpu_usage(True),
-                                  'Data2': common_system.com_system_disk_usage_all(True),
-                                  'Data3': common_system.com_system_virtual_memory(False)})
+            # elif json_message['Device Type'] == 'HDHomeRun':
+            #     pass
+            # elif json_message['Device Type'] == 'Slave':
+            #     if json_message['Command'] == "Chapter Back":
+            #         pass
+            #     elif json_message['Command'] == "Chapter Forward":
+            #         pass
+            #     elif json_message['Command'] == "Fast Forward":
+            #         pass
+            #     elif json_message['Command'] == "Pause":
+            #         pass
+            #     elif json_message['Command'] == 'Play':
+            #         pass
+            #     elif json_message['Command'] == "Rewind":
+            #         pass
+            #     elif json_message['Command'] == 'Stop':
+            #         os.killpg(self.proc_ffmpeg_stream.pid, signal.SIGTERM)
+        # elif json_message['Type'] == "System":
+        #     if json_message['Subtype'] == 'CPU':
+        #         msg = json.dumps({'Type': 'System', 'Sub': 'CPU',
+        #                           'Data': common_system.com_system_cpu_usage(False)})
+        #     elif json_message['Subtype'] == "Disk":
+        #         msg = json.dumps({'Type': 'System', 'Sub': 'Disk',
+        #                           'Data': common_system.com_system_disk_usage_all(True)})
+        #     elif json_message['Subtype'] == "MEM":
+        #         msg = json.dumps({'Type': 'System', 'Sub': 'MEM',
+        #                           'Data': common_system.com_system_virtual_memory(False)})
+        #     elif json_message['Subtype'] == "SYS":
+        #         msg = json.dumps({'Type': 'System', 'Action': 'SYS',
+        #                           'Data': common_system.com_system_cpu_usage(True),
+        #                           'Data2': common_system.com_system_disk_usage_all(True),
+        #                           'Data3': common_system.com_system_virtual_memory(False)})
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
         common_global.es_inst.com_elastic_index('error', {
-            'ffprobe null': ('Acknowledging message %s', delivery_tag)})
+            'ffprobe': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
             common_global.es_inst.com_elastic_index('error',
                                                     {
-                                                        'ffprobe null': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+                                                        'ffprobe': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
                 self.on_cancelok, userdata=self._consumer_tag)
             self._channel.basic_cancel(self._consumer_tag, cb)
@@ -293,7 +290,7 @@ class MKConsumer:
         self.close_channel()
 
     def close_channel(self):
-        common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Closing the channel'})
+        common_global.es_inst.com_elastic_index('error', {'ffprobe': 'Closing the channel'})
         self._channel.close()
 
     def run(self):
@@ -303,13 +300,13 @@ class MKConsumer:
     def stop(self):
         if not self._closing:
             self._closing = True
-            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopping'})
+            common_global.es_inst.com_elastic_index('error', {'ffprobe': 'Stopping'})
             if self._consuming:
                 self.stop_consuming()
                 self._connection.ioloop.start()
             else:
                 self._connection.ioloop.stop()
-            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopped'})
+            common_global.es_inst.com_elastic_index('error', {'ffprobe': 'Stopped'})
 
     class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
