@@ -92,7 +92,7 @@ cd ../ComposeMediaKrakenGrapesJS
 docker build -t mediakraken/mkgrapesjs --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
 # move here so all the "deps" are built first
-docker-compose build --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
+docker-compose build --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org
 
 # containers here and later are "standalone" with no deps
 
