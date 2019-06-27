@@ -20,7 +20,7 @@ from common import common_file
 from common import common_global
 from common import common_hardware_chromecast
 from common import common_hardware_crestron
-from common import common_hardware_hdhomerun
+from common import common_hardware_hdhomerun_py
 from common import common_hardware_hue
 from common import common_hardware_roku_network
 from common import common_hardware_soco
@@ -58,24 +58,24 @@ for dlna_devices in common_network_dlna.com_net_dlna_discover():
 common_global.es_inst.com_elastic_index('info', {'after dlna'})
 
 # hdhomerun tuner discovery
-# tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
-# tuner_api.com_hdhomerun_discover()
-# for row_tuner in tuner_api.com_hdhomerun_list():
-#     print(row_tuner)
-tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
+tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
-    common_global.es_inst.com_elastic_index('info', {
-        'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
-    media_devices.append({'HDHomeRun': {'Model': row_tuner.get_var(item='/sys/model'),
-                                        'HWModel': row_tuner.get_var(item='/sys/hwmodel'),
-                                        'Name': row_tuner.get_name(),
-                                        'ID': str(hex(row_tuner.get_device_id())),
-                                        'IP': common_string.com_string_ip_int_to_ascii(
-                                            row_tuner.get_device_ip()),
-                                        'Firmware': row_tuner.get_version(),
-                                        'Active': True,
-                                        'Channels': {}}})
+    print(row_tuner)
+# tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
+# tuner_api.com_hdhomerun_discover()
+# for row_tuner in tuner_api.com_hdhomerun_list():
+#     common_global.es_inst.com_elastic_index('info', {
+#         'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
+#     media_devices.append({'HDHomeRun': {'Model': row_tuner.get_var(item='/sys/model'),
+#                                         'HWModel': row_tuner.get_var(item='/sys/hwmodel'),
+#                                         'Name': row_tuner.get_name(),
+#                                         'ID': str(hex(row_tuner.get_device_id())),
+#                                         'IP': common_string.com_string_ip_int_to_ascii(
+#                                             row_tuner.get_device_ip()),
+#                                         'Firmware': row_tuner.get_version(),
+#                                         'Active': True,
+#                                         'Channels': {}}})
 
 common_global.es_inst.com_elastic_index('info', {'after hdhomerun'})
 
