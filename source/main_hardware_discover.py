@@ -20,9 +20,14 @@ from common import common_file
 from common import common_global
 from common import common_hardware_chromecast
 from common import common_hardware_crestron
+from common import common_hardware_hdhomerun
+from common import common_hardware_hue
+from common import common_hardware_roku_network
 from common import common_hardware_soco
 from common import common_logging_elasticsearch
+from common import common_network_dlna
 from common import common_signal
+from common import common_string
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware_discover',
@@ -44,42 +49,48 @@ for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_h
 
 common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 
-# # dlna devices
-# for dlna_devices in common_network_dlna.com_net_dlna_discover():
-#     if dlna_devices == 'No compatible devices found.':
-#         break
-#     media_devices.append({'DLNA': dlna_devices})
+# dlna devices
+for dlna_devices in common_network_dlna.com_net_dlna_discover():
+    if dlna_devices == 'No compatible devices found.':
+        break
+    media_devices.append({'DLNA': dlna_devices})
+
+common_global.es_inst.com_elastic_index('info', {'after dlna'})
 
 # hdhomerun tuner discovery
 # tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
 # tuner_api.com_hdhomerun_discover()
 # for row_tuner in tuner_api.com_hdhomerun_list():
 #     print(row_tuner)
-# tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
-# tuner_api.com_hdhomerun_discover()
-# for row_tuner in tuner_api.com_hdhomerun_list():
-#     # common_global.es_inst.com_elastic_index('info', {
-#     #     'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
-#     media_devices.append({'HDHomeRun': {'Model': row_tuner.get_var(item='/sys/model'),
-#                                         'HWModel': row_tuner.get_var(item='/sys/hwmodel'),
-#                                         'Name': row_tuner.get_name(),
-#                                         'ID': str(hex(row_tuner.get_device_id())),
-#                                         'IP': common_string.com_string_ip_int_to_ascii(
-#                                             row_tuner.get_device_ip()),
-#                                         'Firmware': row_tuner.get_version(),
-#                                         'Active': True,
-#                                         'Channels': {}}})
+tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
+tuner_api.com_hdhomerun_discover()
+for row_tuner in tuner_api.com_hdhomerun_list():
+    common_global.es_inst.com_elastic_index('info', {
+        'hdhomerun out': common_string.com_string_ip_int_to_ascii(row_tuner.get_device_ip())})
+    media_devices.append({'HDHomeRun': {'Model': row_tuner.get_var(item='/sys/model'),
+                                        'HWModel': row_tuner.get_var(item='/sys/hwmodel'),
+                                        'Name': row_tuner.get_name(),
+                                        'ID': str(hex(row_tuner.get_device_id())),
+                                        'IP': common_string.com_string_ip_int_to_ascii(
+                                            row_tuner.get_device_ip()),
+                                        'Firmware': row_tuner.get_version(),
+                                        'Active': True,
+                                        'Channels': {}}})
 
-# # phillips hue discover
-# hue_inst = common_hardware_hue.CommonHardwareHue()
-# media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
+common_global.es_inst.com_elastic_index('info', {'after hdhomerun'})
 
-# # roku discover
-# for roku in common_hardware_roku_network.com_roku_network_discovery():
-#     common_global.es_inst.com_elastic_index('info', {'roku out': roku})
-#     media_devices.append({'Roku': roku})
-#
-# common_global.es_inst.com_elastic_index('info', {'after roku'})
+# phillips hue discover
+hue_inst = common_hardware_hue.CommonHardwareHue()
+media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
+
+common_global.es_inst.com_elastic_index('info', {'after phue'})
+
+# roku discover
+for roku in common_hardware_roku_network.com_roku_network_discovery():
+    common_global.es_inst.com_elastic_index('info', {'roku out': roku})
+    media_devices.append({'Roku': roku})
+
+common_global.es_inst.com_elastic_index('info', {'after roku'})
 
 # soco discover
 soco_devices = common_hardware_soco.com_hardware_soco_discover()
@@ -88,12 +99,16 @@ if soco_devices is not None:
         common_global.es_inst.com_elastic_index('info', {'soco out': soco})
         media_devices.append({'Soco': soco})
 
+common_global.es_inst.com_elastic_index('info', {'after soco'})
+
 # crestron device discover
 crestron_devices = common_hardware_crestron.com_hardware_crestron_discover()
 if crestron_devices is not None:
     for crestron in crestron_devices:
-        common_global.es_inst.com_elastic_index('info', {'soco out': crestron})
+        common_global.es_inst.com_elastic_index('info', {'crestron out': crestron})
         media_devices.append({'Crestron': crestron})
+
+common_global.es_inst.com_elastic_index('info', {'after crestron'})
 
 common_global.es_inst.com_elastic_index('info', {'devices': media_devices})
 
