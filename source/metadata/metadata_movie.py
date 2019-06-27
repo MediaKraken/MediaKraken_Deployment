@@ -23,7 +23,7 @@ import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_metadata
-from common import common_metadata_provider_tmdb
+from common import common_metadata_provider_themoviedb
 from common import common_string
 from guessit import guessit
 
@@ -34,7 +34,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # verify themoviedb key exists
 if option_config_json['API']['themoviedb'] is not None:
     # setup the tmdb class
-    TMDB_CONNECTION = common_metadata_provider_tmdb.CommonMetadataTMDB(option_config_json)
+    TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 else:
     TMDB_CONNECTION = None
 
