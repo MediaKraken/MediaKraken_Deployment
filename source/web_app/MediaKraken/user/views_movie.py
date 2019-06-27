@@ -19,6 +19,7 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
+from common import common_network_pika
 from common import common_internationalization
 import database as database_base
 
@@ -33,6 +34,13 @@ def movie_detail(guid):
     """
     if request.method == 'POST':
         if request.form['playback'] == 'Web Viewer':
+            common_network_pika.com_net_pika_send(
+                {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
+                 'User': current_user.get_id(),
+                 'Data': g.db_connection.db_read_media(guid)['mm_media_path']},
+                rabbit_host_name='mkrabbitmq',
+                exchange_name='mkque_ex',
+                route_key='mkque')
             return redirect(url_for('user_playback.user_video_player_videojs', mtype='hls',
                                     guid=request.form['Video_Track'], chapter=1,
                                     audio=request.form['Video_Play_Audio_Track'],

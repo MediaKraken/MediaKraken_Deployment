@@ -20,12 +20,13 @@ import functools
 import json
 import os
 import subprocess
-import uuid
 import time
+import uuid
+
 import pika
 from common import common_config_ini
-from common import common_docker
 from common import common_device_capability
+from common import common_docker
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
@@ -74,7 +75,8 @@ class MKConsumer:
     def close_connection(self):
         self._consuming = False
         if self._connection.is_closing or self._connection.is_closed:
-            common_global.es_inst.com_elastic_index('info', {'pika': 'Connection is closing or already closed'})
+            common_global.es_inst.com_elastic_index('info', {
+                'pika': 'Connection is closing or already closed'})
         else:
             common_global.es_inst.com_elastic_index('info', {'pika': 'Closing connection'})
             self._connection.close()
@@ -84,7 +86,8 @@ class MKConsumer:
         self.open_channel()
 
     def on_connection_open_error(self, _unused_connection, err):
-        common_global.es_inst.com_elastic_index('info', {'pika': ('Connection open failed: %s', err)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'pika': ('Connection open failed: %s', err)})
         self.reconnect()
 
     def on_connection_closed(self, _unused_connection, reason):
@@ -93,7 +96,9 @@ class MKConsumer:
             self._connection.ioloop.stop()
         else:
             common_global.es_inst.com_elastic_index('info',
-                                                    {'pika': ('Connection closed, reconnect necessary: %s', reason)})
+                                                    {'pika': (
+                                                    'Connection closed, reconnect necessary: %s',
+                                                    reason)})
             self.reconnect()
 
     def reconnect(self):
@@ -115,11 +120,13 @@ class MKConsumer:
         self._channel.add_on_close_callback(self.on_channel_closed)
 
     def on_channel_closed(self, channel, reason):
-        common_global.es_inst.com_elastic_index('info', {'pika': ('Channel %i was closed: %s', channel, reason)})
+        common_global.es_inst.com_elastic_index('info', {
+            'pika': ('Channel %i was closed: %s', channel, reason)})
         self.close_connection()
 
     def setup_exchange(self, exchange_name):
-        common_global.es_inst.com_elastic_index('info', {'pika': ('Declaring exchange: %s', exchange_name)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'pika': ('Declaring exchange: %s', exchange_name)})
         # Note: using functools.partial is not required, it is demonstrating
         # how arbitrary data can be passed to the callback when it is called
         cb = functools.partial(
@@ -131,18 +138,21 @@ class MKConsumer:
             durable=True)
 
     def on_exchange_declareok(self, _unused_frame, userdata):
-        common_global.es_inst.com_elastic_index('info', {'pika': ('Exchange declared: %s', userdata)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'pika': ('Exchange declared: %s', userdata)})
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        common_global.es_inst.com_elastic_index('info', {'pika': ('Declaring queue %s', queue_name)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'pika': ('Declaring queue %s', queue_name)})
         cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
         self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
         common_global.es_inst.com_elastic_index('info', {'pika': ('Binding %s to %s with %s',
-                                                                  self.EXCHANGE, queue_name, self.ROUTING_KEY)})
+                                                                  self.EXCHANGE, queue_name,
+                                                                  self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -159,11 +169,13 @@ class MKConsumer:
             prefetch_count=self._prefetch_count, callback=self.on_basic_qos_ok)
 
     def on_basic_qos_ok(self, _unused_frame):
-        common_global.es_inst.com_elastic_index('info', {'pika': ('QOS set to: %d', self._prefetch_count)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'pika': ('QOS set to: %d', self._prefetch_count)})
         self.start_consuming()
 
     def start_consuming(self):
-        common_global.es_inst.com_elastic_index('info', {'pika': 'Issuing consumer related RPC commands'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'pika': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
         self._consumer_tag = self._channel.basic_consume(
             self.QUEUE, self.on_message)
@@ -171,7 +183,8 @@ class MKConsumer:
         self._consuming = True
 
     def add_on_cancel_callback(self):
-        common_global.es_inst.com_elastic_index('info', {'pika': 'Adding consumer cancellation callback'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'pika': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
@@ -257,7 +270,8 @@ class MKConsumer:
                         # stream from hdhomerun
                         container_command = "ffmpeg -i http://" + json_message['IP'] \
                                             + ":5004/auto/v" + json_message['Channel'] \
-                                            + "?transcode=" + json_message['Quality'] + "-vcodec copy" \
+                                            + "?transcode=" + json_message[
+                                                'Quality'] + "-vcodec copy" \
                                             + "./static/streams/" + \
                                             json_message['Channel'] + ".m3u8"
                     elif json_message['Device'] == 'HLS':
@@ -267,7 +281,8 @@ class MKConsumer:
                                             + '\" -vcodec libx264 -preset veryfast' \
                                             + ' -acodec aac -ac:a:0 2 -vbr 5 ' \
                                             + json_message['Audio Track'] \
-                                            + '-vf ' + json_message['Subtitle Track'] + ' yadif=0:0:0 ' \
+                                            + '-vf ' + json_message['Subtitle Track'] \
+                                            + ' yadif=0:0:0 ' \
                                             + json_message['Target UUID']
                     elif json_message['Device'] == 'Roku':
                         pass
@@ -285,20 +300,24 @@ class MKConsumer:
                                               " -output_ts_offset {output_ts_offset:.6f}" \
                                               " -t {t:.6f} pipe:%d.ts".format(**locals())
                     else:
-                        common_global.es_inst.com_elastic_index('critical', {'stuff': 'unknown subtype'})
+                        common_global.es_inst.com_elastic_index('critical',
+                                                                {'stuff': 'unknown subtype'})
                     if container_command is not None:
                         common_global.es_inst.com_elastic_index('info',
-                                                                {'container_command': container_command,
-                                                                 'name': name_container})
+                                                                {
+                                                                    'container_command': container_command,
+                                                                    'name': name_container})
                         hwaccel = False
                         docker_inst.com_docker_run_slave(hwaccel=hwaccel,
                                                          port_mapping=None,
                                                          name_container=name_container,
                                                          container_command=container_command)
-                        common_global.es_inst.com_elastic_index('info', {'stuff': 'after docker run'})
+                        common_global.es_inst.com_elastic_index('info',
+                                                                {'stuff': 'after docker run'})
                 elif json_message['Subtype'] == 'Stop':
                     # this will force stop the container and then delete it
-                    common_global.es_inst.com_elastic_index('info', {'user stop': mk_containers[json_message['User']]})
+                    common_global.es_inst.com_elastic_index('info', {
+                        'user stop': mk_containers[json_message['User']]})
                     docker_inst.com_docker_delete_container(
                         container_image_name=mk_containers[json_message['User']])
                 elif json_message['Subtype'] == 'Pause':
@@ -307,13 +326,15 @@ class MKConsumer:
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
-        common_global.es_inst.com_elastic_index('error', {'pika': ('Acknowledging message %s', delivery_tag)})
+        common_global.es_inst.com_elastic_index('error', {
+            'pika': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
             common_global.es_inst.com_elastic_index('error',
-                                                    {'pika': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+                                                    {
+                                                        'pika': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
                 self.on_cancelok, userdata=self._consumer_tag)
             self._channel.basic_cancel(self._consumer_tag, cb)
@@ -367,7 +388,8 @@ class MKConsumer:
                 self._consumer.stop()
                 reconnect_delay = self._get_reconnect_delay()
                 common_global.es_inst.com_elastic_index('error',
-                                                        {'pika': ('Reconnecting after %d seconds', reconnect_delay)})
+                                                        {'pika': ('Reconnecting after %d seconds',
+                                                                  reconnect_delay)})
                 time.sleep(reconnect_delay)
                 self._consumer = MKConsumer(self._amqp_url)
 
