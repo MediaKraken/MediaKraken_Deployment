@@ -43,7 +43,8 @@ def user_hardware_hue():
         # need to do as could provide an empty list and not None
         data_hue_avail = None
     return render_template("users/user_hardware_hue.html",
-                           data_hue_avail=data_hue_avail)
+                           data_hue_avail=data_hue_avail,
+                           data_hue_list=g.db_connection.db_device_list('Phue'))
 
 
 @blueprint.route('/hardware_hue_on')

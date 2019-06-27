@@ -11,6 +11,7 @@ from MediaKraken.extensions import (
 )
 from MediaKraken.settings import ProdConfig
 from flask import Flask, render_template
+from flask_colorpicker import colorpicker
 from flask_kvsession import KVSessionExtension
 from flask_uwsgi_websocket import GeventWebSocket
 from simplekv.memory.redisstore import RedisStore
@@ -26,6 +27,7 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     websocket = GeventWebSocket(app)
+    colorpicker(app)
     return app
 
 

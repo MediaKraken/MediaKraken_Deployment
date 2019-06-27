@@ -1,4 +1,9 @@
 {% extends "layout.html" %}
+{% block scripts %}
+    {{ super() }}
+    {{ colorpicker.loader() }}
+    {{ colorpicker.picker(ids=[".cp"]) }}
+{% endblock %}
 {% block content %}
 <body id="data_background">
     <head>
@@ -7,24 +12,41 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_slider.css') }}" media="all" type="text/css"/>
     </head>
-
     {% if data_hue_avail is none %}
         <p><h2>Key not found for Hue device! Have administrator sync the device and try again.</h2></p>
     {% else %}
-        <a href="{{ url_for('user_hardware_hue.user_hardware_hue_on') }}" id="user_hue_bulb_on">
-            <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_on.png') }}"
-                 alt="hue_bulb_on" height="200" width="200">
-        </a>
-        <a href="{{ url_for('user_hardware_hue.user_hardware_hue_off') }}" id="user_hue_bulb_off">
-            <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_off.png') }}"
-                 alt="hue_bulb_off" height="200" width="200">
-        </a>
-
-        <div class="slidecontainer">
-            <input type="range" min="1" max="100" value="50" class="slider" id="hue_brightness">
+        <div class="row">
+                <div class="col-sm-2">
+                    <ul class="list-group">
+                        {% for hue_locations in data_hue_list %}
+                            <li class="list-group-item">{{hue_locations}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-sm">
+                    <div class="row">
+                        <a href="{{ url_for('user_hardware_hue.user_hardware_hue_on') }}" id="user_hue_bulb_on">
+                            <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_on.png') }}"
+                                 alt="hue_bulb_on" height="200" width="200">
+                        </a>
+                        <a href="{{ url_for('user_hardware_hue.user_hardware_hue_off') }}" id="user_hue_bulb_off">
+                            <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_off.png') }}"
+                                 alt="hue_bulb_off" height="200" width="200">
+                        </a>
+                    </div>
+                    <div class="row">
+                        <div class="slidecontainer">
+                            <input type="range" min="1" max="100" value="50" class="slider" id="hue_brightness">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form class="verticalform">
+                            <input type="text" class="form-control cp" />
+                        </form>
+                    </div>
+                </div>
         </div>
     {% endif %}
-
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
