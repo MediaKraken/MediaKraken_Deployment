@@ -51,6 +51,7 @@ for platform in list(GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']
                                                           system_alias,
                                                           json.dumps(platform_json))
                 db_connection.db_commit()
+                total_game_systems += 1
 
 # send notifications
 if total_games > 0:
