@@ -62,7 +62,8 @@ class MKConsumer:
     def close_connection(self):
         self._consuming = False
         if self._connection.is_closing or self._connection.is_closed:
-            common_global.es_inst.com_elastic_index('info', {'roku': 'Connection is closing or already closed'})
+            common_global.es_inst.com_elastic_index('info', {
+                'roku': 'Connection is closing or already closed'})
         else:
             common_global.es_inst.com_elastic_index('info', {'roku': 'Closing connection'})
             self._connection.close()
@@ -72,7 +73,8 @@ class MKConsumer:
         self.open_channel()
 
     def on_connection_open_error(self, _unused_connection, err):
-        common_global.es_inst.com_elastic_index('info', {'roku': ('Connection open failed: %s', err)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'roku': ('Connection open failed: %s', err)})
         self.reconnect()
 
     def on_connection_closed(self, _unused_connection, reason):
@@ -81,7 +83,9 @@ class MKConsumer:
             self._connection.ioloop.stop()
         else:
             common_global.es_inst.com_elastic_index('info',
-                                                    {'roku': ('Connection closed, reconnect necessary: %s', reason)})
+                                                    {'roku': (
+                                                    'Connection closed, reconnect necessary: %s',
+                                                    reason)})
             self.reconnect()
 
     def reconnect(self):
@@ -103,11 +107,13 @@ class MKConsumer:
         self._channel.add_on_close_callback(self.on_channel_closed)
 
     def on_channel_closed(self, channel, reason):
-        common_global.es_inst.com_elastic_index('info', {'roku': ('Channel %i was closed: %s', channel, reason)})
+        common_global.es_inst.com_elastic_index('info', {
+            'roku': ('Channel %i was closed: %s', channel, reason)})
         self.close_connection()
 
     def setup_exchange(self, exchange_name):
-        common_global.es_inst.com_elastic_index('info', {'roku': ('Declaring exchange: %s', exchange_name)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'roku': ('Declaring exchange: %s', exchange_name)})
         # Note: using functools.partial is not required, it is demonstrating
         # how arbitrary data can be passed to the callback when it is called
         cb = functools.partial(
@@ -119,18 +125,21 @@ class MKConsumer:
             durable=True)
 
     def on_exchange_declareok(self, _unused_frame, userdata):
-        common_global.es_inst.com_elastic_index('info', {'roku': ('Exchange declared: %s', userdata)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'roku': ('Exchange declared: %s', userdata)})
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        common_global.es_inst.com_elastic_index('info', {'roku': ('Declaring queue %s', queue_name)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'roku': ('Declaring queue %s', queue_name)})
         cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
         self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
         common_global.es_inst.com_elastic_index('info', {'roku': ('Binding %s to %s with %s',
-                                                                     self.EXCHANGE, queue_name, self.ROUTING_KEY)})
+                                                                  self.EXCHANGE, queue_name,
+                                                                  self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -147,11 +156,13 @@ class MKConsumer:
             prefetch_count=self._prefetch_count, callback=self.on_basic_qos_ok)
 
     def on_basic_qos_ok(self, _unused_frame):
-        common_global.es_inst.com_elastic_index('info', {'roku': ('QOS set to: %d', self._prefetch_count)})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'roku': ('QOS set to: %d', self._prefetch_count)})
         self.start_consuming()
 
     def start_consuming(self):
-        common_global.es_inst.com_elastic_index('info', {'roku': 'Issuing consumer related RPC commands'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'roku': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
         self._consumer_tag = self._channel.basic_consume(
             self.QUEUE, self.on_message)
@@ -159,7 +170,8 @@ class MKConsumer:
         self._consuming = True
 
     def add_on_cancel_callback(self):
-        common_global.es_inst.com_elastic_index('info', {'roku': 'Adding consumer cancellation callback'})
+        common_global.es_inst.com_elastic_index('info',
+                                                {'roku': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
@@ -180,13 +192,15 @@ class MKConsumer:
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
-        common_global.es_inst.com_elastic_index('error', {'roku': ('Acknowledging message %s', delivery_tag)})
+        common_global.es_inst.com_elastic_index('error', {
+            'roku': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
             common_global.es_inst.com_elastic_index('error',
-                                                    {'roku': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+                                                    {
+                                                        'roku': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
                 self.on_cancelok, userdata=self._consumer_tag)
             self._channel.basic_cancel(self._consumer_tag, cb)
@@ -240,7 +254,8 @@ class MKConsumer:
                 self._consumer.stop()
                 reconnect_delay = self._get_reconnect_delay()
                 common_global.es_inst.com_elastic_index('error',
-                                                        {'roku': ('Reconnecting after %d seconds', reconnect_delay)})
+                                                        {'roku': ('Reconnecting after %d seconds',
+                                                                  reconnect_delay)})
                 time.sleep(reconnect_delay)
                 self._consumer = MKConsumer(self._amqp_url)
 
