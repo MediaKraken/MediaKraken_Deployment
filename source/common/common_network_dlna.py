@@ -22,7 +22,6 @@ import subprocess
 
 
 def com_net_dlna_discover(timeout_seconds=5):
-    dlnap_pid = subprocess.Popen(
-        shlex.split('python3 /mediakraken/dlnap.py --all --timeout %s' % timeout_seconds))
-    out, err = dlnap_pid.communicate()
-    return out
+    return subprocess.run(
+        shlex.split('python3 /mediakraken/dlnap.py --all --timeout %s' % timeout_seconds),
+        stdout=subprocess.PIPE).stdout
