@@ -113,6 +113,9 @@ current_host_working_directory = docker_inst.com_docker_container_bind(container
                                                                        bind_match='/data/devices')
 
 # start up other docker containers if needed
+if option_config_json['Docker Instances']['elk']:
+    docker_inst.com_docker_run_elk(current_host_working_directory)
+
 if option_config_json['Docker Instances']['mumble']:
     docker_inst.com_docker_run_mumble(current_host_working_directory)
 
@@ -120,6 +123,9 @@ if option_config_json['Docker Instances']['musicbrainz'] \
         and option_config_json['API']['musicbrainz'] is not None:
     docker_inst.com_docker_run_musicbrainz(current_host_working_directory,
                                            option_config_json['API']['musicbrainz'])
+
+if option_config_json['Docker Instances']['pgadmin']:
+    docker_inst.com_docker_run_pgadmin(current_host_working_directory)
 
 if option_config_json['Docker Instances']['portainer']:
     docker_inst.com_docker_run_portainer(current_host_working_directory)
