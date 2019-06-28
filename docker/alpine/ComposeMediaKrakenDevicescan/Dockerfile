@@ -16,8 +16,11 @@ WORKDIR /mediakraken
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   alpine-sdk \
+  gcc \
   git \
   libhdhomerun \
+  linux-headers \
+  musl-dev \
   py3-requests \
   py3-setuptools \
   python3-dev \
@@ -33,6 +36,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk del alpine-sdk \
   git \
   python3-dev \
+  linux-headers \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm -rf phue \
   && rm requirements.txt \

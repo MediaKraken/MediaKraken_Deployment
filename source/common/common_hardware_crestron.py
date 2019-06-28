@@ -24,9 +24,9 @@ import subprocess
 def com_hardware_crestron_discover(ip_addr=None):
     if ip_addr is None:
         return subprocess.check_output(shlex.split(
-            'python3 /mediakraken/common/Crestron-List-Devices-On-Network/List_Crestron_Devices -alc'))
+            'python3 /mediakraken/common/Crestron-List-Devices-On-Network/List_Crestron_Devices.py -alc'))
     else:
         return subprocess.check_output(
             shlex.split(
-                'python3 /mediakraken/common/Crestron-List-Devices-On-Network/List_Crestron_Devices -ala %s' %
+                'python3 /mediakraken/common/Crestron-List-Devices-On-Network/List_Crestron_Devices.py -ala %s' %
                 ip_addr.rsplit('.', 1)[0]))
