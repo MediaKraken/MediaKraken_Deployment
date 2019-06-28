@@ -50,12 +50,13 @@ for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_h
 common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 
 # dlna devices
-for dlna_devices in common_network_dlna.com_net_dlna_discover():
-    if dlna_devices == 'No compatible devices found.':
-        break
-    media_devices.append({'DLNA': dlna_devices})
-
-common_global.es_inst.com_elastic_index('info', {'after dlna'})
+# TODO looks like debugging shows up if run from this program
+# for dlna_devices in common_network_dlna.com_net_dlna_discover():
+#     if dlna_devices.find('No compatible devices found.') != -1:
+#         break
+#     media_devices.append({'DLNA': dlna_devices})
+#
+# common_global.es_inst.com_elastic_index('info', {'after dlna'})
 
 # hdhomerun tuner discovery
 tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
@@ -80,8 +81,9 @@ for row_tuner in tuner_api.com_hdhomerun_list():
 common_global.es_inst.com_elastic_index('info', {'after hdhomerun'})
 
 # phillips hue discover
-hue_inst = common_hardware_hue.CommonHardwareHue()
-media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
+# TODO this does NOT do discovery
+# hue_inst = common_hardware_hue.CommonHardwareHue()
+# media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
 
 common_global.es_inst.com_elastic_index('info', {'after phue'})
 
@@ -102,11 +104,12 @@ if soco_devices is not None:
 common_global.es_inst.com_elastic_index('info', {'after soco'})
 
 # crestron device discover
-crestron_devices = common_hardware_crestron.com_hardware_crestron_discover()
-if crestron_devices is not None:
-    for crestron in crestron_devices:
-        common_global.es_inst.com_elastic_index('info', {'crestron out': crestron})
-        media_devices.append({'Crestron': crestron})
+# TODO need to port the script to py3
+# crestron_devices = common_hardware_crestron.com_hardware_crestron_discover()
+# if crestron_devices is not None:
+#     for crestron in crestron_devices:
+#         common_global.es_inst.com_elastic_index('info', {'crestron out': crestron})
+#         media_devices.append({'Crestron': crestron})
 
 common_global.es_inst.com_elastic_index('info', {'after crestron'})
 
