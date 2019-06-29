@@ -223,16 +223,16 @@ class CommonDocker:
                                                 {'path': os.path.join(
                                                     current_host_working_directory,
                                                     'dosbox')})
-        self.com_docker_delete_container(('mkdosbox' + current_user_uuid.replace('-', ''))[:30])
-        self.com_docker_network_create('mk_mediakraken_game_network')
+        self.com_docker_delete_container(('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30])
+        self.com_docker_network_create('mk_mediakraken_network')
         # create user dir for dosbox, game_uuid is used to not lose installs/game saves
         user_host_dir = os.path.join(current_host_working_directory, 'data/dosbox',
                                      current_user_uuid, game_uuid)
         if not os.path.exists(user_host_dir):
             os.makedirs(user_host_dir)
-        return self.cli.containers.run(image='mediakraken/mkdosbox',
+        return self.cli.containers.run(image='mediakraken/mkdosboxweb',
                                        detach=True,
-                                       name=('mkdosbox' + current_user_uuid.replace('-', ''))[:30],
+                                       name=('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30],
                                        network='mk_mediakraken_game_network',
                                        volumes={user_host_dir:
                                                     {'bind': '/mediakraken/dosbox',
