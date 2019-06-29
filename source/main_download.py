@@ -186,6 +186,7 @@ class MKConsumer:
                     + json_message['URL']))
                 dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
             elif json_message['Subtype'] == 'HDTrailers':
+                # try to grab the RSS feed itself
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(
                     "http://feeds.hd-trailers.net/hd-trailers", directory=None))
                 if data is not None:
