@@ -33,11 +33,11 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && cd phue \
   && python3 setup.py install \
   && cd .. \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del alpine-sdk \
   git \
   python3-dev \
   linux-headers \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm -rf phue \
   && rm requirements.txt \
   && rm -rf /var/cache/apk/*
