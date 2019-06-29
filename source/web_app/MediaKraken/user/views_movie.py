@@ -134,7 +134,7 @@ def movie_detail(guid):
 
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
         ffprobe_data = {}
-        # TODO  the folling does alot of repeats sumhow.   due to dict it stomps over itself
+        # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
         for video_version in g.db_connection.db_ffprobe_all_media_guid(guid,
                                                                        g.db_connection.db_media_uuid_by_class(
                                                                            'Movie')):
