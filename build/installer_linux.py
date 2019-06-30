@@ -21,23 +21,25 @@ import subprocess
 import sys
 from shlex import split
 
+import distro
+
 LINUX_VERSIONS = {
     'alpine': (3.6, 'apk add'),
     'debian': (8.4, 'apt_get -y install'),
     'redhat': (7.1, 'yum install'),
     'ubuntu': (17.04, 'apt_get -y install')}
 
-print(('1:', platform.platform()))
-print(('2:', platform.system()))
-print(('3:', platform.release()))
-print(('4:', platform.version()))
-print(('5:', platform.dist()))
-print(('6:', platform.system()))
-print(('7:', platform.machine()))
-print(('8:', platform.platform()))
-print(('9:', platform.uname()))
-print(('10:', platform.version()))
-print(('11:', platform.mac_ver()))
+print('1:', platform.platform())
+print('2:', platform.system())
+print('3:', platform.release())
+print('4:', platform.version())
+print('5:', distro.linux_distribution(full_distribution_name=False))
+print('6:', platform.system())
+print('7:', platform.machine())
+print('8:', platform.platform())
+print('9:', platform.uname())
+print('10:', platform.version())
+print('11:', platform.mac_ver())
 
 
 def wget_wait(wget_addr):
@@ -55,10 +57,10 @@ elif platform.system() != 'Linux':
 
 # check minimum linux versions
 print('Checking linux version...')
-print(('I see you\'re running', platform.dist()
-[0], 'version', platform.dist()[1]))
+print(('I see you\'re running', platform.dist()[0], 'version', platform.dist()[1]))
 try:
-    if float(platform.dist()[1]) < LINUX_VERSIONS[platform.dist()[0].lower()][0]:
+    if float(distro.linux_distribution(full_distribution_name=False)[1]) < \
+            LINUX_VERSIONS[distro.linux_distribution(full_distribution_name=False)[0].lower()][0]:
         print(('minimum required version is',
                LINUX_VERSIONS[platform.dist()[0].lower()][0]))
 except KeyError:
