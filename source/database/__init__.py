@@ -71,6 +71,35 @@ class MKServerDatabase:
         db_link_list, \
         db_link_insert, \
         db_link_delete
+    from database.db_base_media import db_insert_media, \
+        db_read_media, \
+        db_metadata_from_media_guid, \
+        db_known_media_count, \
+        db_known_media, \
+        db_matched_media_count, \
+        db_known_media_all_unmatched_count, \
+        db_known_media_all_unmatched, \
+        db_media_duplicate_count, \
+        db_media_duplicate, \
+        db_media_duplicate_detail_count, \
+        db_media_duplicate_detail, \
+        db_media_path_by_uuid, \
+        db_update_media_id, \
+        db_update_media_json, \
+        db_media_by_metadata_guid, \
+        db_media_image_path, \
+        db_read_media_metadata_both, \
+        db_read_media_path_like, \
+        db_read_media_new, \
+        db_read_media_new_count, \
+        db_media_watched_checkpoint_update, \
+        db_media_rating_update, \
+        db_read_media_ffprobe, \
+        db_media_ffmeg_update, \
+        db_unmatched_list_count, \
+        db_unmatched_list, \
+        db_ffprobe_data, \
+        db_ffprobe_all_media_guid
     from database.db_base_media_books import db_media_book_list_count, \
         db_media_book_list
     from database.db_base_media_class import db_media_class_list_count, \
@@ -78,6 +107,16 @@ class MKServerDatabase:
         db_media_class_list, \
         db_media_class_by_uuid, \
         db_media_uuid_by_class
+    from database.db_base_media_games import db_media_game_system_list_count, \
+        db_media_game_system_list, \
+        db_media_game_list_by_system_count, \
+        db_media_game_list_by_system, \
+        db_media_game_list_count, \
+        db_media_game_list, \
+        db_media_mame_game_list, \
+        db_media_game_category_update, \
+        db_media_game_clone_list, \
+        db_media_game_category_by_name
     from database.db_base_media_images import db_media_images_list_count, \
         db_media_images_list
     from database.db_base_media_movie import db_web_media_list_count, \
@@ -102,6 +141,23 @@ class MKServerDatabase:
         db_read_media_sports_list_by_uuid
     from database.db_base_media_tv import db_web_tvmedia_list, \
         db_web_tvmedia_list_count
+    from database.db_base_metadata import db_read_media_metadata, \
+        db_meta_genre_list_count, \
+        db_meta_genre_list, \
+        db_meta_movie_count_genre, \
+        db_meta_guid_by_imdb, \
+        db_meta_guid_by_tvdb, \
+        db_meta_guid_by_tmdb, \
+        db_meta_guid_by_rt, \
+        db_meta_insert_tmdb, \
+        db_meta_tmdb_count, \
+        db_meta_movie_count, \
+        db_meta_movie_list, \
+        db_meta_fetch_media_id_json, \
+        db_meta_fetch_series_media_id_json, \
+        db_find_metadata_guid, \
+        db_meta_update_media_id_from_scudlee, \
+        db_meta_queue_list
     from database.db_base_metadata_anime import db_meta_anime_title_insert, \
         db_meta_anime_title_search, \
         db_meta_anime_update_meta_id, \
@@ -229,6 +285,13 @@ class MKServerDatabase:
         db_usage_top10_movie, \
         db_usage_top10_tv_show, \
         db_usage_top10_tv_episode
+    from database.db_base_users import db_user_list_name_count, \
+        db_user_list_name, \
+        db_user_detail, \
+        db_user_delete, \
+        db_user_login, \
+        db_user_group_insert, \
+        db_user_profile_insert
     from database.db_base_version import db_version_check, \
         db_version_update
 
