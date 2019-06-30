@@ -17,7 +17,6 @@
 '''
 
 import datetime
-
 import json
 
 from common import common_global

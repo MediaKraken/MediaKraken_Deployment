@@ -3,7 +3,7 @@
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, flash, request
+from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
 blueprint = Blueprint("admins_game", __name__,

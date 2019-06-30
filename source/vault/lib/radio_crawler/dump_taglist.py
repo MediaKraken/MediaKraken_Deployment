@@ -14,7 +14,6 @@ import bz2
 
 from util import get_cache, LISTENERPEAK, LISTENERCURRENT
 
-
 # tags that get written to the final list if available
 TAGS = ["organization", "location", "genre", "channel-mode",
         "audio-codec", "bitrate", LISTENERPEAK]
@@ -79,12 +78,15 @@ def main():
                     continue
                 out.append(key + "=" + val)
 
-    print "Writing taglist..."
-    print written, " stations"
+    print
+    "Writing taglist..."
+    print
+    written, " stations"
     with open(STATIONFILE, "wb") as h:
         h.write("\n".join(out))
 
-    print "Write compressed version..."
+    print
+    "Write compressed version..."
     with open(STATIONFILE + ".bz2", "wb") as h:
         h.write(bz2.compress(open(STATIONFILE, "rb").read(), 9))
 

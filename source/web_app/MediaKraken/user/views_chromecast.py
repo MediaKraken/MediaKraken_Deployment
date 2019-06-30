@@ -9,7 +9,6 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_chromecast", __name__, url_prefix='/users',
                       static_folder="../static")
-import json
 import sys
 
 sys.path.append('..')
@@ -37,45 +36,51 @@ def user_cast(action, guid):
     #    elif action == 'rewind':
     #        pass
     elif action == 'stop':
-        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Stop', 'Device': 'Cast',
-                                               'User': current_user.get_id()},
-                                              rabbit_host_name='mkrabbitmq',
-                                              exchange_name='mkque_ex',
-                                              route_key='mkque')
+        common_network_pika.com_net_pika_send(
+            {'Type': 'Playback', 'Subtype': 'Stop', 'Device': 'Cast',
+             'User': current_user.get_id()},
+            rabbit_host_name='mkrabbitmq',
+            exchange_name='mkque_ex',
+            route_key='mkque')
     elif action == 'play':
-        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Cast',
-                                               'User': current_user.get_id(),
-                                               'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
-                                               'Target': '10.0.0.220'},
-                                              rabbit_host_name='mkrabbitmq',
-                                              exchange_name='mkque_ex',
-                                              route_key='mkque')
+        common_network_pika.com_net_pika_send(
+            {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Cast',
+             'User': current_user.get_id(),
+             'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
+             'Target': '10.0.0.220'},
+            rabbit_host_name='mkrabbitmq',
+            exchange_name='mkque_ex',
+            route_key='mkque')
     elif action == 'pause':
-        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Pause', 'Device': 'Cast',
-                                               'User': current_user.get_id()},
-                                              rabbit_host_name='mkrabbitmq',
-                                              exchange_name='mkque_ex',
-                                              route_key='mkque')
+        common_network_pika.com_net_pika_send(
+            {'Type': 'Playback', 'Subtype': 'Pause', 'Device': 'Cast',
+             'User': current_user.get_id()},
+            rabbit_host_name='mkrabbitmq',
+            exchange_name='mkque_ex',
+            route_key='mkque')
     elif action == 'forward':
         pass
     elif action == 'mute':
-        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Mute', 'Device': 'Cast',
-                                               'User': current_user.get_id()},
-                                              rabbit_host_name='mkrabbitmq',
-                                              exchange_name='mkque_ex',
-                                              route_key='mkque')
+        common_network_pika.com_net_pika_send(
+            {'Type': 'Playback', 'Subtype': 'Mute', 'Device': 'Cast',
+             'User': current_user.get_id()},
+            rabbit_host_name='mkrabbitmq',
+            exchange_name='mkque_ex',
+            route_key='mkque')
     elif action == 'vol_up':
-        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Volume Up', 'Device': 'Cast',
-                                               'User': current_user.get_id()},
-                                              rabbit_host_name='mkrabbitmq',
-                                              exchange_name='mkque_ex',
-                                              route_key='mkque')
+        common_network_pika.com_net_pika_send(
+            {'Type': 'Playback', 'Subtype': 'Volume Up', 'Device': 'Cast',
+             'User': current_user.get_id()},
+            rabbit_host_name='mkrabbitmq',
+            exchange_name='mkque_ex',
+            route_key='mkque')
     elif action == 'vol down':
-        common_network_pika.com_net_pika_send({'Type': 'Playback', 'Subtype': 'Volume Down', 'Device': 'Cast',
-                                               'User': current_user.get_id()},
-                                              rabbit_host_name='mkrabbitmq',
-                                              exchange_name='mkque_ex',
-                                              route_key='mkque')
+        common_network_pika.com_net_pika_send(
+            {'Type': 'Playback', 'Subtype': 'Volume Down', 'Device': 'Cast',
+             'User': current_user.get_id()},
+            rabbit_host_name='mkrabbitmq',
+            exchange_name='mkque_ex',
+            route_key='mkque')
     return render_template("users/user_playback_cast.html", data_guid=guid,
                            data_chromecast=db_connection.db_device_list('cast'))
 

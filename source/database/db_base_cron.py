@@ -20,7 +20,8 @@ import datetime
 import uuid
 
 
-def db_cron_insert(self, cron_name, cron_desc, cron_enabled, cron_schedule, cron_last_run, cron_json):
+def db_cron_insert(self, cron_name, cron_desc, cron_enabled, cron_schedule, cron_last_run,
+                   cron_json):
     """
     insert cron job
     """

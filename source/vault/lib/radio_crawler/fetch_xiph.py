@@ -5,12 +5,13 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation
 
-import requests
 import re
 import urllib
-import sys
-import cPickle as pickle
 from multiprocessing.pool import ThreadPool
+
+import cPickle as pickle
+import requests
+
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
@@ -45,10 +46,12 @@ def parse_playlists(pl_dict):
         pfunc = parse_playlist
         args = pl_dict.keys()
         for i, (uri, streams) in enumerate(pool.imap_unordered(pfunc, args)):
-            print "%d/%d" % (i + 1, len(args))
+            print
+            "%d/%d" % (i + 1, len(args))
             result[uri] = (pl_dict[uri], streams)
     except Exception as e:
-        print e
+        print
+        e
         return {}
     finally:
         pool.terminate()
@@ -81,7 +84,8 @@ def parse_page(args):
 
         return genre, page, playlists, genres
     except Exception as e:
-        print e
+        print
+        e
         return genre, page, {}, set()
 
 
@@ -100,13 +104,15 @@ def get_for_genres(genres):
             pfunc = parse_page
             for i, res in enumerate(pool.imap_unordered(pfunc, args)):
                 genre, page, pl, found = res
-                print "%d/%d" % (i + 1, len(args))
+                print
+                "%d/%d" % (i + 1, len(args))
                 playlists.update(pl)
                 new_genres |= found
                 if not pl:
                     genres.remove(genre)
         except Exception as e:
-            print e
+            print
+            e
             return playlists, []
         finally:
             pool.terminate()
@@ -128,7 +134,8 @@ def crawl_xiph():
         genres.update(e.text.split())
 
     while genres:
-        print "fetch %d genres" % len(genres)
+        print
+        "fetch %d genres" % len(genres)
         new_pl, new_gen = get_for_genres(genres)
         done |= genres
         genres = new_gen - done
@@ -142,7 +149,6 @@ def crawl_xiph():
 
 
 def main():
-
     # crawl and cache
     try:
         with open(XIPH_CACHE, "rb") as h:

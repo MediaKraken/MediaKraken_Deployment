@@ -7,7 +7,6 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_hardware_hue", __name__, url_prefix='/users',
                       static_folder="../static")
-import json
 import sys
 
 sys.path.append('..')

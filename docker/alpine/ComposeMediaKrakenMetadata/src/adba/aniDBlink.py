@@ -15,11 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
-import socket, sys, zlib
-from time import time, sleep
+import socket
+import sys
 import threading
-from .aniDBresponses import ResponseResolver
+import zlib
+from time import time, sleep
+
 from .aniDBerrors import *
+from .aniDBresponses import ResponseResolver
 
 
 class AniDBLink(threading.Thread):
@@ -33,7 +36,7 @@ class AniDBLink(threading.Thread):
         self.myport = 0
         self.bound = self.connectSocket(myport, self.timeout)
 
-        self.cmd_queue = {None:None}
+        self.cmd_queue = {None: None}
         self.resp_tagged_queue = {}
         self.resp_untagged_queue = []
         self.tags = []
@@ -69,13 +72,13 @@ class AniDBLink(threading.Thread):
     def disconnectSocket(self):
         self.sock.close()
 
-    def stop (self):
+    def stop(self):
         self.log("Releasing socket and stopping link thread")
         self._quiting = True
         self.disconnectSocket()
         self._stop.set()
 
-    def stopped (self):
+    def stopped(self):
         return self._stop.isSet()
 
     def print_log(self, data):
@@ -109,7 +112,8 @@ class AniDBLink(threading.Thread):
                     else:
                         break
                 if not resp:
-                    raise AniDBPacketCorruptedError("Either decrypting, decompressing or parsing the packet failed")
+                    raise AniDBPacketCorruptedError(
+                        "Either decrypting, decompressing or parsing the packet failed")
                 cmd = self._cmd_dequeue(resp)
                 resp = resp.resolve(cmd)
                 resp.parse()
@@ -118,7 +122,7 @@ class AniDBLink(threading.Thread):
                 if resp.rescode in ('209',):
                     print("sorry encryption is not supported")
                     raise
-                    #self.crypt=aes(md5(resp.req.apipassword+resp.attrs['salt']).digest())
+                    # self.crypt=aes(md5(resp.req.apipassword+resp.attrs['salt']).digest())
                 if resp.rescode in ('203', '403', '500', '501', '503', '506'):
                     self.session = None
                     self.crypt = None
@@ -132,13 +136,18 @@ class AniDBLink(threading.Thread):
                     self.tags.remove(resp.restag)
             except:
                 sys.excepthook(*sys.exc_info())
-                print("Avoiding flood by paranoidly panicing: Aborting link thread, killing connection, releasing waiters and quiting")
+                print(
+                    "Avoiding flood by paranoidly panicing: Aborting link thread, killing connection, releasing waiters and quiting")
                 self.sock.close()
-                try:cmd.waiter.release()
-                except:pass
+                try:
+                    cmd.waiter.release()
+                except:
+                    pass
                 for tag, cmd in self.cmd_queue.items():
-                    try:cmd.waiter.release()
-                    except:pass
+                    try:
+                        cmd.waiter.release()
+                    except:
+                        pass
                 sys.exit()
 
     def _handle_timeouts(self):
@@ -211,7 +220,8 @@ class AniDBLink(threading.Thread):
         return newtag
 
     def request(self, command):
-        if not (self.session and command.session) and command.command not in ('AUTH', 'PING', 'ENCRYPT'):
+        if not (self.session and command.session) and command.command not in (
+        'AUTH', 'PING', 'ENCRYPT'):
             raise AniDBMustAuthError("You must be authed to execute commands besides AUTH and PING")
         command.started = time()
         self._cmd_queue(command)

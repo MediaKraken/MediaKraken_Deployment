@@ -25,10 +25,11 @@
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-import os
-import numpy as np
-import multiprocessing 
 import imp
+import multiprocessing
+import os
+
+import numpy as np
 
 ###############################################################################
 # Compilation lock for multiprocessing.                                       #
@@ -115,39 +116,35 @@ _PATH = os.path.expanduser('~/.np_inline')
 if not os.path.exists(_PATH):
     os.makedirs(_PATH)
 
-
 ###############################################################################
 # Code generation.                                                            #
 ###############################################################################
 _TYPE_CONV_DICT = {
-    float : 'double',
-    int   : 'long'
+    float: 'double',
+    int: 'long'
 }
-
 
 _RETURN_FUNC_DICT = {
-    float : 'PyFloat_FromDouble',
-    int   : 'PyLong_FromLong'
+    float: 'PyFloat_FromDouble',
+    int: 'PyLong_FromLong'
 }
-
 
 _TYPE_PARSE_SPEC_DICT = {
-    float : 'd',
-    int   : 'i'
+    float: 'd',
+    int: 'i'
 }
 
-
 _NP_TYPE_CONV_DICT = {
-    np.uint8    : 'npy_uint8',
-    np.uint16   : 'npy_uint16',
-    np.uint32   : 'npy_uint32',
-    np.uint64   : 'npy_uint64',
-    np.int8     : 'npy_int8',
-    np.int16    : 'npy_int16',
-    np.int32    : 'npy_int32',
-    np.int64    : 'npy_int64',
-    np.float32  : 'npy_float32',
-    np.float64  : 'npy_float64',
+    np.uint8: 'npy_uint8',
+    np.uint16: 'npy_uint16',
+    np.uint32: 'npy_uint32',
+    np.uint64: 'npy_uint64',
+    np.int8: 'npy_int8',
+    np.int16: 'npy_int16',
+    np.int32: 'npy_int32',
+    np.int64: 'npy_int64',
+    np.float32: 'npy_float32',
+    np.float64: 'npy_float64',
 }
 
 # The numpy floating point 128 bit type isn't available on all systems it 
@@ -187,7 +184,7 @@ def _gen_parse_arg_types(py_types, np_types):
 
     for np_type, dims, c_name in np_types:
         str_list.append('O')
-        
+
     return ''.join(str_list)
 
 
@@ -199,7 +196,7 @@ def _gen_parse_arg_list(py_types, np_types):
 
     for np_type, dims, c_name in np_types:
         str_list.append('&py_{0}'.format(c_name))
-        
+
     return ', '.join(str_list)
 
 
@@ -215,11 +212,11 @@ def _gen_numpy_array_index_macro(np_type, dims, c_name):
     strides = ''
     for i in range(dims):
         strides += ' + (x{0}) * py_{1}->strides[{0}]'.format(i, c_name)
-    
+
     return '#define {0}({1}) *({2} *)((py_{0}->data {3}))'.format(
         c_name, arg_list, c_type, strides)
-    
-    
+
+
 def _gen_numpy_array_macros(np_types):
     str_list = []
     for np_type, dims, c_name in np_types:
@@ -239,36 +236,36 @@ def _gen_return_val(return_type):
 
 def _gen_code(name, user_code, py_types, np_types, support_code, return_type):
     """Return a string containing the generated C code."""
-    s = _SKEL.replace('__MODULE_NAME__', 
-                     name)
-    s = s.replace('__NUMPY_ARRAY_MACROS__', 
+    s = _SKEL.replace('__MODULE_NAME__',
+                      name)
+    s = s.replace('__NUMPY_ARRAY_MACROS__',
                   _gen_numpy_array_macros(np_types))
-    s = s.replace('__SUPPORT_CODE__', 
+    s = s.replace('__SUPPORT_CODE__',
                   support_code)
-    s = s.replace('__FUNC_VAR_DECLARATIONS__', 
+    s = s.replace('__FUNC_VAR_DECLARATIONS__',
                   _gen_var_decls(py_types, np_types, return_type))
     s = s.replace('__PARSE_ARG_TYPES__',
                   _gen_parse_arg_types(py_types, np_types))
-    s = s.replace('__PARSE_ARG_LIST__', 
+    s = s.replace('__PARSE_ARG_LIST__',
                   _gen_parse_arg_list(py_types, np_types))
-    s = s.replace('__USER_CODE__', 
+    s = s.replace('__USER_CODE__',
                   user_code)
-    s = s.replace('__RETURN_VAL__', 
+    s = s.replace('__RETURN_VAL__',
                   _gen_return_val(return_type))
     return s
-    
+
 
 ###############################################################################
 # Building and installation.                                                  #
 ###############################################################################
 def _build_install_module(c_code, mod_name, extension_kwargs={}):
     # Save the current path so we can reset at the end of this function.
-    curpath = os.getcwd() 
+    curpath = os.getcwd()
     mod_name_c = '{0}.c'.format(mod_name)
 
     try:
         from distutils.core import setup, Extension
-        
+
         # Write out the code.
         with open(os.path.join(_PATH, mod_name_c), 'wb') as f:
             f.write(c_code)
@@ -277,7 +274,7 @@ def _build_install_module(c_code, mod_name, extension_kwargs={}):
         if 'include_dirs' not in extension_kwargs:
             extension_kwargs['include_dirs'] = []
         extension_kwargs['include_dirs'].append(np.get_include())
-            
+
         # Change to the code directory.
         os.chdir(_PATH)
 
@@ -288,7 +285,7 @@ def _build_install_module(c_code, mod_name, extension_kwargs={}):
         setup(ext_modules=[ext], script_args=['clean'])
 
         # Build and install the module here. 
-        setup(ext_modules=[ext], 
+        setup(ext_modules=[ext],
               script_args=['install', '--install-lib={0}'.format(_PATH)])
 
     finally:
@@ -304,7 +301,7 @@ def _string_or_path(code_str, code_path):
     """
     if code_str is not None:
         return code_str
-    
+
     if code_path is not None:
         with open(code_path, 'rb') as f:
             return f.read()
@@ -328,9 +325,9 @@ def _import(mod_name):
     mod = imp.load_dynamic(mod_name, _mod_path(mod_name))
     _FUNCS[mod_name] = mod.function
 
-                  
-def inline(unique_name, args=(), py_types=(), np_types=(), code=None, 
-           code_path=None, support_code=None, support_code_path=None, 
+
+def inline(unique_name, args=(), py_types=(), np_types=(), code=None,
+           code_path=None, support_code=None, support_code_path=None,
            extension_kwargs={}, return_type=None):
     """Inline C code in your python code. 
     
@@ -372,7 +369,7 @@ def inline(unique_name, args=(), py_types=(), np_types=(), code=None,
         return _FUNCS[unique_name](*args)
     except:
         pass
-        
+
     # Next, we try to import the module and inline it again. This will make
     # calling the code the first time reasonably fast. 
     try:
@@ -390,24 +387,24 @@ def inline(unique_name, args=(), py_types=(), np_types=(), code=None,
     with _COMP_LOCK:
         code_str = _string_or_path(code, code_path)
         support_code_str = _string_or_path(support_code, support_code_path)
-        c_code = _gen_code(unique_name, code_str, py_types, np_types, 
+        c_code = _gen_code(unique_name, code_str, py_types, np_types,
                            support_code_str, return_type)
         _build_install_module(c_code, unique_name, extension_kwargs)
         _import(unique_name)
 
     return _FUNCS[unique_name](*args)
-    
 
-def inline_debug(unique_name, args=(), py_types=(), np_types=(), code=None, 
+
+def inline_debug(unique_name, args=(), py_types=(), np_types=(), code=None,
                  code_path=None, support_code=None, support_code_path=None,
                  extension_kwargs={}, return_type=None):
     """Same as inline, but the types of each argument are checked, and 
     the code is recompiled the first time this function is called. 
     """
     # Check args, py_types and np_types for iterability.
-    assert(np.iterable(args))
-    assert(np.iterable(py_types))
-    assert(np.iterable(np_types))
+    assert (np.iterable(args))
+    assert (np.iterable(py_types))
+    assert (np.iterable(np_types))
 
     # Check that code and code path aren't both None, or not None.
     assert code is not None or code_path is not None
@@ -418,16 +415,16 @@ def inline_debug(unique_name, args=(), py_types=(), np_types=(), code=None,
 
     # Check paths if they are used. 
     if code_path is not None:
-        assert(os.path.exists(code_path))
-        
+        assert (os.path.exists(code_path))
+
     if support_code_path is not None:
-        assert(os.path.exists(support_code_path))
+        assert (os.path.exists(support_code_path))
 
     # Type check python arguments.
     for py_obj, (py_type, c_name) in zip(args[:len(py_types)], py_types):
         assert isinstance(py_obj, py_type), 'Type err: {0}'.format(c_name)
         assert py_type in (int, float), 'Bad type: {0}'.format(py_type)
-        
+
     # Type check numpy arguments. 
     for np_obj, (np_type, ndim, c_name) in zip(args[len(py_types):], np_types):
         assert np_obj.dtype == np_type, 'Type err: {0}'.format(c_name)
@@ -440,7 +437,7 @@ def inline_debug(unique_name, args=(), py_types=(), np_types=(), code=None,
     # a recompilation. 
     if unique_name not in _FUNCS and os.path.exists(_mod_path(unique_name)):
         os.unlink(_mod_path(unique_name))
-    
-    return inline(unique_name, args, py_types, np_types, code, code_path, 
-                  support_code, support_code_path, extension_kwargs, 
+
+    return inline(unique_name, args, py_types, np_types, code, code_path,
+                  support_code, support_code_path, extension_kwargs,
                   return_type)

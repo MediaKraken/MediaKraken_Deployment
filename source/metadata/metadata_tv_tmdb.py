@@ -17,15 +17,13 @@
 '''
 
 import json
-import pika
 import time
-import psycopg2
-from guessit import guessit
 
+import pika
+import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_metadata_provider_themoviedb
-from common import common_string
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 

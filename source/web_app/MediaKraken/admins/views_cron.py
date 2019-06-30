@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import json
 import sys
 
-import json
-
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash, redirect, url_for
+from flask import Blueprint, render_template, g, request, redirect, url_for
 from flask_login import login_required
 
 blueprint = Blueprint("admins_cron", __name__,
@@ -32,7 +31,8 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {"admin access attempt by": current_user.get_id()})
+        common_global.es_inst.com_elastic_index('info',
+                                                {"admin access attempt by": current_user.get_id()})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)
@@ -76,7 +76,8 @@ def admin_cron_run(guid):
     common_network_pika.com_net_pika_send({'Type': cron_job_data['mm_cron_json']['type'],
                                            'User': current_user.get_id(),
                                            'JSON': cron_job_data['mm_cron_json']},
-                                          exchange_name=cron_job_data['mm_cron_json']['exchange_key'],
+                                          exchange_name=cron_job_data['mm_cron_json'][
+                                              'exchange_key'],
                                           route_key=cron_job_data['mm_cron_json']['route_key'])
     g.db_connection.db_cron_time_update(cron_job_data['mm_cron_name'])
     return redirect(url_for('admins_cron.admin_cron_display_all'))

@@ -59,7 +59,8 @@ class CommonMetadataComicStrip:
 
     def com_meta_com_list_strips(self, adult_access=False):
         if adult_access:
-            return subprocess.check_output(split('dosage -b %s --singlelist --adult', (self.base_path,)))
+            return subprocess.check_output(
+                split('dosage -b %s --singlelist --adult', (self.base_path,)))
         else:
             return subprocess.check_output(split('dosage -b %s --singlelist', (self.base_path,)))
 
@@ -67,7 +68,8 @@ class CommonMetadataComicStrip:
         if adult_access:
             return subprocess.check_output(split('dosage -b %b %s', (self.base_path, strip_name,)))
         else:
-            return subprocess.check_output(split('dosage -b %s %s --adult', (self.base_path, strip_name,)))
+            return subprocess.check_output(
+                split('dosage -b %s %s --adult', (self.base_path, strip_name,)))
 
     def com_meta_com_current_fetch(self, adult_access=False):
         if adult_access:

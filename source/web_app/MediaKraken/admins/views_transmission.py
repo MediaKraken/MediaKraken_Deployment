@@ -4,7 +4,7 @@ import json
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, flash
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("admins_transmission", __name__, url_prefix='/admin',

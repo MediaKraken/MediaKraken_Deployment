@@ -17,14 +17,12 @@
 '''
 
 import datetime
-import sys
-
 import json
-import pika
 import subprocess
+import sys
 import time
-from guessit import guessit
 
+import pika
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -32,6 +30,7 @@ from common import common_metadata_limiter
 from common import common_signal
 from common import common_string
 from common.common_metadata_limiter import *
+from guessit import guessit
 from metadata import metadata_general
 from metadata import metadata_identification
 

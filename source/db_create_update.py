@@ -17,8 +17,8 @@
 '''
 
 import json
-import psycopg2
 
+import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -77,7 +77,8 @@ db_connection.db_query(
     'CREATE TABLE IF NOT EXISTS mm_version (mm_version_no integer)')
 if db_connection.db_table_count('mm_version') == 0:
     # initial changes to docker db which should never get executed again
-    db_connection.db_query('insert into mm_version (mm_version_no) values (%s)' % common_version.DB_VERSION)
+    db_connection.db_query(
+        'insert into mm_version (mm_version_no) values (%s)' % common_version.DB_VERSION)
 
 # create tables for media shares to mount
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_share_guid uuid'
@@ -97,7 +98,8 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_gu
                        ' mm_media_dir_share_guid uuid,'
                        ' mm_media_dir_status jsonb)')
 if db_connection.db_table_index_check('mm_media_dir_idx_share') is None:
-    db_connection.db_query('CREATE INDEX mm_media_dir_idx_share ON mm_media_dir(mm_media_dir_share_guid)')
+    db_connection.db_query(
+        'CREATE INDEX mm_media_dir_idx_share ON mm_media_dir(mm_media_dir_share_guid)')
 
 '''
 ALTER TABLE mm_media_dir
@@ -978,7 +980,8 @@ db_connection.db_query('create table IF NOT EXISTS mm_hardware (mm_hardware_id u
                        ' mm_hardware_model text,'
                        ' mm_hardware_json jsonb)')
 if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
-    db_connection.db_query('CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
+    db_connection.db_query(
+        'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
 if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
     db_connection.db_query('CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
 

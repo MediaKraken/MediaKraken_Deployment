@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import json
-import os
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash, \
-    url_for, redirect
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("admins_media_import", __name__,
@@ -18,9 +15,6 @@ from functools import wraps
 from common import common_config_ini
 from common import common_file
 from common import common_global
-from common import common_network_cifs
-from common import common_pagination
-from common import common_string
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()

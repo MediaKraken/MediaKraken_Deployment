@@ -77,8 +77,8 @@ class MKConsumer:
         else:
             common_global.es_inst.com_elastic_index('info',
                                                     {'ffprobe': (
-                                                    'Connection closed, reconnect necessary: %s',
-                                                    reason)})
+                                                        'Connection closed, reconnect necessary: %s',
+                                                        reason)})
             self.reconnect()
 
     def reconnect(self):
@@ -302,8 +302,8 @@ class MKConsumer:
                 reconnect_delay = self._get_reconnect_delay()
                 common_global.es_inst.com_elastic_index('error',
                                                         {'ffprobe': (
-                                                        'Reconnecting after %d seconds',
-                                                        reconnect_delay)})
+                                                            'Reconnecting after %d seconds',
+                                                            reconnect_delay)})
                 time.sleep(reconnect_delay)
                 self._consumer = MKConsumer(self._amqp_url)
 

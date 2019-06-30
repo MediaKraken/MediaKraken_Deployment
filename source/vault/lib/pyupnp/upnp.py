@@ -1,5 +1,7 @@
 import urllib
+
 import urlparse
+
 try:
     import xml.etree.cElementTree as et
 except ImportError:
@@ -29,9 +31,12 @@ class Service():
             self.serviceType = xml_tree.findtext('{urn:schemas-upnp-org:device-1-0}serviceType')
             self.serviceId = xml_tree.findtext('{urn:schemas-upnp-org:device-1-0}serviceId')
 
-            self.controlURL = absolute_url(baseUrl, xml_tree.findtext('{urn:schemas-upnp-org:device-1-0}controlURL'))
-            self.eventSubURL = absolute_url(baseUrl, xml_tree.findtext('{urn:schemas-upnp-org:device-1-0}eventSubURL'))
-            self.SCPDURL = absolute_url(baseUrl, xml_tree.findtext('{urn:schemas-upnp-org:device-1-0}SCPDURL'))
+            self.controlURL = absolute_url(baseUrl, xml_tree.findtext(
+                '{urn:schemas-upnp-org:device-1-0}controlURL'))
+            self.eventSubURL = absolute_url(baseUrl, xml_tree.findtext(
+                '{urn:schemas-upnp-org:device-1-0}eventSubURL'))
+            self.SCPDURL = absolute_url(baseUrl, xml_tree.findtext(
+                '{urn:schemas-upnp-org:device-1-0}SCPDURL'))
 
             self.described = True
 
@@ -68,7 +73,8 @@ class Device():
             self.services[schema][type] = {}
 
         if not version in self.services[schema][type]:
-            self.services[schema][type][version] = Service(schema, type, version, xml_tree, baseUrl=self.getBaseUrl())
+            self.services[schema][type][version] = Service(schema, type, version, xml_tree,
+                                                           baseUrl=self.getBaseUrl())
         else:
             self.services[schema][type][version].update(xml_tree, baseUrl=self.getBaseUrl())
 
@@ -115,19 +121,22 @@ class UPnP():
         try:
             xml = et.fromstring(data)
         except et.ParseError:
-            print "parse error"
+            print
+            "parse error"
             return
 
         xDevice = xml.find('{urn:schemas-upnp-org:device-1-0}device')
 
         if xDevice.findtext('{urn:schemas-upnp-org:device-1-0}UDN') != 'uuid:' + device.uuid:
-            print "ERROR: UUID mismatch"
+            print
+            "ERROR: UUID mismatch"
             return
 
         device.friendlyName = xDevice.findtext('{urn:schemas-upnp-org:device-1-0}friendlyName')
 
         device.manufacturer = xDevice.findtext('{urn:schemas-upnp-org:device-1-0}manufacturer')
-        device.manufacturerURL = xDevice.findtext('{urn:schemas-upnp-org:device-1-0}manufacturerURL')
+        device.manufacturerURL = xDevice.findtext(
+            '{urn:schemas-upnp-org:device-1-0}manufacturerURL')
 
         device.modelName = xDevice.findtext('{urn:schemas-upnp-org:device-1-0}modelName')
         device.modelNumber = xDevice.findtext('{urn:schemas-upnp-org:device-1-0}modelNumber')

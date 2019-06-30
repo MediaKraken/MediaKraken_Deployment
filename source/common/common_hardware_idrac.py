@@ -17,7 +17,6 @@
 '''
 
 # https://github.com/MediaKraken-Dep/python-dracclient
-import dracclient.client
 
 
 class CommonHardwareIDrac:

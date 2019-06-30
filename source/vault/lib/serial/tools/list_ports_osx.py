@@ -11,7 +11,6 @@
 # this is distributed under a free software license, see license.txt
 
 
-
 # List all of the callout devices in OS/X by querying IOKit.
 
 # See the following for a reference of how to do this:
@@ -23,7 +22,6 @@
 
 import ctypes
 from ctypes import util
-import re
 
 iokit = ctypes.cdll.LoadLibrary(ctypes.util.find_library('IOKit'))
 cf = ctypes.cdll.LoadLibrary(ctypes.util.find_library('CoreFoundation'))
@@ -40,7 +38,8 @@ iokit.IOServiceGetMatchingServices.restype = ctypes.c_void_p
 
 iokit.IORegistryEntryGetParentEntry.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
 
-iokit.IORegistryEntryCreateCFProperty.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint32]
+iokit.IORegistryEntryCreateCFProperty.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,
+                                                  ctypes.c_uint32]
 iokit.IORegistryEntryCreateCFProperty.restype = ctypes.c_void_p
 
 iokit.IORegistryEntryGetPath.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
@@ -54,7 +53,6 @@ iokit.IOObjectGetClass.restype = ctypes.c_void_p
 
 iokit.IOObjectRelease.argtypes = [ctypes.c_void_p]
 
-
 cf.CFStringCreateWithCString.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int32]
 cf.CFStringCreateWithCString.restype = ctypes.c_void_p
 
@@ -63,6 +61,7 @@ cf.CFStringGetCStringPtr.restype = ctypes.c_char_p
 
 cf.CFNumberGetValue.argtypes = [ctypes.c_void_p, ctypes.c_uint32, ctypes.c_void_p]
 cf.CFNumberGetValue.restype = ctypes.c_void_p
+
 
 def get_string_property(device_t, property):
     """ Search the given device for the specified string property
@@ -91,6 +90,7 @@ def get_string_property(device_t, property):
 
     return output
 
+
 def get_int_property(device_t, property):
     """ Search the given device for the specified string property
 
@@ -118,14 +118,16 @@ def get_int_property(device_t, property):
 
     return number.value
 
+
 def IORegistryEntryGetName(device):
-    pathname = ctypes.create_string_buffer(100) # TODO: Is this ok?
+    pathname = ctypes.create_string_buffer(100)  # TODO: Is this ok?
     iokit.IOObjectGetClass(
         device,
         ctypes.byref(pathname)
     )
 
     return pathname.value
+
 
 def GetParentDeviceByType(device, parent_type):
     """ Find the first parent of a device that implements the parent_type
@@ -149,6 +151,7 @@ def GetParentDeviceByType(device, parent_type):
 
     return device
 
+
 def GetIOServicesByType(service_type):
     """
     """
@@ -171,6 +174,7 @@ def GetIOServicesByType(service_type):
 
     return services
 
+
 def comports():
     # Scan for all iokit serial ports
     services = GetIOServicesByType('IOSerialBSDClient')
@@ -188,21 +192,22 @@ def comports():
             info.append(get_string_property(usb_device, "USB Product Name"))
 
             info.append(
-                "USB VID:PID=%x:%x SNR=%s"%(
-                get_int_property(usb_device, "idVendor"),
-                get_int_property(usb_device, "idProduct"),
-                get_string_property(usb_device, "USB Serial Number"))
+                "USB VID:PID=%x:%x SNR=%s" % (
+                    get_int_property(usb_device, "idVendor"),
+                    get_int_property(usb_device, "idProduct"),
+                    get_string_property(usb_device, "USB Serial Number"))
             )
         else:
-           info.append('n/a')
-           info.append('n/a')
+            info.append('n/a')
+            info.append('n/a')
 
         ports.append(info)
 
     return ports
 
+
 # test
 if __name__ == '__main__':
     for port, desc, hwid in sorted(comports()):
-        print "%s: %s [%s]" % (port, desc, hwid)
-
+        print
+        "%s: %s [%s]" % (port, desc, hwid)

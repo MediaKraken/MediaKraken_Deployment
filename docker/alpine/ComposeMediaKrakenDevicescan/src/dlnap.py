@@ -166,6 +166,7 @@ def _get_control_urls(xml):
         pass
     return
 
+
 @contextmanager
 def _send_udp(to, packet):
     """ Send UDP message to group

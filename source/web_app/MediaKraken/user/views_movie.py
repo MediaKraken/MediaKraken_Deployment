@@ -65,7 +65,8 @@ def movie_detail(guid):
             # launch ffmpeg to ffserver procecss
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    g.db_connection.db_media_path_by_uuid(
-                                                       media_guid_index)[0] + '\" http://localhost/stream.ffm'))
+                                                       media_guid_index)[
+                                                       0] + '\" http://localhost/stream.ffm'))
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
@@ -178,7 +179,8 @@ def movie_detail(guid):
                             stream_title = stream_info['tags']['title']  # Surround 5.1 and so on
                         except KeyError:
                             stream_title = 'NA'
-                        if 'codec_long_name' in stream_info and stream_info['codec_long_name'] != 'unknown':
+                        if 'codec_long_name' in stream_info and stream_info[
+                            'codec_long_name'] != 'unknown':
                             stream_codec = stream_info['codec_long_name']
                         else:
                             try:
@@ -188,12 +190,14 @@ def movie_detail(guid):
                         audio_streams.append((stream_codec, stream_language, stream_title))
                     elif stream_info['codec_type'] == 'subtitle':
                         try:
-                            subtitle_streams.append(common_internationalization.com_inter_country_name(
-                                stream_info['tags']['language']))
+                            subtitle_streams.append(
+                                common_internationalization.com_inter_country_name(
+                                    stream_info['tags']['language']))
                         except KeyError:
                             subtitle_streams.append('Unknown')
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
-                                                            "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
+                                                            "%02dH:%02dM:%02dS" % (
+                                                            hours, minutes, seconds),
                                                             audio_streams,
                                                             subtitle_streams)
         # do chapter stuff here so I can sort

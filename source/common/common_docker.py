@@ -16,11 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-import docker
 import os
 import socket
 import subprocess
 
+import docker
 from . import common_global
 
 
@@ -232,7 +232,8 @@ class CommonDocker:
             os.makedirs(user_host_dir)
         return self.cli.containers.run(image='mediakraken/mkdosboxweb',
                                        detach=True,
-                                       name=('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30],
+                                       name=('mkdosboxweb' + current_user_uuid.replace('-', ''))[
+                                            :30],
                                        network='mk_mediakraken_game_network',
                                        volumes={user_host_dir:
                                                     {'bind': '/mediakraken/dosbox',

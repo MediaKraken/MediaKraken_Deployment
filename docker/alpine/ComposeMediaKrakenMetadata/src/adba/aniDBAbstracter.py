@@ -15,14 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
-from time import time, sleep
-from . import aniDBfileInfo as fileInfo
+import os
+import re
+import string
 import xml.etree.cElementTree as etree
-import os, re, string
+
+from . import aniDBfileInfo as fileInfo
+from .aniDBerrors import *
 from .aniDBmaper import AniDBMaper
 from .aniDBtvDBmaper import TvDBMap
-from .aniDBerrors import *
-
 
 
 class aniDBabstractObject:
@@ -88,7 +89,6 @@ class aniDBabstractObject:
 
         return initialList
 
-
     def load_data(self):
         return False
 
@@ -98,12 +98,13 @@ class aniDBabstractObject:
         priority - low = 0, medium = 1, high = 2 (unconfirmed)
         
         """
-        if(self.aid):
+        if (self.aid):
             self.aniDB.notifyadd(aid=self.aid, type=1, priority=1)
 
 
 class Anime(aniDBabstractObject):
-    def __init__(self, aniDB, name=None, aid=None, tvdbid=None, paramsA=None, autoCorrectName=False, load=False):
+    def __init__(self, aniDB, name=None, aid=None, tvdbid=None, paramsA=None, autoCorrectName=False,
+                 load=False):
 
         self.maper = AniDBMaper()
         self.tvDBMap = TvDBMap()
@@ -157,19 +158,20 @@ class Anime(aniDBabstractObject):
         self.rawData = self.aniDB.groupstatus(aid=self.aid)
         self.release_groups = []
         for line in self.rawData.datalines:
-            self.release_groups.append({"name":str(line["name"], "utf-8"),
-                                        "rating":line["rating"],
-                                        "range":line["episode_range"]
+            self.release_groups.append({"name": str(line["name"], "utf-8"),
+                                        "rating": line["rating"],
+                                        "range": line["episode_range"]
                                         })
         return self.release_groups
 
-    #TODO: refactor and use the new functions in anidbFileinfo
+    # TODO: refactor and use the new functions in anidbFileinfo
     def _get_aid_from_xml(self, name):
         if not self.allAnimeXML:
             self.allAnimeXML = self._read_animetitels_xml()
 
-        regex = re.compile('( \(\d{4}\))|[%s]' % re.escape(string.punctuation)) # remove any punctuation and e.g. ' (2011)'
-        #regex = re.compile('[%s]'  % re.escape(string.punctuation)) # remove any punctuation and e.g. ' (2011)'
+        regex = re.compile('( \(\d{4}\))|[%s]' % re.escape(
+            string.punctuation))  # remove any punctuation and e.g. ' (2011)'
+        # regex = re.compile('[%s]'  % re.escape(string.punctuation)) # remove any punctuation and e.g. ' (2011)'
         name = regex.sub('', name.lower())
         lastAid = 0
         for element in self.allAnimeXML.getiterator():
@@ -182,7 +184,7 @@ class Anime(aniDBabstractObject):
                     return lastAid
         return 0
 
-    #TODO: refactor and use the new functions in anidbFileinfo
+    # TODO: refactor and use the new functions in anidbFileinfo
     def _get_name_from_xml(self, aid, onlyMain=True):
         if not self.allAnimeXML:
             self.allAnimeXML = self._read_animetitels_xml()
@@ -195,7 +197,6 @@ class Anime(aniDBabstractObject):
                     if (currentLang == "en" and not onlyMain) or currentType == "main":
                         return title.text
         return ""
-
 
     def _read_animetitels_xml(self, path=None):
         if not path:
@@ -220,10 +221,10 @@ class Anime(aniDBabstractObject):
                     self.__dict__["sequal"] = self.related_aid_list
 
 
-
 class Episode(aniDBabstractObject):
 
-    def __init__(self, aniDB, number=None, epid=None, filePath=None, fid=None, epno=None, paramsA=None, paramsF=None, load=False, calculate=False):
+    def __init__(self, aniDB, number=None, epid=None, filePath=None, fid=None, epno=None,
+                 paramsA=None, paramsF=None, load=False, calculate=False):
         if not aniDB and not number and not epid and not file and not fid:
             return None
 
@@ -234,7 +235,6 @@ class Episode(aniDBabstractObject):
         self.epno = epno
         if calculate:
             (self.ed2k, self.size) = self._calculate_file_stuff(self.filePath)
-
 
         if not paramsA:
             self.bitCodeA = "C000F0C0"
@@ -257,7 +257,9 @@ class Episode(aniDBabstractObject):
         if self.filePath and not (self.ed2k or self.size):
             (self.ed2k, self.size) = self._calculate_file_stuff(self.filePath)
 
-        self.rawData = self.aniDB.file(fid=self.fid, size=self.size, ed2k=self.ed2k, aid=self.aid, aname=None, gid=None, gname=None, epno=self.epno, fmask=self.bitCodeF, amask=self.bitCodeA)
+        self.rawData = self.aniDB.file(fid=self.fid, size=self.size, ed2k=self.ed2k, aid=self.aid,
+                                       aname=None, gid=None, gname=None, epno=self.epno,
+                                       fmask=self.bitCodeF, amask=self.bitCodeA)
         self._fill(self.rawData.datalines[0])
         self._build_names()
         self.laoded = True
@@ -276,12 +278,11 @@ class Episode(aniDBabstractObject):
 
         try:
             self.aniDB.mylistadd(size=self.size, ed2k=self.ed2k, state=status)
-        except Exception as e :
+        except Exception as e:
             self.log("exception msg: " + str(e))
         else:
             # TODO: add the name or something
             self.log("Added the episode to anidb")
-
 
     def _calculate_file_stuff(self, filePath):
         if not filePath:
@@ -290,4 +291,3 @@ class Episode(aniDBabstractObject):
         ed2k = fileInfo.get_file_hash(filePath)
         size = fileInfo.get_file_size(filePath)
         return (ed2k, size)
-

@@ -7,7 +7,6 @@
 
 """Initializes the cache from the Google URIs"""
 
-
 from util import URILIST, set_cache
 
 

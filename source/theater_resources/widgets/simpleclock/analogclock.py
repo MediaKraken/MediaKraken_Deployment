@@ -8,7 +8,6 @@ from .clockbehavior import ClockBehavior
 
 
 class AnalogClock(ClockBehavior, Widget):
-
     padding = NumericProperty(0)
     color = ListProperty([1, 1, 1, 1])
 

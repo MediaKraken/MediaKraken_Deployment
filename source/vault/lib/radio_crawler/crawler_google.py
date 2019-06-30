@@ -5,19 +5,18 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation
 
-import urllib2
-import simplejson
-import urllib
-import time
-import random
 import itertools
+import random
 import socket
 import sys
+import time
+import urllib
 
+import simplejson
+import urllib2
 
 URIS = "uris.txt"
 CRAWL_INDEX = "google_crawl_index.txt"
-
 
 # use tor to get a new IP if needed
 if "--tor" in sys.argv[1:]:
@@ -29,8 +28,10 @@ if "--tor" in sys.argv[1:]:
     old_socket = socket.socket
     socket.socket = socks.socksocket
 
+
     def new_id():
-        print "new id..."
+        print
+        "new id..."
         # stem doesn't like the socket monkey patching needed for urllib2
         prev = socket.socket
         socket.socket = old_socket
@@ -38,6 +39,8 @@ if "--tor" in sys.argv[1:]:
             controller.authenticate()
             controller.signal(Signal.NEWNYM)
         socket.socket = prev
+
+
     new_id()
 else:
     def new_id():
@@ -68,7 +71,7 @@ def compute_all_search_combinations():
 
 def main():
     base_fmt = 'http://ajax.googleapis.com/ajax/services/search/web?' \
-        'v=1.0&start=%d&rsz=8&safe=off&filter=0&tbs=qdr:%s&q=%s'
+               'v=1.0&start=%d&rsz=8&safe=off&filter=0&tbs=qdr:%s&q=%s'
 
     new_urls = set()
     all_urls = set()
@@ -79,7 +82,8 @@ def main():
     except IOError:
         pass
 
-    print "# urls: ", len(all_urls)
+    print
+    "# urls: ", len(all_urls)
 
     try:
         skip = get_crawl_index()
@@ -90,8 +94,10 @@ def main():
                 continue
             set_crawl_index(i - 1)
 
-            print "#" * 30
-            print i, len(gen), (search, period, index)
+            print
+            "#" * 30
+            print
+            i, len(gen), (search, period, index)
 
             header = {
                 'Referer': 'http://google.com/p/%d' % random.randint(1, 1000),
@@ -100,7 +106,8 @@ def main():
 
             page_start = 0
             while page_start < 64:
-                print "page offset: ", page_start
+                print
+                "page offset: ", page_start
                 string_quote = urllib.quote('"%s" %s' % (search, str(index)))
                 url = base_fmt % (page_start, period, string_quote)
                 request = urllib2.Request(url, None, header)
@@ -110,17 +117,21 @@ def main():
                 try:
                     res = results['responseData']['results']
                 except TypeError:
-                    print "error: " + results['responseDetails']
-                    print "waiting 20 seconds..."
+                    print
+                    "error: " + results['responseDetails']
+                    print
+                    "waiting 20 seconds..."
                     new_id()
                     continue
                 else:
-                    print "found: %d uris" % len(res)
+                    print
+                    "found: %d uris" % len(res)
                     urls = [e['url'] for e in res]
 
                     num_new = len(set(urls) - all_urls)
                     if num_new == 0:
-                        print "nothing new, skip"
+                        print
+                        "nothing new, skip"
                         break
 
                     new_urls.update(urls)
@@ -128,9 +139,10 @@ def main():
 
                     page_start += 8
     finally:
-        print "writing..."
+        print
+        "writing..."
         with open(URIS, "ab") as f:
-            f.write("\n".join(new_urls)+"\n")
+            f.write("\n".join(new_urls) + "\n")
 
 
 if __name__ == "__main__":

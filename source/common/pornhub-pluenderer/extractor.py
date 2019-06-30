@@ -1,5 +1,5 @@
-import re
 import json
+import re
 
 VIEW_KEY_RE = r"a.+?href=\".+?viewkey=(.+?)\""
 INFO_RE = r"var flashvars_.+? = ({.+})"

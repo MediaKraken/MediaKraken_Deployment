@@ -1,7 +1,7 @@
-from twisted.internet import reactor
-from twisted.internet.protocol import DatagramProtocol
 from pyupnp.upnp import Device
 from pyupnp.util import http_parse_raw
+from twisted.internet import reactor
+from twisted.internet.protocol import DatagramProtocol
 
 __author__ = 'Dean Gardiner'
 
@@ -24,7 +24,8 @@ class SSDP_MSearch(DatagramProtocol):
         self.devices = {}
 
     @staticmethod
-    def search(cbFoundDevice=None, cbFinishedSearching=None, target='ssdp:all', mx=5, stopDelay=10, debug=False):
+    def search(cbFoundDevice=None, cbFinishedSearching=None, target='ssdp:all', mx=5, stopDelay=10,
+               debug=False):
         s = SSDP_MSearch(cbFoundDevice, cbFinishedSearching, debug=debug)
         s.listen()
 
@@ -63,7 +64,8 @@ class SSDP_MSearch(DatagramProtocol):
     def _log(self, *message):
         if self.debug:
             for m in list(message):
-                print m,
+                print
+                m,
             print
 
     def datagramReceived(self, data, (host, port)):

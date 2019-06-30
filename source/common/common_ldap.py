@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-from ldap3 import Server, Connection, ALL
+from ldap3 import Connection
 
 
 class CommonLDAP:
@@ -31,6 +31,7 @@ class CommonLDAP:
     def com_ldap_unbind(self):
         # perform the Unbind operation
         self.ldap_inst.unbind()
+
 
 '''
 below is all python-ldap, moving to ldap3

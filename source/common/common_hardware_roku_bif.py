@@ -30,7 +30,8 @@ def getfileinfo(filename):
     Get info about the video
     """
     json_ffmpeg = json.loads(common_ffmpeg.com_ffmpeg_media_attr(filename))
-    video_aspect_ratio = float(json_ffmpeg['streams'][0]['width']) / float(json_ffmpeg['streams'][0]['height'])
+    video_aspect_ratio = float(json_ffmpeg['streams'][0]['width']) / float(
+        json_ffmpeg['streams'][0]['height'])
     if video_aspect_ratio > 1.5:
         if float(json_ffmpeg['streams'][0]['height'] >= 720):
             return "320x180", 'HD'  # HD 16:9 ~ 1.7 ratio

@@ -28,13 +28,16 @@ def user_newmedia_page():
     page, per_page, offset = common_pagination.get_page_items()
     session['search_page'] = 'new_media'
     media_data = []
-    for media_file in g.db_connection.db_read_media_new(offset, per_page, session['search_text'], days_old=7):
-        media_data.append((g.db_connection.db_media_uuid_by_class(media_file['mm_media_class_type']),
-                           media_file['mm_media_name'], None))
+    for media_file in g.db_connection.db_read_media_new(offset, per_page, session['search_text'],
+                                                        days_old=7):
+        media_data.append(
+            (g.db_connection.db_media_uuid_by_class(media_file['mm_media_class_type']),
+             media_file['mm_media_name'], None))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
-                                                  total=g.db_connection.db_read_media_new_count(session['search_text'],
-                                                                                                days_old=7),
+                                                  total=g.db_connection.db_read_media_new_count(
+                                                      session['search_text'],
+                                                      days_old=7),
                                                   record_name='new media',
                                                   format_total=True,
                                                   format_number=True,

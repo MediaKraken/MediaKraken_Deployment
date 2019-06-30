@@ -32,8 +32,10 @@ def get_file_hash(filePath):
     def gen(f):
         while True:
             x = f.read(9728000)
-            if x: yield x
-            else: return
+            if x:
+                yield x
+            else:
+                return
 
     def md4_hash(data):
         m = md4()
@@ -45,32 +47,31 @@ def get_file_hash(filePath):
         hashes = [md4_hash(data).digest() for data in a]
         if len(hashes) == 1:
             return hashes[0].encode("hex")
-        else: return md4_hash(reduce(lambda a,d: a + d, hashes, "")).hexdigest()
-        
-        
+        else:
+            return md4_hash(reduce(lambda a, d: a + d, hashes, "")).hexdigest()
+
+
 def get_file_size(path):
     size = os.path.getsize(path)
     return size
 
 
-
 def read_anidb_xml(filePath):
     if not filePath:
-        filePath = os.path.join(os.path.dirname(os.path.abspath( __file__ )), "animetitles.xml")
+        filePath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "animetitles.xml")
     return read_xml_into_etree(filePath)
 
 
 def read_tvdb_map_xml(filePath):
     if not filePath:
-        filePath = os.path.join(os.path.dirname(os.path.abspath( __file__ )), "anime-list.xml")
+        filePath = os.path.join(os.path.dirname(os.path.abspath(__file__)), "anime-list.xml")
     return read_xml_into_etree(filePath)
 
 
 def read_xml_into_etree(filePath):
-        if not filePath:
-            return None
-        
-        f = open(filePath,"r")
-        xmlASetree = etree.ElementTree(file = f)
-        return xmlASetree
-    
+    if not filePath:
+        return None
+
+    f = open(filePath, "r")
+    xmlASetree = etree.ElementTree(file=f)
+    return xmlASetree

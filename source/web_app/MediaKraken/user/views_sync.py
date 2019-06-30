@@ -5,7 +5,7 @@ User view in webapp
 
 from MediaKraken.user.forms import SyncEditForm
 from flask import Blueprint, render_template, g, request, \
-    redirect, url_for, flash
+    redirect, url_for
 from flask_login import login_required
 
 blueprint = Blueprint("user_sync", __name__,

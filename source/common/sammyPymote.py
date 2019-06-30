@@ -21,9 +21,10 @@ __author__ = 'Costas Tyfoxylos'
 __docformat__ = 'plaintext'
 __date__ = '07/06/2013'
 
-import time
-import socket
 import base64
+import socket
+import time
+
 from network import \
     Network  # we use the network helper class to get basic info about local interface
 
@@ -124,22 +125,22 @@ class Remote:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sock.connect((self.destination, 55000))
                 message = chr(0x64) + chr(0x00) + \
-                    chr(len(base64.b64encode(self.source))) + chr(0x00) + base64.b64encode(
+                          chr(len(base64.b64encode(self.source))) + chr(0x00) + base64.b64encode(
                     self.source) + \
-                    chr(len(base64.b64encode(self.mac))) + chr(0x00) + base64.b64encode(
+                          chr(len(base64.b64encode(self.mac))) + chr(0x00) + base64.b64encode(
                     self.mac) + \
-                    chr(len(base64.b64encode(self.remoteName))) + chr(
+                          chr(len(base64.b64encode(self.remoteName))) + chr(
                     0x00) + base64.b64encode(self.remoteName)
                 packet = chr(0x00) + \
-                    chr(len(self.application)) + chr(0x00) + self.application + \
-                    chr(len(message)) + chr(0x00) + message
+                         chr(len(self.application)) + chr(0x00) + self.application + \
+                         chr(len(message)) + chr(0x00) + message
                 sock.send(packet)
                 message = chr(0x00) + chr(0x00) + chr(0x00) + \
-                    chr(len(base64.b64encode(key))) + \
-                    chr(0x00) + base64.b64encode(key)
+                          chr(len(base64.b64encode(key))) + \
+                          chr(0x00) + base64.b64encode(key)
                 packet = chr(0x00) + \
-                    chr(len(self.model)) + chr(0x00) + self.model + \
-                    chr(len(message)) + chr(0x00) + message
+                         chr(len(self.model)) + chr(0x00) + self.model + \
+                         chr(len(message)) + chr(0x00) + message
                 sock.send(packet)
                 sock.close()
                 time.sleep(0.3)

@@ -1,14 +1,15 @@
 import ctypes
 import re
 
+
 def ValidHandle(value, func, arguments):
     if value == 0:
         raise ctypes.WinError()
     return value
 
+
 import serial
-from serial.win32 import ULONG_PTR, is_64bit
-from ctypes.wintypes import HANDLE
+from serial.win32 import ULONG_PTR
 from ctypes.wintypes import BOOL
 from ctypes.wintypes import HWND
 from ctypes.wintypes import DWORD
@@ -25,8 +26,8 @@ PCTSTR = ctypes.c_char_p
 PTSTR = ctypes.c_void_p
 CHAR = ctypes.c_char
 LPDWORD = PDWORD = ctypes.POINTER(DWORD)
-#~ LPBYTE = PBYTE = ctypes.POINTER(BYTE)
-LPBYTE = PBYTE = ctypes.c_void_p        # XXX avoids error about types
+# ~ LPBYTE = PBYTE = ctypes.POINTER(BYTE)
+LPBYTE = PBYTE = ctypes.c_void_p  # XXX avoids error about types
 
 ACCESS_MASK = DWORD
 REGSAM = ACCESS_MASK
@@ -34,13 +35,14 @@ REGSAM = ACCESS_MASK
 
 def byte_buffer(length):
     """Get a buffer for a string"""
-    return (BYTE*length)()
+    return (BYTE * length)()
+
 
 def string(buffer):
     s = []
     for c in buffer:
         if c == 0: break
-        s.append(chr(c & 0xff)) # "& 0xff": hack to convert signed to unsigned
+        s.append(chr(c & 0xff))  # "& 0xff": hack to convert signed to unsigned
     return ''.join(s)
 
 
@@ -49,8 +51,9 @@ class GUID(ctypes.Structure):
         ('Data1', DWORD),
         ('Data2', WORD),
         ('Data3', WORD),
-        ('Data4', BYTE*8),
+        ('Data4', BYTE * 8),
     ]
+
     def __str__(self):
         return "{%08x-%04x-%04x-%s-%s}" % (
             self.Data1,
@@ -60,6 +63,7 @@ class GUID(ctypes.Structure):
             ''.join(["%02x" % d for d in self.Data4[2:]]),
         )
 
+
 class SP_DEVINFO_DATA(ctypes.Structure):
     _fields_ = [
         ('cbSize', DWORD),
@@ -67,8 +71,11 @@ class SP_DEVINFO_DATA(ctypes.Structure):
         ('DevInst', DWORD),
         ('Reserved', ULONG_PTR),
     ]
+
     def __str__(self):
         return "ClassGuid:%s DevInst:%s" % (self.ClassGuid, self.DevInst)
+
+
 PSP_DEVINFO_DATA = ctypes.POINTER(SP_DEVINFO_DATA)
 
 PSP_DEVICE_INTERFACE_DETAIL_DATA = ctypes.c_void_p
@@ -92,7 +99,8 @@ SetupDiGetClassDevs.restype = HDEVINFO
 SetupDiGetClassDevs.errcheck = ValidHandle
 
 SetupDiGetDeviceRegistryProperty = setupapi.SetupDiGetDeviceRegistryPropertyA
-SetupDiGetDeviceRegistryProperty.argtypes = [HDEVINFO, PSP_DEVINFO_DATA, DWORD, PDWORD, PBYTE, DWORD, PDWORD]
+SetupDiGetDeviceRegistryProperty.argtypes = [HDEVINFO, PSP_DEVINFO_DATA, DWORD, PDWORD, PBYTE,
+                                             DWORD, PDWORD]
 SetupDiGetDeviceRegistryProperty.restype = BOOL
 
 SetupDiGetDeviceInstanceId = setupapi.SetupDiGetDeviceInstanceIdA
@@ -112,7 +120,6 @@ RegQueryValueEx = advapi32.RegQueryValueExA
 RegQueryValueEx.argtypes = [HKEY, LPCSTR, LPDWORD, LPDWORD, LPBYTE, LPDWORD]
 RegQueryValueEx.restype = LONG
 
-
 DIGCF_PRESENT = 2
 DIGCF_DEVICEINTERFACE = 16
 INVALID_HANDLE_VALUE = 0
@@ -124,11 +131,12 @@ DIREG_DEV = 0x00000001
 KEY_READ = 0x20019
 
 # workaround for compatibility between Python 2.x and 3.x
-Ports = serial.to_bytes([80, 111, 114, 116, 115]) # "Ports"
-PortName = serial.to_bytes([80, 111, 114, 116, 78, 97, 109, 101]) # "PortName"
+Ports = serial.to_bytes([80, 111, 114, 116, 115])  # "Ports"
+PortName = serial.to_bytes([80, 111, 114, 116, 78, 97, 109, 101])  # "PortName"
+
 
 def comports():
-    GUIDs = (GUID*8)() # so far only seen one used, so hope 8 are enough...
+    GUIDs = (GUID * 8)()  # so far only seen one used, so hope 8 are enough...
     guids_size = DWORD()
     if not SetupDiClassGuidsFromName(
             Ports,
@@ -140,10 +148,10 @@ def comports():
     # repeat for all possible GUIDs
     for index in range(guids_size.value):
         g_hdi = SetupDiGetClassDevs(
-                ctypes.byref(GUIDs[index]),
-                None,
-                NULL,
-                DIGCF_PRESENT) # was DIGCF_PRESENT|DIGCF_DEVICEINTERFACE which misses CDC ports
+            ctypes.byref(GUIDs[index]),
+            None,
+            NULL,
+            DIGCF_PRESENT)  # was DIGCF_PRESENT|DIGCF_DEVICEINTERFACE which misses CDC ports
 
         devinfo = SP_DEVINFO_DATA()
         devinfo.cbSize = ctypes.sizeof(devinfo)
@@ -153,21 +161,21 @@ def comports():
 
             # get the real com port name
             hkey = SetupDiOpenDevRegKey(
-                    g_hdi,
-                    ctypes.byref(devinfo),
-                    DICS_FLAG_GLOBAL,
-                    0,
-                    DIREG_DEV,  # DIREG_DRV for SW info
-                    KEY_READ)
+                g_hdi,
+                ctypes.byref(devinfo),
+                DICS_FLAG_GLOBAL,
+                0,
+                DIREG_DEV,  # DIREG_DRV for SW info
+                KEY_READ)
             port_name_buffer = byte_buffer(250)
             port_name_length = ULONG(ctypes.sizeof(port_name_buffer))
             RegQueryValueEx(
-                    hkey,
-                    PortName,
-                    None,
-                    None,
-                    ctypes.byref(port_name_buffer),
-                    ctypes.byref(port_name_length))
+                hkey,
+                PortName,
+                None,
+                None,
+                ctypes.byref(port_name_buffer),
+                ctypes.byref(port_name_length))
             RegCloseKey(hkey)
 
             # unfortunately does this method also include parallel ports.
@@ -203,10 +211,12 @@ def comports():
             # in case of USB, make a more readable string, similar to that form
             # that we also generate on other platforms
             if szHardwareID_str.startswith('USB'):
-                m = re.search(r'VID_([0-9a-f]{4})&PID_([0-9a-f]{4})(\\(\w+))?', szHardwareID_str, re.I)
+                m = re.search(r'VID_([0-9a-f]{4})&PID_([0-9a-f]{4})(\\(\w+))?', szHardwareID_str,
+                              re.I)
                 if m:
                     if m.group(4):
-                        szHardwareID_str = 'USB VID:PID=%s:%s SNR=%s' % (m.group(1), m.group(2), m.group(4))
+                        szHardwareID_str = 'USB VID:PID=%s:%s SNR=%s' % (
+                        m.group(1), m.group(2), m.group(4))
                     else:
                         szHardwareID_str = 'USB VID:PID=%s:%s' % (m.group(1), m.group(2))
 
@@ -216,14 +226,14 @@ def comports():
                     g_hdi,
                     ctypes.byref(devinfo),
                     SPDRP_FRIENDLYNAME,
-                    #~ SPDRP_DEVICEDESC,
+                    # ~ SPDRP_DEVICEDESC,
                     None,
                     ctypes.byref(szFriendlyName),
                     ctypes.sizeof(szFriendlyName) - 1,
                     None):
                 # Ignore ERROR_INSUFFICIENT_BUFFER
-                #~ if ctypes.GetLastError() != ERROR_INSUFFICIENT_BUFFER:
-                    #~ raise IOError("failed to get details for %s (%s)" % (devinfo, szHardwareID.value))
+                # ~ if ctypes.GetLastError() != ERROR_INSUFFICIENT_BUFFER:
+                # ~ raise IOError("failed to get details for %s (%s)" % (devinfo, szHardwareID.value))
                 # ignore errors and still include the port in the list, friendly name will be same as port name
                 yield string(port_name_buffer), 'n/a', szHardwareID_str
             else:
@@ -231,10 +241,12 @@ def comports():
 
         SetupDiDestroyDeviceInfoList(g_hdi)
 
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # test
 if __name__ == '__main__':
     import serial
 
     for port, desc, hwid in sorted(comports()):
-        print "%s: %s [%s]" % (port, desc, hwid)
+        print
+        "%s: %s [%s]" % (port, desc, hwid)

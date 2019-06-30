@@ -16,7 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-import subprocess
 import time
 
 from common import common_config_ini
