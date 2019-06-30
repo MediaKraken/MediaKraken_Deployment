@@ -44,13 +44,6 @@ if TMDB_API_CONNECTION is not None:
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_id_max()):
         common_global.es_inst.com_elastic_index('info', {"themoviedb check": str(tmdb_to_fetch)})
         # check to see if we already have it
-        common_global.es_inst.com_elastic_index('info', {"themoviedb count": str(
-            db_connection.db_meta_tmdb_count(tmdb_to_fetch))})
-        common_global.es_inst.com_elastic_index('info', {
-            "themoviedb dl que": db_connection.db_download_que_exists(None,
-                                                                      common_global.DLMediaType.Movie.value,
-                                                                      'themoviedb',
-                                                                      str(tmdb_to_fetch))})
         if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
                 and db_connection.db_download_que_exists(None,
                                                          common_global.DLMediaType.Movie.value,
