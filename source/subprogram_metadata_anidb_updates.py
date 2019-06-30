@@ -22,7 +22,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch
-from common import common_metadata_anidb
+from common import common_metadata_provider_anidb
 from common import common_metadata_scudlee
 from common import common_signal
 
@@ -39,7 +39,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # stage totals
 anime_added = 0
 # grab the updated data
-anidb = common_metadata_anidb.CommonMetadataANIdb(db_connection)
+anidb = common_metadata_provider_anidb.CommonMetadataANIdb(db_connection)
 anidb.com_net_anidb_fetch_titles_file()
 # insert into db
 anidb.com_net_anidb_save_title_data_to_db()
