@@ -1,5 +1,5 @@
-kivy
-crochet
-elasticsearch
-pip3 install service_identity --force --upgrade
-pyopenssl
+kivy==1.11.1
+crochet==1.10.0
+elasticsearch==7.0.2
+service_identity==18.1.0
+pyopenssl==19.0.0

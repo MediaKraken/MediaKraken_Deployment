@@ -1,4 +1,4 @@
-streamlink
-docker
-pika
-elasticsearch
+streamlink==1.1.1
+docker==4.0.2
+pika==1.0.1
+elasticsearch==7.0.2

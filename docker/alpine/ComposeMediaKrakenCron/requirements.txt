@@ -1,2 +1,2 @@
-pika
-docker
+pika==1.0.1
+docker==4.0.2
