@@ -40,31 +40,35 @@ else:
     common_global.es_inst.com_elastic_index('critical', {"API not available."})
 
 if TMDB_API_CONNECTION is not None:
+    force_dl = False
+    if db_connection.db_table_count('mm_metadata_movie') == 0 \
+            and db_connection.db_table_count('mm_download_que') == 0:
+        force_dl = True
     # start up the range fetches for movie
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_id_max()):
         common_global.es_inst.com_elastic_index('info', {"themoviedb check": str(tmdb_to_fetch)})
         # check to see if we already have it
-        if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
-                and db_connection.db_download_que_exists(None,
-                                                         common_global.DLMediaType.Movie.value,
-                                                         'themoviedb',
-                                                         str(tmdb_to_fetch)) is None:
-            common_global.es_inst.com_elastic_index('info', {"themoviedb fetch": str(
-                tmdb_to_fetch)})
+        if force_dl or (db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0
+                        and db_connection.db_download_que_exists(None,
+                                                                 common_global.DLMediaType.Movie.value,
+                                                                 'themoviedb',
+                                                                 str(tmdb_to_fetch)) is None):
             db_connection.db_download_insert('themoviedb', common_global.DLMediaType.Movie.value,
                                              json.dumps({"Status": "Fetch",
-                                                         "ProviderMetaID": str(
-                                                             tmdb_to_fetch),
-                                                         "MetaNewID": str(
-                                                             uuid.uuid4())}))
-
+                                                         "ProviderMetaID": str(tmdb_to_fetch),
+                                                         "MetaNewID": str(uuid.uuid4())}))
+    force_dl = False
+    if db_connection.db_table_count('mm_metadata_tvshow') == 0 \
+            and db_connection.db_table_count('mm_download_que') == 0:
+        force_dl = True
     # start up the range fetches for tv
     for tmdb_to_fetch in range(1, TMDB_API_CONNECTION.com_tmdb_metadata_tv_id_max()):
         # check to see if we already have it
-        if db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0 \
-                and db_connection.db_download_que_exists(None, common_global.DLMediaType.TV.value,
-                                                         'themoviedb',
-                                                         str(tmdb_to_fetch)) is None:
+        if force_dl or (db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0
+                        and db_connection.db_download_que_exists(None,
+                                                                 common_global.DLMediaType.TV.value,
+                                                                 'themoviedb',
+                                                                 str(tmdb_to_fetch)) is None):
             db_connection.db_download_insert('themoviedb', common_global.DLMediaType.TV.value,
                                              json.dumps({"Status": "Fetch",
                                                          "ProviderMetaID": str(tmdb_to_fetch),
