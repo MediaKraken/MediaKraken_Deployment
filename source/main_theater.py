@@ -52,12 +52,15 @@ from kivy.app import App
 from kivy.config import Config
 
 # moving here before anything is setup for Kivy or it doesn't work
-if os.uname()[4][:3] == 'arm':
-    # TODO find real resolution
-    # TODO this is currently set to the "official" raspberry pi touchscreen
-    Config.set('graphics', 'width', 800)
-    Config.set('graphics', 'height', 480)
-    Config.set('graphics', 'fullscreen', 'fake')
+if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+    pass  # as os.uname doesn't exist in windows
+else:
+    if os.uname()[4][:3] == 'arm':
+        # TODO find real resolution
+        # TODO this is currently set to the "official" raspberry pi touchscreen
+        Config.set('graphics', 'width', 800)
+        Config.set('graphics', 'height', 480)
+        Config.set('graphics', 'fullscreen', 'fake')
 
 kivy.require('1.10.0')
 from kivy.uix.label import Label
