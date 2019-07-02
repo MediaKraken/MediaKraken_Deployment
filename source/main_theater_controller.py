@@ -50,8 +50,8 @@ from kivy.config import Config
 
 # moving here before anything is setup for Kivy or it doesn't work
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    # fix detect of opengl2
     Config.set('graphics', 'multisamples', '0')
+    os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 else:
     if os.uname()[4][:3] == 'arm':
         # TODO find real resolution
