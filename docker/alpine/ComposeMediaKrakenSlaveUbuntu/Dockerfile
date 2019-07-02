@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbasenodeffmpegubuntu:latest
+FROM mediakraken/mkbasenodeffmpegubuntu:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main slave app"

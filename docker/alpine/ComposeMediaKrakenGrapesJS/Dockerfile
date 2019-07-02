@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbasenode:latest
+FROM mediakraken/mkbasenode:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the GrapesJS app"
