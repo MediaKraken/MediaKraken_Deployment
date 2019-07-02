@@ -8,7 +8,7 @@ services:
   appserver:
     build:
       context: ./ComposeMediaKrakenServer
-      dockerfile: dockerfile-appserver
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -42,7 +42,7 @@ services:
   broadcast:
     build:
       context: ./ComposeMediaKrakenBroadcast
-      dockerfile: dockerfile-broadcast
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -67,7 +67,7 @@ services:
   cron:
     build:
       context: ./ComposeMediaKrakenCron
-      dockerfile: dockerfile-cron
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -91,7 +91,7 @@ services:
   database:
     build:
       context: ./ComposeMediaKrakenDatabase
-      dockerfile: dockerfile-database
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -112,7 +112,7 @@ services:
   download:
     build:
       context: ./ComposeMediaKrakenDownload
-      dockerfile: dockerfile-download
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -164,7 +164,7 @@ services:
   hardware:
     build:
       context: ./ComposeMediaKrakenHardware
-      dockerfile: dockerfile-hardware
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -187,7 +187,7 @@ services:
   metadata:
     build:
       context: ./ComposeMediaKrakenMetadata
-      dockerfile: dockerfile-metadata
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -217,7 +217,7 @@ services:
   nginx:
     build:
       context: ./ComposeMediaKrakenNginx
-      dockerfile: dockerfile-nginx
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -239,7 +239,7 @@ services:
   pika:
     build:
       context: ./ComposeMediaKrakenPika
-      dockerfile: dockerfile-pika
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -270,7 +270,7 @@ services:
   pgbounce:
     build:
       context: ./ComposeMediaKrakenPGBouncer
-      dockerfile: dockerfile-pgbouncer
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -322,7 +322,7 @@ services:
   reactor:
     build:
       context: ./ComposeMediaKrakenReactor
-      dockerfile: dockerfile-reactor
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -355,7 +355,7 @@ services:
   redis:
     build:
       context: ./ComposeMediaKrakenRedis
-      dockerfile: dockerfile-redis
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
@@ -394,7 +394,7 @@ services:
   webserver:
     build:
       context: ./ComposeMediaKrakenWebServer
-      dockerfile: dockerfile-webserver
+      dockerfile: Dockerfile
       args:
         ALPMIRROR: dl-cdn.alpinelinux.org
         PIPMIRROR: pypi.python.org
