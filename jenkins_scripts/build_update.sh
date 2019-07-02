@@ -104,10 +104,6 @@ docker build -t mediakraken/mkretroarchweb --build-arg ALPMIRROR=dl-cdn.alpineli
 cd ../ComposeMediaKrakenDosBoxWeb
 docker build -t mediakraken/mkdosboxweb --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
-# build the elk
-cd ../ComposeMediaKrakenELK
-docker build -t mediakraken/mkelk --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
-
 # build the mumble
 cd ../ComposeMediaKrakenMumble
 docker build -t mediakraken/mkmumble --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
@@ -115,10 +111,6 @@ docker build -t mediakraken/mkmumble --build-arg ALPMIRROR=dl-cdn.alpinelinux.or
 # build the mediabrainz
 cd ../ComposeMediaKrakenMusicBrainz
 docker build -t mediakraken/mkmusicbrainz --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
-
-# build the pgadmin4
-cd ../ComposeMediaKrakenPgAdmin4
-docker build -t mediakraken/mkpgadmin --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
 # build the inotify
 cd ../ComposeMediaKrakenInotify
@@ -131,10 +123,6 @@ docker build -t mediakraken/mkteamspeak --build-arg ALPMIRROR=dl-cdn.alpinelinux
 # build the transmission
 cd ../ComposeMediaKrakenTransmission
 docker build -t mediakraken/mktransmission --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
-
-# build the wireshark
-cd ../ComposeMediaKrakenWireshark
-docker build -t mediakraken/mkwireshark --build-arg ALPMIRROR=dl-cdn.alpinelinux.org --build-arg PIPMIRROR=pypi.python.org .
 
 # nuke old images (commented due to base ffmpeg)
 #../../purge_images_none.sh
