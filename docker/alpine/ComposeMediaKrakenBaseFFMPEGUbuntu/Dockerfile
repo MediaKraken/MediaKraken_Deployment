@@ -174,7 +174,10 @@ RUN apt update && \
     ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run -s -N --no-kernel-module && \
     rm -Rf /mediakraken && \
     rm -rf /var/lib/apt/lists/* && \
-    ffmpeg -buildconf
+    ffmpeg -buildconf && \
+    groupadd -r metamangrp && useradd -r -g metamangrp metaman
+
+USER metaman
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg

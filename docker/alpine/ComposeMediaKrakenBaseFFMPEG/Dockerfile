@@ -162,7 +162,10 @@ RUN apk add --update bash samba-client lame libass libmodplug libogg \
     soxr fontconfig libvpx librtmp libva libvdpau \
     libva-intel-driver && \
     rm -Rf /home/* && \
-    ffmpeg -buildconf
+    ffmpeg -buildconf && \
+    adduser -DHs /sbin/nologin metaman
+
+USER metaman
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg

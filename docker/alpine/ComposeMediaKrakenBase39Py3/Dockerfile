@@ -22,6 +22,9 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
-  && rm -rf /var/cache/apk/*
+  && rm -rf /var/cache/apk/* \
+  && adduser -DHs /sbin/nologin metaman
+
+USER metaman
 
 CMD ["/bin/ash"]
