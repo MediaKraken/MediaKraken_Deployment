@@ -26,5 +26,6 @@ from shlex import split
 
 def com_calibre_convert_ebook(target_file, target_format):
     calibre_pid = subprocess.Popen(
-        split('./bin/calibre/ebook-convert \"' + target_file + '\" ' + target_format))
+        split('./bin/calibre/ebook-convert \"' + target_file + '\" ' + target_format),
+        stdout=subprocess.PIPE, shell=False)
     return calibre_pid

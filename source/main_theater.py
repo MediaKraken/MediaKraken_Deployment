@@ -627,7 +627,7 @@ def on_config_change(self, config, section, key, value):
                     split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
                           '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
                           '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
-                          + MediaKrakenApp.media_path + '\"'))
+                          + MediaKrakenApp.media_path + '\"'), stdout=subprocess.PIPE, shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
             else:
                 self.theater_play_server()

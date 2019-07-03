@@ -318,7 +318,7 @@ file_handle.write(env_text)
 file_handle.close()
 
 print("Pulling newest images from Docker Hub for MediaKraken....this may take awhile.")
-docker_pid = subprocess.Popen(['docker-compose', 'pull'])
+docker_pid = subprocess.Popen(['docker-compose', 'pull'], stdout=subprocess.PIPE, shell=False)
 docker_pid.wait()
 
 print("MediaKraken setup has been completed. Run ./mediakraken_start.sh' in Linux/MacOS"

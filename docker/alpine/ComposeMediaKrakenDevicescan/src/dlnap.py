@@ -662,7 +662,7 @@ if __name__ == '__main__':
     if url.lower().replace('https://', '').replace('www.', '').startswith('youtube.'):
         import subprocess
 
-        process = subprocess.Popen(['youtube-dl', '-g', url], stdout=subprocess.PIPE)
+        process = subprocess.Popen(['youtube-dl', '-g', url], stdout=subprocess.PIPE, shell=False)
         url, err = process.communicate()
 
     if url.lower().startswith('https://'):

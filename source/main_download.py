@@ -183,7 +183,7 @@ class MKConsumer:
                 # TODO little bobby tables
                 dl_pid = subprocess.Popen(split(
                     'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
-                    + json_message['URL']))
+                    + json_message['URL']), stdout=subprocess.PIPE, shell=False)
                 dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
             elif json_message['Subtype'] == 'HDTrailers':
                 # try to grab the RSS feed itself

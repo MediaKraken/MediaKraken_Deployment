@@ -159,7 +159,7 @@ def com_system_uptime():
     """
     # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     #     uptime_proc = subprocess.Popen(
-    #         ['net', 'statistics', 'server'], stdout=subprocess.PIPE)
+    #         ['net', 'statistics', 'server'], stdout=subprocess.PIPE, shell=False)
     #     out, err = uptime_proc.communicate()  # pylint: disable=W0612
     #     uptime_proc.wait()
     #     for out_line in out:
@@ -167,7 +167,7 @@ def com_system_uptime():
     #             out = out_line.replace('Statistics since ', '')
     #             break
     # else:
-    uptime_proc = subprocess.Popen(['uptime'], stdout=subprocess.PIPE)
+    uptime_proc = subprocess.Popen(['uptime'], stdout=subprocess.PIPE, shell=False)
     out, err = uptime_proc.communicate()
     uptime_proc.wait()
     out = str(out).split(' up ', 1)[1].split(',', 2)[

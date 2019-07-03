@@ -222,7 +222,8 @@ class MKConsumer:
                         command_list.append('-vframes')
                         command_list.append('1')
                         command_list.append('\"' + image_file_path + '\"')
-                        ffmpeg_proc = subprocess.Popen(command_list)
+                        ffmpeg_proc = subprocess.Popen(command_list, stdout=subprocess.PIPE,
+                                                       shell=False)
                         ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
 
                         # as the worker might see it as finished if allowed to continue

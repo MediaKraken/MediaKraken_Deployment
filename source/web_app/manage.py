@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-import os
-import subprocess
-
 from MediaKraken.app import create_app
+from MediaKraken.common import common_network
 from MediaKraken.database import db
 from MediaKraken.settings import ProdConfig
 from MediaKraken.user.models import User
@@ -13,9 +11,6 @@ from flask_script import Manager, Shell, Server
 from flask_script.commands import Clean, ShowUrls
 
 app = create_app(ProdConfig)
-
-HERE = os.path.abspath(os.path.dirname(__file__))
-TEST_PATH = os.path.join(HERE, 'tests')
 
 manager = Manager(app)
 
@@ -27,12 +22,13 @@ def _make_context():
     return {'app': app, 'db': db, 'User': User}
 
 
-@manager.command
-def test():
-    """Run the tests."""
-    import pytest
-    exit_code = pytest.main([TEST_PATH, '--verbose'])
-    return exit_code
+# @manager.command
+# def test():
+#     """Run the tests."""
+#     import pytest
+#     exit_code = pytest.main(
+#         [os.path.join(os.path.abspath(os.path.dirname(__file__)), 'tests'), '--verbose'])
+#     return exit_code
 
 
 manager.add_command('server', Server())
@@ -41,9 +37,7 @@ manager.add_command("urls", ShowUrls())
 manager.add_command("clean", Clean())
 
 if __name__ == '__main__':
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-                                shell=False)
-    wait_pid.wait()
+    # fire off wait for it script to allow connection
+    common_network.mk_network_service_available('mkrabbitmq', '5672')
 
     manager.run()

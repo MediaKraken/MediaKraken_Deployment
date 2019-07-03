@@ -33,7 +33,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # if db_connection.db_version_check() == 1:
 #     # add download image que
-#     proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+#     proc = subprocess.Popen(['python', './db_create_update.py'], stdout=subprocess.PIPE, shell=False)
 #     proc.wait()
 #     db_connection.db_version_update(2)
 #     db_connection.db_commit()

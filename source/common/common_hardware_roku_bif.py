@@ -19,8 +19,8 @@ import json
 import os
 import shutil
 import struct
+import subprocess
 import tempfile
-from subprocess import Popen, PIPE
 
 from common import common_ffmpeg
 
@@ -53,11 +53,11 @@ def extractimages(videofile, directory, interval, resolution, offset=0):
     @param resolution to create images at
     @param offset offset to first image, in seconds
     """
-    proc = Popen(["ffmpeg", "-i", videofile,
-                  "-ss", "%d" % offset,
-                  "-r", "%0.2f" % (1.00 / interval),
-                  "-s", resolution,
-                  "%s/%%08d.jpg" % directory], stdout=PIPE, stdin=PIPE)
+    proc = subprocess.Popen(["ffmpeg", "-i", videofile,
+                             "-ss", "%d" % offset,
+                             "-r", "%0.2f" % (1.00 / interval),
+                             "-s", resolution,
+                             "%s/%%08d.jpg" % directory], stdout=subprocess.PIPE, shell=False)
     (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
 
 

@@ -43,7 +43,7 @@ print('11:', platform.mac_ver())
 
 
 def wget_wait(wget_addr):
-    wget_pid = subprocess.Popen(['wget', wget_addr])
+    wget_pid = subprocess.Popen(['wget', wget_addr], stdout=subprocess.PIPE, shell=False)
     wget_pid.wait()
 
 
@@ -69,7 +69,7 @@ except KeyError:
 
 # install wget
 # print('Installing wget...')
-# install_pid = subprocess.Popen([, 'wget'])
+# install_pid = subprocess.Popen([, 'wget'], stdout=subprocess.PIPE, shell=False)
 # install_pid.wait()
 
 
@@ -84,5 +84,6 @@ file_name = 'MediaKraken_' + current_version + '.tar.bz2'
 wget_wait('http://www.mediakraken.org/%s' % file_name)
 
 # untar to home directory
-tar_pid = subprocess.Popen(split('tar xvjf \"' + file_name + '\" -C ~'))
+tar_pid = subprocess.Popen(split('tar xvjf \"' + file_name + '\" -C ~'), stdout=subprocess.PIPE,
+                           shell=False)
 tar_pid.wait()

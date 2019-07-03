@@ -66,7 +66,8 @@ def movie_detail(guid):
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    g.db_connection.db_media_path_by_uuid(
                                                        media_guid_index)[
-                                                       0] + '\" http://localhost/stream.ffm'))
+                                                       0] + '\" http://localhost/stream.ffm'),
+                                             stdout=subprocess.PIPE, shell=False)
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
@@ -197,7 +198,7 @@ def movie_detail(guid):
                             subtitle_streams.append('Unknown')
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
                                                             "%02dH:%02dM:%02dS" % (
-                                                            hours, minutes, seconds),
+                                                                hours, minutes, seconds),
                                                             audio_streams,
                                                             subtitle_streams)
         # do chapter stuff here so I can sort

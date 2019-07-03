@@ -21,7 +21,7 @@ import subprocess
 
 def com_makemkv_drive_list():
     makemkv_pid = subprocess.Popen(['makemkvcon', '-r', '--cache=1', 'info', 'disc:9999'],
-                                   stdout=subprocess.PIPE, bufsize=1)
+                                   stdout=subprocess.PIPE, shell=False, bufsize=1)
     drive_list = []
     for line in iter(makemkv_pid.stdout.readline, b''):
         drive_list.append(line)
@@ -36,7 +36,7 @@ def com_makemkv_rip_disc(file_location, cache_size=1024, disc=0, track='all', mi
                                     ('--minlength=%s' % min_seconds),
                                     ('--cache=%s' % cache_size),
                                     ('disc:%s' % disc), track, file_location],
-                                   stdout=subprocess.PIPE, bufsize=1)
+                                   stdout=subprocess.PIPE, shell=False, bufsize=1)
     for line in iter(makemkv_pid.stdout.readline, b''):
         command_output.append(line)
         makemkv_pid.communicate()

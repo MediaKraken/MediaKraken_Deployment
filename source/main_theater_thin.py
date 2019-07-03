@@ -250,7 +250,7 @@ class MediaKrakenApp(App):
                     split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
                           '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
                           '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
-                          + video_source_dir + '\"'))
+                          + video_source_dir + '\"'), stdout=subprocess.PIPE, shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
