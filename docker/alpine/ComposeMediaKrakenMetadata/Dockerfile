@@ -8,7 +8,7 @@ ARG ALPMIRROR
 ARG PIPMIRROR
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
@@ -36,8 +36,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 #  && pip3 install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
 
 RUN mkdir /mediakraken/cache
-ADD wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

@@ -11,7 +11,7 @@ ARG PIPMIRROR
 RUN mkdir /mediakraken
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 

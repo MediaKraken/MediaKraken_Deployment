@@ -20,6 +20,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py-setuptools
 
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

@@ -153,7 +153,7 @@ COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
 COPY blacklist.conf /etc/nginx/blacklist.conf
 COPY blockips.conf /etc/nginx/blockips.conf
 
-ADD wait-for-it-ash.sh /usr/bin/
+COPY wait-for-it-ash.sh /usr/bin/
 
 EXPOSE 443
 

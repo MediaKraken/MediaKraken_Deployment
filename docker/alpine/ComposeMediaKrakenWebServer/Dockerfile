@@ -8,7 +8,7 @@ ARG ALPMIRROR
 ARG PIPMIRROR
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
@@ -57,9 +57,9 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-ADD wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 EXPOSE 8080
 CMD ["/bin/ash"]

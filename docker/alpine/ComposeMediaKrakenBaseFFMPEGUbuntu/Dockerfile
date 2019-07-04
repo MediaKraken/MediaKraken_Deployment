@@ -15,7 +15,7 @@ COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
 COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
 RUN mkdir /mediakraken/cuda
-ADD cuda /mediakraken/cuda
+COPY cuda /mediakraken/cuda
 
 # will need to add/comipile by hand as dev version doesn't exist
 # rtmpdump-dev \
@@ -160,7 +160,7 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 ARG NVIDIA_DRIVER=415.25
 
 RUN mkdir /mediakraken
-ADD driver /mediakraken
+COPY driver /mediakraken
 
 RUN apt update && \
     apt -y upgrade && \

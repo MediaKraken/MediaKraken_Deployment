@@ -11,7 +11,7 @@ ARG PIPMIRROR
 RUN mkdir /mediakraken/downloads
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
@@ -32,8 +32,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   git \
   && rm requirements.txt
 
-ADD wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

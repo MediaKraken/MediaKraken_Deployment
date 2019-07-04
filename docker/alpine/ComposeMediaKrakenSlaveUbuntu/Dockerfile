@@ -10,7 +10,7 @@ ARG PIPMIRROR
 RUN mkdir /mediakraken
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apt update \
@@ -51,9 +51,9 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 # Set up config file
 COPY nginx_conf/nginx.conf /etc/nginx/nginx.conf
 
-ADD wait-for-it-bash.sh /mediakraken
+COPY wait-for-it-bash.sh /mediakraken
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]
 

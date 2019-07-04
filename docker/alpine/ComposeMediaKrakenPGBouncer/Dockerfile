@@ -21,8 +21,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 	rm -f /var/cache/apk/* \
         && cd .. && rm -Rf pgbouncer
 
-ADD entrypoint.sh ./
-ADD wait-for-it-ash.sh ./
+COPY entrypoint.sh ./
+COPY wait-for-it-ash.sh ./
 
 ENTRYPOINT ["./entrypoint.sh"]
 

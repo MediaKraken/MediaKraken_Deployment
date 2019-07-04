@@ -7,6 +7,6 @@ LABEL Description="This image holds the castpy app"
 WORKDIR /mediakraken
 
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

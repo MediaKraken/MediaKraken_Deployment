@@ -8,7 +8,7 @@ ARG ALPMIRROR
 ARG PIPMIRROR
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
@@ -20,7 +20,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   alpine-sdk
 
 # Copy the source files for the app
-ADD check.py /mediakraken
+COPY check.py /mediakraken
 
 CMD ["/bin/ash"]
 
