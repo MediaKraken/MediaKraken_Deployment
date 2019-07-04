@@ -58,9 +58,7 @@ RUN buildDeps="autoconf \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories && \
-    apk update && \
-    apk upgrade && \
-    apk add --update ${buildDeps} libgcc libstdc++ ca-certificates && \
+    apk add --no-cache ${buildDeps} libgcc libstdc++ ca-certificates && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \

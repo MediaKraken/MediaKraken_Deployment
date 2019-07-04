@@ -20,7 +20,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-psutil \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
-  && apk add \
+  && apk add --no-cache \
   py-setuptools
 
 # Copy the source files for the app

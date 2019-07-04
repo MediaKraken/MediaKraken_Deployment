@@ -8,7 +8,7 @@ ARG ALPMIRROR
 ARG PIPMIRROR
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-        && apk --update add git build-base automake libtool m4 autoconf libevent-dev libressl-dev c-ares c-ares-dev py-docutils && \
+        && apk --no-cache add git build-base automake libtool m4 autoconf libevent-dev libressl-dev c-ares c-ares-dev py-docutils && \
 	git clone https://github.com/pgbouncer/pgbouncer.git && \
 	cd pgbouncer         && \
         git checkout tags/pgbouncer_1_8_1 && \

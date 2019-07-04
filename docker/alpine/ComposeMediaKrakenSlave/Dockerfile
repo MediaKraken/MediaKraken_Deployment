@@ -47,7 +47,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   musl-dev \
   net-snmp-dev \
   python3-dev \
-  && apk add \
+  && apk add --no-cache \
   py-setuptools \
   && rm requirements.txt \
   && rm -r /root/.npm \
