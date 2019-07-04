@@ -29,7 +29,7 @@ import xml
 
 class CodeSequence:  # Handles codesequences parsing and conversion
     def ProcessPreamble(self, sPreamble):
-        if sPreamble[0] <> "0000":
+        if sPreamble[0] != "0000":
             raise "Formats other than starting with 0000 are not supported!"
         self.dIRFrequency = 1000000 / (
                     long(sPreamble[1], 16) * 0.241246)  # Frequency of the IR carrier in Khz
@@ -43,15 +43,14 @@ class CodeSequence:  # Handles codesequences parsing and conversion
         for i in sItems:
             self.dPulseWidths.append(
                 1000000 * long(i, 16) / self.dIRFrequency)  # Convert pulse widths to uS
-        if len(self.dPulseWidths) <> 2 * (
-                self.lOnceSequenceLength + self.lRepeatableSequenceLength):
+        if len(self.dPulseWidths) != 2 * (self.lOnceSequenceLength + self.lRepeatableSequenceLength):
             raise "Number of actual codes does not match the header information!"
 
     def AnalyzeCode(self, sCodeName, sHexCodes):
         # sHexTable=sHexCodes.split()
         s = string.join(sHexCodes.split(), '')  # Remove whitespace formatting between sequences
         sHexTable = []
-        while s <> '':  # Re-split into group of 4
+        while s != '':  # Re-split into group of 4
             sHexTable.append(s[:4])
             s = s[4:]
         self.sCodeName = sCodeName.rstrip()  # Name of the Code associated with code sequence
@@ -81,7 +80,7 @@ class Device:  # Handles devices
         self.sCodes.append(seq)
 
     def ProcessHEX(self, fHexFile, sLine):  # Process HEX files
-        while sLine <> '' and sLine.strip() <> '':  # EOF?
+        while sLine != '' and sLine.strip() != '':  # EOF?
             [sCodeName, sHexCodes] = sLine.split(':')
             self.AddCodes(sCodeName, sHexCodes)
             sLine = fHexFile.readline()

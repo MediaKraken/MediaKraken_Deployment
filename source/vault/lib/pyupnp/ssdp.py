@@ -68,7 +68,7 @@ class SSDP_MSearch(DatagramProtocol):
                 m,
             print
 
-    def datagramReceived(self, data, (host, port)):
+    def datagramReceived(self, data):
         self.stopLater()  # Reset Stop Delay
 
         version, respCode, respText, headers = http_parse_raw(data)
