@@ -49,7 +49,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   libressl-dev \
   && rm requirements.txt \
-  && apk add \
+  && apk add --no-cache \
   uwsgi-python3 \
   uwsgi-router_uwsgi \
   py-setuptools \
