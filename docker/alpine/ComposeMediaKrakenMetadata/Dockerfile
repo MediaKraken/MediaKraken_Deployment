@@ -30,7 +30,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm requirements.txt \
   && apk add \
   py3-setuptools \
-  py3-service_identity
+  py3-service_identity \
   && rc-update add netmount \
   && rc-update add rpcbind
 #  && pip3 install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
