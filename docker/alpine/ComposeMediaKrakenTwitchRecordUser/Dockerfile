@@ -12,13 +12,12 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   alpine-sdk \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apk del \
-  alpine-sdk \
-  && rm -rf /var/cache/apk/*
+  alpine-sdk
 
 # Copy the source files for the app
 ADD check.py /mediakraken

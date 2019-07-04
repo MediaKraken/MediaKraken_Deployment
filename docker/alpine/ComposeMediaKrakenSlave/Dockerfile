@@ -16,7 +16,7 @@ WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   python \
   cifs-utils \
   nfs-utils \
@@ -50,7 +50,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add \
   py-setuptools \
   && rm requirements.txt \
-  && rm -rf /var/cache/apk/* \
   && rm -r /root/.npm \
   && rc-update add netmount \
   && rc-update add rpcbind

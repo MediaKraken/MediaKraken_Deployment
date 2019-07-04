@@ -14,7 +14,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   alpine-sdk \
   gcc \
   git \
@@ -39,8 +39,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   linux-headers \
   && rm -rf phue \
-  && rm requirements.txt \
-  && rm -rf /var/cache/apk/*
+  && rm requirements.txt
 
 # Copy the source files for the app
 ADD src /mediakraken

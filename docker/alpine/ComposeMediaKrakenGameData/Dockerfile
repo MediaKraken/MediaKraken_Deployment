@@ -13,7 +13,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   ca-certificates \
   openrc \
   py3-psycopg2 \
@@ -21,8 +21,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apk add \
-  py-setuptools \
-  && rm -rf /var/cache/apk/*
+  py-setuptools
 
 # Copy the source files for the app
 ADD src /mediakraken

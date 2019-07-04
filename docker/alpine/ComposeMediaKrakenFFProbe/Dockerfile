@@ -15,7 +15,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   python3 \
   cifs-utils \
   nfs-utils \
@@ -46,7 +46,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add \
   py-setuptools \
   && rm requirements.txt \
-  && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind
 

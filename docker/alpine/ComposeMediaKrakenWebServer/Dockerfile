@@ -13,7 +13,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   ack \
   curl-dev \
   git \
@@ -54,7 +54,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   uwsgi-router_uwsgi \
   py-setuptools \
   && cp /usr/lib/uwsgi/python3_plugin.so /mediakraken/. \
-  && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind
 

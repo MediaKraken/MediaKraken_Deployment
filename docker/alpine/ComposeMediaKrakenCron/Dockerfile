@@ -12,7 +12,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   alpine-sdk \
   python3-dev \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
@@ -26,7 +26,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   linux-headers \
   musl-dev \
   net-snmp-dev \
-  && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 
 ADD wait-for-it-ash.sh /mediakraken

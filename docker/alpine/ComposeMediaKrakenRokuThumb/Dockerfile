@@ -16,7 +16,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   cifs-utils \
   nfs-utils \
   libressl \
@@ -24,7 +24,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3 \
   openrc \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && rm -rf /var/cache/apk/* \
   && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind

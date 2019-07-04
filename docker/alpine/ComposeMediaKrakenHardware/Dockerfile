@@ -12,7 +12,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   eudev-dev \
   gcc \
   git \
@@ -33,8 +33,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   git \
   linux-headers \
   musl-dev \
-  python3-dev \
-  && rm -rf /var/cache/apk/*
+  python3-dev
 
 ADD wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app

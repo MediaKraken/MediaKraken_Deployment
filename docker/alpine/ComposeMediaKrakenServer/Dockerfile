@@ -12,7 +12,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   alpine-sdk \
   libffi-dev \
   libressl \
@@ -51,7 +51,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libressl-dev \
   musl-dev \
   net-snmp-dev \
-  && rm -rf /var/cache/apk/* \
   && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind

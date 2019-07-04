@@ -13,7 +13,7 @@ WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   ca-certificates \
   cifs-utils \
   nfs-utils \
@@ -30,8 +30,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm requirements.txt \
   && apk add \
   py3-setuptools \
-  py3-service_identity \
-  && rm -rf /var/cache/apk/* \
+  py3-service_identity
   && rc-update add netmount \
   && rc-update add rpcbind
 #  && pip3 install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now

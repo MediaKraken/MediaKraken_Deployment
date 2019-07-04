@@ -15,7 +15,7 @@ ADD requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   gcc \
   git \
   libxml2-dev \
@@ -30,7 +30,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk del \
   gcc \
   git \
-  && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 
 ADD wait-for-it-ash.sh /mediakraken
