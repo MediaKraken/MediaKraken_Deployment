@@ -177,7 +177,8 @@ RUN apt update && \
     ffmpeg -buildconf && \
     groupadd -r metamangrp && useradd -r -g metamangrp metaman
 
-USER metaman
+# Do NOT do the below as other containers won't have rights to install/build.
+# USER metaman
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg

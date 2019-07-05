@@ -23,6 +23,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm requirements.txt \
   && adduser -DHs /sbin/nologin metaman
 
-USER metaman
+# Do NOT do the below as other containers won't have rights to install/build.
+# USER metaman
 
 CMD ["/bin/ash"]

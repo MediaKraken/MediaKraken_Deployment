@@ -163,7 +163,8 @@ RUN apk add --no-cache bash samba-client lame libass libmodplug libogg \
     ffmpeg -buildconf && \
     adduser -DHs /sbin/nologin metaman
 
-USER metaman
+# Do NOT do the below as other containers won't have rights to install/build.
+# USER metaman
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg
