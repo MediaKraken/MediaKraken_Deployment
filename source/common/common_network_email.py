@@ -18,7 +18,6 @@
 
 import smtplib
 
-from . import common_global
 
 # For this to work with google smtp you must allow access from less secure apps
 # on google's account site.  Otherwise one will not be able to log in.
@@ -43,8 +42,6 @@ def com_net_send_email(user, pwd, recipient, subject, body, smtp_server='smtp.gm
             server.login(user, pwd)
             server.sendmail(user, TO, message)
             server.close()
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'successfully sent the mail'})
             return True
         except:
-            common_global.es_inst.com_elastic_index('info', {'stuff': "failed to send mail"})
             return False
