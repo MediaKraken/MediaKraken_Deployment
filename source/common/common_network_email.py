@@ -20,7 +20,8 @@ import smtplib
 
 from . import common_global
 
-
+# For this to work with google smtp you must allow access from less secure apps
+# on google's account site.  Otherwise one will not be able to log in.
 def com_net_send_email(user, pwd, recipient, subject, body, smtp_server='smtp.gmail.com',
                        smtp_port=587):
     """
