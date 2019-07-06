@@ -1,4 +1,4 @@
-FROM alpine:3.8 as builder
+FROM alpine:3.10 as builder
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -149,7 +149,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.8
+FROM alpine:3.10
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
