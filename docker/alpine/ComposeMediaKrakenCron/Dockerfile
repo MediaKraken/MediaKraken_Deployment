@@ -11,8 +11,9 @@ ARG PIPMIRROR
 COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
+# had to go back to update instead of no-cache......throws errors
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+  && apk add --update \
   alpine-sdk \
   python3-dev \
   linux-headers \
@@ -25,6 +26,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   linux-headers \
   musl-dev \
   net-snmp-dev \
+  && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 
 COPY wait-for-it-ash.sh /mediakraken

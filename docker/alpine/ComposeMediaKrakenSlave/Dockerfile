@@ -14,9 +14,10 @@ RUN mkdir /mediakraken
 COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
+# had to go back to update instead of no-cache......throws errors
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
-  && apk add --no-cache \
+  && apk add --update \
   python \
   cifs-utils \
   nfs-utils \
@@ -47,12 +48,13 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   musl-dev \
   net-snmp-dev \
   python3-dev \
-  && apk add --no-cache \
+  && apk add --update \
   py-setuptools \
   && rm requirements.txt \
   && rm -r /root/.npm \
   && rc-update add netmount \
-  && rc-update add rpcbind
+  && rc-update add rpcbind \
+  && rm -rf /var/cache/apk/* \
 
 # Forward logs to Docker
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
