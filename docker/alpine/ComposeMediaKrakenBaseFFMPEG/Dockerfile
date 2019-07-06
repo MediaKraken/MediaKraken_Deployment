@@ -160,9 +160,10 @@ RUN apk add --no-cache bash samba-client lame libass libmodplug libogg \
     soxr fontconfig libvpx librtmp libva libvdpau \
     libva-intel-driver && \
     rm -Rf /home/* && \
-    ffmpeg -buildconf && \
-    adduser -DHs /sbin/nologin metaman
+    ffmpeg -buildconf
 
+# will create gid 1000 error in later images
+#   adduser -DHs /sbin/nologin metaman
 # Do NOT do the below as other containers won't have rights to install/build.
 # USER metaman
 

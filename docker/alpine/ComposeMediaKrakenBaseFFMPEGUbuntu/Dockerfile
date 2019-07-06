@@ -174,9 +174,9 @@ RUN apt update && \
     ./NVIDIA-Linux-x86_64-${NVIDIA_DRIVER}.run -s -N --no-kernel-module && \
     rm -Rf /mediakraken && \
     rm -rf /var/lib/apt/lists/* && \
-    ffmpeg -buildconf && \
-    groupadd -r metamangrp && useradd -r -g metamangrp metaman
+    ffmpeg -buildconf
 
+#    groupadd -r metaman && useradd -r -g metaman metaman
 # Do NOT do the below as other containers won't have rights to install/build.
 # USER metaman
 
