@@ -15,12 +15,11 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   alpine-sdk \
   python3-dev \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && apk add --no-cache \
   linux-headers \
   musl-dev \
   py3-psycopg2 \
   py3-psutil \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del \
   alpine-sdk \
   linux-headers \
