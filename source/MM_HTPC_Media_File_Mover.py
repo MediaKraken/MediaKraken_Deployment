@@ -20,7 +20,7 @@
 import glob
 import os
 
-master_directory = '/chenbro/chenbrofile/Media/'
+master_directory = os.getcwd()
 # hold all the directories to parse
 dir_to_parse = []
 
