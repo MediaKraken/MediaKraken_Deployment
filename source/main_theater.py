@@ -803,27 +803,28 @@ def on_config_change(self, config, section, key, value):
         # since it's loaded delete the image
         # os.remove(self.home_movie_inprogress_file_name)
 
-    if __name__ == '__main__':
-        # for windows exe support
-        from multiprocessing import freeze_support
 
-        freeze_support()
-        # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater',
-                                                                                 debug_override='print')
-        log.startLogging(sys.stdout)  # for twisted
-        # set signal exit breaks
-        common_signal.com_signal_set_break()
-        # load the kivy's here so all the classes have been defined
-        Builder.load_file('theater/kivy_layouts/main.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
-        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-            pass  # as os.uname doesn't exist in windows
-        else:
-            # so the raspberry pi doesn't crash
-            if os.uname()[4][:3] != 'arm':
-                Window.fullscreen = 'auto'
-        MediaKrakenApp().run()
+if __name__ == '__main__':
+    # for windows exe support
+    from multiprocessing import freeze_support
+
+    freeze_support()
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater',
+                                                                             debug_override='print')
+    log.startLogging(sys.stdout)  # for twisted
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
+    # load the kivy's here so all the classes have been defined
+    Builder.load_file('theater/kivy_layouts/main.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
+    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+        pass  # as os.uname doesn't exist in windows
+    else:
+        # so the raspberry pi doesn't crash
+        if os.uname()[4][:3] != 'arm':
+            Window.fullscreen = 'auto'
+    MediaKrakenApp().run()
