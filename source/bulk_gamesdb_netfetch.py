@@ -20,7 +20,7 @@ import json
 
 from common import common_config_ini
 from common import common_internationalization
-from common import common_metadata_thegamesdb
+from common import common_metadata_provider_thegamesdb
 
 # init totals
 total_game_systems = 0
@@ -29,7 +29,7 @@ total_games = 0
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-GAMESDB_CONNECTION = common_metadata_thegamesdb.CommonMetadataGamesDB()
+GAMESDB_CONNECTION = common_metadata_provider_thegamesdb.CommonMetadataGamesDB()
 
 # grab and insert all platforms
 for platform in \

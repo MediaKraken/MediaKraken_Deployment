@@ -22,7 +22,7 @@ import uuid
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_metadata_tmdb
+from common import common_metadata_provider_themoviedb
 
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('bulk_themoviedb_netfetch')
 
@@ -32,7 +32,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # verify themoviedb key exists
 if option_config_json['API']['themoviedb'].strip() != 'None':
     # setup the tmdb class
-    TMDB_API_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
+    TMDB_API_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
     common_global.es_inst.com_elastic_index('info', {"Using key %s" % option_config_json['API'][
         'themoviedb'].strip()})
 else:
