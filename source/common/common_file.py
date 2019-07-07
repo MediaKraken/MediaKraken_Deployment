@@ -53,7 +53,6 @@ def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=Fa
     """
     Save data as file
     """
-    file_handle = None
     if as_pickle:
         write_type = 'wb'
     else:
