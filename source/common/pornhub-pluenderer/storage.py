@@ -9,7 +9,7 @@ class AlreadyDownloadedError(Exception):
         Exception.__init__(self, message % filename)
 
 
-class Storage(object):
+class Storage:
     def __init__(self):
         self._skipped_files = []
 

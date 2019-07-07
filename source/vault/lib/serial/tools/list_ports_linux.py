@@ -9,16 +9,16 @@
 # this is distributed under a free software license, see license.txt
 
 import glob
-import sys
 import os
 import re
+import sys
 
 try:
     import subprocess
 except ImportError:
     def popen(argv):
         try:
-            si, so =  os.popen4(' '.join(argv))
+            si, so = os.popen4(' '.join(argv))
             return so.read().strip()
         except:
             raise IOError('lsusb failed')
@@ -29,7 +29,6 @@ else:
         except:
             raise IOError('lsusb failed')
 
-
 # The comports function is expected to return an iterable that yields tuples of
 # 3 strings: port name, human readable description and a hardware ID.
 #
@@ -38,6 +37,7 @@ else:
 
 # try to detect the OS so that a device can be selected...
 plat = sys.platform.lower()
+
 
 def read_line(filename):
     """help function to read a single line from a file. returns none"""
@@ -48,6 +48,7 @@ def read_line(filename):
         return line
     except IOError:
         return None
+
 
 def re_group(regexp, text):
     """search for regexp in text, return 1st group on match"""
@@ -65,16 +66,17 @@ def re_group(regexp, text):
 def usb_sysfs_hw_string(sysfs_path):
     """given a path to a usb device in sysfs, return a string describing it"""
     bus, dev = os.path.basename(os.path.realpath(sysfs_path)).split('-')
-    snr = read_line(sysfs_path+'/serial')
+    snr = read_line(sysfs_path + '/serial')
     if snr:
         snr_txt = ' SNR=%s' % (snr,)
     else:
         snr_txt = ''
     return 'USB VID:PID=%s:%s%s' % (
-            read_line(sysfs_path+'/idVendor'),
-            read_line(sysfs_path+'/idProduct'),
-            snr_txt
-            )
+        read_line(sysfs_path + '/idVendor'),
+        read_line(sysfs_path + '/idProduct'),
+        snr_txt
+    )
+
 
 def usb_lsusb_string(sysfs_path):
     base = os.path.basename(os.path.realpath(sysfs_path))
@@ -94,6 +96,7 @@ def usb_lsusb_string(sysfs_path):
     except IOError:
         return base
 
+
 def describe(device):
     """\
     Get a human readable description.
@@ -111,6 +114,7 @@ def describe(device):
     if os.path.exists(sys_dev_path):
         return read_line(sys_dev_path)
     return base
+
 
 def hwinfo(device):
     """Try to get a HW identification using sysfs"""
@@ -130,14 +134,17 @@ def hwinfo(device):
             sys_dev_path = '/sys/class/tty/%s/device' % (base,)
             if os.path.exists(sys_dev_path):
                 return usb_sysfs_hw_string(sys_dev_path + '/..')
-    return 'n/a'    # XXX directly remove these from the list?
+    return 'n/a'  # XXX directly remove these from the list?
+
 
 def comports():
     devices = glob.glob('/dev/ttyS*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
     return [(d, describe(d), hwinfo(d)) for d in devices]
 
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # test
 if __name__ == '__main__':
     for port, desc, hwid in sorted(comports()):
-        print "%s: %s [%s]" % (port, desc, hwid)
+        print
+        "%s: %s [%s]" % (port, desc, hwid)

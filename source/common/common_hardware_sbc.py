@@ -20,7 +20,7 @@
 import pingo
 
 
-class CommonHardwareSBC(object):
+class CommonHardwareSBC:
     """
     Class for interfacing with sbc
     """

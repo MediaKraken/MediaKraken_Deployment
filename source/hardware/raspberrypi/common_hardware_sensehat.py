@@ -19,7 +19,7 @@
 from sense_hat import SenseHat
 
 
-class CommonHardwarePISenseHat(object):
+class CommonHardwarePISenseHat:
     """
     Class for interfacing with raspberry pi sensehat
     """

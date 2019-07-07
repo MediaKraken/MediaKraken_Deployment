@@ -17,13 +17,14 @@
 '''
 
 import shutil
+
 from pytvdbapi import api
 
 # from xml.dom import minidom
 from . import common_global
 
 
-class CommonTheTVDB(object):
+class CommonTheTVDB:
     """
     Class for interfacing with thetvdb
     """

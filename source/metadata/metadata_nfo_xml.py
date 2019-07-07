@@ -18,6 +18,7 @@
 
 import os
 import xml
+
 import xmltodict
 from common import common_file
 from common import common_file_extentions
@@ -60,7 +61,8 @@ def nfo_xml_file(media_file_path):
                 pass
             except UnicodeDecodeError:
                 pass
-        elif os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml')):
+        elif os.path.isfile(
+                os.path.join(os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml')):
             common_global.es_inst.com_elastic_index('info', {'movie xml file found': xml_file_name})
             try:
                 xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(

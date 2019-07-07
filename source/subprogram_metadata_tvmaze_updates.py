@@ -22,7 +22,7 @@ import uuid
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_metadata_tvmaze
+from common import common_metadata_provider_tvmaze
 from common import common_signal
 
 # start logging
@@ -37,7 +37,7 @@ common_signal.com_signal_set_break()
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # grab updated show list with epoc data
-tvmaze = common_metadata_tvmaze.CommonMetadatatvmaze()
+tvmaze = common_metadata_provider_tvmaze.CommonMetadatatvmaze()
 result = tvmaze.com_meta_tvmaze_show_updated()
 common_global.es_inst.com_elastic_index('info', {'result': result})
 # for show_list_json in result:
@@ -52,14 +52,16 @@ for tvmaze_id, tvmaze_time in list(result.items()):
         # update_insert_show(tvmaze_id, results[0]) # update the guid
         pass
     else:
-        if db_connection.db_download_que_exists(None, 2, 'tvmaze', tvmaze_id) is None:
+        if db_connection.db_download_que_exists(None, common_global.DLMediaType.TV.value, 'tvmaze',
+                                                tvmaze_id) is None:
             # insert new record as it's a new show
-            db_connection.db_download_insert('tvmaze', 2, json.dumps({'MediaID': None,
-                                                                      'Path': None, 'ClassID': None,
-                                                                      'Status': 'Fetch',
-                                                                      'MetaNewID': str(
-                                                                          uuid.uuid4()),
-                                                                      'ProviderMetaID': tvmaze_id}))
+            db_connection.db_download_insert('tvmaze', common_global.DLMediaType.TV.value,
+                                             json.dumps({'MediaID': None,
+                                                         'Path': None, 'ClassID': None,
+                                                         'Status': 'Fetch',
+                                                         'MetaNewID': str(
+                                                             uuid.uuid4()),
+                                                         'ProviderMetaID': tvmaze_id}))
 
 # commit all changes to db
 db_connection.db_commit()

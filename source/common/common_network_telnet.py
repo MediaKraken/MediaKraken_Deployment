@@ -21,7 +21,7 @@ import telnetlib
 NEWLINE = "\n"
 
 
-class CommonNetworkTelnet(object):
+class CommonNetworkTelnet:
     """
     Class for interfacing with telnet protocol
     """

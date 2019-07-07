@@ -1,4 +1,4 @@
-FROM mediakraken/mkbaseffmpeg:latest
+FROM mediakraken/mkbaseffmpeg:dev
 
 ARG ALPMIRROR
 ARG PIPMIRROR

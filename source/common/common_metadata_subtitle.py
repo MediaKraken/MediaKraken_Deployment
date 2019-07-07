@@ -16,31 +16,20 @@
   MA 02110-1301, USA.
 '''
 
-import os
-import shlex
+from datetime import timedelta
 
-import subliminal
+from babelfish import Language
+from subliminal import download_best_subtitles, region, save_subtitles, scan_videos
 
+# configure the cache
+region.configure('dogpile.cache.dbm', arguments={'filename': 'cachefile.dbm'})
 
-def com_meta_fetch_subtitle(file_name, sub_lang="en"):
-    """
-    # fetch subtitles
-    """
-    # file_hash = com_Hash.com_hash_thesubdb(file_name)
-    command_handle = os.popen(shlex.split("subliminal -l " + sub_lang + " -- \'"
-                                          + file_name.encode("utf8") + "\'"))
-    cmd_output = command_handle.read()
-    return cmd_output
+# scan for videos newer than 2 weeks and their existing subtitles in a folder
+videos = scan_videos('/video/folder', age=timedelta(weeks=2))
 
+# download best subtitles
+subtitles = download_best_subtitles(videos, {Language('eng'), Language('fra')})
 
-def com_meta_fetch_subtitle_batch(dir_name, sub_lang='eng'):
-    """
-    # batch fetch subtitles
-    """
-    # configure the cache
-    subliminal.cache_region.configure('dogpile.cache.dbm', arguments={'filename':
-                                                                          '/mediakraken/cache/cachefile.dbm'})
-    # scan for videos in the folder and their subtitles
-    videos = subliminal.scan_videos(dir_name, subtitles=True, embedded_subtitles=True)
-    # download
-    subliminal.download_best_subtitles(videos, Language(sub_lang))
+# save them to disk, next to the video
+for v in videos:
+    save_subtitles(v, subtitles[v])

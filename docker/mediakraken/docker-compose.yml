@@ -8,7 +8,6 @@ services:
   appserver:
     image: mediakraken/mkserver:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -58,15 +57,15 @@ services:
   cron:
     image: mediakraken/mkcron:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkcron
     depends_on:
+      - pgbounce
       - rabbit
-    entrypoint: python3 subprogram_cron_checker.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
@@ -97,9 +96,11 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
     depends_on:
+      - pgbounce
       - rabbit
-    entrypoint: python3 main_download.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 main_download.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -112,15 +113,15 @@ services:
   ffprobe:
     image: mediakraken/mkffprobe:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkffprobe
     depends_on:
+      - pgbounce
       - rabbit
-    entrypoint: python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -189,11 +190,37 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  # pika
+  pika:
+    image: mediakraken/mkpika:latest
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkpika
+    depends_on:
+      - pgbounce
+      - rabbit
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_pika.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      # for start of SSL server
+      - ./data/certs:/mediakraken/key:ro
+      - ./data/backup:/mediakraken/backup
+      - ./mkmount:/mediakraken/mnt
+      # so it can start docker containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
   # pgbouncer
   pgbounce:
     image: mediakraken/mkpgbounce:latest
     environment:
-      - DB_HOST=${DBHOST}
+      - DB_HOST=mkdatabase
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
       - POOL_MODE=transaction
@@ -232,7 +259,6 @@ services:
   reactor:
     image: mediakraken/mkreactor:latest
     environment:
-      - POSTGRES_DB_HOST=${DBHOST}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -241,7 +267,7 @@ services:
     depends_on:
       - pgbounce
       - rabbit
-    entrypoint: python3 subprogram_reactor_line.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- python3 subprogram_reactor_line.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
@@ -330,10 +356,6 @@ networks:
   mediakraken_network:
     driver: bridge
     name: mk_mediakraken_network
-  # Game network for dosbox, etc
-  mediakraken_game_network:
-    driver: bridge
-    name: mk_mediakraken_game_network
 
 volumes:
 #     mkvol-device:

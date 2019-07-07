@@ -17,8 +17,8 @@
 '''
 
 import json
-import psycopg2
 
+import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -122,8 +122,7 @@ if db_connection.db_table_index_check('mm_media_idx_metadata_uuid') is None:
     db_connection.db_query('CREATE INDEX mm_media_idx_metadata_uuid'
                            ' ON mm_media(mm_media_metadata_guid)')
 if db_connection.db_table_index_check('mm_media_idx_path') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_media_idx_path ON mm_media(mm_media_path)')
+    db_connection.db_query('CREATE INDEX mm_media_idx_path ON mm_media(mm_media_path)')
 
 # create table for remote media
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_remote (mmr_media_guid uuid'
@@ -150,11 +149,9 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_link (mm_link_guid uuid'
                        ' mm_link_name text,'
                        ' mm_link_json jsonb)')
 if db_connection.db_table_index_check('mm_link_json_idxgin') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json)')
+    db_connection.db_query('CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json)')
 if db_connection.db_table_index_check('mm_link_idx_name') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_link_idx_name ON mm_link(mm_link_name)')
+    db_connection.db_query('CREATE INDEX mm_link_idx_name ON mm_link(mm_link_name)')
 
 # create table for metadata of tvshows (full json w/crew, w/episodes)
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_tvshow ('
@@ -519,8 +516,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user (id SERIAL PRIMARY KE
                        ' created_at timestamp with time zone,'
                        ' active boolean, is_admin boolean, user_json jsonb, lang text)')
 if db_connection.db_table_index_check('mm_user_idx_username') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_user_idx_username ON mm_user(username)')
+    db_connection.db_query('CREATE INDEX mm_user_idx_username ON mm_user(username)')
 
 # add table for reviews
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_review (mm_review_guid uuid'
@@ -568,56 +564,87 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
                        ' mm_cron_enabled bool,'
                        ' mm_cron_schedule text,'
                        ' mm_cron_last_run timestamp,'
-                       ' mm_cron_file_path text,'
                        ' mm_cron_json jsonb)')
 
 base_cron = [
     # metadata
-    (
-        'Anime', 'Match anime via Scudlee and Manami data',
-        '/mediakraken/subprogram_match_anime_id.py',
-        {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime'}),
+    # TODO CODE
+    ('Anime', 'Match anime via Scudlee and Manami data',
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime',
+      'program': '/mediakraken/subprogram_match_anime_id.py'}),
+
+    # will run within the metadata_api_worker by provider
     ('Collections', 'Create and update collection(s)',
-     '/mediakraken/subprogram_metadata_update_create_collections.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'collection'}),
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Collection',
+      'program': '/mediakraken/subprogram_metadata_update_create_collections.py'}),
+
+    # TODO CODE
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
-     '/mediakraken/subprogram_schedules_direct_updates.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update'}),
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update',
+      'program': '/mediakraken/subprogram_schedules_direct_updates.py'}),
+
     # since file scan could do this
     # ('Subtitle', 'Download missing subtitles for media',
-    #  '/mediakraken/subprogram_subtitle_downloader.py',
-    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle',
+    #  'program': '/mediakraken/subprogram_subtitle_downloader.py'}),
+
+    # will run within the metadata_api_worker by provider
     ('The Movie Database', 'Grab updated metadata for movie(s) and TV show(s)',
-     '/mediakraken/subprogram_metadata_tmdb_updates.py',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
+     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Metadata',
+      'program': '/mediakraken/subprogram_metadata_tmdb_updates.py'}),
+
+    # will run within the pike container via "cron"
+    ('Retro game data', 'Grab updated metadata for retro game(s)',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+      'program': '/mediakraken/subprogram_metadata_games.py'}),
+
+    # ('Giantbomb Game Update', 'Grab updated Giantbomb game metadata',
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'giantbomb', 'task': 'update',
+    #  'program': '/mediakraken/subprogram_metadata_giantbomb.py'}),
+
     # ('TheTVDB Update', 'Grab updated TheTVDB metadata',
-    #  '/mediakraken/subprogram_metadata_thetvdb_updates.py',
-    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'thetvdb', 'task': 'update'}),
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'thetvdb', 'task': 'update',
+    #  'program': '/mediakraken/subprogram_metadata_thetvdb_updates.py'}),
+
     # ('TVmaze Update', 'Grab updated TVmaze metadata',
-    #  '/mediakraken/subprogram_metadata_tvmaze_updates.py',
-    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update'}),
-    ('Trailer', 'Download new trailer(s)', None,
-     {'exchange_key': 'mkque_download_ex', 'route_key': 'mkdownload', 'type': 'Download', 'task': 'HDTrailers'}),
+    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update',
+    #  'program': '/mediakraken/subprogram_metadata_tvmaze_updates.py'}),
+
+    # All code to run this is in the download docker image
+    ('Trailer', 'Download new trailer(s)',
+     {'exchange_key': 'mkque_download_ex', 'route_key': 'mkdownload', 'type': None,
+      'task': 'HDTrailers'}),
+
     # normal subprograms
-    ('Backup', 'Backup PostgreSQL DB', '/mediakraken/subprogram_postgresql_backup.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbbackup'}),
+    # Will simply run in reactor with cron run
+    ('Backup', 'Backup PostgreSQL DB',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+      'program': '/mediakraken/subprogram_postgresql_backup.py'}),
+
+    # Will simply run in reactor
     ('DB Vacuum', 'PostgreSQL Vacuum Analyze all tables',
-     '/mediakraken/subprogram_postgresql_vacuum.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'dbvacuum'}),
-    # ('iRadio Scan', 'Scan for iRadio stations', '/mediakraken/subprogram_iradio_channels.py',
-    #  {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'iradio'}),
-    ('Media Scan', 'Scan for new media', '/mediakraken/subprogram_file_scan.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'scan'}),
-    ('Sync', 'Sync/Transcode media', '/mediakraken/subprogram_sync.py',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'sync'}),
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+      'program': '/mediakraken/subprogram_postgresql_vacuum.py'}),
+
+    # ('iRadio Scan', 'Scan for iRadio stations',
+    #  {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'iradio',
+    #  'program': '/mediakraken/subprogram_iradio_channels.py'}),
+
+    # Will simply run in reactor
+    ('Media Scan', 'Scan for new media',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Library Scan'}),
+
+    # will simply run in reactor
+    ('Sync', 'Sync and transcode media',
+     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+      'program': '/mediakraken/subprogram_sync.py'}),
 ]
 # create base cron entries
-db_connection.db_query('select count(*) from mm_cron')
-if db_connection.fetchone()[0] == 0:
+if db_connection.db_query('select count(*) from mm_cron', fetch_all=False) == 0:
     for base_item in base_cron:
         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
                                      psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
-                                     base_item[2], json.dumps(base_item[3]))
+                                     json.dumps(base_item[2]))
 
 # create internet radio tables
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_radio (mm_radio_guid uuid'
@@ -681,8 +708,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_channel (mm_channel_guid u
                        ' mm_channel_country_guid uuid,'
                        ' mm_channel_logo_guid uuid)')
 if db_connection.db_table_index_check('mm_channel_idx_name') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_channel_idx_name ON mm_channel(mm_channel_name)')
+    db_connection.db_query('CREATE INDEX mm_channel_idx_name ON mm_channel(mm_channel_name)')
 if db_connection.db_table_index_check('mm_channel_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_channel_idxgin_json'
                            ' ON mm_channel USING gin (mm_channel_media_id)')
@@ -690,8 +716,7 @@ if db_connection.db_table_index_check('mm_channel_idx_country') is None:
     db_connection.db_query('CREATE INDEX mm_channel_idx_country'
                            ' ON mm_channel(mm_channel_country_guid)')
 if db_connection.db_table_index_check('mm_channel_idx_logo') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_channel_idx_logo ON mm_channel(mm_channel_logo_guid)')
+    db_connection.db_query('CREATE INDEX mm_channel_idx_logo ON mm_channel(mm_channel_logo_guid)')
 
 # create table for user groups
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_group (mm_user_group_guid uuid'
@@ -748,8 +773,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
                        ' CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
                        ' mm_options_json jsonb,'
                        ' mm_status_json jsonb)')
-db_connection.db_query('select count(*) from mm_options_and_status')
-if db_connection.fetchone()[0] == 0:
+if db_connection.db_query('select count(*) from mm_options_and_status', fetch_all=False) == 0:
     db_connection.db_opt_status_insert(json.dumps({
         'Account': {
             'ScheduleDirect': {'User': None,
@@ -778,7 +802,8 @@ if db_connection.fetchone()[0] == 0:
         'Docker': {'Nodes': 0,
                    'SwarmID': None,
                    'Instances': 0},
-        'Docker Instances': {'mumble': False,
+        'Docker Instances': {'elk': False,
+                             'mumble': False,
                              'musicbrainz': False,
                              'pgadmin': False,
                              'portainer': False,
@@ -905,8 +930,7 @@ db_connection.db_query('create table IF NOT EXISTS mm_device (mm_device_id uuid'
                        ' mm_device_type text,'
                        ' mm_device_json jsonb)')
 if db_connection.db_table_index_check('mm_device_idx_type') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_device_idx_type ON mm_device(mm_device_type)')
+    db_connection.db_query('CREATE INDEX mm_device_idx_type ON mm_device(mm_device_type)')
 if db_connection.db_table_index_check('mm_device_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_device_idxgin_json'
                            ' ON mm_device USING gin (mm_device_json)')
@@ -959,8 +983,7 @@ if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
     db_connection.db_query(
         'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
 if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
+    db_connection.db_query('CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
 
 # create indexes for pg_trgm
 if db_connection.db_table_index_check('mm_metadata_tvshow_name_trigram_idx') is None:

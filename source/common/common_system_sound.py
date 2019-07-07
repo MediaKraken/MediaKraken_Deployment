@@ -38,7 +38,7 @@ def com_sound_play_file(file_name):
     """
     try:
         sound_data = SoundLoader.load(file_name)
-    except GstPlayerException:
+    except GstPlayerException:  # this exception is from kivy/plyer
         sound_data = False
     if sound_data:
         common_global.es_inst.com_elastic_index('info', {"Sound found at": sound_data.source})
@@ -55,4 +55,4 @@ def com_audio_pyaudio_list_devices():
     audio_instance = pyaudio.PyAudio()
     for ndx in range(audio_instance.get_device_count()):
         common_global.es_inst.com_elastic_index('info', {
-            'stuff': audio_instance.get_device_info_by_index(ndx))
+            'stuff': audio_instance.get_device_info_by_index(ndx)})

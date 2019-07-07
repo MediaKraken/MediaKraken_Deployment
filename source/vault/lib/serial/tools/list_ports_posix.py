@@ -20,60 +20,60 @@ currently just identical to the port name.
 """
 
 import glob
-import sys
 import os
+import sys
 
 # try to detect the OS so that a device can be selected...
 plat = sys.platform.lower()
 
-if   plat[:5] == 'linux':    # Linux (confirmed)
+if plat[:5] == 'linux':  # Linux (confirmed)
     from serial.tools.list_ports_linux import comports
 
-elif plat == 'cygwin':       # cygwin/win32
+elif plat == 'cygwin':  # cygwin/win32
     def comports():
         devices = glob.glob('/dev/com*')
         return [(d, d, d) for d in devices]
 
-elif plat[:7] == 'openbsd':    # OpenBSD
+elif plat[:7] == 'openbsd':  # OpenBSD
     def comports():
         devices = glob.glob('/dev/cua*')
         return [(d, d, d) for d in devices]
 
-elif plat[:3] == 'bsd' or  \
+elif plat[:3] == 'bsd' or \
         plat[:7] == 'freebsd':
 
     def comports():
         devices = glob.glob('/dev/cuad*')
         return [(d, d, d) for d in devices]
 
-elif plat[:6] == 'darwin':   # OS X (confirmed)
+elif plat[:6] == 'darwin':  # OS X (confirmed)
     from serial.tools.list_ports_osx import comports
 
-elif plat[:6] == 'netbsd':   # NetBSD
+elif plat[:6] == 'netbsd':  # NetBSD
     def comports():
         """scan for available ports. return a list of device names."""
         devices = glob.glob('/dev/dty*')
         return [(d, d, d) for d in devices]
 
-elif plat[:4] == 'irix':     # IRIX
+elif plat[:4] == 'irix':  # IRIX
     def comports():
         """scan for available ports. return a list of device names."""
         devices = glob.glob('/dev/ttyf*')
         return [(d, d, d) for d in devices]
 
-elif plat[:2] == 'hp':       # HP-UX (not tested)
+elif plat[:2] == 'hp':  # HP-UX (not tested)
     def comports():
         """scan for available ports. return a list of device names."""
         devices = glob.glob('/dev/tty*p0')
         return [(d, d, d) for d in devices]
 
-elif plat[:5] == 'sunos':    # Solaris/SunOS
+elif plat[:5] == 'sunos':  # Solaris/SunOS
     def comports():
         """scan for available ports. return a list of device names."""
         devices = glob.glob('/dev/tty*c')
         return [(d, d, d) for d in devices]
 
-elif plat[:3] == 'aix':      # AIX
+elif plat[:3] == 'aix':  # AIX
     def comports():
         """scan for available ports. return a list of device names."""
         devices = glob.glob('/dev/tty*')
@@ -98,4 +98,5 @@ this module running...
 # test
 if __name__ == '__main__':
     for port, desc, hwid in sorted(comports()):
-        print "%s: %s [%s]" % (port, desc, hwid)
+        print
+        "%s: %s [%s]" % (port, desc, hwid)

@@ -55,7 +55,6 @@ rabbitConfigKeys=(
 	default_pass
 	default_user
 	default_vhost
-	hipe_compile
 	vm_memory_high_watermark
 )
 fileConfigKeys=(
@@ -267,7 +266,7 @@ rabbit_env_config() {
 		local val="${!var:-}"
 		local rawVal="$val"
 		case "$conf" in
-			fail_if_no_peer_cert|hipe_compile)
+			fail_if_no_peer_cert)
 				case "${val,,}" in
 					false|no|0|'') rawVal='false' ;;
 					true|yes|1|*) rawVal='true' ;;
@@ -321,8 +320,8 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$shouldWriteConfig" ]; then
 						gsub(/%$/, "", perc);
 						perc = perc / 100;
 					}
-					if (perc > 1.0 || perc <= 0.0) {
-						printf "error: invalid percentage for vm_memory_high_watermark: %s (must be > 0%%, <= 100%%)\n", $0 > "/dev/stderr";
+					if (perc > 1.0 || perc < 0.0) {
+						printf "error: invalid percentage for vm_memory_high_watermark: %s (must be >= 0%%, <= 100%%)\n", $0 > "/dev/stderr";
 						exit 1;
 					}
 					printf "vm_memory_high_watermark.relative %0.03f\n", perc;
@@ -365,7 +364,7 @@ if [ "$1" = 'rabbitmq-server' ] && [ "$shouldWriteConfig" ]; then
 
 	# if management plugin is installed, generate config for it
 	# https://www.rabbitmq.com/management.html#configuration
-	if [ "$(rabbitmq-plugins list -m -e rabbitmq_management)" ]; then
+	if [ "$(rabbitmq-plugins list -q -m -e rabbitmq_management)" ]; then
 		if [ "$haveManagementSslConfig" ]; then
 			rabbit_set_config 'management.listener.port' 15671
 			rabbit_set_config 'management.listener.ssl' 'true'

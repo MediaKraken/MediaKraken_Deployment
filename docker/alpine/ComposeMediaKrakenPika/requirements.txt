@@ -1,0 +1,12 @@
+service_identity==18.1.0
+pyopenssl==19.0.0
+ldap3==2.6
+pycountry==18.12.8
+twisted==19.2.1
+pika==1.0.1
+docker==4.0.2
+pysmb==1.1.27
+tmdbsimple==2.2.0
+guessit==3.0.4
+xmltodict==0.12.0
+tmdbv3api==1.3.2

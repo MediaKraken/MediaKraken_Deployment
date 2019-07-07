@@ -1,7 +1,7 @@
 service_identity==17.0.0
 cryptography==2.3.1
-pyopenssl
-setuptools
-docker
-pika
-elasticsearch
+pyopenssl==19.0.0 
+setuptools==41.0.1
+docker==4.0.2
+pika==1.0.1
+elasticsearch==7.0.2

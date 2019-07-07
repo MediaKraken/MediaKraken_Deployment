@@ -15,10 +15,11 @@
 # options:
 # - "debug" print diagnostic messages
 
-from serial.serialutil import *
+import logging
 import threading
 import time
-import logging
+
+from serial.serialutil import *
 
 # map log level names to constants. used in fromURL()
 LOGGER_LEVELS = {
@@ -26,7 +27,7 @@ LOGGER_LEVELS = {
     'info': logging.INFO,
     'warning': logging.WARNING,
     'error': logging.ERROR,
-    }
+}
 
 
 class LoopbackSerial(SerialBase):
@@ -66,7 +67,7 @@ class LoopbackSerial(SerialBase):
         """Set communication parameters on opened port. for the loop://
         protocol all settings are ignored!"""
         # not that's it of any real use, but it helps in the unit tests
-        if not isinstance(self._baudrate, (int, long)) or not 0 < self._baudrate < 2**32:
+        if not isinstance(self._baudrate, (int, long)) or not 0 < self._baudrate < 2 ** 32:
             raise ValueError("invalid baudrate: %r" % (self._baudrate))
         if self.logger:
             self.logger.info('_reconfigurePort()')
@@ -94,14 +95,15 @@ class LoopbackSerial(SerialBase):
                 if not option:
                     pass
                 elif option == 'logging':
-                    logging.basicConfig()   # XXX is that good to call it here?
+                    logging.basicConfig()  # XXX is that good to call it here?
                     self.logger = logging.getLogger('pySerial.loop')
                     self.logger.setLevel(LOGGER_LEVELS[value])
                     self.logger.debug('enabled logging')
                 else:
                     raise ValueError('unknown option: %r' % (option,))
         except ValueError, e:
-            raise SerialException('expected a string in the form "[loop://][option[/option...]]": %s' % e)
+            raise SerialException(
+                'expected a string in the form "[loop://][option[/option...]]": %s' % e)
 
     #  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
 
@@ -147,11 +149,11 @@ class LoopbackSerial(SerialBase):
         # ensure we're working with bytes
         data = to_bytes(data)
         # calculate aprox time that would be used to send the data
-        time_used_to_send = 10.0*len(data) / self._baudrate
+        time_used_to_send = 10.0 * len(data) / self._baudrate
         # when a write timeout is configured check if we would be successful
         # (not sending anything, not even the part that would have time)
         if self._writeTimeout is not None and time_used_to_send > self._writeTimeout:
-            time.sleep(self._writeTimeout) # must wait so that unit test succeeds
+            time.sleep(self._writeTimeout)  # must wait so that unit test succeeds
             raise writeTimeoutError
         self.buffer_lock.acquire()
         try:
@@ -250,10 +252,10 @@ else:
     class Serial(LoopbackSerial, io.RawIOBase):
         pass
 
-
 # simple client test
 if __name__ == '__main__':
     import sys
+
     s = Serial('loop://')
     sys.stdout.write('%s\n' % s)
 

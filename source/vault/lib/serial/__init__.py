@@ -14,20 +14,22 @@ if sys.platform == 'cli':
     from serial.serialcli import *
 else:
     import os
+
     # chose an implementation, depending on os
-    if os.name == 'nt': #sys.platform == 'win32':
+    if os.name == 'nt':  # sys.platform == 'win32':
         from serial.serialwin32 import *
     elif os.name == 'posix':
         from serial.serialposix import *
     elif os.name == 'java':
         from serial.serialjava import *
     else:
-        raise ImportError("Sorry: no implementation for your platform ('%s') available" % (os.name,))
-
+        raise ImportError(
+            "Sorry: no implementation for your platform ('%s') available" % (os.name,))
 
 protocol_handler_packages = [
-        'serial.urlhandler',
-        ]
+    'serial.urlhandler',
+]
+
 
 def serial_for_url(url, *args, **kwargs):
     """\
@@ -48,7 +50,7 @@ def serial_for_url(url, *args, **kwargs):
     do_open = 'do_not_open' not in kwargs or not kwargs['do_not_open']
     if 'do_not_open' in kwargs: del kwargs['do_not_open']
     # the default is to use the native version
-    klass = Serial   # 'native' implementation
+    klass = Serial  # 'native' implementation
     # check port type and get class
     try:
         url_nocase = url.lower()
@@ -70,7 +72,7 @@ def serial_for_url(url, *args, **kwargs):
             else:
                 raise ValueError('invalid URL, protocol %r not known' % (protocol,))
         else:
-            klass = Serial   # 'native' implementation
+            klass = Serial  # 'native' implementation
     # instantiate and open when desired
     instance = klass(None, *args, **kwargs)
     instance.port = url

@@ -20,7 +20,7 @@
 import tidalapi
 
 
-class CommonNetworkTidal(object):
+class CommonNetworkTidal:
     """
     Class for interfacing with Tidal
     """

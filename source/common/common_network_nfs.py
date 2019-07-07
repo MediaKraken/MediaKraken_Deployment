@@ -19,7 +19,7 @@
 import libnfs
 
 
-class CommonNetNFS(object):
+class CommonNetNFS:
     def __init__(self, hostname, nfs_share):
         self.nfs_inst = libnfs.NFS('nfs://%s/%s' % (hostname, nfs_share))
 

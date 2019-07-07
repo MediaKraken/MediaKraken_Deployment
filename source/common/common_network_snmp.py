@@ -19,7 +19,7 @@
 from easysnmp import Session
 
 
-class CommonNetworkSNMP(object):
+class CommonNetworkSNMP:
     """
     Class for interfacing via SNMP
     """

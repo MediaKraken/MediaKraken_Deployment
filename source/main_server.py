@@ -43,7 +43,8 @@ common_global.es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Cert not found, generating.'})
-    proc_ssl = subprocess.Popen(['python3', './subprogram_ssl_keygen.py'], shell=False)
+    proc_ssl = subprocess.Popen(['python3', './subprogram_ssl_keygen.py'], stdout=subprocess.PIPE,
+                                shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
         common_global.es_inst.com_elastic_index('critical',
@@ -71,7 +72,8 @@ common_global.es_inst.com_elastic_index('info', {'db2': common_version.DB_VERSIO
 if db_connection.db_version_check() != common_version.DB_VERSION:
     common_global.es_inst.com_elastic_index('info',
                                             {'stuff': 'Database upgrade in progress...'})
-    db_create_pid = subprocess.Popen(['python3', './db_update_version.py'], shell=False)
+    db_create_pid = subprocess.Popen(['python3', './db_update_version.py'], stdout=subprocess.PIPE,
+                                     shell=False)
     db_create_pid.wait()
     common_global.es_inst.com_elastic_index('info', {'stuff': 'Database upgrade complete.'})
 
@@ -103,7 +105,7 @@ if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
 link_pid = {}
 for link_data in db_connection.db_link_list():
     proc_link = subprocess.Popen(['python3', './main_server_link.py', link_data[2]['IP'],
-                                  str(link_data[2]['Port'])], shell=False)
+                                  str(link_data[2]['Port'])], stdout=subprocess.PIPE, shell=False)
     common_global.es_inst.com_elastic_index('info', {'Link PID': proc_link.pid})
     link_pid[link_data[0]] = proc_link.pid
 
@@ -113,6 +115,9 @@ current_host_working_directory = docker_inst.com_docker_container_bind(container
                                                                        bind_match='/data/devices')
 
 # start up other docker containers if needed
+if option_config_json['Docker Instances']['elk']:
+    docker_inst.com_docker_run_elk(current_host_working_directory)
+
 if option_config_json['Docker Instances']['mumble']:
     docker_inst.com_docker_run_mumble(current_host_working_directory)
 
@@ -120,6 +125,9 @@ if option_config_json['Docker Instances']['musicbrainz'] \
         and option_config_json['API']['musicbrainz'] is not None:
     docker_inst.com_docker_run_musicbrainz(current_host_working_directory,
                                            option_config_json['API']['musicbrainz'])
+
+if option_config_json['Docker Instances']['pgadmin']:
+    docker_inst.com_docker_run_pgadmin(current_host_working_directory)
 
 if option_config_json['Docker Instances']['portainer']:
     docker_inst.com_docker_run_portainer(current_host_working_directory)

@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbasenodeffmpeg:latest
+FROM mediakraken/mkbasenodeffmpeg:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the Roku thumbnail generator app"
@@ -11,12 +11,12 @@ ARG PIPMIRROR
 RUN mkdir /mediakraken
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   cifs-utils \
   nfs-utils \
   libressl \
@@ -24,13 +24,12 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3 \
   openrc \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && rm -rf /var/cache/apk/* \
   && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-ADD wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

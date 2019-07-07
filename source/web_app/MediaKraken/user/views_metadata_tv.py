@@ -30,7 +30,33 @@ def metadata_tvshow_detail(guid):
     data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
-    if 'tvmaze' in json_metadata['Meta']:
+    if 'themoviedb' in json_metadata['Meta']:
+        if 'episode_run_time' in json_metadata['Meta']['themoviedb']:
+            try:
+                data_runtime = json_metadata['Meta']['themoviedb']['episode_run_time'][0]
+            except:
+                data_runtime = json_metadata['Meta']['themoviedb']['episode_run_time']
+        else:
+            data_runtime = None
+        # TODO there must be sum rating on stuff......
+        if 'rating' in json_metadata['Meta']['themoviedb']:
+            data_rating = json_metadata['Meta']['themoviedb']['rating']
+        else:
+            data_rating = None
+        if 'first_air_date' in json_metadata['Meta']['themoviedb']:
+            data_first_aired = json_metadata['Meta']['themoviedb']['first_air_date']
+        else:
+            data_first_aired = None
+        if 'overview' in json_metadata['Meta']['themoviedb']:
+            data_overview = json_metadata['Meta']['themoviedb']['overview']
+        else:
+            data_overview = None
+        # build gen list
+        data_genres_list = ''
+        if 'genres' in json_metadata['Meta']['themoviedb']:
+            for ndx in json_metadata['Meta']['themoviedb']['genres']:
+                data_genres_list += (ndx + ', ')
+    elif 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']
         else:

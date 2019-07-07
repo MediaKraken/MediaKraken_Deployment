@@ -22,7 +22,7 @@ from lcdproc.server import Server
 # https://github.com/jinglemansweep/lcdproc/blob/master/examples.py
 
 # lcdproc class
-class CommonLCDProc(object):
+class CommonLCDProc:
     """
     Class for interfacing with lcpproc
     """

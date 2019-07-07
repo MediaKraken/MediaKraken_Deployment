@@ -1,12 +1,12 @@
-import time
-
 import functools
 import json
-import pika
+import os
 import subprocess
-import xmltodict
+import time
 from shlex import split
 
+import pika
+import xmltodict
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -16,11 +16,14 @@ from common import common_signal
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 
-class MKConsumer(object):
+class MKConsumer:
     EXCHANGE = 'mkque_download_ex'
     EXCHANGE_TYPE = 'direct'
     QUEUE = 'mkdownload'
@@ -50,18 +53,18 @@ class MKConsumer(object):
         self._consuming = False
         if self._connection.is_closing or self._connection.is_closed:
             common_global.es_inst.com_elastic_index('info', {
-                'ffprobe': 'Connection is closing or already closed'})
+                'download': 'Connection is closing or already closed'})
         else:
-            common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Closing connection'})
+            common_global.es_inst.com_elastic_index('info', {'download': 'Closing connection'})
             self._connection.close()
 
     def on_connection_open(self, _unused_connection):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Closing opened'})
+        common_global.es_inst.com_elastic_index('info', {'download': 'Closing opened'})
         self.open_channel()
 
     def on_connection_open_error(self, _unused_connection, err):
         common_global.es_inst.com_elastic_index('info',
-                                                {'ffprobe': ('Connection open failed: %s', err)})
+                                                {'download': ('Connection open failed: %s', err)})
         self.reconnect()
 
     def on_connection_closed(self, _unused_connection, reason):
@@ -70,7 +73,7 @@ class MKConsumer(object):
             self._connection.ioloop.stop()
         else:
             common_global.es_inst.com_elastic_index('info',
-                                                    {'ffprobe': (
+                                                    {'download': (
                                                         'Connection closed, reconnect necessary: %s',
                                                         reason)})
             self.reconnect()
@@ -80,28 +83,28 @@ class MKConsumer(object):
         self.stop()
 
     def open_channel(self):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Creating a new channel'})
+        common_global.es_inst.com_elastic_index('info', {'download': 'Creating a new channel'})
         self._connection.channel(on_open_callback=self.on_channel_open)
 
     def on_channel_open(self, channel):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': 'Channel opened'})
+        common_global.es_inst.com_elastic_index('info', {'download': 'Channel opened'})
         self._channel = channel
         self.add_on_channel_close_callback()
         self.setup_exchange(self.EXCHANGE)
 
     def add_on_channel_close_callback(self):
         common_global.es_inst.com_elastic_index('info',
-                                                {'ffprobe': 'Adding channel close callback'})
+                                                {'download': 'Adding channel close callback'})
         self._channel.add_on_close_callback(self.on_channel_closed)
 
     def on_channel_closed(self, channel, reason):
         common_global.es_inst.com_elastic_index('info', {
-            'ffprobe': ('Channel %i was closed: %s', channel, reason)})
+            'download': ('Channel %i was closed: %s', channel, reason)})
         self.close_connection()
 
     def setup_exchange(self, exchange_name):
         common_global.es_inst.com_elastic_index('info', {
-            'ffprobe': ('Declaring exchange: %s', exchange_name)})
+            'download': ('Declaring exchange: %s', exchange_name)})
         # Note: using functools.partial is not required, it is demonstrating
         # how arbitrary data can be passed to the callback when it is called
         cb = functools.partial(
@@ -114,20 +117,20 @@ class MKConsumer(object):
 
     def on_exchange_declareok(self, _unused_frame, userdata):
         common_global.es_inst.com_elastic_index('info',
-                                                {'ffprobe': ('Exchange declared: %s', userdata)})
+                                                {'download': ('Exchange declared: %s', userdata)})
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
         common_global.es_inst.com_elastic_index('info',
-                                                {'ffprobe': ('Declaring queue %s', queue_name)})
+                                                {'download': ('Declaring queue %s', queue_name)})
         cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
         self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Binding %s to %s with %s',
-                                                                     self.EXCHANGE, queue_name,
-                                                                     self.ROUTING_KEY)})
+        common_global.es_inst.com_elastic_index('info', {'download': ('Binding %s to %s with %s',
+                                                                      self.EXCHANGE, queue_name,
+                                                                      self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -136,7 +139,7 @@ class MKConsumer(object):
             callback=cb)
 
     def on_bindok(self, _unused_frame, userdata):
-        common_global.es_inst.com_elastic_index('info', {'ffprobe': ('Queue bound: %s', userdata)})
+        common_global.es_inst.com_elastic_index('info', {'download': ('Queue bound: %s', userdata)})
         self.set_qos()
 
     def set_qos(self):
@@ -145,12 +148,12 @@ class MKConsumer(object):
 
     def on_basic_qos_ok(self, _unused_frame):
         common_global.es_inst.com_elastic_index('info', {
-            'ffprobe': ('QOS set to: %d', self._prefetch_count)})
+            'download': ('QOS set to: %d', self._prefetch_count)})
         self.start_consuming()
 
     def start_consuming(self):
         common_global.es_inst.com_elastic_index('info', {
-            'ffprobe': 'Issuing consumer related RPC commands'})
+            'download': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
         self._consumer_tag = self._channel.basic_consume(
             self.QUEUE, self.on_message)
@@ -159,12 +162,12 @@ class MKConsumer(object):
 
     def add_on_cancel_callback(self):
         common_global.es_inst.com_elastic_index('info', {
-            'ffprobe': 'Adding consumer cancellation callback'})
+            'download': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
         common_global.es_inst.com_elastic_index('info', {
-            'ffprobe': ('Consumer was cancelled remotely, shutting down: %r', method_frame)})
+            'download': ('Consumer was cancelled remotely, shutting down: %r', method_frame)})
         if self._channel:
             self._channel.close()
 
@@ -172,21 +175,20 @@ class MKConsumer(object):
         if body is not None:
             common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
-            # no reason to check for download.....it has to be to get into this program
-            # if json_message['Type'] == 'Download':
-            # file, image, etc
+            # no reason to check for type download.....it has to be to get into this program
             if json_message['Subtype'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local Save Path'])
             elif json_message['Subtype'] == 'Youtube':
                 # TODO little bobby tables
                 dl_pid = subprocess.Popen(split(
-                    'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt ' +
-                    json_message['URL']))
+                    'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
+                    + json_message['URL']), stdout=subprocess.PIPE, shell=False)
                 dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
             elif json_message['Subtype'] == 'HDTrailers':
+                # try to grab the RSS feed itself
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(
-                    "http://feeds.hd-trailers.net/hd-trailers", None))
+                    "http://feeds.hd-trailers.net/hd-trailers", directory=None))
                 if data is not None:
                     for item in data['item']:
                         common_global.es_inst.com_elastic_index('info', {'item': item})
@@ -206,23 +208,23 @@ class MKConsumer(object):
                                     download_link = data['item']['enclosure url']
                                     break
                         if download_link is not None:
-                            # TODO let the metadata fetch program grab these
-                            # TODO verify this trailer has not been downloaded before
-                            # TODO so only insert db dl records
-                            common_network.mk_network_fetch_from_url(download_link,
-                                                                     '/static/meta/trailer')
+                            file_save_name = os.path.join('/static/meta/trailer/',
+                                                          download_link.rsplit('/', 1))
+                            if not os.path.exists(file_save_name):
+                                common_network.mk_network_fetch_from_url(download_link,
+                                                                         directory=file_save_name)
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
         common_global.es_inst.com_elastic_index('error', {
-            'ffprobe null': ('Acknowledging message %s', delivery_tag)})
+            'download': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
             common_global.es_inst.com_elastic_index('error',
                                                     {
-                                                        'ffprobe null': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+                                                        'download': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
                 self.on_cancelok, userdata=self._consumer_tag)
             self._channel.basic_cancel(self._consumer_tag, cb)
@@ -230,11 +232,11 @@ class MKConsumer(object):
     def on_cancelok(self, _unused_frame, userdata):
         self._consuming = False
         common_global.es_inst.com_elastic_index('info', {
-            'ffprobe': ('RabbitMQ acknowledged the cancellation of the consumer: %s', userdata)})
+            'download': ('RabbitMQ acknowledged the cancellation of the consumer: %s', userdata)})
         self.close_channel()
 
     def close_channel(self):
-        common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Closing the channel'})
+        common_global.es_inst.com_elastic_index('error', {'download': 'Closing the channel'})
         self._channel.close()
 
     def run(self):
@@ -244,15 +246,15 @@ class MKConsumer(object):
     def stop(self):
         if not self._closing:
             self._closing = True
-            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopping'})
+            common_global.es_inst.com_elastic_index('error', {'download': 'Stopping'})
             if self._consuming:
                 self.stop_consuming()
                 self._connection.ioloop.start()
             else:
                 self._connection.ioloop.stop()
-            common_global.es_inst.com_elastic_index('error', {'ffprobe null': 'Stopped'})
+            common_global.es_inst.com_elastic_index('error', {'download': 'Stopped'})
 
-    class ReconnectingExampleConsumer(object):
+    class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
         ExampleConsumer indicates that a reconnect is necessary.
         """
@@ -276,7 +278,7 @@ class MKConsumer(object):
                 self._consumer.stop()
                 reconnect_delay = self._get_reconnect_delay()
                 common_global.es_inst.com_elastic_index('error',
-                                                        {'ffprobe': (
+                                                        {'download': (
                                                             'Reconnecting after %d seconds',
                                                             reconnect_delay)})
                 time.sleep(reconnect_delay)
@@ -293,13 +295,9 @@ class MKConsumer(object):
 
 
 def main():
-    # set signal exit breaks
-    common_signal.com_signal_set_break()
-    # fire off wait for it script to allow rabbitmq connection
-    wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                                 'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-                                shell=False)
-    wait_pid.wait()
+    # fire off wait for it script to allow connection
+    common_network.mk_network_service_available('mkrabbitmq', '5672')
+
     mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
     try:
         mk_rabbit.run()

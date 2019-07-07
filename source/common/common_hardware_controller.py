@@ -28,7 +28,7 @@ from . import common_hardware_pioneer
 from . import common_hardware_samsung
 
 
-class CommonHardwareController(object):
+class CommonHardwareController:
     """
     Class for interfacing with hardware from json specifications
     """

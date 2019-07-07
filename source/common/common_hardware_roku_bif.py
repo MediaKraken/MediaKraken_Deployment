@@ -19,8 +19,8 @@ import json
 import os
 import shutil
 import struct
+import subprocess
 import tempfile
-from subprocess import Popen, PIPE
 
 from common import common_ffmpeg
 
@@ -30,7 +30,8 @@ def getfileinfo(filename):
     Get info about the video
     """
     json_ffmpeg = json.loads(common_ffmpeg.com_ffmpeg_media_attr(filename))
-    video_aspect_ratio = float(json_ffmpeg['streams'][0]['width']) / float(json_ffmpeg['streams'][0]['height'])
+    video_aspect_ratio = float(json_ffmpeg['streams'][0]['width']) / float(
+        json_ffmpeg['streams'][0]['height'])
     if video_aspect_ratio > 1.5:
         if float(json_ffmpeg['streams'][0]['height'] >= 720):
             return "320x180", 'HD'  # HD 16:9 ~ 1.7 ratio
@@ -52,11 +53,11 @@ def extractimages(videofile, directory, interval, resolution, offset=0):
     @param resolution to create images at
     @param offset offset to first image, in seconds
     """
-    proc = Popen(["ffmpeg", "-i", videofile,
-                  "-ss", "%d" % offset,
-                  "-r", "%0.2f" % (1.00 / interval),
-                  "-s", resolution,
-                  "%s/%%08d.jpg" % directory], stdout=PIPE, stdin=PIPE)
+    proc = subprocess.Popen(["ffmpeg", "-i", videofile,
+                             "-ss", "%d" % offset,
+                             "-r", "%0.2f" % (1.00 / interval),
+                             "-s", resolution,
+                             "%s/%%08d.jpg" % directory], stdout=subprocess.PIPE, shell=False)
     (stdout, stderr) = proc.communicate()  # pylint: disable=W0612
 
 

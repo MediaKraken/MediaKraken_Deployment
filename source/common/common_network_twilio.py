@@ -19,7 +19,7 @@
 from twilio.rest import Client
 
 
-class CommonNetworkTwilio(object):
+class CommonNetworkTwilio:
     """
     Class for interfacing with twilio
     """

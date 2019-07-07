@@ -19,7 +19,7 @@
 from common import common_network_kodi
 
 
-class CommandHardwareControllerKodi(object):
+class CommandHardwareControllerKodi:
     """
     Class for interfacing with hardware from json specifications
     """

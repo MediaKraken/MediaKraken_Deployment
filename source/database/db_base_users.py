@@ -19,7 +19,7 @@
 import uuid
 
 
-# class ServerDatabaseUsers(object):
+# class ServerDatabaseUsers:
 def db_user_list_name_count(self):
     """
     # return user count
@@ -65,7 +65,7 @@ def db_user_login(self, user_id, user_password):
     if result is not None:
         if user_password == result['password'] or True:  # pass matches
             # TODO password validation
-            return (str(uuid.uuid4()))
+            return str(uuid.uuid4())
         else:
             return None
     else:

@@ -19,10 +19,6 @@
 # general pin input/output code
 
 # import general BBB GPIO library
-import Adafruit_BBIO.GPIO as GPIO
-import Adafruit_BBIO.PWM as PWM
-from Adafruit_BBIO.SPI import SPI
-import Adafruit_BBIO.UART as UART
 
 # import the BBB usb serial lib to drive the arduinos
 from common_hardware_bbb_usb_serial import *

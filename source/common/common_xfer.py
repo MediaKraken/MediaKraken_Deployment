@@ -44,12 +44,12 @@ class FileSenderThread(threading.Thread):
                 common_global.es_inst.com_elastic_index('info', {"fn": self.filenames[fileindex],
                                                                  'types': type(
                                                                      self.filenames[fileindex])})
-                clientsocket.sendall("FILE" + struct.pack("<i256s", len(data),
-                                                          str(self.filenames[fileindex])))
+                clientsocket.sendall(b"FILE" + struct.pack("<i256s", len(data),
+                                                           str(self.filenames[fileindex])))
                 for ndx in range(0, (len(data) + 1023) / 1024):
                     clientsocket.sendall(data[ndx * 1024:(ndx + 1) * 1024])
                     time.sleep(0.05)
-            clientsocket.sendall('FEND')
+            clientsocket.sendall(b'FEND')
             clientsocket.close()
         except socket.error as msg:
             common_global.es_inst.com_elastic_index('error', {'Sending files failed.':
@@ -98,8 +98,9 @@ class FileReceiverThread(threading.Thread):
                         data = con.recv(min(fileleft, 1024))
                         fileleft = max(0, fileleft - len(data))
                         self.filedone = self.filesize - fileleft
-                        common_global.es_inst.com_elastic_index('info', {'percent done':
-                                                                             self.filedone * 100 / self.filesize})
+                        common_global.es_inst.com_elastic_index('info',
+                                                                {'percent done':
+                                                                     self.filedone * 100 / self.filesize})
                         file_handle.write(data)
                     file_handle.close()
                     common_global.es_inst.com_elastic_index('info', {'stuff': 'file finished'})

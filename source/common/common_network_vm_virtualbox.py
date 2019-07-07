@@ -18,7 +18,7 @@
 
 
 # https://github.com/mjdorma/pyvbox
-class CommonNetworkVirtualBox(object):
+class CommonNetworkVirtualBox:
     """
     Class for interfacing via virtualbox
     """

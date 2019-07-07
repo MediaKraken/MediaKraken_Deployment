@@ -41,6 +41,10 @@ docker_inst = common_docker.CommonDocker()
 # using reactor since it should always be running
 current_host_working_directory = docker_inst.com_docker_container_bind(container_name='/mkreactor',
                                                                        bind_match='/data/certs')
+if current_host_working_directory is None:
+    print('Please start the containers so path can be found.'
+          '  Exiting...')
+    sys.exit()
 
 docker_inst.com_docker_network_prune()
 docker_inst.com_docker_network_create()

@@ -1,4 +1,4 @@
-FROM mediakraken/mkbaseffmpegubuntu:latest
+FROM mediakraken/mkbaseffmpegubuntu:dev
 
 ARG PIPMIRROR
 

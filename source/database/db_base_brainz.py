@@ -19,7 +19,7 @@
 import psycopg2
 
 
-class ServerDatabaseBrainz(object):
+class ServerDatabaseBrainz:
     """
     Connect to remote/local brainz instance
     """

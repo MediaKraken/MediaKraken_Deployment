@@ -21,7 +21,7 @@ import fs
 import fs.dlna
 
 
-class CommonNetworkDLNAFS(object):
+class CommonNetworkDLNAFS:
     """
     For setting up dlna fs read
     """

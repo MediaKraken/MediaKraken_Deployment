@@ -16,20 +16,21 @@ Additionally a grep function is supplied that can be used to search for ports
 based on their descriptions or hardware ID.
 """
 
-import sys, os, re
+# chose an implementation, depending on os
+# ~ if sys.platform == 'cli':
+# ~ else:
+import os
+import re
 
 # chose an implementation, depending on os
-#~ if sys.platform == 'cli':
-#~ else:
-import os
-# chose an implementation, depending on os
-if os.name == 'nt': #sys.platform == 'win32':
+if os.name == 'nt':  # sys.platform == 'win32':
     from serial.tools.list_ports_windows import *
 elif os.name == 'posix':
     from serial.tools.list_ports_posix import *
-#~ elif os.name == 'java':
+# ~ elif os.name == 'java':
 else:
     raise ImportError("Sorry: no implementation for your platform ('%s') available" % (os.name,))
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -50,37 +51,37 @@ def main():
     import optparse
 
     parser = optparse.OptionParser(
-        usage = "%prog [options] [<regexp>]",
-        description = "Miniterm - A simple terminal program for the serial port."
+        usage="%prog [options] [<regexp>]",
+        description="Miniterm - A simple terminal program for the serial port."
     )
 
     parser.add_option("--debug",
-            help="print debug messages and tracebacks (development mode)",
-            dest="debug",
-            default=False,
-            action='store_true')
+                      help="print debug messages and tracebacks (development mode)",
+                      dest="debug",
+                      default=False,
+                      action='store_true')
 
     parser.add_option("-v", "--verbose",
-            help="show more messages (can be given multiple times)",
-            dest="verbose",
-            default=1,
-            action='count')
+                      help="show more messages (can be given multiple times)",
+                      dest="verbose",
+                      default=1,
+                      action='count')
 
     parser.add_option("-q", "--quiet",
-            help="suppress all messages",
-            dest="verbose",
-            action='store_const',
-            const=0)
+                      help="suppress all messages",
+                      dest="verbose",
+                      action='store_const',
+                      const=0)
 
     (options, args) = parser.parse_args()
-
 
     hits = 0
     # get iteraror w/ or w/o filter
     if args:
         if len(args) > 1:
             parser.error('more than one regexp not supported')
-        print "Filtered list with regexp: %r" % (args[0],)
+        print
+        "Filtered list with regexp: %r" % (args[0],)
         iterator = sorted(grep(args[0]))
     else:
         iterator = sorted(comports())
@@ -96,6 +97,7 @@ def main():
             print("%d ports found" % (hits,))
         else:
             print("no ports found")
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # test

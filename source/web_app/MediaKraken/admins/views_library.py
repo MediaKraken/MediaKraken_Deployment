@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import sys
-
 import json
 import os
+import sys
 
 sys.path.append('..')
 from flask import Blueprint, render_template, g, request, flash, \
@@ -17,7 +16,7 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import LibraryAddEditForm
-
+from MediaKraken.utils import flash_errors
 from common import common_config_ini
 from common import common_global
 from common import common_network_cifs
@@ -27,18 +26,6 @@ from common import common_string
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-
-def flash_errors(form):
-    """
-    Display errors from list
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
 
 
 def admin_required(fn):
@@ -74,13 +61,6 @@ def admin_library():
                                                   rabbit_host_name='mkrabbitmq',
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
-            # ch = fpika.channel()
-            # ch.basic_publish(exchange='mkque_ex', routing_key='mkque',
-            #                  body=json.dumps({'Type': 'Library Scan'}),
-            #                  properties=fpika.BasicProperties(content_type='text/plain',
-            #                                                   delivery_mode=2)
-            #                  )
-            # fpika.return_channel(ch)
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     page, per_page, offset = common_pagination.get_page_items()

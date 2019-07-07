@@ -18,26 +18,28 @@ import threading
 from time import time, sleep, strftime, localtime
 from types import *
 
-from .aniDBlink import AniDBLink
+from .aniDBAbstracter import Anime, Episode
 from .aniDBcommands import *
 from .aniDBerrors import *
-from .aniDBAbstracter import Anime, Episode
+from .aniDBlink import AniDBLink
 
 version = 100
 
+
 class Connection(threading.Thread):
-    def __init__(self, clientname='adba', server='api.anidb.info', port=9000, myport=9876, user=None, password=None, session=None, log=False, logPrivate=False, keepAlive=False):
+    def __init__(self, clientname='adba', server='api.anidb.info', port=9000, myport=9876,
+                 user=None, password=None, session=None, log=False, logPrivate=False,
+                 keepAlive=False):
         super(Connection, self).__init__()
         # setting the log function
         self.logPrivate = logPrivate
-        if type(log) in (FunctionType, MethodType):# if we get a function or a method use that.
+        if type(log) in (FunctionType, MethodType):  # if we get a function or a method use that.
             self.log = log
-            self.logPrivate = True # true means sensitive data will not be NOT be logged ... yeah i know oO
-        elif log:# if it something else (like True) use the own print_log
+            self.logPrivate = True  # true means sensitive data will not be NOT be logged ... yeah i know oO
+        elif log:  # if it something else (like True) use the own print_log
             self.log = self.print_log
-        else:# dont log at all
+        else:  # dont log at all
             self.log = self.print_log_dummy
-
 
         self.link = AniDBLink(server, port, myport, self.log, logPrivate=self.logPrivate)
         self.link.session = session
@@ -46,7 +48,7 @@ class Connection(threading.Thread):
         self.clientver = version
 
         # from original lib 
-        self.mode = 1    #mode: 0=queue,1=unlock,2=callback
+        self.mode = 1  # mode: 0=queue,1=unlock,2=callback
 
         # to lock other threads out
         self.lock = threading.RLock()
@@ -73,29 +75,29 @@ class Connection(threading.Thread):
     def stop(self):
         self.logout(cutConnection=True)
 
-
     def cut(self):
         self.link.stop()
 
     def handle_response(self, response):
         if response.rescode in ('501', '506') and response.req.command != 'AUTH':
-            self.log("seams like the last command got a not authed error back tring to reconnect now")
+            self.log(
+                "seams like the last command got a not authed error back tring to reconnect now")
             if self._reAuthenticate():
                 response.req.resp = None
                 response = self.handle(response.req, response.req.callback)
 
-
     def handle(self, command, callback):
 
         self.lock.acquire()
-        if self.counterAge < (time() - 120): # the last request was older then 2 min reset delay and counter
+        if self.counterAge < (
+                time() - 120):  # the last request was older then 2 min reset delay and counter
             self.counter = 0
             self.link.delay = 2
-        else: # something happend in the last 120 seconds
+        else:  # something happend in the last 120 seconds
             if self.counter < 5:
-                self.link.delay = 2 # short term "A Client MUST NOT send more than 0.5 packets per second (that's one packet every two seconds, not two packets a second!)"
+                self.link.delay = 2  # short term "A Client MUST NOT send more than 0.5 packets per second (that's one packet every two seconds, not two packets a second!)"
             elif self.counter >= 5:
-                self.link.delay = 6 # long term "A Client MUST NOT send more than one packet every four seconds over an extended amount of time."
+                self.link.delay = 6  # long term "A Client MUST NOT send more than one packet every four seconds over an extended amount of time."
 
         if command.command not in ('AUTH', 'PING', 'ENCRYPT'):
             self.counterAge = time()
@@ -108,13 +110,14 @@ class Connection(threading.Thread):
             if callback:
                 callback(resp)
 
-        self.log("handling(" + str(self.counter) + "-" + str(self.link.delay) + ") command " + str(command.command))
+        self.log("handling(" + str(self.counter) + "-" + str(self.link.delay) + ") command " + str(
+            command.command))
 
-        #make live request
+        # make live request
         command.authorize(self.mode, self.link.new_tag(), self.link.session, callback_wrapper)
         self.link.request(command)
 
-        #handle mode 1 (wait for response)
+        # handle mode 1 (wait for response)
         if self.mode == 1:
             command.wait_response()
             try:
@@ -154,11 +157,11 @@ class Connection(threading.Thread):
         # if not reauthenticate 
         if self.lastAuth and time() - self.lastAuth > 1800:
             self.log("auto uptime !")
-            self.uptime() # this will update the self.link.session and will refresh the session if it is still alive
+            self.uptime()  # this will update the self.link.session and will refresh the session if it is still alive
 
-            if self.authed(): # if we are authed we set the time
+            if self.authed():  # if we are authed we set the time
                 self.lastAuth = time()
-            else: # if we aren't authed and we have the user and pw then reauthenticate
+            else:  # if we aren't authed and we have the user and pw then reauthenticate
                 self._reAuthenticate()
 
         # issue a ping every 20 minutes after the last package
@@ -167,12 +170,10 @@ class Connection(threading.Thread):
             self.log("auto ping !")
             self.ping()
 
-
     def run(self):
         while self.keepAlive:
             self._keep_alive()
             sleep(120)
-
 
     def auth(self, username, password, nat=None, mtu=None, callback=None):
         """
@@ -197,11 +198,13 @@ class Connection(threading.Thread):
                     self.start()
                     self._iamALIVE = True
                 else:
-                    self.log("not starting thread seams like it is already running. this must be a _reAuthenticate")
-
+                    self.log(
+                        "not starting thread seams like it is already running. this must be a _reAuthenticate")
 
         self.lastAuth = time()
-        return self.handle(AuthCommand(username, password, 3, self.clientname, self.clientver, nat, 1, 'utf8', mtu), callback)
+        return self.handle(
+            AuthCommand(username, password, 3, self.clientname, self.clientver, nat, 1, 'utf8',
+                        mtu), callback)
 
     def logout(self, cutConnection=False, callback=None):
         """
@@ -209,7 +212,7 @@ class Connection(threading.Thread):
         
         """
         result = self.handle(LogoutCommand(), callback)
-        if(cutConnection):
+        if (cutConnection):
             self.cut()
         return result
 
@@ -257,7 +260,6 @@ class Connection(threading.Thread):
         """
 
         return self.handle(NotifyAddCommand(aid, gid, type, priority), callback)
-
 
     def notify(self, buddy=None, callback=None):
         """
@@ -386,7 +388,7 @@ class Connection(threading.Thread):
         """
         return self.handle(BuddyStateCommand(startat), callback)
 
-    def anime(self, aid=None, aname=None, amask= -1, callback=None):
+    def anime(self, aid=None, aname=None, amask=-1, callback=None):
         """
         Get information about an anime
 
@@ -420,7 +422,8 @@ class Connection(threading.Thread):
         """
         return self.handle(EpisodeCommand(eid, aid, aname, epno), callback)
 
-    def file(self, fid=None, size=None, ed2k=None, aid=None, aname=None, gid=None, gname=None, epno=None, fmask= -1, amask=0, callback=None):
+    def file(self, fid=None, size=None, ed2k=None, aid=None, aname=None, gid=None, gname=None,
+             epno=None, fmask=-1, amask=0, callback=None):
         """
         Get information about a file
 
@@ -512,7 +515,8 @@ class Connection(threading.Thread):
         31    -        -
         
         """
-        return self.handle(FileCommand(fid, size, ed2k, aid, aname, gid, gname, epno, fmask, amask), callback)
+        return self.handle(FileCommand(fid, size, ed2k, aid, aname, gid, gname, epno, fmask, amask),
+                           callback)
 
     def group(self, gid=None, gname=None, callback=None):
         """
@@ -559,7 +563,8 @@ class Connection(threading.Thread):
 
         return self.handle(ProducerCommand(pid, pname), callback)
 
-    def mylist(self, lid=None, fid=None, size=None, ed2k=None, aid=None, aname=None, gid=None, gname=None, epno=None, callback=None):
+    def mylist(self, lid=None, fid=None, size=None, ed2k=None, aid=None, aname=None, gid=None,
+               gname=None, epno=None, callback=None):
         """
         Get information about your mylist
 
@@ -581,9 +586,12 @@ class Connection(threading.Thread):
         (aid|aname) (gid|gname) epno
         
         """
-        return self.handle(MyListCommand(lid, fid, size, ed2k, aid, aname, gid, gname, epno), callback)
+        return self.handle(MyListCommand(lid, fid, size, ed2k, aid, aname, gid, gname, epno),
+                           callback)
 
-    def mylistadd(self, lid=None, fid=None, size=None, ed2k=None, aid=None, aname=None, gid=None, gname=None, epno=None, edit=None, state=None, viewed=None, source=None, storage=None, other=None, callback=None):
+    def mylistadd(self, lid=None, fid=None, size=None, ed2k=None, aid=None, aname=None, gid=None,
+                  gname=None, epno=None, edit=None, state=None, viewed=None, source=None,
+                  storage=None, other=None, callback=None):
         """
         Add/Edit information to/in your mylist
 
@@ -625,9 +633,12 @@ class Connection(threading.Thread):
         -x    target all episodes upto x
         
         """
-        return self.handle(MyListAddCommand(lid, fid, size, ed2k, aid, aname, gid, gname, epno, edit, state, viewed, source, storage, other), callback)
+        return self.handle(
+            MyListAddCommand(lid, fid, size, ed2k, aid, aname, gid, gname, epno, edit, state,
+                             viewed, source, storage, other), callback)
 
-    def mylistdel(self, lid=None, fid=None, aid=None, aname=None, gid=None, gname=None, epno=None, callback=None):
+    def mylistdel(self, lid=None, fid=None, aid=None, aname=None, gid=None, gname=None, epno=None,
+                  callback=None):
         """
         Delete information from your mylist
 
@@ -747,7 +758,8 @@ class Connection(threading.Thread):
         it's better that way, let it go as utf8 to databases etc. because then you've the real data stored
         
         """
-        raise AniDBStupidUserError("pylibanidb sets the encoding to utf8 as default and it's stupid to use any other encoding. you WILL lose some data if you use other encodings, and now you've been warned. you will need to modify the code yourself if you want to do something as stupid as changing the encoding")
+        raise AniDBStupidUserError(
+            "pylibanidb sets the encoding to utf8 as default and it's stupid to use any other encoding. you WILL lose some data if you use other encodings, and now you've been warned. you will need to modify the code yourself if you want to do something as stupid as changing the encoding")
         return self.handle(EncodingCommand(name), callback)
 
     def sendmsg(self, to, title, body, callback=None):

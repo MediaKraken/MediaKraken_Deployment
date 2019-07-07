@@ -6,16 +6,16 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
 
 ARG FDKAAC_VERSION=0.1.5
-ARG X264_VERSION=20181217-2245-stable
-ARG X265_VERSION=2.9
-ARG FFMPEG_VERSION="4.1"
+ARG X264_VERSION=20190312-2245-stable
+ARG X265_VERSION=3.0
+ARG FFMPEG_VERSION="4.1.3"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 COPY scripts /mediakraken
 RUN mkdir /mediakraken/install
 COPY scripts/vid.stab.0.98b /mediakraken/install/vid.stab.0.98b
 RUN mkdir /mediakraken/cuda
-ADD cuda /mediakraken/cuda
+COPY cuda /mediakraken/cuda
 
 # will need to add/comipile by hand as dev version doesn't exist
 # rtmpdump-dev \
@@ -157,10 +157,10 @@ COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-ARG NVIDIA_DRIVER=415.25
+ARG NVIDIA_DRIVER=430.26
 
 RUN mkdir /mediakraken
-ADD driver /mediakraken
+COPY driver /mediakraken
 
 RUN apt update && \
     apt -y upgrade && \
@@ -175,6 +175,10 @@ RUN apt update && \
     rm -Rf /mediakraken && \
     rm -rf /var/lib/apt/lists/* && \
     ffmpeg -buildconf
+
+#    groupadd -r metaman && useradd -r -g metaman metaman
+# Do NOT do the below as other containers won't have rights to install/build.
+# USER metaman
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg

@@ -1,6 +1,6 @@
-passwordmeter
-twisted
-pika
-docker
-pysmb
-cryptography
+passwordmeter==0.1.8
+twisted==19.2.1
+pika==1.0.1
+docker==4.0.2
+pysmb==1.1.27
+cryptography==2.7

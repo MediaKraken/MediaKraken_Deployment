@@ -19,7 +19,7 @@
 from pylms.server import Server
 
 
-class CommonNetLMS(object):
+class CommonNetLMS:
     def __init__(self, hostname="192.168.1.1", port=9090, username="user",
                  password="password"):
         self.lms_device = Server(hostname=hostname, port=port,

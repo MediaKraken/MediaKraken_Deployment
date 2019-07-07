@@ -1,2 +1,2 @@
-tmdbv3api
-tmdbsimple
+tmdbv3api==1.3.2
+tmdbsimple==2.2.0

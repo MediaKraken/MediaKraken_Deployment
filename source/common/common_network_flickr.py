@@ -19,7 +19,7 @@
 import flickrapi
 
 
-class CommonNetworkFlickr(object):
+class CommonNetworkFlickr:
     """
     Class for interfacing with Flickr
     """

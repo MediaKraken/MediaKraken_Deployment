@@ -17,7 +17,6 @@
 '''
 
 import datetime
-
 import json
 
 from common import common_global
@@ -366,7 +365,7 @@ def db_ffprobe_all_media_guid(self, media_uuid, media_class_uuid):
     # fetch all media with METADATA match
     """
     self.db_cursor.execute(
-        'select mm_media_guid,mm_media_ffprobe_json from mm_media,mm_metadata_movie'
+        'select distinct mm_media_guid,mm_media_ffprobe_json from mm_media,mm_metadata_movie'
         ' where mm_media_metadata_guid = '
         '(select mm_media_metadata_guid from mm_media where mm_media_guid = %s)'
         ' and mm_media_class_guid = %s',

@@ -24,7 +24,7 @@ import uuid
 from . import common_network_irdb
 
 
-class CommonDatabaseOctmote(object):
+class CommonDatabaseOctmote:
     """
     Class for interfacing with database of Octmote
     """

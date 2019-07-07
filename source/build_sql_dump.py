@@ -62,21 +62,23 @@ ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "drop database metama
 ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -c "create database metamandb"')
 
 # enable pg_trgm
-ssh_inst.com_net_ssh_run_sudo_command('psql -U postgres -d metamandb -c "create extension pg_trgm;"')
+ssh_inst.com_net_ssh_run_sudo_command(
+    'psql -U postgres -d metamandb -c "create extension pg_trgm;"')
 
 db_create_pid = subprocess.Popen(['python3',
                                   '/home/metaman/MediaKraken_Deployment/source/db_create_update.py'],
-                                 shell=False)
+                                 stdout=subprocess.PIPE, shell=False)
 db_create_pid.wait()
 
 # do a dump which defaults to plain text
-ssh_inst.com_net_ssh_run_sudo_command('pg_dump -U postgres -d metamandb -f '
-                                      '/home/metaman/create_schema.sql')
+ssh_inst.com_net_ssh_run_sudo_command(
+    'pg_dump -U postgres -d metamandb -f /home/metaman/create_schema.sql')
 
 # close the ssh connection
 ssh_inst.com_net_ssh_close()
 
 # scp the file to local machine
 scp_inst = subprocess.Popen(['scp', '-r', 'metaman@th-postgresql-1:/home/metaman/create_schema.sql',
-                             '../docker/alpine/ComposeMediaKrakenDatabase/docker-entrypoint-initdb.d/.'])
+                             '../docker/alpine/ComposeMediaKrakenDatabase/docker-entrypoint-initdb.d/.'],
+                            stdout=subprocess.PIPE, shell=False)
 scp_inst.wait()

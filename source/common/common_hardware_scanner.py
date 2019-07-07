@@ -21,7 +21,7 @@ import pyinsane2
 from common import common_file
 
 
-class CommonHardwareScanner(object):
+class CommonHardwareScanner:
     def __init__(self):
         pyinsane2.init()
 

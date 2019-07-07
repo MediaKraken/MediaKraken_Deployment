@@ -3,11 +3,11 @@
 # forked and heavily modified for MediaKraken project
 import datetime
 import getopt
-import os
 import re
 import subprocess
 import sys
 import time
+
 from requests import exceptions as reqexc
 from twitch import TwitchClient
 

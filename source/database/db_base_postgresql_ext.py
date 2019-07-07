@@ -29,7 +29,7 @@ class LoggingCursor(psycopg2.extensions.cursor):
             raise
 
 
-class InfDateAdapter(object):
+class InfDateAdapter:
     """
     Infinite date adapter
     """

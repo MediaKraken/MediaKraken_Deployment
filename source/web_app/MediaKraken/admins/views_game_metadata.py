@@ -3,7 +3,7 @@
 import sys
 
 sys.path.append('..')
-from flask import Blueprint, render_template, g, flash, request
+from flask import Blueprint, render_template, g, request
 from flask_login import login_required
 
 blueprint = Blueprint("admins_game", __name__,
@@ -19,18 +19,6 @@ from common import common_global
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-
-def flash_errors(form):
-    """
-    Display errors from list
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
 
 
 def admin_required(fn):

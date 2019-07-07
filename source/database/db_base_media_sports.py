@@ -88,9 +88,11 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
                                            ' and mmr_media_metadata_guid = mm_metadata_guid'
                                            ' and mm_media_json->>\'DateAdded\' >= %s)) as temp',
                                            (class_guid, (datetime.datetime.now()
-                                                         - datetime.timedelta(days=7)).strftime("%Y-%m-%d"),
+                                                         - datetime.timedelta(days=7)).strftime(
+                                               "%Y-%m-%d"),
                                             class_guid, (datetime.datetime.now()
-                                                         - datetime.timedelta(days=7)).strftime("%Y-%m-%d")))
+                                                         - datetime.timedelta(days=7)).strftime(
+                                               "%Y-%m-%d")))
             else:
                 self.db_cursor.execute('select 1')
         else:

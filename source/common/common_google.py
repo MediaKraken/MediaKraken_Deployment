@@ -15,7 +15,7 @@ from . import common_network
 # from oauth2client.tools import argparser
 
 
-class CommonGoogle(object):
+class CommonGoogle:
     """
     Class for interfacing with google api
     """

@@ -21,13 +21,14 @@ import os
 import urllib.error
 import urllib.parse
 import urllib.request
+
 from smb.SMBConnection import SMBConnection
 from smb.SMBHandler import SMBHandler
 
 from . import common_global
 
 
-class CommonNetworkCIFSShareURL(object):
+class CommonNetworkCIFSShareURL:
     """
     Handle CIFS shares
     """
@@ -61,7 +62,7 @@ class CommonNetworkCIFSShareURL(object):
         file_con.close()
 
 
-class CommonCIFSShare(object):
+class CommonCIFSShare:
     """
     Handle CIFS shares
     """

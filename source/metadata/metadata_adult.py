@@ -17,6 +17,7 @@
 '''
 
 import json
+
 from common import common_global
 
 from . import metadata_nfo_xml
@@ -69,7 +70,9 @@ def metadata_adult_lookup(db_connection, download_que_json, download_que_id, fil
                 provider_id = str(tmdb_id)
             else:
                 provider_id = imdb_id
-            dl_meta = db_connection.db_download_que_exists(download_que_id, 1, 'pornhub',
+            dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                           common_global.DLMediaType.Movie.value,
+                                                           'pornhub',
                                                            provider_id)
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']

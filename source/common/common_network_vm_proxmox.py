@@ -22,7 +22,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
-class CommonNetworkProxMox(object):
+class CommonNetworkProxMox:
     """
     Class for interfacing via proxmox
     """

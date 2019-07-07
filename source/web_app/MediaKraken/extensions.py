@@ -14,7 +14,3 @@ login_manager = LoginManager()
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
-
-# from flask_pika import Pika as FPika
-#
-# fpika = FPika()

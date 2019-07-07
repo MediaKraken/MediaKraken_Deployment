@@ -21,7 +21,7 @@ from pyobjus import autoclass
 from . import common_global
 
 
-class CommoniOSHardwareInstance(object):
+class CommoniOSHardwareInstance:
     """
     Class for interfacing with iOS hardware
     """

@@ -1,6 +1,6 @@
 # https://github.com/PHLAK/docker-mumble
 
-FROM alpine:3.6
+FROM alpine:3.9
 MAINTAINER Chris Kankiewicz <Chris@ChrisKankiewicz.com>
 
 # Define Mumble version
@@ -23,7 +23,7 @@ RUN chmod +x /usr/local/bin/supw
 ARG BZIP_URL=https://github.com/mumble-voip/mumble/releases/download/${MUMBLE_VERSION}/murmur-static_x86-${MUMBLE_VERSION}.tar.bz2
 
 # Install dependencies, fetch Mumble bzip archive and chown files
-RUN apk add --update ca-certificates bzip2 tar tzdata wget \
+RUN apk add --no-cache ca-certificates bzip2 tar tzdata wget \
     && wget -qO- ${BZIP_URL} | tar -xjv --strip-components=1 -C /opt/mumble \
     && apk del ca-certificates bzip2 tar wget && rm -rf /var/cache/apk/* \
     && chown -R mumble:mumble /etc/mumble /opt/mumble

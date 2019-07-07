@@ -23,20 +23,20 @@ import uuid
 
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_imvdb
+from common import common_metadata_provider_imvdb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify imvdb key exists
 if option_config_json['API']['imvdb'] is not None:
     IMVDB_CONNECTION \
-        = common_metadata_imvdb.CommonMetadataIMVdb(option_config_json['API']['imvdb'])
+        = common_metadata_provider_imvdb.CommonMetadataIMVdb(option_config_json['API']['imvdb'])
 else:
     IMVDB_CONNECTION = None
 
 
 # imvdb lookup
-def metadata_music_video_lookup(db_connection, file_name):
+def metadata_music_video_lookup(db_connection, file_name, download_que_id):
     """
     Lookup by name on music video database
     """
@@ -78,9 +78,12 @@ def metadata_music_video_lookup(db_connection, file_name):
                         common_global.es_inst.com_elastic_index('info', {"vid data": video_data})
                         if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                             # need to submit a fetch record for limiter and rest of video data
-                            if db_connection.db_download_que_exists(None, 1, 'imvdb',
+                            if db_connection.db_download_que_exists(None,
+                                                                    common_global.DLMediaType.Movie.value,
+                                                                    'imvdb',
                                                                     str(video_data['id'])) is None:
-                                db_connection.db_download_insert('imvdb', 1,
+                                db_connection.db_download_insert('imvdb',
+                                                                 common_global.DLMediaType.Movie.value,
                                                                  json.dumps({"Status": "Fetch",
                                                                              "ProviderMetaID": str(
                                                                                  video_data['id']),

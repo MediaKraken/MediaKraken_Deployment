@@ -13,6 +13,7 @@ blueprint = Blueprint("admins_backup", __name__,
 # need the following three items for admin check
 import flask
 from flask_login import current_user
+from MediaKraken.utils import flash_errors
 from functools import wraps
 from MediaKraken.admins.forms import BackupEditForm
 from common import common_network_cloud
@@ -24,18 +25,6 @@ from common import common_string
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-
-def flash_errors(form):
-    """
-    Display errors from list
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
 
 
 def admin_required(fn):
@@ -65,8 +54,9 @@ def admin_backup_delete_page():
     file_path, file_type = request.form['id'].split('|')
     if file_type == "Local":
         os.remove(file_path)
-    elif file_type == "AWS" or file_type == "AWS S3":
-        CLOUD_HANDLE.com_cloud_file_delete('awss3', file_path, True)
+    else:
+        pass
+        # TODO, do the actual delete
     return json.dumps({'status': 'OK'})
 
 
@@ -97,9 +87,12 @@ def admin_backup():
             backup_files.append((backup_local[0], 'Local',
                                  common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
-    for backup_cloud in CLOUD_HANDLE.com_cloud_backup_list():
-        backup_files.append((backup_cloud.name, backup_cloud.type,
-                             common_string.com_string_bytes2human(backup_cloud.size)))
+    if len(option_config_json['Cloud']) > 0:  # to see if the json has been populated
+        cloud_handle = common_network_cloud.CommonLibCloud(option_config_json)
+        for backup_cloud in cloud_handle.com_net_cloud_list_data_in_container(
+                option_config_json['MediaKrakenServer']['BackupContainerName']):
+            backup_files.append((backup_cloud.name, backup_cloud.type,
+                                 common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
@@ -111,7 +104,7 @@ def admin_backup():
     return render_template("admin/admin_backup.html", form=form,
                            backup_list=sorted(backup_files, reverse=True),
                            data_interval=('Hours', 'Days', 'Weekly'),
-                           data_class=common_cloud.CLOUD_BACKUP_CLASS,
+                           data_class=common_network_cloud.supported_providers,
                            data_enabled=backup_enabled,
                            page=page,
                            per_page=per_page,

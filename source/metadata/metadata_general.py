@@ -17,11 +17,12 @@
 '''
 
 import json
-from guessit import guessit
 
 from common import common_global
-from common import common_metadata_chart_lyrics
+from common import common_metadata_provider_chart_lyrics
 from common import common_metadata_tv_theme
+from guessit import guessit
+
 from . import metadata_anime
 from . import metadata_movie
 from . import metadata_music
@@ -35,32 +36,22 @@ from . import metadata_tv_tvmaze
 
 
 def metadata_process(thread_db, provider_name, download_data):
-    common_global.es_inst.com_elastic_index('info', {'metadata_process': download_data})
+    common_global.es_inst.com_elastic_index('info', {'metadata_process': {'provider': provider_name,
+                                                                          'dl json': download_data}})
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
-        common_global.es_inst.com_elastic_index('info', {'search': provider_name})
         metadata_search(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Update":
-        common_global.es_inst.com_elastic_index('info', {'update': provider_name,
-                                                         'meta': download_data['mdq_download_json'][
-                                                             'ProviderMetaID']})
         metadata_update(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        common_global.es_inst.com_elastic_index('info', {'fetch': provider_name,
-                                                         'meta': download_data['mdq_download_json'][
-                                                             'ProviderMetaID']})
         metadata_fetch(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
-        common_global.es_inst.com_elastic_index('info', {'fetchcastcrew': provider_name})
         metadata_castcrew(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
-        common_global.es_inst.com_elastic_index('info', {'fetchreview': provider_name})
         metadata_review(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchImage":
-        common_global.es_inst.com_elastic_index('info', {'fetchimage': provider_name})
         metadata_image(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
-        common_global.es_inst.com_elastic_index('info', {'fetchcollection': provider_name})
         metadata_collection(thread_db, provider_name, download_data)
 
 
@@ -70,6 +61,7 @@ def metadata_update(thread_db, provider_name, download_data):
     """
     common_global.es_inst.com_elastic_index('info', {'metadata_update': provider_name,
                                                      'dldata': download_data})
+    # TODO horribly broken.  Need to add the dlid, that to update, etc
 
 
 def metadata_search(thread_db, provider_name, download_data):
@@ -84,7 +76,6 @@ def metadata_search(thread_db, provider_name, download_data):
     if provider_name == 'anidb':
         metadata_uuid = metadata_anime.metadata_anime_lookup(thread_db,
                                                              download_data,
-                                                             download_data['mdq_id'],
                                                              guessit(download_data['Path'])[
                                                                  'title'])
         if metadata_uuid is None:
@@ -93,7 +84,7 @@ def metadata_search(thread_db, provider_name, download_data):
             else:
                 set_fetch = True
     elif provider_name == 'chart_lyrics':
-        common_metadata_chart_lyrics.com_meta_chart_lyrics(artist_name, song_name)
+        common_metadata_provider_chart_lyrics.com_meta_chart_lyrics(artist_name, song_name)
         lookup_halt = True
     elif provider_name == 'comicvine':
         lookup_halt = True
@@ -121,10 +112,8 @@ def metadata_search(thread_db, provider_name, download_data):
     elif provider_name == 'lastfm':
         lookup_halt = True
     elif provider_name == 'musicbrainz':
-        metadata_uuid, match_result = metadata_music.music_search_musicbrainz(thread_db,
-                                                                              download_data[
-                                                                                  'mdq_download_json'][
-                                                                                  'Path'])
+        metadata_uuid, match_result = metadata_music.metadata_music_lookup(thread_db,
+                                                                           download_data)
         common_global.es_inst.com_elastic_index('info', {'metadata_uuid': metadata_uuid,
                                                          'result': match_result})
         if metadata_uuid is None:
@@ -249,8 +238,8 @@ def metadata_fetch(thread_db, provider_name, download_data):
     """
     Fetch main metadata for specified provider
     """
-    common_global.es_inst.com_elastic_index('info', {'metadata_fetch': provider_name, 'dldata':
-        download_data})
+    common_global.es_inst.com_elastic_index('info', {'metadata_fetch': provider_name,
+                                                     'dldata': download_data})
     if provider_name == 'imvdb':
         common_global.es_inst.com_elastic_index('info', {'fetch imvdb': provider_name})
         imvdb_id = metadata_music_video.movie_fetch_save_imvdb(thread_db,
@@ -269,22 +258,19 @@ def metadata_fetch(thread_db, provider_name, download_data):
                                                  download_data['mdq_download_json'][
                                                      'ProviderMetaID'],
                                                  download_data['mdq_download_json']['MetaNewID'])
-            thread_db.db_download_delete(download_data['mdq_id'])
         elif download_data['mdq_que_type'] == 2:  # tv
             metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
-                                                    download_data['mdq_download_json'][
-                                                        'ProviderMetaID'],
-                                                    download_data['mdq_download_json']['MetaNewID'])
-            thread_db.db_download_delete(download_data['mdq_id'])
+                                                download_data['mdq_download_json'][
+                                                    'ProviderMetaID'],
+                                                download_data['mdq_download_json']['MetaNewID'])
     elif provider_name == 'thetvdb':
         metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
                                             download_data['mdq_download_json']['ProviderMetaID'])
-        thread_db.db_download_delete(download_data['mdq_id'])
     elif provider_name == 'tvmaze':
         metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
                                                 download_data['mdq_download_json'][
                                                     'ProviderMetaID'])
-        thread_db.db_download_delete(download_data['mdq_id'])
+    thread_db.db_download_delete(download_data['mdq_id'])
 
 
 def metadata_castcrew(thread_db, provider_name, download_data):

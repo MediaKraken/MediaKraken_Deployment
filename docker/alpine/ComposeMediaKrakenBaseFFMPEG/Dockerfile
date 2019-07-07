@@ -1,4 +1,4 @@
-FROM alpine:3.8 as builder
+FROM alpine:3.10 as builder
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -58,9 +58,7 @@ RUN buildDeps="autoconf \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories && \
-    apk update && \
-    apk upgrade && \
-    apk add --update ${buildDeps} libgcc libstdc++ ca-certificates && \
+    apk add --no-cache ${buildDeps} libgcc libstdc++ ca-certificates && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
     tar -jx --strip-components=1 && \
@@ -151,18 +149,23 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.8
+FROM alpine:3.10
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
-RUN apk add --update bash samba-client lame libass libmodplug libogg \
+RUN apk add --no-cache bash samba-client lame libass libmodplug libogg \
     libtheora libvorbis opus speex xvidcore freetype zlib openjpeg libwebp \ 
     soxr fontconfig libvpx librtmp libva libvdpau \
     libva-intel-driver && \
     rm -Rf /home/* && \
     ffmpeg -buildconf
+
+# will create gid 1000 error in later images
+#   adduser -DHs /sbin/nologin metaman
+# Do NOT do the below as other containers won't have rights to install/build.
+# USER metaman
 
 CMD ["--help"]
 WORKDIR /tmp/ffmpeg

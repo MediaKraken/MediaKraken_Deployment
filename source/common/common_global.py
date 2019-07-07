@@ -16,6 +16,8 @@
   MA 02110-1301, USA.
 '''
 
+from enum import unique, IntFlag
+
 # instance for elastisearch
 es_inst = None
 
@@ -24,3 +26,10 @@ client_devices = []
 
 # store pids of things running
 pid_dict = {}
+
+
+@unique
+class DLMediaType(IntFlag):
+    Movie = 1
+    TV = 2
+    Person = 3

@@ -19,7 +19,7 @@
 import requests
 
 
-class CommonBackupCrashplan(object):
+class CommonBackupCrashplan:
     """
     Class for interfacing with crashplan
     """

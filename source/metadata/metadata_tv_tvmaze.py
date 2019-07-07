@@ -21,14 +21,14 @@ import json
 import pika
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_tvmaze
+from common import common_metadata_provider_tvmaze
 from common import common_string
 from guessit import guessit
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # setup the tvmaze class
-TVMAZE_CONNECTION = common_metadata_tvmaze.CommonMetadatatvmaze()
+TVMAZE_CONNECTION = common_metadata_provider_tvmaze.CommonMetadatatvmaze()
 
 
 def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
@@ -57,7 +57,7 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
             metadata_uuid = db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
             common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
     common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
-                                                     'tvbmaze': tvmaze_id})
+                                                     'tvmaze': tvmaze_id})
     return metadata_uuid, tvmaze_id
 
 

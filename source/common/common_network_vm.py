@@ -17,7 +17,7 @@
 '''
 
 
-class CommonNetworkVM(object):
+class CommonNetworkVM:
     """
     Class for interfacing to vm's
     """

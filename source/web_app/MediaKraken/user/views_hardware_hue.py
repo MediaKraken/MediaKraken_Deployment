@@ -7,7 +7,6 @@ from flask_login import login_required
 
 blueprint = Blueprint("user_hardware_hue", __name__, url_prefix='/users',
                       static_folder="../static")
-import json
 import sys
 
 sys.path.append('..')
@@ -43,7 +42,8 @@ def user_hardware_hue():
         # need to do as could provide an empty list and not None
         data_hue_avail = None
     return render_template("users/user_hardware_hue.html",
-                           data_hue_avail=data_hue_avail)
+                           data_hue_avail=data_hue_avail,
+                           data_hue_list=g.db_connection.db_device_list('Phue'))
 
 
 @blueprint.route('/hardware_hue_on')
@@ -59,15 +59,6 @@ def user_hardware_hue_on():
                                           rabbit_host_name='mkrabbitmq',
                                           exchange_name='mkque_hardware_ex',
                                           route_key='mkhardware')
-    # ch = fpika.channel()
-    # ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
-    #                  body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
-    #                                   'Hardware': 'Hue', 'Action': 'OnOff',
-    #                                   'Setting': True, 'Target': '10.0.0.225',
-    #                                   'LightList': (1, 2, 3)}),
-    #                  properties=fpika.BasicProperties(content_type='text/plain',
-    #                                                   delivery_mode=2))
-    # fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 
 
@@ -84,15 +75,6 @@ def user_hardware_hue_off():
                                           rabbit_host_name='mkrabbitmq',
                                           exchange_name='mkque_hardware_ex',
                                           route_key='mkhardware')
-    # ch = fpika.channel()
-    # ch.basic_publish(exchange='mkque_hardware_ex', routing_key='mkhardware',
-    #                  body=json.dumps({'Type': 'Hardware', 'Subtype': 'Lights',
-    #                                   'Hardware': 'Hue', 'Action': 'OnOff',
-    #                                   'Setting': False, 'Target': '10.0.0.225',
-    #                                   'LightList': (1, 2, 3)}),
-    #                  properties=fpika.BasicProperties(content_type='text/plain',
-    #                                                   delivery_mode=2))
-    # fpika.return_channel(ch)
     return render_template("users/user_hardware_hue.html")
 
 

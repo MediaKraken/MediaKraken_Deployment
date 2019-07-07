@@ -1,2 +1,2 @@
-xmltodict
-babel
+xmltodict==0.12.0
+babel==2.7.0

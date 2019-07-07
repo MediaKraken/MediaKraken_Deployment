@@ -19,14 +19,14 @@
 import trakt
 import trakt.core
 from trakt import movies
-from trakt.users import User
 from trakt.calendar import PremiereCalendar
 from trakt.movies import (Movie, dismiss_recommendation, get_recommended_movies)
 from trakt.people import Person
 from trakt.tv import TVShow
+from trakt.users import User
 
 
-class CommonNetworkTrakt(object):
+class CommonNetworkTrakt:
     """
     Class for interfacing with Trakt
     """

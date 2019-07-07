@@ -21,16 +21,16 @@ import uuid
 
 
 def db_cron_insert(self, cron_name, cron_desc, cron_enabled, cron_schedule, cron_last_run,
-                   cron_file_path):
+                   cron_json):
     """
     insert cron job
     """
     new_cron_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_cron (mm_cron_guid, mm_cron_name,'
                            ' mm_cron_description, mm_cron_enabled, mm_cron_schedule,'
-                           ' mm_cron_last_run, mm_cron_file_path) values (%s,%s,%s,%s,%s,%s,%s)',
+                           ' mm_cron_last_run, mm_cron_json) values (%s,%s,%s,%s,%s,%s,%s)',
                            (new_cron_id, cron_name, cron_desc, cron_enabled, cron_schedule,
-                            cron_last_run, cron_file_path))
+                            cron_last_run, cron_json))
     return new_cron_id
 
 
@@ -52,15 +52,15 @@ def db_cron_list(self, enabled_only=False, offset=0, records=None):
     """
     if not enabled_only:
         self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
-                               ' mm_cron_file_path from mm_cron where mm_cron_guid'
+                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_json'
+                               ' from mm_cron where mm_cron_guid'
                                ' in (select mm_cron_guid from mm_cron'
                                ' order by mm_cron_name offset %s limit %s)'
                                ' order by mm_cron_name', (offset, records))
     else:
         self.db_cursor.execute('select mm_cron_guid, mm_cron_name, mm_cron_description,'
-                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run,'
-                               ' mm_cron_file_path from mm_cron where mm_cron_guid'
+                               ' mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_json'
+                               ' from mm_cron where mm_cron_guid'
                                ' in (select mm_cron_guid from mm_cron'
                                ' where mm_cron_enabled = true'
                                ' order by mm_cron_name offset %s limit %s)'
@@ -90,6 +90,6 @@ def db_cron_info(self, cron_uuid):
     """
     self.db_cursor.execute('select mm_cron_guid, mm_cron_name,'
                            ' mm_cron_description, mm_cron_enabled, mm_cron_schedule,'
-                           ' mm_cron_last_run, mm_cron_file_path, mm_cron_json from mm_cron'
+                           ' mm_cron_last_run, mm_cron_json from mm_cron'
                            ' where mm_cron_guid = %s', (cron_uuid,))
     return self.db_cursor.fetchone()

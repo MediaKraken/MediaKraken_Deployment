@@ -24,7 +24,7 @@ import requests
 from . import common_global
 
 
-class CommonSchedulesDirect(object):
+class CommonSchedulesDirect:
     """
     Class for interfacing with Schedules Direct
     """

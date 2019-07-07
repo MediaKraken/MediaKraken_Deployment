@@ -25,7 +25,7 @@ import urllib.request
 from . import common_network
 
 
-class CommonMetadataOpenweatherMap(object):
+class CommonMetadataOpenweatherMap:
     """
     Class for interfacing with OpenweatherMap
     """

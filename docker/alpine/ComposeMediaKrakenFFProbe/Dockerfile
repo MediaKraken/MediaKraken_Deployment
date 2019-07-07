@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbaseffmpeg
+FROM mediakraken/mkbaseffmpeg:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the main ffprobe app"
@@ -11,11 +11,11 @@ ARG PIPMIRROR
 RUN mkdir /mediakraken
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   python3 \
   cifs-utils \
   nfs-utils \
@@ -43,15 +43,14 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   musl-dev \
   net-snmp-dev \
   python3-dev \
-  && apk add \
+  && apk add --no-cache \
   py-setuptools \
   && rm requirements.txt \
-  && rm -rf /var/cache/apk/* \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-ADD wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash.sh /mediakraken
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

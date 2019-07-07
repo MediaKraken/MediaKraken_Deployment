@@ -17,10 +17,11 @@
 # options:
 # - "debug" print diagnostic messages
 
-from serial.serialutil import *
-import time
-import socket
 import logging
+import socket
+import time
+
+from serial.serialutil import *
 
 # map log level names to constants. used in fromURL()
 LOGGER_LEVELS = {
@@ -28,9 +29,10 @@ LOGGER_LEVELS = {
     'info': logging.INFO,
     'warning': logging.WARNING,
     'error': logging.ERROR,
-    }
+}
 
 POLL_TIMEOUT = 2
+
 
 class SocketSerial(SerialBase):
     """Serial port implementation for plain sockets."""
@@ -54,7 +56,7 @@ class SocketSerial(SerialBase):
             self._socket = None
             raise SerialException("Could not open port %s: %s" % (self.portstr, msg))
 
-        self._socket.settimeout(POLL_TIMEOUT) # used for write timeout support :/
+        self._socket.settimeout(POLL_TIMEOUT)  # used for write timeout support :/
 
         # not that there anything to configure...
         self._reconfigurePort()
@@ -107,18 +109,19 @@ class SocketSerial(SerialBase):
                     else:
                         value = None
                     if option == 'logging':
-                        logging.basicConfig()   # XXX is that good to call it here?
+                        logging.basicConfig()  # XXX is that good to call it here?
                         self.logger = logging.getLogger('pySerial.socket')
                         self.logger.setLevel(LOGGER_LEVELS[value])
                         self.logger.debug('enabled logging')
                     else:
                         raise ValueError('unknown option: %r' % (option,))
             # get host and port
-            host, port = url.split(':', 1) # may raise ValueError because of unpacking
-            port = int(port)               # and this if it's not a number
+            host, port = url.split(':', 1)  # may raise ValueError because of unpacking
+            port = int(port)  # and this if it's not a number
             if not 0 <= port < 65536: raise ValueError("port not in range 0...65535")
         except ValueError, e:
-            raise SerialException('expected a string in the form "[rfc2217://]<host>:<port>[/option[/option...]]": %s' % e)
+            raise SerialException(
+                'expected a string in the form "[rfc2217://]<host>:<port>[/option[/option...]]": %s' % e)
         return (host, port)
 
     #  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -129,7 +132,7 @@ class SocketSerial(SerialBase):
         if self.logger:
             # set this one to debug as the function could be called often...
             self.logger.debug('WARNING: inWaiting returns dummy value')
-        return 0 # hmmm, see comment in read()
+        return 0  # hmmm, see comment in read()
 
     def read(self, size=1):
         """Read size bytes from the serial port. If a timeout is set it may
@@ -259,10 +262,10 @@ else:
     class Serial(SocketSerial, io.RawIOBase):
         pass
 
-
 # simple client test
 if __name__ == '__main__':
     import sys
+
     s = Serial('socket://localhost:7000')
     sys.stdout.write('%s\n' % s)
 

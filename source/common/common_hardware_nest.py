@@ -22,7 +22,7 @@ from nest import utils as nest_utils
 from . import common_global
 
 
-class CommonHardwareNest(object):
+class CommonHardwareNest:
     """
     Class for interfacing with arduino device over usb
     """

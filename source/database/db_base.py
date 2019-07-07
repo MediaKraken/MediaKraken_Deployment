@@ -36,9 +36,10 @@ def db_open(self, db_prod=True):
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     if db_prod is True:
-        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"
-                                          % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
-                                             'mkpgbounce', 6432, os.environ['POSTGRES_PASSWORD']))
+        self.sql3_conn = psycopg2.connect(
+            "dbname='%s' user='%s' host='mkpgbounce' port=6432 password='%s'"
+            % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
+               os.environ['POSTGRES_PASSWORD']))
     else:
         self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
                                           " host='th-postgresql-1' port=5432 password='metamanpg'")
@@ -110,7 +111,7 @@ def db_drop_table(self, table_name):
     self.db_cursor.execute('DROP TABLE IF EXISTS ' + table_name)  # can't %s due to ' inserted
 
 
-def db_query(self, query_string):
+def db_query(self, query_string, fetch_all=True):
     """
     # general run anything
     """
@@ -118,7 +119,10 @@ def db_query(self, query_string):
     common_global.es_inst.com_elastic_index('info', {"query": query_string})
     self.db_cursor.execute(query_string)
     try:
-        return self.db_cursor.fetchall()
+        if fetch_all:
+            return self.db_cursor.fetchall()
+        else:
+            return self.db_cursor.fetchone()[0]
     except:
         return None
 

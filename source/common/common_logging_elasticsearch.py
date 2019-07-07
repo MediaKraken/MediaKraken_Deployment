@@ -20,11 +20,12 @@ import json
 import os
 import sys
 import time
+from datetime import datetime
 
 from elasticsearch import Elasticsearch
 
 
-class CommonElasticsearch(object):
+class CommonElasticsearch:
     """
     Class for interfacing with Elasticsearch or docker logging directly
     """
@@ -48,9 +49,9 @@ class CommonElasticsearch(object):
             # leave the try....as I don't want the container to fail if mkelk not accepting
             try:
                 self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
-                                   body={"text": {"type": log_type,
-                                                  "data": json.dumps(body_data),
-                                                  "timestamp": time.strftime("%Y%m%d%H%M%S")}})
+                                   body={"type": log_type,
+                                         "data": json.dumps(body_data),
+                                         "timestamp": datetime.now()})
             except:
                 print((log_type, body_data))
         # write log to host syslog

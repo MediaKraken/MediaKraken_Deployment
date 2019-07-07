@@ -19,7 +19,7 @@
 import pyexcel
 
 
-class CommandExcel(object):
+class CommandExcel:
     """
     Class for interfacing with excel
     """

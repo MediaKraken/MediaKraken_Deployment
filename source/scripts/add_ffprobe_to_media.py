@@ -24,7 +24,7 @@ from common import common_config_ini
 
 # fire off wait for it script to allow rabbitmq connection
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkrabbitmq', '-p', ' 5672', '-t', '30'],
+                             'mkrabbitmq', '-p', ' 5672', '-t', '30'], stdout=subprocess.PIPE,
                             shell=False)
 wait_pid.wait()
 

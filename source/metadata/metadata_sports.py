@@ -21,19 +21,19 @@ import os
 
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_thesportsdb
+from common import common_metadata_provider_thesportsdb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify thesportsdb key exists
 if option_config_json['API']['thesportsdb'] is not None:
     THESPORTSDB_CONNECTION \
-        = common_metadata_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
+        = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
 else:
     THESPORTSDB_CONNECTION = None
 
 
-def metadata_sports_lookup(db_connection, download_data):
+def metadata_sports_lookup(db_connection, download_data, download_que_id):
     """
     Lookup sporting event by name
     """
@@ -43,8 +43,7 @@ def metadata_sports_lookup(db_connection, download_data):
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
         common_global.es_inst.com_elastic_index('info', {"searching": stripped_name})
         thesportsdb_data = \
-            THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(
-                stripped_name)
+            THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(stripped_name)
         common_global.es_inst.com_elastic_index('info', {"sports return": thesportsdb_data})
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
@@ -65,5 +64,5 @@ def metadata_sports_lookup(db_connection, download_data):
                                                             json.dumps(
                                                                 thesportsdb_data),
                                                             json.dumps(image_json))
-                    db_connection.db_download_delete(download_data['mdq_id'])
+                    db_connection.db_download_delete(download_que_id)
     return metadata_uuid

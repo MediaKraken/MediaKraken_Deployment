@@ -9,14 +9,12 @@
 Loads and parses shoutcast/icecast pages and also adds new stream uris.
 """
 
-from multiprocessing import Pool
 import traceback
-import cPickle as pickle
+from multiprocessing import Pool
 
 from util import (parse_shoutcast1, parse_shoutcast2, parse_icecast,
                   ParseError, LISTENERPEAK, LISTENERCURRENT, get_root,
-                  get_cache, set_cache, get_failed, set_failed)
-
+                  get_cache, set_cache, get_failed)
 
 PROCESSES = 20
 PARSE_FAILED = "cast_failed.txt"
@@ -43,7 +41,8 @@ def fetch_stream_infos(uri):
     except ParseError:
         pass
     except:
-        print uri
+        print
+        uri
         traceback.print_exc()
         raise
 
@@ -52,7 +51,8 @@ def fetch_stream_infos(uri):
     except ParseError:
         pass
     except:
-        print uri
+        print
+        uri
         traceback.print_exc()
         raise
 
@@ -61,7 +61,8 @@ def fetch_stream_infos(uri):
     except ParseError:
         pass
     except:
-        print uri
+        print
+        uri
         traceback.print_exc()
         raise
 
@@ -81,7 +82,6 @@ def main():
     # XXX: fetch_stream_infos is the same for each root url
     peak_missing = {get_root(uri) for uri in peak_missing}
     peak_missing = set(peak_missing) - parse_failed_uris
-    
 
     pool = Pool(PROCESSES)
     try:
@@ -90,11 +90,13 @@ def main():
             uri, streams = res
 
             # save all 1000
-            if (i+1) % 1000 == 0:
+            if (i + 1) % 1000 == 0:
                 set_cache(cache)
 
-            print "%d/%d " % (i+1, len(peak_missing)) + uri + " -> ",
-            print "%d new streams" % len(streams)
+            print
+            "%d/%d " % (i + 1, len(peak_missing)) + uri + " -> ",
+            print
+            "%d new streams" % len(streams)
 
             if not streams:
                 parse_failed_uris.add(uri)
@@ -119,12 +121,14 @@ def main():
                     cache[uri][LISTENERCURRENT] = [current]
 
     except Exception as e:
-        print e
+        print
+        e
     finally:
         set_parse_failed(parse_failed_uris)
         set_cache(cache)
         pool.terminate()
         pool.join()
+
 
 if __name__ == "__main__":
     main()

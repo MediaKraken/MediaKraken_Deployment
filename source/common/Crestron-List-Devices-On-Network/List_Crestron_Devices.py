@@ -27,7 +27,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 
-from __future__ import print_function
 import argparse
 import os
 import re
@@ -35,9 +34,8 @@ import socket
 import subprocess
 import sys
 from time import sleep
-#
-import netifaces
 
+import netifaces
 
 MAX_RETRIES = 3
 
@@ -47,11 +45,11 @@ BROADCAST_IP = '255.255.255.255'
 FORMATTING = " " * 5
 
 UDP_MSG = \
-    "\x14\x00\x00\x00\x01\x04\x00\x03\x00\x00\x66\x65\x65\x64" + \
+    b"\x14\x00\x00\x00\x01\x04\x00\x03\x00\x00\x66\x65\x65\x64" + \
     ("\x00" * 252)
 
 
-class CrestronDeviceFinder(object):
+class CrestronDeviceFinder:
     def __init__(self, args):
         """
         initialize internal properties
@@ -60,10 +58,8 @@ class CrestronDeviceFinder(object):
         self.args = args
         self.crestron_devices = {}
 
-
     def initialize_run_variables(self):
         self.console_prompt = ""
-
 
     # Print iterations progress
     def print_progress(self, iteration, total, prefix='', suffix='', decimals=1, bar_length=100):
@@ -89,7 +85,6 @@ class CrestronDeviceFinder(object):
             sys.stdout.write('\n')
         sys.stdout.flush()
 
-
     def open_device_connection(self):
         """
         Open the device connection, attempting port 41795
@@ -101,10 +96,9 @@ class CrestronDeviceFinder(object):
             self.sock.connect(server_address)
             return True
         except:
-            #print ("exception thrown:", sys.exc_info()[0])
+            # print ("exception thrown:", sys.exc_info()[0])
             pass
         return False
-
 
     def close_device_connection(self):
         """
@@ -115,7 +109,6 @@ class CrestronDeviceFinder(object):
         except:
             pass
 
-
     def get_console_prompt(self):
         """
         Determine the device console prompt
@@ -124,7 +117,7 @@ class CrestronDeviceFinder(object):
         for _unused in range(0, MAX_RETRIES):
             try:
                 self.sock.settimeout(30.0)
-                for cr in ["\r", "\r\n"]:
+                for cr in [b"\r", b"\r\n"]:
                     self.sock.sendall(cr)
                     sleep(.25)
                     data += self.sock.recv(BUFF_SIZE)
@@ -136,41 +129,45 @@ class CrestronDeviceFinder(object):
                 pass
             return False
 
-
     def ip_responding_to_ping(self, ip_addr, attempts, limbo):
         wait_time = 100
         for _ in range(0, attempts):
-            if not subprocess.Popen(["ping", "-n", "1", "-w", str(wait_time), ip_addr], stdout=limbo, stderr=limbo).wait():
+            if not subprocess.Popen(["ping", "-n", "1", "-w", str(wait_time), ip_addr],
+                                    stdout=limbo, stderr=limbo).wait():
                 return True
             wait_time += 100
 
-            
     def show_devices_using_icmp(self, subnet):
         """
         Build a list of devices that respond to ping for a /24 subnet like 17.1.6.{1}:
         """
-        print ("Building list of active IP addresses on subnet {0}.0/24\nPlease wait. This will take about a few minutes depending on how many devices are found...".format(subnet))
+        print(
+            "Building list of active IP addresses on subnet {0}.0/24\nPlease wait. This will take about a few minutes depending on how many devices are found...".format(
+                subnet))
         with open(os.devnull, "wb") as limbo:
-            for last_octet in xrange(1, 255):
+            for last_octet in range(1, 255):
                 ip = "{0}.{1}".format(subnet, last_octet)
                 if self.ip_responding_to_ping(ip, 3, limbo):
                     self.active_ips_to_check.append(ip)
-                self.print_progress (last_octet, 254, bar_length = 70)
-            if self.active_ips_to_check:            
-                print("\nLocated {0} active IPs on subnet. Now testing for console on each IP.".format(len(self.active_ips_to_check)))
+                self.print_progress(last_octet, 254, bar_length=70)
+            if self.active_ips_to_check:
+                print(
+                    "\nLocated {0} active IPs on subnet. Now testing for console on each IP.".format(
+                        len(self.active_ips_to_check)))
                 self.active_ips_len = len(self.active_ips_to_check)
                 for index, self.device_ip_address in enumerate(self.active_ips_to_check):
                     item_pos = "(" + str(index + 1) + "/" + str(self.active_ips_len) + ")"
                     if self.open_device_connection():
                         if self.get_console_prompt():
-                            print(FORMATTING + self.console_prompt.ljust(30) + str(" located at " + self.device_ip_address).ljust(25), item_pos)
+                            print(FORMATTING + self.console_prompt.ljust(30) + str(
+                                " located at " + self.device_ip_address).ljust(25), item_pos)
                             self.close_device_connection()
                         else:
                             print(FORMATTING + "Console not found on", self.device_ip_address)
                     else:
-                        print(FORMATTING + "N/A - No CIP".ljust(30) +  str(" located at " + self.device_ip_address).ljust(25), item_pos)
+                        print(FORMATTING + "N/A - No CIP".ljust(30) + str(
+                            " located at " + self.device_ip_address).ljust(25), item_pos)
                     sys.stdout.flush()
-
 
     def show_devices_using_udp(self):
         for iface in netifaces.interfaces():
@@ -198,19 +195,20 @@ class CrestronDeviceFinder(object):
                             # get a UDP response packet and store in buffer
                             data, addr = sock.recvfrom(4096)
                             # find the device hostname in the response buffer
-                            search = re.findall ('\x00([a-zA-Z0-9-]{2,30})\x00', data[9:40])
+                            search = re.findall('\x00([a-zA-Z0-9-]{2,30})\x00', data[9:40])
                             if search:
                                 dev_name = search[0]
                                 # get the ipv4 address received from sock.recvfrom()
                                 dev_ip = addr[0]
                                 # find if ver info is part of UDP packet
                                 firmware_info = ""
-                                search = re.findall ('\x00([\w].{10,80})\x00', data[265:350])
+                                search = re.findall('\x00([\w].{10,80})\x00', data[265:350])
                                 if search:
                                     firmware_info = search[0]
                                 # add only new devices and skip our own packet
                                 if dev_name not in self.crestron_devices and dev_name != "feed":
-                                    print((FORMATTING + dev_name + " located at " + dev_ip).ljust(35) + \
+                                    print((FORMATTING + dev_name + " located at " + dev_ip).ljust(
+                                        35) + \
                                           "\n" + (FORMATTING * 2) + firmware_info)
                                     # save the device to a dictionary so we don't repeat it
                                     self.crestron_devices[dev_name] = dev_ip
@@ -219,28 +217,26 @@ class CrestronDeviceFinder(object):
                     print()
         print("\nLocated a total of", len(self.crestron_devices), "Crestron devices")
 
-                
     def find_devices(self):
         if self.args.autolocatecrestron:
             self.show_devices_using_udp()
         elif self.args.autolocateactiveips:
             self.show_devices_using_icmp(self.args.autolocateactiveips)
-            
-    
-    
+
+
 if __name__ == "__main__":
     # pylint: disable-msg=C0103
     print("\nStephen Genusa's Crestron Device Locator\n")
     parser = argparse.ArgumentParser()
     parser.add_argument("-ala", "--autolocateactiveips", default="", type=str,
-                    help="Automatically locate active IPs on a subnet and look for Crestron devices. \n  Example: 174.209.101 as an argument will check 174.209.101.0/24")
+                        help="Automatically locate active IPs on a subnet and look for Crestron devices. \n  Example: 174.209.101 as an argument will check 174.209.101.0/24")
     parser.add_argument("-alc", "--autolocatecrestron", action="store_true",
-                    help="Automatically locate Crestron devices on all connected subnets and build documentation")
+                        help="Automatically locate Crestron devices on all connected subnets and build documentation")
     args = parser.parse_args()
-    
+
     if not args.autolocatecrestron and not args.autolocateactiveips:
         parser.print_help()
         exit()
-    
+
     documenter = CrestronDeviceFinder(args)
     documenter.find_devices()

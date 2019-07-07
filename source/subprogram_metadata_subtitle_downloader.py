@@ -17,6 +17,8 @@
 '''
 
 import os
+import shlex
+import subprocess
 
 from common import common_file
 from common import common_global
@@ -46,8 +48,9 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
         # change working dir so srt is saved in the right spot
         total_download_attempts += 1
         os.chdir(media_row.rsplit('/', 1)[0])
-        file_handle = os.popen(
-            "subliminal -l " + sub_lang + " -- \"" + media_row + "\"")
+        file_handle = subprocess.Popen(shlex.split(
+            "subliminal -l " + sub_lang + " -- \"" + media_row + "\""), stdout=subprocess.PIPE,
+            shell=False)
         cmd_output = file_handle.read()
         common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
 

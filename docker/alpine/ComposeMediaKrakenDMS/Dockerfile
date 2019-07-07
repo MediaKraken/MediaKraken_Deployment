@@ -1,5 +1,5 @@
 # Download base image
-FROM  mediakraken/mkbaseffmpeg:latest
+FROM  mediakraken/mkbaseffmpeg:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the dms app"
@@ -8,11 +8,11 @@ ARG ALPMIRROR
 ARG PIPMIRROR
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   go \
   go get github.com/anacrolix/dms \
   cifs-utils \
@@ -48,10 +48,9 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   && apk add \
   py-setuptools \
-  && rm -rf /var/cache/apk/* \
   && rm requirements.txt \
 
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

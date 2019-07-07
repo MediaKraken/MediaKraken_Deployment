@@ -25,7 +25,7 @@ https://api.thetvdb.com/swagger#/
 '''
 
 
-class CommonMetadataTheTVDBv2(object):
+class CommonMetadataTheTVDBv2:
     """
     Class for interfacing with TheTVDB with swagger
     """

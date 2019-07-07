@@ -14,6 +14,7 @@
 import serial
 import serial.tools.list_ports
 
+
 class Serial(serial.Serial):
     """Just inherit the native Serial port implementation and patch the open function."""
 
@@ -36,10 +37,11 @@ class Serial(serial.Serial):
     # override property
     port = property(serial.Serial.getPort, setPort, doc="Port setting")
 
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if __name__ == '__main__':
-    #~ s = Serial('hwgrep://ttyS0')
+    # ~ s = Serial('hwgrep://ttyS0')
     s = Serial(None)
     s.port = 'hwgrep://ttyS0'
-    print s
-
+    print
+    s

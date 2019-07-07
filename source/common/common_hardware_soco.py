@@ -28,7 +28,7 @@ def com_hardware_soco_discover():
 # def com_hardware_soco_mute(self, zone, mute_status):
 #        zone_list[zone].mute = mute_status
 
-class CommonHardwareSoco(object):
+class CommonHardwareSoco:
     """
     Class for Sonos
     """

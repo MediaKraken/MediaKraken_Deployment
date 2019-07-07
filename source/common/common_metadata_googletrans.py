@@ -19,7 +19,7 @@
 from googletrans import Translator
 
 
-class CommonMetadataTranslator(object):
+class CommonMetadataTranslator:
     """
     Class for interfacing with google translator
     """

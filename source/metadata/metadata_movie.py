@@ -16,14 +16,14 @@
   MA 02110-1301, USA.
 '''
 
+import json
 import time
 
-import json
 import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_metadata
-from common import common_metadata_tmdb
+from common import common_metadata_provider_themoviedb
 from common import common_string
 from guessit import guessit
 
@@ -33,9 +33,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # verify themoviedb key exists
 if option_config_json['API']['themoviedb'] is not None:
-    # setup the thmdb class
-    TMDB_CONNECTION = common_metadata_tmdb.CommonMetadataTMDB(
-        option_config_json)
+    # setup the tmdb class
+    TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 else:
     TMDB_CONNECTION = None
 
@@ -48,6 +47,7 @@ def movie_search_tmdb(db_connection, file_name):
         common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": str(file_name)})
     except:
         pass
+    # TODO aren't I doing two guessits per file name then?
     file_name = guessit(file_name)
     if type(file_name['title']) == list:
         file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
@@ -272,7 +272,9 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
                 provider_id = str(tmdb_id)
             else:
                 provider_id = imdb_id
-            dl_meta = db_connection.db_download_que_exists(download_que_id, 1, 'themoviedb',
+            dl_meta = db_connection.db_download_que_exists(download_que_id,
+                                                           common_global.DLMediaType.Movie.value,
+                                                           'themoviedb',
                                                            provider_id)
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']

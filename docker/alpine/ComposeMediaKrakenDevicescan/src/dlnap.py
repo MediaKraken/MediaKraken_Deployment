@@ -166,6 +166,7 @@ def _get_control_urls(xml):
         pass
     return
 
+
 @contextmanager
 def _send_udp(to, packet):
     """ Send UDP message to group
@@ -661,7 +662,7 @@ if __name__ == '__main__':
     if url.lower().replace('https://', '').replace('www.', '').startswith('youtube.'):
         import subprocess
 
-        process = subprocess.Popen(['youtube-dl', '-g', url], stdout=subprocess.PIPE)
+        process = subprocess.Popen(['youtube-dl', '-g', url], stdout=subprocess.PIPE, shell=False)
         url, err = process.communicate()
 
     if url.lower().startswith('https://'):

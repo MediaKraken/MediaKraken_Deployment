@@ -16,11 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-from subprocess import Popen, PIPE
+import subprocess
 
 
 def com_net_speedtest():
-    p = Popen(['speedtest-cli'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p = subprocess.Popen(['speedtest-cli'], stdout=subprocess.PIPE, shell=False)
     output, err = p.communicate()
     rc = p.returncode
     speed_download = None

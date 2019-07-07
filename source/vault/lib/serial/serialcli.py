@@ -6,7 +6,6 @@
 # (C) 2008 Chris Liechti <cliechti@gmx.net>
 # this is distributed under a free software license, see license.txt
 
-import clr
 import System
 import System.IO.Ports
 from serial.serialutil import *
@@ -20,14 +19,18 @@ def device(portnum):
 # must invoke function with byte array, make a helper to convert strings
 # to byte arrays
 sab = System.Array[System.Byte]
+
+
 def as_byte_array(string):
-    return sab([ord(x) for x in string])  # XXX will require adaption when run with a 3.x compatible IronPython
+    return sab([ord(x) for x in
+                string])  # XXX will require adaption when run with a 3.x compatible IronPython
+
 
 class IronSerial(SerialBase):
     """Serial port implementation for .NET/Mono."""
 
     BAUDRATES = (50, 75, 110, 134, 150, 200, 300, 600, 1200, 1800, 2400, 4800,
-                9600, 19200, 38400, 57600, 115200)
+                 9600, 19200, 38400, 57600, 115200)
 
     def open(self):
         """Open port with current settings. This may throw a SerialException
@@ -56,21 +59,20 @@ class IronSerial(SerialBase):
         if not self._port_handle:
             raise SerialException("Can only operate on a valid port handle")
 
-        #~ self._port_handle.ReceivedBytesThreshold = 1
+        # ~ self._port_handle.ReceivedBytesThreshold = 1
 
         if self._timeout is None:
             self._port_handle.ReadTimeout = System.IO.Ports.SerialPort.InfiniteTimeout
         else:
-            self._port_handle.ReadTimeout = int(self._timeout*1000)
+            self._port_handle.ReadTimeout = int(self._timeout * 1000)
 
         # if self._timeout != 0 and self._interCharTimeout is not None:
-            # timeouts = (int(self._interCharTimeout * 1000),) + timeouts[1:]
+        # timeouts = (int(self._interCharTimeout * 1000),) + timeouts[1:]
 
         if self._writeTimeout is None:
             self._port_handle.WriteTimeout = System.IO.Ports.SerialPort.InfiniteTimeout
         else:
-            self._port_handle.WriteTimeout = int(self._writeTimeout*1000)
-
+            self._port_handle.WriteTimeout = int(self._writeTimeout * 1000)
 
         # Setup the connection info.
         try:
@@ -80,49 +82,51 @@ class IronSerial(SerialBase):
             raise ValueError(str(e))
 
         if self._bytesize == FIVEBITS:
-            self._port_handle.DataBits     = 5
+            self._port_handle.DataBits = 5
         elif self._bytesize == SIXBITS:
-            self._port_handle.DataBits     = 6
+            self._port_handle.DataBits = 6
         elif self._bytesize == SEVENBITS:
-            self._port_handle.DataBits     = 7
+            self._port_handle.DataBits = 7
         elif self._bytesize == EIGHTBITS:
-            self._port_handle.DataBits     = 8
+            self._port_handle.DataBits = 8
         else:
             raise ValueError("Unsupported number of data bits: %r" % self._bytesize)
 
         if self._parity == PARITY_NONE:
-            self._port_handle.Parity       = getattr(System.IO.Ports.Parity, 'None') # reserved keyword in Py3k
+            self._port_handle.Parity = getattr(System.IO.Ports.Parity,
+                                               'None')  # reserved keyword in Py3k
         elif self._parity == PARITY_EVEN:
-            self._port_handle.Parity       = System.IO.Ports.Parity.Even
+            self._port_handle.Parity = System.IO.Ports.Parity.Even
         elif self._parity == PARITY_ODD:
-            self._port_handle.Parity       = System.IO.Ports.Parity.Odd
+            self._port_handle.Parity = System.IO.Ports.Parity.Odd
         elif self._parity == PARITY_MARK:
-            self._port_handle.Parity       = System.IO.Ports.Parity.Mark
+            self._port_handle.Parity = System.IO.Ports.Parity.Mark
         elif self._parity == PARITY_SPACE:
-            self._port_handle.Parity       = System.IO.Ports.Parity.Space
+            self._port_handle.Parity = System.IO.Ports.Parity.Space
         else:
             raise ValueError("Unsupported parity mode: %r" % self._parity)
 
         if self._stopbits == STOPBITS_ONE:
-            self._port_handle.StopBits     = System.IO.Ports.StopBits.One
+            self._port_handle.StopBits = System.IO.Ports.StopBits.One
         elif self._stopbits == STOPBITS_ONE_POINT_FIVE:
-            self._port_handle.StopBits     = System.IO.Ports.StopBits.OnePointFive
+            self._port_handle.StopBits = System.IO.Ports.StopBits.OnePointFive
         elif self._stopbits == STOPBITS_TWO:
-            self._port_handle.StopBits     = System.IO.Ports.StopBits.Two
+            self._port_handle.StopBits = System.IO.Ports.StopBits.Two
         else:
             raise ValueError("Unsupported number of stop bits: %r" % self._stopbits)
 
         if self._rtscts and self._xonxoff:
-            self._port_handle.Handshake  = System.IO.Ports.Handshake.RequestToSendXOnXOff
+            self._port_handle.Handshake = System.IO.Ports.Handshake.RequestToSendXOnXOff
         elif self._rtscts:
-            self._port_handle.Handshake  = System.IO.Ports.Handshake.RequestToSend
+            self._port_handle.Handshake = System.IO.Ports.Handshake.RequestToSend
         elif self._xonxoff:
-            self._port_handle.Handshake  = System.IO.Ports.Handshake.XOnXOff
+            self._port_handle.Handshake = System.IO.Ports.Handshake.XOnXOff
         else:
-            self._port_handle.Handshake  = getattr(System.IO.Ports.Handshake, 'None')   # reserved keyword in Py3k
+            self._port_handle.Handshake = getattr(System.IO.Ports.Handshake,
+                                                  'None')  # reserved keyword in Py3k
 
-    #~ def __del__(self):
-        #~ self.close()
+    # ~ def __del__(self):
+    # ~ self.close()
 
     def close(self):
         """Close port"""
@@ -226,8 +230,8 @@ class IronSerial(SerialBase):
     def getRI(self):
         """Read terminal status line: Ring Indicator"""
         if not self._port_handle: raise portNotOpenError
-        #~ return self._port_handle.XXX
-        return False #XXX an error would be better
+        # ~ return self._port_handle.XXX
+        return False  # XXX an error would be better
 
     def getCD(self):
         """Read terminal status line: Carrier Detect"""
@@ -252,7 +256,6 @@ else:
     class Serial(IronSerial, io.RawIOBase):
         pass
 
-
 # Nur Testfunktion!!
 if __name__ == '__main__':
     import sys
@@ -263,11 +266,9 @@ if __name__ == '__main__':
     s = Serial()
     sys.stdio.write('%s\n' % s)
 
-
     s.baudrate = 19200
     s.databits = 7
     s.close()
     s.port = 0
     s.open()
     sys.stdio.write('%s\n' % s)
-

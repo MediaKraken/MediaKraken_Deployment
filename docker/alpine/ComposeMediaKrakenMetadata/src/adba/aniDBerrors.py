@@ -16,19 +16,24 @@
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
 class AniDBError(Exception):
-	pass
+    pass
+
 
 class AniDBIncorrectParameterError(AniDBError):
-	pass
+    pass
+
 
 class AniDBCommandTimeoutError(AniDBError):
-	pass
+    pass
+
 
 class AniDBMustAuthError(AniDBError):
-	pass
-	
+    pass
+
+
 class AniDBPacketCorruptedError(AniDBError):
-	pass
+    pass
+
 
 class AniDBInternalError(AniDBError):
-	pass
+    pass

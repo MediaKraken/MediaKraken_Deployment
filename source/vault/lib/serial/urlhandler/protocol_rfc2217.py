@@ -8,4 +8,3 @@
 # (C) 2011 Chris Liechti <cliechti@gmx.net>
 # this is distributed under a free software license, see license.txt
 
-from serial.rfc2217 import Serial

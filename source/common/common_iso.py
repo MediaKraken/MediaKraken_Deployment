@@ -22,7 +22,7 @@ import isoparser
 from . import common_global
 
 
-class CommonISO(object):
+class CommonISO:
     """
     Class for interfacing with iso images
     """

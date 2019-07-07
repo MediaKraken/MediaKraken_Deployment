@@ -50,14 +50,18 @@ from kivy.app import App
 from kivy.config import Config
 
 # moving here before anything is setup for Kivy or it doesn't work
-if os.uname()[4][:3] == 'arm':
-    # TODO find real resolution
-    # TODO this is currently set to the "official" raspberry pi touchscreen
-    Config.set('graphics', 'width', 800)
-    Config.set('graphics', 'height', 480)
-    Config.set('graphics', 'fullscreen', 'fake')
+if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+    Config.set('graphics', 'multisamples', '0')
+    os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
+else:
+    if os.uname()[4][:3] == 'arm':
+        # TODO find real resolution
+        # TODO this is currently set to the "official" raspberry pi touchscreen
+        Config.set('graphics', 'width', 800)
+        Config.set('graphics', 'height', 480)
+        Config.set('graphics', 'fullscreen', 'fake')
 
-kivy.require('1.10.0')
+kivy.require('1.11.0')
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.uix.popup import Popup
@@ -246,7 +250,7 @@ class MediaKrakenApp(App):
                     split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
                           '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
                           '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
-                          + video_source_dir + '\"'))
+                          + video_source_dir + '\"'), stdout=subprocess.PIPE, shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
@@ -417,7 +421,10 @@ if __name__ == '__main__':
     # load the kivy's here so all the classes have been defined
     Builder.load_file('theater_thin/kivy_layouts/main.kv')
     Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
-    # so the raspberry pi doesn't crash
-    if os.uname()[4][:3] != 'arm':
-        Window.fullscreen = 'auto'
+    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+        pass  # as os.uname doesn't exist in windows
+    else:
+        # so the raspberry pi doesn't crash
+        if os.uname()[4][:3] != 'arm':
+            Window.fullscreen = 'auto'
     MediaKrakenApp().run()

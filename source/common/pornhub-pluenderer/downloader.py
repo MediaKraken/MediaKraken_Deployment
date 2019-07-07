@@ -2,7 +2,7 @@ import requests as http
 from storage import Storage
 
 
-class Downloader(object):
+class Downloader:
     def __init__(self):
         self.storage = Storage()
 

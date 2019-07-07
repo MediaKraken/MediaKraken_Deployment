@@ -22,20 +22,9 @@ from common import common_global
 from common import common_network_cifs
 from common import common_pagination
 import database as database_base
+from MediaKraken.utils import flash_errors
 
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-
-def flash_errors(form):
-    """
-    Display errors from list
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
 
 
 def admin_required(fn):

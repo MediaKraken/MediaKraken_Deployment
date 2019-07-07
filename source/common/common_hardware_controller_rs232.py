@@ -19,7 +19,7 @@
 from common import common_network_telnet
 
 
-class CommandHardwareControllerRS232(object):
+class CommandHardwareControllerRS232:
     """
     Class for interfacing with hardware from json specifications
     """

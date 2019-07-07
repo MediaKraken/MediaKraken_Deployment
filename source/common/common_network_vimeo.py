@@ -19,7 +19,7 @@
 import vimeo
 
 
-class CommonNetworkVimeo(object):
+class CommonNetworkVimeo:
     """
     Class for interfacing with Vimeo
     """

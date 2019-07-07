@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, redirect, url_for, flash
+from flask import Blueprint, render_template, g, redirect, url_for
 from flask_login import current_user
 from flask_login import login_required
 
@@ -19,18 +19,6 @@ from common import common_global
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
-
-
-def flash_errors(form):
-    """
-    Display each error on top of form
-    """
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ))
 
 
 @blueprint.route("/")

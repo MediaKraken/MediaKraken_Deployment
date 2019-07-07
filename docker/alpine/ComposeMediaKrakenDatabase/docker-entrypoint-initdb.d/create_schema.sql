@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.3
--- Dumped by pg_dump version 10.3
+-- Dumped from database version 11.3
+-- Dumped by pg_dump version 11.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,22 +12,9 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: 
@@ -73,7 +60,6 @@ CREATE TABLE public.mm_cron (
     mm_cron_enabled boolean,
     mm_cron_schedule text,
     mm_cron_last_run timestamp without time zone,
-    mm_cron_file_path text,
     mm_cron_json jsonb
 );
 
@@ -496,7 +482,8 @@ ALTER TABLE public.mm_options_and_status OWNER TO metamanpg;
 CREATE TABLE public.mm_radio (
     mm_radio_guid uuid NOT NULL,
     mm_radio_name text,
-    mm_radio_adress text,
+    mm_radio_description text,
+    mm_radio_address text,
     mm_radio_active boolean
 );
 
@@ -530,7 +517,6 @@ CREATE TABLE public.mm_sync (
 
 
 ALTER TABLE public.mm_sync OWNER TO metamanpg;
-
 
 --
 -- Name: mm_tv_schedule; Type: TABLE; Schema: public; Owner: metamanpg
@@ -692,16 +678,16 @@ COPY public.mm_channel (mm_channel_guid, mm_channel_name, mm_channel_media_id, m
 -- Data for Name: mm_cron; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_cron (mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_file_path, mm_cron_json) FROM stdin;
-cbb42a96-f95f-4616-a0bb-e635e7b6d9ca	Anime	Match anime via Scudlee data	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_match_anime_id_scudlee.py	{"task": "anime", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-00bcb1b1-7f16-4e90-8c55-77ce4c1ac86a	Collections	Create and update collection(s)	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_update_create_collections.py	{"task": "collection", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
-7be16469-e0e5-44fd-8727-90ec21cae1c4	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_schedules_direct_updates.py	{"task": "update", "route_key": "schedulesdirect", "exchange_key": "mkque_metadata_ex"}
-7831b403-408b-49db-8658-f565af581245	The Movie Database	Grab updated metadata for movie(s) and TV show(s)	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_tmdb_updates.py	{"task": "update", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
-de9b4b9b-8cd2-482a-bfa1-14c298f27aef	Trailer	Download new trailers	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_metadata_trailer_download.py	{"task": "trailer", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
-950ec436-d010-44fb-a653-ef019bf05cc4	Backup	Backup Postgresql DB	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_backup.py	{"task": "dbbackup", "route_key": "mkque", "exchange_key": "mkque_ex"}
-ac093b30-f4ff-4e97-bb08-8ebb2b1e38d5	DB Vacuum	Postgresql Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_postgresql_vacuum.py	{"task": "dbvacuum", "route_key": "mkque", "exchange_key": "mkque_ex"}
-4974d078-cab7-4e37-8922-2a2c2202fb33	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_file_scan.py	{"task": "scan", "route_key": "mkque", "exchange_key": "mkque_ex"}
-144feb59-e15c-491c-8eb9-3a81cc62febe	Sync	Sync/Transcode media	f	Days 1	1970-01-01 00:00:01	/mediakraken/subprogram_sync.py	{"task": "sync", "route_key": "mkque", "exchange_key": "mkque_ex"}
+COPY public.mm_cron (mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_json) FROM stdin;
+47cad101-9e87-4596-ba02-2bcea8ce3575	Anime	Match anime via Scudlee and Manami data	f	Days 1	1970-01-01 00:00:01	{"task": "anime", "program": "/mediakraken/subprogram_match_anime_id.py", "route_key": "Z", "exchange_key": "mkque_metadata_ex"}
+631ea52e-2807-4342-8b59-2f8263da0ef2	Collections	Create and update collection(s)	f	Days 1	1970-01-01 00:00:01	{"type": "Update Collection", "program": "/mediakraken/subprogram_metadata_update_create_collections.py", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
+f82f2aa4-3b4b-4a78-ab5a-5564c414ab1d	Schedules Direct	Fetch TV schedules from Schedules Direct	f	Days 1	1970-01-01 00:00:01	{"task": "update", "program": "/mediakraken/subprogram_schedules_direct_updates.py", "route_key": "schedulesdirect", "exchange_key": "mkque_metadata_ex"}
+0d6f545f-2682-4bfd-8d9a-620eaae36690	The Movie Database	Grab updated metadata for movie(s) and TV show(s)	f	Days 1	1970-01-01 00:00:01	{"type": "Update Metadata", "program": "/mediakraken/subprogram_metadata_tmdb_updates.py", "route_key": "themoviedb", "exchange_key": "mkque_metadata_ex"}
+9e07954c-26e5-4752-863b-f6142b5f6e6a	Trailer	Download new trailer(s)	f	Days 1	1970-01-01 00:00:01	{"task": "HDTrailers", "type": null, "route_key": "mkdownload", "exchange_key": "mkque_download_ex"}
+f039f4d3-ec26-491a-a498-60ea2b1f314b	Backup	Backup PostgreSQL DB	f	Days 1	1970-01-01 00:00:01	{"type": "Cron Run", "program": "/mediakraken/subprogram_postgresql_backup.py", "route_key": "mkque", "exchange_key": "mkque_ex"}
+128d11cd-c0c2-44d7-ae16-cf5de96207d7	DB Vacuum	PostgreSQL Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	{"type": "Cron Run", "program": "/mediakraken/subprogram_postgresql_vacuum.py", "route_key": "mkque", "exchange_key": "mkque_ex"}
+de374320-56f7-45cd-b42c-9c8147feb81f	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	{"type": "Library Scan", "route_key": "mkque", "exchange_key": "mkque_ex"}
+c1f8e43d-c657-435c-a6e1-ac296b3bfba9	Sync	Sync and transcode media	f	Days 1	1970-01-01 00:00:01	{"type": "Cron Run", "program": "/mediakraken/subprogram_sync.py", "route_key": "mkque", "exchange_key": "mkque_ex"}
 \.
 
 
@@ -766,44 +752,44 @@ COPY public.mm_media (mm_media_guid, mm_media_class_guid, mm_media_metadata_guid
 --
 
 COPY public.mm_media_class (mm_media_class_guid, mm_media_class_type, mm_media_class_parent_type, mm_media_class_display) FROM stdin;
-f7354910-02fc-455d-bdb5-361bf42e794c	Adult	Video	t
-e8ad8398-70be-483b-b0b9-abe8b8d7de2d	Anime	Video	t
-852bc096-20ea-4af7-a5a1-4be735c3b1ab	Book	Publication	t
-fd8387da-9d93-4554-be9d-d26e52832ff3	Boxset	\N	f
-f75c3b31-0d48-47eb-b66b-670aef07777b	Comic	Publication	t
-9dd3946f-a499-4f50-af77-b637f159ce66	Comic Strip	Publication	t
-9ba7e24a-ed4e-42c6-b667-e3179d2e71cb	Game CHD	\N	f
-f08b3310-b4a6-4e17-9ab9-74dfd0c71ca0	Game ISO	\N	f
-0ad11426-e4a2-421b-a438-0ff820e4c864	Game ROM	\N	f
-359cd32d-362b-4130-abb9-c1c1debf86cc	Home Movie	Video	t
-f0658749-4aa0-4fa1-8359-fac51106635d	Magazine	Publication	t
-8b40abac-a071-48bc-b1f9-5b678dcc934c	Movie	Video	t
-c53138ee-ab7c-40b9-b86e-d3eed7a26cc1	Movie Extras	Video	f
-d7631d4c-4e3d-4e09-866e-cd26d6c42fab	Movie Collection	\N	f
-eefee9fe-10ac-4ecd-899a-0cb162c67b6f	Movie Theme	Audio	f
-1481b6c9-8f68-4da1-8deb-19d5257035f1	Movie Subtitle	\N	f
-84742b9a-3870-418d-9bbd-4a1d7a3056c8	Movie Trailer	Video	f
-da762d3e-12b8-48a2-a214-647e76453316	Music	Audio	t
-493431f2-5f65-49cb-bb23-dbc20c906481	Music Album	\N	f
-d79edbb5-0c7c-46c1-96c4-128bea0af90b	Music Collection	\N	f
-7284c348-1f47-4d11-813a-bba08ef6b21b	Music Lyric	\N	f
-e0175eb1-b00d-438a-ad5c-8e23a2cc71c9	Music Video	Video	t
-1f187b8d-72fb-4bce-b809-01d6482a149e	Person	\N	f
-b6661e75-4474-44b3-b379-dde721daa31d	Picture	Image	t
-ba02ae59-6d4f-46f8-97a5-dd6e31d7676c	Soundtrack	Audio	f
-b118f082-8771-4ac3-b645-96d9b8d6bad4	Sports	Video	t
-f57d4cdb-7aff-45f0-9235-3f9c8b57842c	Subtitle	\N	f
-f3dc966d-2056-4ba7-8342-54191bb92117	TV Episode	Video	f
-4862b282-3130-430a-84de-cc47ec6caae4	TV Extras	Video	f
-c11a9cb5-6dda-455a-8f63-e94be3998042	TV Season	\N	f
-c62e715c-e35e-4907-a3c5-b7e9ca6f2333	TV Show	Video	t
-d4dea663-25f2-4c25-8f3b-5f68eb49d2f1	TV Subtitle	\N	f
-274f00a5-f058-41dd-a17a-dec9bcc18891	TV Theme	Audio	f
-a359aad3-7a95-4b9f-9050-aa09be35c326	TV Trailer	Video	f
-7c889c86-5eef-48cf-b840-2b56bee4b86b	Video Game	Game	t
-30ba9f85-51dc-49ad-a471-964575adf72c	Video Game Intro	Video	t
-02a162d2-194d-4ca8-8c8c-8167282d1c67	Video Game Speedrun	Video	t
-2e6bc294-eff4-40b9-8e94-e328ae4ab553	Video Game Superplay	Video	t
+bfd269c6-3105-4694-b02d-da76e1431165	Adult	Video	t
+323af63c-0641-4c87-9aa9-f6b6d09fc33b	Anime	Video	t
+ff7bb1dd-d54d-4935-9dca-9e3ff737ab19	Book	Publication	t
+64e41d00-dac3-4de9-87ef-0905eb1ac56b	Boxset	\N	f
+abd9e32e-da96-482e-9e77-b5efde45a931	Comic	Publication	t
+568fb520-ecbb-4ca0-b7d4-a057f3162881	Comic Strip	Publication	t
+52c4032d-bbf0-43aa-b893-f9a336046fe4	Game CHD	\N	f
+c01818e8-4592-409a-bbc1-528eedce0502	Game ISO	\N	f
+cf7c80c3-0a7c-4136-97ab-ef0eb4b5264a	Game ROM	\N	f
+a050c950-2eff-4c69-9b38-37349b3260ca	Home Movie	Video	t
+323568eb-5984-4685-b436-66909fa2bb78	Magazine	Publication	t
+e636fdde-8de1-43b3-9c36-66c76b88e693	Movie	Video	t
+872059dc-00bb-44f9-b422-3a1218740962	Movie Extras	Video	f
+02bfd775-aa0e-4d6a-9d52-5eee9398efbf	Movie Collection	\N	f
+e6e96f4f-cc6b-462a-9f33-e396b775d47e	Movie Theme	Audio	f
+d2513915-3d94-442f-93cb-78e72396b3d2	Movie Subtitle	\N	f
+5bf4e542-e234-4e61-a80b-93dc24b793a8	Movie Trailer	Video	f
+179586d2-8352-4195-868d-5c834034231b	Music	Audio	t
+3d4f9436-ebd5-4816-b962-58123a93ba34	Music Album	\N	f
+c09e2f26-553a-4c36-8915-51776ac1e9a1	Music Collection	\N	f
+2e8f085c-2ba2-4088-9a31-923b35c962e3	Music Lyric	\N	f
+98f64f59-eea9-4397-945b-4758e512f15a	Music Video	Video	t
+56fd8dce-8fea-4671-a776-f2e6bf1ec307	Person	\N	f
+db400fa4-b0ad-45b3-b679-a998fcfe0e6d	Picture	Image	t
+80629edf-3157-4c90-9b37-06c70afd5d61	Soundtrack	Audio	f
+251b593d-e89a-4aa0-8347-08ac832711b3	Sports	Video	t
+ad0fed4c-cf23-4482-85cb-3b5a89509848	Subtitle	\N	f
+2e12c3d0-6bff-48a2-8af6-f903e2d18caa	TV Episode	Video	f
+29b747c2-1256-4f8b-b939-82d99ab211fc	TV Extras	Video	f
+2188520b-acbc-47e0-85c7-ef457e0e1415	TV Season	\N	f
+e58e2a2e-3bc0-464f-9b07-2651336615e3	TV Show	Video	t
+5380c3bf-22c6-49ac-a375-170c01078987	TV Subtitle	\N	f
+b0718413-5e07-453d-afc0-9e1aa477dad7	TV Theme	Audio	f
+680e9904-8b03-4ee0-a037-3bf94e6dc57b	TV Trailer	Video	f
+28c0573c-acc9-4d34-8e72-604474814acb	Video Game	Game	t
+f1371e1b-b79b-4d76-9e47-95ba727840d1	Video Game Intro	Video	t
+2829ab8f-5839-458d-9f5a-2e06488ee52b	Video Game Speedrun	Video	t
+5136162e-846b-4027-981a-163d61d2d86a	Video Game Superplay	Video	t
 \.
 
 
@@ -956,7 +942,7 @@ COPY public.mm_notification (mm_notification_guid, mm_notification_text, mm_noti
 --
 
 COPY public.mm_options_and_status (mm_options_and_status_guid, mm_options_json, mm_status_json) FROM stdin;
-62b7e775-8e3e-4eda-8eb4-60d991a03833	{"SD": {"User": null, "Password": null}, "API": {"anidb": null, "imvdb": null, "dirble": "184709fc95ff6c4dacf841eb14", "google": "AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY", "isbndb": "25C8IT4I", "tvmaze": "mknotneeded", "thetvdb": "147CB43DCA8B61B7", "shoutcast": null, "thelogodb": null, "soundcloud": null, "themoviedb": "f72118d1e84b8a1438935972a9c37cac", "globalcache": null, "musicbrainz": null, "thesportsdb": "4352761817344", "opensubtitles": null, "openweathermap": "575b4ae4615e4e2a4c34fb9defa17ceb", "rottentomatoes": "f4tnu5dn9r7f28gjth3ftqaj"}, "User": {"Password Lock": null, "Activity Purge": null}, "AWSS3": {"Bucket": "mediakraken", "AccessKey": null, "BackupBucket": "mkbackup", "SecretAccessKey": null}, "Trakt": {"ClientID": null, "OAuth": null}, "Twitch": {"ApiKey": null, "ClientID": null, "SecretKey": null}, "Backup": {"Interval": 0, "BackupType": "local"}, "Docker": {"Nodes": 0, "SwarmID": null, "Instances": 0}, "LastFM": {"api_key": null, "password": null, "username": null, "api_secret": null}, "Metadata": {"MetadataImageLocal": false, "DL Subtitle": false, "Trailer": {"Clip": false, "Behind": false, "Carpool": false, "Trailer": false, "Featurette": false}, "MusicBrainz": {"Host": null, "Port": 5000, "User": null, "Password": null, "BrainzDBHost": null, "BrainzDBName": null, "BrainzDBPass": null, "BrainzDBPort": 5432, "BrainzDBUser": null}}, "MaxResumePct": 5, "Transmission": {"Host": null, "Port": 9091, "Password": "metaman", "Username": "spootdev"}, "Docker Instances": {"smtp": false, "mumble": false, "pgadmin": false, "portainer": false, "teamspeak": false, "wireshark": false, "musicbrainz": false, "transmission": false}, "MediaKrakenServer": {"MOTD": null, "BackupLocal": "/mediakraken/backups/", "Server Name": "MediaKraken"}}	{"thetvdb_Updated_Epoc": 0}
+df641592-2c6a-4ffa-816d-5f24dcea1ddd	{"API": {"anidb": null, "imvdb": null, "dirble": "184709fc95ff6c4dacf841eb14", "google": "AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY", "isbndb": "25C8IT4I", "tvmaze": "mknotneeded", "thetvdb": "147CB43DCA8B61B7", "shoutcast": null, "thelogodb": null, "soundcloud": null, "themoviedb": "f72118d1e84b8a1438935972a9c37cac", "globalcache": null, "musicbrainz": null, "thesportsdb": "4352761817344", "opensubtitles": null, "openweathermap": "575b4ae4615e4e2a4c34fb9defa17ceb", "rottentomatoes": "f4tnu5dn9r7f28gjth3ftqaj"}, "User": {"Password Lock": null, "Activity Purge": null}, "Cloud": {}, "Trakt": {"ApiKey": null, "ClientID": null, "SecretKey": null}, "Backup": {"Interval": 0, "BackupType": "local"}, "Docker": {"Nodes": 0, "SwarmID": null, "Instances": 0}, "LastFM": {"api_key": null, "password": null, "username": null, "api_secret": null}, "Twitch": {"OAuth": null, "ClientID": null}, "Account": {"ScheduleDirect": {"User": null, "Password": null}}, "Metadata": {"Trailer": {"Clip": false, "Behind": false, "Carpool": false, "Trailer": false, "Featurette": false}, "DL Subtitle": false, "MusicBrainz": {"Host": null, "Port": 5000, "User": null, "Password": null}, "MetadataImageLocal": false}, "Transmission": {"Host": null, "Port": 9091, "Password": "metaman", "Username": "spootdev"}, "Docker Instances": {"elk": false, "smtp": false, "mumble": false, "pgadmin": false, "portainer": false, "teamspeak": false, "wireshark": false, "musicbrainz": false, "transmission": false}, "MediaKrakenServer": {"MOTD": null, "Maintenance": null, "Server Name": "MediaKraken", "MaxResumePct": 5}}	{"thetvdb_Updated_Epoc": 0}
 \.
 
 
@@ -964,7 +950,7 @@ COPY public.mm_options_and_status (mm_options_and_status_guid, mm_options_json, 
 -- Data for Name: mm_radio; Type: TABLE DATA; Schema: public; Owner: metamanpg
 --
 
-COPY public.mm_radio (mm_radio_guid, mm_radio_name, mm_radio_adress, mm_radio_active) FROM stdin;
+COPY public.mm_radio (mm_radio_guid, mm_radio_name, mm_radio_description, mm_radio_address, mm_radio_active) FROM stdin;
 \.
 
 
@@ -1029,9 +1015,9 @@ COPY public.mm_user_activity (mm_activity_guid, mm_activity_name, mm_activity_ov
 --
 
 COPY public.mm_user_group (mm_user_group_guid, mm_user_group_name, mm_user_group_description, mm_user_group_rights_json) FROM stdin;
-43245db5-e3f2-4d2f-afaf-95d3847555b0	Administrator	Server administrator	{"Admin": true, "PreviewOnly": false}
-34099a51-d3eb-4c5b-9257-68fe8b7c3b62	User	General user	{"Admin": false, "PreviewOnly": false}
-4067a224-3c9a-42d8-8096-8ab6c950a8ff	Guest	Guest (Preview only)	{"Admin": false, "PreviewOnly": true}
+38117775-93b4-47d6-9a42-fc886ab6580c	Administrator	Server administrator	{"Admin": true, "PreviewOnly": false}
+6666956c-a4d8-45bc-9c56-deaa1c2b68d3	User	General user	{"Admin": false, "PreviewOnly": false}
+bea39ac2-505e-4cdd-9a3b-9c7da2cb28b2	Guest	Guest (Preview only)	{"Admin": false, "PreviewOnly": true}
 \.
 
 
@@ -1040,9 +1026,9 @@ COPY public.mm_user_group (mm_user_group_guid, mm_user_group_name, mm_user_group
 --
 
 COPY public.mm_user_profile (mm_user_profile_guid, mm_user_profile_name, mm_user_profile_json) FROM stdin;
-34f122f3-2fa7-4b7a-a485-1f201ef02f8b	Adult	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": true, "Adult": true, "Books": true, "Games": true, "MaxBR": 100, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 5}
-5ad879a3-4c57-411a-9983-eaecf1473c9c	Teen	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 50, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 3}
-ae303673-9a39-45ee-a761-e18c3a9d027e	Child	{"3D": false, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 20, "Movie": true, "Music": true, "IRadio": false, "Images": true, "LiveTV": false, "Sports": true, "Internet": false, "MaxRating": 0}
+0863c596-3d62-4409-83c2-0515d3465adc	Adult	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": true, "Adult": true, "Books": true, "Games": true, "MaxBR": 100, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 5}
+2bf39eb6-8192-4c2d-88cf-6341bbec1cd8	Teen	{"3D": true, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 50, "Movie": true, "Music": true, "IRadio": true, "Images": true, "LiveTV": true, "Sports": true, "Internet": true, "MaxRating": 3}
+2bcbbd3e-8e2e-4fdc-92a9-471e5d018539	Child	{"3D": false, "TV": true, "Home": true, "Lang": "en", "Sync": false, "Adult": false, "Books": true, "Games": true, "MaxBR": 20, "Movie": true, "Music": true, "IRadio": false, "Images": true, "LiveTV": false, "Sports": true, "Internet": false, "MaxRating": 0}
 \.
 
 
@@ -1051,7 +1037,7 @@ ae303673-9a39-45ee-a761-e18c3a9d027e	Child	{"3D": false, "TV": true, "Home": tru
 --
 
 COPY public.mm_version (mm_version_no) FROM stdin;
-21
+22
 \.
 
 
@@ -1308,14 +1294,6 @@ ALTER TABLE ONLY public.mm_review
 
 ALTER TABLE ONLY public.mm_sync
     ADD CONSTRAINT mm_sync_guid_pk PRIMARY KEY (mm_sync_guid);
-
-
---
--- Name: mm_task mm_task_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
---
-
-ALTER TABLE ONLY public.mm_task
-    ADD CONSTRAINT mm_task_guid_pk PRIMARY KEY (mm_task_guid);
 
 
 --

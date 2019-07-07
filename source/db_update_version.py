@@ -16,6 +16,9 @@
   MA 02110-1301, USA.
 '''
 
+import json
+
+import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -30,7 +33,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # if db_connection.db_version_check() == 1:
 #     # add download image que
-#     proc = subprocess.Popen(['python', './db_create_update.py'], shell=False)
+#     proc = subprocess.Popen(['python', './db_create_update.py'], stdout=subprocess.PIPE, shell=False)
 #     proc.wait()
 #     db_connection.db_version_update(2)
 #     db_connection.db_commit()
@@ -282,6 +285,25 @@ if db_connection.db_version_check() < 22:
 #         "MetadataImageLocal": false to metadata json options
 
 # add api for [api][dirble]
+
+if db_connection.db_version_check() < 23:
+    # retro update
+    db_connection.db_cron_insert('Retro game data', 'Grab updated metadata for retro game(s)',
+                                 False, 'Days 1', psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+                                 json.dumps({'exchange_key': 'mkque_ex', 'route_key': 'mkque',
+                                             'type': 'Cron Run',
+                                             'program': '/mediakraken/subprogram_metadata_games.py'}),
+
+                                 )
+    db_connection.db_version_update(23)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 24:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'API': {'Docker Instances': {'elk': False}}})
+    db_connection.db_opt_update(options_json)
+    db_connection.db_version_update(24)
+    db_connection.db_commit()
 
 # close the database
 db_connection.db_close()

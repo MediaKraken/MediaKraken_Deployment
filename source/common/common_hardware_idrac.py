@@ -17,10 +17,9 @@
 '''
 
 # https://github.com/MediaKraken-Dep/python-dracclient
-import dracclient.client
 
 
-class CommonHardwareIDrac(object):
+class CommonHardwareIDrac:
     """
     Class for Dell IDrac
     """

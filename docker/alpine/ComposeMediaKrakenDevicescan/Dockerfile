@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase38py3
+FROM mediakraken/mkbase38py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image scans for new hardware devices"
@@ -8,16 +8,19 @@ ARG ALPMIRROR
 ARG PIPMIRROR
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   alpine-sdk \
+  gcc \
   git \
   libhdhomerun \
+  linux-headers \
+  musl-dev \
   py3-requests \
   py3-setuptools \
   python3-dev \
@@ -30,15 +33,15 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && cd phue \
   && python3 setup.py install \
   && cd .. \
+  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del alpine-sdk \
   git \
   python3-dev \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  linux-headers \
   && rm -rf phue \
-  && rm requirements.txt \
-  && rm -rf /var/cache/apk/*
+  && rm requirements.txt
 
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

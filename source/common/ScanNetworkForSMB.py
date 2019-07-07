@@ -22,12 +22,13 @@
 # 3. This notice cannot be removed or altered from any source distribution.
 #
 
-import sys
+import random
 import select
 import socket
-import random
 import string
+import sys
 import time
+
 from nmb import base
 
 
@@ -126,7 +127,7 @@ def main():
     if ns.pending_count > 0:
         ns.poll(10)
         print(('Query timeout. No replies from %d IP addresses' %
-              ns.pending_count))
+               ns.pending_count))
 
 
 if __name__ == '__main__':

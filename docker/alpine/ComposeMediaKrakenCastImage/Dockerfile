@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase38py3
+FROM mediakraken/mkbase38py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the castpy app"
@@ -7,6 +7,6 @@ LABEL Description="This image holds the castpy app"
 WORKDIR /mediakraken
 
 # Copy the source files for the app
-ADD src /mediakraken
+COPY src /mediakraken
 
 CMD ["/bin/ash"]

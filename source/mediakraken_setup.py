@@ -95,7 +95,6 @@ compose_text += "\n\n  # Main app server which controls the show\n" \
                 "  appserver:\n" \
                 "    image: mediakraken/mkserver:latest\n" \
                 "    environment:\n" \
-                "      - POSTGRES_DB_HOST=${DBHOST}\n" \
                 "      - POSTGRES_DB=${DBDATABASE}\n" \
                 "      - POSTGRES_USER=${DBUSER}\n" \
                 "      - POSTGRES_PASSWORD=${DBPASS}\n" \
@@ -319,7 +318,7 @@ file_handle.write(env_text)
 file_handle.close()
 
 print("Pulling newest images from Docker Hub for MediaKraken....this may take awhile.")
-docker_pid = subprocess.Popen(['docker-compose', 'pull'])
+docker_pid = subprocess.Popen(['docker-compose', 'pull'], stdout=subprocess.PIPE, shell=False)
 docker_pid.wait()
 
 print("MediaKraken setup has been completed. Run ./mediakraken_start.sh' in Linux/MacOS"

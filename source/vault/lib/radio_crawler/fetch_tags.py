@@ -9,9 +9,7 @@ import multiprocessing
 
 from gi.repository import GLib
 from gi.repository import Gst
-
 from util import TagListWrapper, get_cache, get_failed, set_cache, set_failed
-
 
 PROCESSES = 100
 TIMEOUT = 5
@@ -96,12 +94,15 @@ def get_all_tags(uris):
         pool = multiprocessing.Pool(PROCESSES)
         for i, (uri, tags) in enumerate(pool.imap_unordered(get_tags, uris)):
 
-            print "%d/%d " % (i+1, len(uris)) + uri + " -> ",
+            print
+            "%d/%d " % (i + 1, len(uris)) + uri + " -> ",
             if tags:
                 result[uri] = tags
-                print "OK: ", len(tags)
+                print
+                "OK: ", len(tags)
             else:
-                print "FAILED"
+                print
+                "FAILED"
                 failed.append(uri)
     except:
         pass

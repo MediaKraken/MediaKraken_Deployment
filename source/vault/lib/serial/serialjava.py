@@ -9,6 +9,7 @@
 
 from serial.serialutil import *
 
+
 def my_import(name):
     mod = __import__(name)
     components = name.split('.')
@@ -33,8 +34,8 @@ def detect_java_comm(names):
 # http://mho.republika.pl/java/comm/
 
 comm = detect_java_comm([
-    'javax.comm', # Sun/IBM
-    'gnu.io',     # RXTX
+    'javax.comm',  # Sun/IBM
+    'gnu.io',  # RXTX
 ])
 
 
@@ -60,10 +61,11 @@ class JavaSerial(SerialBase):
             raise SerialException("Port must be configured before it can be used.")
         if self._isOpen:
             raise SerialException("Port is already open.")
-        if type(self._port) == type(''):      # strings are taken directly
+        if type(self._port) == type(''):  # strings are taken directly
             portId = comm.CommPortIdentifier.getPortIdentifier(self._port)
         else:
-            portId = comm.CommPortIdentifier.getPortIdentifier(device(self._port))     # numbers are transformed to a comport id obj
+            portId = comm.CommPortIdentifier.getPortIdentifier(
+                device(self._port))  # numbers are transformed to a comport id obj
         try:
             self.sPort = portId.open("python serial module", 10)
         except Exception, msg:
@@ -115,17 +117,17 @@ class JavaSerial(SerialBase):
 
         jflowin = jflowout = 0
         if self._rtscts:
-            jflowin  |=  comm.SerialPort.FLOWCONTROL_RTSCTS_IN
-            jflowout |=  comm.SerialPort.FLOWCONTROL_RTSCTS_OUT
+            jflowin |= comm.SerialPort.FLOWCONTROL_RTSCTS_IN
+            jflowout |= comm.SerialPort.FLOWCONTROL_RTSCTS_OUT
         if self._xonxoff:
-            jflowin  |=  comm.SerialPort.FLOWCONTROL_XONXOFF_IN
-            jflowout |=  comm.SerialPort.FLOWCONTROL_XONXOFF_OUT
+            jflowin |= comm.SerialPort.FLOWCONTROL_XONXOFF_IN
+            jflowout |= comm.SerialPort.FLOWCONTROL_XONXOFF_OUT
 
         self.sPort.setSerialPortParams(self._baudrate, jdatabits, jstopbits, jparity)
         self.sPort.setFlowControlMode(jflowin | jflowout)
 
         if self._timeout >= 0:
-            self.sPort.enableReceiveTimeout(self._timeout*1000)
+            self.sPort.enableReceiveTimeout(self._timeout * 1000)
         else:
             self.sPort.disableReceiveTimeout()
 
@@ -187,7 +189,7 @@ class JavaSerial(SerialBase):
     def sendBreak(self, duration=0.25):
         """Send break condition. Timed, returns to idle state after given duration."""
         if not self.sPort: raise portNotOpenError
-        self.sPort.sendBreak(duration*1000.0)
+        self.sPort.sendBreak(duration * 1000.0)
 
     def setBreak(self, level=1):
         """Set break: Controls TXD. When active, to transmitting is possible."""
@@ -239,17 +241,16 @@ else:
     class Serial(JavaSerial, io.RawIOBase):
         pass
 
-
 if __name__ == '__main__':
     s = Serial(0,
-         baudrate=19200,        # baudrate
-         bytesize=EIGHTBITS,    # number of databits
-         parity=PARITY_EVEN,    # enable parity checking
-         stopbits=STOPBITS_ONE, # number of stopbits
-         timeout=3,             # set a timeout value, None for waiting forever
-         xonxoff=0,             # enable software flow control
-         rtscts=0,              # enable RTS/CTS flow control
-    )
+               baudrate=19200,  # baudrate
+               bytesize=EIGHTBITS,  # number of databits
+               parity=PARITY_EVEN,  # enable parity checking
+               stopbits=STOPBITS_ONE,  # number of stopbits
+               timeout=3,  # set a timeout value, None for waiting forever
+               xonxoff=0,  # enable software flow control
+               rtscts=0,  # enable RTS/CTS flow control
+               )
     s.setRTS(1)
     s.setDTR(1)
     s.flushInput()
@@ -258,5 +259,3 @@ if __name__ == '__main__':
     sys.stdio.write('%r\n' % s.read(5))
     sys.stdio.write('%s\n' % s.inWaiting())
     del s
-
-

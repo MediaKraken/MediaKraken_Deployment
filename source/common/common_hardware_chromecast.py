@@ -32,9 +32,10 @@ def com_hard_chrome_discover(timeout=5, retries=1):
     """
     Discover chromecast devices
     """
-    device_list = common_network_ssdp.ssdp_discover(service='urn:dial-multiscreen-org:device:dial:1',
-                                                    timeout=timeout,
-                                                    retries=retries, mx=1)
+    device_list = common_network_ssdp.ssdp_discover(
+        service='urn:dial-multiscreen-org:device:dial:1',
+        timeout=timeout,
+        retries=retries, mx=1)
     devices_found = []
     for ssdp_device_location in device_list:
         # get the info via request and xmltodict

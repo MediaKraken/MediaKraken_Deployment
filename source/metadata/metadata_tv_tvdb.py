@@ -21,7 +21,7 @@ import json
 import pika
 from common import common_config_ini
 from common import common_global
-from common import common_metadata_thetvdb
+from common import common_metadata_provider_thetvdb
 from common import common_string
 from common import common_thetvdb
 from guessit import guessit
@@ -44,7 +44,7 @@ channel.basic_qos(prefetch_count=1)
 if option_config_json['API']['thetvdb'] is not None:
     THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
     # tvshow xml downloader and general api interface
-    THETVDB_API = common_metadata_thetvdb.CommonMetadataTheTVDB(option_config_json)
+    THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
 else:
     THETVDB_CONNECTION = None
 

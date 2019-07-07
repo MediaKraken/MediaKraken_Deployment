@@ -18,10 +18,8 @@
 
 import json
 import os
-import subprocess
 import time
 import uuid
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime  # to handle threading
 
 import pika
@@ -37,6 +35,12 @@ from common import common_string
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')
+
+# set signal exit breaks
+common_signal.com_signal_set_break()
+
+# open the database
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def worker(audit_directory):
@@ -134,13 +138,15 @@ def worker(audit_directory):
                         or file_name.find('/theme.mp4') != -1 \
                         or file_name.find('\\theme.mp4') != -1:
                     if media_class_text == 'Movie':
-                        if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
+                        if file_name.find('/trailers/') != -1 or file_name.find(
+                                '\\trailers\\') != -1:
                             new_class_type_uuid = class_text_dict['Movie Trailer']
                         else:
                             new_class_type_uuid = class_text_dict['Movie Theme']
                     elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
                             or media_class_text == 'TV Season':
-                        if file_name.find('/trailers/') != -1 or file_name.find('\\trailers\\') != -1:
+                        if file_name.find('/trailers/') != -1 or file_name.find(
+                                '\\trailers\\') != -1:
                             new_class_type_uuid = class_text_dict['TV Trailer']
                         else:
                             new_class_type_uuid = class_text_dict['TV Theme']
@@ -149,7 +155,8 @@ def worker(audit_directory):
                     if original_media_class == 'Movie':
                         new_class_type_uuid = class_text_dict['Movie Extras']
                     elif original_media_class == 'TV Show' \
-                            or thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'TV Episode' \
+                            or thread_db.db_media_class_by_uuid(
+                        media_class_type_uuid) == 'TV Episode' \
                             or media_class_text == 'TV Season':
                         new_class_type_uuid = class_text_dict['TV Extras']
                 # set new media class for backdrops (usually themes)
@@ -171,9 +178,11 @@ def worker(audit_directory):
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
                 media_id = str(uuid.uuid4())
-                thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None, media_json)
+                thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
+                                          media_json)
                 # verify ffprobe and bif should run on the data
-                if ffprobe_bif_data and file_extension[1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                if ffprobe_bif_data and file_extension[
+                                        1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
                         and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
                     # Send a message so ffprobe runs
                     channel.basic_publish(exchange='mkque_ffmpeg_ex',
@@ -191,8 +200,9 @@ def worker(audit_directory):
                                                   {'Type': 'Roku', 'Subtype': 'Thumbnail',
                                                    'Media UUID': media_id,
                                                    'Media Path': file_name}),
-                                              properties=pika.BasicProperties(content_type='text/plain',
-                                                                              delivery_mode=2))
+                                              properties=pika.BasicProperties(
+                                                  content_type='text/plain',
+                                                  delivery_mode=2))
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert
@@ -228,32 +238,14 @@ def worker(audit_directory):
     return
 
 
-# fire off wait for it script to allow rabbitmq connection
-wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkrabbitmq', '-p', ' 5672', '-t', '30'],
-                            shell=False)
-wait_pid.wait()
+# don't need to check this as the subprogram_pika will do it
+# fire off wait for it script to allow connection
+# common_network.mk_network_service_available('mkrabbitmq', '5672')
 
-# set signal exit breaks
-common_signal.com_signal_set_break()
-
-# Open a connection to RabbitMQ
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
-                                       credentials=pika.PlainCredentials('guest', 'guest'))
+credentials = pika.PlainCredentials('guest', 'guest')
+parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30, credentials=credentials)
 connection = pika.BlockingConnection(parameters)
-
-# Open the channel
 channel = connection.channel()
-
-# Declare the queue
-channel.queue_declare(queue="mkffmpeg", durable=True,
-                      exclusive=False, auto_delete=False)
-
-# Turn on delivery confirmations
-channel.confirm_delivery()
-
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 # load in all media from DB
 global_known_media = []  # pylint: disable=C0103
@@ -291,16 +283,19 @@ for row_data in db_connection.db_audit_paths():
         smb_stuff.com_cifs_close()
     else:
         # make sure the path still exists
-        if not os.path.isdir(row_data['mm_media_dir_path']):
+        if not os.path.isdir(os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path'])):
             db_connection.db_notification_insert('Library path not found: %s'
                                                  % row_data['mm_media_dir_path'], True)
         else:
             # verify the directory inodes has changed
-            if datetime.strptime(time.ctime(os.path.getmtime(row_data['mm_media_dir_path'])),
-                                 "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
-                audit_directories.append((row_data['mm_media_dir_path'],
-                                          str(row_data['mm_media_class_guid']),
-                                          row_data['mm_media_dir_guid']))
+            if datetime.strptime(
+                    time.ctime(os.path.getmtime(
+                        os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']))),
+                    "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+                audit_directories.append(
+                    (os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path']),
+                     str(row_data['mm_media_class_guid']),
+                     row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
                                                           json.dumps({'Status': 'Added to scan',
                                                                       'Pct': 100}))
@@ -310,15 +305,18 @@ db_connection.db_commit()
 
 # start processing the directories
 if len(audit_directories) > 0:
-    # switched to this since tracebacks work this method
-    with ThreadPoolExecutor(len(audit_directories)) as executor:
-        futures = [executor.submit(worker, n) for n in audit_directories]
-        for future in futures:
-            pass
-            # try:
-            #     common_global.es_inst.com_elastic_index('info', {'future': str(future.result())})
-            # except:
-            #     pass
+    # TODO Threading will exit.  Ran each dir seperate works.  Why?
+    for media_dir in audit_directories:
+        worker(media_dir)
+    # # switched to this since tracebacks work this method
+    # with ThreadPoolExecutor(len(audit_directories)) as executor:
+    #     futures = [executor.submit(worker, n) for n in audit_directories]
+    #     for future in futures:
+    #         pass
+    #         # try:
+    #         #     common_global.es_inst.com_elastic_index('info', {'future': str(future.result())})
+    #         # except:
+    #         #     pass
 
 # commit
 db_connection.db_commit()

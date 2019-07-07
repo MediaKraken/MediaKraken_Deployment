@@ -19,7 +19,7 @@
 from . import common_network_telnet
 
 
-class CommonHardwareTivo(object):
+class CommonHardwareTivo:
     """
     Class for interfacing with tivo device
     """

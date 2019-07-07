@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase38py3
+FROM mediakraken/mkbase38py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the twitch recorder app"
@@ -8,20 +8,19 @@ ARG ALPMIRROR
 ARG PIPMIRROR
 
 # copy PIP requirements
-ADD requirements.txt /mediakraken
+COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --update \
+  && apk add --no-cache \
   alpine-sdk \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apk del \
-  alpine-sdk \
-  && rm -rf /var/cache/apk/*
+  alpine-sdk
 
 # Copy the source files for the app
-ADD check.py /mediakraken
+COPY check.py /mediakraken
 
 CMD ["/bin/ash"]
 

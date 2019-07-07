@@ -1,10 +1,10 @@
 import time as tm
-from kivy.properties import ObjectProperty, AliasProperty, NumericProperty
+
 from kivy.clock import Clock
+from kivy.properties import ObjectProperty, AliasProperty, NumericProperty
 
 
-class ClockBehavior(object):
-
+class ClockBehavior:
     # Current time. struct_tm object as returned by time.localtime()
     time = ObjectProperty(tm.localtime(), rebind=True)
     # Offset to localtime in seconds. Defaults to 0

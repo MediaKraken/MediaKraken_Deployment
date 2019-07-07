@@ -1,5 +1,6 @@
-import sys
 import signal
+import sys
+
 from clint.textui import colored, puts
 from downloader import Downloader
 from extractor import Extractor

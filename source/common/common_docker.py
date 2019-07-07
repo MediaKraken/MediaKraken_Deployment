@@ -16,11 +16,11 @@
   MA 02110-1301, USA.
 '''
 
-import docker
 import os
 import socket
 import subprocess
 
+import docker
 from . import common_global
 
 
@@ -34,7 +34,7 @@ def com_docker_host_ip():
             ' ')[2]
 
 
-class CommonDocker(object):
+class CommonDocker:
     """
     Class for interfacing with docker
     """
@@ -223,16 +223,17 @@ class CommonDocker(object):
                                                 {'path': os.path.join(
                                                     current_host_working_directory,
                                                     'dosbox')})
-        self.com_docker_delete_container(('mkdosbox' + current_user_uuid.replace('-', ''))[:30])
-        self.com_docker_network_create('mk_mediakraken_game_network')
+        self.com_docker_delete_container(('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30])
+        self.com_docker_network_create('mk_mediakraken_network')
         # create user dir for dosbox, game_uuid is used to not lose installs/game saves
         user_host_dir = os.path.join(current_host_working_directory, 'data/dosbox',
                                      current_user_uuid, game_uuid)
         if not os.path.exists(user_host_dir):
             os.makedirs(user_host_dir)
-        return self.cli.containers.run(image='mediakraken/mkdosbox',
+        return self.cli.containers.run(image='mediakraken/mkdosboxweb',
                                        detach=True,
-                                       name=('mkdosbox' + current_user_uuid.replace('-', ''))[:30],
+                                       name=('mkdosboxweb' + current_user_uuid.replace('-', ''))[
+                                            :30],
                                        network='mk_mediakraken_game_network',
                                        volumes={user_host_dir:
                                                     {'bind': '/mediakraken/dosbox',
@@ -339,21 +340,21 @@ class CommonDocker(object):
                                                 }
                                        )
 
-    def com_docker_run_openldap(self, current_host_working_directory):
-        self.com_docker_delete_container('mkopenldap')
-        return self.cli.containers.run(image='mediakraken/mkopenldap',
-                                       detach=True,
-                                       name='mkopenldap',
-                                       ports={"389": 389, "636": 636},
-                                       volumes={os.path.join(current_host_working_directory,
-                                                             'data/openldap/conf'):
-                                                    {'bind': '/etc/openldap',
-                                                     'mode': 'rw'},
-                                                os.path.join(current_host_working_directory,
-                                                             'data/openldap/data'):
-                                                    {'bind': '/var/lib/openldap/openldap-data',
-                                                     'mode': 'rw'}},
-                                       network='mk_mediakraken_network')
+    # def com_docker_run_openldap(self, current_host_working_directory):
+    #     self.com_docker_delete_container('mkopenldap')
+    #     return self.cli.containers.run(image='mediakraken/mkopenldap',
+    #                                    detach=True,
+    #                                    name='mkopenldap',
+    #                                    ports={"389": 389, "636": 636},
+    #                                    volumes={os.path.join(current_host_working_directory,
+    #                                                          'data/openldap/conf'):
+    #                                                 {'bind': '/etc/openldap',
+    #                                                  'mode': 'rw'},
+    #                                             os.path.join(current_host_working_directory,
+    #                                                          'data/openldap/data'):
+    #                                                 {'bind': '/var/lib/openldap/openldap-data',
+    #                                                  'mode': 'rw'}},
+    #                                    network='mk_mediakraken_network')
 
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
         self.com_docker_delete_container('mkpgadmin')

@@ -19,7 +19,7 @@
 from Arduino import Arduino
 
 
-class CommonHardwareArduino(object):
+class CommonHardwareArduino:
     """
     Class for interfacing with arduino device over usb
     """

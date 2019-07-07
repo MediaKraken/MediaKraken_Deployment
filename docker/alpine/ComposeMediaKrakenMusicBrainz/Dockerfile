@@ -1,18 +1,14 @@
-# https://github.com/linuxserver/docker-musicbrainz
-
-FROM lsiobase/alpine:3.6
+FROM lsiobase/alpine:3.8
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
+ARG MUSICBRAINZ_RELEASE
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="sparklyballs"
 
 # copy files required in build stage
 COPY prebuilds/ /defaults/
-
-# package versions
-ARG BRAINZ_VER="v-2018-08-14"
 
 # global environment settings
 ENV BABEL_DISABLE_CACHE="1" \
@@ -26,17 +22,18 @@ URL_ROOT="ftp://ftp.musicbrainz.org/pub/musicbrainz/data/fullexport"
 
 RUN \
  echo "**** install build packages ****" && \
- apk add --no-cache --virtual=build-dependencies \
+ apk add --no-cache --virtual=build-dependencies --upgrade \
 	db-dev \
 	expat-dev \
 	g++ \
 	gcc \
+	git \
 	icu-dev \
 	libxml2-dev \
 	make \
 	perl-dev && \
  echo "**** install runtime packages ****" && \
- apk add --no-cache \
+ apk add --no-cache --upgrade \
 	bzip2 \
 	curl \
 	db \
@@ -61,11 +58,17 @@ RUN \
 	wget \
 	yarn && \
  echo "**** fetch musicbrainz and install perl and node packages ****" && \
+ if [ -z ${MUSICBRAINZ_RELEASE+x} ]; then \
+	MUSICBRAINZ_RELEASE=$(git ls-remote --tags https://github.com/metabrainz/musicbrainz-server.git \
+	| grep -v '{}' \
+	| tail -n 1 \
+	| awk -F / '{print $3}'); \
+ fi && \
  mkdir -p \
 	/app/musicbrainz && \
  curl -o \
  /tmp/musicbrainz.tar.gz -L \
-	"https://github.com/metabrainz/musicbrainz-server/archive/${BRAINZ_VER}.tar.gz" && \
+	"https://github.com/metabrainz/musicbrainz-server/archive/${MUSICBRAINZ_RELEASE}.tar.gz" && \
  tar xf \
  /tmp/musicbrainz.tar.gz -C \
 	/app/musicbrainz --strip-components=1 && \
@@ -73,6 +76,7 @@ RUN \
  cp /defaults/DBDefs.pm /app/musicbrainz/lib/DBDefs.pm && \
  cd /app/musicbrainz && \
  curl -L http://cpanmin.us | perl - App::cpanminus && \
+ sed -i '/Test::Magpie/d' cpanfile && \
  cpanm --installdeps --notest . && \
  cpanm --notest \
 	Cache::Memcached::Fast \

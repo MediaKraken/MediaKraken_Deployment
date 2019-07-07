@@ -159,7 +159,7 @@ class HashGenerate(Thread):
                 lock.release()
 
 
-class HashScanner(object):
+class HashScanner:
     def __init__(self):
         self.percentComplete = 0
 
@@ -220,7 +220,7 @@ class HashScanner(object):
             time.sleep(0.05)
 
 
-class ROMFileParser(object):
+class ROMFileParser:
     def __init__(self, files, zippedFiles, hashFileMap):
         self.files = files
         self.zippedFiles = zippedFiles

@@ -19,7 +19,7 @@
 import telnetlib
 
 
-class CommonHardwareMarantz(object):
+class CommonHardwareMarantz:
     """
     Class for interfacing with Marantz equipment over network connection
     """

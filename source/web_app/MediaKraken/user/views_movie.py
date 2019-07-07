@@ -19,6 +19,7 @@ sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
 from common import common_global
+from common import common_network_pika
 from common import common_internationalization
 import database as database_base
 
@@ -33,6 +34,13 @@ def movie_detail(guid):
     """
     if request.method == 'POST':
         if request.form['playback'] == 'Web Viewer':
+            common_network_pika.com_net_pika_send(
+                {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
+                 'User': current_user.get_id(),
+                 'Data': g.db_connection.db_read_media(guid)['mm_media_path']},
+                rabbit_host_name='mkrabbitmq',
+                exchange_name='mkque_ex',
+                route_key='mkque')
             return redirect(url_for('user_playback.user_video_player_videojs', mtype='hls',
                                     guid=request.form['Video_Track'], chapter=1,
                                     audio=request.form['Video_Play_Audio_Track'],
@@ -57,7 +65,9 @@ def movie_detail(guid):
             # launch ffmpeg to ffserver procecss
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    g.db_connection.db_media_path_by_uuid(
-                                                       media_guid_index)[0] + '\" http://localhost/stream.ffm'))
+                                                       media_guid_index)[
+                                                       0] + '\" http://localhost/stream.ffm'),
+                                             stdout=subprocess.PIPE, shell=False)
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(url_for('user_movie.movie_detail', guid=guid))
     else:
@@ -126,6 +136,7 @@ def movie_detail(guid):
 
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
         ffprobe_data = {}
+        # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
         for video_version in g.db_connection.db_ffprobe_all_media_guid(guid,
                                                                        g.db_connection.db_media_uuid_by_class(
                                                                            'Movie')):
@@ -169,7 +180,8 @@ def movie_detail(guid):
                             stream_title = stream_info['tags']['title']  # Surround 5.1 and so on
                         except KeyError:
                             stream_title = 'NA'
-                        if 'codec_long_name' in stream_info and stream_info['codec_long_name'] != 'unknown':
+                        if 'codec_long_name' in stream_info and stream_info[
+                            'codec_long_name'] != 'unknown':
                             stream_codec = stream_info['codec_long_name']
                         else:
                             try:
@@ -179,12 +191,14 @@ def movie_detail(guid):
                         audio_streams.append((stream_codec, stream_language, stream_title))
                     elif stream_info['codec_type'] == 'subtitle':
                         try:
-                            subtitle_streams.append(common_internationalization.com_inter_country_name(
-                                stream_info['tags']['language']))
+                            subtitle_streams.append(
+                                common_internationalization.com_inter_country_name(
+                                    stream_info['tags']['language']))
                         except KeyError:
                             subtitle_streams.append('Unknown')
             ffprobe_data[video_version['mm_media_guid']] = (data_resolution,
-                                                            "%02dH:%02dM:%02dS" % (hours, minutes, seconds),
+                                                            "%02dH:%02dM:%02dS" % (
+                                                                hours, minutes, seconds),
                                                             audio_streams,
                                                             subtitle_streams)
         # do chapter stuff here so I can sort

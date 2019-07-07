@@ -19,7 +19,7 @@ import io
 import socket
 
 
-class SSDPResponse(object):
+class SSDPResponse:
     """
     Class for interfacing via SSDP
     """
