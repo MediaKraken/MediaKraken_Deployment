@@ -16,7 +16,6 @@
   MA 02110-1301, USA.
 '''
 
-# import modules
 import glob
 import os
 
@@ -24,8 +23,8 @@ master_directory = os.getcwd()
 # hold all the directories to parse
 dir_to_parse = []
 
-# extentions to parse
-types = ('*.mkv', '*.avi', '*.mp4', '*.mov', '*.wmv', '*.webm')
+# extensions to parse
+types = ('*.mkv', '*.avi', '*.mp4', '*.mov', '*.wmv', '*.webm', '*.m4v')
 
 dir_to_parse.append('Beta')
 dir_to_parse.append('Beta_Super')
@@ -51,14 +50,18 @@ dir_to_parse.append('VHS_Super')
 
 # loop through the directories looking for media files
 for directory_local in dir_to_parse:
-    os.chdir(master_directory + directory_local)
+    # not all dirs will exist in the media directories
+    try:
+        os.chdir(os.path.join(master_directory, directory_local))
+    except FileNotFoundError:
+        continue
     # populate from multiple globs
     files_grabbed = []
     for files in types:
         files_grabbed.extend(glob.glob(files))
     # parse the results
     for file in files_grabbed:
-        print(file)
+        print('File: ', file)
         new_dir_name = file.rsplit('.', 1)[0]
         file_extension = extension = os.path.splitext(file)[1]
         if new_dir_name.find('_') == -1:
@@ -66,9 +69,9 @@ for directory_local in dir_to_parse:
         else:
             old_dir_name = new_dir_name
             new_dir_name = new_dir_name.replace('_', ' ')
-            command_to_run = 'mv ' + master_directory + directory_local + "/\"" \
+            command_to_run = 'mv ' + os.path.join(master_directory, directory_local) + "/\"" \
                              + old_dir_name + '.' + file_extension + '\" ' \
-                             + master_directory + directory_local + "/\"" \
+                             + os.path.join(master_directory, directory_local) + "/\"" \
                              + new_dir_name + "." + file_extension + "\""
             print(command_to_run)
             os.system(command_to_run)
@@ -86,27 +89,29 @@ for directory_local in dir_to_parse:
             os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "theme-music"))
             # create the directory for the theme video/etc files
             os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "backdrops"))
-            # move the corresponding files and metadata
-            command_to_run = 'mv ' + master_directory + directory_local + "/\"" \
-                             + new_dir_name + '\".* ' \
-                             + master_directory + directory_local + "/\"" + new_dir_name + "\"/."
-            print(command_to_run)
-            os.system(command_to_run)
-            command_to_run = 'mv ' + master_directory + directory_local + "/\"" \
-                             + new_dir_name + '-\"* ' \
-                             + master_directory + directory_local + "/\"" + new_dir_name + "\"/."
-            print(command_to_run)
-            os.system(command_to_run)
-            # change overship of files
-            command_to_run = 'chown -R spoot: \"' + os.path.join(master_directory, directory_local,
-                                                                 new_dir_name) + '\"'
-            print(command_to_run)
-            os.system(command_to_run)
-            # change rights just in case of files
-            command_to_run = 'chmod -R 755 \"' + os.path.join(master_directory, directory_local,
-                                                              new_dir_name) + '\"'
-            print(command_to_run)
-            os.system(command_to_run)
+        # move the corresponding files and metadata
+        command_to_run = 'mv ' + os.path.join(master_directory, directory_local) + "/\"" \
+                         + new_dir_name + '\".* ' \
+                         + os.path.join(master_directory,
+                                        directory_local) + "/\"" + new_dir_name + "\"/."
+        print(command_to_run)
+        os.system(command_to_run)
+        command_to_run = 'mv ' + os.path.join(master_directory, directory_local) + "/\"" \
+                         + new_dir_name + '-\"* ' \
+                         + os.path.join(master_directory,
+                                        directory_local) + "/\"" + new_dir_name + "\"/."
+        print(command_to_run)
+        os.system(command_to_run)
+        # change ownership of files
+        command_to_run = 'chown -R spoot: \"' + os.path.join(master_directory, directory_local,
+                                                             new_dir_name) + '\"'
+        print(command_to_run)
+        os.system(command_to_run)
+        # change rights just in case of files
+        command_to_run = 'chmod -R 755 \"' + os.path.join(master_directory, directory_local,
+                                                          new_dir_name) + '\"'
+        print(command_to_run)
+        os.system(command_to_run)
 
 '''
 # setup the music video files
