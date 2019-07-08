@@ -49,8 +49,8 @@ for media_row in common_file.com_file_dir_list('/nfsmount/TV_Shows_Misc/',
         total_download_attempts += 1
         os.chdir(media_row.rsplit('/', 1)[0])
         file_handle = subprocess.Popen(shlex.split(
-            "subliminal -l " + sub_lang + " -- \"" + media_row + "\""), stdout=subprocess.PIPE,
-            shell=False)
+            "subliminal -l " + sub_lang + " -- \"" + media_row + "\""),
+            stdout=subprocess.PIPE, shell=False)
         cmd_output = file_handle.read()
         common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
 

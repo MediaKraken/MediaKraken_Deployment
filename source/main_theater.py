@@ -21,10 +21,10 @@ import json
 import logging  # pylint: disable=W0611
 import os
 import platform
+import shlex
 import subprocess
 import sys
 import uuid
-from shlex import split
 
 from common import common_global
 from common import common_logging_elasticsearch
@@ -624,10 +624,11 @@ def on_config_change(self, config, section, key, value):
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
             if os.path.isfile(MediaKrakenApp.media_path):
                 self.mpv_process = subprocess.Popen(
-                    split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
-                          '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
-                          '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
-                          + MediaKrakenApp.media_path + '\"'), stdout=subprocess.PIPE, shell=False)
+                    shlex.split(
+                        'mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
+                        '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
+                        '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
+                        + MediaKrakenApp.media_path + '\"'), stdout=subprocess.PIPE, shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
             else:
                 self.theater_play_server()

@@ -18,9 +18,9 @@
 
 import functools
 import json
+import shlex
 import subprocess
 import time
-from shlex import split
 
 import pika
 from common import common_global
@@ -198,7 +198,8 @@ class MKConsumer:
             common_global.es_inst.com_elastic_index('info', {'Got Message': body})
         common_global.es_inst.com_elastic_index('info', {'len total': len(body)})
         # no need to check types....as if it's here, it's a slave command
-        subprocess.Popen(split(json_message['Command']), stdout=subprocess.PIPE, shell=False)
+        subprocess.Popen(shlex.split(json_message['Command']),
+                         stdout=subprocess.PIPE, shell=False)
         # if json_message['Device Type'] == 'Cast':
         #     pass
         # if json_message['Command'] == "Chapter Back":

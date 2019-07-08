@@ -17,8 +17,8 @@
 '''
 
 import os
+import shlex
 import subprocess
-from shlex import split
 
 from . import common_global
 
@@ -35,7 +35,7 @@ def com_net_share_mount(share_list):
             pass
         else:
             proc_dir = subprocess.Popen(
-                split('mkdir ./mnt/\"' + share['mm_media_share_guid'] + '\"'),
+                shlex.split('mkdir ./mnt/\"' + share['mm_media_share_guid'] + '\"'),
                 stdout=subprocess.PIPE, shell=False)
             proc_dir.wait()
         mount_command = []
@@ -61,5 +61,6 @@ def com_net_share_mount(share_list):
                 mount_command.append('user=' + share['mm_media_share_user']
                                      + ',password=' + share['mm_media_share_password'])
         common_global.es_inst.com_elastic_index('info', {'mount': mount_command})
-        proc_mnt = subprocess.Popen(split(mount_command), stdout=subprocess.PIPE, shell=False)
+        proc_mnt = subprocess.Popen(shlex.split(mount_command),
+                                    stdout=subprocess.PIPE, shell=False)
         proc_mnt.wait()

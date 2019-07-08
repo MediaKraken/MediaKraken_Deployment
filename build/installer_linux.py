@@ -17,9 +17,9 @@
 '''
 
 import platform
+import shlex
 import subprocess
 import sys
-from shlex import split
 
 import distro
 
@@ -84,6 +84,6 @@ file_name = 'MediaKraken_' + current_version + '.tar.bz2'
 wget_wait('http://www.mediakraken.org/%s' % file_name)
 
 # untar to home directory
-tar_pid = subprocess.Popen(split('tar xvjf \"' + file_name + '\" -C ~'), stdout=subprocess.PIPE,
-                           shell=False)
+tar_pid = subprocess.Popen(shlex.split('tar xvjf \"' + file_name + '\" -C ~'),
+                           stdout=subprocess.PIPE, shell=False)
 tar_pid.wait()

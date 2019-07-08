@@ -1,9 +1,9 @@
 import functools
 import json
 import os
+import shlex
 import subprocess
 import time
-from shlex import split
 
 import pika
 import xmltodict
@@ -181,7 +181,7 @@ class MKConsumer:
                                                          json_message['Local Save Path'])
             elif json_message['Subtype'] == 'Youtube':
                 # TODO little bobby tables
-                dl_pid = subprocess.Popen(split(
+                dl_pid = subprocess.Popen(shlex.split(
                     'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
                     + json_message['URL']), stdout=subprocess.PIPE, shell=False)
                 dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's

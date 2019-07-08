@@ -39,9 +39,9 @@
 
 
 import getopt
+import shlex
 import subprocess
 import sys
-from shlex import split
 
 from common import common_global
 from common import common_logging_elasticsearch
@@ -77,8 +77,8 @@ def main(argv):
         elif opt in ("-o", "--ofile"):
             outputfile = arg
     # kick off ffmpeg process
-    proc = subprocess.Popen(split('./bin/ffmpeg ' + subproccess_args), stdout=subprocess.PIPE,
-                            shell=False)
+    proc = subprocess.Popen(shlex.split('./bin/ffmpeg ' + subproccess_args),
+                            stdout=subprocess.PIPE, shell=False)
     common_global.es_inst.com_elastic_index('info', {"pid": proc.pid,
                                                      "input": inputfile, "output": outputfile})
     proc.wait()

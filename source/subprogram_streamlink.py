@@ -17,8 +17,8 @@
 '''
 
 import datetime
+import shlex
 import subprocess
-from shlex import split
 
 from common import common_config_ini
 from common import common_global
@@ -36,7 +36,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 filename = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + user + " - " \
            + (info['stream']).get("channel").get("status") + ".flv"
 filename = format_filename(filename)
-subprocess.call(split('./bin/streamlink twitch.tv/' + user + quality, '-o \"' + filename + '\"'))
+subprocess.call(shlex.split('./bin/streamlink twitch.tv/' + user + quality,
+                            '-o \"' + filename + '\"'))
 
 # commit all changes
 db_connection.db_commit()
