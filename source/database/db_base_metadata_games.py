@@ -128,6 +128,7 @@ def db_meta_game_image_random(self, return_image_type='Poster'):
     """
     Find random game image
     """
+    # TODO little bobby tables
     self.db_cursor.execute('select gi_game_info_json->\'Images\'->\'thegamesdb\'->>\''
                            + return_image_type + '\' as image_json,gi_id'
                                                  ' from mm_media, mm_metadata_game_software_info'
@@ -186,7 +187,7 @@ def db_meta_game_update_by_guid(self, game_id, game_json):
 
 def db_meta_game_category_by_name(self, category_name):
     self.db_cursor.execute(
-        'select gc_id from mm_game_category where gc_category = %s' % category_name)
+        'select gc_id from mm_game_category where gc_category = %s', (category_name,))
     try:
         return self.db_cursor.fetchone()
     except:
@@ -195,7 +196,7 @@ def db_meta_game_category_by_name(self, category_name):
 
 def db_meta_game_category_add(self, category_name):
     category_uuid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_game_category (gc_id, gc_category) values (%s, %s)'
-                           % (category_uuid, category_name))
+    self.db_cursor.execute('insert into mm_game_category (gc_id, gc_category) values (%s, %s)',
+                           (category_uuid, category_name))
     self.db_cursor.commit()
     return category_uuid

@@ -37,9 +37,9 @@ def db_open(self, db_prod=True):
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     if db_prod is True:
         self.sql3_conn = psycopg2.connect(
-            "dbname='%s' user='%s' host='mkpgbounce' port=6432 password='%s'"
-            % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
-               os.environ['POSTGRES_PASSWORD']))
+            "dbname='%s' user='%s' host='mkpgbounce' port=6432 password='%s'",
+            (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
+             os.environ['POSTGRES_PASSWORD']))
     else:
         self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
                                           " host='th-postgresql-1' port=5432 password='metamanpg'")
@@ -89,6 +89,7 @@ def db_table_index_check(self, resource_name):
     """
     # check for table or index
     """
+    # TODO little bobby tables
     self.db_cursor.execute('SELECT to_regclass(\'public.%s\')' % (resource_name,))
     return self.db_cursor.fetchone()[0]
 

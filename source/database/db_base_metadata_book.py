@@ -114,6 +114,7 @@ def db_meta_book_image_random(self, return_image_type='Cover'):
     """
     Find random book image
     """
+    # TODO little bobby tables
     self.db_cursor.execute('select mm_metadata_book_image_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\' as image_json,mm_metadata_book_guid'
                                                  ' from mm_media,mm_metadata_book'

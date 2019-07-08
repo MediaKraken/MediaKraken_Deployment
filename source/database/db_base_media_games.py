@@ -82,5 +82,5 @@ def db_media_game_clone_list(self):
 
 def db_media_game_category_by_name(self, category_name):
     self.db_cursor.execute('select gi_gc_category from mm_game_info'
-                           ' where gi_short_name = %s' % category_name)
+                           ' where gi_short_name = %s', (category_name,))
     return self.db_cursor.fetchone()[0]

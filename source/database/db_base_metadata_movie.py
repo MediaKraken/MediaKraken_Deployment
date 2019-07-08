@@ -40,6 +40,7 @@ def db_meta_movie_image_random(self, return_image_type='Poster'):
     """
     Find random movie image
     """
+    # TODO little bobby tables
     self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\' as image_json,mm_metadata_guid'
                                                  ' from mm_media,mm_metadata_movie'
