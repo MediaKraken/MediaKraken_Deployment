@@ -48,7 +48,8 @@ def db_media_movie_count_by_genre(self, class_guid):
                            ' and mm_media_metadata_guid = mm_metadata_guid) union (select distinct'
                            ' on (mmr_media_metadata_guid) mm_metadata_json from mm_media_remote,'
                            ' mm_metadata_movie where mmr_media_class_guid = %s'
-                           ' and mmr_media_metadata_guid = mm_metadata_guid)) as temp group by gen',
+                           ' and mmr_media_metadata_guid = mm_metadata_guid))'
+                           ' as temp group by gen',
                            (class_guid, class_guid))
     return self.db_cursor.fetchall()
 
@@ -485,6 +486,10 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
                                                    "%Y-%m-%d"),
+                                                list_genre, class_guid, (datetime.datetime.now()
+                                                                         - datetime.timedelta(
+                                                           days=7)).strftime(
+                                                   "%Y-%m-%d"),
                                                 list_genre))
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
@@ -512,6 +517,10 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' offset %s limit %s',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
+                                                   "%Y-%m-%d"),
+                                                list_genre, class_guid, (datetime.datetime.now()
+                                                                         - datetime.timedelta(
+                                                           days=7)).strftime(
                                                    "%Y-%m-%d"),
                                                 list_genre, offset, list_limit))
 
