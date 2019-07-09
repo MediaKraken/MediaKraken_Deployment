@@ -22,7 +22,7 @@ import sys
 
 try:
     from common import common_docker
-except:
+except ModuleNotFoundError:
     print('Must install docker via "pip3 install docker".  Exiting...')
     sys.exit()
 # map count limit, vm.max_map_count

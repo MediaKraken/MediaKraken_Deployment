@@ -143,7 +143,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
     if result_json is not None:
         try:
             return result_json['movie_results'][0]['id']
-        except:
+        except KeyError:
             return None
     else:
         return None
