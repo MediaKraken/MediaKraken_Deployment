@@ -1,3 +1,6 @@
+# browse catalogs in the registry
+http://th-registry-1:5000/v2/_catalog
+
 ******* Used Containers *****************
 
 ComposeMediaKrakenBase37Py3 - Base OS
