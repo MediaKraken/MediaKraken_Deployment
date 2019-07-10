@@ -24,5 +24,6 @@ FROM alpine:3.8
 RUN apk --update add libevent openssl c-ares postgresql-client
 WORKDIR /
 COPY --from=build_stage /pgbouncer /pgbouncer
-ADD entrypoint.sh ./
+COPY entrypoint.sh ./
+COPY wait-for-it-ash.sh ./
 ENTRYPOINT ["./entrypoint.sh"]
