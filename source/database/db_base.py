@@ -38,9 +38,9 @@ def db_open(self, db_prod=True):
     if db_prod is True:
         # TODO throws tuple error if comma
         self.sql3_conn = psycopg2.connect(
-            "dbname='%s' user='%s' host='mkpgbounce' port=6432 password='%s'" %
-            (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
-             os.environ['POSTGRES_PASSWORD']))
+            "dbname='%s' user='%s' host='mkpgbounce' port=6432 password='%s'"
+            % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
+               os.environ['POSTGRES_PASSWORD']))
     else:
         self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
                                           " host='th-postgresql-1' port=5432 password='metamanpg'")
