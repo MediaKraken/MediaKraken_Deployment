@@ -1,28 +1,28 @@
-# https://github.com/brainsam/pgbouncer
-
-FROM alpine:3.8
+FROM alpine:3.8 AS build_stage
 
 MAINTAINER brainsam@yandex.ru
 
-ARG ALPMIRROR
-ARG PIPMIRROR
+WORKDIR /
+RUN apk --update add git python py-pip build-base automake libtool m4 autoconf libevent-dev openssl-dev c-ares-dev
+RUN pip install docutils
+RUN git clone --branch pgbouncer_1_9_0 --depth 1 https://github.com/pgbouncer/pgbouncer.git src
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-        && apk --no-cache add git build-base automake libtool m4 autoconf libevent-dev libressl-dev c-ares c-ares-dev py-docutils && \
-	git clone https://github.com/pgbouncer/pgbouncer.git && \
-	cd pgbouncer         && \
-        git checkout tags/pgbouncer_1_8_1 && \
-	git submodule init   && \
-	git submodule update && \
-	./autogen.sh         && \
-	./configure --prefix=/usr/local --with-libevent=/usr/lib && \
-	make -j`getconf _NPROCESSORS_ONLN` && make install && \
-	apk del git build-base automake autoconf c-ares-dev libtool m4 && \
-	rm -f /var/cache/apk/* \
-        && cd .. && rm -Rf pgbouncer
+WORKDIR /bin
+RUN ln -s ../usr/bin/rst2man.py rst2man
 
-COPY entrypoint.sh ./
-COPY wait-for-it-ash.sh ./
+WORKDIR /src
+RUN mkdir /pgbouncer
+RUN git submodule init
+RUN git submodule update
+RUN ./autogen.sh
+RUN	./configure --prefix=/pgbouncer --with-libevent=/usr/lib
+RUN make
+RUN make install
+RUN ls -R /pgbouncer
 
+FROM alpine:3.8
+RUN apk --update add libevent openssl c-ares postgresql-client
+WORKDIR /
+COPY --from=build_stage /pgbouncer /pgbouncer
+ADD entrypoint.sh ./
 ENTRYPOINT ["./entrypoint.sh"]
-
