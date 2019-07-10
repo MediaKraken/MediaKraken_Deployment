@@ -1,4 +1,4 @@
-FROM mediakraken/mkbaseffmpegubuntu:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbaseffmpegubuntu:dev
 
 ARG PIPMIRROR
 

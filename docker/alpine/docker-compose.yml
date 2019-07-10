@@ -6,7 +6,7 @@ version: '3.5'
 services:
   # Main app server
   appserver:
-    image: mediakraken/mkserver:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -35,7 +35,7 @@ services:
 
   # start broadcast server (so clients can find server)
   broadcast:
-    image: mediakraken/mkbroadcast:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkbroadcast:dev
     environment:
       # so it knows what ip to broadcast on
       - SWARMIP=${SWARMIP}
@@ -55,7 +55,7 @@ services:
 
   # runs cron
   cron:
-    image: mediakraken/mkcron:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -74,7 +74,7 @@ services:
 
   # Postgresql server
   database:
-    image: mediakraken/mkdatabase:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -90,7 +90,7 @@ services:
 
   # Runs the download services
   download:
-    image: mediakraken/mkdownload:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -111,7 +111,7 @@ services:
 
   # runs ffprobe
   ffprobe:
-    image: mediakraken/mkffprobe:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkffprobe:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -132,7 +132,7 @@ services:
 
   # runs hardware
   hardware:
-    image: mediakraken/mkhardware:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkhardware:dev
     environment:
       - DEBUG=${DEBUG}
     volumes:
@@ -150,7 +150,7 @@ services:
 
   # runs the server to fetch/process all metadata
   metadata:
-    image: mediakraken/mkmetadata:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -175,7 +175,7 @@ services:
 
   # runs the nginx proxy service
   nginx:
-    image: mediakraken/mknginx:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mknginx:dev
     container_name: mknginx
     entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
     stop_grace_period: 30s
@@ -192,7 +192,7 @@ services:
 
   # pika
   pika:
-    image: mediakraken/mkpika:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -218,7 +218,7 @@ services:
 
   # pgbouncer
   pgbounce:
-    image: mediakraken/mkpgbounce:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbounce:dev
     environment:
       - DB_HOST=mkdatabase
       - DB_USER=${DBUSER}
@@ -239,7 +239,7 @@ services:
 
   # rabbit
   rabbit:
-    image: mediakraken/mkrabbitmq:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrabbitmq:dev
     container_name: mkrabbitmq
     hostname: mkrabbitmq
     environment:
@@ -260,7 +260,7 @@ services:
 
   # Main reactor
   reactor:
-    image: mediakraken/mkreactor:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
@@ -288,7 +288,7 @@ services:
 
   # runs the redis service for flask
   redis:
-    image: mediakraken/mkredis:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkredis:dev
     container_name: mkredis
     stop_grace_period: 30s
     stop_signal: SIGTERM
@@ -300,7 +300,7 @@ services:
 
   # runs roku thumbnail
   rokuthumb:
-    image: mediakraken/mkrokuthumb:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrokuthumb:dev
     environment:
       - DEBUG=${DEBUG}
     container_name: mkrokuthumb
@@ -317,7 +317,7 @@ services:
 
   # Runs the web service for the main server application
   webserver:
-    image: mediakraken/mkwebapp:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}

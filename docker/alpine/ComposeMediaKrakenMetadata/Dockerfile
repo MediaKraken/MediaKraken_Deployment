@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase38py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase38py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image downloads and maintains all metadata"
