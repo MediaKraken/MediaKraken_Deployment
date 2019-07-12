@@ -247,8 +247,6 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    ports:
-      - "5672:5672"
     volumes:
       - ./data/rabbit:/var/lib/rabbitmq
     restart: unless-stopped
@@ -289,8 +287,6 @@ services:
     container_name: mkredis
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    ports:
-      - "6379:6379"
     networks:
       - mediakraken_network
     restart: unless-stopped
