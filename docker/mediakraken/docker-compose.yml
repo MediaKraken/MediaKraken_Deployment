@@ -91,12 +91,12 @@ services:
   # Runs the download services
   download:
     image: mediakraken/mkdownload:latest
-    container_name: mkdownload
     environment:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
+    container_name: mkdownload
     depends_on:
       - pgbounce
       - rabbit
