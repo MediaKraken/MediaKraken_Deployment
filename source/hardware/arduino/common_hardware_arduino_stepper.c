@@ -65,6 +65,11 @@ void stepper_arm_vertical_backward()
 AccelStepper Accelstepper_cd_spinner(stepper_cd_spinner_forward, stepper_cd_spinner_backward);
 AccelStepper Accelstepper_move_arm_horizontal(stepper_arm_horizontal_forward, stepper_arm_horizontal_backward);
 AccelStepper Accelstepper_move_arm_vertical(stepper_arm_vertical_forward, stepper_arm_vertical_backward);
+char inData[20]; // Allocate some space for the string
+char inChar=-1; // Where to store the character read
+byte index = 0; // Index into array; where to store the character
+String txtMsg = "";
+char serial_char;
 
 void setup()
 {
@@ -83,6 +88,8 @@ void setup()
     Accelstepper_move_arm_vertical.moveTo(50000);
     // line serial communication
     robobuff_serial.begin(1200);
+    // set the led indicator for traffic
+    pinMode(13, OUTPUT);
 }
 
 void loop()
@@ -100,4 +107,55 @@ void loop()
         Serial.write(robobuff_serial.read());
     if (Serial.available())
         robobuff_serial.write(Serial.read());
+
+    while (Serial.available() > 0)
+    {
+        digitalWrite(13, HIGH);
+        delay(200);
+        serial_char = Serial.read();
+        if (serial_char == '\n')
+        {
+            if (txtMsg.length() > 3)
+            {
+                // process the message type
+                if (txtMsg.substring(0,3) == "CDL") // media has been loaded, start clean process
+                {
+                // media to water wheel
+
+                // spin media
+                stepper_cd_spinner_forward()
+                // move media
+                if (Accelstepper_move_arm.distanceToGo() == 0)
+                    Accelstepper_move_arm.moveTo(-Accelstepper_move_arm.currentPosition());
+                Accelstepper_cd_spinner.run();
+                Accelstepper_move_arm.run();
+                // stop spin
+                Accelstepper_cd_spinner.release()
+                // move media to buffer
+
+                // spin media
+                stepper_cd_spinner_forward()
+                // move media
+                if (Accelstepper_move_arm.distanceToGo() == 0)
+                    Accelstepper_move_arm.moveTo(-Accelstepper_move_arm.currentPosition());
+                Accelstepper_cd_spinner.run();
+                Accelstepper_move_arm.run();
+                // park media for arm transport
+
+                // release so the arm can grab the disk easier
+                Accelstepper_cd_spinner.release()
+                // tell other arduino that it's done cleaning
+                robobuff_serial.write('CDE\n')
+                }
+            }
+            // Serial.println(txtMsg);
+            txtMsg = "";
+        }
+        else
+        {
+            txtMsg.concat(serial_char);
+        }
+        digitalWrite(13, LOW);
+        delay(500);
+    }
 }
