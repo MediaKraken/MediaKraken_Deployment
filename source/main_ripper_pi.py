@@ -129,7 +129,7 @@ class MediaKrakenApp(App):
         if self.arm_arduino is None:
             self.arduino_connect()
         while thread_status:
-            if buffer_busy == False:
+            if buffer_busy is False:
                 # position for pickup disc for buffing
                 if spinner_one_text is not None and spinner_one_text.find('Buff') != -1:
                     self.track_arduino.com_arduino_usb_serial_writestring(
@@ -158,7 +158,7 @@ class MediaKrakenApp(App):
             self.next_disc(2, spinner_two_text)
             self.next_disc(3, spinner_three_text)
             self.next_disc(4, spinner_four_text)
-            if thread_status == False:
+            if thread_status is False:
                 break
             time.sleep(1)
 
