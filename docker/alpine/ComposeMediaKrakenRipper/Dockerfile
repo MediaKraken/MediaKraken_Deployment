@@ -10,17 +10,13 @@ ARG PIPMIRROR
 # create work dir
 RUN mkdir /mediakraken
 
-# copy PIP requirements
-COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   abcde \
   openjdk8-jre-base \
-  python3 \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && rm requirements.txt
+  python3
 
 # Copy the source files for the app
 COPY src /mediakraken
