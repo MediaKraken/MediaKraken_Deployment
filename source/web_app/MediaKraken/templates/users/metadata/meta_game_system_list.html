@@ -10,27 +10,24 @@
     {% if media_game_system %}
     {{ pagination.info }}
     {{ pagination.links }}
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>System Name</th>
-                    <th>System Short Name</th>
-                    <th>Release Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row_data in media_game_system %}
-                <tr>
-                    <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td><a href = "{{ url_for('user_metadata_game.metadata_game_detail', guid=row_data[0]) }}">{{ row_data[2] }}</a></td>
-                    <td>{{ row_data[1] }}</td>
-                    <td>{{ row_data[3] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div id="the-node">
+        {% for row_data in media %}
+        <div class="main_photo">
+            <div class="media_context_right" data-id={{row_data[0]}}>
+                {% if row_data[2] == "" or row_data[2] == None %}
+                <a href= "{{ url_for('user_metadata_game.metadata_game_detail', guid=row_data[0]) }}">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/vid_game.png') }}" height="200" width="300"></a>
+                <div class="description">
+                    <p class="description_content_left">{{row_data[1]}}</p>
+                </div>
+                {% else %}
+                <a href= "{{ url_for('user_metadata_game.metadata_game_detail', guid=row_data[0]) }}">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + (row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', ''))) }}" height="200" width="300">
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
     {{ pagination.links }}
     {% else %}
