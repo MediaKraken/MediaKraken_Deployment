@@ -25,8 +25,8 @@ class CommonHardwareSamsung:
     Class for interfacing with samsung TV equipment over network connection
     """
 
-    def __init__(self, device_ip):
-        self.src = '192.168.1.2'  # ip of remote
+    def __init__(self, source_ip, device_ip):
+        self.src = source_ip  # ip of remote
         self.mac = '00-AB-11-11-11-11'  # mac of remote
         self.remote = 'python remote'  # remote name
         self.dst = device_ip  # ip of tv
