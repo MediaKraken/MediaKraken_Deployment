@@ -1,28 +1,29 @@
 /*!
- * FileInput Estonian Translations
+ * FileInput Uzbek Translations
  *
  * This file must be loaded after 'fileinput.js'. Patterns in braces '{}', or
  * any HTML markup tags in the messages must not be converted or translated.
  *
  * @see http://github.com/kartik-v/bootstrap-fileinput
+ * @author CyanoFresh <cyanofresh@gmail.com>
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 (function ($) {
     "use strict";
 
-    $.fn.fileinputLocales['et'] = {
-        fileSingle: 'fail',
-        filePlural: 'failid',
-        browseLabel: 'Sirvi &hellip;',
-        removeLabel: 'Eemalda',
-        removeTitle: 'Clear selected files',
-        cancelLabel: 'Tühista',
-        cancelTitle: 'Abort ongoing upload',
+    $.fn.fileinputLocales.uz = {
+        fileSingle: 'fayl',
+        filePlural: 'fayllar',
+        browseLabel: 'Tanlash &hellip;',
+        removeLabel: 'O\'chirish',
+        removeTitle: 'Tanlangan fayllarni tozalash',
+        cancelLabel: 'Bekor qilish',
+        cancelTitle: 'Joriy yuklab olishni bekor qilish',
         pauseLabel: 'Pause',
         pauseTitle: 'Pause ongoing upload',
-        uploadLabel: 'Salvesta',
-        uploadTitle: 'Salvesta valitud failid',
+        uploadLabel: 'Yuklab olish',
+        uploadTitle: 'Tanlangan fayllarni yuklash',
         msgNo: 'No',
         msgNoFilesSelected: 'No files selected',
         msgPaused: 'Paused',
@@ -31,17 +32,17 @@
         msgZoomModalHeading: 'Detailed Preview',
         msgFileRequired: 'You must select a file to upload.',
         msgSizeTooSmall: 'File "{name}" (<b>{size} KB</b>) is too small and must be larger than <b>{minSize} KB</b>.',
-        msgSizeTooLarge: 'Fail "{name}" (<b>{size} KB</b>) ületab lubatu suuruse <b>{maxSize} KB</b>.',
-        msgFilesTooLess: 'You must select at least <b>{n}</b> {files} to upload.',
-        msgFilesTooMany: 'Number of files selected for upload <b>({n})</b> exceeds maximum allowed limit of <b>{m}</b>.',
-        msgFileNotFound: 'File "{name}" not found!',
+        msgSizeTooLarge: '"{name}" fayl (<b>{size} KB</b>) ruxsat etilgan maksimal yuklash hajmidan <b>{maxSize} KB</b> ortiq. Yuklashni qayta urinib ko\'ring!',
+        msgFilesTooLess: 'Yuklash uchun kamida <b>{n}</b> {files} tanlashingiz kerak. Yuklashni qayta urinib ko\'ring!',
+        msgFilesTooMany: 'Tanlangan fayllar <b>({n})</b>  ruxsat etilgan maksimal yuklash hajmidan <b>{m}</b> ortiq. Yuklashni qayta urinib ko\'ring!',
+        msgFileNotFound: '"{name}" fayl topilmaydi!',
         msgFileSecured: 'Security restrictions prevent reading the file "{name}".',
-        msgFileNotReadable: 'File "{name}" is not readable.',
-        msgFilePreviewAborted: 'File preview aborted for "{name}".',
-        msgFilePreviewError: 'An error occurred while reading the file "{name}".',
+        msgFileNotReadable: '"{name}" fayl o\'qilmaydi.',
+        msgFilePreviewAborted: '"{name}" Ffylni oldindan ko\'rish jarayoni to\'xtatildi.',
+        msgFilePreviewError: '"{name}" faylni o\'qish paytida xatolik yuz berdi.',
         msgInvalidFileName: 'Invalid or unsupported characters in file name "{name}".',
-        msgInvalidFileType: '"{name}" on vale tüüpi. Ainult "{types}" on lubatud.',
-        msgInvalidFileExtension: 'Invalid extension for file "{name}". Only "{extensions}" files are supported.',
+        msgInvalidFileType: '"{name}" fayl uchun yaroqsiz tur. Faqat "{types}" fayllari qo\'llab-quvvatlanadi.',
+        msgInvalidFileExtension: '"{name}" fayl uchun noto\'g\'ri kengaytma. Faqat "{extensions}" fayllari qo\'llab-quvvatlanadi.',
         msgFileTypes: {
             'image': 'image',
             'html': 'HTML',
@@ -61,13 +62,13 @@
         msgUploadError: 'Upload Error',
         msgDeleteError: 'Delete Error',
         msgProgressError: 'Error',
-        msgValidationError: 'Validation Error',
-        msgLoading: 'Loading file {index} of {files} &hellip;',
-        msgProgress: 'Loading file {index} of {files} - {name} - {percent}% completed.',
-        msgSelected: '{n} {files} selected',
-        msgFoldersNotAllowed: 'Drag & drop files only! Skipped {n} dropped folder(s).',
-        msgImageWidthSmall: 'Pildi laius peab olema vähemalt {size} px.',
-        msgImageHeightSmall: 'Pildi kõrgus peab olema vähemalt {size} px.',
+        msgValidationError: 'Fayl yuklash xatosi',
+        msgLoading: '{Files} dan {index} faylini yuklash &hellip;',
+        msgProgress: '{Files} dan {index}{name} faylini yuklashi  - {percent}% tugallandi.',
+        msgSelected: '{n} {files} tanlangan',
+        msgFoldersNotAllowed: 'Faqat tortib qo\'yiladon fayllar! {n} o\'tirilgan tashlangan papka(lar).',
+        msgImageWidthSmall: 'Width of image file "{name}" must be at least {size} px.',
+        msgImageHeightSmall: 'Height of image file "{name}" must be at least {size} px.',
         msgImageWidthLarge: 'Width of image file "{name}" cannot exceed {size} px.',
         msgImageHeightLarge: 'Height of image file "{name}" cannot exceed {size} px.',
         msgImageResizeError: 'Could not get the image dimensions to resize.',
@@ -84,19 +85,20 @@
             uploadBatch: 'batch file upload',
             uploadExtra: 'form data upload'
         },
-        dropZoneTitle: 'Lohista failid siia &hellip;',
+        dropZoneTitle: 'Fayllarni bu yerga tortib qo\'ying &hellip;',
         dropZoneClickTitle: '<br>(or click to select {files})',
         fileActionSettings: {
-            removeTitle: 'Eemalda fail',
-            uploadTitle: 'Salvesta fail',
+            removeTitle: 'Remove file',
+            uploadTitle: 'Upload file',
             uploadRetryTitle: 'Retry upload',
-            zoomTitle: 'Vaata detaile',
-            dragTitle: 'Liiguta / Korralda',
-            indicatorNewTitle: 'Pole veel salvestatud',
+            downloadTitle: 'Download file',
+            zoomTitle: 'View details',
+            dragTitle: 'Move / Rearrange',
+            indicatorNewTitle: 'Not uploaded yet',
             indicatorSuccessTitle: 'Uploaded',
-            indicatorErrorTitle: 'Salvestamise viga',
+            indicatorErrorTitle: 'Upload Error',
             indicatorPausedTitle: 'Upload Paused',
-            indicatorLoadingTitle:  'Salvestan ...'
+            indicatorLoadingTitle:  'Uploading ...'
         },
         previewZoomButtonTitles: {
             prev: 'View previous file',
