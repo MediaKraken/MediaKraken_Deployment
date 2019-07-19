@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 '''
 
-# https://github.com/MediaKraken-Dependancies/tripplite
+# https://github.com/MediaKraken-Dep/tripplite
 from tripplite import Battery
 
 '''
