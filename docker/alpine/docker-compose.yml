@@ -361,18 +361,11 @@ networks:
     name: mk_mediakraken_network
 
 volumes:
+# Keep in mind ./data/devices must be created first on the host.
 #     mkvol-device:
 #        driver: local
 #        driver_opts:
 #          type: none
 #          o: bind
 #          device: ./data/devices
-#     mkvol-elk:
-#     mkvol-emulation:
-#     mkvol-mbrainz:
-#     mkvol-mumble:
-#     mkvol-openldap:
-#     mkvol-portainer:
      mkvol-static:
-#     mkvol-teamspeak:
-#     mkvol-transmission:
