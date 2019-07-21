@@ -1,8 +1,5 @@
 # vim:set ft=dockerfile:
-FROM alpine:3.9
-
-ARG ALPMIRROR
-ARG PIPMIRROR
+FROM alpine:3.10
 
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
@@ -25,12 +22,12 @@ ENV LANG en_US.utf8
 RUN mkdir /docker-entrypoint-initdb.d
 
 ENV PG_MAJOR 11
-ENV PG_VERSION 11.2
-ENV PG_SHA256 2676b9ce09c21978032070b6794696e0aa5a476e3d21d60afc036dc0a9c09405
+ENV PG_VERSION 11.4
+ENV PG_SHA256 02802ddffd1590805beddd1e464dd28a46a41a5f1e1df04bab4f46663195cc8b
 
 RUN set -ex \
-        && sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-        && apk add --no-cache --virtual .fetch-deps \
+	\
+	&& apk add --no-cache --virtual .fetch-deps \
 		ca-certificates \
 		openssl \
 		tar \
@@ -56,6 +53,7 @@ RUN set -ex \
 		libedit-dev \
 		libxml2-dev \
 		libxslt-dev \
+		linux-headers \
 		make \
 #		openldap-dev \
 		openssl-dev \
@@ -144,8 +142,9 @@ RUN sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/pos
 RUN mkdir -p /var/run/postgresql && chown -R postgres:postgres /var/run/postgresql && chmod 2777 /var/run/postgresql
 
 ENV PGDATA /var/lib/postgresql/data
-RUN mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 777 "$PGDATA" # this 777 will be replaced by 700 at runtime (allows semi-arbitrary "--user" values)
-VOLUME /var/lib/postgresql/data:/var/lib/postgresql/data
+# this 777 will be replaced by 700 at runtime (allows semi-arbitrary "--user" values)
+RUN mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 777 "$PGDATA"
+VOLUME /var/lib/postgresql/data
 COPY docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
