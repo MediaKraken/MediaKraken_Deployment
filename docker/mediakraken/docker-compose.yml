@@ -354,67 +354,67 @@ networks:
     name: mk_mediakraken_network
 
 volumes:
-    mkvol_cache:
+    mediakraken_mkvol_cache:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/cache
-    mkvol_certs:
+    mediakraken_mkvol_certs:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/certs
-    mkvol_devices:
+    mediakraken_mkvol_devices:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/devices
-    mkvol_mumble:
+    mediakraken_mkvol_mumble:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/mumble
-    mkvol_nginx:
+    mediakraken_mkvol_nginx:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/nginx
-    mkvol_phue:
+    mediakraken_mkvol_phue:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/phue
-    mkvol_postgresql:
+    mediakraken_mkvol_postgresql:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/postgresql
-    mkvol_rabbit:
+    mediakraken_mkvol_rabbit:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/rabbit
-    mkvol_static:
+    mediakraken_mkvol_static:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/static
-    mkvol_teamspeak:
+    mediakraken_mkvol_teamspeak:
       driver: local
       driver_opts:
         type: none
         o: bind
         device: ./data/teamspeak
-    mkvol_webkey:
+    mediakraken_mkvol_webkey:
       driver: local
       driver_opts:
         type: none
