@@ -19,14 +19,11 @@
 import database as database_base
 
 
-def com_config_read(db_prod=True, db_built=True):
+def com_config_read():
     """
     Read in the database connection and open unless specified not too
     """
     # open the database
     db_connection = database_base.MKServerDatabase()
-    db_connection.db_open(db_prod)
-    if db_built:
-        return db_connection.db_opt_status_read()['mm_options_json'], db_connection
-    else:
-        return db_connection
+    db_connection.db_open()
+    return db_connection.db_opt_status_read()['mm_options_json'], db_connection
