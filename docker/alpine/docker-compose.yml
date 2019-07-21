@@ -23,11 +23,11 @@ services:
     stop_signal: SIGUSR1
     volumes:
       # server will generate ssl key for use by web/nginx
-      - mediakraken_mkvol_certs:/mediakraken/key
+      - mediakraken_vol_certs:/mediakraken/key
       # if swarmip init
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # so can read the device scan output
-      - mediakraken_mkvol_devices:/mediakraken/devices
+      - mediakraken_vol_devices:/mediakraken/devices
       # server will generate salt/key
       - /var/opt/mediakraken/secure:/mediakraken/secure
     networks:
@@ -83,7 +83,7 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:
-      - mediakraken_mkvol_postgresql:/var/lib/postgresql
+      - mediakraken_vol_postgresql:/var/lib/postgresql
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -137,7 +137,7 @@ services:
       - DEBUG=${DEBUG}
     volumes:
       # this stores the "push button" key
-      - mediakraken_mkvol_phue:/mediakraken/phue
+      - mediakraken_vol_phue:/mediakraken/phue
     container_name: mkhardware
     depends_on:
       - rabbit
@@ -166,9 +166,9 @@ services:
     volumes:
       - ./mkmount:/mediakraken/mnt
       # stores posters/etc so webserver can present
-      - mediakraken_mkvol_static:/mediakraken/web_app/MediaKraken/static
+      - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static
       # stores the xml/json xref files for anime match
-      - mediakraken_mkvol_cache:/mediakraken/cache
+      - mediakraken_vol_cache:/mediakraken/cache
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -181,9 +181,9 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:
-      - mediakraken_mkvol_nginx:/var/log/mediakraken/nginx
-      - mediakraken_mkvol_certs:/etc/nginx/certs:ro
-      - mediakraken_mkvol_static:/mediakraken/web_app/MediaKraken/static:ro
+      - mediakraken_vol_nginx:/var/log/mediakraken/nginx
+      - mediakraken_vol_certs:/etc/nginx/certs:ro
+      - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static:ro
     ports:
       - "8900:8900"
     networks:
@@ -207,7 +207,7 @@ services:
     stop_signal: SIGUSR1
     volumes:
       # for start of SSL server
-      - mediakraken_mkvol_certs:/mediakraken/key:ro
+      - mediakraken_vol_certs:/mediakraken/key:ro
       - ./data/backup:/mediakraken/backup
       - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
@@ -253,7 +253,7 @@ services:
 #      - "15671:15671"
       - "15672:15672"
     volumes:
-      - mediakraken_mkvol_rabbit:/var/lib/rabbitmq
+      - mediakraken_vol_rabbit:/var/lib/rabbitmq
     restart: unless-stopped
     networks:
       - mediakraken_network
@@ -277,7 +277,7 @@ services:
       - "8903:8903"
     volumes:
       # for start of SSL server
-      - mediakraken_mkvol_certs:/mediakraken/key:ro
+      - mediakraken_vol_certs:/mediakraken/key:ro
       - ./data/backup:/mediakraken/backup
       - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
@@ -338,15 +338,15 @@ services:
     volumes:
       - ./mkmount:/mediakraken/mnt
       # must not be read only as it stores cache here
-      - mediakraken_mkvol_static:/mediakraken/web_app/MediaKraken/static
-      - mediakraken_mkvol_webkey:/mediakraken/key
+      - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static
+      - mediakraken_vol_webkey:/mediakraken/key
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # hold log files
       - ./data/log:/mediakraken/log
       # this stores the "push button" key
-      - mediakraken_mkvol_phue:/mediakraken/phue
+      - mediakraken_vol_phue:/mediakraken/phue
       # server will generate salt/key
       - /var/opt/mediakraken/secure:/mediakraken/secure:ro
     networks:
@@ -361,69 +361,80 @@ networks:
     name: mk_mediakraken_network
 
 volumes:
-    mediakraken_mkvol_cache:
+    mediakraken_vol_cache:
+      name: mediakraken_vol_cache
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/cache
-    mediakraken_mkvol_certs:
+        device: $PWD/data/cache
+    mediakraken_vol_certs:
+      name: mediakraken_vol_certs
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/certs
-    mediakraken_mkvol_devices:
+        device: $PWD/data/certs
+    mediakraken_vol_devices:
+      name: mediakraken_vol_devices
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/devices
-    mediakraken_mkvol_mumble:
+        device: $PWD/data/devices
+    mediakraken_vol_mumble:
+      name: mediakraken_vol_mumble
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/mumble
-    mediakraken_mkvol_nginx:
+        device: $PWD/data/mumble
+    mediakraken_vol_nginx:
+      name: mediakraken_vol_nginx
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/nginx
-    mediakraken_mkvol_phue:
+        device: $PWD/data/nginx
+    mediakraken_vol_phue:
+      name: mediakraken_vol_phue
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/phue
-    mediakraken_mkvol_postgresql:
+        device: $PWD/data/phue
+    mediakraken_vol_postgresql:
+      name: mediakraken_vol_postgresql
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/postgresql
-    mediakraken_mkvol_rabbit:
+        device: $PWD/data/postgresql
+    mediakraken_vol_rabbit:
+      name: mediakraken_vol_rabbit
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/rabbit
-    mediakraken_mkvol_static:
+        device: $PWD/data/rabbit
+    mediakraken_vol_static:
+      name: mediakraken_vol_static
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/static
-    mediakraken_mkvol_teamspeak:
+        device: $PWD/data/static
+    mediakraken_vol_teamspeak:
+      name: mediakraken_vol_teamspeak
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/teamspeak
-    mediakraken_mkvol_webkey:
+        device: $PWD/data/teamspeak
+    mediakraken_vol_webkey:
+      name: mediakraken_vol_webkey
       driver: local
       driver_opts:
         type: none
         o: bind
-        device: ./data/webkey
+        device: $PWD/data/webkey
