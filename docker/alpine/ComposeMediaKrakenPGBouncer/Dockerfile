@@ -17,5 +17,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && adduser -DHs /sbin/nologin metaman
 
 WORKDIR /
-ADD entrypoint.sh ./
+COPY wait-for-it-ash.sh ./
+COPY entrypoint.sh ./
 ENTRYPOINT ["./entrypoint.sh"]
