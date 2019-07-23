@@ -1,11 +1,11 @@
-FROM alpine:3.8 AS build_stage
+FROM alpine:latest AS build_stage
 
 MAINTAINER brainsam@yandex.ru
 
 WORKDIR /
 RUN apk --update add git python py-pip build-base automake libtool m4 autoconf libevent-dev openssl-dev c-ares-dev
 RUN pip install docutils
-RUN git clone --branch pgbouncer_1_9_0 --depth 1 https://github.com/pgbouncer/pgbouncer.git src
+RUN git clone https://github.com/pgbouncer/pgbouncer.git src
 
 WORKDIR /bin
 RUN ln -s ../usr/bin/rst2man.py rst2man
@@ -20,10 +20,9 @@ RUN make
 RUN make install
 RUN ls -R /pgbouncer
 
-FROM alpine:3.8
-RUN apk --update add libevent openssl c-ares postgresql-client
+FROM alpine:latest
+RUN apk --update add libevent openssl c-ares
 WORKDIR /
 COPY --from=build_stage /pgbouncer /pgbouncer
-COPY entrypoint.sh ./
-COPY wait-for-it-ash.sh ./
+ADD entrypoint.sh ./
 ENTRYPOINT ["./entrypoint.sh"]

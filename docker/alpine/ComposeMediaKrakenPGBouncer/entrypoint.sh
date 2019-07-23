@@ -16,17 +16,10 @@ if [ ! -f ${PG_CONFIG_DIR}/pgbouncer.ini ]; then
 # Config file is in “ini” format. Section names are between “[” and “]”.
 # Lines starting with “;” or “#” are taken as comments and ignored.
 # The characters “;” and “#” are not recognized when they appear later in the line.
-#[databases]
-#* = host=${DB_HOST:?"Setup pgbouncer config error! You must set DB_HOST env"} \
-#port=${DB_PORT:-5432} \
-#${DB_USER:+user=${DB_USER}} \
-#${DB_PASSWORD:+password=${DB_PASSWORD}}
 [databases]
-default = host=${DB_HOST} port=${DB_PORT} dbname=${DB_NAME} pool_size=${POOL_SIZE_DEFAULT}
-reports = host=${DB_HOST} port=${DB_PORT} dbname=${DB_NAME} pool_size=${POOL_SIZE_REPORTS}
-dashlets = host=${DB_HOST} port=${DB_PORT} dbname=${DB_NAME} pool_size=${POOL_SIZE_DASHLETS}
-previews = host=${DB_HOST} port=${DB_PORT} dbname=${DB_NAME} pool_size=${POOL_SIZE_PREVIEWS}
-silverlining = host=${DB_HOST} port=${DB_PORT} dbname=${DB_NAME}
+* = host=${DB_HOST:?"Setup pgbouncer config error! You must set DB_HOST env"} \
+port=${DB_PORT:-5432} user=${DB_USER:-postgres} \
+${DB_PASSWORD:+password=${DB_PASSWORD}}
 
 [pgbouncer]
 # Generic settings
@@ -38,9 +31,9 @@ ${UNIX_SOCKET_DIR:+unix_socket_dir = ${UNIX_SOCKET_DIR}\n}\
 ${UNIX_SOCKET_MODE:+unix_socket_mode = ${UNIX_SOCKET_MODE}\n}\
 ${UNIX_SOCKET_GROUP:+unix_socket_group = ${UNIX_SOCKET_GROUP}\n}\
 ${USER:+user = ${USER}\n}\
-auth_file = ${PG_CONFIG_DIR}/${AUTH_FILE:-passwords.txt}
+${AUTH_FILE:+auth_file = ${AUTH_FILE}\n}\
 ${AUTH_HBA_FILE:+auth_hba_file = ${AUTH_HBA_FILE}\n}\
-auth_type = ${AUTH_TYPE:-md5}
+auth_type = ${AUTH_TYPE:-any}
 ${AUTH_QUERY:+auth_query = ${AUTH_QUERY}\n}\
 ${POOL_MODE:+pool_mode = ${POOL_MODE}\n}\
 ${MAX_CLIENT_CONN:+max_client_conn = ${MAX_CLIENT_CONN}\n}\
@@ -114,13 +107,9 @@ ${TCP_KEEPALIVE:+tcp_keepalive = ${TCP_KEEPALIVE}\n}\
 ${TCP_KEEPCNT:+tcp_keepcnt = ${TCP_KEEPCNT}\n}\
 ${TCP_KEEPIDLE:+tcp_keepidle = ${TCP_KEEPIDLE}\n}\
 ${TCP_KEEPINTVL:+tcp_keepintvl = ${TCP_KEEPINTVL}\n}\
-
 ################## end file ##################
 " > ${PG_CONFIG_DIR}/pgbouncer.ini
 fi
-
-printf "\"${CLIENT_USER:-${PG_USER}}\" \"${CLIENT_USER:+md5$(echo -n "${CLIENT_PASSWORD}${CLIENT_USER}" | md5sum | awk '{ print $1 }')}\"
-" > ${PG_CONFIG_DIR}/${AUTH_FILE:-passwords.txt}
 
 adduser ${PG_USER}
 mkdir -p ${PG_LOG}
