@@ -13,7 +13,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   c-ares \
   libevent \
   openssl \
-  pgbouncer
+  pgbouncer \
   && adduser -DHs /sbin/nologin metaman
 
 WORKDIR /
