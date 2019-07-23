@@ -1,4 +1,4 @@
-FROM alpine:latest AS build_stage
+FROM alpine:3.8 AS build_stage
 
 MAINTAINER brainsam@yandex.ru
 
@@ -20,7 +20,7 @@ RUN make
 RUN make install
 RUN ls -R /pgbouncer
 
-FROM alpine:latest
+FROM alpine:3.8
 RUN apk --update add libevent openssl c-ares
 WORKDIR /
 COPY --from=build_stage /pgbouncer /pgbouncer
