@@ -2,8 +2,12 @@ FROM alpine:3.8 AS build_stage
 
 MAINTAINER brainsam@yandex.ru
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 WORKDIR /
-RUN apk --update add git python py-pip build-base automake libtool m4 autoconf libevent-dev openssl-dev c-ares-dev
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+    && apk --update add git python py-pip build-base automake libtool m4 autoconf libevent-dev openssl-dev c-ares-dev
 RUN pip install docutils
 RUN git clone https://github.com/pgbouncer/pgbouncer.git src
 
@@ -21,7 +25,8 @@ RUN make install
 RUN ls -R /pgbouncer
 
 FROM alpine:3.8
-RUN apk --update add libevent openssl c-ares
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+    && apk --update add libevent openssl c-ares
 WORKDIR /
 COPY --from=build_stage /pgbouncer /pgbouncer
 ADD entrypoint.sh ./

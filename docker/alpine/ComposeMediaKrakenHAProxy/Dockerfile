@@ -1,6 +1,9 @@
 # vim:set ft=dockerfile:
 FROM alpine:3.10
 
+ARG ALPMIRROR
+ARG PIPMIRROR
+
 ENV HAPROXY_VERSION 2.0.3
 ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.3.tar.gz
 ENV HAPROXY_SHA256 aac1ff3e5079997985b6560f46bf265447d0cd841f11c4d77f15942c9fe4b770
@@ -8,6 +11,7 @@ ENV HAPROXY_SHA256 aac1ff3e5079997985b6560f46bf265447d0cd841f11c4d77f15942c9fe4b
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	\
+	&& sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 	&& apk add --no-cache --virtual .build-deps \
 		ca-certificates \
 		gcc \
