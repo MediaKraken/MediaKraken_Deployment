@@ -1,33 +1,22 @@
-FROM alpine:3.8 AS build_stage
+# Download base image
+FROM alpine:3.10
 
-MAINTAINER brainsam@yandex.ru
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
+LABEL Description="This holds the image for pgbouncer"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
 
-WORKDIR /
+# pip3 is installed with python3
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-    && apk --update add git python py-pip build-base automake libtool m4 autoconf libevent-dev openssl-dev c-ares-dev
-RUN pip install docutils
-RUN git clone https://github.com/pgbouncer/pgbouncer.git src
+  && apk add --no-cache \
+  c-ares \
+  libevent \
+  openssl \
+  pgbouncer \
+  && adduser -DHs /sbin/nologin metaman
 
-WORKDIR /bin
-RUN ln -s ../usr/bin/rst2man.py rst2man
-
-WORKDIR /src
-RUN mkdir /pgbouncer
-RUN git submodule init
-RUN git submodule update
-RUN ./autogen.sh
-RUN	./configure --prefix=/pgbouncer --with-libevent=/usr/lib
-RUN make
-RUN make install
-RUN ls -R /pgbouncer
-
-FROM alpine:3.8
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-    && apk --update add libevent openssl c-ares
 WORKDIR /
-COPY --from=build_stage /pgbouncer /pgbouncer
-ADD entrypoint.sh ./
+COPY wait-for-it-ash.sh ./
+COPY entrypoint.sh ./
 ENTRYPOINT ["./entrypoint.sh"]

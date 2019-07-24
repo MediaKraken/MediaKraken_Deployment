@@ -120,4 +120,4 @@ if [ -z $QUIET ]; then
   cat ${PG_CONFIG_DIR}/pgbouncer.ini
 fi
 echo "Starting pgbouncer..."
-exec /pgbouncer/bin/pgbouncer ${QUIET:+-q} -u ${PG_USER} ${PG_CONFIG_DIR}/pgbouncer.ini
+exec pgbouncer ${QUIET:+-q} -u ${PG_USER} ${PG_CONFIG_DIR}/pgbouncer.ini
