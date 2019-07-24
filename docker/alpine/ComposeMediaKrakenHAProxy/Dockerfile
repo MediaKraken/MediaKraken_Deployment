@@ -1,3 +1,4 @@
+# https://github.com/docker-library/haproxy
 # vim:set ft=dockerfile:
 FROM alpine:3.10
 
@@ -67,7 +68,7 @@ RUN set -x \
 # "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
 # "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
 STOPSIGNAL SIGUSR1
-
+COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
