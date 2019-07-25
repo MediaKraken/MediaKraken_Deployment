@@ -433,7 +433,8 @@ services:
       - HOST_IP=${HOST_IP}
     container_name: mkwebapp
     depends_on:
-      - pgbounce
+      - pgbouncer
+      - pgbouncerha
       - rabbit
       - redis
     entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
