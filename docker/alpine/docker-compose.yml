@@ -198,7 +198,7 @@ services:
       # find what's running and where
       - /var/run/docker.sock:/var/run/docker.sock:ro
     expose:
-      - 7432:7432
+      - "7432"
     networks:
       - mediakraken_network
     deploy:
