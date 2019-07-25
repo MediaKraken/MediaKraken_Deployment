@@ -297,7 +297,7 @@ services:
 
   # pgbouncer
   pgbouncer:
-    image: tophfr/docker-pgbouncer:latest
+    image: tophfr/pgbouncer:latest
     environment:
       - DEFAULT_HOST=mkdatabase
       - CONF__PGBOUNCER__USER=${DBUSER}
