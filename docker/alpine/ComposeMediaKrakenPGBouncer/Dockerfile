@@ -5,15 +5,13 @@ LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This holds the image for pgbouncer"
 
 ARG ALPMIRROR
-ARG PIPMIRROR
 
-# pip3 is installed with python3
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   c-ares \
   libevent \
   openssl \
-  pgbouncer \
+  pgbouncer=1.7.2-r4 \
   postgresql-client \
   && mkdir /run/postgresql \
   && chmod 777 /run/postgresql
