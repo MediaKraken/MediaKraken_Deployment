@@ -14,9 +14,11 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libevent \
   openssl \
   pgbouncer \
-  && adduser -DHs /sbin/nologin metaman \
+  postgresql-client \
   && mkdir /run/postgresql \
   && chmod 777 /run/postgresql
+
+#  && adduser -DHs /sbin/nologin metaman \
 
 WORKDIR /
 COPY wait-for-it-ash.sh ./
