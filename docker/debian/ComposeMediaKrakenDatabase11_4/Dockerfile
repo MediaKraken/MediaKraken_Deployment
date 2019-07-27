@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM debian:stretch-slim
+FROM debian:9.9-slim
 
 RUN set -ex; \
 	if ! command -v gpg > /dev/null; then \
