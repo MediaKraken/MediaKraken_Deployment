@@ -190,6 +190,7 @@ services:
     container_name: mkhaproxy
     depends_on:
       - pgbouncer
+      - pgbouncerha
     environment:
       - BALANCE=leastconn
       # Used to identify services.
