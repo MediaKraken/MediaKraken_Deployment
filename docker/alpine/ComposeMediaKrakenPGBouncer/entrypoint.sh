@@ -25,8 +25,7 @@ ${DB_PASSWORD:+password=${DB_PASSWORD}}
 # Generic settings
 ${LOGFILE:+logfile = ${LOGFILE}\n}\
 ${PIDFILE:+pidfile = ${PIDFILE}\n}\
-listen_addr = ${LISTEN_ADDR:-0.0.0.0}
-${LISTEN_PORT:+listen_port = ${LISTEN_PORT}\n}\
+listen_addr = *
 ${UNIX_SOCKET_DIR:+unix_socket_dir = ${UNIX_SOCKET_DIR}\n}\
 ${UNIX_SOCKET_MODE:+unix_socket_mode = ${UNIX_SOCKET_MODE}\n}\
 ${UNIX_SOCKET_GROUP:+unix_socket_group = ${UNIX_SOCKET_GROUP}\n}\
