@@ -17,6 +17,7 @@
 '''
 
 import json
+import sys
 import uuid
 
 from common import common_config_ini
@@ -33,11 +34,14 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 if option_config_json['API']['themoviedb'].strip() != 'None':
     # setup the tmdb class
     TMDB_API_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
-    common_global.es_inst.com_elastic_index('info', {"Using key %s" % option_config_json['API'][
-        'themoviedb'].strip()})
+    common_global.es_inst.com_elastic_index('info', {"Using key %s"
+                                                     % option_config_json['API'][
+                                                         'themoviedb'].strip()})
 else:
     TMDB_API_CONNECTION = None
     common_global.es_inst.com_elastic_index('critical', {"API not available."})
+    db_connection.db_close()
+    sys.exit()
 
 if TMDB_API_CONNECTION is not None:
     force_dl = False
