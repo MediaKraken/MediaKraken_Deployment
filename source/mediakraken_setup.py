@@ -173,7 +173,7 @@ compose_text += "\n\n  # runs the server to fetch/process all metadata\n" \
 # pgbouncer for connection pooling
 compose_text += "\n\n  # pgbouncer\n" \
                 "  pgbounce:\n" \
-                "    image: mediakraken/mkpgbounce:latest\n" \
+                "    image: mediakraken/mkpgbouncer:latest\n" \
                 "    environment:\n" \
                 "      - DB_HOST=${DBHOST}\n" \
                 "      - DB_USER=${DBUSER}\n" \
@@ -182,7 +182,7 @@ compose_text += "\n\n  # pgbouncer\n" \
                 "      - MAX_CLIENT_CONN=500\n" \
                 "      - DEFAULT_POOL_SIZE=85\n" \
                 "      - SERVER_RESET_QUERY=DISCARD ALL\n" \
-                "    container_name: mkpgbounce\n"
+                "    container_name: mkpgbouncer\n"
 if response is None or len(response) == 0:
     compose_text += "    depends_on:\n" \
                     "      - database\n" \
