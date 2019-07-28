@@ -6,11 +6,7 @@ PG_LOG=/var/log/pgbouncer
 PG_CONFIG_DIR=/etc/pgbouncer
 PG_USER=postgres
 
-if [ ! -f ${PG_CONFIG_DIR}/pgbouncer.ini ]; then
-  echo "create pgbouncer config in ${PG_CONFIG_DIR}"
-  mkdir -p ${PG_CONFIG_DIR}
-
-  printf "\
+printf "\
 #pgbouncer.ini
 # Description
 # Config file is in “ini” format. Section names are between “[” and “]”.
@@ -108,15 +104,11 @@ ${TCP_KEEPIDLE:+tcp_keepidle = ${TCP_KEEPIDLE}\n}\
 ${TCP_KEEPINTVL:+tcp_keepintvl = ${TCP_KEEPINTVL}\n}\
 ################## end file ##################
 " > ${PG_CONFIG_DIR}/pgbouncer.ini
-fi
 
 adduser ${PG_USER}
 mkdir -p ${PG_LOG}
 chmod -R 755 ${PG_LOG}
 chown -R ${PG_USER}:${PG_USER} ${PG_LOG}
 
-if [ -z $QUIET ]; then
-  cat ${PG_CONFIG_DIR}/pgbouncer.ini
-fi
 echo "Starting pgbouncer..."
 exec pgbouncer ${QUIET:+-q} -u ${PG_USER} ${PG_CONFIG_DIR}/pgbouncer.ini
