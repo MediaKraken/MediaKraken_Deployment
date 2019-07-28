@@ -21,10 +21,10 @@ import json
 import logging  # pylint: disable=W0611
 import os
 import platform
+import shlex
 import subprocess
 import sys
 import uuid
-from shlex import split
 
 from common import common_global
 from common import common_logging_elasticsearch
@@ -247,10 +247,11 @@ class MediaKrakenApp(App):
             if os.path.exists(video_source_dir):
                 # direct play it
                 self.mpv_process = subprocess.Popen(
-                    split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
-                          '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
-                          '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
-                          + video_source_dir + '\"'), stdout=subprocess.PIPE, shell=False)
+                    shlex.split(
+                        'mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
+                        '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
+                        '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
+                        + video_source_dir + '\"'), stdout=subprocess.PIPE, shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
         elif json_message['Type'] == "Image":
             common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})

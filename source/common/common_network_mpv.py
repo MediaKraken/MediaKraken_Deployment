@@ -18,6 +18,7 @@
 
 import json
 import os
+import shlex
 import socket
 import subprocess
 import time
@@ -51,8 +52,9 @@ class CommonNetMPVSocat:
         self.sockfile = sockfile
 
     def execute(self, command):
-        self.sub_output = subprocess.Popen('echo \'' + command + '\' | socat - ' + self.sockfile,
-                                           stdout=subprocess.PIPE, stderr=None, shell=True)
+        self.sub_output = subprocess.Popen(
+            shlex.split('echo \'' + command + '\' | socat - ' + self.sockfile),
+            stdout=subprocess.PIPE, stderr=None, shell=True)
         output = self.sub_output.communicate()
         print(('subout: ', output))
 

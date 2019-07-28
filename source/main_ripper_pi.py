@@ -38,17 +38,30 @@ from twisted.protocols import basic
 import kivy
 from kivy.app import App
 
-kivy.require('1.10.0')
+kivy.require('1.11.0')
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
+from kivy.config import Config
 
 twisted_connection = None
 mk_app = None
 thread_status = None
+
+# moving here before anything is setup for Kivy or it doesn't work
+if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+    Config.set('graphics', 'multisamples', '0')
+    os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
+else:
+    if os.uname()[4][:3] == 'arm':
+        # TODO find real resolution
+        # TODO this is currently set to the "official" raspberry pi touchscreen
+        Config.set('graphics', 'width', 800)
+        Config.set('graphics', 'height', 480)
+        Config.set('graphics', 'fullscreen', 'fake')
 
 
 class MKEcho(basic.LineReceiver):
@@ -116,7 +129,7 @@ class MediaKrakenApp(App):
         if self.arm_arduino is None:
             self.arduino_connect()
         while thread_status:
-            if buffer_busy == False:
+            if buffer_busy is False:
                 # position for pickup disc for buffing
                 if spinner_one_text is not None and spinner_one_text.find('Buff') != -1:
                     self.track_arduino.com_arduino_usb_serial_writestring(
@@ -145,15 +158,15 @@ class MediaKrakenApp(App):
             self.next_disc(2, spinner_two_text)
             self.next_disc(3, spinner_three_text)
             self.next_disc(4, spinner_four_text)
-            if thread_status == False:
+            if thread_status is False:
                 break
             time.sleep(1)
 
     def next_disc(self, spinner_no, spinner_text):
         for drive_status in self.rom_drives:
             if drive_status['Status'] is None and (drive_status['Type'] == spinner_text
-                                                   or (drive_status[
-                                                           'Type'] == 'DVD' and spinner_text == 'Audio CD')):
+                                                   or (drive_status['Type'] == 'DVD'
+                                                       and spinner_text == 'Audio CD')):
                 # load this one
                 self.track_arduino.com_arduino_usb_serial_writestring(
                     'track|%s' % self.spindles_media_to_process[spinner_no]['Pos'])
@@ -247,6 +260,8 @@ class MediaKrakenApp(App):
             {4: {'Type': 'BluRay', 'Pos': {'Track': 1, 'Arm': 2}, 'Status': None, 'Spindle': None,
                  'Device': None}},
             {5: {'Type': 'HDDVD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None,
+             'Device': None},
+            {5: {'Type': 'UHD', 'Pos': {'Track': 1, 'Arm': 2}}, 'Status': None, 'Spindle': None,
              'Device': None}]
         return root
 
@@ -326,7 +341,11 @@ if __name__ == '__main__':
     # load the kivy's here so all the classes have been defined
     Builder.load_file('ripper/kivy_layouts/main.kv')
     Builder.load_file('ripper/kivy_layouts/KV_Layout_Notification.kv')
-    # so the raspberry pi doesn't crash
-    if os.uname()[4][:3] != 'arm':
-        Window.fullscreen = 'auto'
+    # adding this since windows10 can run on PI now
+    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+        pass  # as os.uname doesn't exist in windows
+    else:
+        # so the raspberry pi doesn't crash
+        if os.uname()[4][:3] != 'arm':
+            Window.fullscreen = 'auto'
     MediaKrakenApp().run()

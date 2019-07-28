@@ -47,7 +47,7 @@ class CommonMetadataMusicbrainz:
         # option_config_json.get('MediaBrainz','Password').strip())
         musicbrainzngs.set_useragent("MediaKraken_Server", common_version.APP_VERSION,
                                      "spootdev@gmail.com "
-                                     "https://https://github.com/MediaKraken/MediaKraken_Deployment")
+                                     "https://github.com/MediaKraken/MediaKraken_Deployment")
         # If you are connecting to a development server
         if option_config_json['MusicBrainz']['Host'] is not None:
             if option_config_json['MusicBrainz']['Host'] != 'Docker':

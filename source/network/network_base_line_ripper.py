@@ -17,6 +17,7 @@
 '''
 
 import json
+import shlex
 import subprocess
 
 from common import common_discid
@@ -64,44 +65,35 @@ class NetworkEvents(basic.LineReceiver):
 
         if json_message['Type'] == "Rip":
             if json_message['Data'] == "CD":
-                disc_id = common_discid.com_discid_spec_device(
-                    json_message['Target'])
-                mbrainz_data = self.mbrainz_inst.com_mediabrainz_get_releases(
-                    disc_id)
+                disc_id = common_discid.com_discid_spec_device(json_message['Target'])
+                mbrainz_data = self.mbrainz_inst.com_mediabrainz_get_releases(disc_id)
                 disc_id_found = False
                 # TODO if NOT in DB already
                 if disc_id_found is True:
                     pass
                 else:
-                    # call waits until done
-                    # TODO shelix for little bobby tables
-                    subprocess.call(['abcde', '-d', json_message['Target']])
-            elif json_message['Data'] == "DVD":
-                # TODO id disc
-                # TODO see if in db already
-                # TODO shelix for little bobby tables
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
-                                 'all', json_message['Location']])
-            elif json_message['Data'] == "Bray":
-                # TODO id disc
-                # TODO see if in db already
-                # TODO shelix for little bobby tables
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
-                                 'all', json_message['Location']])
-            elif json_message['Data'] == "UHD":
-                # TODO id disc
-                # TODO see if in db already
-                # TODO shelix for little bobby tables
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
-                                 'all', json_message['Location']])
-            elif json_message['Data'] == "HDVD":
-                # TODO id disc
-                # TODO see if in db already
-                # TODO shelix for little bobby tables
-                subprocess.call(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
-                                 'all', json_message['Location']])
+                    subprocess.Popen(shlex.split(['abcde', '-d', json_message['Target']]))
             else:
-                pass
+                if json_message['Data'] == "DVD":
+                    # TODO id disc
+                    # TODO see if in db already
+                    pass
+                elif json_message['Data'] == "BRAY":
+                    # TODO id disc
+                    # TODO see if in db already
+                    pass
+                elif json_message['Data'] == "UHD":
+                    # TODO id disc
+                    # TODO see if in db already
+                    pass
+                elif json_message['Data'] == "HDVD":
+                    # TODO id disc
+                    # TODO see if in db already
+                    pass
+                # catchall makemkvcon
+                subprocess.Popen(
+                    shlex.split(['makemkvcon', 'mkv', 'disc:%s' % json_message['Target'],
+                                 'all', json_message['Location']]))
         elif json_message['Type'] == "Ident":
             # have to create the self.player data so network knows how to send data back
             self.user_device_uuid = json_message['UUID']
@@ -113,8 +105,8 @@ class NetworkEvents(basic.LineReceiver):
             common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            common_global.es_inst.com_elastic_index('info', {"should be sending data len": len(
-                msg)})
+            common_global.es_inst.com_elastic_index('info',
+                                                    {"should be sending data len": len(msg)})
             self.sendLine(msg.encode("utf8"))
 
     def send_all_users(self, message):

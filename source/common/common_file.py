@@ -53,14 +53,13 @@ def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=Fa
     """
     Save data as file
     """
-    file_handle = None
     if as_pickle:
         write_type = 'wb'
     else:
         write_type = 'w+'
     if with_timestamp:
-        file_handle = open(file_name + '_' +
-                           time.strftime("%Y%m%d%H%M%S") + file_ext, write_type)
+        file_handle = open(os.path.join(file_name, '_', time.strftime("%Y%m%d%H%M%S"), file_ext),
+                           write_type)
     else:
         file_handle = open(file_name, write_type)
     if as_pickle:

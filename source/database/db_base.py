@@ -26,7 +26,7 @@ from common import common_global
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
 
 
-def db_open(self, db_prod=True):
+def db_open(self):
     """
     # open database and pull in config and create db if not exist
     """
@@ -35,18 +35,14 @@ def db_open(self, db_prod=True):
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
-    if db_prod is True:
-        self.sql3_conn = psycopg2.connect(
-            "dbname='%s' user='%s' host='mkpgbounce' port=6432 password='%s'"
-            % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
-               os.environ['POSTGRES_PASSWORD']))
-    else:
-        self.sql3_conn = psycopg2.connect("dbname='metamandb' user='metamanpg'"
-                                          " host='th-postgresql-1' port=5432 password='metamanpg'")
+    # TODO throws tuple error if comma
+    self.sql3_conn = psycopg2.connect(
+        "dbname='%s' user='%s' host='mkpgbouncer' port=6432 password='%s'"
+        % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
+           os.environ['POSTGRES_PASSWORD']))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
-    self.db_cursor = self.sql3_conn.cursor(
-        cursor_factory=psycopg2.extras.DictCursor)
+    self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
                            multiprocessing.cpu_count())
@@ -89,6 +85,7 @@ def db_table_index_check(self, resource_name):
     """
     # check for table or index
     """
+    # TODO little bobby tables
     self.db_cursor.execute('SELECT to_regclass(\'public.%s\')' % (resource_name,))
     return self.db_cursor.fetchone()[0]
 

@@ -85,11 +85,11 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         common_global.es_inst.com_elastic_index('info', {"name": tvmaze_name})
         try:
             thetvdb_id = str(show_detail['externals']['thetvdb'])
-        except:
+        except KeyError:
             thetvdb_id = None
         try:
             imdb_id = str(show_detail['externals']['imdb'])
-        except:
+        except KeyError:
             imdb_id = None
         series_id_json = json.dumps({'tvmaze': str(tvmaze_id),
                                      'imdb': imdb_id,

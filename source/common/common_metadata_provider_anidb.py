@@ -61,19 +61,23 @@ class CommonMetadataANIdb:
         anime_title = None
         anime_title_ja = None
         for file_line in file_handle.readlines():
-            # common_global.es_inst.com_elastic_index('info', {'stuff':'line: %s', file_line.decode('utf-8'))
+            # common_global.es_inst.com_elastic_index('info',
+            # {'stuff':'line: %s', file_line.decode('utf-8'))
             if file_line.decode('utf-8').find('<anime aid="') != -1:
                 anime_aid = file_line.decode(
                     'utf-8').split('"', 1)[1].rsplit('"', 1)[0]
-                # common_global.es_inst.com_elastic_index('info', {'stuff':'aid: %s', anime_aid)
+                # common_global.es_inst.com_elastic_index('info',
+                # {'stuff':'aid: %s', anime_aid)
             elif file_line.decode('utf-8').find('title xml:lang="ja"') != -1:
                 anime_title_ja = file_line.decode(
                     'utf-8').split('>', 1)[1].rsplit('<', 1)[0]
-                # common_global.es_inst.com_elastic_index('info', {'stuff':'title: %s', anime_title_ja)
+                # common_global.es_inst.com_elastic_index('info',
+                # {'stuff':'title: %s', anime_title_ja)
             elif file_line.decode('utf-8').find('title xml:lang="en"') != -1:
                 anime_title = file_line.decode(
                     'utf-8').split('>', 1)[1].rsplit('<', 1)[0]
-                # common_global.es_inst.com_elastic_index('info', {'stuff':'title: %s', anime_title)
+                # common_global.es_inst.com_elastic_index('info',
+                # {'stuff':'title: %s', anime_title)
             elif file_line.decode('utf-8').find('</anime>') != -1:
                 if self.db_connection.db_meta_anime_meta_by_id(anime_aid) is None:
                     if anime_title is None:

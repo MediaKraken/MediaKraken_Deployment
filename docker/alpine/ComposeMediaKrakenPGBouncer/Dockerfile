@@ -1,28 +1,24 @@
-# https://github.com/brainsam/pgbouncer
-
+# Download base image
 FROM alpine:3.8
 
-MAINTAINER brainsam@yandex.ru
+LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
+LABEL Description="This holds the image for pgbouncer"
 
 ARG ALPMIRROR
-ARG PIPMIRROR
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-        && apk --no-cache add git build-base automake libtool m4 autoconf libevent-dev libressl-dev c-ares c-ares-dev py-docutils && \
-	git clone https://github.com/pgbouncer/pgbouncer.git && \
-	cd pgbouncer         && \
-        git checkout tags/pgbouncer_1_8_1 && \
-	git submodule init   && \
-	git submodule update && \
-	./autogen.sh         && \
-	./configure --prefix=/usr/local --with-libevent=/usr/lib && \
-	make -j`getconf _NPROCESSORS_ONLN` && make install && \
-	apk del git build-base automake autoconf c-ares-dev libtool m4 && \
-	rm -f /var/cache/apk/* \
-        && cd .. && rm -Rf pgbouncer
+  && apk add --no-cache \
+  c-ares \
+  libevent \
+  openssl \
+  pgbouncer=1.7.2-r4 \
+  postgresql-client \
+  && mkdir /run/postgresql \
+  && chmod 777 /run/postgresql
 
-COPY entrypoint.sh ./
+#  && adduser -DHs /sbin/nologin metaman \
+
+WORKDIR /
 COPY wait-for-it-ash.sh ./
-
+COPY entrypoint.sh ./
 ENTRYPOINT ["./entrypoint.sh"]
-

@@ -37,9 +37,9 @@ class ServerDatabaseBrainz:
         psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
         # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
         # psycopg2.extras.register_default_json(loads=lambda x: x)
-        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'"
-                                          % (postdbname, postdbuser, postdbhost, int(postdbport),
-                                             postdbpass))
+        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'",
+                                          (postdbname, postdbuser, postdbhost, int(postdbport),
+                                           postdbpass))
         self.db_cursor = self.sql3_conn.cursor()
         self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
 

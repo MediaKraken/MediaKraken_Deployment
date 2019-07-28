@@ -19,7 +19,7 @@
 from InstagramAPI import InstagramAPI
 
 
-class CommonNetworkInstragram:
+class CommonNetworkInstagram:
     """
     Class for interfacing with instagram
     """

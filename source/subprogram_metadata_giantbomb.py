@@ -36,7 +36,7 @@ def main(argv):
     # search the directory for filter files
 
 
-# TODO this should go thru the limiter
+# TODO this should go through the limiter
 if __name__ == "__main__":
     print(('bomb game info download attempts: %s' % total_download_attempts))
     # send notifications

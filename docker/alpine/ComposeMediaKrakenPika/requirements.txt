@@ -1,3 +1,4 @@
+gevent==1.4.0
 service_identity==18.1.0
 pyopenssl==19.0.0
 ldap3==2.6

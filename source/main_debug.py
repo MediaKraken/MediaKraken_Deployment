@@ -22,7 +22,7 @@ import sys
 
 try:
     from common import common_docker
-except:
+except ModuleNotFoundError:
     print('Must install docker via "pip3 install docker".  Exiting...')
     sys.exit()
 # map count limit, vm.max_map_count
@@ -49,5 +49,5 @@ if current_host_working_directory is None:
 docker_inst.com_docker_network_prune()
 docker_inst.com_docker_network_create()
 docker_inst.com_docker_run_elk(current_host_working_directory)
-docker_inst.com_docker_run_pgadmin(current_host_working_directory)
+docker_inst.com_docker_run_pgadmin()
 docker_inst.com_docker_run_portainer(current_host_working_directory)

@@ -39,8 +39,7 @@ def sync_display_all():
                                                   format_number=True,
                                                   )
     return render_template('users/user_sync.html',
-                           media_sync=g.db_connection.db_sync_list(
-                               offset, per_page),
+                           media_sync=g.db_connection.db_sync_list(offset, per_page),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

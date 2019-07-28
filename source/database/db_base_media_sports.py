@@ -25,8 +25,9 @@ def db_media_sports_random(self):
     """
     Find random sports
     """
-    self.db_cursor.execute('select mm_metadata_guid,mm_media_guid from mm_media,'
-                           'mm_metadata_sports where mm_media_metadata_guid = mm_metadata_guid'
+    self.db_cursor.execute('select mm_metadata_sports_guid,mm_media_guid from mm_media,'
+                           'mm_metadata_sports'
+                           ' where mm_media_metadata_guid = mm_metadata_sports_guid'
                            ' and random() < 0.01 limit 1')
     try:
         return self.db_cursor.fetchone()
@@ -45,10 +46,12 @@ def db_media_sports_count_by_genre(self, class_guid):
                            ' from ((select distinct on (mm_media_metadata_guid)'
                            ' mm_metadata_json from mm_media, mm_metadata_sports'
                            ' where mm_media_class_guid = %s'
-                           ' and mm_media_metadata_guid = mm_metadata_guid) union (select distinct'
+                           ' and mm_media_metadata_guid = mm_metadata_sports_guid)'
+                           ' union (select distinct'
                            ' on (mmr_media_metadata_guid) mm_metadata_json from mm_media_remote,'
                            ' mm_metadata_sports where mmr_media_class_guid = %s'
-                           ' and mmr_media_metadata_guid = mm_metadata_guid)) as temp group by gen',
+                           ' and mmr_media_metadata_guid = mm_metadata_sports_guid))'
+                           ' as temp group by gen',
                            (class_guid, class_guid))
     return self.db_cursor.fetchall()
 
@@ -67,25 +70,27 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
             if not group_collection:
                 if not include_remote:
                     self.db_cursor.execute('select count(*) from (select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media,'
+                                           ' mm_metadata_sports'
                                            ' where mm_media_class_guid = %s'
                                            ' and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid'
+                                           ' = mm_metadata_sports_guid'
                                            ' and mm_media_json->>\'DateAdded\' >= %s)'
                                            ' as temp', (class_guid, (datetime.datetime.now()
                                                                      - datetime.timedelta(
                                 days=7)).strftime("%Y-%m-%d"),))
                 else:
                     self.db_cursor.execute('select count(*) from ((select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media,'
+                                           ' mm_metadata_sports'
                                            ' where mm_media_class_guid = %s'
                                            ' and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid'
+                                           ' = mm_metadata_sports_guid'
                                            ' and mm_media_json->>\'DateAdded\' >= %s)'
                                            ' union (select distinct mmr_metadata_guid'
                                            ' from mm_media_remote,'
                                            ' mm_metadata_sports where mmr_media_class_guid = %s'
-                                           ' and mmr_media_metadata_guid = mm_metadata_guid'
+                                           ' and mmr_media_metadata_guid = mm_metadata_sports_guid'
                                            ' and mm_media_json->>\'DateAdded\' >= %s)) as temp',
                                            (class_guid, (datetime.datetime.now()
                                                          - datetime.timedelta(days=7)).strftime(
@@ -99,25 +104,27 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
             if not group_collection:
                 if not include_remote:
                     self.db_cursor.execute('select count(*) from (select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media,'
+                                           ' mm_metadata_sports'
                                            ' where mm_media_class_guid = %s'
                                            ' and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid) as temp', (class_guid,))
+                                           ' = mm_metadata_sports_guid) as temp', (class_guid,))
                 else:
                     self.db_cursor.execute('select count(*) from ((select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media, mm_metadata_sports'
                                            ' where mm_media_class_guid = %s and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid) union (select distinct mm_metadata_guid'
+                                           ' = mm_metadata_sports_guid)'
+                                           ' union (select distinct mm_metadata_sports_guid'
                                            ' from mm_media_remote, mm_metadata_sports'
                                            ' where mmr_media_class_guid = %s'
-                                           ' and mmr_media_metadata_guid = mm_metadata_guid)) as temp',
+                                           ' and mmr_media_metadata_guid = mm_metadata_sports_guid)) as temp',
                                            (class_guid, class_guid))
             else:
                 if not include_remote:
                     self.db_cursor.execute('select count(*) as row_count'
-                                           ' from ((select distinct mm_metadata_guid from mm_media,'
+                                           ' from ((select distinct mm_metadata_sports_guid from mm_media,'
                                            ' mm_metadata_sports where mm_media_class_guid = %s'
-                                           ' and mm_media_metadata_guid = mm_metadata_guid'
+                                           ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                            ' and (mm_metadata_json->>\'belongs_to_collection\') is null)'
                                            ' union (select count(*) from xxxx as row_count)) as temp',
                                            (class_guid, class_guid))
@@ -128,9 +135,9 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
             if not group_collection:
                 if not include_remote:
                     self.db_cursor.execute('select count(*) from (select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media, mm_metadata_sports'
                                            ' where mm_media_class_guid = %s and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid and mm_media_json->>\'DateAdded\' >= %s'
+                                           ' = mm_metadata_sports_guid and mm_media_json->>\'DateAdded\' >= %s'
                                            ' and mm_metadata_json->\'Meta\''
                                            '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp',
                                            (class_guid, (datetime.datetime.now()
@@ -138,14 +145,14 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
                                                "%Y-%m-%d"), list_genre))
                 else:
                     self.db_cursor.execute('select count(*) from ((select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media, mm_metadata_sports'
                                            ' where mm_media_class_guid = %s and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid and mm_media_json->>\'DateAdded\' >= %s'
+                                           ' = mm_metadata_sports_guid and mm_media_json->>\'DateAdded\' >= %s'
                                            ' and mm_metadata_json->\'Meta\''
                                            '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                            ' union (select distinct mmr_metadata_guid from mm_media_remote,'
                                            ' mm_metadata_sports where mmr_media_class_guid = %s'
-                                           ' and mmr_media_metadata_guid = mm_metadata_guid'
+                                           ' and mmr_media_metadata_guid = mm_metadata_sports_guid'
                                            ' and mmr_media_json->>\'DateAdded\' >= %s'
                                            ' and mm_metadata_json->\'genres\'->0->\'name\' ? %s)) as temp',
                                            (class_guid, (datetime.datetime.now()
@@ -160,20 +167,21 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
             if not group_collection:
                 if not include_remote:
                     self.db_cursor.execute('select count(*) from (select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media, mm_metadata_sports'
                                            ' where mm_media_class_guid = %s and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
+                                           ' = mm_metadata_sports_guid and mm_metadata_json->\'Meta\''
                                            '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                            ' as temp', (class_guid, list_genre))
                 else:
                     self.db_cursor.execute('select count(*) from ((select distinct'
-                                           ' mm_metadata_guid from mm_media, mm_metadata_sports'
+                                           ' mm_metadata_sports_guid from mm_media, mm_metadata_sports'
                                            ' where mm_media_class_guid = %s and mm_media_metadata_guid'
-                                           ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
+                                           ' = mm_metadata_sports_guid and mm_metadata_json->\'Meta\''
                                            '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
-                                           ' union (select distinct mmr_media_metadata_guid from mm_media_remote,'
+                                           ' union (select distinct mmr_media_metadata_guid'
+                                           ' from mm_media_remote,'
                                            ' mm_metadata_sports where mmr_media_class_guid = %s'
-                                           ' and mmr_media_metadata_guid = mm_metadata_guid'
+                                           ' and mmr_media_metadata_guid = mm_metadata_sports_guid'
                                            ' and mm_metadata_json->\'genres\'->0->\'name\' ? %s)) as temp',
                                            (class_guid, list_genre, class_guid, list_genre))
             else:
@@ -201,10 +209,12 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
-                                               ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
+                                               ' mm_metadata_sports_user_json,'
+                                               ' mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
@@ -216,8 +226,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
@@ -231,8 +242,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
@@ -241,7 +253,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                ' from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s'
+                                               ' = mm_metadata_sports_guid and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' order by mmr_media_metadata_guid, mm_metadata_sports_name) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, (datetime.datetime.now()
@@ -255,8 +267,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
@@ -265,7 +278,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s'
+                                               ' = mm_metadata_sports_guid and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' order by mmr_media_metadata_guid, mm_metadata_sports_name) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, (datetime.datetime.now()
@@ -288,8 +301,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid,))
@@ -298,8 +312,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, offset, list_limit))
@@ -309,8 +324,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json, '
@@ -318,7 +334,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid'
+                                               ' = mm_metadata_sports_guid'
                                                ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, class_guid))
@@ -327,8 +343,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json, '
@@ -336,7 +353,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid'
+                                               ' = mm_metadata_sports_guid'
                                                ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, class_guid, offset, list_limit))
@@ -349,7 +366,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_sports_image_json as metajson,'
                                                ' mm_media_path as mediapath from mm_media,'
                                                ' mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
@@ -365,7 +382,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_sports_image_json as metajson,'
                                                ' mm_media_path as mediapath from mm_media,'
                                                ' mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
@@ -382,7 +399,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_sports_image_json as metaimagejson,'
                                                ' mm_media_path as mediapath'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                # TODO put back in
                                                #                        ' union select mm_metadata_collection_name as name,'
@@ -400,7 +417,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_sports_image_json as metaimagejson,'
                                                ' mm_media_path as mediapath'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                # TODO put back in
                                                #                        ' union select mm_metadata_collection_name as name,'
@@ -420,8 +437,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
@@ -436,8 +454,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
@@ -453,8 +472,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
@@ -465,7 +485,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s'
-                                               ' and mmr_media_metadata_guid = mm_metadata_guid'
+                                               ' and mmr_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
@@ -480,8 +500,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
@@ -492,7 +513,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s'
-                                               ' and mmr_media_metadata_guid = mm_metadata_guid'
+                                               ' and mmr_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
@@ -513,8 +534,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
@@ -526,7 +548,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
@@ -539,8 +561,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
@@ -550,7 +573,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
+                                               ' = mm_metadata_sports_guid and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
                                                ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
@@ -560,8 +583,9 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_metadata_sports_name, mm_media_guid,'
                                                ' mm_metadata_sports_user_json, mm_metadata_sports_image_json,'
                                                ' mm_media_path'
-                                               ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
+                                               ' from mm_media, mm_metadata_sports'
+                                               ' where mm_media_class_guid = %s'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
                                                ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
@@ -571,7 +595,7 @@ def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
+                                               ' = mm_metadata_sports_guid and mm_metadata_json->\'Meta\''
                                                '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
                                                ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
@@ -591,7 +615,7 @@ def db_read_media_metadata_sports_both(self, media_guid):
     """
     self.db_cursor.execute('select mm_media_ffprobe_json,mm_metadata_json,'
                            'mm_metadata_sports_image_json from mm_media, mm_metadata_sports'
-                           ' where mm_media_metadata_guid = mm_metadata_guid'
+                           ' where mm_media_metadata_guid = mm_metadata_sports_guid'
                            ' and mm_media_guid = %s', (media_guid,))
     try:
         return self.db_cursor.fetchone()
@@ -601,7 +625,7 @@ def db_read_media_metadata_sports_both(self, media_guid):
 
 def db_read_media_sports_list_by_uuid(self, media_guid):
     self.db_cursor.execute('select mm_media_ffprobe_json from mm_media'
-                           ' where mm_media_metadata_guid in (select mm_metadata_guid from '
+                           ' where mm_media_metadata_guid in (select mm_metadata_sports_guid from '
                            'mm_media where mm_media_guild = %s)', (media_guid,))
     video_data = []
     for file_data in self.db_cursor.fetchall():

@@ -78,6 +78,7 @@ def db_meta_person_id_count(self, host_type, guid):
     """
     # does person exist already by host/id
     """
+    # TODO little bobby tables
     self.db_cursor.execute('select count(*) from mm_metadata_person'
                            ' where mmp_person_media_id @> \'{"' +
                            host_type + '":"'
@@ -235,6 +236,7 @@ def db_meta_person_as_seen_in(self, person_guid):
         # TODO won't this need to be like below?
     elif 'thetvdb' in row_data['mmp_person_media_id']:
         # sql_params = str(row_data[1]['thetvdb']),
+        # TODO little bobby tables
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
                                'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\''
                                ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''

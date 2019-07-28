@@ -168,10 +168,7 @@ class CommonDatabaseOctmote:
             self.sql3_conn.commit()
         self.db_cursor.execute(
             'select server_host, server_port from octmote_server_settings')
-        try:
-            return self.db_cursor.fetchone()[0]
-        except:
-            return None
+        return self.db_cursor.fetchone()[0]
 
     def com_db_close(self):
         """

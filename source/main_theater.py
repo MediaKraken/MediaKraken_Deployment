@@ -21,10 +21,10 @@ import json
 import logging  # pylint: disable=W0611
 import os
 import platform
+import shlex
 import subprocess
 import sys
 import uuid
-from shlex import split
 
 from common import common_global
 from common import common_logging_elasticsearch
@@ -624,10 +624,11 @@ def on_config_change(self, config, section, key, value):
                     video_source_dir = video_source_dir.replace(mapping[0], mapping[1])
             if os.path.isfile(MediaKrakenApp.media_path):
                 self.mpv_process = subprocess.Popen(
-                    split('mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
-                          '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
-                          '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
-                          + MediaKrakenApp.media_path + '\"'), stdout=subprocess.PIPE, shell=False)
+                    shlex.split(
+                        'mpv --no-config --fullscreen --ontop --no-osc --no-osd-bar --aid=2',
+                        '--audio-spdif=ac3,dts,dts-hd,truehd,eac3 --audio-device=pulse',
+                        '--hwdec=auto --input-ipc-server ./mk_mpv.sock \"'
+                        + MediaKrakenApp.media_path + '\"'), stdout=subprocess.PIPE, shell=False)
                 self.mpv_connection = common_network_mpv.CommonNetMPVSocat()
             else:
                 self.theater_play_server()
@@ -803,27 +804,28 @@ def on_config_change(self, config, section, key, value):
         # since it's loaded delete the image
         # os.remove(self.home_movie_inprogress_file_name)
 
-    if __name__ == '__main__':
-        # for windows exe support
-        from multiprocessing import freeze_support
 
-        freeze_support()
-        # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater',
-                                                                                 debug_override='print')
-        log.startLogging(sys.stdout)  # for twisted
-        # set signal exit breaks
-        common_signal.com_signal_set_break()
-        # load the kivy's here so all the classes have been defined
-        Builder.load_file('theater/kivy_layouts/main.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
-        Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
-        if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-            pass  # as os.uname doesn't exist in windows
-        else:
-            # so the raspberry pi doesn't crash
-            if os.uname()[4][:3] != 'arm':
-                Window.fullscreen = 'auto'
-        MediaKrakenApp().run()
+if __name__ == '__main__':
+    # for windows exe support
+    from multiprocessing import freeze_support
+
+    freeze_support()
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_theater',
+                                                                             debug_override='print')
+    log.startLogging(sys.stdout)  # for twisted
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
+    # load the kivy's here so all the classes have been defined
+    Builder.load_file('theater/kivy_layouts/main.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Load_Dialog.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Login.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Notification.kv')
+    Builder.load_file('theater_resources/kivy_layouts/KV_Layout_Slider.kv')
+    if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
+        pass  # as os.uname doesn't exist in windows
+    else:
+        # so the raspberry pi doesn't crash
+        if os.uname()[4][:3] != 'arm':
+            Window.fullscreen = 'auto'
+    MediaKrakenApp().run()

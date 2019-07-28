@@ -27,9 +27,9 @@ class CommonHardwarePICamera:
     Class for interfacing with pi camera
     """
 
-    def __init__(self):
+    def __init__(self, rez_width=1024, rez_height=768):
         self.camera = PiCamera()
-        self.camera.resolution = (1024, 768)
+        self.camera.resolution = (rez_width, rez_height)
         self.camera.start_preview()
         # Camera warm-up time
         sleep(2)

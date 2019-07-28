@@ -52,19 +52,20 @@ def user_movie_page(genre):
             offset=offset, include_remote=True, search_text=session['search_text']):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_metadata_user_json,
         # 3 - mm_metadata_localimage_json
-        common_global.es_inst.com_elastic_index('info', {"row2": row_data['mm_metadata_user_json']})
+        common_global.es_inst.com_elastic_index('info',
+                                                {"row2": row_data['mm_metadata_user_json']})
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
             watched_status \
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
-        except:
+        except KeyError:
             watched_status = False
         # set synced
         try:
-            sync_status = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id(
-            )]['sync']
-        except:
+            sync_status = \
+                row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['sync']
+        except KeyError:
             sync_status = False
         # set rating
         if row_data['mm_metadata_user_json'] is not None \
@@ -87,7 +88,7 @@ def user_movie_page(genre):
         # set mismatch
         try:
             match_status = row_data['mismatch']
-        except:
+        except KeyError:
             match_status = False
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
                                                          'sync': sync_status,

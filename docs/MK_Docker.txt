@@ -1,3 +1,9 @@
+https://info.crunchydata.com/blog/an-easy-recipe-for-creating-a-postgresql-cluster-with-docker-swarm
+docker stack deploy --compose-file=./docker-compose.yml pg-stack
+
+# browse catalogs in the registry
+http://th-registry-1:5000/v2/_catalog
+
 ******* Used Containers *****************
 
 ComposeMediaKrakenBase37Py3 - Base OS

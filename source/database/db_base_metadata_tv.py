@@ -347,6 +347,7 @@ def db_meta_tvshow_image_random(self, return_image_type='Poster'):
     """
     Find random tv show image
     """
+    # TODO little bobby tables
     self.db_cursor.execute(
         'select mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->>\''
         + return_image_type + '\' as image_json,mm_metadata_guid from mm_media,mm_metadata_tvshow'

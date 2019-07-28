@@ -194,7 +194,8 @@ class MKConsumer:
                     for chapter_data in ffprobe_data['chapters']:
                         chapter_count += 1
                         # file path, time, output name
-                        # check image save option whether to save this in media folder or metadata folder
+                        # check image save option whether to
+                        # save this in media folder or metadata folder
                         if option_config_json['Metadata']['MetadataImageLocal'] is False:
                             image_file_path = os.path.join(
                                 common_metadata.com_meta_image_file_path(json_message['Media Path'],
@@ -209,10 +210,9 @@ class MKConsumer:
                                 os.makedirs(image_file_path)
                             image_file_path = os.path.join(
                                 image_file_path, (str(chapter_count) + '.png'))
-                        command_list = []
-                        command_list.append('ffmpeg')
-                        # if ss is before the input it seeks and doesn't convert every frame like after input
-                        command_list.append('-ss')
+                        # if ss is before the input it seeks
+                        # and doesn't convert every frame like after input
+                        command_list = ['ffmpeg', '-ss']
                         # format the seconds to what ffmpeg is looking for
                         minutes, seconds = divmod(float(chapter_data['start_time']), 60)
                         hours, minutes = divmod(minutes, 60)
@@ -224,7 +224,8 @@ class MKConsumer:
                         command_list.append('\"' + image_file_path + '\"')
                         ffmpeg_proc = subprocess.Popen(command_list, stdout=subprocess.PIPE,
                                                        shell=False)
-                        ffmpeg_proc.wait()  # wait for subprocess to finish to not flood with ffmpeg processes
+                        # wait for subprocess to finish to not flood with ffmpeg processes
+                        ffmpeg_proc.wait()
 
                         # as the worker might see it as finished if allowed to continue
                         chapter_image_list[chapter_data['tags']['title']] = image_file_path

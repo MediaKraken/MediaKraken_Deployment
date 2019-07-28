@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 '''
 
+import shlex
 # https://github.com/MediaKraken-Dep/dosage
 import subprocess
-from shlex import split
 
 '''
 positional arguments:
@@ -60,19 +60,22 @@ class CommonMetadataComicStrip:
     def com_meta_com_list_strips(self, adult_access=False):
         if adult_access:
             return subprocess.check_output(
-                split('dosage -b %s --singlelist --adult', (self.base_path,)))
+                shlex.split('dosage -b %s --singlelist --adult', (self.base_path,)))
         else:
-            return subprocess.check_output(split('dosage -b %s --singlelist', (self.base_path,)))
+            return subprocess.check_output(shlex.split('dosage -b %s --singlelist',
+                                                       (self.base_path,)))
 
     def com_meta_com_fetch_strip(self, strip_name, adult_access=False):
         if adult_access:
-            return subprocess.check_output(split('dosage -b %b %s', (self.base_path, strip_name,)))
+            return subprocess.check_output(shlex.split('dosage -b %b %s',
+                                                       (self.base_path, strip_name,)))
         else:
             return subprocess.check_output(
-                split('dosage -b %s %s --adult', (self.base_path, strip_name,)))
+                shlex.split('dosage -b %s %s --adult', (self.base_path, strip_name,)))
 
     def com_meta_com_current_fetch(self, adult_access=False):
         if adult_access:
-            return subprocess.check_output(split('dosage -b %s @', (self.base_path,)))
+            return subprocess.check_output(shlex.split('dosage -b %s @', (self.base_path,)))
         else:
-            return subprocess.check_output(split('dosage -b %s @ --adult', (self.base_path,)))
+            return subprocess.check_output(shlex.split('dosage -b %s @ --adult',
+                                                       (self.base_path,)))
