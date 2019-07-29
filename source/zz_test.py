@@ -7,16 +7,12 @@ import json
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('zztest')
 
 # file_name = 'http://files.tmdb.org/p/exports/movie_ids_07_27_2019.json.gz'
-#
 # common_network.mk_network_fetch_from_url(file_name, 'movie.gz')
 
-json_data = str(common_file.com_file_ungzip('movie.gz'))
-#print(json_data)
-print(type(json_data))
-
+json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
 for json_row in json_data.splitlines(keepends=True):
-    print(json_row)
-    break
+   print(json.loads(json_row)['id'])
+   break
 
 '''
 {"adult":false,"id":601,"original_title":"E.T. the Extra-Terrestrial","popularity":18.373,"video":false}
