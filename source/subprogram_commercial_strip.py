@@ -77,7 +77,7 @@ def main(argv):
         elif opt in ("-o", "--ofile"):
             outputfile = arg
     # kick off ffmpeg process
-    proc = subprocess.Popen(shlex.split('./bin/ffmpeg ' + subproccess_args),
+    proc = subprocess.Popen(shlex.split('ffmpeg ' + subproccess_args),
                             stdout=subprocess.PIPE, shell=False)
     common_global.es_inst.com_elastic_index('info', {"pid": proc.pid,
                                                      "input": inputfile, "output": outputfile})
