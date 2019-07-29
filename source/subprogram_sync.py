@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 '''
 
+import shlex
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
-import shlex
 
 from common import common_cloud
 from common import common_config_ini
@@ -71,10 +71,9 @@ def worker(row_data):
         if line != '':
             common_global.es_inst.com_elastic_index('info', {'ffmpeg out': line.rstrip()})
             if line.find("Duration:") != -1:
-                media_duration = timedelta(
-                    line.split(': ', 1)[1].split(',', 1)[0])
+                media_duration = timedelta(float(line.split(': ', 1)[1].split(',', 1)[0]))
             elif line[0:5] == "frame":
-                time_string = timedelta(line.split('=', 5)[5].split(' ', 1)[0])
+                time_string = timedelta(float(line.split('=', 5)[5].split(' ', 1)[0]))
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
                 thread_db.db_sync_progress_update(row_data['mm_sync_guid'],
                                                   time_percent)
