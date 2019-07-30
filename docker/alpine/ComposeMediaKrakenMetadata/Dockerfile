@@ -25,6 +25,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libffi-dev \
   openrc \
   libressl-dev \
+  libarchive \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del gcc linux-headers musl-dev python3-dev \
   && rm requirements.txt \
