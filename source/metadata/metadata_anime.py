@@ -18,20 +18,9 @@
 
 import json
 
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_anidb
 
 from . import metadata_nfo_xml
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# verify provider key exists
-if option_config_json['API']['anidb'] is not None:
-    # setup the connection class
-    ANIDB_CONNECTION = common_metadata_provider_anidb.CommonMetadataANIdb(option_config_json)
-else:
-    ANIDB_CONNECTION = None
 
 
 def metadata_anime_lookup(db_connection, download_que_json, download_que_id, file_name):
