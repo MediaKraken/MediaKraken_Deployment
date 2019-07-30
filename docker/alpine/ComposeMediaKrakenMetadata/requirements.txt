@@ -12,4 +12,4 @@ mutagen==1.42.0
 pytvdbapi==0.5.0
 dosage==2.15
 np_inline==0.3
-libarchive-c 2.8
+libarchive-c==2.8
