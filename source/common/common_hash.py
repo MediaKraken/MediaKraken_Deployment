@@ -28,6 +28,7 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from np_inline import inline_debug as inline
 
 from . import common_file
 from . import common_global
@@ -153,8 +154,9 @@ def com_hash_sha1_c(file_name):
             # calculate sha1 hash
             #            SHA1.update(zip_handle.read(zippedfile))
             zip_file_data = zip_handle.read(zippedfile)
-            R = inline(common_hash_c_code.COM_C_CODE, ['zip_file_data'],
+            R = inline(common_hash_c_code.COM_C_CODE, [zip_file_data],
                        support_code=common_hash_c_code.COM_SHA1_CODE)
+        zip_handle.close()
         num += 1
         if num > 5:
             break
@@ -162,7 +164,7 @@ def com_hash_sha1_c(file_name):
 
 def com_hash_crc32(file_name):
     """
-    Caclucate crc32 for file
+    Calculate crc32 for file
     """
     file_pointer = open(file_name, 'rb')
     CRC = zlib.crc32(file_pointer.read(1024 * 1024))
@@ -223,7 +225,7 @@ def com_hash_thesubdb(file_name):
 def com_hash_opensubtitles(file_name):
     """
     hash for opensubtiles.org
-    folling routine is provided by opensubtitles.org website for api calls
+    following routine is provided by opensubtitles.org website for api calls
     """
     try:
         longlongformat = '<q'  # little-endian long long
