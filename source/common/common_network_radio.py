@@ -16,53 +16,9 @@
   MA 02110-1301, USA.
 '''
 
-import subprocess
-import sys
-
-sys.path.append("./common/radio_crawler")
-from . import common_global
-
 
 def com_net_radio():
     """
     # create the cache file for import
     """
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/crawler_google.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Crawler Google PID": proc.pid})
-    proc.wait()
-
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/clean_uris.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Clean Uris PID": proc.pid})
-    proc.wait()
-
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/init_cache.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Init Cache PID": proc.pid})
-    proc.wait()
-
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/fetch_xiph.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Fetch Xiph PID": proc.pid})
-    proc.wait()
-
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/fetch_tags.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Fetch Tags PID": proc.pid})
-    proc.wait()
-
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/fetch_cast.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Fetch Cast PID": proc.pid})
-    proc.wait()
-
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/fetch_tags.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Fetch Tags PID": proc.pid})
-    proc.wait()
-
-    proc = subprocess.Popen(['python3', '../MediaKraken_Common/radio_crawler/dump_taglist.py'],
-                            stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"Dump Taglist PID": proc.pid})
-    proc.wait()
+    pass
