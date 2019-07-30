@@ -28,11 +28,9 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from np_inline import inline_debug as inline
 
 from . import common_file
 from . import common_global
-from . import common_hash_c_code
 
 
 class CommonHashCrypto:
@@ -73,7 +71,7 @@ class CommonHashCrypto:
         return self.fernet.decrypt(decode_string.encode()).decode()
 
 
-def com_hash_sha1_by_filename(file_name):
+def com_hash_sha1_by_filename_old(file_name):
     """
     Generate sha1 has by filename
     """
@@ -141,31 +139,22 @@ def com_hash_sha1_by_filename(file_name):
         file_pointer.close()
         return sha1_hash_data
 
-
-def com_hash_sha1_c(file_name):
+def com_hash_sha1_by_filename(file_name):
     """
-    c call for sha1 hash generation by file name
-    http://pages.cs.wisc.edu/~johnl/np_inline/pydoc-0.3.html
+    Calculate sha1 for file
     """
-    num = 0
-    while 1:
-        zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
-        for zippedfile in zip_handle.namelist():
-            # calculate sha1 hash
-            #            SHA1.update(zip_handle.read(zippedfile))
-            zip_file_data = zip_handle.read(zippedfile)
-            R = inline(common_hash_c_code.COM_C_CODE, [zip_file_data],
-                       support_code=common_hash_c_code.COM_SHA1_CODE)
-        zip_handle.close()
-        num += 1
-        if num > 5:
-            break
+    sha1 = hashlib.sha1()
+    with open(file_name, 'rb') as file_handle:
+        for chunk in iter(lambda: file_handle.read(8192), b''):
+            sha1.update(chunk)
+    file_handle.close()
+    return sha1.digest()
 
-
-def com_hash_crc32(file_name):
+def com_hash_crc32_by_filename(file_name):
     """
     Calculate crc32 for file
     """
+    #  If you want the adler32 or crc32 hash functions, they are available in the zlib module.
     file_pointer = open(file_name, 'rb')
     CRC = zlib.crc32(file_pointer.read(1024 * 1024))
     while True:
@@ -175,6 +164,18 @@ def com_hash_crc32(file_name):
         CRC = zlib.crc32(data, CRC)
     file_pointer.close()
     return CRC
+
+
+def com_hash_md5_by_filename(file_name):
+    """
+    Calculate md5 for file
+    """
+    md5 = hashlib.md5()
+    with open(file_name, 'rb') as file_handle:
+        for chunk in iter(lambda: file_handle.read(8192), b''):
+            md5.update(chunk)
+    file_handle.close()
+    return md5.digest()
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
@@ -204,8 +205,10 @@ def com_hash_ed2k(filepath):
         a = gen(file_handle)
         hashes = [md4_hash(data).digest() for data in a]
         if len(hashes) == 1:
+            file_handle.close()
             return hashes[0].encode("hex")
         else:
+            file_handle.close()
             return md4_hash(reduce(lambda a, d: a + d, hashes, "")).hexdigest()
 
 
@@ -219,6 +222,7 @@ def com_hash_thesubdb(file_name):
         data = file_handle.read(readsize)
         file_handle.seek(-readsize, os.SEEK_END)
         data += file_handle.read(readsize)
+    file_handle.close()
     return hashlib.md5(data).hexdigest()
 
 
@@ -251,11 +255,3 @@ def com_hash_opensubtitles(file_name):
         return returnedhash
     except IOError:
         return "IOError"
-
-
-def com_hash_md5_by_filename(filename):
-    md5 = hashlib.md5()
-    with open(filename, 'rb') as f:
-        for chunk in iter(lambda: f.read(8192), b''):
-            md5.update(chunk)
-    return md5.digest()
