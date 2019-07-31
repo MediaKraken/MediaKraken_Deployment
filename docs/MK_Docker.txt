@@ -4,6 +4,11 @@ docker stack deploy --compose-file=./docker-compose.yml pg-stack
 # browse catalogs in the registry
 http://th-registry-1:5000/v2/_catalog
 
+to use local repo wihtout https
+/etc/docker/daemon.json
+{ "insecure-registries":["th-registry-1.beaverbay.local:5000"] }
+service docker restart
+
 ******* Used Containers *****************
 
 ComposeMediaKrakenBase37Py3 - Base OS
