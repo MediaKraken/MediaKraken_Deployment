@@ -151,9 +151,10 @@ services:
       - "7432"
     networks:
       - mediakraken_network
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+    restart: unless-stopped
+#    deploy:
+#      placement:
+#        constraints: [node.role == manager]
 
   # runs hardware
   hardware:
