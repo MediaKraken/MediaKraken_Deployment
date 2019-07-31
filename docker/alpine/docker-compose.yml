@@ -148,8 +148,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     expose:
       - "7432"
-    ports:
-      - "8950:8080"
     networks:
       - mediakraken_network
     restart: unless-stopped
