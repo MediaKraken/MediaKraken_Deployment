@@ -132,6 +132,24 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  hapgbouncerproxy:
+    image: mediakraken/mkpghaproxy:latest
+    container_name: mkpghaproxy
+    depends_on:
+      - pgbouncer
+      - pgbouncerha
+    environment:
+      # Used to identify services.
+      - ADDITIONAL_SERVICES=project_dir:pgbouncer
+    volumes:
+      # find what's running and where
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    expose:
+      - "7432"
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
   # runs hardware
   hardware:
     image: mediakraken/mkhardware:latest
@@ -234,6 +252,29 @@ services:
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
     container_name: mkpgbouncer
+    depends_on:
+      - database
+    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
+    expose:
+      - "6432"
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # pgbouncer
+  pgbouncerha:
+    image: mediakraken/mkpgbouncer:latest
+    environment:
+      - DB_HOST=mkdatabase
+      - DB_USER=${DBUSER}
+      - DB_PASSWORD=${DBPASS}
+      - POOL_MODE=session
+      - MAX_CLIENT_CONN=500
+      - DEFAULT_POOL_SIZE=85
+      - SERVER_RESET_QUERY=DISCARD ALL
+    container_name: mkpgbouncerha
     depends_on:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
