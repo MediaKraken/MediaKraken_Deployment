@@ -32,26 +32,21 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
         metadata_anime_lookup.metadata_last_id = None
         metadata_anime_lookup.metadata_last_imdb = None
         metadata_anime_lookup.metadata_last_tmdb = None
-        metadata_anime_lookup.metadata_last_rt = None
         metadata_anime_lookup.metadata_last_anidb = None
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'meta anime look filename': str(file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(file_name)
-    imdb_id, tmdb_id, rt_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
+    imdb_id, tmdb_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
         nfo_data, xml_data)
     common_global.es_inst.com_elastic_index('info', {"meta anime look": imdb_id, 'tmdb': tmdb_id,
-                                                     'rt_id': rt_id, 'ani': anidb_id})
+                                                     'ani': anidb_id})
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_anime_lookup.metadata_last_imdb:
         db_connection.db_download_delete(download_que_id)
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
     if tmdb_id is not None and tmdb_id == metadata_anime_lookup.metadata_last_tmdb:
-        db_connection.db_download_delete(download_que_id)
-        # don't need to set last......since they are equal
-        return metadata_anime_lookup.metadata_last_id
-    if rt_id is not None and rt_id == metadata_anime_lookup.metadata_last_rt:
         db_connection.db_download_delete(download_que_id)
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
@@ -64,8 +59,6 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
         metadata_uuid = db_connection.db_meta_guid_by_tmdb(tmdb_id)
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
-    if rt_id is not None and metadata_uuid is None:
-        metadata_uuid = db_connection.db_meta_guid_by_rt(rt_id)
     if anidb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_meta_guid_by_anidb(anidb_id)
     # if ids from nfo/xml on local db
@@ -177,6 +170,5 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
     metadata_anime_lookup.metadata_last_id = metadata_uuid
     metadata_anime_lookup.metadata_last_imdb = imdb_id
     metadata_anime_lookup.metadata_last_tmdb = tmdb_id
-    metadata_anime_lookup.metadata_last_rt = rt_id
     metadata_anime_lookup.metadata_last_anidb = anidb_id
     return metadata_uuid
