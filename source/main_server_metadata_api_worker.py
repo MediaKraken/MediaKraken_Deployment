@@ -230,14 +230,14 @@ def thelogodb(thread_db, download_data):
 
 @ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
              / common_metadata_limiter.API_LIMIT['themoviedb'][1])
-def themoviedb(thread_db, download_data):
+def themoviedb(thread_db, download_data, download_que_type):
     """
     Rate limiter for theMovieDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in moviedb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
+    metadata_general.metadata_process(thread_db, 'themoviedb', download_data, download_que_type)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
@@ -252,28 +252,28 @@ def thesportsdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0]
-             / common_metadata_limiter.API_LIMIT['thetvdb'][1])
-def thetvdb(thread_db, download_data):
-    """
-    Rate limiter for theTVdb
-    """
-    common_global.es_inst.com_elastic_index('info', {"here i am in thetvdb rate":
-        datetime.datetime.now().strftime(
-            "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
+# @ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0]
+#              / common_metadata_limiter.API_LIMIT['thetvdb'][1])
+# def thetvdb(thread_db, download_data):
+#     """
+#     Rate limiter for theTVdb
+#     """
+#     common_global.es_inst.com_elastic_index('info', {"here i am in thetvdb rate":
+#         datetime.datetime.now().strftime(
+#             "%H:%M:%S.%f")})
+#     metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]
-             / common_metadata_limiter.API_LIMIT['tvmaze'][1])
-def tvmaze(thread_db, download_data):
-    """
-    Rate limiter for TVMaze
-    """
-    common_global.es_inst.com_elastic_index('info', {"here i am in tvmaze rate":
-        datetime.datetime.now().strftime(
-            "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
+# @ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]
+#              / common_metadata_limiter.API_LIMIT['tvmaze'][1])
+# def tvmaze(thread_db, download_data):
+#     """
+#     Rate limiter for TVMaze
+#     """
+#     common_global.es_inst.com_elastic_index('info', {"here i am in tvmaze rate":
+#         datetime.datetime.now().strftime(
+#             "%H:%M:%S.%f")})
+#     metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
@@ -404,15 +404,15 @@ while True:
         elif content_providers == 'thelogodb':
             thelogodb(thread_db, row_data)
         elif content_providers == 'themoviedb':
-            themoviedb(thread_db, row_data)
+            themoviedb(thread_db, row_data, row_data['mdq_que_type'])
         elif content_providers == 'thesportsdb':
             thesportsdb(thread_db, row_data)
-        elif content_providers == 'thetvdb':
-            thetvdb(thread_db, row_data)
+        # elif content_providers == 'thetvdb':
+        #     thetvdb(thread_db, row_data)
         elif content_providers == 'tv_intros':
             tv_intros(thread_db, row_data)
-        elif content_providers == 'tvmaze':
-            tvmaze(thread_db, row_data)
+        # elif content_providers == 'tvmaze':
+        #     tvmaze(thread_db, row_data)
         elif content_providers == 'tvshowtime':
             tvshowtime(thread_db, row_data)
         # Z records are the start of all lookups
@@ -458,6 +458,7 @@ while True:
                                                                                         'mdq_download_json'],
                                                                                     row_data[
                                                                                         'mdq_id'],
+                                                                                    row_data['mdq_que_type'],
                                                                                     file_name)
                 # allow NONE to be set so, unmatched stuff can work for skipping
                 metadata_last_id = metadata_uuid

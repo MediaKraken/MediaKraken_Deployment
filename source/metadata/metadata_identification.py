@@ -34,7 +34,7 @@ from . import metadata_tv
 
 
 def metadata_identification(db_connection, class_text, download_que_json,
-                            download_que_id, guessit_file_name):
+                            download_que_id, download_que_type, guessit_file_name):
     """
     Determine which provider to start lookup via class text
     """

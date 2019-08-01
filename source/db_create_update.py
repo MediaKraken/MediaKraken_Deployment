@@ -24,6 +24,13 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_version
 
+base_classes = [
+    {'Audio': {['Music']}},
+    {'Game': {['ROM/ISO']}},
+    {'Publication': {['Comic', 'Comic Strip', 'Book', 'Magazine']}},
+    {'Video': {['Home', 'Movie', 'Sports', 'TV']}},
+]
+
 # media classes
 base_media_classes = (
     ("Adult", "Video", True),

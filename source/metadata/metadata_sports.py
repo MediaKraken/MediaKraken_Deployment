@@ -22,7 +22,7 @@ import os
 from common import common_global
 
 
-def metadata_sports_lookup(db_connection, download_data):
+def metadata_sports_lookup(db_connection, download_data, download_que_id):
     """
     Lookup sporting event by name
     """
