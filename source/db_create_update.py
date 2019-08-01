@@ -25,31 +25,32 @@ from common import common_logging_elasticsearch
 from common import common_version
 
 base_classes = [
-    {'Audio': {['Music']}},
+    {'Audio': {['Movie Theme', 'Music', 'TV Theme']}},
+    {'Collection': {['Boxset', 'Series']}},
     {'Game': {['ROM/ISO']}},
     {'Publication': {['Comic', 'Comic Strip', 'Book', 'Magazine']}},
-    {'Video': {['Home', 'Movie', 'Sports', 'TV']}},
+    {'Video': {['Anime', 'Home', 'Movie', 'Sports', 'TV']}},
 ]
 
 # media classes
 base_media_classes = (
-    ("Adult", "Video", True),
     ("Anime", "Video", True),
     ("Book", "Publication", True),
     ("Boxset", None, False),
     ("Comic", "Publication", True),
     ("Comic Strip", "Publication", True),
-    ("Game CHD", None, False),
-    ("Game ISO", None, False),
-    ("Game ROM", None, False),
+    ("Game CHD", "Game", False),
+    ("Game ISO", "Game", False),
+    ("Game ROM", "Game", False),
     ("Home Movie", "Video", True),
     ("Magazine", "Publication", True),
     ("Movie", "Video", True),
-    ("Movie Extras", "Video", False),
-    ("Movie Collection", None, False),
-    ("Movie Theme", "Audio", False),
-    ("Movie Subtitle", None, False),
-    ("Movie Trailer", "Video", False),
+    ("Movie: Adult", "Video", True),
+    ("Movie: Extras", "Video", False),
+    ("Movie: Collection", None, False),
+    ("Movie: Theme", "Audio", False),
+    ("Movie: Subtitle", None, False),
+    ("Movie: Trailer", "Video", False),
     ("Music", "Audio", True),
     ("Music Album", None, False),
     ("Music Collection", None, False),
@@ -60,17 +61,17 @@ base_media_classes = (
     ("Soundtrack", "Audio", False),
     ("Sports", "Video", True),
     ("Subtitle", None, False),
-    ("TV Episode", "Video", False),
-    ("TV Extras", "Video", False),
-    ("TV Season", None, False),
-    ("TV Show", "Video", True),
-    ("TV Subtitle", None, False),
-    ("TV Theme", "Audio", False),
-    ("TV Trailer", "Video", False),
+    ("TV: Episode", "Video", False),
+    ("TV: Extras", "Video", False),
+    ("TV: Season", None, False),
+    ("TV: Show", "Video", True),
+    ("TV: Subtitle", None, False),
+    ("TV: Theme", "Audio", False),
+    ("TV: Trailer", "Video", False),
     ("Video Game", "Game", True),
-    ("Video Game Intro", "Video", True),
-    ("Video Game Speedrun", "Video", True),
-    ("Video Game Superplay", "Video", True)
+    ("Video Game: Intro", "Video", True),
+    ("Video Game: Speedrun", "Video", True),
+    ("Video Game: Superplay", "Video", True)
 )
 
 # start logging
