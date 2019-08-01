@@ -1,0 +1,63 @@
+Nginx proxy:
+[root@th-jenkins-1 source]# ab -n 10000 -c 30 https://th-swarm-1:8900/
+This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking th-swarm-1 (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        nginx
+Server Hostname:        th-swarm-1
+Server Port:            8900
+SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES256-GCM-SHA384,2048,256
+
+Document Path:          /
+Document Length:        4545 bytes
+
+Concurrency Level:      30
+Time taken for tests:   24.017 seconds
+Complete requests:      10000
+Failed requests:        0
+Write errors:           0
+Total transferred:      49429277 bytes
+HTML transferred:       45450000 bytes
+Requests per second:    416.37 [#/sec] (mean)
+Time per request:       72.052 [ms] (mean)
+Time per request:       2.402 [ms] (mean, across all concurrent requests)
+Transfer rate:          2009.84 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        3    4   1.9      4      40
+Processing:     8   68   5.2     67     141
+Waiting:        7   68   5.2     67     141
+Total:         15   72   5.5     71     144
+
+Percentage of the requests served within a certain time (ms)
+  50%     71
+  66%     72
+  75%     73
+  80%     73
+  90%     76
+  95%     80
+  98%     88
+  99%     94
+ 100%    144 (longest request)
+[root@th-jenkins-1 source]#
+
+*************************************
+
+Nginx Proxy tied into uwsgi:
+NA yet
