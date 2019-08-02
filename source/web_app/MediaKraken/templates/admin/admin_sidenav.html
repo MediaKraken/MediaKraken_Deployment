@@ -63,13 +63,7 @@
 
         <a href="{{ url_for('admins_game.game_metadata') }}" id="admin_navmenu_game_metadata"><img src="{{ url_for('static', filename='images/16/play-station-controller.png') }}"> Game Metadata</a>
 
-        <button class="dropdown-btn">Hardware
-            <img src="{{ url_for('static', filename='images/16/arrow-point-to-down.png') }}">
-        </button>
-        <div class="dropdown-container">
-            <a href="{{ url_for('admins_chromecasts.admin_chromecast') }}" id="admin_navmenu_chromecast"><img src="{{ url_for('static', filename='images/16/chromecast.png') }}"> Chromecasts</a>
-            <a href="{{ url_for('admins_tvtuners.admin_tvtuners') }}" id="admin_navmenu_tvtuner"><img src="{{ url_for('static', filename='images/16/tv.png') }}"> TV Tuners</a>
-        </div>
+        <a href="{{ url_for('admins_hardware.admin_hardware') }}" id="admin_navmenu_hardware"><img src="{{ url_for('static', filename='images/16/chromecast.png') }}"> Hardware</a>
 
         <a href="{{ url_for('admins_library.admin_library') }}" id="admin_navmenu_library"><img src="{{ url_for('static', filename='images/16/video-camera.png') }}">Library <span class="badge badge-info"> {{ data_library }}</span></a>
         <a href="{{ url_for('admins.admin_messages') }}" id="admin_navmenu_messages"><img src="{{ url_for('static', filename='images/16/black-back-closed-envelope-shape.png') }}"> Messages <span class="badge badge-info"> {{ data_messages }}</span></a>
