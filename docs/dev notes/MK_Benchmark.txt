@@ -2,3 +2,4 @@ MK_Benchmark_NGINX
 	Standard SSL proxy	416.37s
 	NGINX talking to uwsgi
 	NGINX cache
+	Google Pagespeed
