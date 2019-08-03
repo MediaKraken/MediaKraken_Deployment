@@ -72,7 +72,7 @@ def db_meta_book_guid_by_name(self, book_name):
     # TODO can be more than one by name
     # TODO sort by release date
     self.db_cursor.execute('select mm_metadata_book_guid from mm_metadata_book'
-                           ' where mm_metadata_book_name =  %s', (book_name,))
+                           ' where mm_metadata_book_name = %s', (book_name,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_book_guid']
     except:
