@@ -10,5 +10,4 @@ pytest-timeout
 pytest-profiling
 Crypto
 feedgen
-pyobjus
 rxv
