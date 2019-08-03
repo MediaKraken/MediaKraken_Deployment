@@ -1,0 +1,15 @@
+﻿pytest
+pytest-xdist
+pytest-selenium
+selenium
+coverage
+pytest-cov
+tox
+pyflakes
+pytest-timeout
+pytest-profiling
+Crypto
+feedgen
+next
+pyobjus
+rxv

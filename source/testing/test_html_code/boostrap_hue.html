@@ -1,0 +1,30 @@
+<body id="data_background">
+    <head>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="../../web_app/MediaKraken/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../web_app/MediaKraken/static/css/star-rating.min.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="../../web_app/MediaKraken/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="../../web_app/MediaKraken/static/css/base_webapp_slider.css" media="all" type="text/css"/>
+    </head>
+
+    <a href="{{ url_for('user_newmedia.user_newmedia_page') }}" id="user_hue_bulb_on">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="/static/images/lightbulb_on.png" alt="hue_bulb_on" height="200" width="200">
+    </a>
+
+    <img src="../../web_app/MediaKraken/static/images/lightbulb_off.png" height="200" width="200">
+
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="hue_brightness">
+    </div>
+
+    <script src="../../web_app/MediaKraken/static/bootstrap/js/bootstrap.min.js">
+    <script src="../../web_app/MediaKraken/static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="../../web_app/MediaKraken/static/js/star-rating.min.js" type="text/javascript"></script>
+    <script src="../../web_app/MediaKraken/static/js/blazy.min.js"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
+</body>
