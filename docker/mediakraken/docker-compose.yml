@@ -297,7 +297,10 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGTERM
     expose:
+      - "4369"
+      - "5671"
       - "5672"
+      - "25672"
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     restart: unless-stopped
