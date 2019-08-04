@@ -18,7 +18,7 @@ services:
     container_name: mkserver
     depends_on:
       - hapgbouncerproxy
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- python3 main_server.py
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 main_server.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -65,7 +65,7 @@ services:
     depends_on:
       - hapgbouncerproxy
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- python3 subprogram_cron_checker.py
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
@@ -104,7 +104,7 @@ services:
     depends_on:
       - hapgbouncerproxy
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- python3 main_download.py
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 main_download.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -125,7 +125,7 @@ services:
     depends_on:
       - hapgbouncerproxy
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -185,7 +185,7 @@ services:
     depends_on:
       - hapgbouncerproxy
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- python3 main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 main_server_metadata_api.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -204,7 +204,7 @@ services:
     container_name: mknginx
     depends_on:
       - webserver
-    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
+    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 60 -- nginx
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:
@@ -230,7 +230,7 @@ services:
     depends_on:
       - hapgbouncerproxy
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- python3 subprogram_pika.py
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_pika.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     expose:
@@ -326,7 +326,7 @@ services:
     depends_on:
       - hapgbouncerproxy
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- python3 subprogram_reactor_line.py
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_reactor_line.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
@@ -387,7 +387,7 @@ services:
       - hapgbouncerproxy
       - rabbit
       - redis
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     expose:
