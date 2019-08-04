@@ -308,8 +308,9 @@ services:
       - "5672"
       - "25672"
     ports:
-#      - "5671:5671"
-#      - "15671:15671"
+      # https management port
+      # - "15671:15671"
+      # http management port
       - "15672:15672"
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
