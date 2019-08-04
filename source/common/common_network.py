@@ -182,7 +182,7 @@ def mk_network_country_code():
         return {'country_code': 'Error', 'country_name': 'Unknown'}
 
 
-def mk_network_service_available(host_dns, host_ip, wait_seconds='30'):
+def mk_network_service_available(host_dns, host_ip, wait_seconds='60'):
     wait_pid = subprocess.Popen(
         ['/mediakraken/wait-for-it-ash.sh', '-h', host_dns, '-p', host_ip, '-t', wait_seconds],
         stdout=subprocess.PIPE, shell=False)
