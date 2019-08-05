@@ -86,8 +86,6 @@ services:
     container_name: mkdatabase
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "5432"
     volumes:
       - mediakraken_vol_postgresql:/var/lib/postgresql
     networks:
@@ -152,8 +150,6 @@ services:
     volumes:
       # find what's running and where
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    expose:
-      - "7432"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -239,8 +235,6 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 subprogram_pika.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
-    expose:
-      - "5672"
     volumes:
       # for start of SSL server
       - mediakraken_vol_certs:/mediakraken/key:ro
@@ -269,8 +263,6 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "6432"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -292,8 +284,6 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "6432"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -308,11 +298,6 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "4369"
-      - "5671"
-      - "5672"
-      - "25672"
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     restart: unless-stopped
@@ -355,8 +340,6 @@ services:
     container_name: mkredis
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "6379"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -399,8 +382,6 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- uwsgi --disable-logging --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     stop_grace_period: 30s
     stop_signal: SIGUSR1
-    expose:
-      - "8080"
     volumes:
       - ./mkmount:/mediakraken/mnt
       # must not be read only as it stores cache here
