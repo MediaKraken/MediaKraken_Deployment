@@ -9,11 +9,15 @@ services:
       - "8080:8080" # The Web UI (enabled by --api)
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # So that Traefik can listen to the Docker events
+    networks:
+      - mediakraken_network
 
   whoami:
     image: containous/whoami # A container that exposes an API to show its IP address
     labels:
       - "traefik.frontend.rule=Host:whoami.docker.localhost"
+    networks:
+      - mediakraken_network
 
   # pgbouncer
   pgbouncer:
@@ -50,8 +54,6 @@ services:
     container_name: mkdatabase
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    volumes:
-      - mediakraken_vol_postgresql:/var/lib/postgresql
     networks:
       - mediakraken_network
     restart: unless-stopped
