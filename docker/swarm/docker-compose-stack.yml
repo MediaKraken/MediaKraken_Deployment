@@ -9,15 +9,11 @@ services:
       - "8080:8080" # The Web UI (enabled by --api)
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # So that Traefik can listen to the Docker events
-    networks:
-      - mediakraken_network
 
   whoami:
     image: containous/whoami # A container that exposes an API to show its IP address
     labels:
       - "traefik.frontend.rule=Host:whoami.docker.localhost"
-    networks:
-      - mediakraken_network
 
   # pgbouncer
   pgbouncer:
@@ -35,10 +31,11 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    networks:
-      - mediakraken_network
     labels:
       - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
+    deploy:
+      mode: replicated
+      replicas: 2
 
   # Postgresql server
   database:
@@ -51,5 +48,6 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    networks:
-      - mediakraken_network
+    deploy:
+      placement:
+        constraints: [node.role == manager]
