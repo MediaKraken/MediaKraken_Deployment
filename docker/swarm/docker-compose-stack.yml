@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
   reverse-proxy:
@@ -30,7 +30,6 @@ services:
       - MAX_CLIENT_CONN=1024
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
-    container_name: mkpgbouncer
     depends_on:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
@@ -38,7 +37,6 @@ services:
     stop_signal: SIGTERM
     networks:
       - mediakraken_network
-    restart: unless-stopped
     labels:
       - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
 
@@ -51,9 +49,7 @@ services:
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
-    container_name: mkdatabase
     stop_grace_period: 30s
     stop_signal: SIGTERM
     networks:
       - mediakraken_network
-    restart: unless-stopped
