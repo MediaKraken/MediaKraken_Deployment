@@ -4,14 +4,25 @@ swarm create
 
 swarm join --advertise=<node_ip:2375> token://<cluster_id>
 
-
-
 docker network create \
   --driver overlay \
   --subnet 10.0.100.0/24 \
   mknetwork
 
 
+***********************
+
+docker stack deploy --compose-file docker-compose-stack.yml mkstack
 
 
-docker-compose up -d  
+
+docker stack rm mkstack
+
+docker stack services mkstack
+
+
+docker service scale backend=3 frontend=5
+
+
+docker service scale mkstack_pgbouncer=5 
+docker service scale mkstack_whoami=20
