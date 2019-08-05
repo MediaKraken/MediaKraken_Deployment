@@ -8,6 +8,8 @@ services:
   appserver:
     image: mediakraken/mkserver:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -57,6 +59,8 @@ services:
   cron:
     image: mediakraken/mkcron:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -94,6 +98,8 @@ services:
   download:
     image: mediakraken/mkdownload:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -115,6 +121,8 @@ services:
   ffprobe:
     image: mediakraken/mkffprobe:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -172,6 +180,8 @@ services:
   metadata:
     image: mediakraken/mkmetadata:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -216,6 +226,8 @@ services:
   pika:
     image: mediakraken/mkpika:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -311,6 +323,8 @@ services:
   reactor:
     image: mediakraken/mkreactor:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -368,6 +382,8 @@ services:
   webserver:
     image: mediakraken/mkwebapp:latest
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}

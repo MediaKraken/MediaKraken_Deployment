@@ -8,6 +8,8 @@ services:
   appserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -57,6 +59,8 @@ services:
   cron:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -77,8 +81,8 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
     environment:
       - PGHOST=/tmp
-      - MAX_CONNECTIONS=10
-      - MAX_WAL_SENDERS=5
+      - MAX_CONNECTIONS=20
+      - MAX_WAL_SENDERS=10
       - PG_MODE=primary
       - PG_PRIMARY_USER=${DBUSER}
       - PG_PRIMARY_PASSWORD=${DBPASS}
@@ -108,8 +112,8 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
     environment:
       - PGHOST=/tmp
-      - MAX_CONNECTIONS=10
-      - MAX_WAL_SENDERS=5
+      - MAX_CONNECTIONS=20
+      - MAX_WAL_SENDERS=10
       - PG_MODE=replica
       - PG_PRIMARY_HOST=database
       - PG_PRIMARY_PORT=5432
@@ -139,6 +143,8 @@ services:
   download:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -160,6 +166,8 @@ services:
   ffprobe:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkffprobe:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -220,6 +228,8 @@ services:
   metadata:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -264,6 +274,8 @@ services:
   pika:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -360,6 +372,8 @@ services:
   reactor:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -417,6 +431,8 @@ services:
   webserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}

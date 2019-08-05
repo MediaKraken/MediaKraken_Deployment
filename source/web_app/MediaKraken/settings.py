@@ -33,6 +33,8 @@ class ProdConfig(Config):
     ENV = 'prod'
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://" + os.environ['POSTGRES_USER'] + ":" \
-                              + os.environ['POSTGRES_PASSWORD'] + "@mkpghaproxy:7432/" \
+                              + os.environ['POSTGRES_PASSWORD'] + "@" \
+                              + os.environ['POSTGRES_HOST'] + ":" \
+                              + str(os.environ['POSTGRES_PORT']) + "/" \
                               + os.environ['POSTGRES_DB']
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar

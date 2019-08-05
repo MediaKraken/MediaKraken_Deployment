@@ -37,8 +37,9 @@ def db_open(self):
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     # TODO throws tuple error if comma
     self.sql3_conn = psycopg2.connect(
-        "dbname='%s' user='%s' host='mkpghaproxy' port=7432 password='%s'"
+        "dbname='%s' user='%s' host=%s port=%s password='%s'"
         % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
+           os.environ['POSTGRES_HOST'], os.environ['POSTGRES_PORT'],
            os.environ['POSTGRES_PASSWORD']))
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)

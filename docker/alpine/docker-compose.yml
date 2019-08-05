@@ -8,6 +8,8 @@ services:
   appserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -17,8 +19,8 @@ services:
       - DEBUG=${DEBUG}
     container_name: mkserver
     depends_on:
-      - hapgbouncerproxy
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 main_server.py
+      - pgbouncer
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -57,15 +59,17 @@ services:
   cron:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkcron
     depends_on:
-      - hapgbouncerproxy
+      - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_cron_checker.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
@@ -96,15 +100,17 @@ services:
   download:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkdownload
     depends_on:
-      - hapgbouncerproxy
+      - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 main_download.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 main_download.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -117,15 +123,17 @@ services:
   ffprobe:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkffprobe:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkffprobe
     depends_on:
-      - hapgbouncerproxy
+      - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -133,27 +141,6 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-  hapgbouncerproxy:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpghaproxy:dev
-    container_name: mkpghaproxy
-    depends_on:
-      - pgbouncer
-      - pgbouncerha
-    environment:
-      # Used to identify services.
-      - ADDITIONAL_SERVICES=project_dir:pgbouncer
-    volumes:
-      # find what's running and where
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    expose:
-      - "7432"
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-#    deploy:
-#      placement:
-#        constraints: [node.role == manager]
 
   # runs hardware
   hardware:
@@ -177,15 +164,17 @@ services:
   metadata:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkmetadata
     depends_on:
-      - hapgbouncerproxy
+      - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server_metadata_api.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -222,15 +211,17 @@ services:
   pika:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkpika
     depends_on:
-      - hapgbouncerproxy
+      - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_pika.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_pika.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     expose:
@@ -258,29 +249,6 @@ services:
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
     container_name: mkpgbouncer
-    depends_on:
-      - database
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
-    stop_grace_period: 30s
-    stop_signal: SIGTERM
-    expose:
-      - "6432"
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-
-  # pgbouncer
-  pgbouncerha:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:dev
-    environment:
-      - DB_HOST=mkdatabase
-      - DB_USER=${DBUSER}
-      - DB_PASSWORD=${DBPASS}
-      - POOL_MODE=session
-      - MAX_CLIENT_CONN=1024
-      - DEFAULT_POOL_SIZE=85
-      - SERVER_RESET_QUERY=DISCARD ALL
-    container_name: mkpgbouncerha
     depends_on:
       - database
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
@@ -322,15 +290,17 @@ services:
   reactor:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
     container_name: mkreactor
     depends_on:
-      - hapgbouncerproxy
+      - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- python3 subprogram_reactor_line.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_reactor_line.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
@@ -379,6 +349,8 @@ services:
   webserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -388,10 +360,10 @@ services:
       - HOST_IP=${HOST_IP}
     container_name: mkwebapp
     depends_on:
-      - hapgbouncerproxy
+      - pgbouncer
       - rabbit
       - redis
-    entrypoint: ./wait-for-it-ash.sh -h hapgbouncerproxy -p 7432 -t 60 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     expose:
