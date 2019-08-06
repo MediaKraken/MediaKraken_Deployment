@@ -44,8 +44,6 @@ services:
     # ignored in swarm start
     depends_on:
       - database
-    expose:
-      - "6432"
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
@@ -72,8 +70,6 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-    expose:
-      - "5432"
     env_file: .env
     networks:
       - mk_mediakraken_network_backend
