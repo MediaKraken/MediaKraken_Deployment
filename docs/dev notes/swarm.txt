@@ -32,3 +32,9 @@ docker service scale backend=3 frontend=5
 
 docker service scale mkstack_pgbouncer=5 
 docker service scale mkstack_whoami=20
+
+
+docker run --name="logspout" \
+	--volume=/var/run/docker.sock:/var/run/docker.sock \
+	gliderlabs/logspout \
+	syslog+tls://logs.papertrailapp.com:55555

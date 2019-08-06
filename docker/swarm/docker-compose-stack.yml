@@ -18,6 +18,18 @@ services:
     labels:
       - "traefik.frontend.rule=Host:whoami.docker.localhost"
 
+  logspout:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mklogspout:dev
+    environment:
+      ROUTE_URIS: 'logstash+tcp://th-jenkins-1.beaverbay.local:9200'
+      LOGSTASH_FIELDS: 'environment=production'
+    volumes:
+      - type: 'bind'
+        target: '/var/run/docker.sock'
+        source: '/var/run/docker.sock'
+    deploy:
+        mode: global
+
   # pgbouncer
   pgbouncer:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:dev
