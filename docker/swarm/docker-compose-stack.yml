@@ -79,8 +79,8 @@ services:
     volumes:
       - /var/data/portainer:/data
     networks:
-      - traefik_public
-      - mediakraken_network_backend
+      - mk_mediakraken_network_frontend
+      - mk_mediakraken_network_backend
     deploy:
       labels:
         - traefik.docker.network=traefik_public
@@ -106,8 +106,6 @@ volumes:
 
 # Docker private networks
 networks:
-  traefik_public:
-    external: true
   mediakraken_network_backend:
     driver: overlay
     name: mk_mediakraken_network_backend
