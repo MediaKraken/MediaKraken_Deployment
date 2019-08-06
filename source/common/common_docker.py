@@ -256,7 +256,7 @@ class CommonDocker:
                                                 'mode': 'rw'}
                                        },
                                        environment={'ELASTICSEARCH_START': 1,
-                                                    'LOGSTASH_START': 0,
+                                                    'LOGSTASH_START': 1,
                                                     'KIBANA_START': 1}
                                        )
 
