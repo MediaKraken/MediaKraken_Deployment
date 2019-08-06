@@ -20,6 +20,12 @@ docker stack rm mkstack
 
 docker stack services mkstack
 
+docker stack list
+
+docker service logs -t mkstack_database
+
+docker service logs --raw mkstack_database
+
 
 docker service scale backend=3 frontend=5
 
