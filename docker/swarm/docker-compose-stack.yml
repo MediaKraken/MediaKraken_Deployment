@@ -12,6 +12,9 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
+      endpoint_mode: vip
+    networks:
+      - mk_mediakraken_network_frontend
 
   whoami:
     image: containous/whoami # A container that exposes an API to show its IP address
@@ -24,9 +27,7 @@ services:
       ROUTE_URIS: 'logstash+tcp://th-jenkins-1.beaverbay.local:9200'
       LOGSTASH_FIELDS: 'environment=production'
     volumes:
-      - type: 'bind'
-        target: '/var/run/docker.sock'
-        source: '/var/run/docker.sock'
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
         mode: global
 
@@ -41,16 +42,23 @@ services:
       - MAX_CLIENT_CONN=1024
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
+    # ignored in swarm start
     depends_on:
       - database
+    expose:
+      - "6432"
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    labels:
-      - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
+#    labels:
+#      - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
     deploy:
       mode: replicated
       replicas: 2
+      endpoint_mode: vip
+    env_file: .env
+    networks:
+      - mk_mediakraken_network_backend
 
   # Postgresql server
   database:
@@ -66,3 +74,50 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
+    expose:
+      - "5432"
+    env_file: .env
+    endpoint_mode: vip
+    networks:
+      - mk_mediakraken_network_backend
+
+  portainer:
+    image: portainer/portainer
+    volumes:
+      - /var/data/portainer:/data
+    networks:
+      - traefik_public
+      - mediakraken_network_backend
+    deploy:
+      labels:
+        - traefik.docker.network=traefik_public
+        - traefik.frontend.rule=Host:console.example.com
+        - traefik.port=9000
+      placement:
+        constraints: [node.role == manager]
+    command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
+
+  portaineragent:
+    image: portainer/agent
+    networks:
+      - mediakraken_network_backend
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.portaineragent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      mode: global
+
+volumes:
+  portainer_data:
+
+# Docker private networks
+networks:
+  traefik_public:
+    external: true
+  mediakraken_network_backend:
+    driver: overlay
+    name: mk_mediakraken_network_backend
+  mediakraken_network_frontend:
+    driver: overlay
+    name: mk_mediakraken_network_frontend
