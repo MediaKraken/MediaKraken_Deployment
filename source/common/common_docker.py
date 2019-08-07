@@ -247,7 +247,8 @@ class CommonDocker:
         self.com_docker_network_create('mk_mediakraken_network')
         return self.cli.containers.run(image='mediakraken/mkelk',
                                        detach=True,
-                                       ports={"5044": 5044, "5601": 5601, "9200": 9200},
+                                       ports={"5044": 5044, "5045": 5045,
+                                              "5601": 5601, "9200": 9200},
                                        name='mkelk',
                                        network='mk_mediakraken_network',
                                        volumes={
