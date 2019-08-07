@@ -72,7 +72,7 @@ services:
         constraints: [node.role == manager]
     env_file: .env
     networks:
-      - mk_mediakraken_network_backend
+      - mediakraken_network_backend
 
   portainer:
     image: portainer/portainer
