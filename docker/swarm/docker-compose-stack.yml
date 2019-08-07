@@ -82,13 +82,8 @@ services:
       - mediakraken_network_frontend
       - mediakraken_network_backend
     deploy:
-      labels:
-        - traefik.docker.network=traefik_public
-        - traefik.frontend.rule=Host:console.example.com
-        - traefik.port=9000
       placement:
         constraints: [node.role == manager]
-    command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
 
   portaineragent:
     image: portainer/agent
