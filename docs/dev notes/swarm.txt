@@ -14,9 +14,8 @@ docker network create \
 
 docker stack deploy --compose-file docker-compose-stack.yml mkstack
 
-
-
 docker stack rm mkstack
+
 
 docker stack services mkstack
 

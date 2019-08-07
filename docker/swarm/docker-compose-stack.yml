@@ -13,7 +13,7 @@ services:
       placement:
         constraints: [node.role == manager]
     networks:
-      - mk_mediakraken_network_frontend
+      - mediakraken_network_frontend
 
   whoami:
     image: containous/whoami # A container that exposes an API to show its IP address
@@ -54,7 +54,7 @@ services:
       replicas: 2
     env_file: .env
     networks:
-      - mk_mediakraken_network_backend
+      - mediakraken_network_backend
 
   # Postgresql server
   database:
@@ -79,8 +79,8 @@ services:
     volumes:
       - /var/data/portainer:/data
     networks:
-      - mk_mediakraken_network_frontend
-      - mk_mediakraken_network_backend
+      - mediakraken_network_frontend
+      - mediakraken_network_backend
     deploy:
       labels:
         - traefik.docker.network=traefik_public
