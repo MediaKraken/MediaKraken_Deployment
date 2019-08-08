@@ -71,7 +71,7 @@ RUN set -ex; \
 	apt-key list
 
 ENV PG_MAJOR 11
-ENV PG_VERSION 11.4-1.pgdg90+1
+ENV PG_VERSION 11.5-1.pgdg90+1
 
 RUN set -ex; \
 	\
@@ -166,6 +166,7 @@ ENV PATH $PATH:/usr/lib/postgresql/$PG_MAJOR/bin
 ENV PGDATA /var/lib/postgresql/data
 # this 777 will be replaced by 700 at runtime (allows semi-arbitrary "--user" values)
 RUN mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 777 "$PGDATA"
+VOLUME /var/lib/postgresql/data
 COPY docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
@@ -173,3 +174,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 5432
 CMD ["postgres"]
+
