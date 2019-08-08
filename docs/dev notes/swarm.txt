@@ -17,6 +17,10 @@ docker stack deploy --compose-file docker-compose-stack.yml mkstack
 docker stack rm mkstack
 
 
+https://technolinchpin.wordpress.com/2017/10/19/centralized-log-management-solution-with-elk-docker-container/
+sudo docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -p 5000:5000 -v /data/logstash:/etc/logstash/conf.d -it --name elk sebp/elk /bin/bash
+
+
 docker stack services mkstack
 
 docker stack list
