@@ -35,7 +35,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: mm_channel; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_channel; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_channel (
@@ -47,10 +47,10 @@ CREATE TABLE public.mm_channel (
 );
 
 
-ALTER TABLE public.mm_channel OWNER TO metamanpg;
+ALTER TABLE public.mm_channel OWNER TO postgres;
 
 --
--- Name: mm_cron; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_cron; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_cron (
@@ -64,10 +64,10 @@ CREATE TABLE public.mm_cron (
 );
 
 
-ALTER TABLE public.mm_cron OWNER TO metamanpg;
+ALTER TABLE public.mm_cron OWNER TO postgres;
 
 --
--- Name: mm_device; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_device; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_device (
@@ -77,10 +77,10 @@ CREATE TABLE public.mm_device (
 );
 
 
-ALTER TABLE public.mm_device OWNER TO metamanpg;
+ALTER TABLE public.mm_device OWNER TO postgres;
 
 --
--- Name: mm_download_que; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_download_que; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_download_que (
@@ -91,10 +91,10 @@ CREATE TABLE public.mm_download_que (
 );
 
 
-ALTER TABLE public.mm_download_que OWNER TO metamanpg;
+ALTER TABLE public.mm_download_que OWNER TO postgres;
 
 --
--- Name: mm_game_category; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_game_category; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_game_category (
@@ -103,10 +103,10 @@ CREATE TABLE public.mm_game_category (
 );
 
 
-ALTER TABLE public.mm_game_category OWNER TO metamanpg;
+ALTER TABLE public.mm_game_category OWNER TO postgres;
 
 --
--- Name: mm_hardware; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_hardware; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_hardware (
@@ -117,10 +117,10 @@ CREATE TABLE public.mm_hardware (
 );
 
 
-ALTER TABLE public.mm_hardware OWNER TO metamanpg;
+ALTER TABLE public.mm_hardware OWNER TO postgres;
 
 --
--- Name: mm_link; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_link; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_link (
@@ -130,10 +130,10 @@ CREATE TABLE public.mm_link (
 );
 
 
-ALTER TABLE public.mm_link OWNER TO metamanpg;
+ALTER TABLE public.mm_link OWNER TO postgres;
 
 --
--- Name: mm_loan; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_loan; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_loan (
@@ -146,10 +146,10 @@ CREATE TABLE public.mm_loan (
 );
 
 
-ALTER TABLE public.mm_loan OWNER TO metamanpg;
+ALTER TABLE public.mm_loan OWNER TO postgres;
 
 --
--- Name: mm_media; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_media; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_media (
@@ -162,10 +162,10 @@ CREATE TABLE public.mm_media (
 );
 
 
-ALTER TABLE public.mm_media OWNER TO metamanpg;
+ALTER TABLE public.mm_media OWNER TO postgres;
 
 --
--- Name: mm_media_class; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_media_class; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_media_class (
@@ -176,10 +176,10 @@ CREATE TABLE public.mm_media_class (
 );
 
 
-ALTER TABLE public.mm_media_class OWNER TO metamanpg;
+ALTER TABLE public.mm_media_class OWNER TO postgres;
 
 --
--- Name: mm_media_dir; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_media_dir; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_media_dir (
@@ -192,10 +192,10 @@ CREATE TABLE public.mm_media_dir (
 );
 
 
-ALTER TABLE public.mm_media_dir OWNER TO metamanpg;
+ALTER TABLE public.mm_media_dir OWNER TO postgres;
 
 --
--- Name: mm_media_remote; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_media_remote; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_media_remote (
@@ -209,10 +209,10 @@ CREATE TABLE public.mm_media_remote (
 );
 
 
-ALTER TABLE public.mm_media_remote OWNER TO metamanpg;
+ALTER TABLE public.mm_media_remote OWNER TO postgres;
 
 --
--- Name: mm_media_share; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_media_share; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_media_share (
@@ -225,10 +225,10 @@ CREATE TABLE public.mm_media_share (
 );
 
 
-ALTER TABLE public.mm_media_share OWNER TO metamanpg;
+ALTER TABLE public.mm_media_share OWNER TO postgres;
 
 --
--- Name: mm_metadata_album; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_album (
@@ -242,10 +242,10 @@ CREATE TABLE public.mm_metadata_album (
 );
 
 
-ALTER TABLE public.mm_metadata_album OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_album OWNER TO postgres;
 
 --
--- Name: mm_metadata_anime; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_anime (
@@ -260,10 +260,10 @@ CREATE TABLE public.mm_metadata_anime (
 );
 
 
-ALTER TABLE public.mm_metadata_anime OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_anime OWNER TO postgres;
 
 --
--- Name: mm_metadata_book; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_book; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_book (
@@ -277,10 +277,10 @@ CREATE TABLE public.mm_metadata_book (
 );
 
 
-ALTER TABLE public.mm_metadata_book OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_book OWNER TO postgres;
 
 --
--- Name: mm_metadata_collection; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_collection; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_collection (
@@ -292,10 +292,10 @@ CREATE TABLE public.mm_metadata_collection (
 );
 
 
-ALTER TABLE public.mm_metadata_collection OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_collection OWNER TO postgres;
 
 --
--- Name: mm_metadata_game_software_info; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_game_software_info; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_game_software_info (
@@ -307,10 +307,10 @@ CREATE TABLE public.mm_metadata_game_software_info (
 );
 
 
-ALTER TABLE public.mm_metadata_game_software_info OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_game_software_info OWNER TO postgres;
 
 --
--- Name: mm_metadata_game_systems_info; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_game_systems_info; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_game_systems_info (
@@ -322,10 +322,10 @@ CREATE TABLE public.mm_metadata_game_systems_info (
 );
 
 
-ALTER TABLE public.mm_metadata_game_systems_info OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_game_systems_info OWNER TO postgres;
 
 --
--- Name: mm_metadata_logo; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_logo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_logo (
@@ -335,10 +335,10 @@ CREATE TABLE public.mm_metadata_logo (
 );
 
 
-ALTER TABLE public.mm_metadata_logo OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_logo OWNER TO postgres;
 
 --
--- Name: mm_metadata_movie; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_movie; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_movie (
@@ -351,10 +351,10 @@ CREATE TABLE public.mm_metadata_movie (
 );
 
 
-ALTER TABLE public.mm_metadata_movie OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_movie OWNER TO postgres;
 
 --
--- Name: mm_metadata_music; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_music (
@@ -367,10 +367,10 @@ CREATE TABLE public.mm_metadata_music (
 );
 
 
-ALTER TABLE public.mm_metadata_music OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_music OWNER TO postgres;
 
 --
--- Name: mm_metadata_music_video; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_video; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_music_video (
@@ -384,10 +384,10 @@ CREATE TABLE public.mm_metadata_music_video (
 );
 
 
-ALTER TABLE public.mm_metadata_music_video OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_music_video OWNER TO postgres;
 
 --
--- Name: mm_metadata_musician; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_musician; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_musician (
@@ -399,10 +399,10 @@ CREATE TABLE public.mm_metadata_musician (
 );
 
 
-ALTER TABLE public.mm_metadata_musician OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_musician OWNER TO postgres;
 
 --
--- Name: mm_metadata_person; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_person; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_person (
@@ -414,10 +414,10 @@ CREATE TABLE public.mm_metadata_person (
 );
 
 
-ALTER TABLE public.mm_metadata_person OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_person OWNER TO postgres;
 
 --
--- Name: mm_metadata_sports; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_sports (
@@ -430,10 +430,10 @@ CREATE TABLE public.mm_metadata_sports (
 );
 
 
-ALTER TABLE public.mm_metadata_sports OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_sports OWNER TO postgres;
 
 --
--- Name: mm_metadata_tvshow; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_metadata_tvshow (
@@ -446,10 +446,10 @@ CREATE TABLE public.mm_metadata_tvshow (
 );
 
 
-ALTER TABLE public.mm_metadata_tvshow OWNER TO metamanpg;
+ALTER TABLE public.mm_metadata_tvshow OWNER TO postgres;
 
 --
--- Name: mm_notification; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_notification; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_notification (
@@ -460,10 +460,10 @@ CREATE TABLE public.mm_notification (
 );
 
 
-ALTER TABLE public.mm_notification OWNER TO metamanpg;
+ALTER TABLE public.mm_notification OWNER TO postgres;
 
 --
--- Name: mm_options_and_status; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_options_and_status; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_options_and_status (
@@ -473,10 +473,10 @@ CREATE TABLE public.mm_options_and_status (
 );
 
 
-ALTER TABLE public.mm_options_and_status OWNER TO metamanpg;
+ALTER TABLE public.mm_options_and_status OWNER TO postgres;
 
 --
--- Name: mm_radio; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_radio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_radio (
@@ -488,10 +488,10 @@ CREATE TABLE public.mm_radio (
 );
 
 
-ALTER TABLE public.mm_radio OWNER TO metamanpg;
+ALTER TABLE public.mm_radio OWNER TO postgres;
 
 --
--- Name: mm_review; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_review; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_review (
@@ -502,10 +502,10 @@ CREATE TABLE public.mm_review (
 );
 
 
-ALTER TABLE public.mm_review OWNER TO metamanpg;
+ALTER TABLE public.mm_review OWNER TO postgres;
 
 --
--- Name: mm_sync; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_sync; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_sync (
@@ -516,10 +516,10 @@ CREATE TABLE public.mm_sync (
 );
 
 
-ALTER TABLE public.mm_sync OWNER TO metamanpg;
+ALTER TABLE public.mm_sync OWNER TO postgres;
 
 --
--- Name: mm_tv_schedule; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_tv_schedule; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_tv_schedule (
@@ -530,10 +530,10 @@ CREATE TABLE public.mm_tv_schedule (
 );
 
 
-ALTER TABLE public.mm_tv_schedule OWNER TO metamanpg;
+ALTER TABLE public.mm_tv_schedule OWNER TO postgres;
 
 --
--- Name: mm_tv_schedule_program; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_tv_schedule_program; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_tv_schedule_program (
@@ -543,10 +543,10 @@ CREATE TABLE public.mm_tv_schedule_program (
 );
 
 
-ALTER TABLE public.mm_tv_schedule_program OWNER TO metamanpg;
+ALTER TABLE public.mm_tv_schedule_program OWNER TO postgres;
 
 --
--- Name: mm_tv_stations; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_tv_stations; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_tv_stations (
@@ -559,10 +559,10 @@ CREATE TABLE public.mm_tv_stations (
 );
 
 
-ALTER TABLE public.mm_tv_stations OWNER TO metamanpg;
+ALTER TABLE public.mm_tv_stations OWNER TO postgres;
 
 --
--- Name: mm_user; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_user; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_user (
@@ -578,10 +578,10 @@ CREATE TABLE public.mm_user (
 );
 
 
-ALTER TABLE public.mm_user OWNER TO metamanpg;
+ALTER TABLE public.mm_user OWNER TO postgres;
 
 --
--- Name: mm_user_activity; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_user_activity; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_user_activity (
@@ -597,10 +597,10 @@ CREATE TABLE public.mm_user_activity (
 );
 
 
-ALTER TABLE public.mm_user_activity OWNER TO metamanpg;
+ALTER TABLE public.mm_user_activity OWNER TO postgres;
 
 --
--- Name: mm_user_group; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_user_group; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_user_group (
@@ -611,10 +611,10 @@ CREATE TABLE public.mm_user_group (
 );
 
 
-ALTER TABLE public.mm_user_group OWNER TO metamanpg;
+ALTER TABLE public.mm_user_group OWNER TO postgres;
 
 --
--- Name: mm_user_id_seq; Type: SEQUENCE; Schema: public; Owner: metamanpg
+-- Name: mm_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE public.mm_user_id_seq
@@ -626,17 +626,17 @@ CREATE SEQUENCE public.mm_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.mm_user_id_seq OWNER TO metamanpg;
+ALTER TABLE public.mm_user_id_seq OWNER TO postgres;
 
 --
--- Name: mm_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: metamanpg
+-- Name: mm_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.mm_user_id_seq OWNED BY public.mm_user.id;
 
 
 --
--- Name: mm_user_profile; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_user_profile; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_user_profile (
@@ -646,10 +646,10 @@ CREATE TABLE public.mm_user_profile (
 );
 
 
-ALTER TABLE public.mm_user_profile OWNER TO metamanpg;
+ALTER TABLE public.mm_user_profile OWNER TO postgres;
 
 --
--- Name: mm_version; Type: TABLE; Schema: public; Owner: metamanpg
+-- Name: mm_version; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_version (
@@ -657,17 +657,17 @@ CREATE TABLE public.mm_version (
 );
 
 
-ALTER TABLE public.mm_version OWNER TO metamanpg;
+ALTER TABLE public.mm_version OWNER TO postgres;
 
 --
--- Name: mm_user id; Type: DEFAULT; Schema: public; Owner: metamanpg
+-- Name: mm_user id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_user ALTER COLUMN id SET DEFAULT nextval('public.mm_user_id_seq'::regclass);
 
 
 --
--- Data for Name: mm_channel; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_channel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_channel (mm_channel_guid, mm_channel_name, mm_channel_media_id, mm_channel_country_guid, mm_channel_logo_guid) FROM stdin;
@@ -675,7 +675,7 @@ COPY public.mm_channel (mm_channel_guid, mm_channel_name, mm_channel_media_id, m
 
 
 --
--- Data for Name: mm_cron; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_cron; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_cron (mm_cron_guid, mm_cron_name, mm_cron_description, mm_cron_enabled, mm_cron_schedule, mm_cron_last_run, mm_cron_json) FROM stdin;
@@ -692,7 +692,7 @@ c1f8e43d-c657-435c-a6e1-ac296b3bfba9	Sync	Sync and transcode media	f	Days 1	1970
 
 
 --
--- Data for Name: mm_device; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_device; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_device (mm_device_id, mm_device_type, mm_device_json) FROM stdin;
@@ -700,7 +700,7 @@ COPY public.mm_device (mm_device_id, mm_device_type, mm_device_json) FROM stdin;
 
 
 --
--- Data for Name: mm_download_que; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_download_que; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_download_que (mdq_id, mdq_provider, mdq_que_type, mdq_download_json) FROM stdin;
@@ -708,7 +708,7 @@ COPY public.mm_download_que (mdq_id, mdq_provider, mdq_que_type, mdq_download_js
 
 
 --
--- Data for Name: mm_game_category; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_game_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_game_category (gc_id, gc_category) FROM stdin;
@@ -716,7 +716,7 @@ COPY public.mm_game_category (gc_id, gc_category) FROM stdin;
 
 
 --
--- Data for Name: mm_hardware; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_hardware; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_hardware (mm_hardware_id, mm_hardware_manufacturer, mm_hardware_model, mm_hardware_json) FROM stdin;
@@ -724,7 +724,7 @@ COPY public.mm_hardware (mm_hardware_id, mm_hardware_manufacturer, mm_hardware_m
 
 
 --
--- Data for Name: mm_link; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_link; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_link (mm_link_guid, mm_link_name, mm_link_json) FROM stdin;
@@ -732,7 +732,7 @@ COPY public.mm_link (mm_link_guid, mm_link_name, mm_link_json) FROM stdin;
 
 
 --
--- Data for Name: mm_loan; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_loan; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_loan (mm_loan_guid, mm_loan_media_id, mm_loan_user_id, mm_load_user_loan_id, mm_loan_time, mm_loan_return_time) FROM stdin;
@@ -740,7 +740,7 @@ COPY public.mm_loan (mm_loan_guid, mm_loan_media_id, mm_loan_user_id, mm_load_us
 
 
 --
--- Data for Name: mm_media; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_media; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_media (mm_media_guid, mm_media_class_guid, mm_media_metadata_guid, mm_media_path, mm_media_ffprobe_json, mm_media_json) FROM stdin;
@@ -748,7 +748,7 @@ COPY public.mm_media (mm_media_guid, mm_media_class_guid, mm_media_metadata_guid
 
 
 --
--- Data for Name: mm_media_class; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_media_class; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_media_class (mm_media_class_guid, mm_media_class_type, mm_media_class_parent_type, mm_media_class_display) FROM stdin;
@@ -794,7 +794,7 @@ f1371e1b-b79b-4d76-9e47-95ba727840d1	Video Game Intro	Video	t
 
 
 --
--- Data for Name: mm_media_dir; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_media_dir; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_media_dir (mm_media_dir_guid, mm_media_dir_path, mm_media_dir_class_type, mm_media_dir_last_scanned, mm_media_dir_share_guid, mm_media_dir_status) FROM stdin;
@@ -802,7 +802,7 @@ COPY public.mm_media_dir (mm_media_dir_guid, mm_media_dir_path, mm_media_dir_cla
 
 
 --
--- Data for Name: mm_media_remote; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_media_remote; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json, mmr_media_json) FROM stdin;
@@ -810,7 +810,7 @@ COPY public.mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, 
 
 
 --
--- Data for Name: mm_media_share; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_media_share; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_media_share (mm_media_share_guid, mm_media_share_type, mm_media_share_user, mm_media_share_password, mm_media_share_server, mm_media_share_path) FROM stdin;
@@ -818,7 +818,7 @@ COPY public.mm_media_share (mm_media_share_guid, mm_media_share_type, mm_media_s
 
 
 --
--- Data for Name: mm_metadata_album; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_album; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, mm_metadata_album_id, mm_metadata_album_json, mm_metadata_album_musician_guid, mm_metadata_album_user_json, mm_metadata_album_localimage) FROM stdin;
@@ -826,7 +826,7 @@ COPY public.mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, m
 
 
 --
--- Data for Name: mm_metadata_anime; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_anime; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_anime (mm_metadata_anime_guid, mm_metadata_anime_media_id, mm_media_anime_name, mm_metadata_anime_json, mm_metadata_anime_mapping, mm_metadata_anime_mapping_before, mm_metadata_anime_localimage_json, mm_metadata_anime_user_json) FROM stdin;
@@ -834,7 +834,7 @@ COPY public.mm_metadata_anime (mm_metadata_anime_guid, mm_metadata_anime_media_i
 
 
 --
--- Data for Name: mm_metadata_book; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_book; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_book (mm_metadata_book_guid, mm_metadata_book_isbn, mm_metadata_book_isbn13, mm_metadata_book_name, mm_metadata_book_json, mm_metadata_book_user_json, mm_metadata_book_localimage_json) FROM stdin;
@@ -842,7 +842,7 @@ COPY public.mm_metadata_book (mm_metadata_book_guid, mm_metadata_book_isbn, mm_m
 
 
 --
--- Data for Name: mm_metadata_collection; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_collection; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_collection (mm_metadata_collection_guid, mm_metadata_collection_name, mm_metadata_collection_media_ids, mm_metadata_collection_json, mm_metadata_collection_imagelocal_json) FROM stdin;
@@ -850,7 +850,7 @@ COPY public.mm_metadata_collection (mm_metadata_collection_guid, mm_metadata_col
 
 
 --
--- Data for Name: mm_metadata_game_software_info; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_game_software_info; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_short_name, gi_game_info_name, gi_game_info_json) FROM stdin;
@@ -858,7 +858,7 @@ COPY public.mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_sh
 
 
 --
--- Data for Name: mm_metadata_game_systems_info; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_game_systems_info; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_game_systems_info (gs_id, gs_game_system_name, gs_game_system_alias, gs_game_system_json, mm_metadata_localimage_json) FROM stdin;
@@ -866,7 +866,7 @@ COPY public.mm_metadata_game_systems_info (gs_id, gs_game_system_name, gs_game_s
 
 
 --
--- Data for Name: mm_metadata_logo; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_logo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_logo (mm_metadata_logo_guid, mm_metadata_logo_media_guid, mm_metadata_logo_image_path) FROM stdin;
@@ -874,7 +874,7 @@ COPY public.mm_metadata_logo (mm_metadata_logo_guid, mm_metadata_logo_media_guid
 
 
 --
--- Data for Name: mm_metadata_movie; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_movie; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_movie (mm_metadata_guid, mm_metadata_media_id, mm_media_name, mm_metadata_json, mm_metadata_localimage_json, mm_metadata_user_json) FROM stdin;
@@ -882,7 +882,7 @@ COPY public.mm_metadata_movie (mm_metadata_guid, mm_metadata_media_id, mm_media_
 
 
 --
--- Data for Name: mm_metadata_music; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_music; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_music (mm_metadata_music_guid, mm_metadata_media_music_id, mm_metadata_music_name, mm_metadata_music_json, mm_metadata_music_album_guid, mm_metadata_music_user_json) FROM stdin;
@@ -890,7 +890,7 @@ COPY public.mm_metadata_music (mm_metadata_music_guid, mm_metadata_media_music_i
 
 
 --
--- Data for Name: mm_metadata_music_video; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_music_video; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_music_video_media_id, mm_media_music_video_band, mm_media_music_video_song, mm_metadata_music_video_json, mm_metadata_music_video_localimage_json, mm_metadata_music_video_user_json) FROM stdin;
@@ -898,7 +898,7 @@ COPY public.mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_m
 
 
 --
--- Data for Name: mm_metadata_musician; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_musician; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_musician (mm_metadata_musician_guid, mm_metadata_musician_name, mm_metadata_musician_id, mm_metadata_musician_json, mm_metadata_musician_localimage_json) FROM stdin;
@@ -906,7 +906,7 @@ COPY public.mm_metadata_musician (mm_metadata_musician_guid, mm_metadata_musicia
 
 
 --
--- Data for Name: mm_metadata_person; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_person; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_person (mmp_id, mmp_person_media_id, mmp_person_meta_json, mmp_person_image, mmp_person_name) FROM stdin;
@@ -914,7 +914,7 @@ COPY public.mm_metadata_person (mmp_id, mmp_person_media_id, mmp_person_meta_jso
 
 
 --
--- Data for Name: mm_metadata_sports; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_sports; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_sports (mm_metadata_sports_guid, mm_metadata_media_sports_id, mm_metadata_sports_name, mm_metadata_sports_json, mm_metadata_sports_user_json, mm_metadata_sports_image_json) FROM stdin;
@@ -922,7 +922,7 @@ COPY public.mm_metadata_sports (mm_metadata_sports_guid, mm_metadata_media_sport
 
 
 --
--- Data for Name: mm_metadata_tvshow; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_metadata_tvshow; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_metadata_tvshow (mm_metadata_tvshow_guid, mm_metadata_media_tvshow_id, mm_metadata_tvshow_name, mm_metadata_tvshow_json, mm_metadata_tvshow_localimage_json, mm_metadata_tvshow_user_json) FROM stdin;
@@ -930,7 +930,7 @@ COPY public.mm_metadata_tvshow (mm_metadata_tvshow_guid, mm_metadata_media_tvsho
 
 
 --
--- Data for Name: mm_notification; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_notification; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_notification (mm_notification_guid, mm_notification_text, mm_notification_time, mm_notification_dismissable) FROM stdin;
@@ -938,7 +938,7 @@ COPY public.mm_notification (mm_notification_guid, mm_notification_text, mm_noti
 
 
 --
--- Data for Name: mm_options_and_status; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_options_and_status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_options_and_status (mm_options_and_status_guid, mm_options_json, mm_status_json) FROM stdin;
@@ -947,7 +947,7 @@ df641592-2c6a-4ffa-816d-5f24dcea1ddd	{"API": {"anidb": null, "imvdb": null, "dir
 
 
 --
--- Data for Name: mm_radio; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_radio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_radio (mm_radio_guid, mm_radio_name, mm_radio_description, mm_radio_address, mm_radio_active) FROM stdin;
@@ -955,7 +955,7 @@ COPY public.mm_radio (mm_radio_guid, mm_radio_name, mm_radio_description, mm_rad
 
 
 --
--- Data for Name: mm_review; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_review; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_review (mm_review_guid, mm_review_metadata_id, mm_review_metadata_guid, mm_review_json) FROM stdin;
@@ -963,7 +963,7 @@ COPY public.mm_review (mm_review_guid, mm_review_metadata_id, mm_review_metadata
 
 
 --
--- Data for Name: mm_sync; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_sync; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_options_json) FROM stdin;
@@ -971,7 +971,7 @@ COPY public.mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_option
 
 
 --
--- Data for Name: mm_tv_schedule; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_tv_schedule; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_tv_schedule (mm_tv_schedule_id, mm_tv_schedule_station_id, mm_tv_schedule_date, mm_tv_schedule_json) FROM stdin;
@@ -979,7 +979,7 @@ COPY public.mm_tv_schedule (mm_tv_schedule_id, mm_tv_schedule_station_id, mm_tv_
 
 
 --
--- Data for Name: mm_tv_schedule_program; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_tv_schedule_program; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_tv_schedule_program (mm_tv_schedule_program_guid, mm_tv_schedule_program_id, mm_tv_schedule_program_json) FROM stdin;
@@ -987,7 +987,7 @@ COPY public.mm_tv_schedule_program (mm_tv_schedule_program_guid, mm_tv_schedule_
 
 
 --
--- Data for Name: mm_tv_stations; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_tv_stations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_tv_stations (mm_tv_stations_id, mm_tv_station_name, mm_tv_station_id, mm_tv_station_channel, mm_tv_station_json, mm_tv_station_image) FROM stdin;
@@ -995,7 +995,7 @@ COPY public.mm_tv_stations (mm_tv_stations_id, mm_tv_station_name, mm_tv_station
 
 
 --
--- Data for Name: mm_user; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_user (id, username, email, password, created_at, active, is_admin, user_json, lang) FROM stdin;
@@ -1003,7 +1003,7 @@ COPY public.mm_user (id, username, email, password, created_at, active, is_admin
 
 
 --
--- Data for Name: mm_user_activity; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_user_activity; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_user_activity (mm_activity_guid, mm_activity_name, mm_activity_overview, mm_activity_short_overview, mm_activity_type, mm_activity_itemid, mm_activity_userid, mm_activity_datecreated, mm_activity_log_severity) FROM stdin;
@@ -1011,7 +1011,7 @@ COPY public.mm_user_activity (mm_activity_guid, mm_activity_name, mm_activity_ov
 
 
 --
--- Data for Name: mm_user_group; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_user_group; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_user_group (mm_user_group_guid, mm_user_group_name, mm_user_group_description, mm_user_group_rights_json) FROM stdin;
@@ -1022,7 +1022,7 @@ bea39ac2-505e-4cdd-9a3b-9c7da2cb28b2	Guest	Guest (Preview only)	{"Admin": false,
 
 
 --
--- Data for Name: mm_user_profile; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_user_profile; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_user_profile (mm_user_profile_guid, mm_user_profile_name, mm_user_profile_json) FROM stdin;
@@ -1033,7 +1033,7 @@ COPY public.mm_user_profile (mm_user_profile_guid, mm_user_profile_name, mm_user
 
 
 --
--- Data for Name: mm_version; Type: TABLE DATA; Schema: public; Owner: metamanpg
+-- Data for Name: mm_version; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.mm_version (mm_version_no) FROM stdin;
@@ -1042,14 +1042,14 @@ COPY public.mm_version (mm_version_no) FROM stdin;
 
 
 --
--- Name: mm_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: metamanpg
+-- Name: mm_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.mm_user_id_seq', 1, false);
 
 
 --
--- Name: mm_game_category gc_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_game_category gc_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_game_category
@@ -1057,7 +1057,7 @@ ALTER TABLE ONLY public.mm_game_category
 
 
 --
--- Name: mm_metadata_game_software_info gi_id_mpk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_game_software_info gi_id_mpk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_game_software_info
@@ -1065,7 +1065,7 @@ ALTER TABLE ONLY public.mm_metadata_game_software_info
 
 
 --
--- Name: mm_metadata_game_systems_info gs_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_game_systems_info gs_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_game_systems_info
@@ -1073,7 +1073,7 @@ ALTER TABLE ONLY public.mm_metadata_game_systems_info
 
 
 --
--- Name: mm_download_que mdq_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_download_que mdq_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_download_que
@@ -1081,7 +1081,7 @@ ALTER TABLE ONLY public.mm_download_que
 
 
 --
--- Name: mm_user_activity mm_activity_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_user_activity mm_activity_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_user_activity
@@ -1089,7 +1089,7 @@ ALTER TABLE ONLY public.mm_user_activity
 
 
 --
--- Name: mm_channel mm_channel_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_channel mm_channel_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_channel
@@ -1097,7 +1097,7 @@ ALTER TABLE ONLY public.mm_channel
 
 
 --
--- Name: mm_cron mm_cron_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_cron mm_cron_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_cron
@@ -1105,7 +1105,7 @@ ALTER TABLE ONLY public.mm_cron
 
 
 --
--- Name: mm_device mm_device_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_device mm_device_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_device
@@ -1113,7 +1113,7 @@ ALTER TABLE ONLY public.mm_device
 
 
 --
--- Name: mm_hardware mm_hardware_id; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_hardware mm_hardware_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_hardware
@@ -1121,7 +1121,7 @@ ALTER TABLE ONLY public.mm_hardware
 
 
 --
--- Name: mm_link mm_link_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_link mm_link_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_link
@@ -1129,7 +1129,7 @@ ALTER TABLE ONLY public.mm_link
 
 
 --
--- Name: mm_loan mm_loan_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_loan mm_loan_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_loan
@@ -1137,7 +1137,7 @@ ALTER TABLE ONLY public.mm_loan
 
 
 --
--- Name: mm_media_class mm_media_class_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_media_class mm_media_class_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_media_class
@@ -1145,7 +1145,7 @@ ALTER TABLE ONLY public.mm_media_class
 
 
 --
--- Name: mm_media_dir mm_media_dir_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_media_dir mm_media_dir_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_media_dir
@@ -1153,7 +1153,7 @@ ALTER TABLE ONLY public.mm_media_dir
 
 
 --
--- Name: mm_media mm_media_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_media mm_media_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_media
@@ -1161,7 +1161,7 @@ ALTER TABLE ONLY public.mm_media
 
 
 --
--- Name: mm_media_share mm_media_share_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_media_share mm_media_share_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_media_share
@@ -1169,7 +1169,7 @@ ALTER TABLE ONLY public.mm_media_share
 
 
 --
--- Name: mm_metadata_album mm_metadata_album_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album mm_metadata_album_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_album
@@ -1177,7 +1177,7 @@ ALTER TABLE ONLY public.mm_metadata_album
 
 
 --
--- Name: mm_metadata_anime mm_metadata_anime_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime mm_metadata_anime_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_anime
@@ -1185,7 +1185,7 @@ ALTER TABLE ONLY public.mm_metadata_anime
 
 
 --
--- Name: mm_metadata_book mm_metadata_book_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_book mm_metadata_book_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_book
@@ -1193,7 +1193,7 @@ ALTER TABLE ONLY public.mm_metadata_book
 
 
 --
--- Name: mm_metadata_collection mm_metadata_collection_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_collection mm_metadata_collection_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_collection
@@ -1201,7 +1201,7 @@ ALTER TABLE ONLY public.mm_metadata_collection
 
 
 --
--- Name: mm_metadata_logo mm_metadata_logo_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_logo mm_metadata_logo_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_logo
@@ -1209,7 +1209,7 @@ ALTER TABLE ONLY public.mm_metadata_logo
 
 
 --
--- Name: mm_metadata_music mm_metadata_music_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music mm_metadata_music_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_music
@@ -1217,7 +1217,7 @@ ALTER TABLE ONLY public.mm_metadata_music
 
 
 --
--- Name: mm_metadata_music_video mm_metadata_music_video_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_video mm_metadata_music_video_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_music_video
@@ -1225,7 +1225,7 @@ ALTER TABLE ONLY public.mm_metadata_music_video
 
 
 --
--- Name: mm_metadata_musician mm_metadata_musician_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_musician mm_metadata_musician_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_musician
@@ -1233,7 +1233,7 @@ ALTER TABLE ONLY public.mm_metadata_musician
 
 
 --
--- Name: mm_metadata_movie mm_metadata_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_movie mm_metadata_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_movie
@@ -1241,7 +1241,7 @@ ALTER TABLE ONLY public.mm_metadata_movie
 
 
 --
--- Name: mm_metadata_sports mm_metadata_sports_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports mm_metadata_sports_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_sports
@@ -1249,7 +1249,7 @@ ALTER TABLE ONLY public.mm_metadata_sports
 
 
 --
--- Name: mm_metadata_tvshow mm_metadata_tvshow_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow mm_metadata_tvshow_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_tvshow
@@ -1257,7 +1257,7 @@ ALTER TABLE ONLY public.mm_metadata_tvshow
 
 
 --
--- Name: mm_notification mm_notification_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_notification mm_notification_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_notification
@@ -1265,7 +1265,7 @@ ALTER TABLE ONLY public.mm_notification
 
 
 --
--- Name: mm_options_and_status mm_options_and_status_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_options_and_status mm_options_and_status_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_options_and_status
@@ -1273,7 +1273,7 @@ ALTER TABLE ONLY public.mm_options_and_status
 
 
 --
--- Name: mm_radio mm_radio_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_radio mm_radio_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_radio
@@ -1281,7 +1281,7 @@ ALTER TABLE ONLY public.mm_radio
 
 
 --
--- Name: mm_review mm_review_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_review mm_review_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_review
@@ -1289,7 +1289,7 @@ ALTER TABLE ONLY public.mm_review
 
 
 --
--- Name: mm_sync mm_sync_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_sync mm_sync_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_sync
@@ -1297,7 +1297,7 @@ ALTER TABLE ONLY public.mm_sync
 
 
 --
--- Name: mm_tv_schedule mm_tv_schedule_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_tv_schedule mm_tv_schedule_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_tv_schedule
@@ -1305,7 +1305,7 @@ ALTER TABLE ONLY public.mm_tv_schedule
 
 
 --
--- Name: mm_tv_schedule_program mm_tv_schedule_program_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_tv_schedule_program mm_tv_schedule_program_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_tv_schedule_program
@@ -1313,7 +1313,7 @@ ALTER TABLE ONLY public.mm_tv_schedule_program
 
 
 --
--- Name: mm_tv_stations mm_tv_stations_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_tv_stations mm_tv_stations_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_tv_stations
@@ -1321,7 +1321,7 @@ ALTER TABLE ONLY public.mm_tv_stations
 
 
 --
--- Name: mm_user_group mm_user_group_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_user_group mm_user_group_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_user_group
@@ -1329,7 +1329,7 @@ ALTER TABLE ONLY public.mm_user_group
 
 
 --
--- Name: mm_user mm_user_pkey; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_user mm_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_user
@@ -1337,7 +1337,7 @@ ALTER TABLE ONLY public.mm_user
 
 
 --
--- Name: mm_user_profile mm_user_profile_guid_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_user_profile mm_user_profile_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_user_profile
@@ -1345,7 +1345,7 @@ ALTER TABLE ONLY public.mm_user_profile
 
 
 --
--- Name: mm_metadata_person mmp_id_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_person mmp_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_metadata_person
@@ -1353,7 +1353,7 @@ ALTER TABLE ONLY public.mm_metadata_person
 
 
 --
--- Name: mm_media_remote mmr_media_remote_pk; Type: CONSTRAINT; Schema: public; Owner: metamanpg
+-- Name: mm_media_remote mmr_media_remote_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.mm_media_remote
@@ -1361,889 +1361,889 @@ ALTER TABLE ONLY public.mm_media_remote
 
 
 --
--- Name: gc_category_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: gc_category_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX gc_category_idx_name ON public.mm_game_category USING btree (gc_category);
 
 
 --
--- Name: gi_game_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: gi_game_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX gi_game_idx_name ON public.mm_metadata_game_software_info USING btree (gi_game_info_name);
 
 
 --
--- Name: gi_game_idx_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: gi_game_idx_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX gi_game_idx_name_trigram_idx ON public.mm_metadata_game_software_info USING gist (gi_game_info_name public.gist_trgm_ops);
 
 
 --
--- Name: gi_game_idx_short_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: gi_game_idx_short_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX gi_game_idx_short_name ON public.mm_metadata_game_software_info USING btree (gi_game_info_short_name);
 
 
 --
--- Name: gi_system_id_ndx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: gi_system_id_ndx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX gi_system_id_ndx ON public.mm_metadata_game_software_info USING btree (gi_system_id);
 
 
 --
--- Name: mdq_que_type_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mdq_que_type_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mdq_que_type_idx_name ON public.mm_download_que USING btree (mdq_que_type);
 
 
 --
--- Name: mm_channel_idx_country; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_channel_idx_country; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_channel_idx_country ON public.mm_channel USING btree (mm_channel_country_guid);
 
 
 --
--- Name: mm_channel_idx_logo; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_channel_idx_logo; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_channel_idx_logo ON public.mm_channel USING btree (mm_channel_logo_guid);
 
 
 --
--- Name: mm_channel_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_channel_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_channel_idx_name ON public.mm_channel USING btree (mm_channel_name);
 
 
 --
--- Name: mm_channel_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_channel_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_channel_idxgin_json ON public.mm_channel USING gin (mm_channel_media_id);
 
 
 --
--- Name: mm_device_idx_type; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_device_idx_type; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_device_idx_type ON public.mm_device USING btree (mm_device_type);
 
 
 --
--- Name: mm_device_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_device_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_device_idxgin_json ON public.mm_device USING gin (mm_device_json);
 
 
 --
--- Name: mm_download_idx_provider; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_download_idx_provider; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_download_idx_provider ON public.mm_download_que USING btree (mdq_provider);
 
 
 --
--- Name: mm_download_que_idxgin_meta_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_download_que_idxgin_meta_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_download_que_idxgin_meta_json ON public.mm_download_que USING gin (mdq_download_json);
 
 
 --
--- Name: mm_game_info_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_game_info_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_game_info_idxgin_json ON public.mm_metadata_game_software_info USING gin (gi_game_info_json);
 
 
 --
--- Name: mm_game_info_idxgin_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_game_info_idxgin_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_game_info_idxgin_name ON public.mm_metadata_game_software_info USING gin (((gi_game_info_json -> '@name'::text)));
 
 
 --
--- Name: mm_game_systems_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_game_systems_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_game_systems_idxgin_json ON public.mm_metadata_game_systems_info USING gin (gs_game_system_json);
 
 
 --
--- Name: mm_hardware_idx_manufacturer; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_hardware_idx_manufacturer; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_hardware_idx_manufacturer ON public.mm_hardware USING btree (mm_hardware_manufacturer);
 
 
 --
--- Name: mm_hardware_idx_model; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_hardware_idx_model; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_hardware_idx_model ON public.mm_hardware USING btree (mm_hardware_model);
 
 
 --
--- Name: mm_link_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_link_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_link_idx_name ON public.mm_link USING btree (mm_link_name);
 
 
 --
--- Name: mm_link_json_idxgin; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_link_json_idxgin; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_link_json_idxgin ON public.mm_link USING gin (mm_link_json);
 
 
 --
--- Name: mm_media_anime_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_anime_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_anime_name_trigram_idx ON public.mm_metadata_anime USING gist (mm_media_anime_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_media_class_idx_type; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_class_idx_type; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_class_idx_type ON public.mm_media_class USING btree (mm_media_class_type);
 
 
 --
--- Name: mm_media_dir_idx_share; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_dir_idx_share; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_dir_idx_share ON public.mm_media_dir USING btree (mm_media_dir_share_guid);
 
 
 --
--- Name: mm_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_idx_metadata_uuid ON public.mm_media USING btree (mm_media_metadata_guid);
 
 
 --
--- Name: mm_media_idx_path; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_idx_path; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_idx_path ON public.mm_media USING btree (mm_media_path);
 
 
 --
--- Name: mm_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_idxgin_ffprobe ON public.mm_media USING gin (mm_media_ffprobe_json);
 
 
 --
--- Name: mm_media_music_video_band_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_music_video_band_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_music_video_band_trigram_idx ON public.mm_metadata_music_video USING gist (mm_media_music_video_band public.gist_trgm_ops);
 
 
 --
--- Name: mm_media_music_video_song_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_music_video_song_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_music_video_song_trigram_idx ON public.mm_metadata_music_video USING gist (mm_media_music_video_song public.gist_trgm_ops);
 
 
 --
--- Name: mm_media_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_media_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_media_name_trigram_idx ON public.mm_metadata_movie USING gist (mm_media_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_metadata_album_idx_musician; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album_idx_musician; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_album_idx_musician ON public.mm_metadata_album USING btree (mm_metadata_album_musician_guid);
 
 
 --
--- Name: mm_metadata_album_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_album_idx_name ON public.mm_metadata_album USING btree (mm_metadata_album_name);
 
 
 --
--- Name: mm_metadata_album_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_album_idx_name_lower ON public.mm_metadata_album USING btree (lower(mm_metadata_album_name));
 
 
 --
--- Name: mm_metadata_album_idxgin_id_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album_idxgin_id_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_album_idxgin_id_json ON public.mm_metadata_album USING gin (mm_metadata_album_id);
 
 
 --
--- Name: mm_metadata_album_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_album_idxgin_json ON public.mm_metadata_album USING gin (mm_metadata_album_json);
 
 
 --
--- Name: mm_metadata_album_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_album_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_album_name_trigram_idx ON public.mm_metadata_album USING gist (mm_metadata_album_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_metadata_aniem_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_aniem_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_aniem_idxgin_media_id ON public.mm_metadata_anime USING gin (mm_metadata_anime_media_id);
 
 
 --
--- Name: mm_metadata_anime_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idx_name ON public.mm_metadata_anime USING btree (mm_media_anime_name);
 
 
 --
--- Name: mm_metadata_anime_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idx_name_lower ON public.mm_metadata_anime USING btree (lower(mm_media_anime_name));
 
 
 --
--- Name: mm_metadata_anime_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idxgin_json ON public.mm_metadata_anime USING gin (mm_metadata_anime_json);
 
 
 --
--- Name: mm_metadata_anime_idxgin_media_id_anidb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idxgin_media_id_anidb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idxgin_media_id_anidb ON public.mm_metadata_anime USING gin (((mm_metadata_anime_media_id -> 'anidb'::text)));
 
 
 --
--- Name: mm_metadata_anime_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idxgin_media_id_imdb ON public.mm_metadata_anime USING gin (((mm_metadata_anime_media_id -> 'imdb'::text)));
 
 
 --
--- Name: mm_metadata_anime_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idxgin_media_id_thetvdb ON public.mm_metadata_anime USING gin (((mm_metadata_anime_media_id -> 'thetvdb'::text)));
 
 
 --
--- Name: mm_metadata_anime_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idxgin_media_id_tmdb ON public.mm_metadata_anime USING gin (((mm_metadata_anime_media_id -> 'tmdb'::text)));
 
 
 --
--- Name: mm_metadata_anime_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_anime_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_anime_idxgin_user_json ON public.mm_metadata_anime USING gin (mm_metadata_anime_user_json);
 
 
 --
--- Name: mm_metadata_book_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_book_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_book_name_trigram_idx ON public.mm_metadata_book USING gist (mm_metadata_book_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_metadata_collection_idxgin_media_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_collection_idxgin_media_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_collection_idxgin_media_json ON public.mm_metadata_collection USING gin (mm_metadata_collection_media_ids);
 
 
 --
--- Name: mm_metadata_collection_idxgin_meta_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_collection_idxgin_meta_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_collection_idxgin_meta_json ON public.mm_metadata_collection USING gin (mm_metadata_collection_json);
 
 
 --
--- Name: mm_metadata_collection_idxgin_name_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_collection_idxgin_name_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_collection_idxgin_name_json ON public.mm_metadata_collection USING gin (mm_metadata_collection_name);
 
 
 --
--- Name: mm_metadata_idx_band_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_band_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_band_name ON public.mm_metadata_music_video USING btree (mm_media_music_video_band);
 
 
 --
--- Name: mm_metadata_idx_band_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_band_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_band_name_lower ON public.mm_metadata_music_video USING btree (lower(mm_media_music_video_band));
 
 
 --
--- Name: mm_metadata_idx_book_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_book_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_book_name ON public.mm_metadata_book USING btree (mm_metadata_book_name);
 
 
 --
--- Name: mm_metadata_idx_book_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_book_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_book_name_lower ON public.mm_metadata_book USING btree (lower(mm_metadata_book_name));
 
 
 --
--- Name: mm_metadata_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_name ON public.mm_metadata_movie USING btree (mm_media_name);
 
 
 --
--- Name: mm_metadata_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_name_lower ON public.mm_metadata_movie USING btree (lower(mm_media_name));
 
 
 --
--- Name: mm_metadata_idx_song_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_song_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_song_name ON public.mm_metadata_music_video USING btree (mm_media_music_video_song);
 
 
 --
--- Name: mm_metadata_idx_song_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idx_song_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idx_song_name_lower ON public.mm_metadata_music_video USING btree (lower(mm_media_music_video_song));
 
 
 --
--- Name: mm_metadata_idxgin_isbn; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_isbn; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_isbn ON public.mm_metadata_book USING btree (mm_metadata_book_isbn);
 
 
 --
--- Name: mm_metadata_idxgin_isbn13; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_isbn13; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_isbn13 ON public.mm_metadata_book USING btree (mm_metadata_book_isbn13);
 
 
 --
--- Name: mm_metadata_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_json ON public.mm_metadata_movie USING gin (mm_metadata_json);
 
 
 --
--- Name: mm_metadata_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_media_id ON public.mm_metadata_movie USING gin (mm_metadata_media_id);
 
 
 --
--- Name: mm_metadata_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_media_id_imdb ON public.mm_metadata_movie USING gin (((mm_metadata_media_id -> 'imdb'::text)));
 
 
 --
--- Name: mm_metadata_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_media_id_thetvdb ON public.mm_metadata_movie USING gin (((mm_metadata_media_id -> 'thetvdb'::text)));
 
 
 --
--- Name: mm_metadata_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_media_id_tmdb ON public.mm_metadata_movie USING gin (((mm_metadata_media_id -> 'tmdb'::text)));
 
 
 --
--- Name: mm_metadata_idxgin_music_video_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_music_video_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_music_video_json ON public.mm_metadata_music_video USING gin (mm_metadata_music_video_json);
 
 
 --
--- Name: mm_metadata_idxgin_music_video_media_id; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_music_video_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_music_video_media_id ON public.mm_metadata_music_video USING gin (mm_metadata_music_video_media_id);
 
 
 --
--- Name: mm_metadata_idxgin_music_video_media_id_imvdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_music_video_media_id_imvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_music_video_media_id_imvdb ON public.mm_metadata_music_video USING gin (((mm_metadata_music_video_media_id -> 'imvdb'::text)));
 
 
 --
--- Name: mm_metadata_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_idxgin_user_json ON public.mm_metadata_movie USING gin (mm_metadata_user_json);
 
 
 --
--- Name: mm_metadata_logo_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_logo_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_logo_idxgin_json ON public.mm_metadata_logo USING gin (mm_metadata_logo_media_guid);
 
 
 --
--- Name: mm_metadata_music_idx_album; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_idx_album; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_idx_album ON public.mm_metadata_music USING btree (mm_metadata_music_album_guid);
 
 
 --
--- Name: mm_metadata_music_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_idx_name ON public.mm_metadata_music USING btree (mm_metadata_music_name);
 
 
 --
--- Name: mm_metadata_music_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_idx_name_lower ON public.mm_metadata_music USING btree (lower(mm_metadata_music_name));
 
 
 --
--- Name: mm_metadata_music_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_idxgin_json ON public.mm_metadata_music USING gin (mm_metadata_music_json);
 
 
 --
--- Name: mm_metadata_music_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_idxgin_media_id ON public.mm_metadata_music USING gin (mm_metadata_media_music_id);
 
 
 --
--- Name: mm_metadata_music_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_idxgin_user_json ON public.mm_metadata_music USING gin (mm_metadata_music_user_json);
 
 
 --
--- Name: mm_metadata_music_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_name_trigram_idx ON public.mm_metadata_music USING gist (mm_metadata_music_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_metadata_music_video_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_music_video_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_music_video_idxgin_user_json ON public.mm_metadata_music_video USING gin (mm_metadata_music_video_user_json);
 
 
 --
--- Name: mm_metadata_musician_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_musician_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_musician_idx_name ON public.mm_metadata_musician USING btree (mm_metadata_musician_name);
 
 
 --
--- Name: mm_metadata_musician_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_musician_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_musician_idx_name_lower ON public.mm_metadata_musician USING btree (lower(mm_metadata_musician_name));
 
 
 --
--- Name: mm_metadata_musician_idxgin_id_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_musician_idxgin_id_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_musician_idxgin_id_json ON public.mm_metadata_musician USING gin (mm_metadata_musician_id);
 
 
 --
--- Name: mm_metadata_musician_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_musician_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_musician_idxgin_json ON public.mm_metadata_musician USING gin (mm_metadata_musician_json);
 
 
 --
--- Name: mm_metadata_musician_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_musician_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_musician_name_trigram_idx ON public.mm_metadata_musician USING gist (mm_metadata_musician_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_metadata_person_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_person_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_person_idx_name ON public.mm_metadata_person USING btree (mmp_person_name);
 
 
 --
--- Name: mm_metadata_person_idxgin_id_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_person_idxgin_id_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_person_idxgin_id_json ON public.mm_metadata_person USING gin (mmp_person_media_id);
 
 
 --
--- Name: mm_metadata_person_idxgin_meta_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_person_idxgin_meta_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_person_idxgin_meta_json ON public.mm_metadata_person USING gin (mmp_person_meta_json);
 
 
 --
--- Name: mm_metadata_review_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_review_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_review_idx_metadata_uuid ON public.mm_review USING btree (mm_review_metadata_guid);
 
 
 --
--- Name: mm_metadata_review_idxgin_media_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_review_idxgin_media_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_review_idxgin_media_json ON public.mm_review USING gin (mm_review_metadata_id);
 
 
 --
--- Name: mm_metadata_sports_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idx_name ON public.mm_metadata_sports USING btree (mm_metadata_sports_name);
 
 
 --
--- Name: mm_metadata_sports_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idx_name_lower ON public.mm_metadata_sports USING btree (lower(mm_metadata_sports_name));
 
 
 --
--- Name: mm_metadata_sports_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_json ON public.mm_metadata_sports USING gin (mm_metadata_sports_json);
 
 
 --
--- Name: mm_metadata_sports_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_media_id ON public.mm_metadata_sports USING gin (mm_metadata_media_sports_id);
 
 
 --
--- Name: mm_metadata_sports_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_media_id_imdb ON public.mm_metadata_sports USING gin (((mm_metadata_media_sports_id -> 'imdb'::text)));
 
 
 --
--- Name: mm_metadata_sports_idxgin_media_id_thesportsdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_media_id_thesportsdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_media_id_thesportsdb ON public.mm_metadata_sports USING gin (((mm_metadata_media_sports_id -> 'thesportsdb'::text)));
 
 
 --
--- Name: mm_metadata_sports_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdb ON public.mm_metadata_sports USING gin (((mm_metadata_media_sports_id -> 'thetvdb'::text)));
 
 
 --
--- Name: mm_metadata_sports_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdbseries ON public.mm_metadata_sports USING gin (((mm_metadata_media_sports_id -> 'thetvdbSeries'::text)));
 
 
 --
--- Name: mm_metadata_sports_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_media_id_tmdb ON public.mm_metadata_sports USING gin (((mm_metadata_media_sports_id -> 'tmdb'::text)));
 
 
 --
--- Name: mm_metadata_sports_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_idxgin_media_id_tvmaze ON public.mm_metadata_sports USING gin (((mm_metadata_media_sports_id -> 'tvmaze'::text)));
 
 
 --
--- Name: mm_metadata_sports_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_sports_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_sports_name_trigram_idx ON public.mm_metadata_sports USING gist (mm_metadata_sports_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_metadata_tvshow_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idx_name ON public.mm_metadata_tvshow USING btree (mm_metadata_tvshow_name);
 
 
 --
--- Name: mm_metadata_tvshow_idx_name_lower; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idx_name_lower ON public.mm_metadata_tvshow USING btree (lower(mm_metadata_tvshow_name));
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_json ON public.mm_metadata_tvshow USING gin (mm_metadata_tvshow_json);
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_localimage_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_localimage_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_localimage_json ON public.mm_metadata_tvshow USING gin (mm_metadata_tvshow_json);
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_media_id; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_media_id ON public.mm_metadata_tvshow USING gin (mm_metadata_media_tvshow_id);
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_media_id_imdb ON public.mm_metadata_tvshow USING gin (((mm_metadata_media_tvshow_id -> 'imdb'::text)));
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdb ON public.mm_metadata_tvshow USING gin (((mm_metadata_media_tvshow_id -> 'thetvdb'::text)));
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdbseries ON public.mm_metadata_tvshow USING gin (((mm_metadata_media_tvshow_id -> 'thetvdbSeries'::text)));
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tmdb ON public.mm_metadata_tvshow USING gin (((mm_metadata_media_tvshow_id -> 'tmdb'::text)));
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tvmaze ON public.mm_metadata_tvshow USING gin (((mm_metadata_media_tvshow_id -> 'tvmaze'::text)));
 
 
 --
--- Name: mm_metadata_tvshow_idxgin_user_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_idxgin_user_json ON public.mm_metadata_tvshow USING gin (mm_metadata_tvshow_user_json);
 
 
 --
--- Name: mm_metadata_tvshow_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_metadata_tvshow_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON public.mm_metadata_tvshow USING gist (mm_metadata_tvshow_name public.gist_trgm_ops);
 
 
 --
--- Name: mm_notification_idx_dismissable; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_notification_idx_dismissable; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_notification_idx_dismissable ON public.mm_notification USING btree (mm_notification_dismissable);
 
 
 --
--- Name: mm_notification_idx_time; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_notification_idx_time; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_notification_idx_time ON public.mm_notification USING btree (mm_notification_time);
 
 
 --
--- Name: mm_sync_idxgin_json; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_sync_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_sync_idxgin_json ON public.mm_sync USING gin (mm_sync_options_json);
 
 
 --
--- Name: mm_tv_schedule_idx_date; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_tv_schedule_idx_date; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_tv_schedule_idx_date ON public.mm_tv_schedule USING btree (mm_tv_schedule_date);
 
 
 --
--- Name: mm_tv_schedule_idx_program; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_tv_schedule_idx_program; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_tv_schedule_idx_program ON public.mm_tv_schedule_program USING btree (mm_tv_schedule_program_id);
 
 
 --
--- Name: mm_tv_schedule_idx_station; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_tv_schedule_idx_station; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_tv_schedule_idx_station ON public.mm_tv_schedule USING btree (mm_tv_schedule_station_id);
 
 
 --
--- Name: mm_tv_stations_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_tv_stations_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_tv_stations_idx_name ON public.mm_tv_stations USING btree (mm_tv_station_name);
 
 
 --
--- Name: mm_tv_stations_idx_station; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_tv_stations_idx_station; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_tv_stations_idx_station ON public.mm_tv_stations USING btree (mm_tv_station_id);
 
 
 --
--- Name: mm_user_activity_idx_date; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_user_activity_idx_date; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_user_activity_idx_date ON public.mm_user_activity USING btree (mm_activity_datecreated);
 
 
 --
--- Name: mm_user_activity_idx_user_guid; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_user_activity_idx_user_guid; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_user_activity_idx_user_guid ON public.mm_user_activity USING btree (mm_activity_userid);
 
 
 --
--- Name: mm_user_group_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_user_group_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_user_group_idx_name ON public.mm_user_group USING btree (mm_user_group_name);
 
 
 --
--- Name: mm_user_idx_username; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_user_idx_username; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_user_idx_username ON public.mm_user USING btree (username);
 
 
 --
--- Name: mm_user_profile_idx_name; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mm_user_profile_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mm_user_profile_idx_name ON public.mm_user_profile USING btree (mm_user_profile_name);
 
 
 --
--- Name: mmp_person_name_trigram_idx; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mmp_person_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mmp_person_name_trigram_idx ON public.mm_metadata_person USING gist (mmp_person_name public.gist_trgm_ops);
 
 
 --
--- Name: mmr_media_idx_link_uuid; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mmr_media_idx_link_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mmr_media_idx_link_uuid ON public.mm_media_remote USING btree (mmr_media_link_id);
 
 
 --
--- Name: mmr_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mmr_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mmr_media_idx_metadata_uuid ON public.mm_media_remote USING btree (mmr_media_metadata_guid);
 
 
 --
--- Name: mmr_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: metamanpg
+-- Name: mmr_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mmr_media_idxgin_ffprobe ON public.mm_media_remote USING gin (mmr_media_ffprobe_json);
