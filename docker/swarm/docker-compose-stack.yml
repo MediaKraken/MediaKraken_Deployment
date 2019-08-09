@@ -179,7 +179,8 @@ services:
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     networks:
-      - portaineragent_agent_network
+      # TODO do NOT post one below.....breaks portainer
+      # - portaineragent_agent_network
       - mediakraken_network_backend
 
   # runs the redis service for flask (account management)
@@ -192,15 +193,14 @@ services:
 
 # Docker private networks
 networks:
+  # don't bother naming as swarm names as stack_*
   portaineragent_agent_network:
     driver: overlay
     attachable: true
   mediakraken_network_backend:
     driver: overlay
-    name: mk_mediakraken_network_backend
   mediakraken_network_frontend:
     driver: overlay
-    name: mk_mediakraken_network_frontend
 
 volumes:
   portainer_data:
