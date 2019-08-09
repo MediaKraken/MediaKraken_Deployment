@@ -176,7 +176,6 @@ services:
       - "15671:15671"
       # http management port
       - "15672:15672"
-    env_file: .env
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     networks:
