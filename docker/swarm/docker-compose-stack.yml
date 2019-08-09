@@ -182,6 +182,7 @@ services:
       # TODO do NOT post one below.....breaks portainer
       # - portaineragent_agent_network
       - mediakraken_network_backend
+      - mediakraken_network_frontend
 
   # runs the redis service for flask (account management)
   redis:
@@ -200,6 +201,7 @@ networks:
   mediakraken_network_backend:
     driver: overlay
   mediakraken_network_frontend:
+    attachable: true
     driver: overlay
 
 volumes:
