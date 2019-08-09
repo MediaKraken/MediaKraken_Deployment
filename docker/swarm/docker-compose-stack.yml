@@ -179,6 +179,7 @@ services:
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     networks:
+      - portaineragent_agent_network
       - mediakraken_network_backend
 
   # runs the redis service for flask (account management)
