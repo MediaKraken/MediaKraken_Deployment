@@ -48,8 +48,8 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-#    labels:
-#      - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
+    labels:
+      - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
     deploy:
       mode: replicated
       replicas: 2
