@@ -183,6 +183,11 @@ services:
       # - portaineragent_agent_network
       - mediakraken_network_backend
       - mediakraken_network_frontend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   # runs the redis service for flask (account management)
   redis:
@@ -191,7 +196,12 @@ services:
     stop_signal: SIGTERM
     networks:
       - mediakraken_network_backend
-
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+        
 # Docker private networks
 networks:
   # don't bother naming as swarm names as stack_*
