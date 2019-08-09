@@ -201,7 +201,8 @@ networks:
   mediakraken_network_backend:
     driver: overlay
   mediakraken_network_frontend:
-    driver: bridge
+    driver: overlay
+    attachable: true
 
 volumes:
   portainer_data:
