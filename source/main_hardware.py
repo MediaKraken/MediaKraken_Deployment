@@ -279,8 +279,8 @@ def main():
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # fire off wait for it script to allow connection
-    common_network.mk_network_service_available('mkrabbitmq', '5672')
-    mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    common_network.mk_network_service_available('rabbitmq', '5672')
+    mk_rabbit = MKConsumer('amqp://guest:guest@rabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:

@@ -87,7 +87,6 @@ services:
     stop_signal: SIGUSR1
     networks:
       - mediakraken_network_backend
-    restart: unless-stopped
 
 #  # Postgresql server
 #  database:
