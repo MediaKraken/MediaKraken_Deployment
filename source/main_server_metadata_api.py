@@ -45,7 +45,7 @@ common_signal.com_signal_set_break()
 
 # fire off wait for it script to allow rabbitmq connection
 # doing here so I don't have to do it multiple times
-common_network.mk_network_service_available('mkrabbitmq', '5672')
+common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
 # fire up the workers for each provider
 for meta_provider in list(common_metadata_limiter.API_LIMIT.keys()):

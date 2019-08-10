@@ -356,9 +356,9 @@ def main():
     common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow connection
-    common_network.mk_network_service_available('mkrabbitmq', '5672')
+    common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
-    mkconsume = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    mkconsume = MKConsumer('amqp://guest:guest@mkstack_rabbitmq:5672/%2F')
     try:
         mkconsume.run()
     except KeyboardInterrupt:

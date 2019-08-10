@@ -21,7 +21,7 @@ import json
 import pika
 
 
-def com_net_pika_send(body_data, rabbit_host_name='mkrabbitmq', exchange_name='mkque_ex',
+def com_net_pika_send(body_data, rabbit_host_name='mkstack_rabbitmq', exchange_name='mkque_ex',
                       route_key='mkque'):
     pika_inst = pika.BlockingConnection(pika.ConnectionParameters(host=rabbit_host_name))
     pika_channel = pika_inst.channel()

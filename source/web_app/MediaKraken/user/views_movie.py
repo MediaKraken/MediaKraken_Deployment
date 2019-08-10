@@ -38,7 +38,7 @@ def movie_detail(guid):
                 {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
                  'User': current_user.get_id(),
                  'Data': g.db_connection.db_read_media(guid)['mm_media_path']},
-                rabbit_host_name='mkrabbitmq',
+                rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
                 route_key='mkque')
             return redirect(url_for('user_playback.user_video_player_videojs', mtype='hls',

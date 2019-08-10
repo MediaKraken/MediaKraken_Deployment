@@ -58,7 +58,7 @@ def admin_library():
         if "scan" in request.form:
             # submit the message
             common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
-                                                  rabbit_host_name='mkrabbitmq',
+                                                  rabbit_host_name='mkstack_rabbitmq',
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
             flash("Scheduled media scan.")

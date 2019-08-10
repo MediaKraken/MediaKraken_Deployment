@@ -321,8 +321,8 @@ class MKConsumer:
 
 def main():
     # fire off wait for it script to allow connection
-    common_network.mk_network_service_available('mkrabbitmq', '5672')
-    mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
+    mk_rabbit = MKConsumer('amqp://guest:guest@mkstack_rabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:

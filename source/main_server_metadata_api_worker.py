@@ -347,7 +347,7 @@ for class_data in thread_db.db_media_class_list(None, None):
     class_text_dict[class_data['mm_media_class_guid']] = class_data['mm_media_class_type']
 
 # pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
+parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 
