@@ -35,7 +35,7 @@ services:
   pgbouncer:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:dev
     environment:
-      - DB_HOST=mkdatabase
+      - DB_HOST=database
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
       - POOL_MODE=session
@@ -73,6 +73,21 @@ services:
       - mediakraken_vol_postgresql:/var/lib/postgresql
     networks:
       - mediakraken_network_backend
+
+  # runs hardware
+  hardware:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkhardware:dev
+    environment:
+      - DEBUG=${DEBUG}
+    volumes:
+      # this stores the "push button" key
+      - mediakraken_vol_phue:/mediakraken/phue
+    entrypoint: python3 main_hardware.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    networks:
+      - mediakraken_network_backend
+    restart: unless-stopped
 
 #  # Postgresql server
 #  database:
