@@ -24,8 +24,6 @@ services:
   appserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
     environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -70,8 +68,6 @@ services:
   cron:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
     environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -96,7 +92,6 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
-    env_file: .env
     volumes:
       - mediakraken_vol_postgresql:/var/lib/postgresql
     networks:
@@ -157,8 +152,6 @@ services:
   download:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
     environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -175,8 +168,6 @@ services:
   ffprobe:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkffprobe:dev
     environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -221,8 +212,6 @@ services:
   metadata:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
     environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -289,7 +278,6 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-    env_file: .env
     networks:
       - mediakraken_network_backend
 
@@ -297,8 +285,6 @@ services:
   pika:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
     environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -316,83 +302,6 @@ services:
     networks:
       - mediakraken_network_backend
 
-  # Main reactor
-  reactor:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
-    environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 60 -- python3 subprogram_reactor_line.py
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    ports:
-      - "8903:8903"
-    volumes:
-      # for start of SSL server
-      - mediakraken_vol_certs:/mediakraken/key:ro
-      - ./data/backup:/mediakraken/backup
-      - ./mkmount:/mediakraken/mnt
-      # so it can start docker containers
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - mediakraken_network_backend
-
-  # Runs the web service for the main server application
-  webserver:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
-    environment:
-      - POSTGRES_HOST=${DBHOST}
-      - POSTGRES_PORT=${DBPORT}
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
-      - SECURE=${SECURE}
-      - DEBUG=${DEBUG}
-      - SWARMIP=${SWARMIP}
-      - HOST_IP=${HOST_IP}
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 60 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    ports:
-      - "9191:9191"
-    volumes:
-      - ./mkmount:/mediakraken/mnt
-      # must not be read only as it stores cache here
-      - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static
-      - mediakraken_vol_webkey:/mediakraken/key
-      - mediakraken_vol_webpid:/var/run
-      - ./data/uploads:/mediakraken/uploads
-      # needed to show docker/swarm info
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      # hold log files
-      - ./data/log:/mediakraken/log
-      # this stores the "push button" key
-      - mediakraken_vol_phue:/mediakraken/phue
-      # server will generate salt/key
-      - /var/opt/mediakraken/secure:/mediakraken/secure:ro
-    networks:
-      - mediakraken_network_backend
-
-  portaineragent:
-    image: portainer/agent
-    environment:
-      AGENT_CLUSTER_ADDR: tasks.portaineragent
-      # AGENT_PORT: 9001
-      # LOG_LEVEL: debug
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/volumes:/var/lib/docker/volumes
-    networks:
-      - portaineragent_agent_network
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.platform.os == linux]
-
   portainer:
     image: portainer/portainer
     command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
@@ -409,6 +318,22 @@ services:
       replicas: 1
       placement:
         constraints: [node.role == manager]
+
+  portaineragent:
+    image: portainer/agent
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.portaineragent
+      # AGENT_PORT: 9001
+      # LOG_LEVEL: debug
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - portaineragent_agent_network
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
 
   # rabbit
   rabbitmq:
@@ -435,6 +360,29 @@ services:
       replicas: 1
       placement:
         constraints: [node.role == manager]
+
+  # Main reactor
+  reactor:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 60 -- python3 subprogram_reactor_line.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    ports:
+      - "8903:8903"
+    volumes:
+      # for start of SSL server
+      - mediakraken_vol_certs:/mediakraken/key:ro
+      - ./data/backup:/mediakraken/backup
+      - ./mkmount:/mediakraken/mnt
+      # so it can start docker containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - mediakraken_network_backend
 
   # runs the redis service for flask (account management)
   redis:
@@ -464,6 +412,40 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  # Runs the web service for the main server application
+  webserver:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
+    environment:
+      - POSTGRES_DB=${DBDATABASE}
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+      - SECURE=${SECURE}
+      - DEBUG=${DEBUG}
+      - SWARMIP=${SWARMIP}
+      - HOST_IP=${HOST_IP}
+    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 60 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    ports:
+      - "9191:9191"
+    volumes:
+      - ./mkmount:/mediakraken/mnt
+      # must not be read only as it stores cache here
+      - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static
+      - mediakraken_vol_webkey:/mediakraken/key
+      - mediakraken_vol_webpid:/var/run
+      - ./data/uploads:/mediakraken/uploads
+      # needed to show docker/swarm info
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # hold log files
+      - ./data/log:/mediakraken/log
+      # this stores the "push button" key
+      - mediakraken_vol_phue:/mediakraken/phue
+      # server will generate salt/key
+      - /var/opt/mediakraken/secure:/mediakraken/secure:ro
+    networks:
+      - mediakraken_network_backend
 
 # Docker private networks
 networks:
