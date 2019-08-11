@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -15,7 +15,7 @@
   Software Foundation, Inc., 51 Franklin Street,
   Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
