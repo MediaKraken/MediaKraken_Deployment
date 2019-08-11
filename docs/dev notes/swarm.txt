@@ -4,7 +4,7 @@ swarm create
 
 swarm join --advertise=<node_ip:2375> token://<cluster_id>
 
-docker network create \
+docker network create \docker-
   --driver overlay \
   --subnet 10.0.100.0/24 \
   mknetwork
@@ -13,6 +13,9 @@ docker network create \
 ***********************
 
 docker stack deploy --compose-file docker-compose-stack.yml mkstack
+
+# well, that will screw up the network names, etc, even added commented out services
+docker-compose config | docker stack deploy --compose-file docker-compose-stack.yml mkstack
 
 docker stack rm mkstack
 
