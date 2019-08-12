@@ -327,10 +327,7 @@ services:
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     networks:
-      # TODO do NOT post one below.....breaks portainer
-      # - portaineragent_agent_network
       - mediakraken_network_backend
-      - mediakraken_network_frontend
     deploy:
       mode: replicated
       replicas: 1
