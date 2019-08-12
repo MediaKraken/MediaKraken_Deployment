@@ -43,7 +43,7 @@ services:
       # needs socket for running image list
       - /var/run/docker.sock:/var/run/docker.sock:ro
     # needs to run as host so clients can see it on their subnet
-    network_mode: host
+    # network_mode: host
 
   # runs cron
   cron:
