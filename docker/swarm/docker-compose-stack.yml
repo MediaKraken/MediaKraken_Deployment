@@ -1,38 +1,15 @@
 version: '3.5'
 
 services:
-  #  reverse-proxy:
-  #    image: th-registry-1.beaverbay.local:5000/mediakraken/mktraefik:dev
-  #    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
-  #    ports:
-  #      - "80:80"     # The HTTP port
-  #      - "8080:8080" # The Web UI (enabled by --api)
-  #    volumes:
-  #      - /var/run/docker.sock:/var/run/docker.sock:ro # So that Traefik can listen to the Docker events
-  #    deploy:
-  #      placement:
-  #        constraints: [node.role == manager]
-  #    networks:
-  #      - mediakraken_network_frontend
-
-  #  whoami:
-  #    image: containous/whoami # A container that exposes an API to show its IP address
-  #    labels:
-  #      - "traefik.frontend.rule=Host:whoami.docker.localhost"
-
   # Main app server
   appserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
     environment:
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
       - SECURE=/run/secrets/secure_key
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
     secrets:
-      - db_name
-      - db_user
       - db_password
       - secure_key
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_server.py
@@ -72,12 +49,8 @@ services:
   cron:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
     environment:
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
@@ -91,12 +64,8 @@ services:
     environment:
       - MAX_CONNECTIONS=20
       - MAX_WAL_SENDERS=10
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
     stop_grace_period: 30s
     stop_signal: SIGTERM
@@ -163,12 +132,8 @@ services:
   download:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
     environment:
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_download.py
     stop_grace_period: 30s
@@ -182,12 +147,8 @@ services:
   ffprobe:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkffprobe:dev
     environment:
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
@@ -227,12 +188,8 @@ services:
   metadata:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
     environment:
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_server_metadata_api.py
     stop_grace_period: 30s
@@ -282,12 +239,14 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:dev
     environment:
       - DB_HOST=mkstack_database
-      - DB_USER=${DBUSER}
-      - DB_PASSWORD=${DBPASS}
+      - DB_USER=postgres
+      - DB_PASSWORD=/run/secrets/db_password
       - POOL_MODE=session
       - MAX_CLIENT_CONN=1024
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
+    secrets:
+      - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_database -p 5432 -t 120 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
@@ -303,12 +262,8 @@ services:
   pika:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
     environment:
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_pika.py
     stop_grace_period: 30s
@@ -386,12 +341,8 @@ services:
   reactor:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
     environment:
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_reactor_line.py
     stop_grace_period: 30s
@@ -442,12 +393,8 @@ services:
       - SECURE=/run/secrets/secure_key
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}
-      - POSTGRES_DB=/run/secrets/db_name
-      - POSTGRES_USER=/run/secrets/db_user
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
-      - db_name
-      - db_user
       - db_password
       - secure_key
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
@@ -582,9 +529,5 @@ volumes:
 secrets:
   secure_key:
     file: mkstack_secure_key.txt
-  db_name:
-    file: mkstack_db_name.txt
   db_password:
     file: mkstack_db_password.txt
-  db_user:
-    file: mkstack_db_user.txt

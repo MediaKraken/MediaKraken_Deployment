@@ -32,7 +32,7 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://" + os.environ['POSTGRES_USER'] + ":" \
-                              + os.environ['POSTGRES_PASSWORD'] + "@mkstack_pgbouncer:6432/" \
-                              + os.environ['POSTGRES_DB']
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:" \
+                              + os.environ['POSTGRES_PASSWORD'] \
+                              + "@mkstack_pgbouncer:6432/postgres"
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
