@@ -200,10 +200,6 @@ class CommonDocker:
         return self.cli.networks.prune()
 
     def com_docker_run_device_scan(self, current_host_working_directory):
-        common_global.es_inst.com_elastic_index('info',
-                                                {'path': os.path.join(
-                                                    current_host_working_directory,
-                                                    'data/devices')})
         if current_host_working_directory is not None\
                 and os.path.exists(os.path.join(current_host_working_directory, 'data/devices')):
             self.com_docker_delete_container('mkdevicescan')
@@ -221,10 +217,6 @@ class CommonDocker:
                                            )
 
     def com_docker_run_dosbox(self, current_user_uuid, current_host_working_directory, game_uuid):
-        common_global.es_inst.com_elastic_index('info',
-                                                {'path': os.path.join(
-                                                    current_host_working_directory,
-                                                    'dosbox')})
         if current_host_working_directory is not None\
                 and os.path.exists(os.path.join(current_host_working_directory, 'data/dosbox')):
             self.com_docker_delete_container(('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30])
