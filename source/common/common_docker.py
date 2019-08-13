@@ -204,62 +204,65 @@ class CommonDocker:
                                                 {'path': os.path.join(
                                                     current_host_working_directory,
                                                     'data/devices')})
-        self.com_docker_delete_container('mkdevicescan')
-        return self.cli.containers.run(image='mediakraken/mkdevicescan',
-                                       detach=True,
-                                       command='python3 /mediakraken/main_hardware_discover.py',
-                                       name='mkdevicescan',
-                                       network_mode='host',
-                                       volumes={os.path.join(current_host_working_directory,
-                                                             'data/devices'):
-                                                    {'bind': '/mediakraken/devices',
-                                                     'mode': 'rw'}
-                                                },
-                                       environment={'DEBUG': os.environ['DEBUG']},
-                                       )
+        if os.path.exists(os.path.join(current_host_working_directory, 'data/devices')):
+            self.com_docker_delete_container('mkdevicescan')
+            return self.cli.containers.run(image='mediakraken/mkdevicescan',
+                                           detach=True,
+                                           command='python3 /mediakraken/main_hardware_discover.py',
+                                           name='mkdevicescan',
+                                           network_mode='host',
+                                           volumes={os.path.join(current_host_working_directory,
+                                                                 'data/devices'):
+                                                        {'bind': '/mediakraken/devices',
+                                                         'mode': 'rw'}
+                                                    },
+                                           environment={'DEBUG': os.environ['DEBUG']},
+                                           )
 
     def com_docker_run_dosbox(self, current_user_uuid, current_host_working_directory, game_uuid):
         common_global.es_inst.com_elastic_index('info',
                                                 {'path': os.path.join(
                                                     current_host_working_directory,
                                                     'dosbox')})
-        self.com_docker_delete_container(('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30])
-        self.com_docker_network_create('mk_mediakraken_network')
-        # create user dir for dosbox, game_uuid is used to not lose installs/game saves
-        user_host_dir = os.path.join(current_host_working_directory, 'data/dosbox',
-                                     current_user_uuid, game_uuid)
-        if not os.path.exists(user_host_dir):
-            os.makedirs(user_host_dir)
-        return self.cli.containers.run(image='mediakraken/mkdosboxweb',
-                                       detach=True,
-                                       name=('mkdosboxweb' + current_user_uuid.replace('-', ''))[
-                                            :30],
-                                       network='mk_mediakraken_game_network',
-                                       volumes={user_host_dir:
-                                                    {'bind': '/mediakraken/dosbox',
-                                                     'mode': 'rw'}
-                                                },
-                                       environment={'DEBUG': os.environ['DEBUG']},
-                                       )
+        if os.path.exists(os.path.join(current_host_working_directory, 'data/dosbox')):
+            self.com_docker_delete_container(('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30])
+            self.com_docker_network_create('mk_mediakraken_network')
+            # create user dir for dosbox, game_uuid is used to not lose installs/game saves
+            user_host_dir = os.path.join(current_host_working_directory, 'data/dosbox',
+                                         current_user_uuid, game_uuid)
+            if not os.path.exists(user_host_dir):
+                os.makedirs(user_host_dir)
+            return self.cli.containers.run(image='mediakraken/mkdosboxweb',
+                                           detach=True,
+                                           name=('mkdosboxweb' + current_user_uuid.replace('-', ''))[
+                                                :30],
+                                           network='mk_mediakraken_game_network',
+                                           volumes={user_host_dir:
+                                                        {'bind': '/mediakraken/dosbox',
+                                                         'mode': 'rw'}
+                                                    },
+                                           environment={'DEBUG': os.environ['DEBUG']},
+                                           )
 
     def com_docker_run_elk(self, current_host_working_directory):
-        self.com_docker_delete_container('mkelk')
-        self.com_docker_network_create('mk_mediakraken_network')
-        return self.cli.containers.run(image='mediakraken/mkelk',
-                                       detach=True,
-                                       ports={"5000": 5000, "5044": 5044,
-                                              "5601": 5601, "9200": 9200},
-                                       name='mkelk',
-                                       network='mk_mediakraken_network',
-                                       volumes={
-                                           os.path.join(current_host_working_directory, 'data/elk'):
-                                               {'bind': '/var/lib/elasticsearch',
-                                                'mode': 'rw'}
-                                       },
-                                       environment={'ELASTICSEARCH_START': 1,
-                                                    'LOGSTASH_START': 1,
-                                                    'KIBANA_START': 1}
-                                       )
+        if os.path.exists(os.path.join(current_host_working_directory, 'data/elk')):
+            self.com_docker_delete_container('mkelk')
+            self.com_docker_network_create('mk_mediakraken_network')
+            return self.cli.containers.run(image='mediakraken/mkelk',
+                                           detach=True,
+                                           ports={"5000": 5000, "5044": 5044,
+                                                  "5601": 5601, "9200": 9200},
+                                           name='mkelk',
+                                           network='mk_mediakraken_network',
+                                           volumes={
+                                               os.path.join(current_host_working_directory, 'data/elk'):
+                                                   {'bind': '/var/lib/elasticsearch',
+                                                    'mode': 'rw'}
+                                           },
+                                           environment={'ELASTICSEARCH_START': 1,
+                                                        'LOGSTASH_START': 1,
+                                                        'KIBANA_START': 1}
+                                           )
 
     def com_docker_run_game_data(self, current_host_working_directory,
                                  container_command='python3 /mediakraken/subprogram_metadata_games.py'):
@@ -329,17 +332,18 @@ class CommonDocker:
                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self, current_host_working_directory):
-        self.com_docker_delete_container('mkmumble')
-        return self.cli.containers.run(image='mediakraken/mkmumble',
-                                       detach=True,
-                                       ports={"64738": 64738},
-                                       name='mkmumble',
-                                       volumes={os.path.join(current_host_working_directory,
-                                                             'data/mumble'):
-                                                    {'bind': '/etc/mumble',
-                                                     'mode': 'rw'}
-                                                }
-                                       )
+        if os.path.exists(os.path.join(current_host_working_directory, 'data/mumble')):
+            self.com_docker_delete_container('mkmumble')
+            return self.cli.containers.run(image='mediakraken/mkmumble',
+                                           detach=True,
+                                           ports={"64738": 64738},
+                                           name='mkmumble',
+                                           volumes={os.path.join(current_host_working_directory,
+                                                                 'data/mumble'):
+                                                        {'bind': '/etc/mumble',
+                                                         'mode': 'rw'}
+                                                    }
+                                           )
 
     # def com_docker_run_openldap(self, current_host_working_directory):
     #     self.com_docker_delete_container('mkopenldap')
@@ -367,19 +371,6 @@ class CommonDocker:
                                        network='mk_mediakraken_network',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
-
-    def com_docker_run_portainer(self, current_host_working_directory):
-        self.com_docker_delete_container('mkportainer')
-        return self.cli.containers.run(image='portainer/portainer:latest',
-                                       detach=True,
-                                       name='mkportainer',
-                                       ports={"9000": 9000},
-                                       volumes={'/var/run/docker.sock':
-                                                    {'bind': '/var/run/docker.sock',
-                                                     'mode': 'ro'},
-                                                os.path.join(current_host_working_directory,
-                                                             'data/portainer'):
-                                                    {'bind': '/ data', 'mode': 'rw'}})
 
     def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command,
                              ram_disk=False):
