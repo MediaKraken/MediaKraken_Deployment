@@ -55,7 +55,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-COPY wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash-busybox130.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 

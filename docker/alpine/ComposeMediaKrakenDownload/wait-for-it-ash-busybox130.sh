@@ -1,5 +1,6 @@
 #!/bin/sh
 #   Use this script to test if a given TCP host/port are available
+# https://github.com/ucalgary/wait-for-it/blob/master/wait-for-it.sh
 
 cmdname=$(basename $0)
 
@@ -106,7 +107,7 @@ TIMEOUT_PATH=$(realpath $(which timeout))
 BUSYBOX="busybox"
 if test "${TIMEOUT_PATH#*$BUSYBOX}" != "$BUSYBOX"; then
     ISBUSY=1
-    BUSYTIMEFLAG="-t"
+    BUSYTIMEFLAG=""
 else
     ISBUSY=0
     BUSYTIMEFLAG=""

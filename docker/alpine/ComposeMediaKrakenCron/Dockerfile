@@ -29,7 +29,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rm -rf /var/cache/apk/* \
   && rm requirements.txt
 
-COPY wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash-busybox130.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 

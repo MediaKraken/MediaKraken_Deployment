@@ -37,7 +37,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 #  && pip3 install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
 
 RUN mkdir /mediakraken/cache
-COPY wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash-busybox130.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 

@@ -52,7 +52,7 @@ services:
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_cron_checker.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
@@ -191,7 +191,7 @@ services:
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_server_metadata_api.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -377,7 +377,7 @@ services:
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_reactor_line.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_reactor_line.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
