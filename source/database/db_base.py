@@ -19,6 +19,7 @@
 import multiprocessing
 import os
 import sys
+import time
 
 import psycopg2
 import psycopg2.extras
@@ -36,9 +37,16 @@ def db_open(self):
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     # TODO throws tuple error if comma
-    self.sql3_conn = psycopg2.connect(
-        "dbname='postgres' user='postgres' host='mkstack_pgbouncer' port=6432 password='%s'"
-        % os.environ['POSTGRES_PASSWORD'])
+    while True:
+        try:
+            self.sql3_conn = psycopg2.connect(
+                "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
+                " port=6432 password='%s'"
+                % os.environ['POSTGRES_PASSWORD'])
+        except psycopg2.OperationalError:
+            time.sleep(10)
+        else:
+            break
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
