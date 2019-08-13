@@ -204,7 +204,8 @@ class CommonDocker:
                                                 {'path': os.path.join(
                                                     current_host_working_directory,
                                                     'data/devices')})
-        if os.path.exists(os.path.join(current_host_working_directory, 'data/devices')):
+        if current_host_working_directory is not None\
+                and os.path.exists(os.path.join(current_host_working_directory, 'data/devices')):
             self.com_docker_delete_container('mkdevicescan')
             return self.cli.containers.run(image='mediakraken/mkdevicescan',
                                            detach=True,
@@ -224,7 +225,8 @@ class CommonDocker:
                                                 {'path': os.path.join(
                                                     current_host_working_directory,
                                                     'dosbox')})
-        if os.path.exists(os.path.join(current_host_working_directory, 'data/dosbox')):
+        if current_host_working_directory is not None\
+                and os.path.exists(os.path.join(current_host_working_directory, 'data/dosbox')):
             self.com_docker_delete_container(('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30])
             self.com_docker_network_create('mk_mediakraken_network')
             # create user dir for dosbox, game_uuid is used to not lose installs/game saves
@@ -245,7 +247,8 @@ class CommonDocker:
                                            )
 
     def com_docker_run_elk(self, current_host_working_directory):
-        if os.path.exists(os.path.join(current_host_working_directory, 'data/elk')):
+        if current_host_working_directory is not None\
+                and os.path.exists(os.path.join(current_host_working_directory, 'data/elk')):
             self.com_docker_delete_container('mkelk')
             self.com_docker_network_create('mk_mediakraken_network')
             return self.cli.containers.run(image='mediakraken/mkelk',
@@ -332,7 +335,7 @@ class CommonDocker:
                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self, current_host_working_directory):
-        if os.path.exists(os.path.join(current_host_working_directory, 'data/mumble')):
+        if current_host_working_directory is not None and os.path.exists(os.path.join(current_host_working_directory, 'data/mumble')):
             self.com_docker_delete_container('mkmumble')
             return self.cli.containers.run(image='mediakraken/mkmumble',
                                            detach=True,
