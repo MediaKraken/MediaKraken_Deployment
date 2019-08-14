@@ -19,7 +19,7 @@ from simplekv.memory.redisstore import RedisStore
 
 def create_app(config_object=ProdConfig):
     app = Flask(__name__)
-    KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
+    KVSessionExtension(RedisStore(redis.StrictRedis(host='mkstack_redis')), app)
     app.config.from_object(config_object)
     app.config['UPLOAD_FOLDER'] = '/mediakraken/uploads'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
