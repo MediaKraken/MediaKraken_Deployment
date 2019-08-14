@@ -22,7 +22,7 @@ import uuid
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_metadata_tmdb
+from common import common_metadata_provider_themoviedb
 from common import common_signal
 
 # start logging
@@ -35,7 +35,7 @@ common_signal.com_signal_set_break()
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # grab the updated data
-tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
+tmdb = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 
 # TODO this should go through the limiter
 # process movie changes

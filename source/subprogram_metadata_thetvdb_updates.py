@@ -23,7 +23,7 @@ import xmltodict
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_metadata_thetvdb
+from common import common_metadata_provider_thetvdb
 from common import common_signal
 
 # start logging
@@ -38,7 +38,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # TODO this should go through the limiter
 # grab the data
-thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(
+thetvdb_API_Connection = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(
     option_config_json)
 option_json, status_json = db_connection.db_opt_status_read()
 # for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc\
