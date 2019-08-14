@@ -267,7 +267,6 @@ services:
       - db_password
     ports:
       - "8905:8080"
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 5432 -t 120 -- unicorn -p 8080 -c ./config/unicorn.rb -E production
     stop_grace_period: 30s
     stop_signal: SIGTERM
     deploy:
@@ -285,7 +284,6 @@ services:
       - db_password
     ports:
       - "8910:8080"
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 5432 -t 120 -- puma -C config/puma.rb
     stop_grace_period: 30s
     stop_signal: SIGTERM
     deploy:
