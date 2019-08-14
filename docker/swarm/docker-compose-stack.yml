@@ -432,6 +432,7 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
+      - "8901:8080"
       - "9191:9191"
     volumes:
       - ./mkmount:/mediakraken/mnt
