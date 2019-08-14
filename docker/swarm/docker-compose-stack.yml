@@ -150,7 +150,7 @@ services:
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -299,7 +299,7 @@ services:
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_pika.py
+    entrypoint: python3 subprogram_pika.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
