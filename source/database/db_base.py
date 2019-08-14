@@ -43,7 +43,7 @@ def db_open(self):
                 "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
                 " port=6432 password='%s'"
                 % os.environ['POSTGRES_PASSWORD'])
-        except psycopg2.OperationalError:
+        except (psycopg2.OperationalError, psycopg2.DatabaseError):
             time.sleep(10)
         else:
             break
