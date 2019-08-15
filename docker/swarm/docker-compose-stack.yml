@@ -44,6 +44,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     # needs to run as host so clients can see it on their subnet
     # network_mode: host
+    networks:
+      - host
 
   # runs cron
   cron:
@@ -466,6 +468,9 @@ networks:
   mediakraken_network_frontend:
     driver: overlay
     attachable: true
+  host:
+    name: host
+    external: true
 
 volumes:
   portainer_data:
