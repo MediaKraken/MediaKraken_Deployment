@@ -182,7 +182,7 @@ class CommonDocker:
         """
         return self.cli_api.unpause(container=container_image_name)
 
-    def com_docker_network_create(self, network_name='mk_mediakraken_network'):
+    def com_docker_network_create(self, network_name='mediakraken_network_backend'):
         """
         create network
         """
@@ -190,7 +190,7 @@ class CommonDocker:
         if len(self.com_docker_network_list(network_name)) == 0:
             return self.cli.networks.create(name=network_name, driver="bridge")
 
-    def com_docker_network_list(self, network_name='mk_mediakraken_network'):
+    def com_docker_network_list(self, network_name='mediakraken_network_backend'):
         return self.cli.networks.list(network_name)
 
     def com_docker_network_prune(self):
@@ -221,7 +221,7 @@ class CommonDocker:
                 and os.path.exists(os.path.join(current_host_working_directory, 'data/dosbox')):
             self.com_docker_delete_container(
                 ('mkdosboxweb' + current_user_uuid.replace('-', ''))[:30])
-            self.com_docker_network_create('mk_mediakraken_network')
+            self.com_docker_network_create('mediakraken_network_backend')
             # create user dir for dosbox, game_uuid is used to not lose installs/game saves
             user_host_dir = os.path.join(current_host_working_directory, 'data/dosbox',
                                          current_user_uuid, game_uuid)
@@ -232,7 +232,7 @@ class CommonDocker:
                                            name=('mkdosboxweb' + current_user_uuid.replace('-',
                                                                                            ''))[
                                                 :30],
-                                           network='mk_mediakraken_game_network',
+                                           network='mediakraken_network_backend',
                                            volumes={user_host_dir:
                                                         {'bind': '/mediakraken/dosbox',
                                                          'mode': 'rw'}
@@ -244,13 +244,13 @@ class CommonDocker:
         if current_host_working_directory is not None \
                 and os.path.exists(os.path.join(current_host_working_directory, 'data/elk')):
             self.com_docker_delete_container('mkelk')
-            self.com_docker_network_create('mk_mediakraken_network')
+            self.com_docker_network_create('mediakraken_network_backend')
             return self.cli.containers.run(image='mediakraken/mkelk',
                                            detach=True,
                                            ports={"5000": 5000, "5044": 5044,
                                                   "5601": 5601, "9200": 9200},
                                            name='mkelk',
-                                           network='mk_mediakraken_network',
+                                           network='mediakraken_network_backend',
                                            volumes={
                                                os.path.join(current_host_working_directory,
                                                             'data/elk'):
@@ -271,7 +271,7 @@ class CommonDocker:
                 os.path.join(current_host_working_directory, 'data/emulation')):
             self.com_docker_delete_container('mkgamedata')
             return self.cli.containers.run(image='mediakraken/mkgamedata',
-                                           network='mk_mediakraken_network',
+                                           network='mediakraken_network_backend',
                                            command=container_command,
                                            detach=True,
                                            volumes={os.path.join(current_host_working_directory,
@@ -323,7 +323,7 @@ class CommonDocker:
             return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
                                            detach=True,
                                            name='mkmusicbrainz',
-                                           network='mk_mediakraken_network',
+                                           network='mediakraken_network_backend',
                                            ports={"5000": 5000},
                                            environment={'BRAINZCODE': brainzcode},
                                            volumes={os.path.join(current_host_working_directory,
@@ -364,16 +364,16 @@ class CommonDocker:
                                                                  'data/openldap/data'):
                                                         {'bind': '/var/lib/openldap/openldap-data',
                                                          'mode': 'rw'}},
-                                           network='mk_mediakraken_network')
+                                           network='mediakraken_network_backend')
 
     def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
         self.com_docker_delete_container('mkpgadmin')
-        self.com_docker_network_create('mk_mediakraken_network')
+        self.com_docker_network_create('mediakraken_network_backend')
         return self.cli.containers.run(image='mediakraken/mkpgadmin',
                                        detach=True,
                                        name='mkpgadmin',
                                        ports={"5050": 5050},
-                                       network='mk_mediakraken_network',
+                                       network='mediakraken_network_backend',
                                        environment={'PGADMIN_DEFAULT_EMAIL': user_email,
                                                     'PGADMIN_DEFAULT_PASSWORD': user_password})
 
@@ -402,7 +402,7 @@ class CommonDocker:
         self.com_docker_delete_container(image_name.replace('mediakraken/', ''))
         return self.cli.containers.run(image=image_name,
                                        ports=port_mapping,
-                                       network='mk_mediakraken_network',
+                                       network='mediakraken_network_backend',
                                        command=container_command,
                                        detach=True,
                                        volumes=mount_volumes,
@@ -430,7 +430,7 @@ class CommonDocker:
                 os.path.join(current_host_working_directory, 'data/transmission')):
             self.com_docker_delete_container('mktransmission')
             return self.cli.containers.run(image='mediakraken/mktransmission',
-                                           network='mk_mediakraken_network',
+                                           network='mediakraken_network_backend',
                                            detach=True,
                                            ports={"9091": 9091, "51413/tcp": 51413,
                                                   "51413/udp": 51413},
@@ -469,7 +469,7 @@ class CommonDocker:
         run wireshark
         """
         self.com_docker_delete_container('mkwireshark')
-        self.com_docker_network_create('mk_mediakraken_network')
+        self.com_docker_network_create('mediakraken_network_backend')
         return self.cli.containers.run(image='mediakraken/mkwireshark',
                                        detach=True,
                                        name='mkwireshark',
