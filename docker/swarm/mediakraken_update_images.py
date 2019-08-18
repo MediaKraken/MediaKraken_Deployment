@@ -21,6 +21,6 @@ import subprocess
 with open('./docker-compose-stack.yml') as file_handle:
     for line in file_handle:
         if line.find('image: ') > 0:
-            pull_pid = subprocess.Popen('docker pull %s' % line.split('image: ')[1])
+            pull_pid = subprocess.Popen('docker pull %s' % line.split('image: ')[1].strip())
             pull_pid.wait()
 file_handle.close()
