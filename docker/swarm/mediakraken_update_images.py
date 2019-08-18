@@ -16,11 +16,13 @@
   MA 02110-1301, USA.
 """
 
+import shlex
 import subprocess
 
 with open('./docker-compose-stack.yml') as file_handle:
     for line in file_handle:
         if line.find('image: ') > 0:
-            pull_pid = subprocess.Popen('docker pull %s' % line.split('image: ')[1].strip())
+            pull_pid = subprocess.check_output(shlex.split('docker pull %s'
+                                                           % line.split('image: ')[1].strip()))
             pull_pid.wait()
 file_handle.close()
