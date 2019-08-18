@@ -28,6 +28,14 @@ docker stack services mkstack
 
 docker stack list
 
+# lists space used by docker
+docker system df
+
+docker system prune
+
+# nuke from orbit
+docker system prune -a
+
 docker volume rm $(docker volume ls -qf dangling=true)
 
 docker service logs -t mkstack_database
