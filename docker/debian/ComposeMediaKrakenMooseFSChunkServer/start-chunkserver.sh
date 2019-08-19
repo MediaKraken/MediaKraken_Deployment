@@ -10,7 +10,7 @@ SIZE="${SIZE:- 10}"
 
 echo "/mnt/hdd0 "$SIZE"GiB" >> /etc/mfs/mfshdd.cfg
 echo "LABELS=$LABELS" >> /etc/mfs/mfschunkserver.cfg
-echo "MASTERHOST=mkstack_moosefsmaster" >> /etc/mfs/mfschunkserver.cfg
+echo "MASTER_HOST=mkstack_moosefsmaster" >> /etc/mfs/mfschunkserver.cfg
 
 mfschunkserver start
 
