@@ -1,0 +1,18 @@
+kubectl version
+
+kubectl get nodes
+
+kubectl run kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1 --port=8080
+
+kubectl get deployments
+
+
+    kubectl get - list resources
+    kubectl describe - show detailed information about a resource
+    kubectl logs - print the logs from a container in a pod
+    kubectl exec - execute a command on a container in a pod
+
+
+kubectl describe pods
+
+kubectl logs $POD_NAME
