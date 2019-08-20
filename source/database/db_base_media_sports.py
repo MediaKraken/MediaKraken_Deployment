@@ -190,9 +190,9 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
     return self.db_cursor.fetchone()[0]
 
 
-def db_media_sports_list(self, class_guid, list_type=None, list_genre='All',
-                         list_limit=0, group_collection=False, offset=None, include_remote=False,
-                         search_text=None):
+def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_text=None,
+                         list_type=None, list_genre='All',
+                         group_collection=False, include_remote=False):
     """
     # web media return
     """
