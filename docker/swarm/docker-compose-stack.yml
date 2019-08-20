@@ -45,7 +45,7 @@ services:
     # needs to run as host so clients can see it on their subnet
     # network_mode: host
     networks:
-      - host
+      - mediakraken_network_backend
 
   # runs cron
   cron:
