@@ -272,7 +272,7 @@ def admin_server_zfs():
 @blueprint.route("/cloud")
 @login_required
 @admin_required
-def admin_cloud_dropbox():
+def admin_cloud():
     """
     browse cloud via libcloud
     """
