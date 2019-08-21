@@ -46,7 +46,7 @@
         </table>
     </div>
     {% endif %}
-    <p><a href="{{ url_for('admins_chromecasts.admin_chromecast_edit_page') }}" class="btn btn-primary btn-large">Add new Chromecast manually</a>
+    <p><a href="{{ url_for('admins_hardware.admin_chromecast_edit_page') }}" class="btn btn-primary btn-large">Add new Chromecast manually</a>
     <form name="form_chromecast_scan" action="." method="post">
         <input class="btn btn-default btn-submit" type="submit" name="chromecast_scan" value="Chromecast Scan">
     </form>
@@ -88,7 +88,7 @@
         </table>
     </div>
     {% endif %}
-    <p><a href="{{ url_for('admins_tvtuners.admin_tvtuner_edit_page') }}" class="btn btn-primary btn-large">Add new tuner manually</a>
+    <p><a href="{{ url_for('admins_hardware.admin_tvtuner_edit_page') }}" class="btn btn-primary btn-large">Add new tuner manually</a>
     <form name="form_tuner_scan" action="." method="post">
         <input class="btn btn-default btn-submit" type="submit" name="tuner_scan" value="Tuner Scan">
     </form>
