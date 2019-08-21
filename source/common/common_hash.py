@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import base64
 import hashlib
@@ -30,8 +30,6 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 from . import common_file
-from . import common_global
-from . import common_hash_c_code
 
 
 class CommonHashCrypto:
@@ -72,98 +70,61 @@ class CommonHashCrypto:
         return self.fernet.decrypt(decode_string.encode()).decode()
 
 
-def com_hash_sha1_by_filename(file_name):
+def com_hash_sha1_by_filename(file_name, enter_archive=False):
     """
-    Generate sha1 has by filename
+    Calculate sha1 for file
     """
-    if file_name.endswith('zip'):
-        zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
-        hash_dict = {}
-        for zippedfile in zip_handle.namelist():
-            try:
-                # calculate sha1 hash
-                SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
-                SHA1.update(zip_handle.read(zippedfile))
-                sha1_hash_data = SHA1.hexdigest()
-                hash_dict[zippedfile] = sha1_hash_data
-            except:
-                pass
-        zip_handle.close()
-        if len(hash_dict) > 0:
-            if len(hash_dict) == 1:
-                fileHASHListSingle.append(list(hash_dict.values())[0])
-                fileHASHNameListSingle.append(os.path.normpath(file_name))
-            else:
-                fileHASHList.append(hash_dict)
-            return hash_dict
-        return None
-    elif file_name.endswith('7z'):
-        try:
-            file_handle = open(file_name, 'rb')
-            archive = Archive7z(file_handle)
-            filenames = archive.getnames()
+    if enter_archive is False:
+        sha1 = hashlib.sha1()
+        with open(file_name, 'rb') as file_handle:
+            for chunk in iter(lambda: file_handle.read(8192), b''):
+                sha1.update(chunk)
+        file_handle.close()
+        return sha1.digest()  # TODO or do I need to use hexdigest
+    else:
+        # get without the dot
+        file_extention = os.path.splitext(file_name)[1][1:].strip().lower()
+        if file_extention == 'zip':
+            zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
             hash_dict = {}
-            for filename in filenames:
-                cf = archive.getmember(filename)
+            for zippedfile in zip_handle.namelist():
                 try:
                     # calculate sha1 hash
                     SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
-                    SHA1.update(cf.read())
+                    SHA1.update(zip_handle.read(zippedfile))
                     sha1_hash_data = SHA1.hexdigest()
-                    hash_dict[filename] = sha1_hash_data
+                    hash_dict[zippedfile] = sha1_hash_data
                 except:
                     pass
-            file_handle.close()
-            if len(hash_dict) > 0:
-                if len(hash_dict) == 1:
-                    fileHASHListSingle.append(list(hash_dict.values())[0])
-                    fileHASHNameListSingle.append(os.path.normpath(file_name))
-                else:
-                    fileHASHList.append(hash_dict)
-                    fileHASHNameList.append(os.path.normpath(file_name))
+            zip_handle.close()
+            return hash_dict
+        elif file_name.endswith('7z'):
+            try:
+                file_handle = open(file_name, 'rb')
+                archive = Archive7z(file_handle)
+                filenames = archive.getnames()
+                hash_dict = {}
+                for filename in filenames:
+                    cf = archive.getmember(filename)
+                    try:
+                        # calculate sha1 hash
+                        SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
+                        SHA1.update(cf.read())
+                        sha1_hash_data = SHA1.hexdigest()
+                        hash_dict[filename] = sha1_hash_data
+                    except:
+                        pass
+                file_handle.close()
                 return hash_dict
-        except:
-            pass
-        return None
-    else:
-        sha1_hash_data = None
-        file_pointer = open(file_name, 'rb')
-        # read in chunks to lower memory requirement
-        try:
-            SHA1 = hashlib.sha1()  # "reset" the sha1 to blank
-            for chunk in iter(lambda: file_pointer.read(128 * SHA1.block_size), ''):
-                SHA1.update(chunk)
-                sha1_hash_data = SHA1.hexdigest()
-        except:
-            common_global.es_inst.com_elastic_index('error', {'stuff': "hash sha1 fail: %s" %
-                                                                       file_name})
-        file_pointer.close()
-        return sha1_hash_data
+            except:
+                pass
 
 
-def com_hash_sha1_c(file_name):
+def com_hash_crc32_by_filename(file_name):
     """
-    c call for sha1 hash generation by file name
-    http://pages.cs.wisc.edu/~johnl/np_inline/pydoc-0.3.html
+    Calculate crc32 for file
     """
-    num = 0
-    while 1:
-        zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
-        for zippedfile in zip_handle.namelist():
-            # calculate sha1 hash
-            #            SHA1.update(zip_handle.read(zippedfile))
-            zip_file_data = zip_handle.read(zippedfile)
-            R = inline(common_hash_c_code.COM_C_CODE, ['zip_file_data'],
-                       support_code=common_hash_c_code.COM_SHA1_CODE)
-        num += 1
-        if num > 5:
-            break
-
-
-def com_hash_crc32(file_name):
-    """
-    Caclucate crc32 for file
-    """
+    #  If you want the adler32 or crc32 hash functions, they are available in the zlib module.
     file_pointer = open(file_name, 'rb')
     CRC = zlib.crc32(file_pointer.read(1024 * 1024))
     while True:
@@ -173,6 +134,18 @@ def com_hash_crc32(file_name):
         CRC = zlib.crc32(data, CRC)
     file_pointer.close()
     return CRC
+
+
+def com_hash_md5_by_filename(file_name):
+    """
+    Calculate md5 for file
+    """
+    md5 = hashlib.md5()
+    with open(file_name, 'rb') as file_handle:
+        for chunk in iter(lambda: file_handle.read(8192), b''):
+            md5.update(chunk)
+    file_handle.close()
+    return md5.digest()  # TODO or do I need to use hexdigest
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
@@ -202,8 +175,10 @@ def com_hash_ed2k(filepath):
         a = gen(file_handle)
         hashes = [md4_hash(data).digest() for data in a]
         if len(hashes) == 1:
+            file_handle.close()
             return hashes[0].encode("hex")
         else:
+            file_handle.close()
             return md4_hash(reduce(lambda a, d: a + d, hashes, "")).hexdigest()
 
 
@@ -217,13 +192,14 @@ def com_hash_thesubdb(file_name):
         data = file_handle.read(readsize)
         file_handle.seek(-readsize, os.SEEK_END)
         data += file_handle.read(readsize)
+    file_handle.close()
     return hashlib.md5(data).hexdigest()
 
 
 def com_hash_opensubtitles(file_name):
     """
     hash for opensubtiles.org
-    folling routine is provided by opensubtitles.org website for api calls
+    following routine is provided by opensubtitles.org website for api calls
     """
     try:
         longlongformat = '<q'  # little-endian long long
@@ -249,11 +225,3 @@ def com_hash_opensubtitles(file_name):
         return returnedhash
     except IOError:
         return "IOError"
-
-
-def com_hash_md5_by_filename(filename):
-    md5 = hashlib.md5()
-    with open(filename, 'rb') as f:
-        for chunk in iter(lambda: f.read(8192), b''):
-            md5.update(chunk)
-    return md5.digest()

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import uuid
 
@@ -49,7 +49,7 @@ def db_meta_game_system_list(self, offset=0, records=None, search_value=None):
     """
     # return list of game systems
     """
-    # TODO might need to sort by release year as well for machines with multiple released
+    # TODO might need to sort by release year as well for machines with multiple releases
     if search_value is not None:
         self.db_cursor.execute('select gs_id,gs_game_system_name,'
                                'gs_game_system_json->\'description\','

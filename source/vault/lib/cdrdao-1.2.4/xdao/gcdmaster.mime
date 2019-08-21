@@ -1,7 +1,0 @@
-# mime types for gcdmaster
-
-application/x-toc
-        ext: toc TOC
-
-application/x-cue
-        ext: cue CUE

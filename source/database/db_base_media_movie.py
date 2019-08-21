@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import datetime
 
@@ -202,7 +202,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -215,7 +215,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -231,7 +231,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -239,7 +239,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                ' from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s'
@@ -255,7 +255,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -263,7 +263,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s'
@@ -289,7 +289,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_media_name) as temp'
@@ -299,7 +299,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_media_name) as temp'
@@ -311,14 +311,14 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_media_name)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid'
@@ -329,14 +329,14 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' order by mm_media_metadata_guid, mm_media_name)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid'
@@ -353,7 +353,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metajson,'
                                                ' mm_media_path as mediapath from mm_media,'
-                                               ' mm_metadata_movie where mm_media_class_guid = %s'
+                                               ' mm_metadata_movie, mm_metadata_json where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
@@ -369,13 +369,13 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_media_name as name,'
                                                ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metajson,'
-                                               ' mm_media_path as mediapath from mm_media,'
+                                               ' mm_media_path as mediapath, mm_metadata_json from mm_media,'
                                                ' mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
-                                               ' mm_media_path as mediapath'
+                                               ' mm_media_path as mediapath, mm_metadata_json'
                                                ' from mm_metadata_collection'
                                                ' order by mm_media_metadata_guid, name) as temp'
                                                ' order by LOWER(name),'
@@ -388,7 +388,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_media_name as name,'
                                                ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metaimagejson,'
-                                               ' mm_media_path as mediapath'
+                                               ' mm_media_path as mediapath, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
@@ -407,7 +407,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_media_name as name,'
                                                ' mm_media_guid as guid, mm_metadata_user_json as mediajson,'
                                                ' mm_metadata_localimage_json as metaimagejson,'
-                                               ' mm_media_path as mediapath'
+                                               ' mm_media_path as mediapath, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
@@ -429,7 +429,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -445,7 +445,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -463,7 +463,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -473,7 +473,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s'
                                                ' and mmr_media_metadata_guid = mm_metadata_guid'
@@ -494,7 +494,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
@@ -504,7 +504,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s'
                                                ' and mmr_media_metadata_guid = mm_metadata_guid'
@@ -532,7 +532,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
@@ -544,7 +544,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from (select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
@@ -559,7 +559,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     if offset is None:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
@@ -568,7 +568,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union (select distinct on (mmr_media_metadata_guid)'
                                                ' mm_media_name, mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
@@ -580,7 +580,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                     else:
                         self.db_cursor.execute('select * from ((select distinct'
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
-                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path'
+                                               ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
@@ -589,7 +589,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union (select distinct on (mmr_media_metadata_guid)'
                                                ' mm_media_name, mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_localimage_json, NULL as '
-                                               'mmr_media_path'
+                                               'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid and mm_metadata_json->\'Meta\''

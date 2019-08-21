@@ -20,7 +20,7 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_d
 common_signal.com_signal_set_break()
 
 # open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json = common_config_ini.com_config_read(close_db=True)
 
 
 class MKConsumer:
@@ -296,9 +296,9 @@ class MKConsumer:
 
 def main():
     # fire off wait for it script to allow connection
-    common_network.mk_network_service_available('mkrabbitmq', '5672')
+    common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
-    mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    mk_rabbit = MKConsumer('amqp://guest:guest@mkstack_rabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:

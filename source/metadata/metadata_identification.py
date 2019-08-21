@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import os
 import uuid
@@ -34,7 +34,7 @@ from . import metadata_tv
 
 
 def metadata_identification(db_connection, class_text, download_que_json,
-                            download_que_id, guessit_file_name):
+                            download_que_id, download_que_type, guessit_file_name):
     """
     Determine which provider to start lookup via class text
     """

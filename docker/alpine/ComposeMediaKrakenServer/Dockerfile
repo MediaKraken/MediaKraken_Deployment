@@ -56,11 +56,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rc-update add rpcbind
 
 COPY wait-for-it-ash.sh /mediakraken
-COPY np_inline-0.3 /mediakraken/np_inline
-RUN cd /mediakraken/np_inline \
-  && python3 setup.py install \
-  && cd .. \
-  && rm -R ./np_inline
 # Copy the source files for the app
 COPY src /mediakraken
 

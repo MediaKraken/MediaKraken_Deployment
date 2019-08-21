@@ -8,6 +8,8 @@ services:
   appserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -18,7 +20,7 @@ services:
     container_name: mkserver
     depends_on:
       - pgbouncer
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 main_server.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -57,6 +59,8 @@ services:
   cron:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -65,7 +69,7 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 subprogram_cron_checker.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
@@ -76,77 +80,26 @@ services:
   database:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
     environment:
-      - PGHOST=/tmp
-      - MAX_CONNECTIONS=10
-      - MAX_WAL_SENDERS=5
-      - PG_MODE=primary
-      - PG_PRIMARY_USER=${DBUSER}
-      - PG_PRIMARY_PASSWORD=${DBPASS}
-#      - PG_DATABASE=testdb
-#      - PG_USER=testuser
-#      - PG_PASSWORD=password
-      - PG_ROOT_PASSWORD=${DBPASS}
-      - PG_PRIMARY_PORT=5432
-
+      - MAX_CONNECTIONS=20
+      - MAX_WAL_SENDERS=10
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
     container_name: mkdatabase
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "5432"
     volumes:
       - mediakraken_vol_postgresql:/var/lib/postgresql
     networks:
       - mediakraken_network
     restart: unless-stopped
-    deploy:
-      placement:
-        constraints:
-        - node.labels.type == primary
-        - node.role == worker
-
-  # Postgresql server replica
-  database-replica:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
-    environment:
-      - PGHOST=/tmp
-      - MAX_CONNECTIONS=10
-      - MAX_WAL_SENDERS=5
-      - PG_MODE=replica
-      - PG_PRIMARY_HOST=database
-      - PG_PRIMARY_PORT=5432
-      - PG_PRIMARY_USER=${DBUSER}
-      - PG_PRIMARY_PASSWORD=${DBPASS}
-#      - PG_DATABASE=testdb
-#      - PG_USER=testuser
-#      - PG_PASSWORD=password
-      - PG_ROOT_PASSWORD=${DBPASS}
-
-      - POSTGRES_DB=${DBDATABASE}
-      - POSTGRES_USER=${DBUSER}
-      - POSTGRES_PASSWORD=${DBPASS}
-    container_name: mkdatabasereplica
-    stop_grace_period: 30s
-    stop_signal: SIGTERM
-    expose:
-      - "5432"
-    volumes:
-      - mediakraken_vol_postgresql_replica:/var/lib/postgresql
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-    deploy:
-      placement:
-        constraints:
-        - node.labels.type != primary
-        - node.role == worker
 
   # Runs the download services
   download:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -155,7 +108,7 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 main_download.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 main_download.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -168,6 +121,8 @@ services:
   ffprobe:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkffprobe:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -176,7 +131,7 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -184,26 +139,6 @@ services:
     networks:
       - mediakraken_network
     restart: unless-stopped
-
-  hapgbouncerproxy:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkhaproxy:dev
-    container_name: mkhaproxy
-    depends_on:
-      - pgbouncer
-    environment:
-      - BALANCE=leastconn
-      # Used to identify services.
-      - ADDITIONAL_SERVICES=project_dir:pgbouncer
-    volumes:
-      # find what's running and where
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    expose:
-      - "7432"
-    networks:
-      - mediakraken_network
-    deploy:
-      placement:
-        constraints: [node.role == manager]
 
   # runs hardware
   hardware:
@@ -227,6 +162,8 @@ services:
   metadata:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -235,7 +172,7 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server_metadata_api.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -254,13 +191,14 @@ services:
     container_name: mknginx
     depends_on:
       - webserver
-    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 30 -- nginx
+    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 60 -- nginx
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:
       - mediakraken_vol_nginx:/var/log/mediakraken/nginx
       - mediakraken_vol_certs:/etc/nginx/certs:ro
       - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static:ro
+#      - mediakraken_vol_webpid:/var/run:ro
     ports:
       - "8900:8900"
     networks:
@@ -271,6 +209,8 @@ services:
   pika:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -279,11 +219,9 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 subprogram_pika.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_pika.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
-    expose:
-      - "5672"
     volumes:
       # for start of SSL server
       - mediakraken_vol_certs:/mediakraken/key:ro
@@ -302,8 +240,8 @@ services:
       - DB_HOST=mkdatabase
       - DB_USER=${DBUSER}
       - DB_PASSWORD=${DBPASS}
-      - POOL_MODE=transaction
-      - MAX_CLIENT_CONN=500
+      - POOL_MODE=session
+      - MAX_CLIENT_CONN=1024
       - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
     container_name: mkpgbouncer
@@ -312,31 +250,6 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "6432"
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-
-  # pgbouncer
-  pgbouncerha:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:dev
-    environment:
-      - DB_HOST=mkdatabase
-      - DB_USER=${DBUSER}
-      - DB_PASSWORD=${DBPASS}
-      - POOL_MODE=transaction
-      - MAX_CLIENT_CONN=500
-      - DEFAULT_POOL_SIZE=85
-      - SERVER_RESET_QUERY=DISCARD ALL
-    container_name: mkpgbouncerha
-    depends_on:
-      - database
-    entrypoint: ./wait-for-it-ash.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
-    stop_grace_period: 30s
-    stop_signal: SIGTERM
-    expose:
-      - "6432"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -351,11 +264,10 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "5672"
     ports:
-#      - "5671:5671"
-#      - "15671:15671"
+      # https management port
+      # - "15671:15671"
+      # http management port
       - "15672:15672"
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
@@ -367,6 +279,8 @@ services:
   reactor:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -375,7 +289,7 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- python3 subprogram_reactor_line.py
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_reactor_line.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
@@ -397,8 +311,6 @@ services:
     container_name: mkredis
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    expose:
-      - "6379"
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -424,6 +336,8 @@ services:
   webserver:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
     environment:
+      - POSTGRES_HOST=${DBHOST}
+      - POSTGRES_PORT=${DBPORT}
       - POSTGRES_DB=${DBDATABASE}
       - POSTGRES_USER=${DBUSER}
       - POSTGRES_PASSWORD=${DBPASS}
@@ -434,14 +348,11 @@ services:
     container_name: mkwebapp
     depends_on:
       - pgbouncer
-      - pgbouncerha
       - rabbit
       - redis
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     stop_grace_period: 30s
     stop_signal: SIGUSR1
-    expose:
-      - "8080"
     ports:
       - "9191:9191"
     volumes:
@@ -449,6 +360,7 @@ services:
       # must not be read only as it stores cache here
       - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static
       - mediakraken_vol_webkey:/mediakraken/key
+      - mediakraken_vol_webpid:/var/run
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -519,13 +431,6 @@ volumes:
         type: none
         o: bind
         device: $PWD/data/postgresql
-    mediakraken_vol_postgresql_replica:
-      name: mediakraken_vol_postgresql_replica
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/postgresql_replica
     mediakraken_vol_rabbit:
       name: mediakraken_vol_rabbit
       driver: local
@@ -554,3 +459,10 @@ volumes:
         type: none
         o: bind
         device: $PWD/data/webkey
+    mediakraken_vol_webpid:
+      name: mediakraken_vol_webpid
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: $PWD/data/webpid

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import subprocess
@@ -24,8 +24,8 @@ from common import common_config_ini
 
 # fire off wait for it script to allow rabbitmq connection
 wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkrabbitmq', '-p', ' 5672', '-t', '30'], stdout=subprocess.PIPE,
-                            shell=False)
+                             'mkstack_rabbitmq', '-p', ' 5672', '-t', '30'],
+                            stdout=subprocess.PIPE, shell=False)
 wait_pid.wait()
 
 # Open a connection to RabbitMQ on localhost using all default parameters

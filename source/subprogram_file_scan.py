@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import os
@@ -240,10 +240,11 @@ def worker(audit_directory):
 
 # don't need to check this as the subprogram_pika will do it
 # fire off wait for it script to allow connection
-# common_network.mk_network_service_available('mkrabbitmq', '5672')
+# common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
 credentials = pika.PlainCredentials('guest', 'guest')
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30, credentials=credentials)
+parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
+                                       credentials=credentials)
 connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
 

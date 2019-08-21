@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import uuid
@@ -72,7 +72,7 @@ def db_meta_book_guid_by_name(self, book_name):
     # TODO can be more than one by name
     # TODO sort by release date
     self.db_cursor.execute('select mm_metadata_book_guid from mm_metadata_book'
-                           ' where mm_metadata_book_name =  %s', (book_name,))
+                           ' where mm_metadata_book_name = %s', (book_name,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_book_guid']
     except:

@@ -58,7 +58,7 @@ def admin_library():
         if "scan" in request.form:
             # submit the message
             common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
-                                                  rabbit_host_name='mkrabbitmq',
+                                                  rabbit_host_name='mkstack_rabbitmq',
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
             flash("Scheduled media scan.")
@@ -121,7 +121,8 @@ def admin_library_edit_page():
                 elif request.form['library_path'][0:3] == "nfs":
                     # TODO
                     pass
-                elif not os.path.isdir(request.form['library_path']):
+                elif not os.path.isdir(os.path.join('/mediakraken/mnt',
+                                                    request.form['library_path'])):
                     flash("Invalid library path.", 'error')
                     return redirect(url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add

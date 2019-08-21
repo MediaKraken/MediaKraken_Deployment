@@ -2,3 +2,4 @@
 /.docker-compose.yml.un~
 /.env~
 *.un~
+*.sh~

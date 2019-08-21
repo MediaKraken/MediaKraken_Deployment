@@ -66,7 +66,7 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
                                                'Subtitle Track': subtracks,
                                                'Target UUID': target_uuid,
                                                'User': current_user.get_id()},
-                                              rabbit_host_name='mkrabbitmq',
+                                              rabbit_host_name='mkstack_rabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
         # TODO how to know what to return here.....slave could be anywhere on swarm
@@ -107,7 +107,7 @@ def user_playback(action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Stop', 'Device': device,
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'play':
@@ -118,14 +118,14 @@ def user_playback(action, guid):
              'Audio': audio_track,
              'Subtitle': subtitle_track,
              'Target': playback_device},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'pause':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Pause', 'Device': device,
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'forward':
@@ -134,21 +134,21 @@ def user_playback(action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Mute', 'Device': device,
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'vol_up':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Volume Up', 'Device': device,
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'vol down':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Volume Down', 'Device': device,
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     return render_template("users/user_playback.html")

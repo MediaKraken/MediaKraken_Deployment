@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -29,7 +29,7 @@ from guessit import guessit
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
+parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue

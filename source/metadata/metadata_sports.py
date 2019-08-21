@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,23 +14,12 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import os
 
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_thesportsdb
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# verify thesportsdb key exists
-if option_config_json['API']['thesportsdb'] is not None:
-    THESPORTSDB_CONNECTION \
-        = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
-else:
-    THESPORTSDB_CONNECTION = None
 
 
 def metadata_sports_lookup(db_connection, download_data, download_que_id):
@@ -64,5 +53,4 @@ def metadata_sports_lookup(db_connection, download_data, download_que_id):
                                                             json.dumps(
                                                                 thesportsdb_data),
                                                             json.dumps(image_json))
-                    db_connection.db_download_delete(download_que_id)
     return metadata_uuid

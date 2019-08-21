@@ -56,7 +56,7 @@ def user_hardware_hue_on():
                                            'Hardware': 'Hue', 'Action': 'OnOff',
                                            'Setting': True, 'Target': '10.0.0.225',
                                            'LightList': (1, 2, 3)},
-                                          rabbit_host_name='mkrabbitmq',
+                                          rabbit_host_name='mkstack_rabbitmq',
                                           exchange_name='mkque_hardware_ex',
                                           route_key='mkhardware')
     return render_template("users/user_hardware_hue.html")
@@ -72,7 +72,7 @@ def user_hardware_hue_off():
                                            'Hardware': 'Hue', 'Action': 'OnOff',
                                            'Setting': False, 'Target': '10.0.0.225',
                                            'LightList': (1, 2, 3)},
-                                          rabbit_host_name='mkrabbitmq',
+                                          rabbit_host_name='mkstack_rabbitmq',
                                           exchange_name='mkque_hardware_ex',
                                           route_key='mkhardware')
     return render_template("users/user_hardware_hue.html")

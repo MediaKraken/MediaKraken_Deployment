@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2019 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -38,11 +38,10 @@ def metadata_adult_lookup(db_connection, download_que_json, download_que_id, fil
     common_global.es_inst.com_elastic_index('info', {'metadata_adult_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(download_que_json['Path'])
-    imdb_id, tmdb_id, rt_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
-    if imdb_id is not None or tmdb_id is not None or rt_id is not None:
+    imdb_id, tmdb_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
+    if imdb_id is not None or tmdb_id is not None:
         common_global.es_inst.com_elastic_index('info', {"meta adult look": imdb_id,
-                                                         'tmdb': tmdb_id,
-                                                         'rt': rt_id})
+                                                         'tmdb': tmdb_id})
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_adult_lookup.metadata_last_imdb:
         db_connection.db_download_delete(download_que_id)

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2019 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,14 +14,14 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
 import pika
 
 
-def com_net_pika_send(body_data, rabbit_host_name='mkrabbitmq', exchange_name='mkque_ex',
+def com_net_pika_send(body_data, rabbit_host_name='mkstack_rabbitmq', exchange_name='mkque_ex',
                       route_key='mkque'):
     pika_inst = pika.BlockingConnection(pika.ConnectionParameters(host=rabbit_host_name))
     pika_channel = pika_inst.channel()

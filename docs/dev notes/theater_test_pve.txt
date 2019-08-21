@@ -3,7 +3,7 @@ docker run -it mediakraken/mkbase38py3 /bin/ash
 debian 9.5 net
 XFCE
 ssh
-nornal utilties
+normal utilties
 
 apt-get update
 apt install python3-pip git dirmngr

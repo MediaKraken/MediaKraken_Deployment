@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 from common import common_config_ini
 from common import common_file
@@ -32,16 +32,16 @@ common_signal.com_signal_set_break()
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# start code for updating iradio database
-common_network_radio.com_net_radio()
-
-# load the cache files and compare to db
-radio_cache = common_file.com_file_load_data('./cache.pickle', True)
-for row_data in radio_cache:
-    common_global.es_inst.com_elastic_index('info', {'radio cache': row_data})
-    db_connection.db_iradio_insert(row_data)
-
-# radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
+# # start code for updating iradio database
+# common_network_radio.com_net_radio()
+#
+# # load the cache files and compare to db
+# radio_cache = common_file.com_file_load_data('./cache.pickle', True)
+# for row_data in radio_cache:
+#     common_global.es_inst.com_elastic_index('info', {'radio cache': row_data})
+#     db_connection.db_iradio_insert(row_data)
+#
+# # radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)
 
 
 # commit

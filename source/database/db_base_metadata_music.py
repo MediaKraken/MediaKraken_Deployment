@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import uuid
 
@@ -23,7 +23,7 @@ def db_meta_song_list(self, offset=0, records=None, search_value=None):
     """
     # return songs metadatalist
     """
-    # TODO, only grab the poster local from json
+    # TODO, only grab the poster locale from json
     return self.db_cursor.fetchall()
 
 
@@ -135,7 +135,7 @@ def db_meta_album_list(self, offset=0, records=None, search_value=None):
     """
     # return albums metadatalist
     """
-    # TODO, only grab the poster local from json
+    # TODO, only grab the poster locale from json
     # TODO order by release year
     if search_value is not None:
         self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
@@ -157,7 +157,7 @@ def db_meta_muscian_list(self, offset=0, records=None, search_value=None):
     """
     # return muscian metadatalist
     """
-    # TODO, only grab the poster local from json
+    # TODO, only grab the poster locale from json
     if search_value is not None:
         self.db_cursor.execute('select mm_metadata_musician_guid, mm_metadata_musician_name,'
                                ' mm_metadata_musician_json from mm_metadata_musician'

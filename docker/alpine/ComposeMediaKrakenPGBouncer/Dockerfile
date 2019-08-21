@@ -21,4 +21,5 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 WORKDIR /
 COPY wait-for-it-ash.sh ./
 COPY entrypoint.sh ./
+EXPOSE 6432
 ENTRYPOINT ["./entrypoint.sh"]

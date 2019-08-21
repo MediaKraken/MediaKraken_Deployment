@@ -1,5 +1,5 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase38py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase310_1py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image downloads and maintains all metadata"
@@ -25,6 +25,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libffi-dev \
   openrc \
   libressl-dev \
+  libarchive \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del gcc linux-headers musl-dev python3-dev \
   && rm requirements.txt \
@@ -36,7 +37,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 #  && pip3 install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now
 
 RUN mkdir /mediakraken/cache
-COPY wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash-busybox130.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 

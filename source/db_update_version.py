@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -300,8 +300,8 @@ if db_connection.db_version_check() < 23:
 
 if db_connection.db_version_check() < 24:
     options_json, status_json = db_connection.db_opt_status_read()
-    options_json.update({'API': {'Docker Instances': {'elk': False}}})
-    db_connection.db_opt_update(options_json)
+    options_json['Docker Instances']['elk'] = False
+    db_connection.db_opt_update(json.dumps(options_json))
     db_connection.db_version_update(24)
     db_connection.db_commit()
 

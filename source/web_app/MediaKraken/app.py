@@ -19,7 +19,7 @@ from simplekv.memory.redisstore import RedisStore
 
 def create_app(config_object=ProdConfig):
     app = Flask(__name__)
-    KVSessionExtension(RedisStore(redis.StrictRedis(host='mkredis')), app)
+    KVSessionExtension(RedisStore(redis.StrictRedis(host='mkstack_redis')), app)
     app.config.from_object(config_object)
     app.config['UPLOAD_FOLDER'] = '/mediakraken/uploads'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -81,10 +81,10 @@ def register_blueprints(app):
     # load up admin bps
     app.register_blueprint(admins.views.blueprint)
     app.register_blueprint(admins.views_backup.blueprint)
-    app.register_blueprint(admins.views_chromecasts.blueprint)
     app.register_blueprint(admins.views_cron.blueprint)
     app.register_blueprint(admins.views_docker.blueprint)
     app.register_blueprint(admins.views_game_metadata.blueprint)
+    app.register_blueprint(admins.views_hardware.blueprint)
     app.register_blueprint(admins.views_library.blueprint)
     app.register_blueprint(admins.views_link.blueprint)
     app.register_blueprint(admins.views_media_import.blueprint)
@@ -92,7 +92,6 @@ def register_blueprints(app):
     app.register_blueprint(admins.views_reports.blueprint)
     app.register_blueprint(admins.views_share.blueprint)
     app.register_blueprint(admins.views_transmission.blueprint)
-    app.register_blueprint(admins.views_tvtuners.blueprint)
     app.register_blueprint(admins.views_users.blueprint)
     return None
 

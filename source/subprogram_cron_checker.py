@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import datetime
 import json
@@ -37,10 +37,11 @@ common_signal.com_signal_set_break()
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # fire off wait for it script to allow connection
-common_network.mk_network_service_available('mkrabbitmq', '5672')
+common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
 credentials = pika.PlainCredentials('guest', 'guest')
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30, credentials=credentials)
+parameters = pika.ConnectionParameters('mkstack_rabbitmq',
+                                       socket_timeout=30, credentials=credentials)
 connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
 

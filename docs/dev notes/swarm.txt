@@ -4,14 +4,53 @@ swarm create
 
 swarm join --advertise=<node_ip:2375> token://<cluster_id>
 
-
-
-docker network create \
+docker network create \docker-
   --driver overlay \
   --subnet 10.0.100.0/24 \
   mknetwork
 
 
+***********************
+
+docker stack deploy --compose-file docker-compose-stack.yml mkstack
+
+# well, that will screw up the network names, etc, even added commented out services
+docker-compose config | docker stack deploy --compose-file docker-compose-stack.yml mkstack
+
+docker stack rm mkstack
 
 
-docker-compose up -d  
+https://technolinchpin.wordpress.com/2017/10/19/centralized-log-management-solution-with-elk-docker-container/
+sudo docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -p 5000:5000 -v /data/logstash:/etc/logstash/conf.d -it --name elk sebp/elk /bin/bash
+
+
+docker stack services mkstack
+
+docker stack list
+
+# lists space used by docker
+docker system df
+
+docker system prune
+
+# nuke from orbit
+docker system prune -a
+
+docker volume rm $(docker volume ls -qf dangling=true)
+
+docker service logs -t mkstack_database
+
+docker service logs --raw mkstack_database
+
+
+docker service scale backend=3 frontend=5
+
+
+docker service scale mkstack_pgbouncer=5 
+docker service scale mkstack_whoami=20
+
+
+docker run --name="logspout" \
+	--volume=/var/run/docker.sock:/var/run/docker.sock \
+	gliderlabs/logspout \
+	syslog+tls://logs.papertrailapp.com:55555

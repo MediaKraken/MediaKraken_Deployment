@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import uuid
@@ -22,7 +22,7 @@ import uuid
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_metadata_tmdb
+from common import common_metadata_provider_themoviedb
 from common import common_signal
 
 # start logging
@@ -35,7 +35,7 @@ common_signal.com_signal_set_break()
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # grab the updated data
-tmdb = common_metadata_tmdb.CommonMetadataTMDB(option_config_json)
+tmdb = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 
 # TODO this should go through the limiter
 # process movie changes
@@ -84,8 +84,7 @@ for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
                                                          'Path': None,
                                                          'ClassID': None,
                                                          'Status': 'Fetch',
-                                                         'MetaNewID': str(
-                                                             uuid.uuid4()),
+                                                         'MetaNewID': str(uuid.uuid4()),
                                                          'ProviderMetaID': str(
                                                              tv_change['id'])}))
     else:
@@ -95,8 +94,7 @@ for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
                                                      'Path': None,
                                                      'ClassID': None,
                                                      'Status': 'Update',
-                                                     'MetaNewID': str(
-                                                         uuid.uuid4()),
+                                                     'MetaNewID': str(uuid.uuid4()),
                                                      'ProviderMetaID': str(
                                                          tv_change['id'])}))
 

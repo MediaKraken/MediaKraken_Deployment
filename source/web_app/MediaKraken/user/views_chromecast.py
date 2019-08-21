@@ -39,7 +39,7 @@ def user_cast(action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Stop', 'Device': 'Cast',
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'play':
@@ -48,14 +48,14 @@ def user_cast(action, guid):
              'User': current_user.get_id(),
              'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
              'Target': '10.0.0.220'},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'pause':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Pause', 'Device': 'Cast',
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'forward':
@@ -64,21 +64,21 @@ def user_cast(action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Mute', 'Device': 'Cast',
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'vol_up':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Volume Up', 'Device': 'Cast',
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'vol down':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Volume Down', 'Device': 'Cast',
              'User': current_user.get_id()},
-            rabbit_host_name='mkrabbitmq',
+            rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     return render_template("users/user_playback_cast.html", data_guid=guid,
