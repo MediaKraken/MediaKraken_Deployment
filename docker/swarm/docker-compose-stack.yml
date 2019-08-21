@@ -75,7 +75,7 @@ services:
       placement:
         constraints: [node.role == manager]
     volumes:
-      - mediakraken_vol_postgresql:/var/lib/postgresql
+      - mediakraken_vol_postgresql:/var/lib/postgresql/data
     networks:
       - mediakraken_network_backend
 
