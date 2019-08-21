@@ -1,1 +1,1 @@
-docker ps | grep mk
+docker stack services mkstack

@@ -1,1 +1,1 @@
-docker-compose down
+docker stack rm mkstack
