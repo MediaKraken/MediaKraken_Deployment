@@ -36,7 +36,7 @@ RUN bash -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
 		libpq-dev \
 		libpython-dev \
 		openssh-client \
-		postgresql-client-11.5 \
+		postgresql-client-11 \
 		python \
 		rsync \
         gettext-base \
