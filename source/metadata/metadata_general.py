@@ -158,7 +158,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
             else:
                 if metadata_uuid is not None:
                     set_fetch = True
-        else:
+        elif download_que_type == common_global.DLMediaType.TV:
             metadata_uuid, match_result = metadata_tv.metadata_tv_lookup(thread_db,
                                                                          download_data[
                                                                              'mdq_download_json'][
@@ -167,6 +167,13 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
                                                              'result': match_result})
             # if match_result is an int, that means the lookup found a match but isn't in db
             if metadata_uuid is None and type(match_result) != int:
+                update_provider = 'omdb'
+            else:
+                if metadata_uuid is not None:
+                    set_fetch = True
+        else:
+            # this will hit from type 0's (trailers, etc)
+            if metadata_uuid is None:
                 update_provider = 'omdb'
             else:
                 if metadata_uuid is not None:
@@ -281,13 +288,13 @@ def metadata_fetch(thread_db, provider_name, download_data):
                                                 download_data['mdq_download_json'][
                                                     'ProviderMetaID'],
                                                 download_data['mdq_download_json']['MetaNewID'])
-    elif provider_name == 'thetvdb':
-        metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
-                                            download_data['mdq_download_json']['ProviderMetaID'])
-    elif provider_name == 'tvmaze':
-        metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
-                                                download_data['mdq_download_json'][
-                                                    'ProviderMetaID'])
+    # elif provider_name == 'thetvdb':
+    #     metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
+    #                                         download_data['mdq_download_json']['ProviderMetaID'])
+    # elif provider_name == 'tvmaze':
+    #     metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
+    #                                             download_data['mdq_download_json'][
+    #                                                 'ProviderMetaID'])
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
