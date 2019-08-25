@@ -18,16 +18,16 @@
                         {% if row_data[3] == None %}
                             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/Movie-icon.png') }}" height="300" width="200">
                             {% if row_data[4] == True %}
-                            <img class="wide_watched_icon" src="{{ url_for('static', filename='images/eye.png') }}" height="25" width="25">
+                            <img class="watched_icon" src="{{ url_for('static', filename='images/eye.png') }}" height="25" width="25">
                             {% endif %}
                             {% if row_data[5] != None %}
-                            <img class="wide_rating_icon" src={{row_data[5]}} height="25" width="25">
+                            <img class="rating_icon" src={{row_data[5]}} height="25" width="25">
                             {% endif %}
                             {% if row_data[6] != None %}
-                            <img class="wide_request_icon" src="{{ url_for('static', filename='images/add-button.png') }}" height="25" width="25">
+                            <img class="request_icon" src="{{ url_for('static', filename='images/add-button.png') }}" height="25" width="25">
                             {% endif %}
                             {% if row_data[7] != None %}
-                            <img class="wide_queue_icon" src="{{ url_for('static', filename='images/rectangles.png') }}" height="25" width="25">
+                            <img class="queue_icon" src="{{ url_for('static', filename='images/rectangles.png') }}" height="25" width="25">
                             {% endif %}
                             </a>
                             <div class="description">
@@ -36,16 +36,16 @@
                         {% else %}
                             <img class="b-lazy" src=data: data-src= "{{ url_for('static', filename='meta/images/' + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
                             {% if row_data[4] == True %}
-                            <img class="wide_watched_icon" src="{{ url_for('static', filename='images/eye.png') }}" height="25" width="25">
+                            <img class="watched_icon" src="{{ url_for('static', filename='images/eye.png') }}" height="25" width="25">
                             {% endif %}
                             {% if row_data[5] != None %}
-                            <img class="wide_rating_icon" src={{row_data[5]}} height="25" width="25">
+                            <img class="rating_icon" src={{row_data[5]}} height="25" width="25">
                             {% endif %}
                             {% if row_data[6] != None %}
-                            <img class="wide_request_icon" src="{{ url_for('static', filename='images/add-button.png') }}" height="25" width="25">
+                            <img class="request_icon" src="{{ url_for('static', filename='images/add-button.png') }}" height="25" width="25">
                             {% endif %}
                             {% if row_data[7] != None %}
-                            <img class="wide_queue_icon" src="{{ url_for('static', filename='images/rectangles.png') }}" height="25" width="25">
+                            <img class="queue_icon" src="{{ url_for('static', filename='images/rectangles.png') }}" height="25" width="25">
                             {% endif %}
                             </a>
                         {% endif %}
