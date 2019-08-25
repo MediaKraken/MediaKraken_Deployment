@@ -281,13 +281,13 @@ def metadata_fetch(thread_db, provider_name, download_data):
                                                 download_data['mdq_download_json'][
                                                     'ProviderMetaID'],
                                                 download_data['mdq_download_json']['MetaNewID'])
-    elif provider_name == 'thetvdb':
-        metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
-                                            download_data['mdq_download_json']['ProviderMetaID'])
-    elif provider_name == 'tvmaze':
-        metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
-                                                download_data['mdq_download_json'][
-                                                    'ProviderMetaID'])
+    # elif provider_name == 'thetvdb':
+    #     metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
+    #                                         download_data['mdq_download_json']['ProviderMetaID'])
+    # elif provider_name == 'tvmaze':
+    #     metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
+    #                                             download_data['mdq_download_json'][
+    #                                                 'ProviderMetaID'])
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
