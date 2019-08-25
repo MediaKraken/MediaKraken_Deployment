@@ -59,13 +59,13 @@ def user_movie_page(genre):
         try:
             watched_status \
                 = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
-        except KeyError:
+        except (KeyError, TypeError):
             watched_status = False
         # set synced
         try:
             sync_status = \
                 row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['sync']
-        except KeyError:
+        except (KeyError, TypeError):
             sync_status = False
         # set rating
         if row_data['mm_metadata_user_json'] is not None \
@@ -88,7 +88,7 @@ def user_movie_page(genre):
         # set mismatch
         try:
             match_status = row_data['mismatch']
-        except KeyError:
+        except (KeyError, TypeError):
             match_status = False
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
                                                          'sync': sync_status,
