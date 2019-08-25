@@ -382,6 +382,7 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_IO_THREAD_POOL_SIZE=128
     stop_grace_period: 30s
     stop_signal: SIGTERM
     ports:
