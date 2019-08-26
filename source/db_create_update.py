@@ -814,7 +814,6 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
                              'mumble': False,
                              'musicbrainz': False,
                              'pgadmin': False,
-                             'portainer': False,
                              'smtp': False,
                              'teamspeak': False,
                              'transmission': False,

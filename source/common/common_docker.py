@@ -316,22 +316,22 @@ class CommonDocker:
                                                 },
                                        name=name_container)
 
-    def com_docker_run_musicbrainz(self, current_host_working_directory, brainzcode):
-        if current_host_working_directory is not None and os.path.exists(
-                os.path.join(current_host_working_directory, 'data/mbrainz')):
-            self.com_docker_delete_container('mkmusicbrainz')
-            return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
-                                           detach=True,
-                                           name='mkmusicbrainz',
-                                           network='mediakraken_network_backend',
-                                           ports={"5000": 5000},
-                                           environment={'BRAINZCODE': brainzcode},
-                                           volumes={os.path.join(current_host_working_directory,
-                                                                 'data/mbrainz/config'):
-                                                        {'bind': '/config', 'mode': 'rw'},
-                                                    os.path.join(current_host_working_directory,
-                                                                 'data/mbrainz/data'):
-                                                        {'bind': '/data', 'mode': 'rw'}})
+    # def com_docker_run_musicbrainz(self, current_host_working_directory, brainzcode):
+    #     if current_host_working_directory is not None and os.path.exists(
+    #             os.path.join(current_host_working_directory, 'data/mbrainz')):
+    #         self.com_docker_delete_container('mkmusicbrainz')
+    #         return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
+    #                                        detach=True,
+    #                                        name='mkmusicbrainz',
+    #                                        network='mediakraken_network_backend',
+    #                                        ports={"5000": 5000},
+    #                                        environment={'BRAINZCODE': brainzcode},
+    #                                        volumes={os.path.join(current_host_working_directory,
+    #                                                              'data/mbrainz/config'):
+    #                                                     {'bind': '/config', 'mode': 'rw'},
+    #                                                 os.path.join(current_host_working_directory,
+    #                                                              'data/mbrainz/data'):
+    #                                                     {'bind': '/data', 'mode': 'rw'}})
 
     def com_docker_run_mumble(self, current_host_working_directory):
         if current_host_working_directory is not None and os.path.exists(
@@ -366,17 +366,6 @@ class CommonDocker:
                                                          'mode': 'rw'}},
                                            network='mediakraken_network_backend')
 
-    def com_docker_run_pgadmin(self, user_email='spootdev@gmail.com', user_password='metaman'):
-        self.com_docker_delete_container('mkpgadmin')
-        self.com_docker_network_create('mediakraken_network_backend')
-        return self.cli.containers.run(image='mediakraken/mkpgadmin',
-                                       detach=True,
-                                       name='mkpgadmin',
-                                       ports={"5050": 5050},
-                                       network='mediakraken_network_backend',
-                                       environment={'PGADMIN_DEFAULT_EMAIL': user_email,
-                                                    'PGADMIN_DEFAULT_PASSWORD': user_password})
-
     def com_docker_run_slave(self, hwaccel, port_mapping, name_container, container_command,
                              ram_disk=False):
         """
@@ -407,47 +396,6 @@ class CommonDocker:
                                        detach=True,
                                        volumes=mount_volumes,
                                        name=name_container)
-
-    def com_docker_run_teamspeak(self, current_host_working_directory):
-        if current_host_working_directory is not None and os.path.exists(
-                os.path.join(current_host_working_directory, 'data/teamspeak')):
-            self.com_docker_delete_container('mkteamspeak')
-            return self.cli.containers.run(image='mediakraken/mkteamspeak',
-                                           ports={"9987/upd": 9987, "10011": 10011,
-                                                  "30033": 30033},
-                                           volumes={os.path.join(current_host_working_directory,
-                                                                 'data/teamspeak/data'):
-                                                        {'bind': '/opt/teamspeak',
-                                                         'mode': 'rw'},
-                                                    },
-                                           name='mkteamspeak')
-
-    def com_docker_run_transmission(self, current_host_working_directory, username, password):
-        """
-        run transmission daemon
-        """
-        if current_host_working_directory is not None and os.path.exists(
-                os.path.join(current_host_working_directory, 'data/transmission')):
-            self.com_docker_delete_container('mktransmission')
-            return self.cli.containers.run(image='mediakraken/mktransmission',
-                                           network='mediakraken_network_backend',
-                                           detach=True,
-                                           ports={"9091": 9091, "51413/tcp": 51413,
-                                                  "51413/udp": 51413},
-                                           command='/start-transmission.sh',
-                                           volumes={
-                                               os.path.join(current_host_working_directory,
-                                                            'data/transmission/downloads'):
-                                                   {'bind': '/transmission/downloads',
-                                                    'mode': 'rw'},
-                                               os.path.join(current_host_working_directory,
-                                                            '/data/transmission/incomplete'):
-                                                   {'bind': '/transmission/incomplete',
-                                                    'mode': 'rw'}
-                                           },
-                                           name='mktransmission',
-                                           environment={'USERNAME': username,
-                                                        'PASSWORD': password})
 
     def com_docker_run_twitch_record_user(self, twitch_user):
         """
