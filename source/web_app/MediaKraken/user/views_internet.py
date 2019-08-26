@@ -52,6 +52,7 @@ def user_internet_youtube():
             common_global.es_inst.com_elastic_index('info', {'searchurllink': url_link})
             youtube_videos.append(
                 json.loads(google_instance.com_google_youtube_info(url_link, 'snippet')))
+        session['search_text'] = None
     else:
         # get trending for specified country code
         for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
@@ -175,6 +176,7 @@ def user_iradio_list():
     if session['search_text'] is not None:
         mediadata = g.db_connection.db_iradio_list(offset, per_page,
                                                    search_value=session['search_text'])
+        session['search_text'] = None
     else:
         mediadata = g.db_connection.db_iradio_list(offset, per_page)
     return render_template("users/user_iradio_list.html")

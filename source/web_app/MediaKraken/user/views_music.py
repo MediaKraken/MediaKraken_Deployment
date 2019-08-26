@@ -43,6 +43,7 @@ def user_album_list_page():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
+    session['search_text'] = None
     return render_template("users/user_music_album_page.html", media=media,
                            page=page,
                            per_page=per_page,

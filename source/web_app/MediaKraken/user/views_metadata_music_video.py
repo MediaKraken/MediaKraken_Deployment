@@ -35,9 +35,11 @@ def metadata_music_video_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
+    media_list = g.db_connection.db_meta_music_video_list(offset, per_page,
+                                                          session['search_text'])
+    session['search_text'] = None
     return render_template('users/metadata/meta_music_video_list.html',
-                           media=g.db_connection.db_meta_music_video_list(offset, per_page,
-                                                                          session['search_text']),
+                           media=media_list,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

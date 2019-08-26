@@ -36,9 +36,11 @@ def metadata_music_song_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
+    media_list = g.db_connection.db_meta_song_list(offset, per_page,
+                                                   session['search_text'])
+    session['search_text'] = None
     return render_template('users/metadata/meta_music_list.html',
-                           media=g.db_connection.db_meta_song_list(offset, per_page,
-                                                                   session['search_text']),
+                           media=media_list,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -76,6 +78,7 @@ def metadata_music_album_list():
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
     session['search_page'] = 'meta_album'
+    session['search_text'] = None
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(

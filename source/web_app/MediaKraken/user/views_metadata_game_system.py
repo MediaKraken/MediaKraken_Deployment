@@ -44,9 +44,11 @@ def metadata_game_system_list():
                                                   format_total=True,
                                                   format_number=True
                                                   )
+    media_list = g.db_connection.db_meta_game_system_list(offset, per_page,
+                                                          session['search_text'])
+    session['search_text'] = None
     return render_template('users/metadata/meta_game_system_list.html',
-                           media=g.db_connection.db_meta_game_system_list(offset, per_page,
-                                                                          session['search_text']),
+                           media=media_list,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,

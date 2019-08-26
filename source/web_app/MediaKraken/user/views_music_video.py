@@ -35,9 +35,10 @@ def user_music_video_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
+    media_list = g.db_connection.db_music_video_list(offset, per_page, session['search_text'])
+    session['search_text'] = None
     return render_template('users/user_music_video_list.html',
-                           media_person=g.db_connection.db_music_video_list(offset, per_page,
-                                                                            session['search_text']),
+                           media_person=media_list,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
