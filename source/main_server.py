@@ -119,9 +119,6 @@ if option_config_json['Docker Instances']['musicbrainz'] \
 if option_config_json['Docker Instances']['pgadmin']:
     docker_inst.com_docker_run_pgadmin(current_host_working_directory)
 
-if option_config_json['Docker Instances']['portainer']:
-    docker_inst.com_docker_run_portainer(current_host_working_directory)
-
 # if option_config_json['Docker Instances']['smtp']:
 #     docker_inst.com_docker_run_container()
 
