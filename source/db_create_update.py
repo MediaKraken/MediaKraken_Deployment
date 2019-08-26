@@ -798,7 +798,6 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
                 'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
                 'shoutcast': None,
                 'soundcloud': None,
-                'thelogodb': None,
                 'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
                 'thesportsdb': '4352761817344',
                 'thetvdb': '147CB43DCA8B61B7',
