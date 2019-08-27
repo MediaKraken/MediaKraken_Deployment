@@ -470,7 +470,7 @@ services:
       mode: replicated
       replicas: 0
     ports:
-      - "9987/upd:9987"
+      - "9987:9987/upd"
       - "10011:10011"
       - "30033:30033"
     volumes:
@@ -486,8 +486,8 @@ services:
       replicas: 0
     ports:
       - "9091:9091"
-      - "51413/tcp:51413"
-      - "51413/udp:51413"
+      - "51413:51413/tcp"
+      - "51413:51413/udp"
     volumes:
       - mediakraken_vol_transmission:/transmission/downloads
       - mediakraken_vol_transmission_incomplete:/transmission/incomplete
@@ -503,7 +503,7 @@ services:
     secrets:
       - db_password
       - secure_key
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- uwsgi --http11-socket --socket 0.0.0.0:8080 --protocol http --stats :9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- uwsgi --http11-socket :8080 --protocol http --stats :9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
