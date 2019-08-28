@@ -401,8 +401,6 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGTERM
     ports:
-      # https management port
-      - "15671:15671"
       # http management port
       - "15672:15672"
     volumes:
