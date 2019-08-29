@@ -273,6 +273,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: spootdev@gmail.com
       PGADMIN_DEFAULT_PASSWORD: metaman
+    volumes:
+      - mediakraken_vol_pgadmin:/data
     deploy:
       mode: replicated
       replicas: 1
@@ -576,6 +578,7 @@ volumes:
 #      type: none
 #      o: bind
 #      device: $PWD/data/nginx
+  mediakraken_vol_pgadmin:
   mediakraken_vol_phue:
 #    driver: local
 #    driver_opts:
