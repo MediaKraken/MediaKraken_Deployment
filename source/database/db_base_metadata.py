@@ -175,7 +175,7 @@ def db_meta_movie_list(self, offset=0, records=None, search_value=None):
                                ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
                                ' from mm_metadata_movie where mm_media_name %% %s'
                                ' order by mm_media_name offset %s limit %s)'
-                               ' order by mm_media_name, mm_date asc',
+                               ' order by mm_media_name, mm_date',
                                (search_value, offset, records))
     else:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
@@ -184,7 +184,7 @@ def db_meta_movie_list(self, offset=0, records=None, search_value=None):
                                'mm_metadata_user_json'
                                ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
                                ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
-                               ' order by mm_media_name, mm_date asc', (offset, records))
+                               ' order by mm_media_name, mm_date', (offset, records))
     return self.db_cursor.fetchall()
 
 
