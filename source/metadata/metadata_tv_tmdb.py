@@ -80,7 +80,8 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                                                                   result_json['credits']['crew'])
         # this except is to check duplicate keys for mm_metadata_pk
         except psycopg2.IntegrityError:
-            # TODO technically I could be missing cast/crew if the above doesn't finish after the insert
+            # TODO technically I could be missing cast/crew
+            #  if the above doesn't finish after the insert
             pass
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
