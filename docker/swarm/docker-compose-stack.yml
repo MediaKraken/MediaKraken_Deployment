@@ -68,6 +68,8 @@ services:
       - MAX_WAL_SENDERS=10
       - shared_buffers=4GB
       - work_mem=256MB
+      # log queries that take more than 1 second
+      - log_min_duration_statement=1000
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password

@@ -93,3 +93,6 @@ def db_pgsql_table_exits(self, table_name):
     """
     self.db_cursor.execute('SELECT to_regclass(%s)::text', (table_name,))
     return self.db_cursor.fetchone()[0]
+
+# TODO - see last analynze, etc
+#SELECT schemaname, relname, last_analyze FROM pg_stat_all_tables WHERE relname = 'city';
