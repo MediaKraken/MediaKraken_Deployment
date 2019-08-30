@@ -56,18 +56,21 @@ def report_display_all_duplicates_detail(guid):
     for media_data in g.db_connection.db_media_duplicate_detail(guid, offset, per_page):
         common_global.es_inst.com_elastic_index('info', {"media": media_data[
             'mm_media_ffprobe_json']})
-        for stream_data in media_data['mm_media_ffprobe_json']['streams']:
-            if stream_data['codec_type'] == 'video':
-                media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
-                              str(stream_data['width']) +
-                              'x' + str(stream_data['height']),
-                              media_data['mm_media_ffprobe_json']['format']['duration']))
-                break
+        if media_data['mm_media_ffprobe_json'] is not None:
+            for stream_data in media_data['mm_media_ffprobe_json']['streams']:
+                if stream_data['codec_type'] == 'video':
+                    media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
+                                  str(stream_data['width']) +
+                                  'x' + str(stream_data['height']),
+                                  media_data['mm_media_ffprobe_json']['format']['duration']))
+                    break
+        else:
+            media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
+                          'NA', '999:99:99'))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.
-                                                  db_media_duplicate_detail_count(guid)[
-                                                      0],
+                                                  db_media_duplicate_detail_count(guid)[0],
                                                   record_name='copies',
                                                   format_total=True,
                                                   format_number=True,
