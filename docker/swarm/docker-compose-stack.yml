@@ -66,6 +66,8 @@ services:
     environment:
       - MAX_CONNECTIONS=40
       - MAX_WAL_SENDERS=10
+      - shared_buffers=4GB
+      - work_mem=256MB
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
