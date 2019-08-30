@@ -205,8 +205,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid, (datetime.datetime.now()
@@ -218,8 +217,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -234,16 +232,14 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_localimage_json, NULL as '
                                                'mmr_media_path, mm_metadata_json'
                                                ' from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mmr_media_metadata_guid, mm_media_name) as temp'
+                                               ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid, (datetime.datetime.now()
@@ -258,16 +254,14 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
                                                'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mmr_media_metadata_guid, mm_media_name) as temp'
+                                               ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -291,8 +285,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               ' and mm_media_metadata_guid = mm_metadata_guid) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid,))
@@ -301,8 +294,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               ' and mm_media_metadata_guid = mm_metadata_guid) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                ' offset %s limit %s',
@@ -313,16 +305,14 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               ' and mm_media_metadata_guid = mm_metadata_guid)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
                                                'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid'
-                                               ' order by mmr_media_metadata_guid, mm_media_name)) as temp'
+                                               ' = mm_metadata_guid)) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid, class_guid))
@@ -331,16 +321,14 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
                                                ' mm_metadata_user_json, mm_metadata_localimage_json, mm_media_path, mm_metadata_json'
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_guid'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               ' and mm_media_metadata_guid = mm_metadata_guid)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
                                                'mmr_media_path, mm_metadata_json'
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_guid'
-                                               ' order by mmr_media_metadata_guid, mm_media_name)) as temp'
+                                               ' = mm_metadata_guid)) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -359,8 +347,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
                                                ' mm_media_path as mediapath'
-                                               ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid,))
@@ -376,8 +363,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
                                                ' mm_media_path as mediapath, mm_metadata_json'
-                                               ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -398,7 +384,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
                                                #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ') as temp'
                                                ' order by LOWER(name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid,))
@@ -417,7 +403,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
                                                #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ') as temp'
                                                ' order by LOWER(name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -434,8 +420,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid, (datetime.datetime.now()
@@ -450,8 +435,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -468,8 +452,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
@@ -479,8 +462,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and mmr_media_metadata_guid = mm_metadata_guid'
                                                ' and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_media_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid, (datetime.datetime.now()
@@ -499,8 +481,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_localimage_json, NULL as '
@@ -510,8 +491,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and mmr_media_metadata_guid = mm_metadata_guid'
                                                ' and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_media_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -536,8 +516,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid, list_genre))
@@ -548,8 +527,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
@@ -563,8 +541,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid)'
                                                ' mm_media_name, mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_localimage_json, NULL as '
@@ -572,8 +549,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_media_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc',
                                                (class_guid, list_genre, class_guid, list_genre))
@@ -584,8 +560,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' from mm_media, mm_metadata_movie where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_media_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid)'
                                                ' mm_media_name, mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_localimage_json, NULL as '
@@ -593,8 +568,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                '  from mm_media_remote, mm_metadata_movie'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_media_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_media_name),'
                                                ' mm_metadata_json->>\'release_date\' asc'
                                                ' offset %s limit %s',
