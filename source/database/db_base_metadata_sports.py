@@ -55,15 +55,15 @@ def db_meta_sports_list(self, offset=0, records=None, search_value=None):
                                ' from mm_metadata_sports where mm_metadata_sports_guid'
                                ' in (select mm_metadata_sports_guid from mm_metadata_sports'
                                ' where mm_metadata_sports_name %% %s'
-                               ' order by mm_metadata_sports_name offset %s limit %s)'
-                               ' order by mm_metadata_sports_name',
+                               ' order by LOWER(mm_metadata_sports_name) offset %s limit %s)'
+                               ' order by LOWER(mm_metadata_sports_name)',
                                (search_value, offset, records))
     else:
         self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
                                ' from mm_metadata_sports where mm_metadata_sports_guid'
                                ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                               ' order by mm_metadata_sports_name offset %s limit %s)'
-                               ' order by mm_metadata_sports_name', (offset, records))
+                               ' order by LOWER(mm_metadata_sports_name) offset %s limit %s)'
+                               ' order by LOWER(mm_metadata_sports_name)', (offset, records))
     return self.db_cursor.fetchall()
 
 

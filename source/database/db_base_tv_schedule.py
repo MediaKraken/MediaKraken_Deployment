@@ -122,6 +122,7 @@ def db_tv_schedule_by_date(self, display_date):
                            ' mm_tv_schedule_json from mm_tv_stations, mm_tv_schedule'
                            ' where mm_tv_schedule_station_id = mm_tv_station_id'
                            ' and mm_tv_schedule_date = %s'
-                           ' order by mm_tv_station_name, mm_tv_schedule_json->\'airDateTime\'',
+                           ' order by LOWER(mm_tv_station_name),'
+                           ' mm_tv_schedule_json->\'airDateTime\'',
                            (display_date,))
     return self.db_cursor.fetchall()

@@ -43,12 +43,12 @@ def db_meta_person_list(self, offset=0, records=None, search_value=None):
         self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
                                ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                ' from mm_metadata_person where mmp_person_name %% %s'
-                               ' order by mmp_person_name offset %s limit %s',
+                               ' order by LOWER(mmp_person_name) offset %s limit %s',
                                (search_value, offset, records))
     else:
         self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
                                ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                               ' from mm_metadata_person order by mmp_person_name'
+                               ' from mm_metadata_person order by LOWER(mmp_person_name)'
                                ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
@@ -224,14 +224,14 @@ def db_meta_person_as_seen_in(self, person_guid):
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
                                'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
                                ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
-                               ' @> \'[{"id": %s}]\' order by mm_media_name', sql_params)
+                               ' @> \'[{"id": %s}]\' order by LOWER(mm_media_name)', sql_params)
     elif 'tvmaze' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['tvmaze']),
         common_global.es_inst.com_elastic_index('info', {'sql paramts': sql_params})
         self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
                                'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
                                ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-                               '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\' order by mm_metadata_tvshow_name',
+                               '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\' order by LOWER(mm_metadata_tvshow_name)',
                                sql_params)
         # TODO won't this need to be like below?
     elif 'thetvdb' in row_data['mmp_person_media_id']:
@@ -242,7 +242,7 @@ def db_meta_person_as_seen_in(self, person_guid):
                                ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
                                '->\'Cast\'->\'Actor\' @> \'[{"id": \"'
                                + str(row_data['mmp_person_media_id']['thetvdb'])
-                               + '\"}]\' order by mm_metadata_tvshow_name')  # , sql_params)  #TODO
+                               + '\"}]\' order by LOWER(mm_metadata_tvshow_name)')  # , sql_params)  #TODO
     return self.db_cursor.fetchall()
 
 # works

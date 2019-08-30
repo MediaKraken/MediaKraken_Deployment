@@ -40,9 +40,9 @@ def db_usage_top10_tv_show(self):
     """
     Top 10 TV show
     """
-    self.db_cursor.execute('select mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''
+    self.db_cursor.execute('select mm_metadata_tvshow_user_json->\'Watched\'->\'Times\''
                            ' from mm_metadata_tvshow'
-                           ' order by mm_metadata_tvshow_user_json ->\'Watched\'->\'Times\''
+                           ' order by mm_metadata_tvshow_user_json->\'Watched\'->\'Times\''
                            ' desc limit 10')
     return self.db_cursor.fetchall()
 
