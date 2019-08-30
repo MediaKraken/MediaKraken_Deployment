@@ -216,8 +216,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -230,8 +229,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -246,16 +244,14 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_sports_image_json, NULL as '
                                                'mmr_media_path'
                                                ' from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_sports_guid and mmr_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               ' = mm_metadata_sports_guid and mmr_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -271,16 +267,14 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' and mm_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               ' and mm_media_json->>\'DateAdded\' >= %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_sports_image_json, NULL as '
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_sports_guid and mmr_media_json->>\'DateAdded\' >= %s'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               ' = mm_metadata_sports_guid and mmr_media_json->>\'DateAdded\' >= %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -304,8 +298,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' mm_media_path'
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid,))
                     else:
@@ -315,8 +308,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' mm_media_path'
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, offset, list_limit))
                 else:
@@ -327,16 +319,14 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' mm_media_path'
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_sports_image_json, NULL as '
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_sports_guid'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
+                                               ' = mm_metadata_sports_guid)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, class_guid))
                     else:
@@ -346,16 +336,14 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' mm_media_path'
                                                ' from mm_media, mm_metadata_sports'
                                                ' where mm_media_class_guid = %s'
-                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               ' and mm_media_metadata_guid = mm_metadata_sports_guid)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_sports_image_json, NULL as '
                                                'mmr_media_path'
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
-                                               ' = mm_metadata_sports_guid'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
+                                               ' = mm_metadata_sports_guid)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, class_guid, offset, list_limit))
             else:
@@ -372,8 +360,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
                                                ' mm_media_path as mediapath'
-                                               ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name)',
                                                (class_guid,))
                     else:
@@ -388,8 +375,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
                                                ' mm_media_path as mediapath'
-                                               ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name) offset %s limit %s',
                                                (class_guid, offset, list_limit))
                 else:
@@ -408,7 +394,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
                                                #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ') as temp'
                                                ' order by LOWER(name)',
                                                (class_guid,))
                     else:
@@ -426,7 +412,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
                                                #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
-                                               ' order by mm_media_metadata_guid, name) as temp'
+                                               ') as temp'
                                                ' order by LOWER(name) offset %s limit %s',
                                                (class_guid, offset, list_limit))
     else:
@@ -443,8 +429,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -460,8 +445,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -478,8 +462,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_sports_image_json, NULL as '
@@ -489,8 +472,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mmr_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -506,8 +488,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid) mm_metadata_sports_name,'
                                                ' mmr_media_guid, mmr_media_json, '
                                                'mm_metadata_sports_image_json, NULL as '
@@ -517,8 +498,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mmr_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mmr_media_json->>\'DateAdded\' >= %s'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, (datetime.datetime.now()
                                                              - datetime.timedelta(days=7)).strftime(
@@ -539,8 +519,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, list_genre))
                     else:
@@ -551,8 +530,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' from mm_media, mm_metadata_sports where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, list_genre, offset, list_limit))
 
@@ -566,8 +544,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid)'
                                                ' mm_metadata_sports_name, mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_sports_image_json, NULL as '
@@ -575,8 +552,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_sports_guid and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name)',
                                                (class_guid, list_genre, class_guid, list_genre))
                     else:
@@ -588,8 +564,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' where mm_media_class_guid = %s'
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mm_media_metadata_guid, mm_metadata_sports_name)'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)'
                                                ' union (select distinct on (mmr_media_metadata_guid)'
                                                ' mm_metadata_sports_name, mmr_media_guid, mmr_media_json,'
                                                ' mm_metadata_sports_image_json, NULL as '
@@ -597,8 +572,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                '  from mm_media_remote, mm_metadata_sports'
                                                ' where mmr_media_class_guid = %s and mmr_media_metadata_guid'
                                                ' = mm_metadata_sports_guid and mm_metadata_sports_json->\'Meta\''
-                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s'
-                                               ' order by mmr_media_metadata_guid, mm_metadata_sports_name)) as temp'
+                                               '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %s)) as temp'
                                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s',
                                                (class_guid, list_genre, class_guid, list_genre,
                                                 offset, list_limit))
