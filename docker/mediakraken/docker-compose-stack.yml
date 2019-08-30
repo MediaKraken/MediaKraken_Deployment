@@ -618,6 +618,8 @@ volumes:
 #      type: none
 #      o: bind
 #      device: $PWD/data/teamspeak
+  mediakraken_vol_transmission:
+  mediakraken_vol_transmission_incomplete:
   mediakraken_vol_webkey:
 #    driver: local
 #    driver_opts:
