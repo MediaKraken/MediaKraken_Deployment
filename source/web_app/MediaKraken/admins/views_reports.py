@@ -127,7 +127,10 @@ def report_display_all_media_known_video():
     return render_template('admin/reports/report_all_known_media_video.html',
                            media=g.db_connection.db_web_media_list(
                                g.db_connection.db_media_uuid_by_class('Movie'),
-                               offset=offset, list_limit=per_page),
+                               list_type='movie', list_genre='All', list_limit=per_page,
+                               group_collection=False,
+                               offset=offset, include_remote=True,
+                               search_text=None),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
