@@ -43,12 +43,8 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
         common_global.es_inst.com_elastic_index('info', {"meta movie look": imdb_id,
                                                          'tmdb': tmdb_id})
     # if same as last, return last id and save lookup
-    if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
-        db_connection.db_download_delete(download_que_id)
-        # don't need to set last......since they are equal
-        return metadata_movie_lookup.metadata_last_id
-    if tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb:
-        db_connection.db_download_delete(download_que_id)
+    if (imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb) or (
+            tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb):
         # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     # doesn't match last id's so continue lookup
@@ -59,10 +55,7 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
         metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid A": metadata_uuid})
-    if metadata_uuid is not None:
-        db_connection.db_download_delete(download_que_id)
-        # fall through here to set last id's
-    else:
+    if metadata_uuid is None:
         # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:

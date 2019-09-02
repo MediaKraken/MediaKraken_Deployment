@@ -211,7 +211,6 @@ def db_update_media_id(self, media_guid, metadata_guid):
     """
     self.db_cursor.execute('update mm_media set mm_media_metadata_guid = %s'
                            ' where mm_media_guid = %s', (metadata_guid, media_guid))
-    self.db_commit()
 
 
 def db_update_media_json(self, media_guid, mediajson):

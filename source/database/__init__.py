@@ -4,6 +4,7 @@ class MKServerDatabase:
     """
     from database.db_base import db_open, \
         db_close, \
+        db_begin, \
         db_commit, \
         db_rollback, \
         db_table_index_check, \

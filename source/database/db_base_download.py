@@ -47,8 +47,7 @@ def db_download_delete(self, guid):
     """
     Remove download
     """
-    self.db_cursor.execute(
-        'delete from mm_download_que where mdq_id = %s', (guid,))
+    self.db_cursor.execute('delete from mm_download_que where mdq_id = %s', (guid,))
     self.db_commit()
 
 

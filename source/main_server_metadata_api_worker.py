@@ -437,11 +437,9 @@ while True:
                     if file_name['title'].lower() == metadata_last_title \
                             and file_name['year'] == metadata_last_year:
                         # matches last media scanned, so set with that metadata id
-                        thread_db.db_download_delete(row_data['mdq_id'])
                         metadata_uuid = metadata_last_id
                 elif file_name['title'].lower() == metadata_last_title:
                     # matches last media scanned, so set with that metadata id
-                    thread_db.db_download_delete(row_data['mdq_id'])
                     metadata_uuid = metadata_last_id
                 common_global.es_inst.com_elastic_index('info',
                                                         {"worker Z meta api uuid": metadata_uuid,
@@ -468,6 +466,7 @@ while True:
                 except KeyError:
                     metadata_last_year = None
             else:  # invalid guessit guess so set to ZZ to skip for now
+                # commit in function
                 thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
             # update the media row with the json media id AND THE proper NAME!!!
             if metadata_uuid is not None:
@@ -476,9 +475,11 @@ while True:
                                                                      row_data[
                                                                          'mdq_download_json'][
                                                                          'MediaID']})
-                # commit occurs in following function
+                thread_db.db_begin()
                 thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                                              metadata_uuid)
+                thread_db.db_download_delete(row_data['mdq_id'])
+                thread_db.db_commit()
     time.sleep(1)
     # grab message from rabbitmq if available
     try:  # since can get connection drops
