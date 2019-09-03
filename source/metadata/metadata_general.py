@@ -168,14 +168,14 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
                                                              'result': match_result})
             # if match_result is an int, that means the lookup found a match but isn't in db
             if metadata_uuid is None and type(match_result) != int:
-                update_provider = 'omdb'
+                update_provider = 'anidb'
             else:
                 if metadata_uuid is not None:
                     set_fetch = True
         else:
             # this will hit from type 0's (trailers, etc)
             if metadata_uuid is None:
-                update_provider = 'omdb'
+                update_provider = 'anidb'
             else:
                 if metadata_uuid is not None:
                     set_fetch = True

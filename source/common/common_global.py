@@ -33,3 +33,46 @@ class DLMediaType(IntFlag):
     Movie = 1
     TV = 2
     Person = 3
+    Sports = 4
+    Game = 5
+    Publication = 6
+    Picture = 7
+    Anime = 8
+    Music = 9
+    Adult = 10
+
+    Adult_Image = 1000
+    Adult_Movie = 1001
+    Adult_Scene = 1002
+
+    Game_CHD = 501
+    Game_Cinematics = 502
+    Game_Intro = 503
+    Game_ISO = 504
+    Game_ROM = 505
+    Game_Speedrun = 506
+    Game_Superplay = 507
+
+    Movie_Home = 111
+    Movie_Extras = 112
+    Movie_Soundtrack = 113
+    Movie_Subtitle = 114
+    Movie_Theme = 115
+    Movie_Trailer = 116
+
+    Music_Album = 901
+    Music_Lyrics = 902
+    Music_Song = 903
+    Music_Video = 904
+
+    Publication_Book = 601
+    Publication_Comic = 602
+    Publication_Comic_Strip = 603
+    Publication_Magazine = 604
+
+    TV_Episode = 201
+    TV_Extras = 202
+    TV_Season = 203
+    TV_Subtitle = 204
+    TV_Theme = 205
+    TV_Trailer = 206
