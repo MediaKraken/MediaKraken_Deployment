@@ -249,6 +249,7 @@ def db_find_metadata_guid(self, media_name, media_release_year):
                                ' or LOWER(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'original_title\') = %s)',
                                (media_name.lower(), media_name.lower()))
     for row_data in self.db_cursor.fetchall():
+        # TODO should probably handle multiple results better.   Perhaps a notification?
         metadata_guid = row_data['mm_metadata_guid']
         common_global.es_inst.com_elastic_index('info', {"db find metadata guid": metadata_guid})
         break
