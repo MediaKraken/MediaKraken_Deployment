@@ -57,16 +57,6 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
     # if ids from nfo/xml on local db
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid A": metadata_uuid})
     if metadata_uuid is None:
-        # no ids found on the local database so begin name/year searches
-        common_global.es_inst.com_elastic_index('info', {'stuff': "meta movie db lookup"})
-        # db lookup by name and year (if available)
-        if 'year' in file_name:
-            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],
-                                                                file_name['year'])
-        else:
-            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
-        common_global.es_inst.com_elastic_index('info', {"meta movie db meta": metadata_uuid})
-    if metadata_uuid is None:
         # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
@@ -86,6 +76,18 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
                 db_connection.db_download_update_provider('themoviedb', download_que_id)
             else:
                 metadata_uuid = dl_meta
+    # leave this AFTER the dl check as it looks at tmdbid and imdb for values!
+    if metadata_uuid is None:
+        # no ids found on the local database so begin name/year searches
+        common_global.es_inst.com_elastic_index('info', {'stuff': "meta movie db lookup"})
+        # db lookup by name and year (if available)
+        if 'year' in file_name:
+            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],
+                                                                file_name['year'])
+        else:
+            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
+        common_global.es_inst.com_elastic_index('info', {"meta movie db meta": metadata_uuid})
+
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         metadata_uuid = download_que_json['MetaNewID']
