@@ -28,15 +28,17 @@ client_devices = []
 pid_dict = {}
 
 
+# stuff in comments are the old class TEXT
 @unique
 class DLMediaType(IntFlag):
     Movie = 1
     TV = 2
     Person = 3
+
     Sports = 4
     Game = 5
     Publication = 6
-    Picture = 7
+    Picture = 7  # "Picture"
     Anime = 8
     Music = 9
     Adult = 10
@@ -53,7 +55,7 @@ class DLMediaType(IntFlag):
     Game_Speedrun = 506
     Game_Superplay = 507
 
-    Movie_Home = 111
+    Movie_Home = 111  # "Home Movie"
     Movie_Extras = 112
     Movie_Soundtrack = 113
     Movie_Subtitle = 114
