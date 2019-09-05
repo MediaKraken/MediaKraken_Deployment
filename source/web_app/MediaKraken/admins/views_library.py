@@ -72,8 +72,15 @@ def admin_library():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
+    return_media = []
+    for row_data in g.db_connection.db_audit_paths(offset, per_page):
+        return_media.append((row_data['mm_media_dir_path'],
+                             row_data['mm_media_class_type'],
+                             row_data['mm_media_dir_last_scanned'],
+                             common_global.DLMediaType.row_data['mm_media_class_guid'].name,
+                             row_data['mm_media_dir_guid']))
     return render_template("admin/admin_library.html",
-                           media_dir=g.db_connection.db_audit_paths(offset, per_page),
+                           media_dir=return_media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -146,10 +153,20 @@ def admin_library_edit_page():
         else:
             flash_errors(form)
     class_list = []
-    for row_data in g.db_connection.db_media_class_list():
-        if row_data['mm_media_class_display']:  # flagged for display
-            class_list.append(
-                (row_data['mm_media_class_type'], row_data['mm_media_class_guid']))
+    class_list.append((common_global.DLMediaType.Movie.name, common_global.DLMediaType.Movie.value))
+    class_list.append((common_global.DLMediaType.TV.name, common_global.DLMediaType.TV.value))
+    class_list.append(
+        (common_global.DLMediaType.Person.name, common_global.DLMediaType.Person.value))
+    class_list.append(
+        (common_global.DLMediaType.Sports.name, common_global.DLMediaType.Sports.value))
+    class_list.append((common_global.DLMediaType.Game.name, common_global.DLMediaType.Game.value))
+    class_list.append(
+        (common_global.DLMediaType.Publication.name, common_global.DLMediaType.Publication.value))
+    class_list.append(
+        (common_global.DLMediaType.Picture.name, common_global.DLMediaType.Picture.value))
+    class_list.append((common_global.DLMediaType.Anime.name, common_global.DLMediaType.Anime.value))
+    class_list.append((common_global.DLMediaType.Music.name, common_global.DLMediaType.Music.value))
+    class_list.append((common_global.DLMediaType.Adult.name, common_global.DLMediaType.Adult.value))
     share_list = []
     for row_data in g.db_connection.db_audit_shares():
         share_name = row_data['mm_media_share_server'] + \

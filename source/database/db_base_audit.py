@@ -95,8 +95,7 @@ def db_audit_paths(self, offset=0, records=None):
     """
     self.db_cursor.execute('select mm_media_dir_path, mm_media_class_type,'
                            ' mm_media_dir_last_scanned, mm_media_class_guid,'
-                           ' mm_media_dir_guid from mm_media_dir, mm_media_class'
-                           ' where mm_media_dir_class_type = mm_media_class_guid'
+                           ' mm_media_dir_guid from mm_media_dir'
                            ' order by mm_media_class_type, mm_media_dir_path'
                            ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
@@ -178,7 +177,7 @@ def db_audit_share_add(self, share_type, share_user, share_password, share_serve
     self.db_cursor.execute('insert into mm_media_share (mm_media_share_guid,'
                            ' mm_media_share_type, mm_media_share_user,'
                            ' mm_media_share_password, mm_media_share_server,'
-                           ' mm_media_share_path) values (%s,%s,%s,%s, %s, %s)',
+                           ' mm_media_share_path) values (%s,%s,%s,%s,%s,%s)',
                            (new_guid, share_type, share_user,
                             share_password, share_server, share_path))
     return new_guid
