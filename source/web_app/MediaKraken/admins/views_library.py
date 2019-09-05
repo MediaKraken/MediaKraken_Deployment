@@ -172,7 +172,6 @@ def admin_library_edit_page():
         share_name = row_data['mm_media_share_server'] + \
                      ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
-
     return render_template("admin/admin_library_edit.html", form=form,
                            data_class=class_list,
                            data_share=share_list)
