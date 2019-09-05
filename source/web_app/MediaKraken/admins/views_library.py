@@ -152,28 +152,30 @@ def admin_library_edit_page():
                 pass
         else:
             flash_errors(form)
-    class_list = []
-    class_list.append((common_global.DLMediaType.Movie.name, common_global.DLMediaType.Movie.value))
-    class_list.append((common_global.DLMediaType.TV.name, common_global.DLMediaType.TV.value))
-    class_list.append(
-        (common_global.DLMediaType.Person.name, common_global.DLMediaType.Person.value))
-    class_list.append(
-        (common_global.DLMediaType.Sports.name, common_global.DLMediaType.Sports.value))
-    class_list.append((common_global.DLMediaType.Game.name, common_global.DLMediaType.Game.value))
-    class_list.append(
-        (common_global.DLMediaType.Publication.name, common_global.DLMediaType.Publication.value))
-    class_list.append(
-        (common_global.DLMediaType.Picture.name, common_global.DLMediaType.Picture.value))
-    class_list.append((common_global.DLMediaType.Anime.name, common_global.DLMediaType.Anime.value))
-    class_list.append((common_global.DLMediaType.Music.name, common_global.DLMediaType.Music.value))
-    class_list.append((common_global.DLMediaType.Adult.name, common_global.DLMediaType.Adult.value))
     share_list = []
     for row_data in g.db_connection.db_audit_shares():
         share_name = row_data['mm_media_share_server'] + \
                      ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
     return render_template("admin/admin_library_edit.html", form=form,
-                           data_class=class_list,
+                           data_class=((common_global.DLMediaType.Movie.name,
+                                        common_global.DLMediaType.Movie.value),
+                                       (common_global.DLMediaType.TV.name,
+                                        common_global.DLMediaType.TV.value),
+                                       (common_global.DLMediaType.Music.name,
+                                        common_global.DLMediaType.Music.value),
+                                       (common_global.DLMediaType.Sports.name,
+                                        common_global.DLMediaType.Sports.value),
+                                       (common_global.DLMediaType.Game.name,
+                                        common_global.DLMediaType.Game.value),
+                                       (common_global.DLMediaType.Publication.name,
+                                        common_global.DLMediaType.Publication.value),
+                                       (common_global.DLMediaType.Picture.name,
+                                        common_global.DLMediaType.Picture.value),
+                                       (common_global.DLMediaType.Anime.name,
+                                        common_global.DLMediaType.Anime.value),
+                                       (common_global.DLMediaType.Adult.name,
+                                        common_global.DLMediaType.Adult.value)),
                            data_share=share_list)
 
 
