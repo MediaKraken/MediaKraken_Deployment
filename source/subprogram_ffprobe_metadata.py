@@ -180,6 +180,7 @@ class MKConsumer:
         if body is not None:
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'ffprobe': json_message})
+            # scan media file via ffprobe
             ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
             common_global.es_inst.com_elastic_index('info', {'ffprobe_data': ffprobe_data})
             # check for none first as it might be invalid json
@@ -200,13 +201,15 @@ class MKConsumer:
                             image_file_path = os.path.join(
                                 common_metadata.com_meta_image_file_path(json_message['Media Path'],
                                                                          'chapter'),
-                                (str(uuid.uuid4()) + '.png'))
+                                                                        json_message['Media UUID']
+                                                                        + '_' + str(chapter_count)
+                                                                        + '.png')
                         else:
                             image_file_path = os.path.join(
                                 os.path.dirname(json_message['Media Path']),
                                 'chapters')
                             # have this bool so I don't hit the os looking for path each time
-                            if first_image == True and not os.path.isdir(image_file_path):
+                            if first_image is True and not os.path.isdir(image_file_path):
                                 os.makedirs(image_file_path)
                             image_file_path = os.path.join(
                                 image_file_path, (str(chapter_count) + '.png'))
@@ -222,7 +225,8 @@ class MKConsumer:
                         command_list.append('-vframes')
                         command_list.append('1')
                         command_list.append('\"' + image_file_path + '\"')
-                        ffmpeg_proc = subprocess.Popen(command_list, stdout=subprocess.PIPE,
+                        ffmpeg_proc = subprocess.Popen(command_list,
+                                                       stdout=subprocess.PIPE,
                                                        shell=False)
                         # wait for subprocess to finish to not flood with ffmpeg processes
                         ffmpeg_proc.wait()
@@ -230,12 +234,13 @@ class MKConsumer:
                         # as the worker might see it as finished if allowed to continue
                         chapter_image_list[chapter_data['tags']['title']] = image_file_path
                         first_image = False
-                # TODO this should be merged into one database update
+                db_connection.db_begin()
                 db_connection.db_update_media_json(json_message['Media UUID'],
                                                    json.dumps(
                                                        {'ChapterImages': chapter_image_list}))
                 db_connection.db_media_ffmeg_update(json_message['Media UUID'],
                                                     json.dumps(ffprobe_data))
+                db_connection.db_commit()
             else:
                 common_global.es_inst.com_elastic_index('error', {'ffprobe': json_message})
         self.acknowledge_message(basic_deliver.delivery_tag)

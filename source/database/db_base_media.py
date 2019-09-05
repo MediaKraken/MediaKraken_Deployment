@@ -184,6 +184,7 @@ def db_media_rating_update(self, media_guid, user_id, status_text):
         else:
             json_data['UserStats'][user_id] = {status_text: status_setting}
         self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_commit()
     except:
         self.db_rollback()
         return None
@@ -203,6 +204,7 @@ def db_media_watched_checkpoint_update(self, media_guid, user_id, ffmpeg_time):
     else:
         json_data['UserStats'][user_id] = {'ffmpeg_checkpoint': ffmpeg_time}
     self.db_update_media_json(media_guid, json.dumps(json_data))
+    self.db_commit()
 
 
 def db_update_media_id(self, media_guid, metadata_guid):
@@ -219,7 +221,6 @@ def db_update_media_json(self, media_guid, mediajson):
     """
     self.db_cursor.execute('update mm_media set mm_media_json = %s where mm_media_guid = %s',
                            (mediajson, media_guid))
-    self.db_commit()
 
 
 def db_media_by_metadata_guid(self, metadata_guid, media_class_uuid):
@@ -336,7 +337,6 @@ def db_media_ffmeg_update(self, media_guid, ffmpeg_json):
     """
     self.db_cursor.execute('update mm_media set mm_media_ffprobe_json = %s'
                            ' where mm_media_guid = %s', (ffmpeg_json, media_guid))
-    self.db_commit()
 
 
 def db_unmatched_list_count(self):
