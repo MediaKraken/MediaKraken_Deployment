@@ -13,6 +13,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 from common import common_pagination
 import database as database_base
 
@@ -29,7 +30,7 @@ def user_sports_page():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db_connection.db_media_sports_list(
-            g.db_connection.db_media_uuid_by_class('Sports'),
+            common_global.DLMediaType.Sports,
             offset, per_page, session['search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))

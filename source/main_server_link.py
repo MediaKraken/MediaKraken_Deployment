@@ -120,7 +120,7 @@ class MediaKrakenApp:
                 # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
                 # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
-                if new_media[1] == 'Movie':
+                if new_media[1] == common_global.DLMediaType.Movie:
                     metadata_guid = self.db_connection.db_meta_guid_by_imdb(
                         new_media[3]['imdb'])
                     if metadata_guid is None:
@@ -129,7 +129,7 @@ class MediaKrakenApp:
                         if metadata_guid is None:
                             metadata_guid = self.db_connection.db_meta_guid_by_tvdb(
                                 new_media[3]['thetvdb'])
-                elif new_media[1] == 'TV Show':
+                elif new_media[1] == common_global.DLMediaType.TV:
                     metadata_guid \
                         = self.db_connection.db_metatv_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
@@ -141,18 +141,18 @@ class MediaKrakenApp:
                 elif new_media[1] == 'Sports':
                     metadata_guid = self.db_connection.db_metasports_guid_by_thesportsdb(
                         new_media[3]['thesportsdb'])
-                elif new_media[1] == 'Music':
+                elif new_media[1] == common_global.DLMediaType.Music:
                     pass
-                elif new_media[1] == 'Book':
+                elif new_media[1] == common_global.DLMediaType.Publication_Book:
                     pass
                 if metadata_guid is None:
                     # find on internet
                     # for "keys" in new_media[3]
                     pass
                 self.db_connection.db_insert_remote_media(json_message['Target'], new_media[0],
-                                                          self.db_connection.db_media_uuid_by_class(
-                                                              new_media[1]),
-                                                          new_media[2], metadata_guid)
+                                                          new_media[1],
+                                                          new_media[2],
+                                                          metadata_guid)
             self.db_connection.db_commit()
         else:
             common_global.es_inst.com_elastic_index('info', {'stuff': 'unknown message type'})

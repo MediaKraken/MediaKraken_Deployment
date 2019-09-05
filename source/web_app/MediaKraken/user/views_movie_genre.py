@@ -30,7 +30,7 @@ def user_movie_genre_page():
     """
     media = []
     for row_data in g.db_connection.db_media_movie_count_by_genre(
-            g.db_connection.db_media_uuid_by_class('Movie')):
+            common_global.DLMediaType.Movie):
         media.append((row_data['gen']['name'],
                       common_internationalization.com_inter_number_format(
                           row_data[1]),
@@ -47,7 +47,7 @@ def user_movie_page(genre):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     for row_data in g.db_connection.db_web_media_list(
-            g.db_connection.db_media_uuid_by_class('Movie'),
+            common_global.DLMediaType.Movie,
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
             offset=offset, include_remote=True, search_text=session['search_text']):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_metadata_user_json,
@@ -103,7 +103,7 @@ def user_movie_page(genre):
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,
                           watched_status, sync_status, rating_status, match_status))
     total = g.db_connection.db_web_media_list_count(
-        g.db_connection.db_media_uuid_by_class('Movie'), list_type='movie', list_genre=genre,
+        common_global.DLMediaType.Movie, list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True, search_text=session['search_text'])
     session['search_page'] = 'media_movie'
     session['search_text'] = None

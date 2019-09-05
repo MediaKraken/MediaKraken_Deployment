@@ -103,11 +103,6 @@ class MKServerDatabase:
         db_ffprobe_all_media_guid
     from database.db_base_media_books import db_media_book_list_count, \
         db_media_book_list
-    from database.db_base_media_class import db_media_class_list_count, \
-        db_media_class_insert, \
-        db_media_class_list, \
-        db_media_class_by_uuid, \
-        db_media_uuid_by_class
     from database.db_base_media_games import db_media_game_system_list_count, \
         db_media_game_system_list, \
         db_media_game_list_by_system_count, \

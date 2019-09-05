@@ -164,7 +164,7 @@ def admin_books_add():
     Display books add page
     """
     if request.method == 'POST':
-        class_uuid = g.db_connection.db_media_uuid_by_class('Book')
+        class_uuid = common_global.DLMediaType.Publication_Book
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())
