@@ -115,19 +115,20 @@ def admin_library_edit_page():
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins_library.admin_library_edit_page'))
                     smb_stuff.com_cifs_close()
-                # smb/cifs mounts
-                elif request.form['library_path'][0:3] == "smb":
-                    # TODO
-                    smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(
-                        ip_addr, user_name='guest', user_password='')
-                    smb_stuff.com_cifs_share_directory_check(
-                        share_name, dir_path)
-                    smb_stuff.com_cifs_close()
-                # nfs mount
-                elif request.form['library_path'][0:3] == "nfs":
-                    # TODO
-                    pass
+                # TODO these should be mounted under mkmount on docker host
+                # which will break docker swarm....when master moves
+                # # smb/cifs mounts
+                # elif request.form['library_path'][0:3] == "smb":
+                #     # TODO
+                #     smb_stuff = common_network_cifs.CommonCIFSShare()
+                #     smb_stuff.com_cifs_connect(
+                #         ip_addr, user_name='guest', user_password='')
+                #     smb_stuff.com_cifs_share_directory_check(
+                #         share_name, dir_path)
+                #     smb_stuff.com_cifs_close()
+                # # nfs mount
+                # elif request.form['library_path'][0:3] == "nfs":
+                #     pass
                 elif not os.path.isdir(os.path.join('/mediakraken/mnt',
                                                     request.form['library_path'])):
                     flash("Invalid library path.", 'error')
@@ -206,7 +207,8 @@ def getLibraryById():
 @admin_required
 def updateLibrary():
     g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
-                                                 request.form['new_class'], request.form['id'])
+                                                 request.form['new_class'],
+                                                 request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
