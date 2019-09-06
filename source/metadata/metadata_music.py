@@ -56,9 +56,7 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
         db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
                                                   ffmpeg_data_json['format']['tags']['ALBUM'],
                                                   ffmpeg_data_json['format']['tags']['TITLE'])
-        if db_result is None:
-            pass
-        else:
+        if db_result is not None:
             metadata_uuid = db_result['mm_metadata_music_guid']
     if metadata_uuid is not None:
         db_connection.db_download_delete(download_que_id)
