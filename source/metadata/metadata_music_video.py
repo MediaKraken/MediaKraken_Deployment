@@ -67,11 +67,11 @@ def metadata_music_video_lookup(db_connection, file_name, download_que_id):
                         if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                             # need to submit a fetch record for limiter and rest of video data
                             if db_connection.db_download_que_exists(None,
-                                                                    common_global.DLMediaType.Movie.value,
+                                                                    common_global.DLMediaType.Music_Video.value,
                                                                     'imvdb',
                                                                     str(video_data['id'])) is None:
                                 db_connection.db_download_insert('imvdb',
-                                                                 common_global.DLMediaType.Movie.value,
+                                                                 common_global.DLMediaType.Music_Video.value,
                                                                  json.dumps({"Status": "Fetch",
                                                                              "ProviderMetaID": str(
                                                                                  video_data['id']),
