@@ -33,11 +33,8 @@ def nfo_xml_file(media_file_path):
     nfo_data = None
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
-    try:  # pull the "real" extension
-        # ext_check = media_file_path[-4:].lower().split(".")[-1]
-        ext_check = pathlib.Path(media_file_path).suffix.lower()
-    except:
-        ext_check = None
+    # pull the "real" extension
+    ext_check = pathlib.Path(media_file_path).suffix.lower()
     if ext_check in common_file_extentions.SUBTITLE_EXTENSION:
         # need to chop off the lang too, the split works even with no .lang in name
         nfo_file_check = media_file_path.rsplit('.', 2)[0] + '.nfo'
