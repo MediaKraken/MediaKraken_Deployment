@@ -159,10 +159,7 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
             metadata_uuid = db_connection.db_find_metadata_guid(
                 file_name['title'], None)
         common_global.es_inst.com_elastic_index('info', {"meta movie db meta": metadata_uuid})
-        if metadata_uuid is not None:
-            # match found by title/year on local db so purge dl record
-            db_connection.db_download_delete(download_que_id)
-        else:
+        if metadata_uuid is None:
             # no matches by name/year
             # search themoviedb since not matched above via DB or nfo/xml
             download_que_json.update({'Status': 'Search'})

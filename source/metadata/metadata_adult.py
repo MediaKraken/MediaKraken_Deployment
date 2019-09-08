@@ -96,10 +96,7 @@ def metadata_adult_lookup(db_connection, download_que_json, download_que_id, fil
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
         common_global.es_inst.com_elastic_index('info', {"meta adult db meta": metadata_uuid})
-        if metadata_uuid is not None:
-            # match found by title/year on local db so purge dl record
-            db_connection.db_download_delete(download_que_id)
-        else:
+        if metadata_uuid is None:
             metadata_uuid = download_que_json['MetaNewID']
             # no matches by name/year on local database
             # search themoviedb since not matched above via DB or nfo/xml

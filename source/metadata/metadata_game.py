@@ -51,10 +51,7 @@ def metadata_game_lookup(db_connection, download_que_json, download_que_id):
         metadata_uuid = row_data['gi_id']
         break
     common_global.es_inst.com_elastic_index('info', {"meta game metadata_uuid B": metadata_uuid})
-    if metadata_uuid is not None:
-        # match found by title on local db so purge dl record
-        db_connection.db_download_delete(download_que_id)
-    else:
+    if metadata_uuid is None:
         # no matches by name
         # search giantbomb since not matched above via DB or nfo/xml
         download_que_json.update({'Status': 'Search'})
