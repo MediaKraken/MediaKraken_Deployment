@@ -29,12 +29,8 @@ from guessit import guessit
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# verify themoviedb key exists
-if option_config_json['API']['themoviedb'] is not None:
-    # setup the tmdb class
-    TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
-else:
-    TMDB_CONNECTION = None
+# setup the tmdb class
+TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 
 
 def movie_search_tmdb(db_connection, file_name):
@@ -50,29 +46,27 @@ def movie_search_tmdb(db_connection, file_name):
     if type(file_name['title']) == list:
         file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
     metadata_uuid = None
-    match_result = None
-    if TMDB_CONNECTION is not None:
-        # try to match ID ONLY
-        if 'year' in file_name:
-            match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
-                file_name['title'], file_name['year'], True, media_type='movie')
-        else:
-            match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
-                file_name['title'], None, True, media_type='movie')
-        common_global.es_inst.com_elastic_index('info', {"meta movie response":
-                                                             match_response, 'res': match_result})
-        if match_response == 'idonly':
-            # check to see if metadata exists for TMDB id
-            metadata_uuid = db_connection.db_meta_guid_by_tmdb(match_result)
-            common_global.es_inst.com_elastic_index('info', {"meta movie db result": metadata_uuid})
-        elif match_response == 'info':
-            # store new metadata record and set uuid
-            common_global.es_inst.com_elastic_index('info', {"meta movie movielookup info "
-                                                             "results": match_result})
-        elif match_response == 're':
-            # multiple results
-            common_global.es_inst.com_elastic_index('info', {"movielookup multiple results":
-                                                                 match_result})
+    # try to match ID ONLY
+    if 'year' in file_name:
+        match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
+            file_name['title'], file_name['year'], True, media_type='movie')
+    else:
+        match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
+            file_name['title'], None, True, media_type='movie')
+    common_global.es_inst.com_elastic_index('info', {"meta movie response":
+                                                         match_response, 'res': match_result})
+    if match_response == 'idonly':
+        # check to see if metadata exists for TMDB id
+        metadata_uuid = db_connection.db_meta_guid_by_tmdb(match_result)
+        common_global.es_inst.com_elastic_index('info', {"meta movie db result": metadata_uuid})
+    elif match_response == 'info':
+        # store new metadata record and set uuid
+        common_global.es_inst.com_elastic_index('info', {"meta movie movielookup info "
+                                                         "results": match_result})
+    elif match_response == 're':
+        # multiple results
+        common_global.es_inst.com_elastic_index('info', {"movielookup multiple results":
+                                                             match_result})
     common_global.es_inst.com_elastic_index('info', {'meta movie uuid': metadata_uuid,
                                                      'result': match_result})
     return metadata_uuid, match_result

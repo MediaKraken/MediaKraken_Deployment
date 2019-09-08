@@ -25,12 +25,8 @@ from common import common_metadata_provider_imvdb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-# verify imvdb key exists
-if option_config_json['API']['imvdb'] is not None:
-    IMVDB_CONNECTION \
-        = common_metadata_provider_imvdb.CommonMetadataIMVdb(option_config_json['API']['imvdb'])
-else:
-    IMVDB_CONNECTION = None
+IMVDB_CONNECTION = common_metadata_provider_imvdb.CommonMetadataIMVdb(
+    option_config_json['API']['imvdb'])
 
 
 def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):

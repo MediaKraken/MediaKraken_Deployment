@@ -22,12 +22,8 @@ from common import common_metadata_provider_isbndb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-if option_config_json['API']['isbndb'] is not None:
-    # setup the isbndb class
-    ISBNDB_CONNECTION = common_metadata_provider_isbndb.CommonMetadataISBNdb(
-        option_config_json)
-else:
-    ISBNDB_CONNECTION = None
+# setup the isbndb class
+ISBNDB_CONNECTION = common_metadata_provider_isbndb.CommonMetadataISBNdb(option_config_json)
 
 
 def metadata_periodicals_search_isbndb(db_connection, lookup_name):
