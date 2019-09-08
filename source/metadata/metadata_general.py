@@ -217,10 +217,12 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
     # if search is being updated to new provider
     if update_provider is not None:
         thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
+        thread_db.db_commit()
         return metadata_uuid # no need to continue with checks
     # if lookup halt set to ZZ so it doesn't get picked up by metadata dl queue
     if lookup_halt:
         thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+        thread_db.db_commit()
         return metadata_uuid # no need to continue with checks
     # if set fetch, set provider id and status on dl record
     if set_fetch:
@@ -239,6 +241,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
             thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                          download_data['mdq_id'])
+            thread_db.db_commit()
     return metadata_uuid
 
 
@@ -300,6 +303,7 @@ def metadata_castcrew(thread_db, provider_name, download_data):
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                  download_data['mdq_id'])
+    thread_db.db_commit()
 
 
 def metadata_image(thread_db, provider_name, download_data):

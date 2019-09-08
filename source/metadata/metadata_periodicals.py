@@ -47,11 +47,13 @@ def metadata_periodicals_lookup(db_connection, download_que_json, download_que_i
         if metadata_uuid is None:
             download_que_json.update({'Status': 'Search'})
             # save the updated status
+            db_connection.db_begin()
             db_connection.db_download_update(json.dumps(download_que_json),
                                              download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider(
                 'isbndb', download_que_id)
+            db_connection.db_commit()
     else:
         # meta uuid is found so delete
         db_connection.db_download_delete(download_que_id)

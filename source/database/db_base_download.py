@@ -59,7 +59,6 @@ def db_download_update_provider(self, provider_name, guid):
                                                      'guid': guid})
     self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',
                            (provider_name, guid))
-    self.db_commit()
 
 
 def db_download_update(self, update_json, guid, update_que_id=None):
@@ -75,7 +74,6 @@ def db_download_update(self, update_json, guid, update_que_id=None):
     else:
         self.db_cursor.execute('update mm_download_que set mdq_download_json = %s'
                                ' where mdq_id = %s', (update_json, guid))
-    self.db_commit()
 
 
 def db_download_que_exists(self, download_que_uuid, download_que_type,

@@ -67,10 +67,12 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
         # search musicbrainz since not matched above via DB
         download_que_json.update({'Status': 'Search'})
         # save the updated status
+        db_connection.db_begin()
         db_connection.db_download_update(json.dumps(download_que_json),
                                          download_que_id)
         # set provider last so it's not picked up by the wrong thread
         db_connection.db_download_update_provider('musicbrainz', download_que_id)
+        db_connection.db_commit()
     common_global.es_inst.com_elastic_index('info',
                                             {"metadata_music_lookup return uuid": metadata_uuid})
     metadata_music_lookup.metadata_last_id = metadata_uuid

@@ -85,10 +85,12 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
                 metadata_uuid = download_que_json['MetaNewID']
                 download_que_json.update(
                     {'Status': 'Fetch', 'ProviderMetaID': provider_id})
+                db_connection.db_begin()
                 db_connection.db_download_update(json.dumps(download_que_json),
                                                  download_que_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 db_connection.db_download_update_provider('themoviedb', download_que_id)
+                db_connection.db_commit()
             else:
                 db_connection.db_download_delete(download_que_id)
                 metadata_uuid = dl_meta
@@ -100,11 +102,13 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
                 metadata_uuid = download_que_json['MetaNewID']
                 download_que_json.update(
                     {'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
+                db_connection.db_begin()
                 db_connection.db_download_update(json.dumps(download_que_json),
                                                  download_que_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 db_connection.db_download_update_provider(
                     'thetvdb', download_que_id)
+                db_connection.db_commit()
             else:
                 db_connection.db_download_delete(download_que_id)
                 metadata_uuid = dl_meta
@@ -128,10 +132,12 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
             # search themoviedb since not matched above via DB or nfo/xml
             download_que_json.update({'Status': 'Search'})
             # save the updated status
+            db_connection.db_begin()
             db_connection.db_download_update(json.dumps(download_que_json),
                                              download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('themoviedb', download_que_id)
+            db_connection.db_commit()
     # set last values to negate lookups for same show
     metadata_tv_lookup.metadata_last_id = metadata_uuid
     metadata_tv_lookup.metadata_last_imdb = imdb_id

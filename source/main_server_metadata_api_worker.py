@@ -468,6 +468,7 @@ while True:
             else:  # invalid guessit guess so set to ZZ to skip for now
                 # commit in function
                 thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
+                thread_db.db_commit()
             # update the media row with the json media id AND THE proper NAME!!!
             if metadata_uuid is not None:
                 common_global.es_inst.com_elastic_index('info', {"worker Z meta api update":
