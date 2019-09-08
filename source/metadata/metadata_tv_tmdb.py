@@ -39,12 +39,7 @@ queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
-# verify themoviedb key exists
-if option_config_json['API']['themoviedb'] is not None:
-    # setup the thmdb class
-    TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
-else:
-    TMDB_CONNECTION = None
+TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 
 
 def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
