@@ -48,13 +48,15 @@ class CommonMetadataMusicbrainz:
         musicbrainzngs.set_useragent("MediaKraken_Server", common_version.APP_VERSION,
                                      "spootdev@gmail.com "
                                      "https://github.com/MediaKraken/MediaKraken_Deployment")
-        # If you are connecting to a development server
-        if option_config_json['MusicBrainz']['Host'] is not None:
-            if option_config_json['MusicBrainz']['Host'] != 'Docker':
-                musicbrainzngs.set_hostname(option_config_json['MusicBrainz']['Host'] + ':'
-                                            + option_config_json['MusicBrainz']['Port'])
-            else:
-                musicbrainzngs.set_hostname('mkmusicbrainz:5000')
+        if option_config_json['Docker Instances']['musicbrainz']:
+            musicbrainzngs.set_hostname('mkstack_mkmusicbrainz:5000')
+        else:
+            # If you are connecting to a development server
+            if option_config_json['Metadata']['MusicBrainz']['Host'] is not None:
+                if option_config_json['Metadata']['MusicBrainz']['Host'] != 'Docker':
+                    musicbrainzngs.set_hostname(
+                        option_config_json['Metadata']['MusicBrainz']['Host'] + ':'
+                        + option_config_json['Metadata']['MusicBrainz']['Port'])
 
     def show_release_details(self, rel):
         """

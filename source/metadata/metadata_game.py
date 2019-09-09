@@ -60,7 +60,6 @@ def metadata_game_lookup(db_connection, download_que_json, download_que_id):
         db_connection.db_download_update(json.dumps(download_que_json),
                                          download_que_id)
         # set provider last so it's not picked up by the wrong thread
-        db_connection.db_download_update_provider(
-            'giantbomb', download_que_id)
+        db_connection.db_download_update_provider('giantbomb', download_que_id)
         db_connection.db_commit()
     return metadata_uuid
