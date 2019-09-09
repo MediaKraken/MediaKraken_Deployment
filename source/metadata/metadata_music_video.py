@@ -50,8 +50,7 @@ def metadata_music_video_lookup(db_connection, file_name, download_que_id):
         if band_name == metadata_music_video_lookup.metadata_last_band \
                 and song_name == metadata_music_video_lookup.metadata_last_song:
             return metadata_music_video_lookup.metadata_last_id
-        metadata_uuid = db_connection.db_meta_music_video_lookup(
-            band_name, song_name)
+        metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)
         common_global.es_inst.com_elastic_index('info', {"uuid": metadata_uuid})
         if metadata_uuid == []:
             metadata_uuid = None
