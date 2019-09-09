@@ -156,7 +156,7 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                     pass
     common_global.es_inst.com_elastic_index('info', {'nfo/xml imdb': imdb_id,
                                                      'tmdb': tmdb_id})
-    return (imdb_id, tmdb_id)
+    return imdb_id, tmdb_id
 
 
 def nfo_xml_id_lookup_tv(nfo_data, xml_data):
@@ -208,4 +208,4 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
     common_global.es_inst.com_elastic_index('info', {'nfo/xml tv imdb': imdb_id,
                                                      'tvdb': tvdb_id,
                                                      'tmdb': tmdb_id})
-    return (imdb_id, tvdb_id, tmdb_id)
+    return imdb_id, tvdb_id, tmdb_id
