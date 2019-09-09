@@ -16,53 +16,37 @@
   MA 02110-1301, USA.
 """
 
+import json
 import time
+
 import psycopg2
 from common import common_config_ini
 from common import common_global
 from common import common_metadata_provider_musicbrainz
 
+option_config_json, db_connection = common_config_ini.com_config_read()
+MBRAINZ_CONNECTION = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
+    option_config_json)
 
-def music_search_musicbrainz(db_connection, file_name):
-    """
-    # search musicbrainz
-    """
+
+def music_search_musicbrainz(db_connection, download_que_json, ffmpeg_data_json):
     try:
         common_global.es_inst.com_elastic_index('info',
-                                                {"meta movie search musicbrainz": str(file_name)})
+                                                {"meta music search brainz": download_que_json})
     except:
         pass
-
-
-    # TODO aren't I doing two guessits per file name then?
-    file_name = guessit(file_name)
-    if type(file_name['title']) == list:
-        file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
     metadata_uuid = None
-    # try to match ID ONLY
-    if 'year' in file_name:
-        match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
-            file_name['title'], file_name['year'], True, media_type='movie')
-    else:
-        match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
-            file_name['title'], None, True, media_type='movie')
-    common_global.es_inst.com_elastic_index('info', {"meta movie response":
-                                                         match_response, 'res': match_result})
-    if match_response == 'idonly':
-        # check to see if metadata exists for TMDB id
-        metadata_uuid = db_connection.db_meta_guid_by_tmdb(match_result)
-        common_global.es_inst.com_elastic_index('info', {"meta movie db result": metadata_uuid})
-    elif match_response == 'info':
-        # store new metadata record and set uuid
-        common_global.es_inst.com_elastic_index('info', {"meta movie movielookup info "
-                                                         "results": match_result})
-    elif match_response == 're':
-        # multiple results
-        common_global.es_inst.com_elastic_index('info', {"movielookup multiple results":
-                                                             match_result})
-    common_global.es_inst.com_elastic_index('info', {'meta movie uuid': metadata_uuid,
-                                                     'result': match_result})
-    return metadata_uuid, match_result
+    # look at musicbrainz server
+    music_data = MBRAINZ_CONNECTION.com_mediabrainz_get_recordings(
+        ffmpeg_data_json['format']['tags']['ARTIST'],
+        ffmpeg_data_json['format']['tags']['ALBUM'],
+        ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)
+    if music_data is not None:
+        if metadata_uuid is None:
+            metadata_uuid = db_connection.db_meta_song_add(
+                ffmpeg_data_json['format']['tags']['TITLE'],
+                music_data['fakealbun_id'], json.dumps(music_data))
+    return metadata_uuid, music_data
 
 
 def music_fetch_save_musicbrainz(db_connection, tmdb_id, metadata_uuid):

@@ -16,10 +16,7 @@
   MA 02110-1301, USA.
 """
 
-import json
-
 import musicbrainzngs
-from common import common_config_ini
 from common import common_global
 from common import common_version
 
@@ -106,27 +103,3 @@ class CommonMetadataMusicbrainz:
                 common_global.es_inst.com_elastic_index('info', {"match #{}:".format(idx + 1)})
                 self.show_release_details(release)
             return release['id']
-
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-MBRAINZ_CONNECTION = CommonMetadataMusicbrainz(option_config_json)
-
-
-def music_search_musicbrainz(db_connection, download_que_json, ffmpeg_data_json):
-    try:
-        common_global.es_inst.com_elastic_index('info',
-                                                {"meta music search brainz": download_que_json})
-    except:
-        pass
-    metadata_uuid = None
-    # look at musicbrainz server
-    music_data = MBRAINZ_CONNECTION.com_mediabrainz_get_recordings(
-        ffmpeg_data_json['format']['tags']['ARTIST'],
-        ffmpeg_data_json['format']['tags']['ALBUM'],
-        ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)
-    if music_data is not None:
-        if metadata_uuid is None:
-            metadata_uuid = db_connection.db_meta_song_add(
-                ffmpeg_data_json['format']['tags']['TITLE'],
-                music_data['fakealbun_id'], json.dumps(music_data))
-    return metadata_uuid, music_data
