@@ -64,7 +64,7 @@ services:
   database:
     image: mediakraken/mkdatabase:latest
     environment:
-      - MAX_CONNECTIONS=40
+      - MAX_CONNECTIONS=100
       - MAX_WAL_SENDERS=10
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB
@@ -293,7 +293,7 @@ services:
       - POOL_MODE=transaction
       #- POOL_MODE=session
       - MAX_CLIENT_CONN=1024
-      - DEFAULT_POOL_SIZE=85
+      - DEFAULT_POOL_SIZE=50
       - SERVER_RESET_QUERY=DISCARD ALL
     secrets:
       - db_password
