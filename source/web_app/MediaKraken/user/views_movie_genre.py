@@ -106,7 +106,6 @@ def user_movie_page(genre):
         common_global.DLMediaType.Movie, list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True, search_text=session['search_text'])
     session['search_page'] = 'media_movie'
-    session['search_text'] = None
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=total,

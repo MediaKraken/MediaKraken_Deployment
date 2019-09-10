@@ -43,7 +43,6 @@ def metadata_periodical_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    session['search_text'] = None
     return render_template('users/metadata/meta_periodical_list.html',
                            media_person=item_list,
                            page=page,

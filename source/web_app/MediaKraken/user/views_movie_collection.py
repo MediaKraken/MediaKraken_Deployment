@@ -44,7 +44,6 @@ def metadata_movie_collection_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    session['search_text'] = None
     return render_template('users/metadata/meta_movie_collection_list.html',
                            media=media,
                            page=page,

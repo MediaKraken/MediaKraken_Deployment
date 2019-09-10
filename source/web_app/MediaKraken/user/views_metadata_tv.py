@@ -281,7 +281,6 @@ def metadata_tvshow_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    session['search_text'] = None
     return render_template('users/metadata/meta_tvshow_list.html',
                            media_tvshow=media_tvshow,
                            page=page,

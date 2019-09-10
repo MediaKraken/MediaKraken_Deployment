@@ -42,7 +42,6 @@ def user_newmedia_page():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    session['search_text'] = None
     return render_template('users/user_newmedia.html',
                            media=media_data,
                            page=page,

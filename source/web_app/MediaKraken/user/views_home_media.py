@@ -30,7 +30,6 @@ def home_media_list():
     media = []
     # TODO wrong movie query
     metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
-    session['search_text'] = None
     return render_template("users/user_home_media_list.html", media=media)
 
 

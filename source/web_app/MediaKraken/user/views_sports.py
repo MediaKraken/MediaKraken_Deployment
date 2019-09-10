@@ -43,7 +43,6 @@ def user_sports_page():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    session['search_text'] = None
     return render_template('users/user_sports_page.html', media=media,
                            page=page,
                            per_page=per_page,

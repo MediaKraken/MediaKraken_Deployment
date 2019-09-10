@@ -81,7 +81,6 @@ def metadata_person_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    session['search_text'] = None
     return render_template('users/metadata/meta_people_list.html',
                            media_person=person_list,
                            page=page,

@@ -43,3 +43,15 @@ def db_metatvdb_update(self, series_id_json, tv_name, show_detail, tvdb_id):
                            ' where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s',
                            (series_id_json, tv_name, show_detail, tvdb_id))
     self.db_commit()
+
+def db_metatv_guid_by_tvdb(self, thetvdb_uuid):
+    """
+    # metadata guid by tv id
+    """
+    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
+                           ' where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s',
+                           (thetvdb_uuid,))
+    try:
+        return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
+    except:
+        return None

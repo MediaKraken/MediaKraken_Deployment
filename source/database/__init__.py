@@ -223,9 +223,9 @@ class MKServerDatabase:
         db_metathesports_update, \
         db_metathesportsdb_select_guid
     from database.db_base_metadata_thetvdb import db_metatvdb_insert, \
-        db_metatvdb_update
+        db_metatvdb_update, \
+        db_metatv_guid_by_tvdb
     from database.db_base_metadata_tv import db_metatv_guid_by_imdb, \
-        db_metatv_guid_by_tvdb, \
         db_metatv_guid_by_tvmaze, \
         db_metatv_guid_by_tmdb, \
         db_metatv_guid_by_rt, \
