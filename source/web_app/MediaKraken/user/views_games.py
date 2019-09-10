@@ -35,10 +35,9 @@ def user_games_list():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    media_list = g.db_connection.db_meta_game_system_list(offset, per_page,
-                                                          session['search_text'])
     return render_template("users/user_game_list.html",
-                           media=media_list,
+                           media=g.db_connection.db_meta_game_system_list(offset, per_page,
+                                                                          session['search_text']),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
