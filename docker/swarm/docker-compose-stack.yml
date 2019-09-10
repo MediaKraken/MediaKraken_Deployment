@@ -298,8 +298,6 @@ services:
     entrypoint: ./wait-for-it-ash.sh -h mkstack_database -p 5432 -t 120 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    #    labels:
-    #      - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
     deploy:
       mode: replicated
       replicas: 2
@@ -370,7 +368,6 @@ services:
       - "8000:8000"
     volumes:
       - portainer_data:/data
-    #      - mediakraken_vol_portainer:/data
     networks:
       - portaineragent_agent_network
     deploy:
@@ -549,82 +546,22 @@ networks:
 volumes:
   portainer_data:
   mediakraken_vol_cache:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/cache
   mediakraken_vol_certs:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/certs
   mediakraken_vol_devices:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/devices
   mediakraken_vol_mbrainz_conf:
   mediakraken_vol_mbrainz_data:
   mediakraken_vol_mumble:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/mumble
   mediakraken_vol_nginx:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/nginx
   mediakraken_vol_pgadmin:
   mediakraken_vol_phue:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/phue
   mediakraken_vol_portainer:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/portainer
   mediakraken_vol_postgresql:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/postgresql
   mediakraken_vol_rabbit:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/rabbit
   mediakraken_vol_static:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/static
   mediakraken_vol_teamspeak:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/teamspeak
   mediakraken_vol_transmission:
   mediakraken_vol_transmission_incomplete:
   mediakraken_vol_webkey:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/webkey
   mediakraken_vol_webpid:
 #    driver: local
 #    driver_opts:
