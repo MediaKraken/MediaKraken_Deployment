@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose.exe convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: webapp
+  name: webapp
+spec:
+  ports:
+  - name: "8901"
+    port: 8901
+    targetPort: 8080
+  - name: "9191"
+    port: 9191
+    targetPort: 9191
+  selector:
+    io.kompose.service: webapp
+status:
+  loadBalancer: {}

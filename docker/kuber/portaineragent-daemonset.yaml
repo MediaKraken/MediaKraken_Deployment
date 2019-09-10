@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  annotations:
+    kompose.cmd: kompose.exe convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: portaineragent
+  name: portaineragent
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: portaineragent
+    spec:
+      containers:
+      - env:
+        - name: AGENT_CLUSTER_ADDR
+          value: tasks.portaineragent
+        image: portainer/agent
+        name: portaineragent
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: portaineragent-claim0
+        - mountPath: /var/lib/docker/volumes
+          name: portaineragent-claim1
+      restartPolicy: Always
+      volumes:
+      - name: portaineragent-claim0
+        persistentVolumeClaim:
+          claimName: portaineragent-claim0
+      - name: portaineragent-claim1
+        persistentVolumeClaim:
+          claimName: portaineragent-claim1
+status:
+  currentNumberScheduled: 0
+  desiredNumberScheduled: 0
+  numberMisscheduled: 0

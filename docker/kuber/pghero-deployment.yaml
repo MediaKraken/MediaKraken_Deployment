@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose.exe convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pghero
+  name: pghero
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: pghero
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_URL
+          value: postgres://postgres:owfohiwehCHANGEMEjiow2rJ@mkstack_database:5432/postgres
+        image: th-registry-1.beaverbay.local:5000/mediakraken/mkpghero:dev
+        name: pghero
+        ports:
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+status: {}
