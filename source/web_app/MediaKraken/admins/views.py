@@ -33,7 +33,7 @@ from common import common_version
 from common import common_zfs
 import database as database_base
 
-ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = {'py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
