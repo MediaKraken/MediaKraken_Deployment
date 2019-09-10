@@ -545,7 +545,7 @@ networks:
     attachable: true
   # specifying external is depreciated
   mediakraken_outside:
-      name: "host"
+      name: "mkhost"
 
 volumes:
   portainer_data:
