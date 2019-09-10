@@ -45,7 +45,7 @@ services:
     # needs to run as host so clients can see it on their subnet
     # network_mode: host
     networks:
-      - mediakraken_network_backend
+      - mediakraken_outside
 
   # runs cron
   cron:
@@ -544,9 +544,9 @@ networks:
   mediakraken_network_frontend:
     driver: overlay
     attachable: true
-  host:
-    name: host
-    external: true
+  mediakraken_outside:
+    external:
+      name: "host"
 
 volumes:
   portainer_data:
