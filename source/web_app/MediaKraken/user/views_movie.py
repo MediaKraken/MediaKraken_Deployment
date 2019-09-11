@@ -139,7 +139,7 @@ def movie_detail(guid):
         ffprobe_data = {}
         # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
         for video_version in g.db_connection.db_ffprobe_all_media_guid(guid,
-                                                                       common_global.DLMediaType.Movie):
+                                                                       common_global.DLMediaType.Movie.value):
             common_global.es_inst.com_elastic_index('info', {"vid_version": video_version})
             # not all files have ffprobe
             if video_version['mm_media_ffprobe_json'] is None:

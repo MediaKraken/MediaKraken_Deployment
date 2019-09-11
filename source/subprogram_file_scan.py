@@ -112,22 +112,22 @@ def worker(audit_directory):
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
                 # video game data
-                if original_media_class == common_global.DLMediaType.Game:
+                if original_media_class == common_global.DLMediaType.Game.value:
                     if file_extension[1:] == 'iso':
-                        new_class_type_uuid = common_global.DLMediaType.Game_ISO
+                        new_class_type_uuid = common_global.DLMediaType.Game_ISO.value
                     elif file_extension[1:] == 'chd':
-                        new_class_type_uuid = common_global.DLMediaType.Game_CHD
+                        new_class_type_uuid = common_global.DLMediaType.Game_CHD.value
                     else:
-                        new_class_type_uuid = common_global.DLMediaType.Game_ROM
+                        new_class_type_uuid = common_global.DLMediaType.Game_ROM.value
                     ffprobe_bif_data = False
                 # set new media class for subtitles
                 elif file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION:
-                    if original_media_class == common_global.DLMediaType.Movie:
-                        new_class_type_uuid = common_global.DLMediaType.Movie_Subtitle
-                    elif original_media_class == common_global.DLMediaType.TV \
-                            or original_media_class == common_global.DLMediaType.TV_Episode \
-                            or original_media_class == common_global.DLMediaType.TV_Season:
-                        new_class_type_uuid = common_global.DLMediaType.TV_Subtitle
+                    if original_media_class == common_global.DLMediaType.Movie.value:
+                        new_class_type_uuid = common_global.DLMediaType.Movie_Subtitle.value
+                    elif original_media_class == common_global.DLMediaType.TV.value \
+                            or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            or original_media_class == common_global.DLMediaType.TV_Season.value:
+                        new_class_type_uuid = common_global.DLMediaType.TV_Subtitle.value
                     # else:
                     #     new_class_type_uuid = common_global.DLMediaType.Movie['Subtitle']
                     ffprobe_bif_data = False
@@ -138,28 +138,28 @@ def worker(audit_directory):
                         or file_name.find('\\theme.mp3') != -1 \
                         or file_name.find('/theme.mp4') != -1 \
                         or file_name.find('\\theme.mp4') != -1:
-                    if original_media_class == common_global.DLMediaType.Movie:
+                    if original_media_class == common_global.DLMediaType.Movie.value:
                         if file_name.find('/trailers/') != -1 or file_name.find(
                                 '\\trailers\\') != -1:
-                            new_class_type_uuid = common_global.DLMediaType.Movie_Trailer
+                            new_class_type_uuid = common_global.DLMediaType.Movie_Trailer.value
                         else:
-                            new_class_type_uuid = common_global.DLMediaType.Movie_Theme
-                    elif original_media_class == common_global.DLMediaType.TV \
-                            or original_media_class == common_global.DLMediaType.TV_Episode \
-                            or original_media_class == common_global.DLMediaType.TV_Season:
+                            new_class_type_uuid = common_global.DLMediaType.Movie_Theme.value
+                    elif original_media_class == common_global.DLMediaType.TV.value \
+                            or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            or original_media_class == common_global.DLMediaType.TV_Season.value:
                         if file_name.find('/trailers/') != -1 or file_name.find(
                                 '\\trailers\\') != -1:
-                            new_class_type_uuid = common_global.DLMediaType.TV_Trailer
+                            new_class_type_uuid = common_global.DLMediaType.TV_Trailer.value
                         else:
-                            new_class_type_uuid = common_global.DLMediaType.TV_Theme
+                            new_class_type_uuid = common_global.DLMediaType.TV_Theme.value
                 # set new media class for extras
                 elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
-                    if original_media_class == common_global.DLMediaType.Movie:
-                        new_class_type_uuid = common_global.DLMediaType.Movie_Extras
-                    elif original_media_class == common_global.DLMediaType.TV \
-                            or original_media_class == common_global.DLMediaType.TV_Episode \
-                            or original_media_class == common_global.DLMediaType.TV_Season:
-                        new_class_type_uuid = common_global.DLMediaType.TV_Extras
+                    if original_media_class == common_global.DLMediaType.Movie.value:
+                        new_class_type_uuid = common_global.DLMediaType.Movie_Extras.value
+                    elif original_media_class == common_global.DLMediaType.TV.value \
+                            or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            or original_media_class == common_global.DLMediaType.TV_Season.value:
+                        new_class_type_uuid = common_global.DLMediaType.TV_Extras.value
                 # set new media class for backdrops (usually themes)
                 elif file_name.find('/backdrops/') != -1 \
                         or file_name.find('\\backdrops\\') != -1:
@@ -168,12 +168,12 @@ def worker(audit_directory):
                             or file_name.find('\\theme.mp3') != -1 \
                             or file_name.find('/theme.mp4') != -1 \
                             or file_name.find('\\theme.mp4') != -1:
-                        if original_media_class == common_global.DLMediaType.Movie:
-                            new_class_type_uuid = common_global.DLMediaType.Movie_Theme
-                        elif original_media_class == common_global.DLMediaType.TV \
-                                or original_media_class == common_global.DLMediaType.TV_Episode \
-                                or original_media_class == common_global.DLMediaType.TV_Season:
-                            new_class_type_uuid = common_global.DLMediaType.TV_Theme
+                        if original_media_class == common_global.DLMediaType.Movie.value:
+                            new_class_type_uuid = common_global.DLMediaType.Movie_Theme.value
+                        elif original_media_class == common_global.DLMediaType.TV.value \
+                                or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                                or original_media_class == common_global.DLMediaType.TV_Season.value:
+                            new_class_type_uuid = common_global.DLMediaType.TV_Theme.value
                 # flip around slashes for smb paths
                 if file_name[:1] == "\\":
                     file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
@@ -194,7 +194,7 @@ def worker(audit_directory):
                                                'Media Path': file_name}),
                                           properties=pika.BasicProperties(content_type='text/plain',
                                                                           delivery_mode=2))
-                    if original_media_class != common_global.DLMediaType.Music:
+                    if original_media_class != common_global.DLMediaType.Music.value:
                         # Send a message so roku thumbnail is generated
                         channel.basic_publish(exchange='mkque_roku_ex',
                                               routing_key='mkroku',

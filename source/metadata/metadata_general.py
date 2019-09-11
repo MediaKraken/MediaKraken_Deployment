@@ -146,7 +146,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
     elif provider_name == 'thegamesdb':
         lookup_halt = True
     elif provider_name == 'themoviedb':
-        if download_que_type == common_global.DLMediaType.Movie:
+        if download_que_type == common_global.DLMediaType.Movie.value:
             metadata_uuid, match_result = metadata_provider_themoviedb.movie_search_tmdb(thread_db,
                                                                                          download_data[
                                                                                              'mdq_download_json'][
@@ -159,7 +159,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
             else:
                 if metadata_uuid is not None:
                     set_fetch = True
-        elif download_que_type == common_global.DLMediaType.TV:
+        elif download_que_type == common_global.DLMediaType.TV.value:
             metadata_uuid, match_result = metadata_tv.metadata_tv_lookup(thread_db,
                                                                          download_data[
                                                                              'mdq_download_json'][

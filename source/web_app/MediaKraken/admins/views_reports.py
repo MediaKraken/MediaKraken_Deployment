@@ -118,14 +118,14 @@ def report_display_all_media_known_video():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_media_list_count(
-                                                      common_global.DLMediaType.Movie),
+                                                      common_global.DLMediaType.Movie.value),
                                                   record_name='known video(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
     return render_template('admin/reports/report_all_known_media_video.html',
                            media=g.db_connection.db_web_media_list(
-                               common_global.DLMediaType.Movie,
+                               common_global.DLMediaType.Movie.value,
                                list_type='movie', list_genre='All', list_limit=per_page,
                                group_collection=False,
                                offset=offset, include_remote=True,

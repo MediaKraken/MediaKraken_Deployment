@@ -120,7 +120,7 @@ class MediaKrakenApp:
                 # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
                 # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
-                if new_media[1] == common_global.DLMediaType.Movie:
+                if new_media[1] == common_global.DLMediaType.Movie.value:
                     metadata_guid = self.db_connection.db_meta_guid_by_imdb(
                         new_media[3]['imdb'])
                     if metadata_guid is None:
@@ -129,7 +129,7 @@ class MediaKrakenApp:
                         if metadata_guid is None:
                             metadata_guid = self.db_connection.db_meta_guid_by_tvdb(
                                 new_media[3]['thetvdb'])
-                elif new_media[1] == common_global.DLMediaType.TV:
+                elif new_media[1] == common_global.DLMediaType.TV.value:
                     metadata_guid \
                         = self.db_connection.db_metatv_guid_by_imdb(new_media[3]['imdb'])
                     if metadata_guid is None:
@@ -141,9 +141,9 @@ class MediaKrakenApp:
                 elif new_media[1] == 'Sports':
                     metadata_guid = self.db_connection.db_metasports_guid_by_thesportsdb(
                         new_media[3]['thesportsdb'])
-                elif new_media[1] == common_global.DLMediaType.Music:
+                elif new_media[1] == common_global.DLMediaType.Music.value:
                     pass
-                elif new_media[1] == common_global.DLMediaType.Publication_Book:
+                elif new_media[1] == common_global.DLMediaType.Publication_Book.value:
                     pass
                 if metadata_guid is None:
                     # find on internet
