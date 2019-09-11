@@ -282,10 +282,8 @@ def db_read_media_new_count(self, search_value=None, days_old=7):
     """
     # new media count
     """
-    self.db_cursor.execute('select count(*) from mm_media, mm_metadata_movie, mm_media_class'
+    self.db_cursor.execute('select count(*) from mm_media, mm_metadata_movie'
                            ' where mm_media_metadata_guid = mm_metadata_guid'
-                           ' and mm_media.mm_media_class_guid ='
-                           ' mm_media_class.mm_media_class_guid'
                            ' and mm_media_json->>\'DateAdded\' >= %s',
                            ((datetime.datetime.now()
                              - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
@@ -298,10 +296,8 @@ def db_read_media_new(self, offset=None, records=None, search_value=None, days_o
     """
     if offset is None:
         self.db_cursor.execute('select mm_media_name, mm_media_guid, mm_media_class_type'
-                               ' from mm_media, mm_metadata_movie, mm_media_class'
+                               ' from mm_media, mm_metadata_movie'
                                ' where mm_media_metadata_guid = mm_metadata_guid'
-                               ' and mm_media.mm_media_class_guid'
-                               ' = mm_media_class.mm_media_class_guid'
                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                ' order by LOWER(mm_media_name),'
                                ' mm_media_class_type',
@@ -309,10 +305,8 @@ def db_read_media_new(self, offset=None, records=None, search_value=None, days_o
                                  - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
     else:
         self.db_cursor.execute('select mm_media_name, mm_media_guid, mm_media_class_type'
-                               ' from mm_media, mm_metadata_movie, mm_media_class'
+                               ' from mm_media, mm_metadata_movie'
                                ' where mm_media_metadata_guid = mm_metadata_guid'
-                               ' and mm_media.mm_media_class_guid'
-                               ' = mm_media_class.mm_media_class_guid'
                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                ' order by LOWER(mm_media_name),'
                                ' mm_media_class_type offset %s limit %s',
