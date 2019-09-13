@@ -38,7 +38,10 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
-      - "9101:9101"
+      - target: 9101
+        published: 9101
+        protocol: tcp
+        mode: host
     volumes:
       # needs socket for running image list
       - /var/run/docker.sock:/var/run/docker.sock:ro
