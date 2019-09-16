@@ -68,8 +68,7 @@ def db_user_login(self, user_id, user_password):
             return str(uuid.uuid4())
         else:
             return None
-    else:
-        return None
+    return None
 
 
 def db_user_group_insert(self, group_name, group_desc, group_rights_json):
