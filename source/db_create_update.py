@@ -28,7 +28,7 @@ from common import common_version
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_create_update')
 
 # open the database
-db_connection = common_config_ini.com_config_read(db_prod=False, db_built=False)
+db_connection = common_config_ini.com_config_read()
 
 # create table for version
 db_connection.db_query(
