@@ -24,7 +24,8 @@ def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
     """
     # metadata guid by imdb id
     """
-    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'
+    self.db_cursor.execute('select mm_metadata_sports_guid'
+                           ' from mm_metadata_sports'
                            ' where mm_metadata_media_sports_id->\'thesportsdb\' ? %s',
                            (thesports_uuid,))
     try:
@@ -51,8 +52,10 @@ def db_meta_sports_list(self, offset=0, records=None, search_value=None):
     # TODO order by year
     """
     if search_value is not None:
-        self.db_cursor.execute('select mm_metadata_sports_guid, mm_metadata_sports_name'
-                               ' from mm_metadata_sports where mm_metadata_sports_guid'
+        self.db_cursor.execute('select mm_metadata_sports_guid,'
+                               ' mm_metadata_sports_name'
+                               ' from mm_metadata_sports'
+                               ' where mm_metadata_sports_guid'
                                ' in (select mm_metadata_sports_guid from mm_metadata_sports'
                                ' where mm_metadata_sports_name %% %s'
                                ' order by LOWER(mm_metadata_sports_name) offset %s limit %s)'
@@ -71,7 +74,8 @@ def db_meta_sports_guid_by_event_name(self, event_name):
     """
     # fetch guid by event name
     """
-    self.db_cursor.execute('select mm_metadata_sports_guid from mm_metadata_sports'
+    self.db_cursor.execute('select mm_metadata_sports_guid'
+                           ' from mm_metadata_sports'
                            ' where mm_metadata_sports_name = %s', (event_name,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_sports_guid']

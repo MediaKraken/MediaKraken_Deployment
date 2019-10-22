@@ -34,8 +34,10 @@ def db_meta_music_video_add(self, new_guid, artist_name, artist_song, id_json,
     Add metadata for music video
     """
     self.db_cursor.execute('insert into mm_metadata_music_video (mm_metadata_music_video_guid,'
-                           ' mm_metadata_music_video_media_id, mm_media_music_video_band,'
-                           ' mm_media_music_video_song, mm_metadata_music_video_json,'
+                           ' mm_metadata_music_video_media_id,'
+                           ' mm_media_music_video_band,'
+                           ' mm_media_music_video_song,'
+                           ' mm_metadata_music_video_json,'
                            ' mm_metadata_music_video_localimage_json)'
                            ' values (%s,%s,%s,%s,%s,%s)',
                            (new_guid, id_json, artist_name, artist_song, data_json, image_json))
@@ -47,7 +49,8 @@ def db_meta_music_video_detail_uuid(self, item_guid):
     """
     Grab metadata for specififed music video
     """
-    self.db_cursor.execute('select mm_media_music_video_band, mm_media_music_video_song,'
+    self.db_cursor.execute('select mm_media_music_video_band,'
+                           ' mm_media_music_video_song,'
                            ' mm_metadata_music_video_json,'
                            ' mm_metadata_music_video_localimage_json'
                            ' from mm_metadata_music_video'
@@ -83,7 +86,8 @@ def db_meta_music_video_list(self, offset=0, records=None, search_value=None):
     # TODO order by release date
     if search_value is not None:
         self.db_cursor.execute('select mm_metadata_music_video_guid,'
-                               ' mm_media_music_video_band, mm_media_music_video_song,'
+                               ' mm_media_music_video_band,'
+                               ' mm_media_music_video_song,'
                                ' mm_metadata_music_video_localimage_json'
                                ' from mm_metadata_music_video'
                                ' where mm_media_music_video_song %% %s '
@@ -93,7 +97,8 @@ def db_meta_music_video_list(self, offset=0, records=None, search_value=None):
                                (search_value, offset, records))
     else:
         self.db_cursor.execute('select mm_metadata_music_video_guid,'
-                               ' mm_media_music_video_band, mm_media_music_video_song,'
+                               ' mm_media_music_video_band,'
+                               ' mm_media_music_video_song,'
                                ' mm_metadata_music_video_localimage_json'
                                ' from mm_metadata_music_video'
                                ' order by LOWER(mm_media_music_video_band),'

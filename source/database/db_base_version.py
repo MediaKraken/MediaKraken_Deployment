@@ -21,7 +21,8 @@ def db_version_check(self):
     """
     query db version
     """
-    self.db_cursor.execute('select mm_version_no from mm_version')
+    self.db_cursor.execute('select mm_version_no'
+                           ' from mm_version')
     return self.db_cursor.fetchone()[0]
 
 

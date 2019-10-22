@@ -40,7 +40,8 @@ def db_meta_person_list(self, offset=0, records=None, search_value=None):
     """
     # TODO order by birth date
     if search_value is not None:
-        self.db_cursor.execute('select mmp_id,mmp_person_name,mmp_person_image,'
+        self.db_cursor.execute('select mmp_id,mmp_person_name,'
+                               ' mmp_person_image,'
                                ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                ' from mm_metadata_person where mmp_person_name %% %s'
                                ' order by LOWER(mmp_person_name) offset %s limit %s',
@@ -57,7 +58,8 @@ def db_meta_person_by_guid(self, guid):
     """
     # return person data
     """
-    self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
+    self.db_cursor.execute('select mmp_id, mmp_person_media_id,'
+                           ' mmp_person_meta_json,'
                            ' mmp_person_image, mmp_person_name,'
                            ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                            ' from mm_metadata_person where mmp_id = %s', (guid,))
@@ -68,8 +70,11 @@ def db_meta_person_by_name(self, person_name):
     """
     # return person data by name
     """
-    self.db_cursor.execute('select mmp_id, mmp_person_media_id, mmp_person_meta_json,'
-                           ' mmp_person_image, mmp_person_name from mm_metadata_person'
+    self.db_cursor.execute('select mmp_id, mmp_person_media_id,'
+                           ' mmp_person_meta_json,'
+                           ' mmp_person_image,'
+                           ' mmp_person_name'
+                           ' from mm_metadata_person'
                            ' where mmp_person_name = %s', (person_name,))
     return self.db_cursor.fetchone()
 
@@ -104,7 +109,9 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
                                                                         'image': image_json}})
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
-                           ' mmp_person_media_id, mmp_person_meta_json, mmp_person_image)'
+                           ' mmp_person_media_id,'
+                           ' mmp_person_meta_json,'
+                           ' mmp_person_image)'
                            ' values (%s,%s,%s,%s,%s)', (new_guid, person_name, media_id_json,
                                                         person_json, image_json))
     self.db_commit()
@@ -116,7 +123,8 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     update the person bio/etc
     """
     self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, '
-                           'mmp_person_image = %s where mmp_person_media_id->\''
+                           'mmp_person_image = %s'
+                           ' where mmp_person_media_id->\''
                            + provider_name + '\' ? %s',
                            (json.dumps(person_bio), json.dumps(person_image),
                             str(provider_uuid)))

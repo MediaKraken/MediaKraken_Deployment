@@ -25,7 +25,8 @@ def db_metatv_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
     # insert metadata from themoviedb
     """
     self.db_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'
-                           ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name,'
+                           ' mm_metadata_media_tvshow_id,'
+                           ' mm_metadata_tvshow_name,'
                            ' mm_metadata_tvshow_json,'
                            ' mm_metadata_tvshow_localimage_json)'
                            ' values (%s,%s,%s,%s,%s)', (uuid_id, series_id, data_title,

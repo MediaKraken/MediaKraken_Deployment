@@ -22,6 +22,8 @@ def db_channel_insert(self, channel_id, channel_name, channel_language,
     """
     # insert channel
     """
-    self.db_cursor.execute('select count(*) from blah where blah = %s', (channel_id,))
+    self.db_cursor.execute('select count(*)'
+                           ' from blah'
+                           ' where blah = %s', (channel_id,))
     if self.db_cursor.fetchall()[0] == 0:
         self.db_cursor.execute('')

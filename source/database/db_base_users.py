@@ -32,8 +32,15 @@ def db_user_list_name(self, offset=0, records=None):
     """
     # return user list
     """
-    self.db_cursor.execute('select id, username, email, created_at, active, is_admin, lang'
-                           ' from mm_user where id in (select id from mm_user'
+    self.db_cursor.execute('select id,'
+                           ' username,'
+                           ' email,'
+                           ' created_at,'
+                           ' active,'
+                           ' is_admin,'
+                           ' lang'
+                           ' from mm_user'
+                           ' where id in (select id from mm_user'
                            ' order by LOWER(username)'
                            ' offset %s limit %s) order by LOWER(username)', (offset, records))
     return self.db_cursor.fetchall()
@@ -43,7 +50,8 @@ def db_user_detail(self, guid):
     """
     # return all data for specified user
     """
-    self.db_cursor.execute('select * from mm_user where id = %s', (guid,))
+    self.db_cursor.execute('select * from mm_user'
+                           ' where id = %s', (guid,))
     return self.db_cursor.fetchone()
 
 
@@ -51,7 +59,8 @@ def db_user_delete(self, user_guid):
     """
     # remove user
     """
-    self.db_cursor.execute('delete from mm_user where id = %s', (user_guid,))
+    self.db_cursor.execute('delete from mm_user'
+                           ' where id = %s', (user_guid,))
     self.db_commit()
 
 
@@ -59,7 +68,8 @@ def db_user_login(self, user_id, user_password):
     """
     # verify user logon
     """
-    self.db_cursor.execute('select id,password from mm_user where id = %s',
+    self.db_cursor.execute('select id,password'
+                           ' from mm_user where id = %s',
                            (user_id,))
     result = self.db_cursor.fetchone()
     if result is not None:
@@ -77,7 +87,8 @@ def db_user_group_insert(self, group_name, group_desc, group_rights_json):
     """
     new_user_group_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_user_group (mm_user_group_guid,'
-                           ' mm_user_group_name, mm_user_group_description,'
+                           ' mm_user_group_name,'
+                           ' mm_user_group_description,'
                            ' mm_user_group_rights_json)'
                            ' values (%s,%s,%s,%s)', (new_user_group_id, group_name,
                                                      group_desc, group_rights_json))
@@ -91,7 +102,9 @@ def db_user_profile_insert(self, profile_name, profile_json):
     """
     new_user_profile_id = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_user_profile (mm_user_profile_guid,'
-                           ' mm_user_profile_name, mm_user_profile_json) values (%s, %s, %s)',
+                           ' mm_user_profile_name,'
+                           ' mm_user_profile_json)'
+                           ' values (%s, %s, %s)',
                            (new_user_profile_id, profile_name, profile_json))
     self.db_commit()
     return new_user_profile_id

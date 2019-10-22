@@ -29,10 +29,14 @@ def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_anime(mm_metadata_anime_guid,'
-                           ' mm_metadata_anime_media_id, mm_media_anime_name,'
-                           ' mm_metadata_anime_json, mm_metadata_anime_localimage_json,'
-                           ' mm_metadata_anime_user_json, mm_metadata_anime_mapping,'
-                           ' mm_metadata_anime_mapping_before) values (%s,%s,%s,%s,%s,%s,%s,%s)',
+                           ' mm_metadata_anime_media_id,'
+                           ' mm_media_anime_name,'
+                           ' mm_metadata_anime_json,'
+                           ' mm_metadata_anime_localimage_json,'
+                           ' mm_metadata_anime_user_json,'
+                           ' mm_metadata_anime_mapping,'
+                           ' mm_metadata_anime_mapping_before)'
+                           ' values (%s,%s,%s,%s,%s,%s,%s,%s)',
                            (new_guid, ani_media_id_json, ani_name, ani_json,
                             ani_image_local, ani_user_json, mapping_data, before_data))
     self.db_commit()
@@ -44,7 +48,8 @@ def db_meta_anime_title_search(self, title_to_search):
     search for title
     """
     # TODO hit movie and tv db's as well?
-    self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'
+    self.db_cursor.execute('select mm_metadata_anime_guid'
+                           ' from mm_metadata_anime'
                            ' where mm_media_anime_name = %s', (title_to_search,))
     try:
         return self.db_cursor.fetchone()[0]
@@ -71,7 +76,8 @@ def db_meta_anime_meta_by_id(self, anidb_id):
     Return count of records with id
     """
     common_global.es_inst.com_elastic_index('info', {'exist ani': anidb_id})
-    self.db_cursor.execute('select mm_metadata_anime_guid from mm_metadata_anime'
+    self.db_cursor.execute('select mm_metadata_anime_guid'
+                           ' from mm_metadata_anime'
                            ' where mm_metadata_anime_media_id->\'anidb\' ? %s', (anidb_id,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_anime_guid']

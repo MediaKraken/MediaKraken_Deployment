@@ -25,7 +25,8 @@ def db_notification_insert(self, notification_data, notification_dismissable):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_notification (mm_notification_guid,'
-                           'mm_notification_text,mm_notification_time,'
+                           'mm_notification_text,'
+                           'mm_notification_time,'
                            'mm_notification_dismissable)'
                            ' values (%s,%s,CURRENT_TIMESTAMP,%s)', (new_guid, notification_data,
                                                                     notification_dismissable))
@@ -37,8 +38,10 @@ def db_notification_read(self, offset=0, records=None):
     """
     # read all notifications
     """
-    self.db_cursor.execute('select mm_notification_guid, mm_notification_text,'
-                           ' mm_notification_time, mm_notification_dismissable'
+    self.db_cursor.execute('select mm_notification_guid,'
+                           ' mm_notification_text,'
+                           ' mm_notification_time,'
+                           ' mm_notification_dismissable'
                            ' from mm_notification'
                            ' order by mm_notification_time desc offset %s limit %s',
                            (offset, records))
@@ -49,6 +52,7 @@ def db_notification_delete(self, notification_uuid):
     """
     # remove notifications
     """
-    self.db_cursor.execute('delete from mm_notification where mm_notification_guid = %s',
+    self.db_cursor.execute('delete from mm_notification'
+                           ' where mm_notification_guid = %s',
                            (notification_uuid,))
     self.db_commit()

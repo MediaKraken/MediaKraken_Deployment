@@ -28,25 +28,31 @@ def db_search(self, search_string, search_type='Local', search_movie=True, searc
     if search_type == 'Local':
         if search_movie:
             # movie section
-            self.db_cursor.execute('SELECT mm_metadata_guid, mm_media_name, '
+            self.db_cursor.execute('SELECT mm_metadata_guid,'
+                                   ' mm_media_name, '
                                    'similarity(mm_media_name, %s) AS sml'
-                                   ' FROM mm_metadata_movie WHERE mm_media_name % %s'
+                                   ' FROM mm_metadata_movie'
+                                   ' WHERE mm_media_name % %s'
                                    ' ORDER BY sml DESC, LOWER(mm_media_name);',
                                    (search_string, search_string))
             json_return_data['Movie'] = json.dumps(self.db_cursor.fetchall())
         if search_tvshow:
             # tv show section
-            self.db_cursor.execute('SELECT mm_metadata_tvshow_guid, mm_metadata_tvshow_name,'
+            self.db_cursor.execute('SELECT mm_metadata_tvshow_guid,'
+                                   ' mm_metadata_tvshow_name,'
                                    ' similarity(mm_metadata_tvshow_name, %s) AS sml'
-                                   ' FROM mm_metadata_tvshow WHERE mm_metadata_tvshow_name % %s'
+                                   ' FROM mm_metadata_tvshow'
+                                   ' WHERE mm_metadata_tvshow_name % %s'
                                    ' ORDER BY sml DESC, LOWER(mm_metadata_tvshow_name);',
                                    (search_string, search_string))
             json_return_data['TVShow'] = json.dumps(self.db_cursor.fetchall())
         if search_album:
             # album section
-            self.db_cursor.execute('SELECT mm_metadata_album_guid, mm_metadata_album_name,'
+            self.db_cursor.execute('SELECT mm_metadata_album_guid,'
+                                   ' mm_metadata_album_name,'
                                    ' similarity(mm_metadata_album_name, %s) AS sml'
-                                   ' FROM mm_metadata_album WHERE mm_metadata_album_name % %s'
+                                   ' FROM mm_metadata_album'
+                                   ' WHERE mm_metadata_album_name % %s'
                                    ' ORDER BY sml DESC, LOWER(mm_metadata_album_name);',
                                    (search_string, search_string))
             json_return_data['Album'] = json.dumps(self.db_cursor.fetchall())
@@ -55,15 +61,18 @@ def db_search(self, search_string, search_type='Local', search_movie=True, searc
             pass
         if search_publication:
             # publication section
-            self.db_cursor.execute('SELECT mm_metadata_book_guid, mm_metadata_book_name,'
+            self.db_cursor.execute('SELECT mm_metadata_book_guid,'
+                                   ' mm_metadata_book_name,'
                                    ' similarity(mm_metadata_book_name, %s) AS sml'
-                                   ' FROM mm_metadata_book WHERE mm_metadata_book_name % %s'
+                                   ' FROM mm_metadata_book'
+                                   ' WHERE mm_metadata_book_name % %s'
                                    ' ORDER BY sml DESC, LOWER(mm_metadata_book_name);',
                                    (search_string, search_string))
             json_return_data['Publication'] = json.dumps(self.db_cursor.fetchall())
         if search_game:
             # game section
-            self.db_cursor.execute('SELECT gi_id, gi_game_info_name,'
+            self.db_cursor.execute('SELECT gi_id,'
+                                   ' gi_game_info_name,'
                                    ' similarity(gi_game_info_name, %s) AS sml'
                                    ' FROM mm_metadata_game_software_info'
                                    ' WHERE gi_game_info_name % %s'

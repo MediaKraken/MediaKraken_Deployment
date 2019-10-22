@@ -36,7 +36,8 @@ def db_music_lookup(self, artist_name, album_name, song_title):
     self.db_cursor.execute('select mm_metadata_music_guid,'
                            ' mm_metadata_media_music_id->\'Mbrainz\' as mbrainz from '
                            'mm_metadata_music,'
-                           ' mm_metadata_album, mm_metadata_musician'
+                           ' mm_metadata_album,'
+                           ' mm_metadata_musician'
                            ' where lower(mm_metadata_musician_name) = %s'
                            ' and lower(mm_metadata_album_name) = %s'
                            ' and lower(mm_metadata_music_name) = %s',
@@ -65,8 +66,10 @@ def db_meta_musician_add(self, data_name, data_id, data_json):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_musician (mm_metadata_musician_guid,'
-                           ' mm_metadata_musician_name, mm_metadata_musician_id,'
-                           ' mm_metadata_musician_json) values (%s,%s,%s,%s)',
+                           ' mm_metadata_musician_name,'
+                           ' mm_metadata_musician_id,'
+                           ' mm_metadata_musician_json)'
+                           ' values (%s,%s,%s,%s)',
                            (new_guid, data_name, data_id, data_json))
     self.db_commit()
     return new_guid
@@ -90,8 +93,10 @@ def db_meta_album_add(self, data_name, data_id, data_json):
     """
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_album (mm_metadata_album_guid,'
-                           ' mm_metadata_album_name, mm_metadata_album_id,'
-                           ' mm_metadata_album_json) values (%s,%s,%s,%s)',
+                           ' mm_metadata_album_name,'
+                           ' mm_metadata_album_id,'
+                           ' mm_metadata_album_json)'
+                           ' values (%s,%s,%s,%s)',
                            (new_guid, data_name, data_id, data_json))
     self.db_commit()
     return new_guid

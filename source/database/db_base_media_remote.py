@@ -25,8 +25,11 @@ def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,
     # insert media into database
     """
     new_guid = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_media_remote (mmr_media_guid, mmr_media_link_id,'
-                           ' mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid,'
+    self.db_cursor.execute('insert into mm_media_remote (mmr_media_guid,'
+                           ' mmr_media_link_id,'
+                           ' mmr_media_uuid,'
+                           ' mmr_media_class_guid,'
+                           ' mmr_media_metadata_guid,'
                            ' mmr_media_ffprobe_json)'
                            ' values (%s,%s,%s,%s,%s,%s)', (new_guid, media_link_uuid, media_uuid,
                                                            media_class_uuid, media_metadata_uuid,
@@ -105,8 +108,10 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     first_query = True
     sync_query = ''
     if sync_movie is not None:
-        sync_query += ('select mm_media_guid, \'Movie\', mm_media_ffprobe_json,'
-                       ' mm_metadata_media_id from mm_media, mm_metadata_movie'
+        sync_query += ('select mm_media_guid, \'Movie\','
+                       ' mm_media_ffprobe_json,'
+                       ' mm_metadata_media_id'
+                       ' from mm_media, mm_metadata_movie'
                        ' where mm_media_metadata_guid = mm_metadata_guid'
                        ' and mm_media_json->>\'DateAdded\' >= %s', (date_last_sync,))
         first_query = False
@@ -114,8 +119,10 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     if sync_tv is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ('select mm_media_guid, \'TV Show\', mm_media_ffprobe_json,'
-                       ' mm_metadata_media_tvshow_id from mm_media, mm_metadata_tvshow'
+        sync_query += ('select mm_media_guid, \'TV Show\','
+                       ' mm_media_ffprobe_json,'
+                       ' mm_metadata_media_tvshow_id'
+                       ' from mm_media, mm_metadata_tvshow'
                        ' where mm_metadata_tvshow_guid = mm_metadata_tvshow_guid'
                        ' and mm_media_json->>\'DateAdded\' >= %s', (date_last_sync,))
         first_query = False
@@ -123,8 +130,10 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     if sync_sports is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ('select mm_media_guid, \'Sports\', mm_media_ffprobe_json,'
-                       ' mm_metadata_media_sports_id from mm_media, mm_metadata_sports'
+        sync_query += ('select mm_media_guid, \'Sports\','
+                       ' mm_media_ffprobe_json,'
+                       ' mm_metadata_media_sports_id'
+                       ' from mm_media, mm_metadata_sports'
                        ' where mm_metadata_sports_guid = mm_metadata_sports_guid'
                        ' and mm_media_json->>\'DateAdded\' >= %s', (date_last_sync,))
         first_query = False
@@ -132,8 +141,10 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     if sync_music is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ('select mm_media_guid, \'Music\', mm_media_ffprobe_json,'
-                       ' mm_metadata_media_music_id from mm_media, mm_metadata_music'
+        sync_query += ('select mm_media_guid, \'Music\','
+                       ' mm_media_ffprobe_json,'
+                       ' mm_metadata_media_music_id'
+                       ' from mm_media, mm_metadata_music'
                        ' where mm_metadata_music_guid = mm_metadata_music_guid'
                        ' and mm_media_json->>\'DateAdded\' >= %s', (date_last_sync,))
         first_query = False
@@ -141,8 +152,10 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     if sync_music_video is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ('select mm_media_guid, \'Music Video\', mm_media_ffprobe_json,'
-                       ' mm_metadata_music_video_media_id from mm_media, mm_metadata_music_video'
+        sync_query += ('select mm_media_guid, \'Music Video\','
+                       ' mm_media_ffprobe_json,'
+                       ' mm_metadata_music_video_media_id'
+                       ' from mm_media, mm_metadata_music_video'
                        ' where mm_metadata_music_video_guid = mm_metadata_music_video_guid'
                        ' and mm_media_json->>\'DateAdded\' >= %s', (date_last_sync,))
         first_query = False
@@ -150,8 +163,10 @@ def db_media_remote_read_new(self, date_last_sync, sync_movie=None, sync_tv=None
     if sync_book is not None:
         if not first_query:
             sync_query += ' union all '
-        sync_query += ('select mm_media_guid, \'Book\', mm_media_ffprobe_json,'
-                       ' mm_metadata_book_isbn from mm_media, mm_metadata_book'
+        sync_query += ('select mm_media_guid, \'Book\','
+                       ' mm_media_ffprobe_json,'
+                       ' mm_metadata_book_isbn'
+                       ' from mm_media, mm_metadata_book'
                        ' where mm_metadata_book_guid = mm_metadata_book_guid'
                        ' and mm_media_json->>\'DateAdded\' >= %s', (date_last_sync,))
         first_query = False
