@@ -31,7 +31,7 @@ incremental==17.5.0
 pysmb==1.1.27
 python-stdnum==1.11
 Babel==2.7.0
-docker==4.0.2
+docker==4.1.0
 isbntools==4.3.20
 beautifulsoup4==4.7.1
 appdirs==1.4.3

@@ -5,7 +5,7 @@ ldap3==2.6
 pycountry==18.12.8
 twisted==19.7.0
 pika==1.1.0
-docker==4.0.2
+docker==4.1.0
 pysmb==1.1.27
 tmdbsimple==2.2.0
 guessit==3.0.4
