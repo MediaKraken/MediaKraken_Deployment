@@ -33,7 +33,7 @@ python-stdnum==1.11
 Babel==2.7.0
 docker==4.1.0
 isbntools==4.3.20
-beautifulsoup4==4.7.1
+beautifulsoup4==4.8.1
 appdirs==1.4.3
 appnope==0.1.0
 backports.shutil-get-terminal-size==1.0.0
