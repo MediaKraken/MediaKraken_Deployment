@@ -27,24 +27,24 @@ path = "../images_to_embed/flags"
 dirList = os.listdir(path)
 for fname in dirList:
     iconfile = open(path + "/" + fname, "rb")
-    icondata = iconfile.read()
-    icondata = base64.b64encode(icondata)
-    fin.write("\"flag_" + fname.split(".")[0] + "\": \"" + icondata + "\",")
+    fin.write(
+        "\"flag_" + fname.split(".")[0] + "\": \""
+        + base64.b64encode(iconfile.read()) + "\",")
+    iconfile.close()
 path = "./images_to_embed/os"  # insert the path to the directory of interest
 dirList = os.listdir(path)
 for fname in dirList:
     iconfile = open(path + "/" + fname, "rb")
-    icondata = iconfile.read()
-    icondata = base64.b64encode(icondata)
-    fin.write("\"os_" + fname.split(".")[0] + "\": \"" + icondata + "\",")
+    fin.write("\"os_" + fname.split(".")[0] + "\": \""
+              + base64.b64encode(iconfile.read()) + "\",")
+    iconfile.close()
 # insert the path to the directory of interest
 path = "../images_to_embed/systems_controllers_media"
 dirList = os.listdir(path)
 for fname in dirList:
     iconfile = open(path + "/" + fname, "rb")
-    icondata = iconfile.read()
-    icondata = base64.b64encode(icondata)
-    fin.write("\"controller_" + fname.split(".")
-    [0] + "\": \"" + icondata + "\",")
+    fin.write("\"controller_" + fname.split(".")[0] + "\": \""
+              + base64.b64encode(iconfile.read()) + "\",")
+    iconfile.close()
 fin.write("}")
 fin.close()
