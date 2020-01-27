@@ -40,8 +40,8 @@ def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_n
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'metadata_tv_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
-    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file_tv(download_que_json['Path'])
-    imdb_id, tvdb_id, tmdb_id = metadata_nfo_xml.nfo_xml_id_lookup_tv(nfo_data, xml_data)
+    nfo_data = metadata_nfo_xml.nfo_file_tv(download_que_json['Path'])
+    imdb_id, tvdb_id, tmdb_id = metadata_nfo_xml.nfo_id_lookup_tv(nfo_data)
     common_global.es_inst.com_elastic_index('info', {"tv look": imdb_id,
                                                      'tbdb': tvdb_id,
                                                      'themoviedb': tmdb_id})

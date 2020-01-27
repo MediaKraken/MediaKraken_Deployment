@@ -17,9 +17,9 @@
 """
 
 import json
-import time
 
 import psycopg2
+import time
 from common import common_config_ini
 from common import common_global
 from common import common_metadata
