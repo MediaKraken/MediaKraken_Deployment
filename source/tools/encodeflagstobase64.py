@@ -27,8 +27,7 @@ path = "../images_to_embed/flags"
 dirList = os.listdir(path)
 for fname in dirList:
     iconfile = open(path + "/" + fname, "rb")
-    fin.write(
-        "\"flag_" + fname.split(".")[0] + "\": \""
+    fin.write("\"flag_" + fname.split(".")[0] + "\": \""
         + base64.b64encode(iconfile.read()) + "\",")
     iconfile.close()
 path = "./images_to_embed/os"  # insert the path to the directory of interest
