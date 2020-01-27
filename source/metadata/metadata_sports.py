@@ -26,6 +26,16 @@ def metadata_sports_lookup(db_connection, download_data, download_que_id):
     """
     Lookup sporting event by name
     """
+    # don't bother checking title/year as the main_server_metadata_api_worker does it already
+    if not hasattr(metadata_sports_lookup, "metadata_last_id"):
+        # it doesn't exist yet, so initialize it
+        metadata_sports_lookup.metadata_last_id = None
+        metadata_sports_lookup.metadata_last_imdb = None
+        metadata_sports_lookup.metadata_last_tmdb = None
+        metadata_sports_lookup.metadata_last_thesportsdb = None
+    metadata_uuid = None  # so not found checks verify later
+
+
     stripped_name = os.path.basename(
         download_data['mdq_download_json']['Path'].replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(stripped_name)
@@ -53,4 +63,12 @@ def metadata_sports_lookup(db_connection, download_data, download_que_id):
                                                             json.dumps(
                                                                 thesportsdb_data),
                                                             json.dumps(image_json))
+
+
+    common_global.es_inst.com_elastic_index('info', {"metadata_sports return uuid": metadata_uuid})
+    # set last values to negate lookups for same title/show
+    metadata_sports_lookup.metadata_last_id = metadata_uuid
+    metadata_sports_lookup.metadata_last_imdb = imdb_id
+    metadata_sports_lookup.metadata_last_tmdb = tmdb_id
+    metadata_sports_lookup.metadata_last_thesportsdb = thesportsdb_id
     return metadata_uuid

@@ -17,9 +17,26 @@
 """
 
 from common import common_config_ini
+from common import common_global
 from common import common_metadata_provider_thesportsdb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 THESPORTSDB_CONNECTION \
     = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
+
+def search_thesportsdb(db_connection, file_name):
+    """
+    # search thesportsdb
+    """
+    try:
+        common_global.es_inst.com_elastic_index('info', {"meta movie search thesportsdb": str(file_name)})
+    except:
+        pass
+
+    common_global.es_inst.com_elastic_index('info', {'search_thesportsdb': str(file_name)})
+
+
+    common_global.es_inst.com_elastic_index('info', {'meta thesportsdb uuid': metadata_uuid,
+                                                     'result': match_result})
+    return metadata_uuid, match_result
