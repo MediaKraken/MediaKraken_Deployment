@@ -86,6 +86,8 @@
         <a href="{{ url_for('admins_link.admin_server_link_server') }}" id="admin_navmenu_server_link"><img src="{{ url_for('static', filename='images/16/link.png') }}">Server Links</a>
         <a href="{{ url_for('admins_share.admin_share') }}" id="admin_navmenu_share"><img src="{{ url_for('static', filename='images/16/folder.png') }}"> Share <span class="badge badge-info"> {{ data_share }}</span></a>
 
+        <a href="{{ url_for('admins_media_import.admin_media_import') }}" id="admin_navmenu_media_import">Media Import</a>
+
         {% if data_transmission_active %}
         <a href="{{ url_for('admins_transmission.admin_transmission') }}" id="admin_navmenu_transmission"><img src="{{ url_for('static', filename='images/16/world.png') }}">Transmission</a>
         {% endif %}

@@ -29,8 +29,9 @@ def home_media_list():
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     # TODO wrong movie query
-    metadata = g.db_connection.db_meta_movie_list(offset, per_page, session['search_text'])
-    return render_template("users/user_home_media_list.html", media=media)
+    return render_template("users/user_home_media_list.html",
+                           media=g.db_connection.db_meta_movie_list(offset, per_page,
+                                                                    session['search_text']))
 
 
 @blueprint.route('/home_media_detail/<guid>')

@@ -83,6 +83,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
                                                                  'title'])
         if metadata_uuid is None:
             if match_result is None:
+                # TODO this could start an infinate loop....don't
                 update_provider = 'themoviedb'
             else:
                 set_fetch = True
@@ -145,7 +146,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
     elif provider_name == 'thegamesdb':
         lookup_halt = True
     elif provider_name == 'themoviedb':
-        if download_que_type == common_global.DLMediaType.Movie:
+        if download_que_type == common_global.DLMediaType.Movie.value:
             metadata_uuid, match_result = metadata_provider_themoviedb.movie_search_tmdb(thread_db,
                                                                                          download_data[
                                                                                              'mdq_download_json'][
@@ -154,11 +155,11 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
                                                              'result': match_result})
             # if match_result is an int, that means the lookup found a match but isn't in db
             if metadata_uuid is None and type(match_result) != int:
-                update_provider = 'omdb'
+                lookup_halt = True
             else:
                 if metadata_uuid is not None:
                     set_fetch = True
-        elif download_que_type == common_global.DLMediaType.TV:
+        elif download_que_type == common_global.DLMediaType.TV.value:
             metadata_uuid, match_result = metadata_tv.metadata_tv_lookup(thread_db,
                                                                          download_data[
                                                                              'mdq_download_json'][
@@ -167,14 +168,14 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
                                                              'result': match_result})
             # if match_result is an int, that means the lookup found a match but isn't in db
             if metadata_uuid is None and type(match_result) != int:
-                update_provider = 'omdb'
+                lookup_halt = True
             else:
                 if metadata_uuid is not None:
                     set_fetch = True
         else:
             # this will hit from type 0's (trailers, etc)
             if metadata_uuid is None:
-                update_provider = 'omdb'
+                lookup_halt = True
             else:
                 if metadata_uuid is not None:
                     set_fetch = True
@@ -216,44 +217,32 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
     # if search is being updated to new provider
     if update_provider is not None:
         thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
-        return  # no need to continue with checks
+        thread_db.db_commit()
+        return metadata_uuid # no need to continue with checks
     # if lookup halt set to ZZ so it doesn't get picked up by metadata dl queue
     if lookup_halt:
         thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
-        return  # no need to continue with checks
+        thread_db.db_commit()
+        return metadata_uuid # no need to continue with checks
     # if set fetch, set provider id and status on dl record
     if set_fetch:
         # first verify a download queue record doesn't exist for this id
-        metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'], 0,
+        metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],
+                                                         download_que_type,
                                                          provider_name, str(match_result))
         common_global.es_inst.com_elastic_index('info', {'metaquelook': metadata_uuid})
-        if metadata_uuid is not None:
+        if metadata_uuid is None:
+            metadata_uuid = download_data['mdq_download_json']['MetaNewID']
+            common_global.es_inst.com_elastic_index('info', {'meta setfetch': metadata_uuid})
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
                                          metadata_uuid)
-            # found in database so remove from download que
-            thread_db.db_download_delete(download_data['mdq_id'])
-        else:
-            metadata_uuid = download_data['mdq_download_json']['MetaNewID']
-            common_global.es_inst.com_elastic_index('info', {'meta': metadata_uuid})
-            thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
-                                         download_data['mdq_download_json']['MetaNewID'])
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'after media id'})
             download_data['mdq_download_json'].update(
                 {'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'after json update'})
             thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                          download_data['mdq_id'])
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'after update'})
-        return  # no need to continue with checks
-    # uuid found on local db
-    if metadata_uuid is not None:
-        # update with found metadata uuid from db
-        thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
-                                     metadata_uuid)
-        # found in database so remove from download que
-        thread_db.db_download_delete(download_data['mdq_id'])
-        return  # no need to continue with checks
+            thread_db.db_commit()
+    return metadata_uuid
 
 
 def metadata_fetch(thread_db, provider_name, download_data):
@@ -314,6 +303,7 @@ def metadata_castcrew(thread_db, provider_name, download_data):
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                  download_data['mdq_id'])
+    thread_db.db_commit()
 
 
 def metadata_image(thread_db, provider_name, download_data):

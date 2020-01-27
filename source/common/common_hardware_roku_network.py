@@ -37,11 +37,11 @@ def com_roku_network_discovery():
 
 def com_roku_network_command(roku_addr, roku_port, roku_command, roku_command_seconds):
     """
-    Send comment to roku device
+    Send command to roku device
     """
     # urllib2.post('http://' + self.roku_address + "/keypress/" + roku_command)
     if roku_command_seconds > 0:
-        response = urllib.request.urlopen(
+        urllib.request.urlopen(
             roku_addr + ':' + roku_port + '/keydown/' + roku_command)
         time.sleep(roku_command_seconds)
         response = urllib.request.urlopen(

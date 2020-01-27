@@ -543,7 +543,6 @@ class MediaKrakenApp(App):
                     or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_Video_List' \
                     or self.root.ids._screen_manager.current == 'Main_Theater_Media_Music_List':
                 self.root.ids._screen_manager.current = 'Main_Theater_Home'
-            pass
         elif keycode[1] == 'enter':
             pass
         elif keycode[1] == 'shift':

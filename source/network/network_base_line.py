@@ -189,15 +189,13 @@ class NetworkEvents(basic.LineReceiver):
                     if 'Offset' in json_message:
                         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data':
                             self.db_connection.db_web_media_list(
-                                self.db_connection.db_media_uuid_by_class(
-                                    json_message['Data']),
+                                json_message['Data'],
                                 json_message['Type'], offset=json_message['Offset'],
                                 list_limit=json_message['Limit'])})
                     else:
                         msg = json.dumps({'Type': 'Media', 'Subtype': 'List',
                                           'Data': self.db_connection.db_web_media_list(
-                                              self.db_connection.db_media_uuid_by_class(
-                                                  json_message['Data']),
+                                              json_message['Data'],
                                               json_message['Type'])})
             elif json_message['Subtype'] == 'In Progress':
                 # (Offset, Limit)

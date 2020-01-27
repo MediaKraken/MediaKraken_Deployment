@@ -33,7 +33,7 @@ from common import common_version
 from common import common_zfs
 import database as database_base
 
-ALLOWED_EXTENSIONS = set(['py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = {'py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 outside_ip = None
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -164,7 +164,7 @@ def admin_books_add():
     Display books add page
     """
     if request.method == 'POST':
-        class_uuid = g.db_connection.db_media_uuid_by_class('Book')
+        class_uuid = common_global.DLMediaType.Publication_Book.value
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())

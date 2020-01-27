@@ -25,7 +25,8 @@ def db_metatv_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
     # insert metadata from themoviedb
     """
     self.db_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'
-                           ' mm_metadata_media_tvshow_id, mm_metadata_tvshow_name,'
+                           ' mm_metadata_media_tvshow_id,'
+                           ' mm_metadata_tvshow_name,'
                            ' mm_metadata_tvshow_json,'
                            ' mm_metadata_tvshow_localimage_json)'
                            ' values (%s,%s,%s,%s,%s)', (uuid_id, series_id, data_title,
@@ -82,19 +83,6 @@ def db_metatv_guid_by_imdb(self, imdb_uuid):
     """
     self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
                            ' where mm_metadata_media_tvshow_id->\'imdb\' ? %s', (imdb_uuid,))
-    try:
-        return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
-    except:
-        return None
-
-
-def db_metatv_guid_by_tvdb(self, thetvdb_uuid):
-    """
-    # metadata guid by tv id
-    """
-    self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
-                           ' where mm_metadata_media_tvshow_id->\'thetvdb\' ? %s',
-                           (thetvdb_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_tvshow_guid']
     except:

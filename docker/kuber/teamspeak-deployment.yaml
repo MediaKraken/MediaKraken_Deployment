@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose.exe convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: teamspeak
+  name: teamspeak
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: teamspeak
+    spec:
+      containers:
+      - image: th-registry-1.beaverbay.local:5000/mediakraken/mkteamspeak:dev
+        name: teamspeak
+        ports:
+        - containerPort: 9987
+          protocol: UDP
+        - containerPort: 10011
+        - containerPort: 30033
+        resources: {}
+        volumeMounts:
+        - mountPath: /opt/teamspeak
+          name: mediakraken-vol-teamspeak
+      restartPolicy: Always
+      volumes:
+      - name: mediakraken-vol-teamspeak
+        persistentVolumeClaim:
+          claimName: mediakraken-vol-teamspeak
+status: {}

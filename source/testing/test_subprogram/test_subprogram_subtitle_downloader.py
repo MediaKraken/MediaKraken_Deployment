@@ -30,7 +30,7 @@ class TestSubprogramSubtitleDownloader:
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python3', './subprogram_subtitle_downloader.py'],
+        proc_info = subprocess.Popen(['python3', './subprogram_metadata_subtitle_downloader.py'],
                                      shell=False)
         common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s" % proc_info.pid})
         proc_info.wait()

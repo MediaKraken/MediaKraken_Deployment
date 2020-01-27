@@ -4,6 +4,7 @@ class MKServerDatabase:
     """
     from database.db_base import db_open, \
         db_close, \
+        db_begin, \
         db_commit, \
         db_rollback, \
         db_table_index_check, \
@@ -102,11 +103,6 @@ class MKServerDatabase:
         db_ffprobe_all_media_guid
     from database.db_base_media_books import db_media_book_list_count, \
         db_media_book_list
-    from database.db_base_media_class import db_media_class_list_count, \
-        db_media_class_insert, \
-        db_media_class_list, \
-        db_media_class_by_uuid, \
-        db_media_uuid_by_class
     from database.db_base_media_games import db_media_game_system_list_count, \
         db_media_game_system_list, \
         db_media_game_list_by_system_count, \
@@ -227,9 +223,9 @@ class MKServerDatabase:
         db_metathesports_update, \
         db_metathesportsdb_select_guid
     from database.db_base_metadata_thetvdb import db_metatvdb_insert, \
-        db_metatvdb_update
+        db_metatvdb_update, \
+        db_metatv_guid_by_tvdb
     from database.db_base_metadata_tv import db_metatv_guid_by_imdb, \
-        db_metatv_guid_by_tvdb, \
         db_metatv_guid_by_tvmaze, \
         db_metatv_guid_by_tmdb, \
         db_metatv_guid_by_rt, \

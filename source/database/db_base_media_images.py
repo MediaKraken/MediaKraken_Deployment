@@ -21,7 +21,8 @@ def db_media_images_list_count(self, search_value=None):
     """
     Images list count
     """
-    self.db_cursor.execute('select count(*) from mm_media,mm_media_class'
+    self.db_cursor.execute('select count(*) from mm_media,'
+                           'mm_media_class'
                            ' where mm_media.mm_media_class_guid'
                            ' = mm_media_class.mm_media_class_guid'
                            ' and mm_media_class_type = \'Picture\'')
@@ -31,7 +32,8 @@ def db_media_images_list(self, offset=0, records=None, search_value=None):
     """
     Images list
     """
-    self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'
+    self.db_cursor.execute('select mm_media_path from mm_media,'
+                           'mm_media_class'
                            ' where mm_media.mm_media_class_guid'
                            ' = mm_media_class.mm_media_class_guid'
                            ' and mm_media_class_type = \'Picture\' offset %s limit %s',

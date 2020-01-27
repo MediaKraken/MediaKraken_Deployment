@@ -38,12 +38,11 @@ def metadata_person_detail(guid):
             person_image = "/static/images/person_missing.png"
     else:
         person_image = "/static/images/person_missing.png"
-    # also appears in
-    meta_also_media = g.db_connection.db_meta_person_as_seen_in(person_data['mmp_id'])
     return render_template('users/metadata/meta_people_detail.html',
                            json_metadata=person_data['mmp_person_meta_json'],
                            data_person_image=person_image,
-                           data_also_media=meta_also_media,
+                           data_also_media=g.db_connection.db_meta_person_as_seen_in(
+                               person_data['mmp_id']),
                            )
 
 

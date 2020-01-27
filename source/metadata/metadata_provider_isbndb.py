@@ -22,12 +22,8 @@ from common import common_metadata_provider_isbndb
 
 option_config_json, db_connection = common_config_ini.com_config_read()
 
-if option_config_json['API']['isbndb'] is not None:
-    # setup the isbndb class
-    ISBNDB_CONNECTION = common_metadata_provider_isbndb.CommonMetadataISBNdb(
-        option_config_json)
-else:
-    ISBNDB_CONNECTION = None
+# setup the isbndb class
+ISBNDB_CONNECTION = common_metadata_provider_isbndb.CommonMetadataISBNdb(option_config_json)
 
 
 def metadata_periodicals_search_isbndb(db_connection, lookup_name):
@@ -36,7 +32,6 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     """
     common_global.es_inst.com_elastic_index('info', {"meta book search isbndb": lookup_name})
     metadata_uuid = None
-    match_result = None
     common_global.es_inst.com_elastic_index('info', {'wh': ISBNDB_CONNECTION})
     if ISBNDB_CONNECTION is not None:
         api_response = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
@@ -47,8 +42,6 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
             if 'error' in api_response.json():
                 common_global.es_inst.com_elastic_index('info', {'stuff': 'error skipp'})
             else:
-                metadata_uuid = db_connection.db_meta_book_insert(
-                    api_response.json())
-    common_global.es_inst.com_elastic_index('info', {'meta book uuid': metadata_uuid,
-                                                     'result': match_result})
-    return metadata_uuid, match_result
+                metadata_uuid = db_connection.db_meta_book_insert(api_response.json())
+    common_global.es_inst.com_elastic_index('info', {'meta book uuid': metadata_uuid})
+    return metadata_uuid

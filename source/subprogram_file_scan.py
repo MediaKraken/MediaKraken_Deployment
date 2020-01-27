@@ -51,7 +51,7 @@ def worker(audit_directory):
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     common_global.es_inst.com_elastic_index('info', {'worker dir': dir_path})
-    original_media_class = thread_db.db_media_class_by_uuid(media_class_type_uuid)
+    original_media_class = media_class_type_uuid
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
     thread_db.db_audit_path_update_status(dir_guid,
@@ -65,6 +65,7 @@ def worker(audit_directory):
         smb_stuff.com_cifs_connect(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
+                # TODO can I do os.path.join with UNC?
                 file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]
                                  + '\\' + file_name)
         smb_stuff.com_cifs_close()
@@ -90,7 +91,6 @@ def worker(audit_directory):
                 total_files += 1
                 # set here which MIGHT be overrode later
                 new_class_type_uuid = media_class_type_uuid
-                media_class_text = thread_db.db_media_class_by_uuid(media_class_type_uuid)
                 # check for "stacked" media file
                 # the split below and the splitext above do return different results
                 head, base_file_name = os.path.split(file_name)
@@ -112,23 +112,24 @@ def worker(audit_directory):
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
                 # video game data
-                if thread_db.db_media_class_by_uuid(media_class_type_uuid) == 'Video Game':
+                if original_media_class == common_global.DLMediaType.Game.value:
                     if file_extension[1:] == 'iso':
-                        new_class_type_uuid = class_text_dict['Game ISO']
+                        new_class_type_uuid = common_global.DLMediaType.Game_ISO.value
                     elif file_extension[1:] == 'chd':
-                        new_class_type_uuid = class_text_dict['Game CHD']
+                        new_class_type_uuid = common_global.DLMediaType.Game_CHD.value
                     else:
-                        new_class_type_uuid = class_text_dict['Game ROM']
+                        new_class_type_uuid = common_global.DLMediaType.Game_ROM.value
                     ffprobe_bif_data = False
                 # set new media class for subtitles
                 elif file_extension[1:] in common_file_extentions.SUBTITLE_EXTENSION:
-                    if original_media_class == 'Movie':
-                        new_class_type_uuid = class_text_dict['Movie Subtitle']
-                    elif original_media_class == 'TV Show' or original_media_class == 'TV Episode' \
-                            or original_media_class == 'TV Season':
-                        new_class_type_uuid = class_text_dict['TV Subtitle']
-                    else:
-                        new_class_type_uuid = class_text_dict['Subtitle']
+                    if original_media_class == common_global.DLMediaType.Movie.value:
+                        new_class_type_uuid = common_global.DLMediaType.Movie_Subtitle.value
+                    elif original_media_class == common_global.DLMediaType.TV.value \
+                            or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            or original_media_class == common_global.DLMediaType.TV_Season.value:
+                        new_class_type_uuid = common_global.DLMediaType.TV_Subtitle.value
+                    # else:
+                    #     new_class_type_uuid = common_global.DLMediaType.Movie['Subtitle']
                     ffprobe_bif_data = False
                 # set new media class for trailers or themes
                 elif file_name.find('/trailers/') != -1 \
@@ -137,41 +138,42 @@ def worker(audit_directory):
                         or file_name.find('\\theme.mp3') != -1 \
                         or file_name.find('/theme.mp4') != -1 \
                         or file_name.find('\\theme.mp4') != -1:
-                    if media_class_text == 'Movie':
+                    if original_media_class == common_global.DLMediaType.Movie.value:
                         if file_name.find('/trailers/') != -1 or file_name.find(
                                 '\\trailers\\') != -1:
-                            new_class_type_uuid = class_text_dict['Movie Trailer']
+                            new_class_type_uuid = common_global.DLMediaType.Movie_Trailer.value
                         else:
-                            new_class_type_uuid = class_text_dict['Movie Theme']
-                    elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
-                            or media_class_text == 'TV Season':
+                            new_class_type_uuid = common_global.DLMediaType.Movie_Theme.value
+                    elif original_media_class == common_global.DLMediaType.TV.value \
+                            or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            or original_media_class == common_global.DLMediaType.TV_Season.value:
                         if file_name.find('/trailers/') != -1 or file_name.find(
                                 '\\trailers\\') != -1:
-                            new_class_type_uuid = class_text_dict['TV Trailer']
+                            new_class_type_uuid = common_global.DLMediaType.TV_Trailer.value
                         else:
-                            new_class_type_uuid = class_text_dict['TV Theme']
+                            new_class_type_uuid = common_global.DLMediaType.TV_Theme.value
                 # set new media class for extras
                 elif file_name.find('/extras/') != -1 or file_name.find('\\extras\\') != -1:
-                    if original_media_class == 'Movie':
-                        new_class_type_uuid = class_text_dict['Movie Extras']
-                    elif original_media_class == 'TV Show' \
-                            or thread_db.db_media_class_by_uuid(
-                        media_class_type_uuid) == 'TV Episode' \
-                            or media_class_text == 'TV Season':
-                        new_class_type_uuid = class_text_dict['TV Extras']
+                    if original_media_class == common_global.DLMediaType.Movie.value:
+                        new_class_type_uuid = common_global.DLMediaType.Movie_Extras.value
+                    elif original_media_class == common_global.DLMediaType.TV.value \
+                            or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            or original_media_class == common_global.DLMediaType.TV_Season.value:
+                        new_class_type_uuid = common_global.DLMediaType.TV_Extras.value
                 # set new media class for backdrops (usually themes)
                 elif file_name.find('/backdrops/') != -1 \
                         or file_name.find('\\backdrops\\') != -1:
-                    media_class_text = thread_db.db_media_class_by_uuid(new_class_type_uuid)
+                    media_class_text = new_class_type_uuid
                     if file_name.find('/theme.mp3') != -1 \
                             or file_name.find('\\theme.mp3') != -1 \
                             or file_name.find('/theme.mp4') != -1 \
                             or file_name.find('\\theme.mp4') != -1:
-                        if media_class_text == 'Movie':
-                            new_class_type_uuid = class_text_dict['Movie Theme']
-                        elif media_class_text == 'TV Show' or media_class_text == 'TV Episode' \
-                                or media_class_text == 'TV Season':
-                            new_class_type_uuid = class_text_dict['TV Theme']
+                        if original_media_class == common_global.DLMediaType.Movie.value:
+                            new_class_type_uuid = common_global.DLMediaType.Movie_Theme.value
+                        elif original_media_class == common_global.DLMediaType.TV.value \
+                                or original_media_class == common_global.DLMediaType.TV_Episode.value \
+                                or original_media_class == common_global.DLMediaType.TV_Season.value:
+                            new_class_type_uuid = common_global.DLMediaType.TV_Theme.value
                 # flip around slashes for smb paths
                 if file_name[:1] == "\\":
                     file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
@@ -192,7 +194,7 @@ def worker(audit_directory):
                                                'Media Path': file_name}),
                                           properties=pika.BasicProperties(content_type='text/plain',
                                                                           delivery_mode=2))
-                    if new_class_type_uuid != class_text_dict['Music']:
+                    if original_media_class != common_global.DLMediaType.Music.value:
                         # Send a message so roku thumbnail is generated
                         channel.basic_publish(exchange='mkque_roku_ex',
                                               routing_key='mkroku',
@@ -254,11 +256,6 @@ for media_row in db_connection.db_known_media():
     if media_row['mm_media_path'] is not None:
         global_known_media.append(media_row['mm_media_path'])
 
-# table the class_text into a dict...will lessen the db calls
-class_text_dict = {}
-for class_data in db_connection.db_media_class_list(None, None):
-    class_text_dict[class_data['mm_media_class_type']] = class_data['mm_media_class_guid']
-
 # determine directories to audit
 audit_directories = []  # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
@@ -306,7 +303,7 @@ db_connection.db_commit()
 
 # start processing the directories
 if len(audit_directories) > 0:
-    # TODO Threading will exit.  Ran each dir seperate works.  Why?
+    # TODO Threading will exit.  Ran each dir separate works.  Why?
     for media_dir in audit_directories:
         worker(media_dir)
     # # switched to this since tracebacks work this method

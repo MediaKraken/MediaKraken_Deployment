@@ -43,7 +43,6 @@ services:
       # needs socket for running image list
       - /var/run/docker.sock:/var/run/docker.sock:ro
     # needs to run as host so clients can see it on their subnet
-    # network_mode: host
     networks:
       - mediakraken_network_backend
 
@@ -64,8 +63,12 @@ services:
   database:
     image: mediakraken/mkdatabase:latest
     environment:
-      - MAX_CONNECTIONS=40
+      - MAX_CONNECTIONS=100
       - MAX_WAL_SENDERS=10
+      - SHARED_BUFFERS=4096MB
+      - WORK_MEM=256MB
+      # log queries that take more than 1 second
+      - log_min_duration_statement=1000
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
@@ -186,6 +189,21 @@ services:
     deploy:
       mode: global
 
+  mbrainz:
+    image: mediakraken/mkmusicbrainz:latest
+    environment:
+      - BRAINZCODE=/run/secrets/musicbrainz_code
+    secrets:
+      - musicbrainz_code
+    ports:
+      - "5000:5000"
+    volumes:
+      - mediakraken_vol_mbrainz_conf:/config
+      - mediakraken_vol_mbrainz_data:/data
+    deploy:
+      mode: replicated
+      replicas: 0
+
   # runs the server to fetch/process all metadata
   metadata:
     image: mediakraken/mkmetadata:latest
@@ -241,7 +259,6 @@ services:
       - mediakraken_vol_nginx:/var/log/mediakraken/nginx
       - mediakraken_vol_certs:/etc/nginx/certs:ro
       - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static:ro
-    #      - mediakraken_vol_webpid:/var/run:ro
     ports:
       - "8900:8900"
     networks:
@@ -258,6 +275,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: spootdev@gmail.com
       PGADMIN_DEFAULT_PASSWORD: metaman
+    volumes:
+      - mediakraken_vol_pgadmin:/data
     deploy:
       mode: replicated
       replicas: 1
@@ -269,18 +288,16 @@ services:
       - DB_HOST=mkstack_database
       - DB_USER=postgres
       - DB_PASSWORD=/run/secrets/db_password
-      - POOL_MODE=transaction
-      #- POOL_MODE=session
+      #- POOL_MODE=transaction
+      - POOL_MODE=session
       - MAX_CLIENT_CONN=1024
-      - DEFAULT_POOL_SIZE=85
+      - DEFAULT_POOL_SIZE=50
       - SERVER_RESET_QUERY=DISCARD ALL
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_database -p 5432 -t 120 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    #    labels:
-    #      - "traefik.frontend.rule=Host:pgbouncer.docker.localhost"
     deploy:
       mode: replicated
       replicas: 2
@@ -351,7 +368,6 @@ services:
       - "8000:8000"
     volumes:
       - portainer_data:/data
-    #      - mediakraken_vol_portainer:/data
     networks:
       - portaineragent_agent_network
     deploy:
@@ -386,8 +402,6 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGTERM
     ports:
-      # https management port
-      - "15671:15671"
       # http management port
       - "15672:15672"
     volumes:
@@ -449,6 +463,34 @@ services:
       mode: replicated
       replicas: 1
 
+  teamspeak:
+    image: mediakraken/mkteamspeak:latest
+    deploy:
+      mode: replicated
+      replicas: 0
+    ports:
+      - "9987:9987/udp"
+      - "10011:10011"
+      - "30033:30033"
+    volumes:
+      - mediakraken_vol_teamspeak:/opt/teamspeak
+
+  transmission:
+    image: mediakraken/mktransmission:latest
+    environment:
+      - USERNAME=metaman
+      - PASSWORD=metaman
+    deploy:
+      mode: replicated
+      replicas: 0
+    ports:
+      - "9091:9091"
+      - "51413:51413/tcp"
+      - "51413:51413/udp"
+    volumes:
+      - mediakraken_vol_transmission:/transmission/downloads
+      - mediakraken_vol_transmission_incomplete:/transmission/incomplete
+
   # Runs the web service for the main server application
   webapp:
     image: mediakraken/mkwebapp:latest
@@ -460,11 +502,10 @@ services:
     secrets:
       - db_password
       - secure_key
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- uwsgi --socket 0.0.0.0:8080 --protocol http --stats 0.0.0.0:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- uwsgi --disable-logging --http11-socket :8080 --protocol http --stats :9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
-      - "8901:8080"
       - "9191:9191"
     volumes:
       - ./mkmount:/mediakraken/mnt
@@ -504,86 +545,28 @@ networks:
 volumes:
   portainer_data:
   mediakraken_vol_cache:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/cache
   mediakraken_vol_certs:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/certs
   mediakraken_vol_devices:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/devices
+  mediakraken_vol_mbrainz_conf:
+  mediakraken_vol_mbrainz_data:
   mediakraken_vol_mumble:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/mumble
   mediakraken_vol_nginx:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/nginx
+  mediakraken_vol_pgadmin:
   mediakraken_vol_phue:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/phue
   mediakraken_vol_portainer:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/portainer
   mediakraken_vol_postgresql:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/postgresql
   mediakraken_vol_rabbit:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/rabbit
   mediakraken_vol_static:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/static
   mediakraken_vol_teamspeak:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/teamspeak
+  mediakraken_vol_transmission:
+  mediakraken_vol_transmission_incomplete:
   mediakraken_vol_webkey:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/webkey
   mediakraken_vol_webpid:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/webpid
 
 secrets:
   secure_key:
     file: mkstack_secure_key.txt
   db_password:
     file: mkstack_db_password.txt
+  musicbrainz_code:
+    file: mkstack_musicbrainz_code.txt

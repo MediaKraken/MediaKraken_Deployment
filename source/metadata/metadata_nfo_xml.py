@@ -33,11 +33,8 @@ def nfo_xml_file(media_file_path):
     nfo_data = None
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
-    try:  # pull the "real" extension
-        # ext_check = media_file_path[-4:].lower().split(".")[-1]
-        ext_check = pathlib.Path(media_file_path).suffix.lower()
-    except:
-        ext_check = None
+    # pull the "real" extension
+    ext_check = pathlib.Path(media_file_path).suffix.lower()
     if ext_check in common_file_extentions.SUBTITLE_EXTENSION:
         # need to chop off the lang too, the split works even with no .lang in name
         nfo_file_check = media_file_path.rsplit('.', 2)[0] + '.nfo'
@@ -159,7 +156,7 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                     pass
     common_global.es_inst.com_elastic_index('info', {'nfo/xml imdb': imdb_id,
                                                      'tmdb': tmdb_id})
-    return (imdb_id, tmdb_id)
+    return imdb_id, tmdb_id
 
 
 def nfo_xml_id_lookup_tv(nfo_data, xml_data):
@@ -211,4 +208,4 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
     common_global.es_inst.com_elastic_index('info', {'nfo/xml tv imdb': imdb_id,
                                                      'tvdb': tvdb_id,
                                                      'tmdb': tmdb_id})
-    return (imdb_id, tvdb_id, tmdb_id)
+    return imdb_id, tvdb_id, tmdb_id

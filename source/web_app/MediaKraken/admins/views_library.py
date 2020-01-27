@@ -72,8 +72,15 @@ def admin_library():
                                                   format_total=True,
                                                   format_number=True,
                                                   )
+    return_media = []
+    for row_data in g.db_connection.db_audit_paths(offset, per_page):
+        return_media.append((row_data['mm_media_dir_path'],
+                             row_data['mm_media_class_type'],
+                             row_data['mm_media_dir_last_scanned'],
+                             common_global.DLMediaType.row_data['mm_media_class_guid'].name,
+                             row_data['mm_media_dir_guid']))
     return render_template("admin/admin_library.html",
-                           media_dir=g.db_connection.db_audit_paths(offset, per_page),
+                           media_dir=return_media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
@@ -108,19 +115,20 @@ def admin_library_edit_page():
                         flash("Invalid UNC path.", 'error')
                         return redirect(url_for('admins_library.admin_library_edit_page'))
                     smb_stuff.com_cifs_close()
-                # smb/cifs mounts
-                elif request.form['library_path'][0:3] == "smb":
-                    # TODO
-                    smb_stuff = common_network_cifs.CommonCIFSShare()
-                    smb_stuff.com_cifs_connect(
-                        ip_addr, user_name='guest', user_password='')
-                    smb_stuff.com_cifs_share_directory_check(
-                        share_name, dir_path)
-                    smb_stuff.com_cifs_close()
-                # nfs mount
-                elif request.form['library_path'][0:3] == "nfs":
-                    # TODO
-                    pass
+                # TODO these should be mounted under mkmount on docker host
+                # which will break docker swarm....when master moves
+                # # smb/cifs mounts
+                # elif request.form['library_path'][0:3] == "smb":
+                #     # TODO
+                #     smb_stuff = common_network_cifs.CommonCIFSShare()
+                #     smb_stuff.com_cifs_connect(
+                #         ip_addr, user_name='guest', user_password='')
+                #     smb_stuff.com_cifs_share_directory_check(
+                #         share_name, dir_path)
+                #     smb_stuff.com_cifs_close()
+                # # nfs mount
+                # elif request.form['library_path'][0:3] == "nfs":
+                #     pass
                 elif not os.path.isdir(os.path.join('/mediakraken/mnt',
                                                     request.form['library_path'])):
                     flash("Invalid library path.", 'error')
@@ -145,19 +153,30 @@ def admin_library_edit_page():
                 pass
         else:
             flash_errors(form)
-    class_list = []
-    for row_data in g.db_connection.db_media_class_list():
-        if row_data['mm_media_class_display']:  # flagged for display
-            class_list.append(
-                (row_data['mm_media_class_type'], row_data['mm_media_class_guid']))
     share_list = []
     for row_data in g.db_connection.db_audit_shares():
         share_name = row_data['mm_media_share_server'] + \
                      ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
-
     return render_template("admin/admin_library_edit.html", form=form,
-                           data_class=class_list,
+                           data_class=((common_global.DLMediaType.Movie.name,
+                                        common_global.DLMediaType.Movie.value),
+                                       (common_global.DLMediaType.TV.name,
+                                        common_global.DLMediaType.TV.value),
+                                       (common_global.DLMediaType.Music.name,
+                                        common_global.DLMediaType.Music.value),
+                                       (common_global.DLMediaType.Sports.name,
+                                        common_global.DLMediaType.Sports.value),
+                                       (common_global.DLMediaType.Game.name,
+                                        common_global.DLMediaType.Game.value),
+                                       (common_global.DLMediaType.Publication.name,
+                                        common_global.DLMediaType.Publication.value),
+                                       (common_global.DLMediaType.Picture.name,
+                                        common_global.DLMediaType.Picture.value),
+                                       (common_global.DLMediaType.Anime.name,
+                                        common_global.DLMediaType.Anime.value),
+                                       (common_global.DLMediaType.Adult.name,
+                                        common_global.DLMediaType.Adult.value)),
                            data_share=share_list)
 
 
@@ -188,7 +207,8 @@ def getLibraryById():
 @admin_required
 def updateLibrary():
     g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
-                                                 request.form['new_class'], request.form['id'])
+                                                 request.form['new_class'],
+                                                 request.form['id'])
     return json.dumps({'status': 'OK'})
 
 

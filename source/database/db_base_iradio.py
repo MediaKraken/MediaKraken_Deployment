@@ -23,12 +23,15 @@ def db_iradio_insert(self, radio_channel):
     """
     Insert iradio channel
     """
-    if self.db_cursor.execute('select count(*) from mm_radio where mm_radio_address = %s',
+    if self.db_cursor.execute('select count(*) from mm_radio'
+                              ' where mm_radio_address = %s',
                               (radio_channel,)):
         if self.db_cursor.fetchall()[0][0] == 0:
             new_guid = str(uuid.uuid4())
-            self.db_cursor.execute('insert into mm_radio (mm_radio_guid, mm_radio_address,'
-                                   'mm_radio_active) values (%s,%s,true)',
+            self.db_cursor.execute('insert into mm_radio (mm_radio_guid,'
+                                   ' mm_radio_address,'
+                                   'mm_radio_active)'
+                                   ' values (%s,%s,true)',
                                    (new_guid, radio_channel))
             self.db_commit()
             return new_guid
@@ -43,7 +46,8 @@ def db_iradio_list_count(self, active_station=True, search_value=None):
                                'where mm_radio_active = %s and mm_radio_name %% %s',
                                (active_station,))
     else:
-        self.db_cursor.execute('select count(*) from mm_radio where mm_radio_active = %s',
+        self.db_cursor.execute('select count(*) from mm_radio'
+                               ' where mm_radio_active = %s',
                                (active_station,))
     return self.db_cursor.fetchone()[0]
 
@@ -53,7 +57,9 @@ def db_iradio_list(self, offset=0, records=None, active_station=True, search_val
     Iradio list
     """
     if search_value is not None:
-        self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_address'
+        self.db_cursor.execute('select mm_radio_guid,'
+                               ' mm_radio_name,'
+                               ' mm_radio_address'
                                ' from mm_radio where mm_radio_guid '
                                'in (select mm_radio_guid from mm_radio'
                                ' where mm_radio_active = %s and mm_radio_name %% %s'
@@ -61,9 +67,12 @@ def db_iradio_list(self, offset=0, records=None, active_station=True, search_val
                                ' order by LOWER(mm_radio_name)',
                                (active_station, search_value, offset, records))
     else:
-        self.db_cursor.execute('select mm_radio_guid, mm_radio_name, mm_radio_address'
+        self.db_cursor.execute('select mm_radio_guid,'
+                               ' mm_radio_name,'
+                               ' mm_radio_address'
                                ' from mm_radio where mm_radio_guid'
-                               ' in (select mm_radio_guid from mm_radio'
+                               ' in (select mm_radio_guid'
+                               ' from mm_radio'
                                ' where mm_radio_active = %s order by LOWER(mm_radio_name)'
                                ' offset %s limit %s) order by LOWER(mm_radio_name)',
                                (active_station, offset, records))

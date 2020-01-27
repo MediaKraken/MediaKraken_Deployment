@@ -1,7 +1,7 @@
 """
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
-  This program is free software; you can redistribute it and/or
+  This program is free software; you can redistributeF it and/or
   modify it under the terms of the GNU General Public License
   version 2, as published by the Free Software Foundation.
 
@@ -24,61 +24,11 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_version
 
-base_classes = [
-    {'Audio': {['Movie Theme', 'Music', 'TV Theme']}},
-    {'Collection': {['Boxset', 'Series']}},
-    {'Game': {['ROM/ISO']}},
-    {'Publication': {['Comic', 'Comic Strip', 'Book', 'Magazine']}},
-    {'Video': {['Anime', 'Home', 'Movie', 'Sports', 'TV']}},
-]
-
-# media classes
-base_media_classes = (
-    ("Anime", "Video", True),
-    ("Book", "Publication", True),
-    ("Boxset", None, False),
-    ("Comic", "Publication", True),
-    ("Comic Strip", "Publication", True),
-    ("Game CHD", "Game", False),
-    ("Game ISO", "Game", False),
-    ("Game ROM", "Game", False),
-    ("Home Movie", "Video", True),
-    ("Magazine", "Publication", True),
-    ("Movie", "Video", True),
-    ("Movie: Adult", "Video", True),
-    ("Movie: Extras", "Video", False),
-    ("Movie: Collection", None, False),
-    ("Movie: Theme", "Audio", False),
-    ("Movie: Subtitle", None, False),
-    ("Movie: Trailer", "Video", False),
-    ("Music", "Audio", True),
-    ("Music Album", None, False),
-    ("Music Collection", None, False),
-    ("Music Lyric", None, False),
-    ("Music Video", "Video", True),
-    ("Person", None, False),
-    ("Picture", "Image", True),
-    ("Soundtrack", "Audio", False),
-    ("Sports", "Video", True),
-    ("Subtitle", None, False),
-    ("TV: Episode", "Video", False),
-    ("TV: Extras", "Video", False),
-    ("TV: Season", None, False),
-    ("TV: Show", "Video", True),
-    ("TV: Subtitle", None, False),
-    ("TV: Theme", "Audio", False),
-    ("TV: Trailer", "Video", False),
-    ("Video Game", "Game", True),
-    ("Video Game: Intro", "Video", True),
-    ("Video Game: Speedrun", "Video", True),
-    ("Video Game: Superplay", "Video", True)
-)
-
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_create_update')
 
 # open the database
-db_connection = common_config_ini.com_config_read(db_prod=False, db_built=False)
+db_connection = common_config_ini.com_config_read()
 
 # create table for version
 db_connection.db_query(
@@ -101,7 +51,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_shar
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_guid uuid'
                        ' CONSTRAINT mm_media_dir_pk PRIMARY KEY,'
                        ' mm_media_dir_path text,'
-                       ' mm_media_dir_class_type uuid,'
+                       ' mm_media_dir_class_type smallint,'
                        ' mm_media_dir_last_scanned timestamp,'
                        ' mm_media_dir_share_guid uuid,'
                        ' mm_media_dir_status jsonb)')
@@ -118,7 +68,7 @@ FOREIGN KEY (book_id) REFERENCES books (id);
 # create table for media
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media (mm_media_guid uuid'
                        ' CONSTRAINT mm_media_pk PRIMARY KEY,'
-                       ' mm_media_class_guid uuid,'
+                       ' mm_media_class_guid smallint,'
                        ' mm_media_metadata_guid uuid,'
                        ' mm_media_path text,'
                        ' mm_media_ffprobe_json jsonb,'
@@ -137,7 +87,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_remote (mmr_media_gu
                        ' CONSTRAINT mmr_media_remote_pk PRIMARY KEY,'
                        ' mmr_media_link_id uuid,'
                        ' mmr_media_uuid uuid,'
-                       ' mmr_media_class_guid uuid,'
+                       ' mmr_media_class_guid smallint,'
                        ' mmr_media_metadata_guid uuid,'
                        ' mmr_media_ffprobe_json jsonb,'
                        ' mmr_media_json jsonb)')
@@ -328,22 +278,6 @@ if db_connection.db_table_index_check('mm_metadata_music_idx_album') is None:
 if db_connection.db_table_index_check('mm_metadata_music_idxgin_user_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_music_idxgin_user_json'
                            ' ON mm_metadata_music USING gin (mm_metadata_music_user_json)')
-
-# create the base media class
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_class (mm_media_class_guid uuid'
-                       ' CONSTRAINT mm_media_class_pk PRIMARY KEY,'
-                       ' mm_media_class_type text,'
-                       ' mm_media_class_parent_type text,'
-                       ' mm_media_class_display boolean)')
-if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
-    db_connection.db_query('CREATE INDEX mm_media_class_idx_type'
-                           ' ON mm_media_class(mm_media_class_type)')
-
-# add media classes
-if db_connection.db_table_count('mm_media_class') == 0:
-    for media_class in base_media_classes:
-        db_connection.db_media_class_insert(
-            media_class[0], media_class[1], media_class[2])
 
 # create table for anime metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_anime (mm_metadata_anime_guid uuid'
@@ -793,13 +727,11 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
                 'google': 'AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY',
                 'imvdb': None,
                 'isbndb': '25C8IT4I',
-                'musicbrainz': None,
                 'opensubtitles': None,
                 'openweathermap': '575b4ae4615e4e2a4c34fb9defa17ceb',
                 'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
                 'shoutcast': None,
                 'soundcloud': None,
-                'thelogodb': None,
                 'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
                 'thesportsdb': '4352761817344',
                 'thetvdb': '147CB43DCA8B61B7',
@@ -814,7 +746,6 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
                              'mumble': False,
                              'musicbrainz': False,
                              'pgadmin': False,
-                             'portainer': False,
                              'smtp': False,
                              'teamspeak': False,
                              'transmission': False,
@@ -842,11 +773,6 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
         'Trakt': {'ApiKey': None,
                   'ClientID': None,
                   'SecretKey': None},
-        'Transmission': {'Host': None,
-                         'Port': 9091,
-                         'Username': 'spootdev',
-                         'Password': 'metaman'
-                         },
         'Twitch': {'ClientID': None,
                    'OAuth': None},
         'User': {'Activity Purge': None,

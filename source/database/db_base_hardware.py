@@ -35,13 +35,16 @@ def db_hardware_json_read(self, manufacturer, model_name):
 def db_hardware_insert(self, manufacturer, model_name, json_data):
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_hardware_json (mm_hardware_id,'
-                           ' mm_hardware_manufacturer, mm_hardware_model,'
-                           ' mm_hardware_json) values (%s, %s, %s, %s)',
+                           ' mm_hardware_manufacturer,'
+                           ' mm_hardware_model,'
+                           ' mm_hardware_json)'
+                           ' values (%s, %s, %s, %s)',
                            (new_guid, manufacturer, model_name, json_data))
     self.db_commit()
     return new_guid
 
 
 def db_hardware_delete(self, guid):
-    self.db_cursor.execute('delete from mm_hardware_json where mm_hardware_id = %s', (guid,))
+    self.db_cursor.execute('delete from mm_hardware_json'
+                           ' where mm_hardware_id = %s', (guid,))
     self.db_commit()

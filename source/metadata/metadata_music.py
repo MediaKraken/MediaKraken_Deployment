@@ -56,23 +56,20 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
         db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
                                                   ffmpeg_data_json['format']['tags']['ALBUM'],
                                                   ffmpeg_data_json['format']['tags']['TITLE'])
-        if db_result is None:
-            pass
-        else:
+        if db_result is not None:
             metadata_uuid = db_result['mm_metadata_music_guid']
-    if metadata_uuid is not None:
-        db_connection.db_download_delete(download_que_id)
-        # fall through here to set last id's
-    else:
+    if metadata_uuid is None:
         metadata_uuid = download_que_json['MetaNewID']
         # no matches on local database
         # search musicbrainz since not matched above via DB
         download_que_json.update({'Status': 'Search'})
         # save the updated status
+        db_connection.db_begin()
         db_connection.db_download_update(json.dumps(download_que_json),
                                          download_que_id)
         # set provider last so it's not picked up by the wrong thread
         db_connection.db_download_update_provider('musicbrainz', download_que_id)
+        db_connection.db_commit()
     common_global.es_inst.com_elastic_index('info',
                                             {"metadata_music_lookup return uuid": metadata_uuid})
     metadata_music_lookup.metadata_last_id = metadata_uuid

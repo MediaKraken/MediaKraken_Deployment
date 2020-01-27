@@ -305,5 +305,21 @@ if db_connection.db_version_check() < 24:
     db_connection.db_version_update(24)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 25:
+    options_json, status_json = db_connection.db_opt_status_read()
+    db_connection.db_drop_table('mm_media_class')
+    db_connection.db_query('ALTER TABLE mm_media DROP COLUMN mm_media_class_guid;')
+    db_connection.db_query('ALTER TABLE mm_media ADD COLUMN mm_media_class_guid smallint;')
+    db_connection.db_query('ALTER TABLE mm_media DROP COLUMN mm_media_class_guid;')
+    db_connection.db_query('ALTER TABLE mm_media ADD COLUMN mm_media_class_guid smallint;')
+    db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_class_type;')
+    db_connection.db_query(
+        'ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_class_type smallint;')
+    db_connection.db_query('ALTER TABLE mm_media_remote DROP COLUMN mmr_media_class_guid;')
+    db_connection.db_query(
+        'ALTER TABLE mm_media_remote ADD COLUMN mmr_media_class_guid smallint;')
+    db_connection.db_version_update(25)
+    db_connection.db_commit()
+
 # close the database
 db_connection.db_close()

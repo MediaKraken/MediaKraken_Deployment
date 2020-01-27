@@ -4,15 +4,16 @@ from common import common_file
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
+from common import common_network_mediakraken
 
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('zztest')
-
-file_name = 'http://files.tmdb.org/p/exports/movie_ids_07_27_2019.json.gz'
-common_network.mk_network_fetch_from_url(file_name, 'movie.gz')
-json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
-for json_row in json_data.splitlines():
-    print(json.loads(json_row)['id'])
-    break
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch()
+#
+# file_name = 'http://files.tmdb.org/p/exports/movie_ids_07_27_2019.json.gz'
+# common_network.mk_network_fetch_from_url(file_name, 'movie.gz')
+# json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
+# for json_row in json_data.splitlines():
+#     print(json.loads(json_row)['id'])
+#     break
 
 '''
 {"adult":false,"id":601,"original_title":"E.T. the Extra-Terrestrial","popularity":18.373,"video":false}
@@ -24,3 +25,5 @@ for json_row in json_data.splitlines():
 {"adult":false,"id":607,"original_title":"Men in Black","popularity":26.757,"video":false}
 {"adult":false,"id":608,"original_title":"Men in Black II","popularity":26.805,"video":false}
 '''
+
+common_network_mediakraken.com_net_mediakraken_find_server()

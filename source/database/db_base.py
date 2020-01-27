@@ -25,6 +25,7 @@ import psycopg2
 import psycopg2.extras
 from common import common_global
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
+from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
 
 def db_open(self):
@@ -47,8 +48,9 @@ def db_open(self):
             time.sleep(10)
         else:
             break
-    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-    # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
+    # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    # this is the default postgresql settings
+    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
@@ -70,6 +72,14 @@ def db_close(self):
     """
     common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
     self.sql3_conn.close()
+
+
+def db_begin(self):
+    """
+    # start a transaction
+    """
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db begin'})
+    self.sql3_conn.begin()
 
 
 def db_commit(self):

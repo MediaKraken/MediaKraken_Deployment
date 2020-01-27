@@ -26,6 +26,9 @@ dir_to_parse = []
 # extensions to parse
 types = ('*.mkv', '*.avi', '*.mp4', '*.mov', '*.wmv', '*.webm', '*.m4v')
 
+# subdirectories to create
+media_subdirectory = ("trailers", "chapters", "extras", "theme-music", "backdrops")
+
 dir_to_parse.append('Beta')
 dir_to_parse.append('Beta_Super')
 dir_to_parse.append('BluRay')
@@ -79,16 +82,10 @@ for directory_local in dir_to_parse:
         if not os.path.exists(os.path.join(master_directory, directory_local, new_dir_name)):
             # create the directory for the video files
             os.mkdir(os.path.join(master_directory, directory_local, new_dir_name))
-            # create the directory for the trailer files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "trailers"))
-            # create the directory for the chapter files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "chapters"))
-            # create the directory for the extras files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "extras"))
-            # create the directory for the theme music files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "theme-music"))
-            # create the directory for the theme video/etc files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "backdrops"))
+            # create the subdirectories
+            for subdir_create in media_subdirectory:
+                os.mkdir(
+                    os.path.join(master_directory, directory_local, new_dir_name, subdir_create))
         # move the corresponding files and metadata
         command_to_run = 'mv ' + os.path.join(master_directory, directory_local) + "/\"" \
                          + new_dir_name + '\".* ' \
@@ -107,7 +104,7 @@ for directory_local in dir_to_parse:
                                                              new_dir_name) + '\"'
         print(command_to_run)
         os.system(command_to_run)
-        # change rights just in case of files
+        # change rights just in case
         command_to_run = 'chmod -R 755 \"' + os.path.join(master_directory, directory_local,
                                                           new_dir_name) + '\"'
         print(command_to_run)
@@ -115,7 +112,7 @@ for directory_local in dir_to_parse:
 
 '''
 # setup the music video files
-# loop through the dirctories looking for media files
+# loop through the directories looking for media files
 directory_local = "Music_Video"
 os.chdir(master_directory + directory_local)
 # populate from multiple globs

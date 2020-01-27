@@ -33,6 +33,8 @@ from common import common_metadata_provider_themoviedb
 
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('bulk_themoviedb_netfetch')
 
+fetch_date = '07_28_2019'
+
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
@@ -41,7 +43,7 @@ if db_connection.db_table_count('mm_metadata_movie') == 0 \
         and db_connection.db_table_count('mm_download_que') == 0:
     force_dl = True
 # start up the range fetches for movie
-file_name = 'http://files.tmdb.org/p/exports/movie_ids_07_28_2019.json.gz'
+file_name = 'http://files.tmdb.org/p/exports/movie_ids_%s.json.gz' % fetch_date
 common_network.mk_network_fetch_from_url(file_name, 'movie.gz')
 json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
 for json_row in json_data.splitlines():
@@ -64,7 +66,7 @@ if db_connection.db_table_count('mm_metadata_tvshow') == 0 \
         and db_connection.db_table_count('mm_download_que') == 0:
     force_dl = True
 # start up the range fetches for tv
-file_name = 'http://files.tmdb.org/p/exports/tv_series_ids_07_28_2019.json.gz'
+file_name = 'http://files.tmdb.org/p/exports/tv_series_ids_%s.json.gz' % fetch_date
 common_network.mk_network_fetch_from_url(file_name, 'tv.gz')
 json_data = common_file.com_file_ungzip('tv.gz').decode('utf-8')
 for json_row in json_data.splitlines():

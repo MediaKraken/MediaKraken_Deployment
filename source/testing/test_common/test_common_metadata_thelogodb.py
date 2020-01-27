@@ -28,7 +28,7 @@ class TestCommonthelogodb:
     @classmethod
     def setup_class(self):
         # open the database
-        option_config_json, db_connection = common_config_ini.com_config_read(db_prod=False)
+        option_config_json, db_connection = common_config_ini.com_config_read()
         self.db_connection = common_metadata_provider_thelogodb.CommonMetadataTheLogoDB(
             option_config_json)
 

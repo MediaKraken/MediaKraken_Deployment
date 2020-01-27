@@ -31,6 +31,6 @@ class TestSubprogramTheTVDBUpdates:
         Test function
         """
         proc_info = subprocess.Popen(
-            ['python3', './subprogram_thetvdb_updates.py'], shell=False)
+            ['python3', './subprogram_metadata_thetvdb_updates.py'], shell=False)
         common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s" % proc_info.pid})
         proc_info.wait()

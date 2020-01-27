@@ -27,8 +27,7 @@ class CommandHardwareControllerRS232:
     # db_hardware_json_read will populate the json
     def __init__(self, device_json):
         self.device_json = device_json
-        self.device_inst = common_network_telnet.CommonNetworkTelnet()
-        self.device_inst.com_net_telnet_open_device(
+        self.device_inst = common_network_telnet.CommonNetworkTelnet(
             self.device_json["Protocol"]["Host IP"],
             self.device_json["Protocol"]["Host Port"],
             self.device_json["Protocol"]["User"],

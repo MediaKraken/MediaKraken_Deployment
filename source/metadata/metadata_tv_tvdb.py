@@ -40,13 +40,9 @@ queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
-# verify thetvdb key exists for search
-if option_config_json['API']['thetvdb'] is not None:
-    THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
-    # tvshow xml downloader and general api interface
-    THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
-else:
-    THETVDB_CONNECTION = None
+THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
+# tvshow xml downloader and general api interface
+THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
 
 
 def tv_search_tvdb(db_connection, file_name, lang_code='en'):

@@ -43,26 +43,20 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
         common_global.es_inst.com_elastic_index('info', {"meta movie look": imdb_id,
                                                          'tmdb': tmdb_id})
     # if same as last, return last id and save lookup
-    if imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb:
-        db_connection.db_download_delete(download_que_id)
-        # don't need to set last......since they are equal
-        return metadata_movie_lookup.metadata_last_id
-    if tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb:
-        db_connection.db_download_delete(download_que_id)
+    if (imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb) or (
+            tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb):
         # don't need to set last......since they are equal
         return metadata_movie_lookup.metadata_last_id
     # doesn't match last id's so continue lookup
     # if ids from nfo/xml, query local db to see if exist
     if tmdb_id is not None:
         metadata_uuid = db_connection.db_meta_guid_by_tmdb(tmdb_id)
+    # keep these separate just in case imdb is there but tmdb isn't
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
     common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid A": metadata_uuid})
-    if metadata_uuid is not None:
-        db_connection.db_download_delete(download_que_id)
-        # fall through here to set last id's
-    else:
+    if metadata_uuid is None:
         # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
@@ -76,14 +70,15 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']
                 download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': provider_id})
+                db_connection.db_begin()
                 db_connection.db_download_update(json.dumps(download_que_json),
                                                  download_que_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 db_connection.db_download_update_provider('themoviedb', download_que_id)
+                db_connection.db_commit()
             else:
-                db_connection.db_download_delete(download_que_id)
                 metadata_uuid = dl_meta
-    common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid B": metadata_uuid})
+    # leave this AFTER the dl check as it looks at tmdbid and imdb for values!
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
         common_global.es_inst.com_elastic_index('info', {'stuff': "meta movie db lookup"})
@@ -94,19 +89,20 @@ def metadata_movie_lookup(db_connection, download_que_json, download_que_id, fil
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
         common_global.es_inst.com_elastic_index('info', {"meta movie db meta": metadata_uuid})
-        if metadata_uuid is not None:
-            # match found by title/year on local db so purge dl record
-            db_connection.db_download_delete(download_que_id)
-        else:
-            metadata_uuid = download_que_json['MetaNewID']
-            # no matches by name/year on local database
-            # search themoviedb since not matched above via DB or nfo/xml
-            download_que_json.update({'Status': 'Search'})
-            # save the updated status
-            db_connection.db_download_update(json.dumps(download_que_json),
-                                             download_que_id)
-            # set provider last so it's not picked up by the wrong thread
-            db_connection.db_download_update_provider('themoviedb', download_que_id)
+
+    common_global.es_inst.com_elastic_index('info', {"meta movie metadata_uuid B": metadata_uuid})
+    if metadata_uuid is None:
+        metadata_uuid = download_que_json['MetaNewID']
+        # no matches by name/year on local database
+        # search themoviedb since not matched above via DB or nfo/xml
+        download_que_json.update({'Status': 'Search'})
+        # save the updated status
+        db_connection.db_begin()
+        db_connection.db_download_update(json.dumps(download_que_json),
+                                         download_que_id)
+        # set provider last so it's not picked up by the wrong thread
+        db_connection.db_download_update_provider('themoviedb', download_que_id)
+        db_connection.db_commit()
     common_global.es_inst.com_elastic_index('info', {"metadata_movie return uuid": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid

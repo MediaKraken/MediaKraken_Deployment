@@ -18,32 +18,33 @@
 
 # https://github.com/postlund/pyatv
 import asyncio
+import pyatv
 
 LOOP = asyncio.get_event_loop()
 
 
-@asyncio.coroutine
-def com_hard_atv_what_is_playing(atv):
-    playing = yield from atv.metadata.playing()
-    return playing
-
-
-def com_hard_atv_discover():
-    atvs = await pyatv.scan_for_apple_tvs(loop, timeout=5)
-    if not atvs:
-        return False
-    print('Connecting to {0}'.format(atvs[0].address))
-
-
-class CommonHardwareAppleTV:
-    """
-    Class for interfacing with apple tv
-    """
-
-    def __init__(self, ip_addr, loop):
-        self.atv_inst = pyatv.connect_to_apple_tv(atvs[0], loop)
-
-    def com_hard_atv_logout(self):
-        await self.atv_inst.logout()
+# @asyncio.coroutine
+# def com_hard_atv_what_is_playing(atv):
+#     playing = yield from atv.metadata.playing()
+#     return playing
+#
+#
+# def com_hard_atv_discover():
+#     atvs = await pyatv.scan_for_apple_tvs(loop, timeout=5)
+#     if not atvs:
+#         return False
+#     print('Connecting to {0}'.format(atvs[0].address))
+#
+#
+# class CommonHardwareAppleTV:
+#     """
+#     Class for interfacing with apple tv
+#     """
+#
+#     def __init__(self, ip_addr, loop):
+#         self.atv_inst = pyatv.connect_to_apple_tv(atvs[0], loop)
+#
+#     def com_hard_atv_logout(self):
+#         await self.atv_inst.logout()
 
 # helpers.auto_connect(com_hard_atv_what_is_playing)

@@ -92,9 +92,9 @@ class CommonNetworkTrakt:
 
     def com_net_trakt_get_person(self, person_name, search=False):
         if search:
-            return Person(person_name)
-        else:
             return Person.search(person_name)[0]
+        else:
+            return Person(person_name)
 
     def com_net_trakt_get_tv(self, tv_show_name):
         return TVShow(tv_show_name)

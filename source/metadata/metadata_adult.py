@@ -76,10 +76,12 @@ def metadata_adult_lookup(db_connection, download_que_json, download_que_id, fil
             if dl_meta is None:
                 metadata_uuid = download_que_json['MetaNewID']
                 download_que_json.update({'Status': 'Fetch', 'ProviderMetaID': provider_id})
+                db_connection.db_begin()
                 db_connection.db_download_update(json.dumps(download_que_json),
                                                  download_que_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 db_connection.db_download_update_provider('pornhub', download_que_id)
+                db_connection.db_commit()
             else:
                 db_connection.db_download_delete(download_que_id)
                 metadata_uuid = dl_meta
@@ -94,19 +96,18 @@ def metadata_adult_lookup(db_connection, download_que_json, download_que_id, fil
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
         common_global.es_inst.com_elastic_index('info', {"meta adult db meta": metadata_uuid})
-        if metadata_uuid is not None:
-            # match found by title/year on local db so purge dl record
-            db_connection.db_download_delete(download_que_id)
-        else:
+        if metadata_uuid is None:
             metadata_uuid = download_que_json['MetaNewID']
             # no matches by name/year on local database
             # search themoviedb since not matched above via DB or nfo/xml
             download_que_json.update({'Status': 'Search'})
             # save the updated status
+            db_connection.db_begin()
             db_connection.db_download_update(json.dumps(download_que_json),
                                              download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('pornhub', download_que_id)
+            db_connection.db_commit()
     common_global.es_inst.com_elastic_index('info', {"metadata_adult return uuid": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_adult_lookup.metadata_last_id = metadata_uuid

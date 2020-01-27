@@ -30,7 +30,8 @@ class TestSubprogramUpdateCreateCollections:
         """
         Test function
         """
-        proc_info = subprocess.Popen(['python3', './subprogram_update_create_collections.py'],
+        proc_info = subprocess.Popen(['python3',
+                                      './subprogram_metadata_update_create_collections.py'],
                                      shell=False)
         common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s" % proc_info.pid})
         proc_info.wait()

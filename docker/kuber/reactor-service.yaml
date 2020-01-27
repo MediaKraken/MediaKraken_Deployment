@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose.exe convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: reactor
+  name: reactor
+spec:
+  ports:
+  - name: "8903"
+    port: 8903
+    targetPort: 8903
+  selector:
+    io.kompose.service: reactor
+status:
+  loadBalancer: {}

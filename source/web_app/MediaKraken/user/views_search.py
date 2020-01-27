@@ -104,7 +104,7 @@ def search_nav_media():
     determine what search results screen to show
     """
     common_global.es_inst.com_elastic_index('info', {"search session": session['search_page']})
-    session['search_text'] = request.form.get('nav_search')
+    session['search_text'] = request.form.get('nav_search').strip()
     if session['search_page'] == 'media_3d':
         return redirect(url_for('user_3d.user_3d_list'))
     elif session['search_page'] == 'media_album':

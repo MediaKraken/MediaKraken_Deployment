@@ -56,18 +56,21 @@ def report_display_all_duplicates_detail(guid):
     for media_data in g.db_connection.db_media_duplicate_detail(guid, offset, per_page):
         common_global.es_inst.com_elastic_index('info', {"media": media_data[
             'mm_media_ffprobe_json']})
-        for stream_data in media_data['mm_media_ffprobe_json']['streams']:
-            if stream_data['codec_type'] == 'video':
-                media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
-                              str(stream_data['width']) +
-                              'x' + str(stream_data['height']),
-                              media_data['mm_media_ffprobe_json']['format']['duration']))
-                break
+        if media_data['mm_media_ffprobe_json'] is not None:
+            for stream_data in media_data['mm_media_ffprobe_json']['streams']:
+                if stream_data['codec_type'] == 'video':
+                    media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
+                                  str(stream_data['width']) +
+                                  'x' + str(stream_data['height']),
+                                  media_data['mm_media_ffprobe_json']['format']['duration']))
+                    break
+        else:
+            media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
+                          'NA', '999:99:99'))
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.
-                                                  db_media_duplicate_detail_count(guid)[
-                                                      0],
+                                                  db_media_duplicate_detail_count(guid)[0],
                                                   record_name='copies',
                                                   format_total=True,
                                                   format_number=True,
@@ -115,16 +118,18 @@ def report_display_all_media_known_video():
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_media_list_count(
-                                                      g.db_connection.db_media_uuid_by_class(
-                                                          'Movie')),
+                                                      common_global.DLMediaType.Movie.value),
                                                   record_name='known video(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
     return render_template('admin/reports/report_all_known_media_video.html',
                            media=g.db_connection.db_web_media_list(
-                               g.db_connection.db_media_uuid_by_class('Movie'),
-                               offset=offset, list_limit=per_page),
+                               common_global.DLMediaType.Movie.value,
+                               list_type='movie', list_genre='All', list_limit=per_page,
+                               group_collection=False,
+                               offset=offset, include_remote=True,
+                               search_text=None),
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
