@@ -1,0 +1,24 @@
+Login into PVE
+
+# verify following are running
+th-alpinemirror-1
+    - cronjob every 15 minutes to pull latest packages
+th-jenkins-1
+    /root/start_mkjenkins.sh
+    - http://th-jenkins-1:8080/
+    - Violations, Sloc, etc
+    /root/mailcow-dockerized/
+        - this is where mailcow runs as well
+    /root/MediaKraken_CI/source
+        build_dev_environment.py
+        build_dev_images.py
+        build_prod_images_and_deploy.py
+        build_security_images.py
+        build_testing_images.py
+th-registry-1  # for storing all the images that are built
+    - registry:2 is the image it's running
+th-swarm-1  # for running the test code
+    /home/spoot/Mediakraken_Deployment/docker/swarm
+
+thunderbird
+    - metaman@beaverbay.local
