@@ -45,6 +45,11 @@ psql -d metamandb -c "create extension pg_trgm;"
 docker build -t mediakraken/mkdatabaseupgrade .
 
 
+docker build -t mediakraken/ansible_runner_service .
+
+docker run -it centos:7 /bin/bash
+
+docker run -it mediakraken/ansible_runner_service /bin/bash
 
 
 
