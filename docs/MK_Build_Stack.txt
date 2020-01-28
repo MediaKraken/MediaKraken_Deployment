@@ -3,17 +3,22 @@ Login into PVE
 # verify following are running
 th-alpinemirror-1
     - cronjob every 15 minutes to pull latest packages
-th-jenkins-1
+th-jenkins-1  # run build stuff from here
     /root/start_mkjenkins.sh
     - http://th-jenkins-1:8080/
     - Violations, Sloc, etc
     /root/mailcow-dockerized/
         - this is where mailcow runs as well
     /root/MediaKraken_CI/source
+        - setup centos environment via packages, pip, etc
         build_dev_environment.py
+        - build the new images from code
         build_dev_images.py
+        - tag and push the images to dockerhub
         build_prod_images_and_deploy.py
+        - build security testing images
         build_security_images.py
+        - build testing tool images
         build_testing_images.py
 th-registry-1  # for storing all the images that are built
     - registry:2 is the image it's running
