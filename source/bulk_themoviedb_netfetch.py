@@ -17,19 +17,14 @@
 """
 
 import json
-import sys
-import uuid
-from common import common_file
-from common import common_global
-from common import common_logging_elasticsearch
-from common import common_network
-from common import common_file
-from common import common_network
-from common import common_logging_elasticsearch
-from common import common_global
 import os
+
+import uuid
 from common import common_config_ini
-from common import common_metadata_provider_themoviedb
+from common import common_file
+from common import common_global
+from common import common_logging_elasticsearch
+from common import common_network
 
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('bulk_themoviedb_netfetch')
 

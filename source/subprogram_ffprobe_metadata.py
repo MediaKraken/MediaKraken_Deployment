@@ -2,10 +2,9 @@ import functools
 import json
 import os
 import subprocess
-import time
-import uuid
 
 import pika
+import time
 from common import common_config_ini
 from common import common_ffmpeg
 from common import common_global
@@ -201,9 +200,9 @@ class MKConsumer:
                             image_file_path = os.path.join(
                                 common_metadata.com_meta_image_file_path(json_message['Media Path'],
                                                                          'chapter'),
-                                                                        json_message['Media UUID']
-                                                                        + '_' + str(chapter_count)
-                                                                        + '.png')
+                                json_message['Media UUID']
+                                + '_' + str(chapter_count)
+                                + '.png')
                         else:
                             image_file_path = os.path.join(
                                 os.path.dirname(json_message['Media Path']),
