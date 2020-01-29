@@ -19,6 +19,7 @@ from MediaKraken.admins.forms import TVTunerEditForm
 from MediaKraken.utils import flash_errors
 from common import common_config_ini
 from common import common_docker
+from common import common_network_pika
 from common import common_global
 import database as database_base
 
@@ -47,8 +48,11 @@ def admin_required(fn):
 @admin_required
 def admin_hardware():
     if request.method == 'POST':
-        docker_inst = common_docker.CommonDocker()
-        docker_inst.com_docker_run_device_scan()
+        # submit the message
+        common_network_pika.com_net_pika_send({'Type': 'Hardware Scan'},
+                                              rabbit_host_name='mkstack_rabbitmq',
+                                              exchange_name='mkque_hardware_ex',
+                                              route_key='mkhardware')
         flash("Scheduled hardware scan.")
     chromecast_list = []
     for row_data in g.db_connection.db_device_list('Chromecast'):
