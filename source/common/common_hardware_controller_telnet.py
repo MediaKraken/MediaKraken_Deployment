@@ -27,12 +27,11 @@ class CommonHardwareControllerTelnet:
     # db_hardware_json_read will populate the json
     def __init__(self, device_json):
         self.device_json = device_json
-        self.device_inst = common_network_telnet.CommonNetworkTelnet()
-        self.device_inst.com_net_telnet_open_device(
-            self.device_json["Protocol"]["Host IP"],
-            self.device_json["Protocol"]["Host Port"],
-            self.device_json["Protocol"]["User"],
-            self.device_json["Protocol"]["Password"])
+        self.device_inst = common_network_telnet.CommonNetworkTelnet(
+            telnet_host=self.device_json["Protocol"]["Host IP"],
+            telnet_port=self.device_json["Protocol"]["Host Port"],
+            telnet_user=self.device_json["Protocol"]["User"],
+            telnet_password=self.device_json["Protocol"]["Password"])
 
     def com_hardware_command(self, command_value):
         """
