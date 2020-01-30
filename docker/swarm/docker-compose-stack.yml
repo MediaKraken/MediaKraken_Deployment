@@ -70,8 +70,11 @@ services:
       - MAX_WAL_SENDERS=10
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB
-      # log queries that take more than 1 second
-      - log_min_duration_statement=1000
+      # log all db queries
+      - log_statement='all'
+      - log_destination='csvlog'
+      - logging_collector=on
+      - log_directory='pg_log'
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
