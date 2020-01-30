@@ -38,14 +38,14 @@ class CommonElasticsearch:
                 self.es_inst = Elasticsearch([{'host': es_host, 'port': es_port}])
                 self.es_index = index_type
         else:
-            if debug_override is None:
-                self.debug = None
-            else:
-                self.debug = debug_override
+            self.debug = debug_override
 
     def com_elastic_index(self, log_type, body_data):
+        # do this first for speed
+        if self.debug is None:
+            pass
         # write log to elk
-        if self.debug == 'es':
+        elif self.debug == 'es':
             # leave the try....as I don't want the container to fail if mkelk not accepting
             try:
                 self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
