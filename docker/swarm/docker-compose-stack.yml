@@ -306,7 +306,7 @@ services:
     stop_signal: SIGTERM
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 1
     networks:
       - mediakraken_network_backend
 
