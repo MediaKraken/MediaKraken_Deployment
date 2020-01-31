@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.8
+FROM alpine:3.11.3
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This holds the image for pgbouncer"
@@ -11,7 +11,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   c-ares \
   libevent \
   openssl \
-  pgbouncer=1.7.2-r4 \
+  pgbouncer=1.12.0-r1 \
   postgresql-client \
   && mkdir /run/postgresql \
   && chmod 777 /run/postgresql
