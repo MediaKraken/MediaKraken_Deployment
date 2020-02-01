@@ -19,7 +19,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 #  && adduser -DHs /sbin/nologin metaman \
 
 WORKDIR /
-COPY wait-for-it-ash.sh ./
+COPY wait-for-it-ash-busybox130.sh ./
 COPY entrypoint.sh ./
 EXPOSE 6432
 ENTRYPOINT ["./entrypoint.sh"]

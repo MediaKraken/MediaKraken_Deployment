@@ -301,7 +301,7 @@ services:
       - SERVER_RESET_QUERY=DISCARD ALL
     secrets:
       - db_password
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_database -p 5432 -t 120 -- ./entrypoint.sh
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_database -p 5432 -t 120 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
     deploy:
