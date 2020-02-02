@@ -81,6 +81,9 @@ services:
       - LOG_DESTINATION=csvlog
       - LOGGING_COLLECTOR=on
       - LOG_DIRECTORY=log
+      - LOG_CONNECTIONS=true
+      - LOG_DISCONNCTIONS=true
+      - LOG_HOSTNAME=true
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
