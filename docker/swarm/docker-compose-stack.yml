@@ -26,6 +26,11 @@ services:
       - /var/opt/mediakraken/secure:/mediakraken/secure
     networks:
       - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   # start broadcast server (so clients can find server)
   broadcast:
@@ -48,6 +53,11 @@ services:
     # needs to run as host so clients can see it on their subnet
     networks:
       - mediakraken_outside
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   # runs cron
   cron:
@@ -153,6 +163,11 @@ services:
       - ./data/download:/mediakraken/download
     networks:
       - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   # runs ffprobe
   ffprobe:
@@ -183,6 +198,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   logspout:
     image: bekt/logspout-logstash
@@ -209,6 +226,8 @@ services:
     deploy:
       mode: replicated
       replicas: 0
+      placement:
+        constraints: [node.role == manager]
 
   # runs the server to fetch/process all metadata
   metadata:
@@ -228,6 +247,11 @@ services:
       - mediakraken_vol_cache:/mediakraken/cache
     networks:
       - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   moosefsmaster:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmoosemaster:dev
@@ -269,6 +293,11 @@ services:
       - "8900:8900"
     networks:
       - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   pgadmin:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgadmin:dev
@@ -328,23 +357,23 @@ services:
     networks:
       - mediakraken_network_backend
 
-  # pghero
-  pghero:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpghero:dev
-    environment:
-      - DATABASE_URL=postgres://postgres:owfohiwehCHANGEMEjiow2rJ@mkstack_database:5432/postgres
-      #- DATABASE_URL=postgres://postgres:${DOCKER-SECRET:db_password}@mkstack_database:5432/postgres
-    secrets:
-      - db_password
-    ports:
-      - "8910:8080"
-    stop_grace_period: 30s
-    stop_signal: SIGTERM
-    deploy:
-      mode: replicated
-      replicas: 1
-    networks:
-      - mediakraken_network_backend
+#  # pghero
+#  pghero:
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpghero:dev
+#    environment:
+#      - DATABASE_URL=postgres://postgres:owfohiwehCHANGEMEjiow2rJ@mkstack_database:5432/postgres
+#      #- DATABASE_URL=postgres://postgres:${DOCKER-SECRET:db_password}@mkstack_database:5432/postgres
+#    secrets:
+#      - db_password
+#    ports:
+#      - "8910:8080"
+#    stop_grace_period: 30s
+#    stop_signal: SIGTERM
+#    deploy:
+#      mode: replicated
+#      replicas: 1
+#    networks:
+#      - mediakraken_network_backend
 
   # pika
   pika:
@@ -468,27 +497,28 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   teamspeak:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkteamspeak:dev
-    deploy:
-      mode: replicated
-      replicas: 0
     ports:
       - "9987:9987/udp"
       - "10011:10011"
       - "30033:30033"
     volumes:
       - mediakraken_vol_teamspeak:/opt/teamspeak
+    deploy:
+      mode: replicated
+      replicas: 0
+      placement:
+        constraints: [node.role == manager]
 
   transmission:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mktransmission:dev
     environment:
       - USERNAME=metaman
       - PASSWORD=metaman
-    deploy:
-      mode: replicated
-      replicas: 0
     ports:
       - "9091:9091"
       - "51413:51413/tcp"
@@ -496,6 +526,11 @@ services:
     volumes:
       - mediakraken_vol_transmission:/transmission/downloads
       - mediakraken_vol_transmission_incomplete:/transmission/incomplete
+    deploy:
+      mode: replicated
+      replicas: 0
+      placement:
+        constraints: [node.role == manager]
 
   # Runs the web service for the main server application
   webapp:
@@ -531,6 +566,11 @@ services:
       - /var/opt/mediakraken/secure:/mediakraken/secure:ro
     networks:
       - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
 # Docker private networks
 networks:
