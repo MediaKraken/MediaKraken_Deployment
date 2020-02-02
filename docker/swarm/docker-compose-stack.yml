@@ -71,10 +71,10 @@ services:
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB
       # log all db queries
-      - log_statement=all
-      - log_destination=csvlog
-      - logging_collector=on
-      - log_directory=log
+      - LOG_STATEMENT=all
+      - LOG_DESTINATION=csvlog
+      - LOGGING_COLLECTOR=on
+      - LOG_DIRECTORY=log
       - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
