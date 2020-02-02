@@ -27,8 +27,6 @@ services:
     networks:
       - mediakraken_network_backend
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
@@ -54,8 +52,6 @@ services:
     networks:
       - mediakraken_outside
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
@@ -164,8 +160,6 @@ services:
     networks:
       - mediakraken_network_backend
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
@@ -196,8 +190,6 @@ services:
     networks:
       - mediakraken_network_backend
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
@@ -248,8 +240,6 @@ services:
     networks:
       - mediakraken_network_backend
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
@@ -294,8 +284,6 @@ services:
     networks:
       - mediakraken_network_backend
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
@@ -394,6 +382,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   portainer:
     image: portainer/portainer
@@ -444,8 +435,6 @@ services:
     networks:
       - mediakraken_network_backend
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
@@ -470,6 +459,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # runs the redis service for flask (account management)
   redis:
@@ -478,11 +470,6 @@ services:
     stop_signal: SIGTERM
     networks:
       - mediakraken_network_backend
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
 
   # runs roku thumbnail
   rokuthumb:
@@ -495,8 +482,6 @@ services:
     networks:
       - mediakraken_network_backend
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints: [node.role == manager]
 
