@@ -19,17 +19,18 @@
 import os
 import shlex
 import subprocess
+from base64 import b64encode
 
 if not os.path.isfile('mkstack_db_password.txt'):
     file_handle = open('mkstack_db_password.txt', 'w+')
-    file_handle.write(str(os.urandom(32)))
+    file_handle.write(b64encode(os.urandom(32).decode('utf-8')))
     file_handle.close()
     subprocess.call(shlex.split('docker secret create db_password ./mkstack_db_password.txt'),
                     stdout=subprocess.PIPE, shell=False)
 
 if not os.path.isfile('mkstack_secure_key.txt'):
     file_handle = open('mkstack_secure_key.txt', 'w+')
-    file_handle.write(str(os.urandom(32)))
+    file_handle.write(b64encode(os.urandom(32).decode('utf-8')))
     file_handle.close()
     subprocess.call(shlex.split('docker secret create secure_key ./mkstack_secure_key.txt'),
                     stdout=subprocess.PIPE, shell=False)
