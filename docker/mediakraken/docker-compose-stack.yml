@@ -199,22 +199,22 @@ services:
     deploy:
       mode: global
 
-  mbrainz:
-    image: mediakraken/mkmusicbrainz:latest
-    environment:
-      - BRAINZCODE=/run/secrets/musicbrainz_code
-    secrets:
-      - musicbrainz_code
-    ports:
-      - "5000:5000"
-    volumes:
-      - mediakraken_vol_mbrainz_conf:/config
-      - mediakraken_vol_mbrainz_data:/data
-    deploy:
-      mode: replicated
-      replicas: 0
-      placement:
-        constraints: [node.role == manager]
+#  mbrainz:
+#    image: mediakraken/mkmusicbrainz:latest
+#    environment:
+#      - BRAINZCODE=/run/secrets/musicbrainz_code
+#    secrets:
+#      - musicbrainz_code
+#    ports:
+#      - "5000:5000"
+#    volumes:
+#      - mediakraken_vol_mbrainz_conf:/config
+#      - mediakraken_vol_mbrainz_data:/data
+#    deploy:
+#      mode: replicated
+#      replicas: 0
+#      placement:
+#        constraints: [node.role == manager]
 
   # runs the server to fetch/process all metadata
   metadata:
@@ -238,31 +238,31 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  moosefsmaster:
-    image: mediakraken/mkmoosemaster:latest
-    networks:
-      - mediakraken_moosefsnet
-    ports:
-      - "9425:9425"
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-
-  moosefschunkserver:
-    image: mediakraken/mkmoosechunkserver:latest
-    environment:
-      - LABELS=M
-      - SIZE=1
-    networks:
-      - mediakraken_moosefsnet
-    volumes:
-      - ./data/moosehdd0:/mnt/hdd0
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.platform.os == linux]
+#  moosefsmaster:
+#    image: mediakraken/mkmoosemaster:latest
+#    networks:
+#      - mediakraken_moosefsnet
+#    ports:
+#      - "9425:9425"
+#    deploy:
+#      mode: replicated
+#      replicas: 1
+#      placement:
+#        constraints: [node.role == manager]
+#
+#  moosefschunkserver:
+#    image: mediakraken/mkmoosechunkserver:latest
+#    environment:
+#      - LABELS=M
+#      - SIZE=1
+#    networks:
+#      - mediakraken_moosefsnet
+#    volumes:
+#      - ./data/moosehdd0:/mnt/hdd0
+#    deploy:
+#      mode: global
+#      placement:
+#        constraints: [node.platform.os == linux]
 
   # runs the nginx proxy service
   nginx:
@@ -594,5 +594,3 @@ secrets:
     file: mkstack_secure_key.txt
   db_password:
     file: mkstack_db_password.txt
-  musicbrainz_code:
-    file: mkstack_musicbrainz_code.txt
