@@ -80,7 +80,7 @@ services:
       - LOG_CONNECTIONS=true
       - LOG_DISCONNCTIONS=true
       - LOG_HOSTNAME=true
-      - POSTGRES_PASSWORD=/run/secrets/db_password
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
     secrets:
       - db_password
     stop_grace_period: 30s

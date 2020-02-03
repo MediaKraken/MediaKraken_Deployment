@@ -72,7 +72,7 @@ services:
       - MAX_WAL_SENDERS=10
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB
-      - POSTGRES_PASSWORD=/run/secrets/db_password
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
     secrets:
       - db_password
     stop_grace_period: 30s
