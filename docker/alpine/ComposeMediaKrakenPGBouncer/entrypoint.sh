@@ -15,7 +15,7 @@ printf "\
 [databases]
 * = host=${DB_HOST:?"Setup pgbouncer config error! You must set DB_HOST env"} \
 port=${DB_PORT:-5432} user=${DB_USER:-postgres} \
-${DB_PASSWORD:+password=${DB_PASSWORD}}
+${DB_PASSWORD:+password="$(cat /run/secrets/db_password)"
 
 [pgbouncer]
 # Generic settings

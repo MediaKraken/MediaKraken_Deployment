@@ -295,7 +295,6 @@ services:
     environment:
       - DB_HOST=mkstack_database
       - DB_USER=postgres
-      - DB_PASSWORD=/run/secrets/db_password
       #- POOL_MODE=transaction
       - POOL_MODE=session
       - MAX_CLIENT_CONN=1024
