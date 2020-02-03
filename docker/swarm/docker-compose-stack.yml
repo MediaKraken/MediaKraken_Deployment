@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.6'
 
 services:
   # Main app server
@@ -605,6 +605,6 @@ volumes:
 
 secrets:
   secure_key:
-    file: mkstack_secure_key.txt
+    external: true
   db_password:
-    file: mkstack_db_password.txt
+    external: true
