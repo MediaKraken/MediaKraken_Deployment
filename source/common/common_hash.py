@@ -57,7 +57,8 @@ class CommonHashCrypto:
             iterations=100000,
             backend=default_backend()
         )
-        self.hash_key = base64.urlsafe_b64encode(kdf.derive(os.environ['SECURE']))
+        self.hash_key = base64.urlsafe_b64encode(
+            kdf.derive(common_file.com_file_load_data('/run/secrets/secure_key')))
         self.fernet = Fernet(self.hash_key)
 
     def com_hash_gen_crypt_encode(self, encode_string):

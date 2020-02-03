@@ -17,12 +17,12 @@
 """
 
 import multiprocessing
-import os
 import sys
 import time
 
 import psycopg2
 import psycopg2.extras
+from common import common_file
 from common import common_global
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
@@ -43,7 +43,7 @@ def db_open(self):
             self.sql3_conn = psycopg2.connect(
                 "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
                 " port=6432 password='%s'"
-                % os.environ['POSTGRES_PASSWORD'])
+                % common_file.com_file_load_data('/run/secrets/db_password'))
         except (psycopg2.OperationalError, psycopg2.DatabaseError):
             time.sleep(10)
         else:

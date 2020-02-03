@@ -5,8 +5,6 @@ services:
   appserver:
     image: mediakraken/mkserver:latest
     environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
-      - SECURE=/run/secrets/secure_key
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
     secrets:
@@ -58,8 +56,6 @@ services:
   # runs cron
   cron:
     image: mediakraken/mkcron:latest
-    environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_cron_checker.py
@@ -143,8 +139,6 @@ services:
   # Runs the download services
   download:
     image: mediakraken/mkdownload:latest
-    environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_download.py
@@ -161,8 +155,6 @@ services:
   # runs ffprobe
   ffprobe:
     image: mediakraken/mkffprobe:latest
-    environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_ffprobe_metadata.py
@@ -219,8 +211,6 @@ services:
   # runs the server to fetch/process all metadata
   metadata:
     image: mediakraken/mkmetadata:latest
-    environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_server_metadata_api.py
@@ -361,8 +351,6 @@ services:
   # pika
   pika:
     image: mediakraken/mkpika:latest
-    environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
     entrypoint: python3 subprogram_pika.py
@@ -436,8 +424,6 @@ services:
   # Main reactor
   reactor:
     image: mediakraken/mkreactor:latest
-    environment:
-      - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_reactor_line.py
@@ -516,10 +502,8 @@ services:
   webapp:
     image: mediakraken/mkwebapp:latest
     environment:
-      - SECURE=/run/secrets/secure_key
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}
-      - POSTGRES_PASSWORD=/run/secrets/db_password
     secrets:
       - db_password
       - secure_key
@@ -591,6 +575,6 @@ volumes:
 
 secrets:
   secure_key:
-    file: mkstack_secure_key.txt
+    external: true
   db_password:
-    file: mkstack_db_password.txt
+    external: true
