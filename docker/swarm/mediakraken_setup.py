@@ -21,6 +21,8 @@ import shlex
 import subprocess
 from base64 import b64encode
 
+# TODO, what if the random picks ' or "
+
 if not os.path.isfile('mkstack_db_password.txt'):
     file_handle = open('mkstack_db_password.txt', 'w+')
     file_handle.write(b64encode(os.urandom(32)).decode('utf-8'))

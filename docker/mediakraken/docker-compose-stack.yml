@@ -294,7 +294,6 @@ services:
     image: mediakraken/mkpgbouncer:latest
     environment:
       - DB_HOST=mkstack_database
-      - DB_USER=postgres
       #- POOL_MODE=transaction
       - POOL_MODE=session
       - MAX_CLIENT_CONN=1024
