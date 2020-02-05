@@ -42,7 +42,7 @@ def db_open(self):
         try:
             self.sql3_conn = psycopg2.connect(
                 "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
-                " port=6432 password='%s'"
+                " port=6432 password='%s' connect_timeout=5"
                 % common_file.com_file_load_data('/run/secrets/db_password'))
         except (psycopg2.OperationalError, psycopg2.DatabaseError):
             time.sleep(10)
