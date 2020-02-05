@@ -305,7 +305,7 @@ services:
       #- POOL_MODE=transaction
       - POOL_MODE=session
       - MAX_CLIENT_CONN=1024
-      - DEFAULT_POOL_SIZE=50
+      - DEFAULT_POOL_SIZE=75
       - SERVER_RESET_QUERY=DISCARD ALL
     secrets:
       - db_password
