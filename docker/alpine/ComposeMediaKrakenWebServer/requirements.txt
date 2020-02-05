@@ -5,7 +5,7 @@ pycountry==18.12.8
 gevent==1.4.0
 simplekv==0.12.0
 pgen==0.2.1
-cython==0.29.11
+cython==0.29.14
 Flask==1.1.1
 Flask-Login==0.4.1
 Flask-Bcrypt==0.7.1
