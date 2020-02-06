@@ -30,7 +30,7 @@ class CommonElasticsearch:
     Class for interfacing with Elasticsearch or docker logging directly
     """
 
-    def __init__(self, index_type='mediakraken', es_host='mkelk', es_port=9200,
+    def __init__(self, index_type='mediakraken', es_host='th-jenkins-1', es_port=9200,
                  debug_override=None):
         if 'DEBUG' in os.environ and debug_override is None:
             self.debug = os.environ['DEBUG'].lower()
