@@ -242,7 +242,7 @@ class CommonDocker:
 
     def com_docker_run_elk(self, current_host_working_directory):
         if current_host_working_directory is not None \
-                and os.path.exists(os.path.join(current_host_working_directory, 'data/elk')):
+                and os.path.exists(os.path.join(current_host_working_directory, 'elkdata')):
             self.com_docker_delete_container('mkelk')
             self.com_docker_network_create('mediakraken_network_backend')
             return self.cli.containers.run(image='mediakraken/mkelk',
