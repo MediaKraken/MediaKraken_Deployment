@@ -73,13 +73,21 @@ services:
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB
       # log all db queries
-      - LOG_STATEMENT=all
-      - LOG_DESTINATION=csvlog
-      - LOGGING_COLLECTOR=on
-      - LOG_DIRECTORY=log
-      - LOG_CONNECTIONS=true
-      - LOG_DISCONNCTIONS=true
-      - LOG_HOSTNAME=true
+      #- LOG_STATEMENT=all
+      #- LOG_DESTINATION=syslog
+      # - log_filename = 'postgresql-%Y-%m-%d.log' - default name
+      #- LOGGING_COLLECTOR=on
+      #- LOG_DIRECTORY=log
+      #- LOG_CONNECTIONS=true
+      #- LOG_DISCONNCTIONS=true
+      #- LOG_HOSTNAME=true
+      - logging_collector = on
+      - log_min_duration_statement = 0
+      - log_directory = '/var/log/postgresql'
+      - log_min_messages = WARNING
+      - log_rotation_age = 1d
+      - log_rotation_size = 1GB
+      #- log_line_prefix = 'start_prefix{"log_time":"%m","application_name":"%a","user_name":"%u","database_name":"%d","remote_host":"%r","process_id":"%p","command_tag":"%i","sql_state":"%e","session_id":"%c","session_line_number":"%l","virtual_transaction_id":"%v","session_id":"%c"}end_prefix log_line: '
       - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
     secrets:
       - db_password
@@ -189,10 +197,9 @@ services:
         constraints: [node.role == manager]
 
   logspout:
-    image: bekt/logspout-logstash
-    #    image: th-registry-1.beaverbay.local:5000/mediakraken/mklogspout:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mklogspout:dev
     environment:
-      ROUTE_URIS: 'logstash+tcp://th-jenkins-1.beaverbay.local:5000'
+      ROUTE_URIS: 'logstash+tcp://th-elk-1:5000'
       LOGSTASH_FIELDS: 'environment=production'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
