@@ -148,7 +148,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
-COPY uwsgi_params /var/uwsgi_params
+# COPY uwsgi_params /var/uwsgi_params
 # https://github.com/MediaKraken-Dep/nginx-badbot-blocker
 COPY blacklist.conf /etc/nginx/blacklist.conf
 COPY blockips.conf /etc/nginx/blockips.conf
