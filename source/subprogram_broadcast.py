@@ -34,6 +34,7 @@ common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_i
 docker_port = None
 while docker_port is None:
     for container_json in docker_inst.com_docker_container_list():
+        common_global.es_inst.com_elastic_index('info', {'container_json': container_json})
         # grab ports for server
         if container_json['Names'][0].find('mkstack_reactor') != -1:
             docker_port = str(
