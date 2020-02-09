@@ -162,9 +162,6 @@ class MediaKrakenApp(App):
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
         self.use_kivy_settings = False
-        self._keyboard = Window.request_keyboard(
-            self._keyboard_closed, self.root)
-        self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.first_image_demo = True
         self.mpv_process = None
