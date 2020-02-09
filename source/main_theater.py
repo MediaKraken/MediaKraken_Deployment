@@ -465,63 +465,60 @@ class MediaKrakenApp(App):
             else:
                 common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
 
+    def build_config(self, config):
+        """
+        Build base config
+        """
+        config.setdefaults('MediaKrakenServer', {
+            'Host': 'None',
+            'Port': 8903})
+        config.setdefaults('Audio', {
+            'Default_Device': 'Default',
+            'Channels': '7.1'})
+        config.setdefaults('Passthrough', {
+            'Enable': False,
+            'Device': 'Default',
+            'DTS': False,
+            'DTSHD': False,
+            'DTSX': False,
+            'AC3': False,
+            'EAC3': False,
+            'TRUEHD': False,
+            'Atmos': False})
+        config.setdefaults('MediaKraken', {
+            'Default_Device': 'Default'})
+        config.setdefaults('Video', {
+            'Blank_Displays': False,
+            'Display_Screen': 'Display #1',
+            'Resolution': 'Window Size',
+            'Fullscreen': True,
+            'Fullscreen_Window': False,
+            'Sleep_Time': '3 min'})
+        config.setdefaults('Library', {
+            'Show_Plot_Unwatched': True,
+            'Flatten_TV_Show_Seasons': 'If Only One Season',
+            'Group_Movies_in_Sets': True})
+        config.setdefaults('Playback', {
+            'Preferred_Audio_Language': 'Original Stream Language',
+            'Play_Next_Media_Automatically': False})
 
-def build_config(self, config):
-    """
-    Build base config
-    """
-    config.setdefaults('MediaKrakenServer', {
-        'Host': 'None',
-        'Port': 8903})
-    config.setdefaults('Audio', {
-        'Default_Device': 'Default',
-        'Channels': '7.1'})
-    config.setdefaults('Passthrough', {
-        'Enable': False,
-        'Device': 'Default',
-        'DTS': False,
-        'DTSHD': False,
-        'DTSX': False,
-        'AC3': False,
-        'EAC3': False,
-        'TRUEHD': False,
-        'Atmos': False})
-    config.setdefaults('MediaKraken', {
-        'Default_Device': 'Default'})
-    config.setdefaults('Video', {
-        'Blank_Displays': False,
-        'Display_Screen': 'Display #1',
-        'Resolution': 'Window Size',
-        'Fullscreen': True,
-        'Fullscreen_Window': False,
-        'Sleep_Time': '3 min'})
-    config.setdefaults('Library', {
-        'Show_Plot_Unwatched': True,
-        'Flatten_TV_Show_Seasons': 'If Only One Season',
-        'Group_Movies_in_Sets': True})
-    config.setdefaults('Playback', {
-        'Preferred_Audio_Language': 'Original Stream Language',
-        'Play_Next_Media_Automatically': False})
+    def build_settings(self, settings):
+        settings.add_json_panel('MediaKraken', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_base_json)
+        settings.add_json_panel('Audio', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_audio_json)
+        settings.add_json_panel('Video', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_video_json)
+        settings.add_json_panel('Library', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_library_json)
+        settings.add_json_panel('Playback', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_playback_json)
 
-
-def build_settings(self, settings):
-    settings.add_json_panel('MediaKraken', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_base_json)
-    settings.add_json_panel('Audio', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_audio_json)
-    settings.add_json_panel('Video', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_video_json)
-    settings.add_json_panel('Library', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_library_json)
-    settings.add_json_panel('Playback', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_playback_json)
-
-
-def on_config_change(self, config, section, key, value):
-    common_global.es_inst.com_elastic_index('info', {'stuff': {'config': config,
-                                                               'section': section,
-                                                               'key': key,
-                                                               'value': value}})
+    def on_config_change(self, config, section, key, value):
+        common_global.es_inst.com_elastic_index('info', {'stuff': {'config': config,
+                                                                   'section': section,
+                                                                   'key': key,
+                                                                   'value': value}})
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
