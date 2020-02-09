@@ -19,10 +19,13 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(address)
 
 docker_inst = common_docker.CommonDocker()
-if os.environ['SWARMIP'] != 'None':
-    mediakraken_ip = os.environ['SWARMIP']
-else:
-    mediakraken_ip = os.environ['HOST_IP']
+try:
+    if os.environ['SWARMIP'] != 'None':
+        mediakraken_ip = os.environ['SWARMIP']
+    else:
+        mediakraken_ip = os.environ['HOST_IP']
+except KeyError:  # this is to handle running from local host and NOT within docker
+    mediakraken_ip = socket.gethostbyname(socket.gethostname())
 
 common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip})
 
