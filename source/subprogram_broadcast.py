@@ -32,7 +32,7 @@ docker_port = None
 while docker_port is None:
     for container_json in docker_inst.com_docker_container_list():
         # grab ports for server
-        if container_json['Names'][0] == '/mkreactor':
+        if container_json['Names'][0].find('mkstack_reactor') != -1:
             docker_port = str(
                 docker_inst.com_docker_port(container_json['Id'], 8903)[0]['HostPort'])
             break
