@@ -39,7 +39,7 @@ def db_audit_path_update_status(self, lib_guid, status_json):
     # update status
     """
     self.db_cursor.execute('update mm_media_dir set mm_media_dir_status = %s'
-                           ' where mm_media_dir_guid = %s', (status_json, lib_guid))
+                           ' where mm_media_dir_share_guid = %s', (status_json, lib_guid))
 
 
 def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
@@ -48,7 +48,7 @@ def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     """
     self.db_cursor.execute('update mm_media_dir set mm_media_dir_path = %s,'
                            ' mm_media_dir_class_type = %s'
-                           ' where mm_media_dir_guid = %s',
+                           ' where mm_media_dir_share_guid = %s',
                            (lib_path, class_guid, lib_guid))
 
 
@@ -57,7 +57,7 @@ def db_audit_path_delete(self, lib_guid):
     # remove media path
     """
     self.db_cursor.execute(
-        'delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
+        'delete from mm_media_dir where mm_media_dir_share_guid = %s', (lib_guid,))
 
 
 def db_audit_path_add(self, dir_path, class_guid, share_guid):
@@ -100,10 +100,9 @@ def db_audit_paths(self, offset=0, records=None):
     # read the paths to audit
     """
     self.db_cursor.execute('select mm_media_dir_path,'
-                           ' mm_media_class_type,'
+                           ' mm_media_dir_class_type,'
                            ' mm_media_dir_last_scanned,'
-                           ' mm_media_class_guid,'
-                           ' mm_media_dir_guid'
+                           ' mm_media_dir_share_guid'
                            ' from mm_media_dir'
                            ' order by mm_media_class_type, mm_media_dir_path'
                            ' offset %s limit %s', (offset, records))
@@ -118,7 +117,7 @@ def db_audit_path_by_uuid(self, dir_id):
                            ' mm_media_dir_path,'
                            ' mm_media_dir_class_type'
                            ' from mm_media_dir'
-                           ' where mm_media_dir_guid = %s', (dir_id,))
+                           ' where mm_media_dir_share_guid = %s', (dir_id,))
     try:
         return self.db_cursor.fetchone()
     except:
