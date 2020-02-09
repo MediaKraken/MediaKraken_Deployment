@@ -28,30 +28,30 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # start broadcast server (so clients can find server)
-  broadcast:
-    image: mediakraken/mkbroadcast:latest
-    environment:
-      # so it knows what ip to broadcast on
-      - SWARMIP=${SWARMIP}
-      - HOST_IP=${HOST_IP}
-    entrypoint: python3 subprogram_broadcast.py
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    ports:
-      - target: 9101
-        published: 9101
-        protocol: tcp
-        mode: host
-    volumes:
-      # needs socket for running image list
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    # needs to run as host so clients can see it on their subnet
-    networks:
-      - mediakraken_network_backend
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+#  # start broadcast server (so clients can find server)
+#  broadcast:
+#    image: mediakraken/mkbroadcast:latest
+#    environment:
+#      # so it knows what ip to broadcast on
+#      - SWARMIP=${SWARMIP}
+#      - HOST_IP=${HOST_IP}
+#    entrypoint: python3 subprogram_broadcast.py
+#    stop_grace_period: 30s
+#    stop_signal: SIGUSR1
+#    ports:
+#      - target: 9101
+#        published: 9101
+#        protocol: tcp
+#        mode: host
+#    volumes:
+#      # needs socket for running image list
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    # needs to run as host so clients can see it on their subnet
+#    networks:
+#      - mediakraken_network_backend
+#    deploy:
+#      placement:
+#        constraints: [node.role == manager]
 
   # runs cron
   cron:
