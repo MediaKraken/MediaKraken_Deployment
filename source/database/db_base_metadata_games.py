@@ -142,7 +142,7 @@ def db_meta_game_image_random(self, return_image_type='Poster'):
                                                  ' from mm_media, mm_metadata_game_software_info'
                                                  ' where mm_media_metadata_guid = gi_id'
                                                  ' and ('
-                                                 'mm_metadata_localimage_json->\'Images\'->\'thegamesdb\'->>\''
+                                                 'gi_game_info_json->\'Images\'->\'thegamesdb\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')
     try:
