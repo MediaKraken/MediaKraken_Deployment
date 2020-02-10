@@ -1,4 +1,5 @@
 version: '3.6'
+# Volumes are HOST directory and then CONTAINER directory
 
 services:
   # Main app server
