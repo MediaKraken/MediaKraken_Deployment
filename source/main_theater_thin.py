@@ -353,11 +353,12 @@ class MediaKrakenApp(App):
                                               'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
+    # in order from the KV file
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
         common_global.es_inst.com_elastic_index('info', {"home press": args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
-                or args[0] == 'Movie' or args[0] == 'video':
+                or args[0] == 'movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'demo':
             # add movie id to stream

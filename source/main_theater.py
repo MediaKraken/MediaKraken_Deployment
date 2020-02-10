@@ -660,11 +660,12 @@ class MediaKrakenApp(App):
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
         self.send_twisted_message(msg)
 
+    # in order from the KV file
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
         common_global.es_inst.com_elastic_index('info', {'stuff': "home press: %s" % args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
-                or args[0] == 'Movie' or args[0] == 'video':
+                or args[0] == 'movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_TV_List'
