@@ -17,6 +17,7 @@
 """
 
 import multiprocessing
+import os
 import sys
 import time
 
@@ -24,7 +25,6 @@ import psycopg2
 import psycopg2.extras
 from common import common_file
 from common import common_global
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
 
@@ -38,12 +38,17 @@ def db_open(self):
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     # TODO throws tuple error if comma
+    # this is here to handle going back to docker-compose with else for docker swarm
+    if 'POSTGRES_PASSWORD' in os.environ:
+        database_password = os.environ['POSTGRES_PASSWORD']
+    else:
+        database_password = common_file.com_file_load_data('/run/secrets/db_password')
     while True:
         try:
             self.sql3_conn = psycopg2.connect(
                 "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
                 " port=6432 password='%s' connect_timeout=5"
-                % common_file.com_file_load_data('/run/secrets/db_password'))
+                % database_password)
         except (psycopg2.OperationalError, psycopg2.DatabaseError):
             time.sleep(10)
         else:
