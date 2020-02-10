@@ -801,7 +801,7 @@ class MediaKrakenApp(App):
         common_global.es_inst.com_elastic_index('info', {'stuff': "image refresh"})
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
-            # refreshs for movie stuff
+            # refreshes for movie stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
                                                   'Image Media Type': 'Demo',
@@ -818,7 +818,7 @@ class MediaKrakenApp(App):
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
                                                   'Image Media Type': 'In Progress',
                                                   'Image Type': 'Backdrop'}))
-            # refreshs for tv stuff
+            # refreshes for tv stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
                                                   'Image Media Type': 'TV',
@@ -827,12 +827,12 @@ class MediaKrakenApp(App):
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
                                                   'Image Media Type': 'Live TV',
                                                   'Image Type': 'Backdrop'}))
-            # refreshs for game stuff
+            # refreshes for game stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Game',
                                                   'Image Media Type': 'Game',
                                                   'Image Type': 'Backdrop'}))
-            # refreshs for books stuff
+            # refreshes for books stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Book',
                                                   'Image Media Type': 'Book',
