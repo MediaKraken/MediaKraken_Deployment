@@ -359,88 +359,22 @@ networks:
     name: mk_mediakraken_network
 
 volumes:
-    portainer_data:
-    mediakraken_vol_cache:
-      name: mediakraken_vol_cache
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/cache
-    mediakraken_vol_certs:
-      name: mediakraken_vol_certs
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/certs
-    mediakraken_vol_devices:
-      name: mediakraken_vol_devices
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/devices
-    mediakraken_vol_mumble:
-      name: mediakraken_vol_mumble
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/mumble
-    mediakraken_vol_nginx:
-      name: mediakraken_vol_nginx
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/nginx
-    mediakraken_vol_phue:
-      name: mediakraken_vol_phue
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/phue
-    mediakraken_vol_postgresql:
-      name: mediakraken_vol_postgresql
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/postgresql
-    mediakraken_vol_rabbit:
-      name: mediakraken_vol_rabbit
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/rabbit
-    mediakraken_vol_static:
-      name: mediakraken_vol_static
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/static
-    mediakraken_vol_teamspeak:
-      name: mediakraken_vol_teamspeak
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/teamspeak
-    mediakraken_vol_webkey:
-      name: mediakraken_vol_webkey
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/webkey
-    mediakraken_vol_webpid:
-      name: mediakraken_vol_webpid
-      driver: local
-      driver_opts:
-        type: none
-        o: bind
-        device: $PWD/data/webpid
+  portainer_data:
+  mediakraken_vol_cache:
+  mediakraken_vol_certs:
+  mediakraken_vol_devices:
+  mediakraken_vol_mbrainz_conf:
+  mediakraken_vol_mbrainz_data:
+  mediakraken_vol_mumble:
+  mediakraken_vol_nginx:
+  mediakraken_vol_pgadmin:
+  mediakraken_vol_phue:
+  mediakraken_vol_portainer:
+  mediakraken_vol_postgresql:
+  mediakraken_vol_rabbit:
+  mediakraken_vol_static:
+  mediakraken_vol_teamspeak:
+  mediakraken_vol_transmission:
+  mediakraken_vol_transmission_incomplete:
+  mediakraken_vol_webkey:
+  mediakraken_vol_webpid:
