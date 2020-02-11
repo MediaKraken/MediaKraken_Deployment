@@ -227,6 +227,29 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  portainer:
+    image: portainer/portainer
+    command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    volumes:
+      - portainer_data:/data
+    networks:
+      - portaineragent_agent_network
+
+  portaineragent:
+    image: portainer/agent
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.portaineragent
+      # AGENT_PORT: 9001
+      # LOG_LEVEL: debug
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - portaineragent_agent_network
+
   # rabbit
   rabbit:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkrabbitmq:dev
@@ -346,6 +369,10 @@ networks:
   mediakraken_network:
     driver: bridge
     name: mk_mediakraken_network
+  # portainer stuff
+  portaineragent_agent_network:
+    driver: bridge
+    name: mk_portainer_network
 
 volumes:
   portainer_data:
