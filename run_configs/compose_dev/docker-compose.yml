@@ -124,7 +124,7 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_ffprobe_metadata.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_ffprobe_metadata.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -224,7 +224,7 @@ services:
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_pika.py
+    entrypoint: python3 subprogram_pika.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
