@@ -1,8 +1,8 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase310py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase311_3py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the reactor app"
+LABEL Description="This image holds the pika app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR

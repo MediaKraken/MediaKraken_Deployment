@@ -14,7 +14,7 @@ services:
     container_name: mkstack_server
     depends_on:
       - pgbouncer
-    entrypoint: ./wait-for-it-ash.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
