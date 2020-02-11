@@ -38,6 +38,6 @@ class ProdConfig(Config):
     else:
         database_password = common_file.com_file_load_data('/run/secrets/db_password')
     SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:\'" \
-                              + database_password \
+                              + database_password.strip() \
                               + "\'@mkstack_pgbouncer:6432/postgres"
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
