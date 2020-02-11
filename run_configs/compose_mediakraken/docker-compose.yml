@@ -229,7 +229,7 @@ services:
 
   portainer:
     image: portainer/portainer
-    command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
+    command: -H unix:///var/run/docker.sock
     ports:
       - "9000:9000"
       - "8000:8000"

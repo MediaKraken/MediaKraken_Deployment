@@ -256,7 +256,7 @@ services:
 
   portainer:
     image: portainer/portainer
-    command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
+    command: -H unix:///var/run/docker.sock
     container_name: mkstack_portainer
     ports:
       - "9000:9000"
