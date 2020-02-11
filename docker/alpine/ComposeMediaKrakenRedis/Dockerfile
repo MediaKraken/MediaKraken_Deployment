@@ -1,13 +1,9 @@
 # https://github.com/docker-library/redis
-FROM alpine:3.8
-
-ARG ALPMIRROR
-ARG PIPMIRROR
-
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories
+FROM alpine:3.11
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN addgroup -S redis && adduser -S -G redis redis
+RUN addgroup -S -g 1000 redis && adduser -S -G redis -u 999 redis
+# alpine already has a gid 999, so we'll use the next id
 
 RUN apk add --no-cache \
 # grab su-exec for easy step-down from root
@@ -15,20 +11,19 @@ RUN apk add --no-cache \
 # add tzdata for https://github.com/docker-library/redis/issues/138
 		tzdata
 
-ENV REDIS_VERSION 4.0.11
-ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-4.0.11.tar.gz
-ENV REDIS_DOWNLOAD_SHA fc53e73ae7586bcdacb4b63875d1ff04f68c5474c1ddeda78f00e5ae2eed1bbb
+ENV REDIS_VERSION 5.0.7
+ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-5.0.7.tar.gz
+ENV REDIS_DOWNLOAD_SHA 61db74eabf6801f057fd24b590232f2f337d422280fd19486eca03be87d3a82b
 
-# for redis-sentinel see: http://redis.io/topics/sentinel
-RUN set -ex; \
+RUN set -eux; \
 	\
 	apk add --no-cache --virtual .build-deps \
 		coreutils \
 		gcc \
-		jemalloc-dev \
 		linux-headers \
 		make \
 		musl-dev \
+		openssl-dev \
 	; \
 	\
 	wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL"; \
@@ -47,8 +42,19 @@ RUN set -ex; \
 # see also https://github.com/docker-library/redis/issues/4#issuecomment-50780840
 # (more exactly, this makes sure the default behavior of "save on SIGTERM" stays functional by default)
 	\
-	make -C /usr/src/redis -j "$(nproc)"; \
+	make -C /usr/src/redis -j "$(nproc)" all; \
 	make -C /usr/src/redis install; \
+	\
+# TODO https://github.com/antirez/redis/pull/3494 (deduplicate "redis-server" copies)
+	serverMd5="$(md5sum /usr/local/bin/redis-server | cut -d' ' -f1)"; export serverMd5; \
+	find /usr/local/bin/redis* -maxdepth 0 \
+		-type f -not -name redis-server \
+		-exec sh -eux -c ' \
+			md5="$(md5sum "$1" | cut -d" " -f1)"; \
+			test "$md5" = "$serverMd5"; \
+		' -- '{}' ';' \
+		-exec ln -svfT 'redis-server' '{}' ';' \
+	; \
 	\
 	rm -r /usr/src/redis; \
 	\
@@ -58,9 +64,10 @@ RUN set -ex; \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --virtual .redis-rundeps $runDeps; \
-	apk del .build-deps; \
+	apk add --no-network --virtual .redis-rundeps $runDeps; \
+	apk del --no-network .build-deps; \
 	\
+	redis-cli --version; \
 	redis-server --version
 
 RUN mkdir /data && chown redis:redis /data
