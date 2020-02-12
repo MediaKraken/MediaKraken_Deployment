@@ -104,7 +104,7 @@ def db_audit_paths(self, offset=0, records=None):
                            ' mm_media_dir_last_scanned,'
                            ' mm_media_dir_share_guid'
                            ' from mm_media_dir'
-                           ' order by mm_media_class_type, mm_media_dir_path'
+                           ' order by mm_media_dir_class_type, mm_media_dir_path'
                            ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
