@@ -6,11 +6,6 @@ PG_LOG=/var/log/pgbouncer
 PG_CONFIG_DIR=/etc/pgbouncer
 PG_USER=postgres
 
-if ${DB_PASSWORD:+isset}
-then echo ""
-else DB_PASSWORD=$(cat /run/secrets/db_password)
-fi
-
 printf "\
 #pgbouncer.ini
 # Description
@@ -20,7 +15,7 @@ printf "\
 [databases]
 * = host=${DB_HOST:?"Setup pgbouncer config error! You must set DB_HOST env"} \
 # shellcheck disable=SC2039
-port=5432 user=postgres password='${DB_PASSWORD}'
+port=5432 user=postgres password='${DB_PASSWORD:?$(cat /run/secrets/db_password)}'
 
 [pgbouncer]
 # Generic settings
