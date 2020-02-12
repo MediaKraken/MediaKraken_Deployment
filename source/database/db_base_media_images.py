@@ -17,7 +17,7 @@
 """
 
 
-def db_media_images_list_count(self, search_value=None):
+def db_media_images_list_count(self, class_guid, search_value=None):
     """
     Images list count
     """
@@ -25,10 +25,10 @@ def db_media_images_list_count(self, search_value=None):
                            'mm_media_class'
                            ' where mm_media.mm_media_class_guid'
                            ' = mm_media_class.mm_media_class_guid'
-                           ' and mm_media_class_type = \'Picture\'')
+                           ' and mm_media_class_guid = %s', (class_guid,))
 
 
-def db_media_images_list(self, offset=0, records=None, search_value=None):
+def db_media_images_list(self, class_guid, offset=0, records=None, search_value=None):
     """
     Images list
     """
@@ -36,6 +36,6 @@ def db_media_images_list(self, offset=0, records=None, search_value=None):
                            'mm_media_class'
                            ' where mm_media.mm_media_class_guid'
                            ' = mm_media_class.mm_media_class_guid'
-                           ' and mm_media_class_type = \'Picture\' offset %s limit %s',
-                           (offset, records))
+                           ' and mm_media_class_guid = %s offset %s limit %s',
+                           (class_guid, offset, records))
     return self.db_cursor.fetchall()

@@ -13,6 +13,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_config_ini
+from common import common_global
 import database as database_base
 
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -25,7 +26,8 @@ def user_image_gallery():
     Display image gallery page
     """
     return render_template("users/user_image_gallery_view.html",
-                           image_data=g.db_connection.db_media_images_list())
+                           image_data=g.db_connection.db_media_images_list(
+                               common_global.DLMediaType.Picture))
 
 
 @blueprint.before_request
