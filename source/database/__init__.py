@@ -198,7 +198,7 @@ class MKServerDatabase:
         db_meta_song_add, \
         db_meta_songs_by_album_guid, \
         db_meta_album_list, \
-        db_meta_muscian_list, \
+        db_meta_musician_list, \
         db_meta_album_image_random, \
         db_meta_music_by_provider_uuid
     from database.db_base_metadata_music_video import db_meta_music_video_lookup, \
