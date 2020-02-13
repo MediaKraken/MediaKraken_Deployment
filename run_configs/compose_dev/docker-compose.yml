@@ -75,6 +75,7 @@ services:
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB
       - POSTGRES_PASSWORD=${DBPASS}
+    command: postgres -c logging_collector=on -c log_destination=stderr -c log_min_duration_statement=0 -c log_connections=off -c log_disconnections=off
     container_name: mkstack_database
     stop_grace_period: 30s
     stop_signal: SIGTERM
