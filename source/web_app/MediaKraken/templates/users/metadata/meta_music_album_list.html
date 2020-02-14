@@ -28,7 +28,7 @@
                 {% endif %}
                 {% else %}
                 <a href= "{{ url_for('user_metadata_album.metadata_album_detail', guid=row_data[0]) }}" >
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[3] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[2]}}</p>
