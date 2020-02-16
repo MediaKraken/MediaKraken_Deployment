@@ -65,7 +65,7 @@ for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
 for scud_collection in common_metadata_scudlee.mk_scudlee_anime_set_parse():
     pass
 
-# send notications
+# send notifications
 if anime_added > 0:
     db_connection.db_notification_insert(
         common_internationalization.com_inter_number_format(anime_added)
