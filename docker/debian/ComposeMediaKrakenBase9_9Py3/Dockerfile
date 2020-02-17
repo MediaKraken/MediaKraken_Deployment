@@ -26,4 +26,4 @@ RUN apt-get update -y \
 # Do NOT do the below as other containers won't have rights to install/build.
 # USER metaman
 
-CMD ["/bin/ash"]
+CMD ["/bin/bash"]
