@@ -153,6 +153,47 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
+  # Container to monitor services running inside other containers
+  metricbeat:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetricbeat:dev
+    # https://github.com/docker/swarmkit/issues/1951
+    hostname: "{{.Node.Hostname}}-metricbeat"
+    networks:
+      - mediakraken_network
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - mediakraken_vol_metricbeat:/usr/share/metricbeat/data
+    environment:
+      - ELASTICSEARCH_HOST=th-elk-1.beaverbay.local
+      - KIBANA_HOST=th-elk-1.beaverbay.local
+    # disable strict permission checks
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+
+  # Specific container and configuration to monitor the HOST (filesystem, memory, processes,...)
+  metricbeat-host:
+    build:
+      context: ./docker/metricbeat
+      args:
+        - METRICBEAT_FILE=metricbeat-host.yml
+    container_name: metricbeat-metricbeat-host
+    command: -system.hostfs=/hostfs
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "WAIT_FOR_HOSTS=th-elk-1.beaverbay.local:9222 th-elk-1.beaverbay.local:5666"
+      - "HOST_ELASTICSEARCH=th-elk-1.beaverbay.local:9222"
+      - "HOST_KIBANA=th-elk-1.beaverbay.local:5666"
+    extra_hosts:
+      - "elasticsearch:172.17.0.1" # The IP of docker0 interface to access host from container
+      - "kibana:172.17.0.1" # The IP of docker0 interface to access host from container
+    network_mode: host # Mandatory to monitor HOST filesystem, memory, processes,...
+
   # runs the server to fetch/process all metadata
   metadata:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
@@ -400,6 +441,7 @@ volumes:
   mediakraken_vol_devices:
   mediakraken_vol_mbrainz_conf:
   mediakraken_vol_mbrainz_data:
+  mediakraken_vol_metricbeat:
   mediakraken_vol_mumble:
   mediakraken_vol_nginx:
   mediakraken_vol_pgadmin:
