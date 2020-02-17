@@ -2,7 +2,6 @@ pika==1.1.0
 ldap3==2.6
 apache-libcloud==2.6.0
 pycountry==19.8.18
-gevent==1.4.0
 simplekv==0.12.0
 pgen==0.2.1
 cython==0.29.14
@@ -17,7 +16,6 @@ Flask-uWSGI-WebSocket==0.6.1
 flask-ldap3-login==0.9.16
 Flask-Colorpicker==0.9
 cryptography==2.7
-uwsgi==2.0.18
 pygal==2.4.0
 pdfkit==0.6.1
 soundcloud==0.5.0
