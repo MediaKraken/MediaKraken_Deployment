@@ -39,5 +39,4 @@ manager.add_command("clean", Clean())
 if __name__ == '__main__':
     # fire off wait for it script to allow connection
     common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
-
     manager.run()
