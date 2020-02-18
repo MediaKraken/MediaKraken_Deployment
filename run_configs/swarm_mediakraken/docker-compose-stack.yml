@@ -504,11 +504,9 @@ services:
     secrets:
       - db_password
       - secure_key
-    entrypoint: ./wait-for-it-ash.sh -h mkstack_pgbouncer -p 6432 -t 120 -- uwsgi --disable-logging --gevent 100 --http11-socket :8080 --protocol http --stats :9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- uwsgi --disable-logging --gevent 100 --http11-socket :8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
     stop_grace_period: 30s
     stop_signal: SIGUSR1
-    ports:
-      - "9191:9191"
     volumes:
       - ./mkmount:/mediakraken/mnt
       # must not be read only as it stores cache here
