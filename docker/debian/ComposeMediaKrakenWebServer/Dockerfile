@@ -1,5 +1,5 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase311_3py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbasedeb9_9py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the image for the web server app"
@@ -12,58 +12,51 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apt update && apt -y install \
   ack \
-  curl-dev \
+  libcurl4-openssl-dev \
   git \
   gcc \
-  jpeg-dev \
+  libjpeg-dev \
   libffi-dev \
   libxml2-dev \
   libxslt-dev \
-  linux-headers \
-  musl-dev \  
+  linux-headers-amd64 \
   openrc \
-  libressl-dev \
-  py3-cffi \
-  py3-redis \
+  libssl-dev \
+  python3-cffi \
+  python3-redis \
   python3-dev \
   cifs-utils \
-  nfs-utils \
+  nfs-common \
   ca-certificates \
-  libressl \
-  py3-numpy \
-  py3-psycopg2 \
-  py3-psutil \
-  py3-gevent \
+  libssl1.1 \
+  python3-numpy \
+  python3-psycopg2 \
+  python3-psutil \
+  python3-gevent \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install git+https://github.com/MediaKraken/Flask-Paginate \
   && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
-  && apk del \
+  && apt -y remove \
   gcc \
   git \
-  musl-dev \
-  linux-headers \
+  linux-headers-amd64 \
   python3-dev \
-  libressl-dev \
+  libssl-dev \
   && rm requirements.txt \
-  && apk add --no-cache \
+  && apt -y install \
   uwsgi \
-  uwsgi-http \
-  uwsgi-gevent3 \
-  uwsgi-python3 \
-  uwsgi-router_uwsgi \
-  py-setuptools \
-  && cp /usr/lib/uwsgi/python3_plugin.so /mediakraken/. \
-  && rc-update add netmount \
-  && rc-update add rpcbind
+  uwsgi-plugin-python3 \
+  uwsgi-plugin-router-access \
+  python3-setuptools \
+  && cp /usr/lib/uwsgi/plugins/python3_plugin.so /mediakraken/.
 
-COPY wait-for-it-ash-busybox130.sh /mediakraken
+COPY wait-for-it-bash.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 
 EXPOSE 8080
-CMD ["/bin/ash"]
+CMD ["/bin/bash"]
