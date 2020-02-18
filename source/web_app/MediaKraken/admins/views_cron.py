@@ -14,13 +14,10 @@ import flask
 from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import CronEditForm
-from common import common_config_ini
 from common import common_global
 from common import common_network_pika
 from common import common_pagination
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):

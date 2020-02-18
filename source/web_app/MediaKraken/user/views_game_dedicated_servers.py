@@ -3,7 +3,7 @@ User view in webapp
 """
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, g, session
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 
 blueprint = Blueprint("user_game_dedicated_server", __name__,
@@ -12,11 +12,8 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_pagination
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/game_servers', methods=['GET', 'POST'])

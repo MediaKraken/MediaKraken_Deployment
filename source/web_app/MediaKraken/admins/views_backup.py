@@ -17,14 +17,11 @@ from MediaKraken.utils import flash_errors
 from functools import wraps
 from MediaKraken.admins.forms import BackupEditForm
 from common import common_network_cloud
-from common import common_config_ini
 from common import common_file
 from common import common_global
 from common import common_pagination
 from common import common_string
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):
@@ -87,10 +84,10 @@ def admin_backup():
             backup_files.append((backup_local[0], 'Local',
                                  common_string.com_string_bytes2human(backup_local[1])))
     # cloud backup list
-    if len(option_config_json['Cloud']) > 0:  # to see if the json has been populated
-        cloud_handle = common_network_cloud.CommonLibCloud(option_config_json)
+    if len(g.option_config_json['Cloud']) > 0:  # to see if the json has been populated
+        cloud_handle = common_network_cloud.CommonLibCloud(g.option_config_json)
         for backup_cloud in cloud_handle.com_net_cloud_list_data_in_container(
-                option_config_json['MediaKrakenServer']['BackupContainerName']):
+                g.option_config_json['MediaKrakenServer']['BackupContainerName']):
             backup_files.append((backup_cloud.name, backup_cloud.type,
                                  common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = common_pagination.get_page_items()
@@ -118,6 +115,7 @@ def before_request():
     Executes before each request
     """
     g.db_connection = database_base.MKServerDatabase()
+    g.option_config_json = g.db_connection.db_opt_status_read()[0]
     g.db_connection.db_open()
 
 

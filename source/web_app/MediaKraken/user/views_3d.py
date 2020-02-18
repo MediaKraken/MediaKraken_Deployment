@@ -12,11 +12,8 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_pagination
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # 3d

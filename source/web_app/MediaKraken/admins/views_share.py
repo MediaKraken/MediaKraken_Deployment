@@ -17,14 +17,11 @@ from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import ShareAddEditForm
 
-from common import common_config_ini
 from common import common_global
 from common import common_network_cifs
 from common import common_pagination
 import database as database_base
 from MediaKraken.utils import flash_errors
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):

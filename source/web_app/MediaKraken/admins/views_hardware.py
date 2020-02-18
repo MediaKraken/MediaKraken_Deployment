@@ -17,13 +17,9 @@ from functools import wraps
 from MediaKraken.admins.forms import ChromecastEditForm
 from MediaKraken.admins.forms import TVTunerEditForm
 from MediaKraken.utils import flash_errors
-from common import common_config_ini
-from common import common_docker
 from common import common_network_pika
 from common import common_global
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):

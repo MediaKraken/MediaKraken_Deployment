@@ -14,11 +14,8 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/search", methods=["GET", "POST"])
@@ -61,7 +58,7 @@ def search_media():
             elif request.form['search_media_type'] == 'game':
                 game_search = True
             json_data = json.loads(
-                db_connection.db_search(request.form['search_string'], search_type='Local',
+                g.db_connection.db_search(request.form['search_string'], search_type='Local',
                                         search_movie=movie_search, search_tvshow=tvshow_search,
                                         search_album=album_search, search_image=image_search,
                                         search_publication=publication_search,

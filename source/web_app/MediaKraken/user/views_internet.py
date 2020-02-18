@@ -14,17 +14,12 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
 from common import common_google
 from common import common_network_twitchv5
 from common import common_network_youtube
 from common import common_pagination
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-google_instance = common_google.CommonGoogle(option_config_json)
 
 
 # internet sites
@@ -46,18 +41,18 @@ def user_internet_youtube():
     """
     youtube_videos = []
     if session['search_text'] is not None:
-        videos, channels, playlists = google_instance.com_google_youtube_search(
+        videos, channels, playlists = g.google_instance.com_google_youtube_search(
             session['search_text'])
         for url_link in videos:
             common_global.es_inst.com_elastic_index('info', {'searchurllink': url_link})
             youtube_videos.append(
-                json.loads(google_instance.com_google_youtube_info(url_link, 'snippet')))
+                json.loads(g.google_instance.com_google_youtube_info(url_link, 'snippet')))
     else:
         # get trending for specified country code
         for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
             common_global.es_inst.com_elastic_index('info', {'urllink': url_link})
-            youtube_videos.append(json.loads(google_instance.com_google_youtube_info(url_link,
-                                                                                     'snippet')))
+            youtube_videos.append(json.loads(g.google_instance.com_google_youtube_info(url_link,
+                                                                                       'snippet')))
     common_global.es_inst.com_elastic_index('info', {'temphold': youtube_videos})
     return render_template("users/user_internet_youtube.html",
                            media=youtube_videos)
@@ -72,7 +67,7 @@ def user_internet_youtube_detail(uuid):
     """
     return render_template("users/user_internet_youtube_detail.html",
                            media=json.loads(
-                               google_instance.com_google_youtube_info(uuid)),
+                               g.google_instance.com_google_youtube_info(uuid)),
                            data_guid=uuid)
 
 
@@ -102,9 +97,8 @@ def user_internet_twitch():
     """
     Display twitchtv page
     """
-    twitch_api = common_network_twitchv5.CommonNetworkTwitchV5(option_config_json)
     twitch_media = []
-    for stream_data in twitch_api.com_net_twitch_get_featured():
+    for stream_data in g.twitch_api.com_net_twitch_get_featured():
         pass
 
     # twitch_api = common_network_twitch.CommonNetworkTwitch()
@@ -195,6 +189,9 @@ def before_request():
     Executes before each request
     """
     g.db_connection = database_base.MKServerDatabase()
+    g.google_instance = common_google.CommonGoogle(g.db_connection.db_opt_status_read()[0])
+    g.twitch_api = common_network_twitchv5.CommonNetworkTwitchV5(
+        g.db_connection.db_opt_status_read()[0])
     g.db_connection.db_open()
 
 
