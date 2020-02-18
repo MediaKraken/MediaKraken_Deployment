@@ -19,75 +19,54 @@
 import uuid
 
 
-def db_cron_insert(self, cron_name, cron_desc, cron_enabled, cron_schedule, cron_last_run,
-                   cron_json):
+def db_game_server_insert(self, game_server_name, game_server_json):
     """
-    insert cron job
+    insert game server
     """
-    new_cron_id = str(uuid.uuid4())
-    self.db_cursor.execute('insert into mm_cron (mm_cron_guid,'
-                           ' mm_cron_name,'
-                           ' mm_cron_description,'
-                           ' mm_cron_enabled,'
-                           ' mm_cron_schedule,'
-                           ' mm_cron_last_run, mm_cron_json)'
-                           ' values (%s,%s,%s,%s,%s,%s,%s)',
-                           (new_cron_id, cron_name, cron_desc, cron_enabled, cron_schedule,
-                            cron_last_run, cron_json))
-    return new_cron_id
+    new_id = str(uuid.uuid4())
+    self.db_cursor.execute('insert into mm_game_dedicated_servers (mm_game_server_guid,'
+                           ' mm_game_server_name,'
+                           ' mm_game_server_json)'
+                           ' values (%s,%s,%s)',
+                           (new_id, game_server_name, game_server_json))
+    return new_id
 
 
-def db_cron_list_count(self, enabled_only=False):
+def db_game_server_list_count(self):
     """
-    Return number of cron jobs
+    Return number of game servers
     """
-    if not enabled_only:
-        self.db_cursor.execute('select count(*) from mm_cron')
-    else:
-        self.db_cursor.execute(
-            'select count(*) from mm_cron'
-            ' where mm_cron_enabled = true')
+    self.db_cursor.execute('select count(*) from mm_game_dedicated_servers')
     return self.db_cursor.fetchone()[0]
 
 
-def db_cron_list(self, enabled_only=False, offset=0, records=None):
+def db_game_server_list(self, offset=0, records=None):
     """
-    Return cron list
+    Return game server list
     """
-    self.db_cursor.execute('select mm_cron_guid,'
-                           ' mm_cron_name,'
-                           ' mm_cron_description,'
-                           ' mm_cron_enabled,'
-                           ' mm_cron_schedule,'
-                           ' mm_cron_last_run,'
-                           ' mm_cron_json'
-                           ' from mm_cron where mm_cron_guid'
-                           ' in (select mm_cron_guid from mm_cron'
-                           ' order by mm_cron_name offset %s limit %s)'
-                           ' order by mm_cron_name', (offset, records))
+    self.db_cursor.execute('select mm_game_server_guid,'
+                           ' mm_game_server_name,'
+                           ' mm_game_server_json'
+                           ' from mm_game_dedicated_servers'
+                           ' order by mm_game_server_name offset %s limit %s)', (offset, records))
     return self.db_cursor.fetchall()
 
 
-def db_cron_delete(self, cron_uuid):
+def db_game_server_delete(self, record_uuid):
     """
-    Delete cron job
+    Delete game_server
     """
-    self.db_cursor.execute('delete from mm_cron'
-                           ' where mm_cron_guid = %s',
-                           (cron_uuid,))
+    self.db_cursor.execute('delete from mm_game_dedicated_servers'
+                           ' where mm_game_server_guid = %s',
+                           (record_uuid,))
 
 
-def db_cron_info(self, cron_uuid):
+def db_game_server_detail(self, record_uuid):
     """
-    Cron job info
+    game server info
     """
-    self.db_cursor.execute('select mm_cron_guid,'
-                           ' mm_cron_name,'
-                           ' mm_cron_description,'
-                           ' mm_cron_enabled,'
-                           ' mm_cron_schedule,'
-                           ' mm_cron_last_run,'
-                           ' mm_cron_json'
-                           ' from mm_cron'
-                           ' where mm_cron_guid = %s', (cron_uuid,))
+    self.db_cursor.execute('select mm_game_server_name,'
+                           ' mm_game_server_json'
+                           ' from mm_game_dedicated_servers'
+                           ' where mm_game_server_guid = %s', (record_uuid,))
     return self.db_cursor.fetchone()

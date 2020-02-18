@@ -62,6 +62,11 @@ class MKServerDatabase:
         db_download_que_exists
     from database.db_base_extensions import db_extension_available, \
         db_extension_installed
+    from database.db_base_game_dedicated_servers import db_game_server_insert, \
+        db_game_server_list_count, \
+        db_game_server_list, \
+        db_game_server_delete, \
+        db_game_server_detail
     from database.db_base_hardware import db_hardware_json_read, \
         db_hardware_insert, \
         db_hardware_delete
