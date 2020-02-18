@@ -5,6 +5,7 @@ from . import views_3d
 from . import views_cctv
 from . import views_chromecast
 from . import views_comic_reader
+from . import views_game_dedicated_servers
 from . import views_games
 from . import views_hardware
 from . import views_hardware_hue

@@ -48,6 +48,7 @@ def register_blueprints(app):
     app.register_blueprint(user.views_cctv.blueprint)
     app.register_blueprint(user.views_chromecast.blueprint)
     app.register_blueprint(user.views_comic_reader.blueprint)
+    app.register_blueprint(user.views_game_dedicated_servers)
     app.register_blueprint(user.views_games.blueprint)
     app.register_blueprint(user.views_hardware.blueprint)
     app.register_blueprint(user.views_hardware_hue.blueprint)
