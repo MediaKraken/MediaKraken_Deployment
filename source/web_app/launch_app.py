@@ -13,13 +13,11 @@ from MediaKraken.app import create_app
 from common import common_global
 from common import common_logging_elasticsearch
 
-# from gevent import monkey
-# monkey.patch_all()
-
 import gevent.monkey
+import psycogreen.gevent
+
 gevent.monkey.patch_all()
-import psycogreen
-gevent_psycopg2.monkey_patch()
+psycogreen.gevent.patch_psycopg()
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
