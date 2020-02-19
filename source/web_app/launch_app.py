@@ -18,7 +18,7 @@ from common import common_logging_elasticsearch
 
 import gevent.monkey
 gevent.monkey.patch_all()
-import gevent_psycopg2
+import psycogreen
 gevent_psycopg2.monkey_patch()
 
 # start logging
