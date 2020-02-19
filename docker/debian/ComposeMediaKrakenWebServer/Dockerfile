@@ -50,6 +50,7 @@ RUN apt update && apt -y install \
   && apt -y install \
   uwsgi \
   uwsgi-plugin-python3 \
+  uwsgi-plugin-greenlet-python3 \
   uwsgi-plugin-router-access \
   python3-setuptools \
   && cp /usr/lib/uwsgi/plugins/python3_plugin.so /mediakraken/.
