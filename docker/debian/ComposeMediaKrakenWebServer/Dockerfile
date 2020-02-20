@@ -47,7 +47,7 @@ RUN apt update && apt -y install \
   libssl-dev \
   && rm requirements.txt \
   && apt -y install \
-  uwsgi=2.0.17 \
+  uwsgi \
   uwsgi-plugin-python3 \
   # uwsgi-plugin-greenlet-python3 \  # this didn't help
   uwsgi-plugin-router-access \
