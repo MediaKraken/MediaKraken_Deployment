@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+import gevent.monkey
+import psycogreen.gevent
 
+gevent.monkey.patch_all()
+psycogreen.gevent.patch_psycopg()
 
 import os
 import sys
@@ -12,12 +16,6 @@ if BASE_DIR not in sys.path:
 from MediaKraken.app import create_app
 from common import common_global
 from common import common_logging_elasticsearch
-
-import gevent.monkey
-import psycogreen.gevent
-
-gevent.monkey.patch_all()
-psycogreen.gevent.patch_psycopg()
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
