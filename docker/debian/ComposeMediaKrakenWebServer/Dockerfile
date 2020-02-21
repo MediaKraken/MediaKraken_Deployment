@@ -32,6 +32,7 @@ RUN apt update && apt -y install \
   libssl1.1 \
   python3-numpy \
   python3-psutil \
+  libpq-dev  # so I can build psycopg2 in pip3 \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
