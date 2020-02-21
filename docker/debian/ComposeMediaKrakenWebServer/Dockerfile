@@ -34,7 +34,7 @@ RUN apt update && apt -y install \
   python3-psycopg2 \
   python3-psutil \
   python3-gevent \
-  python3-psycogreen \
+  python-psycogreen \  # in buster the 3 is dropped
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
