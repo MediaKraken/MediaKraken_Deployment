@@ -33,6 +33,8 @@ RUN apt update && apt -y install \
   python3-numpy \
   python3-psutil \
   libpq-dev \
+  libpcre3 \
+  libpcre3-dev \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
@@ -44,6 +46,7 @@ RUN apt update && apt -y install \
   linux-headers-amd64 \
   python3-dev \
   libssl-dev \
+  libpcre3-dev \
   && rm requirements.txt \
   && apt -y install \
   uwsgi-plugin-python3 \
