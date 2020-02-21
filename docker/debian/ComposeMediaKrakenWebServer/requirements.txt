@@ -1,4 +1,5 @@
-gevent==1.4.0
+cython==0.29.15
+gevent==1.5a3
 psycogreen==1.0.1
 psycopg2==2.8.4
 uWSGI==2.0.18
@@ -9,7 +10,6 @@ apache-libcloud==2.6.0
 pycountry==19.8.18
 simplekv==0.12.0
 pgen==0.2.1
-cython==0.29.14
 Flask==1.1.1
 Flask-Login==0.5.0
 Flask-Bcrypt==0.7.1
