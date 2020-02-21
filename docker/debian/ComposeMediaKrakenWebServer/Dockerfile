@@ -31,10 +31,7 @@ RUN apt update && apt -y install \
   ca-certificates \
   libssl1.1 \
   python3-numpy \
-  python3-psycopg2 \
   python3-psutil \
-  python3-gevent \
-  python-psycogreen \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
@@ -48,11 +45,8 @@ RUN apt update && apt -y install \
   libssl-dev \
   && rm requirements.txt \
   && apt -y install \
-  uwsgi \
   uwsgi-plugin-python3 \
-  # uwsgi-plugin-greenlet-python3 \  # this didn't help
   uwsgi-plugin-router-access \
-  python3-setuptools \
   && cp /usr/lib/uwsgi/plugins/python3_plugin.so /mediakraken/.
 
 COPY wait-for-it-bash.sh /mediakraken
