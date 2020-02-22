@@ -5,6 +5,7 @@ psycopg2==2.8.4
 uWSGI==2.0.18
 setuptools==45.2.0
 redis==3.4.1
+psutil==5.7.0
 pika==1.1.0
 ldap3==2.6
 apache-libcloud==2.6.0
