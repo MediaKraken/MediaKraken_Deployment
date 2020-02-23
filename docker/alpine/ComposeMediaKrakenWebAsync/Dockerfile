@@ -23,6 +23,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
+  make \
   musl-dev \  
   openrc \
   libressl-dev \
