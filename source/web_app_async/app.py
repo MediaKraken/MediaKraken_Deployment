@@ -18,8 +18,8 @@ auth = HTTPBasicAuth()
 # session = InMemorySessionInterface(cookie_name=app.name, prefix=app.name)
 common_global.jinja = SanicJinja2(app)
 # setup the blueprints
-app.blueprint(bp_about)
-app.blueprint(bp_homepage)
+app.blueprint(bp_about.bp_about)
+app.blueprint(bp_homepage.bp_homepage)
 
 db_connection = None
 
