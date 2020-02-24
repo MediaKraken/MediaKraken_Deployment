@@ -1,13 +1,28 @@
 import hashlib
+import os
 
+import asyncpg
+from common import common_file
 from sanic import Sanic
 from sanic.response import text
 from sanic_httpauth import HTTPBasicAuth
-import asyncio
-import asyncpg
 
 app = Sanic(__name__)
 auth = HTTPBasicAuth()
+db_connection = None
+
+
+@app.listener('before_server_start')
+async def setup_connection(*args, **kwargs):
+    global db_connection
+    if 'POSTGRES_PASSWORD' in os.environ:
+        database_password = os.environ['POSTGRES_PASSWORD']
+    else:
+        database_password = common_file.com_file_load_data('/run/secrets/db_password')
+    db_connection = await asyncpg.connect(user='user',
+                                          password='%s' % database_password,
+                                          database='postgres',
+                                          host='mkstack_pgbouncer')
 
 
 def hash_password(salt, password):

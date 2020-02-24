@@ -385,9 +385,47 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # Runs the web service for the main server application
+#  # Runs the web service for the main server application
+#  webapp:
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
+#    environment:
+#      - POSTGRES_PASSWORD=${DBPASS}
+#      - SECURE=${SECURE}
+#      - DEBUG=${DEBUG}
+#      - SWARMIP=${SWARMIP}
+#      - HOST_IP=${HOST_IP}
+#    container_name: mkstack_webapp
+#    depends_on:
+#      - pgbouncer
+#      - rabbit
+#      - redis
+#    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- uwsgi --pcre-jit --gevent 100 --http11-socket :8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+#    stop_grace_period: 30s
+#    stop_signal: SIGUSR1
+#    ports:
+#      - "8080:8080"
+#      - "9191:9191"
+#    volumes:
+#      - ./mkmount:/mediakraken/mnt
+#      # must not be read only as it stores cache here
+#      - mediakraken_vol_static:/mediakraken/web_app/MediaKraken/static
+#      - mediakraken_vol_webkey:/mediakraken/key
+#      - mediakraken_vol_webpid:/var/run
+#      - ./data/uploads:/mediakraken/uploads
+#      # needed to show docker/swarm info
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#      # hold log files
+#      - ./data/log:/mediakraken/log
+#      # this stores the "push button" key
+#      - mediakraken_vol_phue:/mediakraken/phue
+#      # server will generate salt/key
+#      - /var/opt/mediakraken/secure:/mediakraken/secure:ro
+#    networks:
+#      - mediakraken_network
+#    restart: unless-stopped
+
   webapp:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebappasync:dev
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
@@ -399,12 +437,12 @@ services:
       - pgbouncer
       - rabbit
       - redis
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- uwsgi --pcre-jit --gevent 100 --http11-socket :8080 --protocol http --stats 127.0.0.1:9191 --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- uvicorn web_app_async.app:app --port 8080 --loop uvloop --http h11
+    # gunicorn -w 4 -k uvicorn.workers.UvicornH11Worker
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
       - "8080:8080"
-      - "9191:9191"
     volumes:
       - ./mkmount:/mediakraken/mnt
       # must not be read only as it stores cache here
