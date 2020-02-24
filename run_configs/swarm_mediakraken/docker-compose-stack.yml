@@ -256,7 +256,7 @@ services:
   # runs the nginx proxy service
   nginx:
     image: mediakraken/mknginx:latest
-    entrypoint: /usr/bin/wait-for-it-ash.sh -h mkstack_webapp -p 8080 -t 120 -- nginx
+    entrypoint: /usr/bin/wait-for-it-ash-busybox130.sh -h mkstack_webapp -p 8080 -t 120 -- nginx
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:

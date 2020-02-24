@@ -169,7 +169,7 @@ services:
     container_name: mkstack_nginx
     depends_on:
       - webapp
-    entrypoint: /usr/bin/wait-for-it-ash.sh -h webserver -p 8080 -t 60 -- nginx
+    entrypoint: /usr/bin/wait-for-it-ash-busybox130.sh -h webserver -p 8080 -t 60 -- nginx
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:
