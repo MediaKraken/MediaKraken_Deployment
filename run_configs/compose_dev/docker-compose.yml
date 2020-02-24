@@ -437,8 +437,9 @@ services:
       - pgbouncer
       - rabbit
       - redis
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- uvicorn web_app_async.app:app --host 0.0.0.0 --port 8080 --loop uvloop --http h11
-    # gunicorn web_app_async.app:app -w 4 -k uvicorn.workers.UvicornWorker
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- gunicorn web_app_async.app:app -b :8080 -w 4 -k uvicorn.workers.UvicornWorker
+    # uvicorn web_app_async.app:app --host 0.0.0.0 --port 8080 --loop uvloop --http h11
+    # gunicorn web_app_async.app:app -b :8080 -w 4 -k uvicorn.workers.UvicornWorker
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
