@@ -2,22 +2,23 @@ import hashlib
 import os
 
 import asyncpg
-from blueprint import bp_about
-from blueprint import bp_homepage
 from common import common_file
 from common import common_global
 from sanic import Sanic
-from sanic import response
+from sanic_blueprint import bp_about
+from sanic_blueprint import bp_homepage
 from sanic_httpauth import HTTPBasicAuth
 from sanic_jinja2 import SanicJinja2
-from sanic_session import InMemorySessionInterface
 
+# from sanic_session import InMemorySessionInterface
+
+# setup the Sanic app
 app = Sanic(__name__)
 auth = HTTPBasicAuth()
-session = InMemorySessionInterface(cookie_name=app.name, prefix=app.name)
+# session = InMemorySessionInterface(cookie_name=app.name, prefix=app.name)
 common_global.jinja = SanicJinja2(app)
 # setup the blueprints
-app.blueprint(bp_about, url_prefix='/about')
+app.blueprint(bp_about)
 app.blueprint(bp_homepage)
 
 db_connection = None
@@ -36,18 +37,18 @@ async def setup_connection(*args, **kwargs):
                                           host='mkstack_pgbouncer')
 
 
-@app.middleware("request")
-async def add_session_to_request(request):
-    # before each request initialize a session
-    # using the client's request
-    await session.open(request)
-
-
-@app.middleware("response")
-async def save_session(request, response):
-    # after each request save the session,
-    # pass the response to set client cookies
-    await session.save(request, response)
+# @app.middleware("request")
+# async def add_session_to_request(request):
+#     # before each request initialize a session
+#     # using the client's request
+#     await session.open(request)
+#
+#
+# @app.middleware("response")
+# async def save_session(request, response):
+#     # after each request save the session,
+#     # pass the response to set client cookies
+#     await session.save(request, response)
 
 
 def hash_password(salt, password):
@@ -70,9 +71,9 @@ def verify_password(username, password):
 
 
 # @auth.login_required
-@app.route("/")
-async def hello(request):
-    return response.html('<p>Hello world!</p>')
+# @app.route("/")
+# async def hello(request):
+#     return response.html('<p>Hello world!</p>')
 
 
 if __name__ == "__main__":
