@@ -1,9 +1,9 @@
 from sanic import Blueprint
-from sanic.response import json
+from sanic import response
 
 bp_about = Blueprint('bp_about')
 
 
-@bp_about.route('/about')
+@bp_about.route('/about', methods=["GET"])
 async def bp_url_about(request):
-    return json({'my': 'blueprint'})
+    return await response.file('./templates/public/about.html')
