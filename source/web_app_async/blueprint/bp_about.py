@@ -1,7 +1,7 @@
 from sanic import Blueprint
 from sanic import response
 
-bp_about = Blueprint('bp_about')
+bp_about = Blueprint('bp_about', __name__)
 
 
 @bp_about.route('/about', methods=["GET"])

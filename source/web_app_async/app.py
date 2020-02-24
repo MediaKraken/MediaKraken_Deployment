@@ -5,10 +5,10 @@ import asyncpg
 from common import common_file
 from common import common_global
 from sanic import Sanic
-from sanic_blueprint import bp_about
-from sanic_blueprint import bp_homepage
 from sanic_httpauth import HTTPBasicAuth
 from sanic_jinja2 import SanicJinja2
+from web_app_async.blueprint import bp_about
+from web_app_async.blueprint import bp_homepage
 
 # from sanic_session import InMemorySessionInterface
 
@@ -77,4 +77,4 @@ def verify_password(username, password):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080, debug=True)
