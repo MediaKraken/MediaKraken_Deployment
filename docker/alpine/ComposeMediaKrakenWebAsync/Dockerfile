@@ -24,7 +24,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libxslt-dev \
   linux-headers \
   make \
-  musl-dev \  
+  musl-dev \
   openrc \
   libressl-dev \
   py3-cffi \
