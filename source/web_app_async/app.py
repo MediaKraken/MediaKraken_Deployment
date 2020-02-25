@@ -2,21 +2,14 @@ import os
 
 import asyncpg
 from common import common_file
-#from common import common_network_pika
+# from common import common_network_pika
 from sanic import Blueprint, Sanic, response
-from sanic.response import json
 from sanic.response import redirect
 from web_app_async.blueprint import blueprint_content_mediakraken
 
 # setup the Sanic app
 app = Sanic(__name__)
-blueprint = Blueprint('name_blueprint', url_prefix='/public')
 blueprint_public = Blueprint('name_blueprint_public', url_prefix='/public')
-
-
-@blueprint.route('/foo', methods=["GET"])
-async def foo(request):
-    return json({'msg': 'hi from blueprint'})
 
 
 @blueprint_public.route('/aboutlocal', methods=["GET"])
@@ -25,7 +18,6 @@ async def bp_url_about(request):
 
 
 # setup the blueprints
-app.register_blueprint(blueprint)
 app.register_blueprint(blueprint_public)
 # above working
 app.register_blueprint(blueprint_content_mediakraken)
@@ -48,6 +40,7 @@ async def setup_connection(*args, **kwargs):
 @app.route("/")
 async def hello(request):
     return redirect(app.url_for('url_bp_public_about'))
+
 
 # print out all routes for debugging purposes
 for handler, (rule, router) in app.router.routes_names.items():
