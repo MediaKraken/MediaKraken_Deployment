@@ -9,7 +9,7 @@ from web_app_async.blueprint import content_mediakraken
 
 # setup the Sanic app
 app = Sanic(__name__)
-blueprint = Blueprint('name', url_prefix='/my_blueprint')
+blueprint = Blueprint('name', url_prefix='/public')
 blueprint_public = Blueprint('name2', url_prefix='/public')
 
 
