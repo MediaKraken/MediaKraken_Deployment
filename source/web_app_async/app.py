@@ -10,7 +10,7 @@ from web_app_async.blueprint import content_mediakraken
 # setup the Sanic app
 app = Sanic(__name__)
 blueprint = Blueprint('name', url_prefix='/my_blueprint')
-blueprint2 = Blueprint('name2', url_prefix='/my_blueprint2')
+blueprint_public = Blueprint('name2', url_prefix='/public')
 
 
 @blueprint.route('/foo')
@@ -18,15 +18,15 @@ async def foo(request):
     return json({'msg': 'hi from blueprint'})
 
 
-@blueprint2.route('/foo')
-async def foo2(request):
+@blueprint_public.route('/about')
+async def bp_url_about(request):
     return await response.file('./web_app_async/templates/public/about.html')
 
 
 # setup the blueprints
 app.register_blueprint(content_mediakraken)
 app.register_blueprint(blueprint)
-app.register_blueprint(blueprint2)
+app.register_blueprint(blueprint_public)
 db_connection = None
 
 
