@@ -3,24 +3,15 @@ import os
 import asyncpg
 from common import common_file
 # from common import common_network_pika
-from sanic import Blueprint, Sanic, response
+from sanic import Sanic
 from sanic.response import redirect
 from web_app_async.blueprint import blueprint_content_mediakraken
 
 # setup the Sanic app
 app = Sanic(__name__)
-blueprint_public = Blueprint('name_blueprint_public', url_prefix='/public')
-
-
-@blueprint_public.route('/aboutlocal', methods=["GET"])
-async def bp_url_about(request):
-    return await response.file('./web_app_async/templates/public/about.html')
-
-
 # setup the blueprints
-app.blueprint(blueprint_public)
-# above working
 app.blueprint(blueprint_content_mediakraken)
+
 db_connection = None
 
 
