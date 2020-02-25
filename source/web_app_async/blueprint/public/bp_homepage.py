@@ -1,7 +1,7 @@
 from sanic import Blueprint
 from sanic import response
 
-bp_homepage = Blueprint('bp_homepage', __name__)
+bp_homepage = Blueprint('content_homepage', url_prefix='/public')
 
 
 @bp_homepage.route('/', methods=["GET"])
