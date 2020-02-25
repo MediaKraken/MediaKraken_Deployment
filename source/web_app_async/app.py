@@ -2,7 +2,7 @@ import os
 
 import asyncpg
 from common import common_file
-from common import common_network_pika
+#from common import common_network_pika
 from sanic import Blueprint, Sanic, response
 from sanic.response import json
 from sanic.response import redirect
@@ -53,10 +53,10 @@ async def hello(request):
 for handler, (rule, router) in app.router.routes_names.items():
     print(rule)
 
-common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
-                                      rabbit_host_name='mkstack_rabbitmq',
-                                      exchange_name='mkque_ex',
-                                      route_key='mkque')
+# common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
+#                                       rabbit_host_name='mkstack_rabbitmq',
+#                                       exchange_name='mkque_ex',
+#                                       route_key='mkque')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
