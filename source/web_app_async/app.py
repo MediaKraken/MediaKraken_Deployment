@@ -48,6 +48,9 @@ async def setup_connection(*args, **kwargs):
 async def hello(request):
     return redirect(app.url_for('url_bp_public_about'))
 
+# print out all routes for debugging purposes
+for handler, (rule, router) in app.router.routes_names.items():
+    print(rule)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
