@@ -1,26 +1,30 @@
-import hashlib
 import os
 
 import asyncpg
 from common import common_file
 from common import common_global
-from sanic import Sanic
+from sanic import Blueprint, Sanic
+from sanic.response import file, redirect
 from sanic_httpauth import HTTPBasicAuth
 from sanic_jinja2 import SanicJinja2
 from web_app_async.blueprint import content_mediakraken
 
-# from sanic_session import InMemorySessionInterface
-
 # setup the Sanic app
 app = Sanic(__name__)
 auth = HTTPBasicAuth()
-# session = InMemorySessionInterface(cookie_name=app.name, prefix=app.name)
-common_global.jinja = SanicJinja2(app)
+
+blueprint3 = Blueprint('name3', url_prefix='/my_blueprint3')
+
+#common_global.jinja = SanicJinja2(app)
 # setup the blueprints
 app.blueprint(content_mediakraken)
+app.blueprint(blueprint3)
 
 db_connection = None
 
+@blueprint3.route('/foo')
+async def index(request):
+    return await file('websocket.html')
 
 @app.listener('before_server_start')
 async def setup_connection(*args, **kwargs):
@@ -35,43 +39,9 @@ async def setup_connection(*args, **kwargs):
                                           host='mkstack_pgbouncer')
 
 
-# @app.middleware("request")
-# async def add_session_to_request(request):
-#     # before each request initialize a session
-#     # using the client's request
-#     await session.open(request)
-#
-#
-# @app.middleware("response")
-# async def save_session(request, response):
-#     # after each request save the session,
-#     # pass the response to set client cookies
-#     await session.save(request, response)
-
-
-def hash_password(salt, password):
-    salted = password + salt
-    return hashlib.sha512(salted.encode("utf8")).hexdigest()
-
-
-app_salt = "APP_SECRET - don't do this in production"
-users = {
-    "john": hash_password(app_salt, "hello"),
-    "susan": hash_password(app_salt, "bye"),
-}
-
-
-@auth.verify_password
-def verify_password(username, password):
-    if username in users:
-        return users.get(username) == hash_password(app_salt, password)
-    return False
-
-
-# @auth.login_required
-# @app.route("/")
-# async def hello(request):
-#     return response.html('<p>Hello world!</p>')
+@app.route("/")
+async def hello(request):
+    return redirect(app.url_for('bp_url_homepage'))
 
 
 if __name__ == "__main__":
