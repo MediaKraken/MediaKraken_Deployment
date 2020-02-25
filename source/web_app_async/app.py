@@ -30,7 +30,7 @@ async def setup_connection(*args, **kwargs):
 
 @app.route("/")
 async def hello(request):
-    return redirect(app.url_for('url_bp_homepage'))
+    return redirect(app.url_for('name_blueprint_public_homepage.url_bp_homepage'))
 
 
 # print out all routes for debugging purposes
