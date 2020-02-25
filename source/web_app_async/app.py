@@ -2,29 +2,33 @@ import os
 
 import asyncpg
 from common import common_file
-from common import common_global
 from sanic import Blueprint, Sanic
-from sanic.response import file, redirect
-from sanic_httpauth import HTTPBasicAuth
-from sanic_jinja2 import SanicJinja2
+from sanic.response import json
+from sanic.response import redirect
 from web_app_async.blueprint import content_mediakraken
 
 # setup the Sanic app
 app = Sanic(__name__)
-auth = HTTPBasicAuth()
+blueprint = Blueprint('name', url_prefix='/my_blueprint')
+blueprint2 = Blueprint('name2', url_prefix='/my_blueprint2')
 
-blueprint3 = Blueprint('name3', url_prefix='/my_blueprint3')
 
-#common_global.jinja = SanicJinja2(app)
+@blueprint.route('/foo')
+async def foo(request):
+    return json({'msg': 'hi from blueprint'})
+
+
+@blueprint2.route('/foo')
+async def foo2(request):
+    return json({'msg': 'hi from blueprint2'})
+
+
 # setup the blueprints
-app.blueprint(content_mediakraken)
-app.blueprint(blueprint3)
-
+app.register_blueprint(content_mediakraken)
+app.register_blueprint(blueprint)
+app.register_blueprint(blueprint2)
 db_connection = None
 
-@blueprint3.route('/foo')
-async def index(request):
-    return await file('websocket.html')
 
 @app.listener('before_server_start')
 async def setup_connection(*args, **kwargs):
