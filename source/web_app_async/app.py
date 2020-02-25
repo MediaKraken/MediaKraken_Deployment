@@ -46,7 +46,7 @@ async def setup_connection(*args, **kwargs):
 
 @app.route("/")
 async def hello(request):
-    return redirect(app.url_for('bp_url_homepage'))
+    return redirect(app.url_for('url_bp_public_about'))
 
 
 if __name__ == "__main__":

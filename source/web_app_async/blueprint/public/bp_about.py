@@ -5,5 +5,5 @@ blueprint_public_about = Blueprint('name_blueprint_public_about', url_prefix='/p
 
 
 @blueprint_public_about.route('/about', methods=["GET"])
-async def bp_url_about(request):
+async def url_bp_public_about(request):
     return await response.file('./web_app_async/templates/public/about.html')
