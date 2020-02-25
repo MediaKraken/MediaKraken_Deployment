@@ -13,12 +13,12 @@ blueprint = Blueprint('name', url_prefix='/public')
 blueprint_public = Blueprint('name2', url_prefix='/public')
 
 
-@blueprint.route('/foo')
+@blueprint.route('/foo', methods=["GET"])
 async def foo(request):
     return json({'msg': 'hi from blueprint'})
 
 
-@blueprint_public.route('/about')
+@blueprint_public.route('/about', methods=["GET"])
 async def bp_url_about(request):
     return await response.file('./web_app_async/templates/public/about.html')
 
