@@ -5,7 +5,7 @@ from common import common_file
 from sanic import Blueprint, Sanic, response
 from sanic.response import json
 from sanic.response import redirect
-from web_app_async.blueprint import content_mediakraken
+#from web_app_async.blueprint import content_mediakraken
 from web_app_async.blueprint import blueprint_public_about
 
 # setup the Sanic app
@@ -25,7 +25,7 @@ async def bp_url_about(request):
 
 
 # setup the blueprints
-app.register_blueprint(content_mediakraken)
+#app.register_blueprint(content_mediakraken)
 app.register_blueprint(blueprint)
 app.register_blueprint(blueprint_public)
 app.register_blueprint(blueprint_public_about)
