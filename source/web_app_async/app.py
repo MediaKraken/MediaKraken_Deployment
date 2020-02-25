@@ -18,9 +18,9 @@ async def bp_url_about(request):
 
 
 # setup the blueprints
-app.register_blueprint(blueprint_public)
+app.blueprint(blueprint_public)
 # above working
-app.register_blueprint(blueprint_content_mediakraken)
+app.blueprint(blueprint_content_mediakraken)
 db_connection = None
 
 
