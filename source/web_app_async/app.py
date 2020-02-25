@@ -20,7 +20,7 @@ async def foo(request):
 
 @blueprint2.route('/foo')
 async def foo2(request):
-    return await response.file('./templates/public/about.html')
+    return await response.file('./web_app_async/templates/public/about.html')
 
 
 # setup the blueprints
