@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-narrow">
+    <h1>Chromecast Addition</h1>
+    <br>
+    <form id="chromecastaddeditForm" class="form form-chromecastedit" method="POST" action="" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{form.name.label}}
+            {{form.name(placeholder="Name", class_="form-control")}}
+            {{form.ipaddr.label}}
+            {{form.ipaddr(placeholder="IP Address", class_="form-control")}}
+            {{form.enabled.label}}
+            {{form.enabled(placeholder="Enabled", class_="form-control")}}
+        </div>
+        <p><input class="btn btn-default btn-submit" type="submit" name="action_type" value="Add"></p>
+    </form>
+</div>
+{% endblock %}

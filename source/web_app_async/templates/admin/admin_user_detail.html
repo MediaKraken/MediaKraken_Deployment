@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
+        <![endif]-->
+        <link href="{{ url_for('static', filename='css/style.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
+    </head>
+    {% if data_user %}
+    <p><b>User Name:</b> {{ data_user[1] }}</p>
+    <p><b>Email:</b> {{ data_user[2] }}</p>
+    <p><b>Joined:</b> {{ data_user[4] }}</p>
+    <p><b>Active:</b> {{ data_user[5] }}</p>
+    <p><b>Admin:</b> {{ data_user[6] }}</p>
+    <p><b>Language:</b> </p>
+    {% else %}
+    <p>No user data found. This should never happen!</p>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp_delete.js') }}"></script>
+</body>
+{% endblock %}

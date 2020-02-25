@@ -2,7 +2,7 @@ import os
 
 import asyncpg
 from common import common_file
-from sanic import Blueprint, Sanic
+from sanic import Blueprint, Sanic, response
 from sanic.response import json
 from sanic.response import redirect
 from web_app_async.blueprint import content_mediakraken
@@ -20,7 +20,7 @@ async def foo(request):
 
 @blueprint2.route('/foo')
 async def foo2(request):
-    return json({'msg': 'hi from blueprint2'})
+    return await response.file('./templates/public/about.html')
 
 
 # setup the blueprints
