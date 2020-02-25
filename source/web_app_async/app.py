@@ -6,11 +6,12 @@ from sanic import Blueprint, Sanic, response
 from sanic.response import json
 from sanic.response import redirect
 from web_app_async.blueprint import content_mediakraken
+from web_app_async.blueprint import blueprint_public_about
 
 # setup the Sanic app
 app = Sanic(__name__)
-blueprint = Blueprint('name', url_prefix='/public')
-blueprint_public = Blueprint('name2', url_prefix='/public')
+blueprint = Blueprint('name_blueprint', url_prefix='/public')
+blueprint_public = Blueprint('name_blueprint_public', url_prefix='/public')
 
 
 @blueprint.route('/foo', methods=["GET"])
@@ -18,7 +19,7 @@ async def foo(request):
     return json({'msg': 'hi from blueprint'})
 
 
-@blueprint_public.route('/about', methods=["GET"])
+@blueprint_public.route('/aboutlocal', methods=["GET"])
 async def bp_url_about(request):
     return await response.file('./web_app_async/templates/public/about.html')
 
@@ -27,6 +28,7 @@ async def bp_url_about(request):
 app.register_blueprint(content_mediakraken)
 app.register_blueprint(blueprint)
 app.register_blueprint(blueprint_public)
+app.register_blueprint(blueprint_public_about)
 db_connection = None
 
 
