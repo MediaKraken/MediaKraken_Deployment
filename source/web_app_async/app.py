@@ -15,8 +15,9 @@ app.blueprint(blueprint_content_mediakraken)
 db_connection = None
 
 
-@app.listener('before_server_start')
+@app.listener('after_server_start')
 async def setup_connection(*args, **kwargs):
+    print('after server start, connect to db')
     global db_connection
     if 'POSTGRES_PASSWORD' in os.environ:
         database_password = os.environ['POSTGRES_PASSWORD']
@@ -28,6 +29,7 @@ async def setup_connection(*args, **kwargs):
                                           host='mkstack_pgbouncer')
 
 
+# route to the default homepage
 @app.route("/")
 async def hello(request):
     return redirect(app.url_for('name_blueprint_public_homepage.url_bp_homepage'))
