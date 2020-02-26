@@ -7,6 +7,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from sanic import Sanic
 from sanic.response import redirect, html
 from web_app_async.blueprint import blueprint_content_mediakraken
+from webassets import Environment as AssetsEnvironment
+from webassets.ext.jinja2 import AssetsExtension
 
 # setup the Sanic app
 app = Sanic(__name__)
@@ -17,7 +19,11 @@ db_connection = None
 
 # setup the jinja2 environment
 jinja_env = Environment(loader=FileSystemLoader('./web_app_async/templates'),
-                        autoescape=select_autoescape(['html', 'xml', 'html_file_name']))
+                        autoescape=select_autoescape(['html', 'xml', 'html_file_name']),
+                        extensions=[AssetsExtension])
+jinja_env.assets_environment = AssetsEnvironment('./static/media', '/media')
+# OSError: '/home/spoot/MediaKraken_Deployment/source/static/media/css_all' does not exist
+
 # public templates
 jinja_template_url_public_about = jinja_env.get_template('public/about.html')
 jinja_template_url_public_homepage = jinja_env.get_template('public/home.html')
