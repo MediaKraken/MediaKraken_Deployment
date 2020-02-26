@@ -21,7 +21,7 @@ db_connection = None
 jinja_env = Environment(loader=FileSystemLoader('./web_app_async/templates'),
                         autoescape=select_autoescape(['html', 'xml', 'html_file_name']),
                         extensions=[AssetsExtension])
-jinja_env.assets_environment = AssetsEnvironment('./static/media', '/media')
+#jinja_env.assets_environment = AssetsEnvironment('./static/media', '/media')
 # OSError: '/home/spoot/MediaKraken_Deployment/source/static/media/css_all' does not exist
 
 # public templates
