@@ -2,9 +2,10 @@ import os
 
 import asyncpg
 from common import common_file
+from jinja2 import Environment, FileSystemLoader
 # from common import common_network_pika
 from sanic import Sanic
-from sanic.response import redirect
+from sanic.response import redirect, html
 from web_app_async.blueprint import blueprint_content_mediakraken
 
 # setup the Sanic app
@@ -13,6 +14,24 @@ app = Sanic(__name__)
 app.blueprint(blueprint_content_mediakraken)
 
 db_connection = None
+
+# setup the jinja2 environment
+jinja_env = Environment(loader=FileSystemLoader('./web_app_async/templates'))
+# public templates
+jinja_template_url_public_about = jinja_env.get_template('public/about.html')
+jinja_template_url_public_homepage = jinja_env.get_template('public/home.html')
+
+
+# return jinja2_generic_template('index.html', title='Sanic', data='blob', test=test)
+async def jinja2_render_generic_template(html_file_name, **kwargs):
+    template = jinja_env.get_template(html_file_name)
+    return html(template.render(kwargs))
+
+
+# jinja test route
+@app.route("/jinja")
+async def hello_jinja(request):
+    return jinja2_render_generic_template('public/about.html')
 
 
 @app.listener('after_server_start')

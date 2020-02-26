@@ -9,7 +9,7 @@ app = Sanic(__name__)
 
 # Load the template environment with async support
 template_env = Environment(
-    loader=PackageLoader('jinja_example', 'templates'),
+    loader=PackageLoader('bp_example_jinja2', 'templates'),
     autoescape=select_autoescape(['html', 'xml']),
     enable_async=True
 )
