@@ -13,32 +13,32 @@
 <nav class="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
     <a class="navbar-brand" href="#">
         <img src="./web_app_async/static/images/MediaKraken.png" alt="Logo" style="width:40px;">
-        <a class="navbar-brand" href="{{ url_for('public.home') }}" id="menu_home">MediaKraken</a>
+        <a class="navbar-brand" href="./web_app_async/static/public/home.html" id="menu_home">MediaKraken</a>
     </a>
     <ul class="navbar-nav">
         {% if current_user and current_user.is_authenticated %}
-            <li><a class="nav-link" href="{{ url_for('user.members') }}" id="menu_media">Home</a></li>
-            <li><a class="nav-link" href="{{ url_for('user_sync.sync_display_all') }}" id="menu_sync">Sync</a></li>
+            <li><a class="nav-link" href="./web_app_async/static/users/members.html" id="menu_media">Home</a></li>
+            <li><a class="nav-link" href="./web_app_async/static/user/user_sync.html" id="menu_sync">Sync</a></li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Metadata</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_movie.metadata_movie_list') }}" id="menu_metadata_movies">Movies</a>
-                    <a class="dropdown-item" href="{{ url_for('user_movie_collection.metadata_movie_collection_list') }}" id="menu_metadata_movie_collection">Movie Collection</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_tv.metadata_tvshow_list') }}" id="menu_metadata_tv_shows">TV Shows</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_album.metadata_music_album_list') }}" id="menu_metadata_music_albums">Music Albums</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_music_video.metadata_music_video_list') }}" id="menu_metadata_music_videos">Music Videos</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_sports.metadata_sports_list') }}" id="menu_metadata_sports">Sports</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_game.metadata_game_list') }}" id="menu_metadata_games">Games</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_game_system.metadata_game_system_list') }}" id="menu_metadata_game_systems">Game Systems</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_people.metadata_person_list') }}" id="menu_metadata_people">People</a>
-                    <a class="dropdown-item" href="{{ url_for('user_metadata_periodical.metadata_periodical_list') }}" id="menu_metadata_periodical">Periodical</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_movie_list.html') }}" id="menu_metadata_movies">Movies</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_movie_collection_list.html') }}" id="menu_metadata_movie_collection">Movie Collection</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_tvshow_list.html') }}" id="menu_metadata_tv_shows">TV Shows</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta__music_album_list.html') }}" id="menu_metadata_music_albums">Music Albums</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_music_video_list.html') }}" id="menu_metadata_music_videos">Music Videos</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_sports_list.html') }}" id="menu_metadata_sports">Sports</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_game_list.html') }}" id="menu_metadata_games">Games</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_game_system_list.html') }}" id="menu_metadata_game_systems">Game Systems</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_people_list.html') }}" id="menu_metadata_people">People</a>
+                    <a class="dropdown-item" href="./web_app_async/static/users/metadata/meta_periodical_list.html') }}" id="menu_metadata_periodical">Periodical</a>
                 </div>
             </li>
         {% endif %}
         {% if current_user.is_admin %}
-            <li><a class="nav-link" href="{{ url_for('admins.admins') }}" id="menu_server">Admin</a></li>
+            <li><a class="nav-link" href="./web_app_async/static/admin/admins.html" id="menu_server">Admin</a></li>
         {% endif %}
-        <li><a class="nav-link" href="{{ url_for('public.about') }}" id="menu_about">About</a></li>
+        <li><a class="nav-link" href="./web_app_async/static/public/about.html" id="menu_about">About</a></li>
         <li>
             <p><span id="timestamp"></span></p>
         </li>
@@ -50,10 +50,10 @@
                 </div>
                 <button type="submit" formmethod="post" class="btn btn-default" id="main_button_search">Submit</button>
             </form>
-            <li><p class="navbar-text"><a class="navbar-link" href="{{ url_for('user.members') }}">Logged in as {{ current_user.username }}</a></p></li>
-            <li><a class="nav-link" href="{{ url_for('public.logout') }}"><img src="{{ url_for('static', filename='images/16/emergency-exit.png') }}"></a></li>
+            <li><p class="navbar-text"><a class="navbar-link" href="./web_app_async/static/users/members.html">Logged in as {{ current_user.username }}</a></p></li>
+            <li><a class="nav-link" href="{{ url_for('public.logout') }}"><img src="./web_app_async/static/images/16/emergency-exit.png"></a></li>
         {% elif form %}
-            <li><a class="nav-link" href="{{ url_for('public.register') }}" id="menu_sign_up"><span class="fas user-alt"></span>Sign Up</a></li>
+            <li><a class="nav-link" href="./web_app_async/static/public/register.html" id="menu_sign_up"><span class="fas user-alt"></span>Sign Up</a></li>
             <form id="loginForm" method="POST" class="navbar-form form-inline navbar-right" action="/" role="login">
                 {{ form.hidden_tag() }}
                 <div class="form-group">

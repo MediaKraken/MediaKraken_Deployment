@@ -8,9 +8,9 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_slider.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_layout.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_slider.css" media="all" type="text/css"/>
     </head>
     {% if data_hue_avail is none %}
         <p><h2>Key not found for Hue device! Have administrator sync the device and try again.</h2></p>
@@ -26,11 +26,11 @@
             <div class="col-sm">
                 <div class="row">
                     <a href="{{ url_for('user_hardware_hue.user_hardware_hue_on') }}" id="user_hue_bulb_on">
-                        <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_on.png') }}"
+                        <img class="b-lazy" src=data: data-src="./web_app_async/static/images/lightbulb_on.png"
                              alt="hue_bulb_on" height="200" width="200">
                     </a>
                     <a href="{{ url_for('user_hardware_hue.user_hardware_hue_off') }}" id="user_hue_bulb_off">
-                        <img class="b-lazy" src=data: data-src="{{ url_for('static', filename='images/lightbulb_off.png') }}"
+                        <img class="b-lazy" src=data: data-src="./web_app_async/static/images/lightbulb_off.png"
                              alt="hue_bulb_off" height="200" width="200">
                     </a>
                 </div>
@@ -47,9 +47,9 @@
             </div>
         </div>
     {% endif %}
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script src="./web_app_async/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./web_app_async/static/js/jquery.min.js"></script>
+    <script src="./web_app_async/static/js/blazy.min.js"></script>
     <script>
         ;(function() {
             // Initialize

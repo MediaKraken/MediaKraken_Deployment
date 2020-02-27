@@ -66,7 +66,7 @@
                       {% if data_episode_count[episode_info][1] == "missing_icon.jpg" %}
                           <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "./web_app_async/static/images/missing_icon.jpg" alt= "./web_app_async/static/meta/images/missing_icon.jpg" height="200" width="300">
                       {% else %}
-                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ ./web_app_async/static/meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" alt= "{{ url_for('static', filename='meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="210" width="350">
+                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ ./web_app_async/static/meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" alt= "{{ url_for('static', filename='meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app_async/static/meta/images/', '')) }}" height="210" width="350">
                       {% endif %}
                       </a>
                         <div class="description">

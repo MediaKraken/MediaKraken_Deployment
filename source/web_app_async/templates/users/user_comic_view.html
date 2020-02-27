@@ -8,9 +8,9 @@
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- load all styles css -->
-        <link href="{{url_for('static', filename=comicarchive/css/styles.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='lightGallery/css/lightGallery.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css"/>
+        <link href="./web_app_async/static/comicarchive/css/styles.css" rel="stylesheet">
+        <link href="./web_app_async/static/lightGallery/css/lightGallery.min.css" rel="stylesheet">
+        <link href="./web_app_async/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css"/>
     </head>
     <body id="data_background">
         <div class="se-pre-con"></div> <!-- loading spinner -->
@@ -27,10 +27,10 @@
 
             <br><br>
         </center>
-        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/uncompress/uncompress.js') }}"></script>
-        <script src="{{ url_for('static', filename='lightGallery/js/lightgallery-all.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='comicarchive/js/script.js') }}"></script>
+        <script src="./web_app_async/static/js/jquery.min.js"></script>
+        <script src="./web_app_async/static/js/uncompress/uncompress.js"></script>
+        <script src="./web_app_async/static/lightGallery/js/lightgallery-all.min.js"></script>
+        <script src="./web_app_async/static/comicarchive/js/script.js"></script>
     </body>
 </html>
 {% endblock %}

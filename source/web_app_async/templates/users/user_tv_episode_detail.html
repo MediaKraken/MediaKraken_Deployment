@@ -10,13 +10,13 @@
     {% if data %}
     <div id="movie_detail">
         {% if data_background_image is not none %}
-        <img alt="fs_bg_image" src= "{{ ./web_app_async/static/meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" id="fs_bg_image" >
+        <img alt="fs_bg_image" src= "{{ ./web_app_async/static/meta/images/' + data_background_image | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" id="fs_bg_image" >
         {% endif %}
         <div id="movie_image_div" class="table-responsive">
             {% if data_poster_image is none %}
             <img class="center" src= "./web_app_async/static/images/missing_icon.jpg">
             {% else %}
-            <img class="center" src= "{{ ./web_app_async/static/meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" >
+            <img class="center" src= "{{ ./web_app_async/static/meta/images/' + data_poster_image | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" >
             {% endif %}
             <table class="table table-hover">
                 <tbody>

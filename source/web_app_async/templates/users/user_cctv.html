@@ -3,7 +3,7 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_layout.css" media="all" type="text/css"/>
     </head>
     {% if media %}
     {{ pagination.info }}
@@ -14,7 +14,7 @@
         <a href= "{{ url_for('user_cctv.cctv_detail', guid=row_data[0]) }}" > {{row_data[1]}}</a>
         {% else %}
         <a href= "{{ url_for('user_cctv.cctv_detail', guid=row_data[0]) }}" >
-        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="200" width="132">
+        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ ./web_app_async/static/meta/images/' + row_data[0] | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" height="200" width="132">
         </a>
         {% endif %}
         {% endfor %}
@@ -23,8 +23,8 @@
     {% else %}
     <p id="general_text">No CCTV media found.</p>
     {% endif %}
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script src="./web_app_async/static/js/jquery.min.js"></script>
+    <script src="./web_app_async/static/js/blazy.min.js"></script>
     <script>
         ;(function() {
             // Initialize

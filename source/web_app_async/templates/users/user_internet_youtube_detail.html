@@ -5,8 +5,8 @@
     <head>
         <meta charset="utf-8" />
         <title>MediaKraken YT Video Player</title>
-        <link href="{{ url_for('static', filename='videojs/video-js.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
+        <link href="./web_app_async/static/videojs/video-js.min.css" rel="stylesheet">
+        <link href="./web_app_async/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css">
     </head>
     <body id="data_background">
         <form id="SearchForm" class="form form-youtube" method="POST" action="{{ url_for('user_internet.user_internet_youtube') }}" role="form">
@@ -19,8 +19,8 @@
         <video id="vid1" src="" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" data-setup='{"fluid":"true","techOrder":["youtube"]}'>
             <source src={{"http://www.youtube.com/watch?v=" + data_guid}} type="video/youtube">
         </video>
-        <script src="{{ url_for('static', filename='videojs/video.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='videojs/Youtube.min.js') }}"></script>
+        <script src="./web_app_async/static/videojs/video.min.js"></script>
+        <script src="./web_app_async/static/videojs/Youtube.min.js"></script>
     </body>
 </html>
 {% endblock %}

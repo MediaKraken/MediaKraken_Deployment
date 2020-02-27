@@ -16,13 +16,13 @@
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href= "{{ url_for('user_tv.user_tv_show_detail_page', guid=row_data[1]) }}" >
                 {% if row_data[2] == None %}
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/missing_icon.jpg') }}" height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "./web_app_async/static/images/missing_icon.jpg" height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content">{{row_data[0] + " - " + row_data[3]}}</p>
                 </div>
                 {% else %}
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ ./web_app_async/static/meta/images/' + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" height="300" width="200">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ ./web_app_async/static/meta/images/' + row_data[2] | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[3]}}</p>

@@ -3,9 +3,9 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='datetimepicker/jquery.datetimepicker.min.css') }}"/ >
-        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="./web_app_async/static/datetimepicker/jquery.datetimepicker.min.css"/>
+        <link rel="stylesheet" href="./web_app_async/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_layout.css" media="all" type="text/css"/>
     </head>
     <p><input id="_datetimepicker3" type="text" value="10.12.2013 23:45"/></p>
     {% if media != "" %}
@@ -25,8 +25,8 @@
         });
         // ]]>
     </script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='datetimepicker/jquery.datetimepicker.full.min.js') }}"></script>
+    <script src="./web_app_async/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./web_app_async/static/js/jquery.min.js"></script>
+    <script src="./web_app_async/static/datetimepicker/jquery.datetimepicker.full.min.js"></script>
 </body>
 {% endblock %}
