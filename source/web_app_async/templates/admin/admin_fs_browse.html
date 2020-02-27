@@ -9,12 +9,12 @@
 {% if files %}
     <head>
         <title>MediaKraken Browser - {{ path }}</title>
-        <link rel="stylesheet" href="{{ url_for('user.static', filename='/static/css/fs_style.css') }}" />
+        <link rel="stylesheet" href="./web_app_async/static/css/fs_style.css" />
     </head>
     <body class="list">
         {% if path != '.' %}
             <div>
-                <img src="{{ url_for('user.static', filename='/static/images/fs/parent.png') }}" />
+                <img src="./web_app_async/static/images/fs/parent.png" />
                 <a href="{{ url_for('admins.admin_listdir', path=parent) }}">
                     Parent Directory
                 </a>
@@ -28,7 +28,7 @@
             {% endif %}
             {% if file['type'] == 'd' %}
                 <div>
-                    <img src="{{ url_for('user.static', filename='/static/images/fs/directory.png') }}" />
+                    <img src="./web_app_async/static/images/fs/directory.png" />
                     <a href="{{ file['link'] }}">
                         {{ file['filename'] }}
                     </a>

@@ -3,8 +3,8 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='context/jquery.contextmenu.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/context/jquery.contextmenu.css">
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_layout.css" media="all" type="text/css"/>
     </head>
     <div class="container-narrow">
         <h1>Search Media</h1>
@@ -21,7 +21,7 @@
                     <a href="{{ url_for('user_movie.movie_detail', guid=row_data[0]) }}" >
                     <img class="b-lazy"
                          src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-                         data-src="{{url_for('static', filename='images/genre/' + row_data[2].replace(' ', '%20')) }}"
+                         data-src="{{./web_app_async/static/images/genre/' + row_data[2].replace(' ', '%20') }}"
                     height="300" width="200">
                     </a>
                     <div class="description">
@@ -66,10 +66,10 @@
                       value="Search Metadata Providers"></p>
         </form>
     </div>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='context/jquery.contextmenu.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/base_webapp.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script src="./web_app_async/static/js/jquery.min.js"></script>
+    <script src="./web_app_async/static/context/jquery.contextmenu.js"></script>
+    <script src="./web_app_async/static/js/base_webapp.js"></script>
+    <script src="./web_app_async/static/js/blazy.min.js"></script>
     <script>
             ;(function() {
                 // Initialize

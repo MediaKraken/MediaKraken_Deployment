@@ -3,15 +3,15 @@
 <body id="data_background">
     <head>
         <meta charset="UTF-8"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css"/>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./web_app_async/static/css/star-rating.min.css" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_layout.css" media="all" type="text/css"/>
     </head>
     {% if data %}
     <div id="movie_detail">
-        <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image) }}" id="fs_bg_image" />
+        <img alt="fs_bg_image" src= "{{ ./web_app_async/static/meta/images/' + data_background_image) }}" id="fs_bg_image" />
         <div id="movie_image_div" class="table-responsive">
-            <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image) }}" >
+            <img class="center" src= "{{ ./web_app_async/static/meta/images/' + data_poster_image) }}" >
             <table class="table table-hover">
                 <tbody>
                     <tr>
@@ -148,10 +148,10 @@
     {% else %}
     <p>No info found. ERROR! You should never see this message.</p>
     {% endif %}
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/star-rating.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script src="./web_app_async/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./web_app_async/static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="./web_app_async/static/js/star-rating.min.js" type="text/javascript"></script>
+    <script src="./web_app_async/static/js/blazy.min.js"></script>
     <script>
         ;(function() {
             // Initialize

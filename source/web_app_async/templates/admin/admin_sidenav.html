@@ -67,7 +67,7 @@
         <a href="{{ url_for('admins.admin_messages') }}" id="admin_navmenu_messages"><img src="{{ url_for('static', filename='images/16/black-back-closed-envelope-shape.png') }}"> Messages <span class="badge badge-info"> {{ data_messages }}</span></a>
 
         <button class="dropdown-btn">Reports
-            <img src="{{ url_for('static', filename='images/16/arrow-point-to-down.png') }}">
+            <img src="./web_app_async/static/images/16/arrow-point-to-down.png">
         </button>
         <div class="dropdown-container">
             <a href="{{ url_for('admins.admin_chart_browser') }}" id="admin_navmenu_chart_browser">Browser</a>
@@ -93,8 +93,8 @@
         {% endif %}
         <a href="{{ url_for('admins_users.admin_users') }}" id="admin_navmenu_users"><img src="{{ url_for('static', filename='images/16/multiple-users-silhouette.png') }}"> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
     </div>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="./web_app_async/static/js/jquery.min.js"></script>
+    <script src="./web_app_async/static/bootstrap/js/bootstrap.min.js"></script>
     <script>
         var dropdown = document.getElementsByClassName("dropdown-btn");
         var i;

@@ -3,8 +3,8 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_layout.css" media="all" type="text/css"/>
     </head>
     {% if media %}
     {{ pagination.info }}
@@ -17,13 +17,13 @@
                     {% if row_data[3] == None %}
                     <td>
                         <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1]) }}" }} >
-                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" alt= {{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
+                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ row_data[0] | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" alt= {{ row_data[0] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
                         </a>
                     </td>
                     {% else %}
                     <td>
                         <a href= "{{ url_for('user_music.user_album_detail_page', guid=row_data[1]) }}" >
-                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" alt= {{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
+                        <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ row_data[2] | replace('/mediakraken/web_app_async/static/meta/images/', '') }}" alt= {{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }} height="100" width="100">
                         </a>
                     </td>
                     {% endif %}
@@ -37,10 +37,10 @@
     <p id="general_text">No album media found.</p>
     {% endif %}
     {% endblock %}
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.shuffle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script src="./web_app_async/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./web_app_async/static/js/jquery.min.js"></script>
+    <script src="./web_app_async/static/js/jquery.shuffle.min.js"></script>
+    <script src="./web_app_async/static/js/blazy.min.js"></script>
     <script>
         ;(function() {
             // Initialize

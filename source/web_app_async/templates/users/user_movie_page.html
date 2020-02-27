@@ -3,8 +3,8 @@
 <body id="data_background">
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.contextMenu.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+        <link rel="stylesheet" href="./web_app_async/static/css/jquery.contextMenu.min.css">
+        <link rel="stylesheet" href="./web_app_async/static/css/base_webapp_layout.css" media="all" type="text/css"/>
     </head>
     {% if media %}
     <div id="filterdiv">
@@ -41,18 +41,18 @@
             <div data-id={{row_data[1]}}>
                 <a href= "{{ url_for('user_movie.movie_detail', guid=row_data[1]) }}">
                 {% if row_data[2] == None %}
-                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/Movie-icon.png') }}" height="300" width="200">
+                    <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "./web_app_async/static/images/Movie-icon.png" height="300" width="200">
                     {% if row_data[3] == True %}
-                    <img class="watched_icon" src="{{ url_for('static', filename='images/eye.png') }}" height="20" width="20">
+                    <img class="watched_icon" src="./web_app_async/static/images/eye.png" height="20" width="20">
                     {% endif %}
                     {% if row_data[4] == True %}
-                    <img class="synced_icon" src="{{ url_for('static', filename='images/synced.jpg') }}" height="20" width="20">
+                    <img class="synced_icon" src="./web_app_async/static/images/synced.jpg" height="20" width="20">
                     {% endif %}
                     {% if row_data[5] != None %}
                     <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
                     {% endif %}
                     {% if row_data[6] == True %}
-                    <img class="exclamation_icon" src="{{ url_for('static', filename='images/exclamation-circle-frame.png') }}" height="20" width="20">
+                    <img class="exclamation_icon" src="./web_app_async/static/images/exclamation-circle-frame.png" height="20" width="20">
                     {% endif %}
                     </a>
                     <div class="description">
@@ -61,16 +61,16 @@
                 {% else %}
                     <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
                     {% if row_data[3] == True %}
-                    <img class="watched_icon" src="{{ url_for('static', filename='images/eye.png') }}" height="20" width="20">
+                    <img class="watched_icon" src="./web_app_async/static/images/eye.png" height="20" width="20">
                     {% endif %}
                     {% if row_data[4] == True %}
-                    <img class="synced_icon" src="{{ url_for('static', filename='images/synced.jpg') }}" height="20" width="20">
+                    <img class="synced_icon" src="./web_app_async/static/images/synced.jpg" height="20" width="20">
                     {% endif %}
                     {% if row_data[5] != None %}
                     <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
                     {% endif %}
                     {% if row_data[6] == True %}
-                    <img class="exclamation_icon" src="{{ url_for('static', filename='images/exclamation-circle-frame.png') }}" height="20" width="20">
+                    <img class="exclamation_icon" src="./web_app_async/static/images/exclamation-circle-frame.png" height="20" width="20">
                     {% endif %}
                     </a>
                 {% endif %}
@@ -82,10 +82,10 @@
     {% else %}
     <p id="general_text">No media found.</p>
     {% endif %}
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.contextMenu.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/base_webapp.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script src="./web_app_async/static/js/jquery.min.js"></script>
+    <script src="./web_app_async/static/js/jquery.contextMenu.min.js"></script>
+    <script src="./web_app_async/static/js/base_webapp.js"></script>
+    <script src="./web_app_async/static/js/blazy.min.js"></script>
     <script>
         ;(function() {
             // Initialize
