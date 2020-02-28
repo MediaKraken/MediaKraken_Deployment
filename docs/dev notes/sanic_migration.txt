@@ -1,0 +1,10 @@
+Templates with jinja2 and url_for
+jinja2 = https://github.com/lixxu/sanic-jinja2 - appears to have url_for
+
+simple auth for routes
+https://github.com/MihaiBalint/Sanic-HTTPAuth
+
+save user session info
+https://github.com/xen/sanic_session
+
+don't need the assets thing
