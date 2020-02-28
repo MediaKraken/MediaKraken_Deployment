@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+  <head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/star-rating.min.css') }}" media="all" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+  </head>
+{% if data %}
+  <div id="movie_detail">
+      {% if data_background_image is not none %}
+          <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" id="fs_bg_image" >
+      {% endif %}
+      <div id="movie_image_div" class="table-responsive">
+          {% if data_poster_image is none %}
+              <img class="center" src= "{{ url_for('static', filename='images/missing_icon.jpg') }}">
+          {% else %}
+              <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" >
+          {% endif %}
+        <table class="table table-hover">
+        <tbody>
+          <tr>
+            <div id="textbox">
+                <p class="alignleft"> {{data_runtime}}</p>
+                <p class="alignright">Rating: {{data_rating}} </p>
+            </div>
+            <div style="clear: both;"></div>
+            <div id="textbox">
+                <p class="alignleft">{{data_aspect}} </p>
+            </div>
+            <div style="clear: both;"></div>
+          </tr>
+        </tbody>
+        </table>
+      </div>
+      <div id="movie_detail_div" class="table-responsive">
+        <div id="textbox">
+            <p class="alignleft">Title: {{data}}</p>
+            <p class="alignright">Release Date: {{data_first_aired}}</p>
+        </div>
+        <div style="clear: both;"></div>
+        <div style="clear: both;"></div>
+        <div id="textbox">
+            <form name="video_detail_stat_form_status" action={{data_detail_url}} method="post">
+                {% if data_genres %}
+                    <p class="alignleft">Genres: {{data_genres}}</p>
+                {% endif %}
+                <p class="alignright">
+            </form>
+        </div>
+     </div>
+    <p>Episodes:</p>
+    <div id="container">
+        <div class="grid">
+            {% for episode_info in data_episode_keys %}
+                <div class="col-1-4">
+                    <div class="wrapper">
+                      <a href= "{{ url_for('user_metadata_tv.metadata_tvshow_episode_detail_page', guid=row_data[0], eps_id=data_episode_count[episode_info][2]) }}" >
+                      {% if data_episode_count[episode_info][1] == "missing_icon.jpg" %}
+                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/missing_icon.jpg') }}" alt= "{{ url_for('static', filename='meta/images/missing_icon.jpg') }}" height="200" width="300">
+                      {% else %}
+                          <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" alt= "{{ url_for('static', filename='meta/images/' + data_episode_count[episode_info][1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="210" width="350">
+                      {% endif %}
+                      </a>
+                        <div class="description">
+                          <p>{{"S" + data_season|string + ", E" + episode_info|string + " - " + data_episode_count[episode_info][0]}}</p>
+                       </div>
+                  </div>
+              </div>
+            {% endfor %}
+         </div>
+     </div>
+ </div>
+{% else %}
+    <p>No info found. ERROR! You should never see this message.</p>
+{% endif %}
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/star-rating.min.js') }}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+<script>
+    ;(function() {
+        // Initialize
+        var bLazy = new Blazy();
+    })();
+</script>
+</body>
+{% endblock %}

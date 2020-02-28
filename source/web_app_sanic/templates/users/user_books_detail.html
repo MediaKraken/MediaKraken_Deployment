@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+    </head>
+    <div id="meta_detail">
+        <div id="meta_image_div" class="table-responsive">
+            <img class="center" src= {{ data_item_image }} >
+        </div>
+        <div id="meta_detail_div" class="table-responsive">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <p>Name: {{data_name}}</p>
+                        <p>ISBN: {{data_isbn}}</p>
+                        <p>Overview: {{data_overview}}</p>
+                        <p>Author: {{data_author}}</p>
+                        <p>Publisher: {{data_publisher}}</p>
+                        <p>Pages: {{data_pages}}</p>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <p id="general_text">No info found. ERROR! You should never see this message.</p>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='context/jquery.contextmenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
+</body>

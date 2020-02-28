@@ -1,0 +1,113 @@
+<html lang="en">
+    <head>
+        <style>
+            .sidenav {
+              z-index: 1;
+              left: 0;
+              background-color: #111;
+              overflow-x: hidden;
+              padding-top: 20px;
+            }
+
+            /* Style the sidenav links and the dropdown button */
+            .sidenav a, .dropdown-btn {
+              padding: 6px 8px 6px 16px;
+              text-decoration: none;
+              font-size: 20px;
+              color: #818181;
+              display: block;
+              border: none;
+              background: none;
+              width:100%;
+              text-align: left;
+              cursor: pointer;
+              outline: none;
+            }
+
+            /* On mouse-over */
+            .sidenav a:hover, .dropdown-btn:hover {
+              color: #f1f1f1;
+            }
+
+            /* Add an active class to the active dropdown button */
+            .active {
+              background-color: green;
+              color: white;
+            }
+
+            /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+            .dropdown-container {
+              display: none;
+              background-color: #262626;
+              padding-left: 8px;
+            }
+
+            /* Optional: Style the caret down icon */
+            .fa-caret-down {
+              float: right;
+              padding-right: 8px;
+            }
+        </style>
+    </head>
+    <div class="sidenav">
+        <a href="{{ url_for('admins_backup.admin_backup') }} " id="admin_navmenu_backup"><img src="{{ url_for('static', filename='images/16/hard-drive-with-an-arrow-pointing-down.png') }}">Backup</a>
+        <a href="{{ url_for('admins.admin_books_add') }}" id="admin_navmenu_book_add"><img src="{{ url_for('static', filename='images/16/books-stack-of-three.png') }}"> Book (add) <span class="badge badge-info"></span></a>
+        <a href="{{ url_for('admins_cron.admin_cron_display_all') }} " id="admin_navmenu_cron"><img src="{{ url_for('static', filename='images/16/list.png') }}">Cron</a>
+
+        <a href="{{ url_for('admins.admin_cloud') }}" id="admin_navmenu_cloud"><img src="{{ url_for('static', filename='images/16/database.png') }}"> Cloud</a>
+
+        <a href="{{ url_for('admins.admin_database_statistics') }}" id="admin_navmenu_database_stats"><img src="{{ url_for('static', filename='images/16/database.png') }}"> DB Statistics</a>
+        <a href="{{ url_for('admins_docker.docker_stat') }}" id="admin_navmenu_docker_stats"><img src="{{ url_for('static', filename='images/16/big-anchor.png') }}"> Docker Statistics</a>
+
+        <a href="{{ url_for('admins_game.game_metadata') }}" id="admin_navmenu_game_metadata"><img src="{{ url_for('static', filename='images/16/play-station-controller.png') }}"> Game Metadata</a>
+
+        <a href="{{ url_for('admins_hardware.admin_hardware') }}" id="admin_navmenu_hardware"><img src="{{ url_for('static', filename='images/16/chromecast.png') }}"> Hardware</a>
+
+        <a href="{{ url_for('admins_library.admin_library') }}" id="admin_navmenu_library"><img src="{{ url_for('static', filename='images/16/video-camera.png') }}">Library <span class="badge badge-info"> {{ data_library }}</span></a>
+        <a href="{{ url_for('admins.admin_messages') }}" id="admin_navmenu_messages"><img src="{{ url_for('static', filename='images/16/black-back-closed-envelope-shape.png') }}"> Messages <span class="badge badge-info"> {{ data_messages }}</span></a>
+
+        <button class="dropdown-btn">Reports
+            <img src="{{ url_for('static', filename='images/16/arrow-point-to-down.png') }}">
+        </button>
+        <div class="dropdown-container">
+            <a href="{{ url_for('admins.admin_chart_browser') }}" id="admin_navmenu_chart_browser">Browser</a>
+            <a href="{{ url_for('admins.admin_chart_client_usage') }}" id="admin_navmenu_client_usage">Client</a>
+            <a href="{{ url_for('admins_report.report_display_all_duplicates') }}" id="admin_navmenu_all_dup">Duplicate Media</a>
+            <a href="{{ url_for('admins_report.report_display_all_media') }}" id="admin_navmenu_all_media">Known Media</a>
+            <a href="{{ url_for('admins_report.report_display_all_media_known_video') }}" id="admin_navmenu_all_matched">Matched Media</a>
+            <a href="{{ url_for('admins_report.report_display_all_unmatched_media') }}" id="admin_navmenu_all_unmatched">Unmatched Media</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=1) }}" id="admin_navmenu_top10_all_time">Top 10 All Time</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=2) }}" id="admin_navmenu_top10_movie">Top 10 Movie</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=3) }}" id="admin_navmenu_top10_tvshow">Top 10 TV Show</a>
+            <a href="{{ url_for('admins_report.report_top10', mtype=4) }}" id="admin_navmenu_top10_tveps">Top 10 TV Episodes</a>
+        </div>
+
+        <a href="{{ url_for('admins.admin_server_settings') }}" id="admin_navmenu_server_settings"><img src="{{ url_for('static', filename='images/16/two-cogwheels-configuration-interface-symbol.png') }}"> Server</a>
+        <a href="{{ url_for('admins_link.admin_server_link_server') }}" id="admin_navmenu_server_link"><img src="{{ url_for('static', filename='images/16/link.png') }}">Server Links</a>
+        <a href="{{ url_for('admins_share.admin_share') }}" id="admin_navmenu_share"><img src="{{ url_for('static', filename='images/16/folder.png') }}"> Share <span class="badge badge-info"> {{ data_share }}</span></a>
+
+        <a href="{{ url_for('admins_media_import.admin_media_import') }}" id="admin_navmenu_media_import">Media Import</a>
+
+        {% if data_transmission_active %}
+        <a href="{{ url_for('admins_transmission.admin_transmission') }}" id="admin_navmenu_transmission"><img src="{{ url_for('static', filename='images/16/world.png') }}">Transmission</a>
+        {% endif %}
+        <a href="{{ url_for('admins_users.admin_users') }}" id="admin_navmenu_users"><img src="{{ url_for('static', filename='images/16/multiple-users-silhouette.png') }}"> Users <span class="badge badge-info"> {{ data_user_count }}</span></a>
+    </div>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script>
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+        for (i = 0; i < dropdown.length; i++) {
+          dropdown[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+              dropdownContent.style.display = "none";
+            } else {
+              dropdownContent.style.display = "block";
+            }
+          });
+        }
+    </script>
+</html>

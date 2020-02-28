@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block page_title %}MediaKraken Unauthorized{% endblock %}
+{% block content %}
+<div class="{% block content_class %}container{% endblock content_class %}">
+    <div class="jumbotron">
+        <div class="text-center">
+            <h1>403 - Invalid security profile</h1>
+            <img src="{{ url_for('static', filename='images/browser.png') }}">
+            <p>You must be an administrator to see this page.</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
