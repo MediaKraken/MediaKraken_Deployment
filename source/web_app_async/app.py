@@ -3,15 +3,15 @@ import os
 import asyncpg
 from common import common_file
 from sanic import Sanic
-from sanic.response import redirect, html
-from web_app_async.blueprint import blueprint_content_mediakraken
-from sanic_session import Session
+from sanic.response import redirect
 from sanic_jinja2 import SanicJinja2
+from sanic_session import Session
+from web_app_async.blueprint import blueprint_content_mediakraken
 
 # setup the Sanic app
 app = Sanic(__name__)
 Session(app)
-jinja = SanicJinja2(app)
+jinja_template = SanicJinja2(app)
 
 app.static('/static', './web_app_async/static')
 
@@ -23,7 +23,7 @@ db_connection = None
 
 # jinja test route
 @app.route("/jinja")
-@jinja.template('public/about.html')
+@jinja_template.template('public/about.html')
 async def hello_jinja(request):
     request['flash']('error message', 'error')
     return {'greetings': 'Hello, sanic!'}
