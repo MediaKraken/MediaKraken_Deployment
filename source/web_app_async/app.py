@@ -13,6 +13,8 @@ app = Sanic(__name__)
 Session(app)
 jinja = SanicJinja2(app)
 
+app.static('/static', './web_app_async/static')
+
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
 
