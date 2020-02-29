@@ -10,9 +10,11 @@ simple auth for routes # TODO TEST
     https://github.com/MihaiBalint/Sanic-HTTPAuth
     INSTALLED
 
-save user session info # TODO TEST
+save user session info # TODO TEST - this uses ujson.....which booms
     https://github.com/xen/sanic_session
-    INSTALLED
+    INSTALLED - removed   sanic-session==0.6.0
+    forked and replaced ujson with json   https://github.com/MediaKraken/sanic_session
+    pip3 install git+https://github.com/MediaKraken/sanic_session
 
 ***************************************
 
