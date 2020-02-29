@@ -7,12 +7,12 @@
     <title>MediaKraken About</title>
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="./web_app_async/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="./web_app_async/static/js/html5.js"></script>
+    <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
     <![endif]-->
-    <link href="./web_app_async/static/css/style_min.css" rel="stylesheet">
-    <link href="./web_app_async/static/css/base_webapp_layout.css" media="all" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='css/style_min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
     <style type="text/css">
      .tab { margin-left: 80px; }
     </style>
@@ -213,6 +213,6 @@
         </div>
     </div>
 </div>
-<script src="./web_app_async/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 </body>
 {% endblock %}
