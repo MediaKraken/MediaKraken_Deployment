@@ -1,10 +1,20 @@
-Templates with jinja2 and url_for
-jinja2 = https://github.com/lixxu/sanic-jinja2 - appears to have url_for
+Templates with jinja2 and url_for # TODO TEST
+    https://github.com/lixxu/sanic-jinja2 - appears to have url_for
+    INSTALLED
 
-simple auth for routes
-https://github.com/MihaiBalint/Sanic-HTTPAuth
+amqp # TODO TEST
+    https://github.com/Polyconseil/aioamqp
+    INSTALLED
 
-save user session info
-https://github.com/xen/sanic_session
+simple auth for routes # TODO TEST
+    https://github.com/MihaiBalint/Sanic-HTTPAuth
+    INSTALLED
+
+save user session info # TODO TEST
+    https://github.com/xen/sanic_session
+    INSTALLED
+
+***************************************
 
 don't need the assets thing
+    webassets==2.0

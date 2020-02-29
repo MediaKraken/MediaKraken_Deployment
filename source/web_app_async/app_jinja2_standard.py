@@ -2,29 +2,43 @@ import os
 
 import asyncpg
 from common import common_file
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+# from common import common_network_pika
 from sanic import Sanic
 from sanic.response import redirect, html
 from web_app_async.blueprint import blueprint_content_mediakraken
-from sanic_session import Session
-from sanic_jinja2 import SanicJinja2
+from webassets import Environment as AssetsEnvironment
+from webassets.ext.jinja2 import AssetsExtension
 
 # setup the Sanic app
 app = Sanic(__name__)
-Session(app)
-jinja = SanicJinja2(app)
-
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
 
 db_connection = None
 
+# setup the jinja2 environment
+jinja_env = Environment(loader=FileSystemLoader('./web_app_async/templates'),
+                        autoescape=select_autoescape(['html', 'xml', 'html_file_name']),
+                        extensions=[AssetsExtension])
+jinja_env.assets_environment = AssetsEnvironment('.', '.')
+# OSError: '/home/spoot/MediaKraken_Deployment/source/static/media/css_all' does not exist
+
+# public templates
+jinja_template_url_public_about = jinja_env.get_template('public/about.html')
+jinja_template_url_public_homepage = jinja_env.get_template('public/home.html')
+
+
+# return jinja2_generic_template('index.html', title='Sanic', data='blob', test=test)
+def jinja2_render_generic_template(html_file_name, **kwargs):
+    template = jinja_env.get_template(html_file_name)
+    return html(template.render(kwargs))
+
 
 # jinja test route
 @app.route("/jinja")
-@jinja.template('public/about.html')
 async def hello_jinja(request):
-    request['flash']('error message', 'error')
-    return {'greetings': 'Hello, sanic!'}
+    return jinja2_render_generic_template('public/about.html')
 
 
 @app.listener('after_server_start')
