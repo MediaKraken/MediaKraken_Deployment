@@ -15,6 +15,7 @@ save user session info # TODO TEST - this uses ujson.....which booms
     INSTALLED - removed   sanic-session==0.6.0
     forked and replaced ujson with json   https://github.com/MediaKraken/sanic_session
     pip3 install git+https://github.com/MediaKraken/sanic_session
+        my session didn't explode
 
 ***************************************
 

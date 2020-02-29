@@ -1,20 +1,47 @@
+import hashlib
 import os
 
 import asyncpg
 from common import common_file
 # from common import common_network_pika
 from sanic import Sanic
-from sanic.response import redirect
+from sanic.response import redirect, text
+from sanic_httpauth import HTTPBasicAuth
 from sanic_jinja2 import SanicJinja2
+from sanic_session import Session
 from web_app_async.blueprint import blueprint_content_mediakraken
 
 # setup the Sanic app
 app = Sanic(__name__)
+Session(app)
+auth = HTTPBasicAuth()
 jinja_template = SanicJinja2(app)
+
+app.static('/static', './web_app_async/static')
+
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
 
 db_connection = None
+
+
+def hash_password(salt, password):
+    salted = password + salt
+    return hashlib.sha512(salted.encode("utf8")).hexdigest()
+
+
+app_salt = "APP_SECRET - don't do this in production"
+users = {
+    "john": hash_password(app_salt, "hello"),
+    "susan": hash_password(app_salt, "bye"),
+}
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users:
+        return users.get(username) == hash_password(app_salt, password)
+    return False
 
 
 # jinja test route
@@ -37,6 +64,12 @@ async def setup_connection(*args, **kwargs):
                                           password='%s' % database_password,
                                           database='postgres',
                                           host='mkstack_pgbouncer')
+
+
+@app.route("/auth")
+@auth.login_required
+def index(request):
+    return text("Hello, %s!" % auth.username(request))
 
 
 # route to the default homepage
