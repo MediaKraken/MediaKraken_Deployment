@@ -9,6 +9,7 @@ amqp # TODO TEST
 simple auth for routes # TODO TEST
     https://github.com/MihaiBalint/Sanic-HTTPAuth
     INSTALLED
+        pops up standard security user/pass like htaccess does
 
 save user session info # TODO TEST - this uses ujson.....which booms
     https://github.com/xen/sanic_session
@@ -16,6 +17,12 @@ save user session info # TODO TEST - this uses ujson.....which booms
     forked and replaced ujson with json   https://github.com/MediaKraken/sanic_session
     pip3 install git+https://github.com/MediaKraken/sanic_session
         my session didn't explode
+
+# adding tasks.....like timers.....perhaps the refreshing clock or lib scan?
+https://github.com/huge-success/sanic/blob/master/examples/add_task_sanic.py
+
+# custom error handler........so can throw 500's and auto send to elk
+https://github.com/huge-success/sanic/blob/master/examples/exception_monitoring.py
 
 ***************************************
 
