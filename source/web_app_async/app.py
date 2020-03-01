@@ -4,6 +4,8 @@ import os
 from asyncpg import create_pool
 from common import common_file
 from sanic import Sanic
+from sanic.exceptions import SanicException
+from sanic.handlers import ErrorHandler
 from sanic.response import json
 from sanic.response import redirect, text
 from sanic_httpauth import HTTPBasicAuth
@@ -11,12 +13,30 @@ from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
 from web_app_async.blueprint import blueprint_content_mediakraken
 
+
+class CustomHandler(ErrorHandler):
+
+    def default(self, request, exception):
+        # Here, we have access to the exception object
+        # and can do anything with it (log, send to external service, etc)
+
+        # Some exceptions are trivial and built into Sanic (404s, etc)
+        if not isinstance(exception, SanicException):
+            print(exception)
+
+        # Then, we must finish handling the exception by returning
+        # our response to the client
+        # For this we can just call the super class' default handler
+        return super().default(request, exception)
+
+
 # setup the Sanic app
 app = Sanic(__name__)
 Session(app)
 auth = HTTPBasicAuth()
 jinja_template = SanicJinja2(app)
-
+handler = CustomHandler()
+app.error_handler = handler
 app.static('/static', './web_app_async/static')
 
 # setup the blueprints
