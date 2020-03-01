@@ -1,9 +1,10 @@
 import hashlib
 import os
 
-import asyncpg
+from asyncpg import create_pool
 from common import common_file
 from sanic import Sanic
+from sanic.response import json
 from sanic.response import redirect, text
 from sanic_httpauth import HTTPBasicAuth
 from sanic_jinja2 import SanicJinja2
@@ -50,18 +51,46 @@ async def hello_jinja(request):
     return {'greetings': 'Hello, sanic!'}
 
 
-@app.listener('after_server_start')
-async def setup_connection(*args, **kwargs):
-    print('after server start, connect to db')
-    global db_connection
+# @app.listener('after_server_start')
+# async def setup_connection(app, loop):
+#     print('after server start, connect to db')
+#     global db_connection
+#     if 'POSTGRES_PASSWORD' in os.environ:
+#         database_password = os.environ['POSTGRES_PASSWORD']
+#     else:
+#         database_password = common_file.com_file_load_data('/run/secrets/db_password')
+#     app.db_connection = await asyncpg.connect(user='user',
+#                                               password='%s' % database_password,
+#                                               database='postgres',
+#                                               host='mkstack_pgbouncer')
+
+@app.listener('before_server_start')
+async def register_db(app, loop):
     if 'POSTGRES_PASSWORD' in os.environ:
         database_password = os.environ['POSTGRES_PASSWORD']
     else:
         database_password = common_file.com_file_load_data('/run/secrets/db_password')
-    db_connection = await asyncpg.connect(user='user',
-                                          password='%s' % database_password,
-                                          database='postgres',
-                                          host='mkstack_pgbouncer')
+    app.pool = await create_pool(user='user',
+                                 password='%s' % database_password,
+                                 database='postgres',
+                                 host='mkstack_pgbouncer',
+                                 loop=loop, max_size=100)
+    async with app.pool.acquire() as connection:
+        await connection.execute('DROP TABLE IF EXISTS sanic_post')
+
+
+def jsonify(records):
+    """
+    Parse asyncpg record response into JSON format
+    """
+    return [dict(r.items()) for r in records]
+
+
+@app.get('/db')
+async def root_get(request):
+    async with app.pool.acquire() as connection:
+        results = await connection.fetch('SELECT * FROM sanic_post')
+        return json({'posts': jsonify(results)})
 
 
 @app.route("/auth")
