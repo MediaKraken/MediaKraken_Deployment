@@ -65,13 +65,4 @@
         {% endif %}
     </ul>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <!-- the script for refresh current time -->
-    <script>
-    var update = function () {
-    $("#timestamp").html(moment().format('MMMM Do YYYY, h:mm:ss a'));
-    };
-    $(document).ready(function(){
-    setInterval(update, 100);
-    });
-    </script>
 </nav>
