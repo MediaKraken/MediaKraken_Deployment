@@ -47,7 +47,6 @@ def verify_password(username, password):
 @app.route("/jinja")
 @jinja_template.template('public/about.html')
 async def hello_jinja(request):
-    request['flash']('error message', 'error')
     return {'greetings': 'Hello, sanic!'}
 
 
@@ -68,6 +67,7 @@ async def setup_connection(*args, **kwargs):
 @app.route("/auth")
 @auth.login_required
 def index(request):
+    request['flash']('error message', 'error')
     return text("Hello, %s!" % auth.username(request))
 
 
