@@ -1,4 +1,5 @@
 import os
+
 import crypto
 from asyncpg import create_pool
 from common import common_file
@@ -69,6 +70,7 @@ async def login(request):
     content = template.render(links=links, form=form, errors=errors)
     return response.html(content)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 async def login(request):
     message = ''
@@ -81,6 +83,7 @@ async def login(request):
             auth.login_user(request, user)
             return response.redirect('/profile')
     return response.html(HTML_LOGIN_FORM)
+
 
 @app.route("/register", methods=['GET', 'POST'])
 async def register(request):
@@ -109,9 +112,6 @@ async def register(request):
 async def check_password(self, password):
     temp_pass = await crypto.hash_SHA512(password)
     return self.password == temp_pass.decode("utf-8")
-
-
-
 
 
 @app.route('/logout')
