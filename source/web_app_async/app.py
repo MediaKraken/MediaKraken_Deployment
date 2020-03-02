@@ -1,17 +1,18 @@
-import hashlib
 import os
-
+import crypto
 from asyncpg import create_pool
 from common import common_file
 from sanic import Sanic
+from sanic import response
 from sanic.exceptions import SanicException
 from sanic.handlers import ErrorHandler
 from sanic.response import json
 from sanic.response import redirect, text
-from sanic_httpauth import HTTPBasicAuth
+from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
 from web_app_async.blueprint import blueprint_content_mediakraken
+from web_app_async.blueprint.public.loginform import LoginForm, RegistrationForm
 
 
 class CustomHandler(ErrorHandler):
@@ -32,8 +33,9 @@ class CustomHandler(ErrorHandler):
 
 # setup the Sanic app
 app = Sanic(__name__)
+app.config.AUTH_LOGIN_ENDPOINT = 'login'
+auth = Auth(app)
 Session(app)
-auth = HTTPBasicAuth()
 jinja_template = SanicJinja2(app)
 handler = CustomHandler()
 app.error_handler = handler
@@ -45,23 +47,78 @@ app.blueprint(blueprint_content_mediakraken)
 db_connection = None
 
 
-def hash_password(salt, password):
-    salted = password + salt
-    return hashlib.sha512(salted.encode("utf8")).hexdigest()
+@app.route("/login", methods=['GET', 'POST'])
+async def login(request):
+    form = LoginForm(request)
+    errors = {}
+    if request.method == 'POST' and form.validate():
+        username = form.username.data
+        password = form.password.data
+        try:
+            user = await db_objects.get(Operator, username=username)
+            if await user.check_password(password):
+                login_user = User(id=user.id, name=user.username)
+                auth.login_user(request, login_user)
+                return response.redirect("/")
+        except:
+            errors['validate_errors'] = "Username or password invalid"
+    errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
+    errors['username_errors'] = '<br>'.join(form.username.errors)
+    errors['password_errors'] = '<br>'.join(form.password.errors)
+    template = env.get_template('login.html')
+    content = template.render(links=links, form=form, errors=errors)
+    return response.html(content)
+
+@app.route('/login', methods=['GET', 'POST'])
+async def login(request):
+    message = ''
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # fetch user from database
+        user = some_datastore.get(name=username)
+        if user and user.check_password(password):
+            auth.login_user(request, user)
+            return response.redirect('/profile')
+    return response.html(HTML_LOGIN_FORM)
+
+@app.route("/register", methods=['GET', 'POST'])
+async def register(request):
+    errors = {}
+    form = RegistrationForm(request)
+    if request.method == 'POST' and form.validate():
+        username = form.username.data
+        password = await crypto.hash_SHA512(form.password.data)
+        # we need to create a new user
+        try:
+            user = await db_objects.create(Operator, username=username, password=password)
+            login_user = User(id=user.id, name=user.username)
+            auth.login_user(request, login_user)
+            return response.redirect("/")
+        except:
+            # failed to insert into database
+            errors['validate_errors'] = "failed to create user"
+    errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
+    errors['username_errors'] = '<br>'.join(form.username.errors)
+    errors['password_errors'] = '<br>'.join(form.password.errors)
+    template = env.get_template('register.html')
+    content = template.render(links=links, form=form, errors=errors)
+    return response.html(content)
 
 
-app_salt = "APP_SECRET - don't do this in production"
-users = {
-    "john": hash_password(app_salt, "hello"),
-    "susan": hash_password(app_salt, "bye"),
-}
+async def check_password(self, password):
+    temp_pass = await crypto.hash_SHA512(password)
+    return self.password == temp_pass.decode("utf-8")
 
 
-@auth.verify_password
-def verify_password(username, password):
-    if username in users:
-        return users.get(username) == hash_password(app_salt, password)
-    return False
+
+
+
+@app.route('/logout')
+@auth.login_required
+async def logout(request):
+    auth.logout_user(request)
+    return response.redirect('/login')
 
 
 # jinja test route
