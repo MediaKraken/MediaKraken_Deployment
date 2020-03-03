@@ -70,7 +70,7 @@ async def login(request):
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
-    return jinja_template.render('public/login.html', request, form=form, errors=errors)
+    return common_global.jinja_template.render('public/login.html', request, form=form, errors=errors)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -92,7 +92,7 @@ async def register(request):
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
-    template = jinja_template.get_template('register.html')
+    template = common_global.jinja_template.get_template('register.html')
     content = template.render(form=form, errors=errors)
     return response.html(content)
 
