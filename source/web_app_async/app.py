@@ -7,29 +7,14 @@ from common import common_global
 from sanic import Sanic
 from sanic import response
 from sanic.exceptions import SanicException
-from sanic.handlers import ErrorHandler
+from sanic.exceptions import ServerError
+from sanic.log import logger
+from sanic.request import Request
 from sanic.response import json
 from sanic.response import redirect, text
 from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
-
-
-class CustomHandler(ErrorHandler):
-
-    def default(self, request, exception):
-        # Here, we have access to the exception object
-        # and can do anything with it (log, send to external service, etc)
-
-        # Some exceptions are trivial and built into Sanic (404s, etc)
-        if not isinstance(exception, SanicException):
-            print(exception)
-
-        # Then, we must finish handling the exception by returning
-        # our response to the client
-        # For this we can just call the super class' default handler
-        return super().default(request, exception)
-
 
 # setup the Sanic app
 app = Sanic(__name__)
@@ -39,18 +24,24 @@ auth = Auth(app)
 Session(app)
 # initialize jinja templating
 common_global.jinja_template = SanicJinja2(app)
-# since I use global jinja....these MUST be after the initialization
+# since I use global jinja....these MUST be after the initialization otherwise template = NONE
 from web_app_async.blueprint import blueprint_content_mediakraken
 from web_app_async.blueprint.public.loginform import LoginForm, RegistrationForm
 
-handler = CustomHandler()
-app.error_handler = handler
 app.static('/static', './web_app_async/static')
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
 
-db_connection = None
+
+@app.exception(Exception)
+async def no_details_to_user(request: Request, exception: Exception):
+    if isinstance(exception, SanicException):
+        str_code = str(exception.status_code)
+        logger.info(f'[{str_code}]')
+        return text(str_code, exception.status_code)
+    logger.exception(exception)
+    return text('Server error', 500)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -117,15 +108,18 @@ async def register_db(app, loop):
     if 'POSTGRES_PASSWORD' in os.environ:
         database_password = os.environ['POSTGRES_PASSWORD']
     else:
-        database_password = common_file.com_file_load_data('/run/secrets/db_password')
+        try:
+            database_password = common_file.com_file_load_data('/run/secrets/db_password')
+        except FileNotFoundError:
+            raise ServerError("Something bad happened", status_code=500)
     app.pool = await create_pool(user='user',
                                  password='%s' % database_password,
                                  database='postgres',
                                  host='mkstack_pgbouncer',
                                  loop=loop,
                                  max_size=100)
-    async with app.pool.acquire() as connection:
-        await connection.execute('DROP TABLE IF EXISTS sanic_post')
+    # async with app.pool.acquire() as connection:
+    #     await connection.execute('DROP TABLE IF EXISTS sanic_post')
 
 
 def jsonify(records):
