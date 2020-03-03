@@ -46,16 +46,15 @@ from web_app_async.blueprint.public.loginform import LoginForm, RegistrationForm
 handler = CustomHandler()
 app.error_handler = handler
 app.static('/static', './web_app_async/static')
-#app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
+# app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
 
 db_connection = None
 
 
-# @jinja_template.template('public/login.html')
-
 @app.route("/login", methods=['GET', 'POST'])
+@common_global.jinja_template.template('public/login.html')
 async def login(request):
     form = LoginForm(request)
     errors = {}
@@ -73,13 +72,12 @@ async def login(request):
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
-    return common_global.jinja_template.render('public/login.html',
-                                               request,
-                                               form=form,
-                                               errors=errors)
+    return {'form': form,
+            'errors': errors}
 
 
 @app.route("/register", methods=['GET', 'POST'])
+@common_global.jinja_template.template('public/register.html')
 async def register(request):
     errors = {}
     form = RegistrationForm(request)
@@ -98,10 +96,8 @@ async def register(request):
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
-    template = common_global.jinja_template.get_template('register.html')
-    content = template.render(form=form,
-                              errors=errors)
-    return response.html(content)
+    return {'form': form,
+            'errors': errors}
 
 
 async def check_password(self, password):
