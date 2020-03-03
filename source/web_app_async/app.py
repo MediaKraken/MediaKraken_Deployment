@@ -13,7 +13,6 @@ from sanic.response import redirect, text
 from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
-from web_app_async.blueprint.public.loginform import LoginForm, RegistrationForm
 
 
 class CustomHandler(ErrorHandler):
@@ -44,6 +43,7 @@ app.error_handler = handler
 app.static('/static', './web_app_async/static')
 
 from web_app_async.blueprint import blueprint_content_mediakraken
+from web_app_async.blueprint.public.loginform import LoginForm, RegistrationForm
 
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
