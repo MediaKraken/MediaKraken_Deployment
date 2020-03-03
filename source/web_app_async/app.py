@@ -35,6 +35,7 @@ class CustomHandler(ErrorHandler):
 # setup the Sanic app
 app = Sanic(__name__)
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
+app.config['WTF_CSRF_SECRET_KEY'] = 'top secret!'  # TODO!  load from secret I guess
 auth = Auth(app)
 Session(app)
 jinja_template = SanicJinja2(app)
@@ -47,6 +48,8 @@ app.blueprint(blueprint_content_mediakraken)
 
 db_connection = None
 
+
+# @jinja_template.template('public/login.html')
 
 @app.route("/login", methods=['GET', 'POST'])
 async def login(request):
@@ -66,23 +69,21 @@ async def login(request):
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
-    template = env.get_template('login.html')
-    content = template.render(links=links, form=form, errors=errors)
-    return response.html(content)
+    return jinja_template.render('public/login.html', request, form=form, errors=errors)
 
 
-@app.route('/login', methods=['GET', 'POST'])
-async def login(request):
-    message = ''
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        # fetch user from database
-        user = some_datastore.get(name=username)
-        if user and user.check_password(password):
-            auth.login_user(request, user)
-            return response.redirect('/profile')
-    return response.html(HTML_LOGIN_FORM)
+# @app.route('/login', methods=['GET', 'POST'])
+# async def login(request):
+#     message = ''
+#     if request.method == 'POST':
+#         username = request.form.get('username')
+#         password = request.form.get('password')
+#         # fetch user from database
+#         user = some_datastore.get(name=username)
+#         if user and user.check_password(password):
+#             auth.login_user(request, user)
+#             return response.redirect('/profile')
+#     return response.html(HTML_LOGIN_FORM)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -104,8 +105,8 @@ async def register(request):
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
-    template = env.get_template('register.html')
-    content = template.render(links=links, form=form, errors=errors)
+    template = jinja_template.get_template('register.html')
+    content = template.render(form=form, errors=errors)
     return response.html(content)
 
 
