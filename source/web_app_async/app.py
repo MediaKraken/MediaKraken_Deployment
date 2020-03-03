@@ -70,7 +70,10 @@ async def login(request):
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
-    return common_global.jinja_template.render('public/login.html', request, form=form, errors=errors)
+    return common_global.jinja_template.render('public/login.html',
+                                               request,
+                                               form=form,
+                                               errors=errors)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -93,7 +96,8 @@ async def register(request):
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
     template = common_global.jinja_template.get_template('register.html')
-    content = template.render(form=form, errors=errors)
+    content = template.render(form=form,
+                              errors=errors)
     return response.html(content)
 
 
@@ -109,11 +113,11 @@ async def logout(request):
     return response.redirect('/login')
 
 
-# jinja test route
-@app.route("/jinja")
-@common_global.jinja_template.template('public/about.html')
-async def hello_jinja(request):
-    return {'greetings': 'Hello, sanic!'}
+# # jinja test route
+# @app.route("/jinja")
+# @common_global.jinja_template.template('public/about.html')
+# async def hello_jinja(request):
+#     return {'greetings': 'Hello, sanic!'}
 
 
 @app.listener('before_server_start')
@@ -126,7 +130,8 @@ async def register_db(app, loop):
                                  password='%s' % database_password,
                                  database='postgres',
                                  host='mkstack_pgbouncer',
-                                 loop=loop, max_size=100)
+                                 loop=loop,
+                                 max_size=100)
     async with app.pool.acquire() as connection:
         await connection.execute('DROP TABLE IF EXISTS sanic_post')
 
