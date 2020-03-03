@@ -118,8 +118,10 @@ async def register_db(app, loop):
                                  host='mkstack_database',
                                  loop=loop,
                                  max_size=100)
-    # async with app.pool.acquire() as connection:
-    #     await connection.execute('DROP TABLE IF EXISTS sanic_post')
+    async with app.pool.acquire() as connection:
+        # await connection.execute('select * from mm_user')
+        values = await connection.fetch('select * from mm_user')
+        print(values)
 
 
 def jsonify(records):
