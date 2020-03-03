@@ -3,6 +3,7 @@ import os
 import crypto
 from asyncpg import create_pool
 from common import common_file
+from common import common_global
 from sanic import Sanic
 from sanic import response
 from sanic.exceptions import SanicException
@@ -38,7 +39,7 @@ app.config.AUTH_LOGIN_ENDPOINT = 'login'
 app.config['WTF_CSRF_SECRET_KEY'] = 'top secret!'  # TODO!  load from secret I guess
 auth = Auth(app)
 Session(app)
-jinja_template = SanicJinja2(app)
+common_global.jinja_template = SanicJinja2(app)
 handler = CustomHandler()
 app.error_handler = handler
 app.static('/static', './web_app_async/static')
@@ -70,20 +71,6 @@ async def login(request):
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
     return jinja_template.render('public/login.html', request, form=form, errors=errors)
-
-
-# @app.route('/login', methods=['GET', 'POST'])
-# async def login(request):
-#     message = ''
-#     if request.method == 'POST':
-#         username = request.form.get('username')
-#         password = request.form.get('password')
-#         # fetch user from database
-#         user = some_datastore.get(name=username)
-#         if user and user.check_password(password):
-#             auth.login_user(request, user)
-#             return response.redirect('/profile')
-#     return response.html(HTML_LOGIN_FORM)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -124,23 +111,10 @@ async def logout(request):
 
 # jinja test route
 @app.route("/jinja")
-@jinja_template.template('public/about.html')
+@common_global.jinja_template.template('public/about.html')
 async def hello_jinja(request):
     return {'greetings': 'Hello, sanic!'}
 
-
-# @app.listener('after_server_start')
-# async def setup_connection(app, loop):
-#     print('after server start, connect to db')
-#     global db_connection
-#     if 'POSTGRES_PASSWORD' in os.environ:
-#         database_password = os.environ['POSTGRES_PASSWORD']
-#     else:
-#         database_password = common_file.com_file_load_data('/run/secrets/db_password')
-#     app.db_connection = await asyncpg.connect(user='user',
-#                                               password='%s' % database_password,
-#                                               database='postgres',
-#                                               host='mkstack_pgbouncer')
 
 @app.listener('before_server_start')
 async def register_db(app, loop):
@@ -173,7 +147,7 @@ async def root_get(request):
 
 @app.route("/auth")
 @auth.login_required
-def index(request):
+async def index(request):
     request['flash']('error message', 'error')
     return text("Hello, %s!" % auth.username(request))
 
@@ -187,11 +161,6 @@ async def hello(request):
 # print out all routes for debugging purposes
 for handler, (rule, router) in app.router.routes_names.items():
     print(rule)
-
-# common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
-#                                       rabbit_host_name='mkstack_rabbitmq',
-#                                       exchange_name='mkque_ex',
-#                                       route_key='mkque')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
