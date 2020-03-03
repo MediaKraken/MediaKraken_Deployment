@@ -37,14 +37,16 @@ app.config.AUTH_LOGIN_ENDPOINT = 'login'
 app.config['WTF_CSRF_SECRET_KEY'] = 'top secret!'  # TODO!  load from secret I guess
 auth = Auth(app)
 Session(app)
+# initialize jinja templating
 common_global.jinja_template = SanicJinja2(app)
-handler = CustomHandler()
-app.error_handler = handler
-app.static('/static', './web_app_async/static')
-
+# since I use global jinja....these MUST be after the initialization
 from web_app_async.blueprint import blueprint_content_mediakraken
 from web_app_async.blueprint.public.loginform import LoginForm, RegistrationForm
 
+handler = CustomHandler()
+app.error_handler = handler
+app.static('/static', './web_app_async/static')
+#app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
 
@@ -112,13 +114,6 @@ async def check_password(self, password):
 async def logout(request):
     auth.logout_user(request)
     return response.redirect('/login')
-
-
-# # jinja test route
-# @app.route("/jinja")
-# @common_global.jinja_template.template('public/about.html')
-# async def hello_jinja(request):
-#     return {'greetings': 'Hello, sanic!'}
 
 
 @app.listener('before_server_start')
