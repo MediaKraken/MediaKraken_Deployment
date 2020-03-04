@@ -14,7 +14,7 @@ from sanic.response import redirect, text
 from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
-
+import database_aync as database_base_async
 # setup the Sanic app
 app = Sanic(__name__)
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
@@ -31,6 +31,9 @@ app.static('/static', './web_app_async/static')
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
+
+# setup all the db functions and attempt db connection
+app.db_functions = database_base_async.MKServerDatabaseasync()
 
 # setup the pika connection
 credentials = pika.PlainCredentials('guest', 'guest')
@@ -106,6 +109,7 @@ async def logout(request):
 
 @app.listener('before_server_start')
 async def register_db(app, loop):
+    # need to leave this here so the "loop" is defined
     if 'POSTGRES_PASSWORD' in os.environ:
         database_password = os.environ['POSTGRES_PASSWORD']
     else:
@@ -119,6 +123,20 @@ async def register_db(app, loop):
                                     host='mkstack_database',
                                     loop=loop,
                                     max_size=100)
+    # TODO, test for trigam, etc
+    # self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
+    # self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
+    #                        multiprocessing.cpu_count())
+    # # do here since the db cursor is created now
+    # # verify the trigram extension is enabled for the database
+    # self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
+    # if self.db_cursor.fetchone()[0] == 0:
+    #     common_global.es_inst.com_elastic_index('critical',
+    #                                             {'stuff': 'pg_trgm extension needs to '
+    #                                                       'be enabled for database!!!!'
+    #                                                       '  Exiting!!!'})
+    #     sys.exit(1)
+    #
     # async with app.db_pool.acquire() as db_connection:
     #     # await connection.execute('select * from mm_user')
     #     values = await db_connection.fetch('select * from mm_user')
