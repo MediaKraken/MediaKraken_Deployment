@@ -51,6 +51,7 @@ async def root_get_pika(request):
                                            'Media Path': 'fakename'}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=2))
+    return text("Hello Pika")
 
 
 @app.exception(Exception)
@@ -155,6 +156,7 @@ async def root_get(request):
         results = await connection.fetch('SELECT * FROM mm_user')
         for row_data in results:
             print(row_data, row_data['email'])
+    return text("Hello DB")
 
 
 @app.route("/auth")
