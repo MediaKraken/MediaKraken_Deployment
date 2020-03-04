@@ -152,8 +152,8 @@ def jsonify(records):
 
 @app.route('/db')
 async def root_get(request):
-    async with app.db_pool.acquire() as connection:
-        results = await connection.fetch('SELECT * FROM mm_user')
+    async with app.db_pool.acquire() as db_connection:
+        results = await db_connection.fetch('SELECT * FROM mm_user')
         for row_data in results:
             print(row_data, row_data['email'])
     return text("Hello DB")
