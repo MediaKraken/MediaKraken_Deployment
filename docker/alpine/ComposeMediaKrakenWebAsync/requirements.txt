@@ -1,3 +1,4 @@
+crypto==1.4.1
 WTForms==2.2.1
 sanic==19.12.2
 Sanic-WTF==0.5.0
