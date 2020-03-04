@@ -1,6 +1,8 @@
+import json
 import os
 
 import crypto
+import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
@@ -31,6 +33,24 @@ app.static('/static', './web_app_async/static')
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
+
+# setup the pika connection
+credentials = pika.PlainCredentials('guest', 'guest')
+parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
+                                       credentials=credentials)
+connection = pika.BlockingConnection(parameters)
+app.channel = connection.channel()
+
+
+@app.route('/pika')
+async def root_get_pika(request):
+    request.app.channel.basic_publish(exchange='mkque_ffmpeg_ex',
+                                      routing_key='mkffmpeg',
+                                      body=json.dumps(
+                                          {'Type': 'FFProbe', 'Media UUID': '453454',
+                                           'Media Path': 'fakename'}),
+                                      properties=pika.BasicProperties(content_type='text/plain',
+                                                                      delivery_mode=2))
 
 
 @app.exception(Exception)
@@ -129,7 +149,7 @@ def jsonify(records):
     return [dict(r.items()) for r in records]
 
 
-@app.get('/db')
+@app.route('/db')
 async def root_get(request):
     async with app.db_pool.acquire() as connection:
         results = await connection.fetch('SELECT * FROM mm_user')
