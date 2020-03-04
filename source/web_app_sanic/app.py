@@ -112,15 +112,15 @@ async def register_db(app, loop):
             database_password = common_file.com_file_load_data('/run/secrets/db_password')
         except FileNotFoundError:
             raise ServerError("Something bad happened", status_code=500)
-    app.pool = await create_pool(user='postgres',
-                                 password='%s' % database_password,
-                                 database='postgres',
-                                 host='mkstack_database',
-                                 loop=loop,
-                                 max_size=100)
-    async with app.pool.acquire() as connection:
+    app.db_pool = await create_pool(user='postgres',
+                                    password='%s' % database_password,
+                                    database='postgres',
+                                    host='mkstack_database',
+                                    loop=loop,
+                                    max_size=100)
+    async with app.db_pool.acquire() as db_connection:
         # await connection.execute('select * from mm_user')
-        values = await connection.fetch('select * from mm_user')
+        values = await db_connection.fetch('select * from mm_user')
         print(values)
 
 
