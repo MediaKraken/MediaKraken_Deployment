@@ -10,7 +10,6 @@ from sanic.exceptions import SanicException
 from sanic.exceptions import ServerError
 from sanic.log import logger
 from sanic.request import Request
-from sanic.response import json
 from sanic.response import redirect, text
 from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
@@ -20,7 +19,7 @@ from sanic_session import Session
 app = Sanic(__name__)
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
 app.config['WTF_CSRF_SECRET_KEY'] = 'top secret!'  # TODO!  load from secret I guess
-auth = Auth(app)
+common_global.auth = Auth(app)
 Session(app)
 # initialize jinja templating
 common_global.jinja_template = SanicJinja2(app)
@@ -63,7 +62,7 @@ async def login(request):
             user = await db_objects.get(Operator, username=username)
             if await user.check_password(password):
                 login_user = User(id=user.id, name=user.username)
-                auth.login_user(request, login_user)
+                common_global.auth.login_user(request, login_user)
                 return response.redirect("/")
         except:
             errors['validate_errors'] = "Username or password invalid"
@@ -86,7 +85,7 @@ async def register(request):
         try:
             user = await db_objects.create(Operator, username=username, password=password)
             login_user = User(id=user.id, name=user.username)
-            auth.login_user(request, login_user)
+            common_global.auth.login_user(request, login_user)
             return response.redirect("/")
         except:
             # failed to insert into database
@@ -99,9 +98,9 @@ async def register(request):
 
 
 @app.route('/logout')
-@auth.login_required
+@common_global.auth.login_required
 async def logout(request):
-    auth.logout_user(request)
+    common_global.auth.logout_user(request)
     return response.redirect('/login')
 
 
@@ -120,31 +119,10 @@ async def register_db(app, loop):
                                     host='mkstack_database',
                                     loop=loop,
                                     max_size=100)
-    async with app.db_pool.acquire() as db_connection:
-        # await connection.execute('select * from mm_user')
-        values = await db_connection.fetch('select * from mm_user')
-        print(values)
-
-
-def jsonify(records):
-    """
-    Parse asyncpg record response into JSON format
-    """
-    return [dict(r.items()) for r in records]
-
-
-@app.get('/db')
-async def root_get(request):
-    async with app.pool.acquire() as connection:
-        results = await connection.fetch('SELECT * FROM sanic_post')
-        return json({'posts': jsonify(results)})
-
-
-@app.route("/auth")
-@auth.login_required
-async def index(request):
-    request['flash']('error message', 'error')
-    return text("Hello, %s!" % auth.username(request))
+    # async with app.db_pool.acquire() as db_connection:
+    #     # await connection.execute('select * from mm_user')
+    #     values = await db_connection.fetch('select * from mm_user')
+    #     print(values)
 
 
 # route to the default homepage
