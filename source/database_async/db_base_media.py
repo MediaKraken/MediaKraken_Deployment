@@ -309,18 +309,6 @@ def db_read_media_path_like(self, media_path):
         return None
 
 
-def db_read_media_new_count(self, search_value=None, days_old=7):
-    """
-    # new media count
-    """
-    self.db_cursor.execute('select count(*) from mm_media, mm_metadata_movie'
-                           ' where mm_media_metadata_guid = mm_metadata_guid'
-                           ' and mm_media_json->>\'DateAdded\' >= %s',
-                           ((datetime.datetime.now()
-                             - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
-    return self.db_cursor.fetchone()[0]
-
-
 def db_read_media_new(self, offset=None, records=None, search_value=None, days_old=7):
     """
     # new media

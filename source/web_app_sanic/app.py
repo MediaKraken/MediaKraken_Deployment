@@ -123,7 +123,7 @@ async def register_db(app, loop):
     #     # await connection.execute('select * from mm_user')
     #     values = await db_connection.fetch('select * from mm_user')
     #     print(values)
-
+    # await db_connection.close() - not needed in pool?
 
 # route to the default homepage
 @app.route("/")
