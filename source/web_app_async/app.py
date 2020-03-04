@@ -10,7 +10,6 @@ from sanic.exceptions import SanicException
 from sanic.exceptions import ServerError
 from sanic.log import logger
 from sanic.request import Request
-from sanic.response import json
 from sanic.response import redirect, text
 from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
@@ -136,7 +135,6 @@ async def root_get(request):
         results = await connection.fetch('SELECT * FROM mm_user')
         for row_data in results:
             print(row_data, row_data['email'])
-        return json({'posts': jsonify(results)})
 
 
 @app.route("/auth")
