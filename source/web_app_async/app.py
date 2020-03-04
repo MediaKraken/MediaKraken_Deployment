@@ -132,7 +132,7 @@ def jsonify(records):
 
 @app.get('/db')
 async def root_get(request):
-    async with app.pool.acquire() as connection:
+    async with app.db_pool.acquire() as connection:
         results = await connection.fetch('SELECT * FROM mm_user')
         for row_data in results:
             print(row_data, row_data['email'])
