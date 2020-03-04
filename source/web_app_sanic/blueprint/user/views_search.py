@@ -1,22 +1,3 @@
-"""
-User view in webapp
-"""
-# -*- coding: utf-8 -*-
-
-from flask import Blueprint, render_template, g, request, redirect, url_for, session
-from flask_login import login_required
-
-blueprint = Blueprint("user_search", __name__,
-                      url_prefix='/users', static_folder="../static")
-import json
-from MediaKraken.user.forms import SearchEditForm
-import sys
-
-sys.path.append('..')
-sys.path.append('../..')
-from common import common_global
-import database as database_base
-
 
 @blueprint.route("/search", methods=["GET", "POST"])
 @login_required
@@ -140,19 +121,3 @@ def search_nav_media():
     elif session['search_page'] == 'meta_tv':
         return redirect(url_for('user_metadata_tv.metadata_tvshow_list'))
 
-
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):  # pylint: disable=W0613
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

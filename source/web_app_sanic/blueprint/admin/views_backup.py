@@ -1,27 +1,3 @@
-# -*- coding: utf-8 -*-
-
-import json
-import os
-import sys
-
-sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash
-from flask_login import login_required
-
-blueprint = Blueprint("admins_backup", __name__,
-                      url_prefix='/admin', static_folder="../static")
-# need the following three items for admin check
-import flask
-from flask_login import current_user
-from MediaKraken.utils import flash_errors
-from functools import wraps
-from MediaKraken.admins.forms import BackupEditForm
-from common import common_network_cloud
-from common import common_file
-from common import common_global
-from common import common_pagination
-from common import common_string
-import database as database_base
 
 
 def admin_required(fn):
@@ -118,10 +94,3 @@ def before_request():
     g.option_config_json = g.db_connection.db_opt_status_read()[0]
     g.db_connection.db_open()
 
-
-@blueprint.teardown_request
-def teardown_request(exception):
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

@@ -1,24 +1,3 @@
-"""
-User view in webapp
-"""
-# -*- coding: utf-8 -*-
-
-from MediaKraken.user.forms import SyncEditForm
-from flask import Blueprint, render_template, g, request, \
-    redirect, url_for
-from flask_login import login_required
-
-blueprint = Blueprint("user_sync", __name__,
-                      url_prefix='/users', static_folder="../static")
-import json
-import sys
-
-sys.path.append('..')
-sys.path.append('../..')
-from common import common_pagination
-import database as database_base
-from MediaKraken.utils import flash_errors
-
 
 @blueprint.route('/sync')
 @login_required
@@ -83,19 +62,3 @@ def admin_sync_delete_page():
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
-
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):  # pylint: disable=W0613
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

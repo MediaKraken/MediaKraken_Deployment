@@ -1,23 +1,3 @@
-# -*- coding: utf-8 -*-
-
-import json
-import sys
-
-sys.path.append('..')
-from flask import Blueprint, render_template, g, request, redirect, url_for
-from flask_login import login_required
-
-blueprint = Blueprint("admins_cron", __name__,
-                      url_prefix='/admin', static_folder="../static")
-# need the following three items for admin check
-import flask
-from flask_login import current_user
-from functools import wraps
-from MediaKraken.admins.forms import CronEditForm
-from common import common_global
-from common import common_network_pika
-from common import common_pagination
-import database as database_base
 
 
 def admin_required(fn):
@@ -111,18 +91,3 @@ def admin_cron_delete_page():
     return json.dumps({'status': 'OK'})
 
 
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

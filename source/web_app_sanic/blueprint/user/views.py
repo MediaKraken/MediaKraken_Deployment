@@ -1,23 +1,3 @@
-"""
-User view in webapp
-"""
-# -*- coding: utf-8 -*-
-
-from flask import Blueprint, render_template, g, redirect, url_for
-from flask_login import current_user
-from flask_login import login_required
-
-blueprint = Blueprint("user", __name__, url_prefix='/users',
-                      static_folder="../static")
-import json
-import sys
-
-sys.path.append('..')
-sys.path.append('../..')
-from common import common_global
-import database as database_base
-
-
 @blueprint.route("/")
 @login_required
 def members():
@@ -85,20 +65,3 @@ def tv_status(guid, event_type):
     elif event_type == "mismatch":
         pass
     return redirect(url_for('user_tv.user_tv_page'))
-
-
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):  # pylint: disable=W0613
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

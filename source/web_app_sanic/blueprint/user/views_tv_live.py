@@ -1,19 +1,3 @@
-"""
-User view in webapp
-"""
-# -*- coding: utf-8 -*-
-
-from flask import Blueprint, render_template, g
-from flask_login import login_required
-
-blueprint = Blueprint("user_tv_live", __name__,
-                      url_prefix='/users', static_folder="../static")
-import sys
-
-sys.path.append('..')
-sys.path.append('../..')
-import database as database_base
-
 
 # livetv list
 @blueprint.route("/livetv/<schedule_date>/<schedule_time>")
@@ -135,19 +119,3 @@ def user_livetv_detail_page(guid):
     """
     return render_template("users/user_livetv_page.html")
 
-
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):  # pylint: disable=W0613
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

@@ -1,21 +1,3 @@
-"""
-User view in webapp
-"""
-# -*- coding: utf-8 -*-
-
-from flask import Blueprint, render_template, g, session
-from flask_login import login_required
-
-blueprint = Blueprint("user_sports", __name__,
-                      url_prefix='/users', static_folder="../static")
-import sys
-
-sys.path.append('..')
-sys.path.append('../..')
-from common import common_global
-from common import common_pagination
-import database as database_base
-
 
 # list of spoting events
 @blueprint.route("/sports", methods=['GET', 'POST'])
@@ -76,19 +58,3 @@ def user_sports_detail_page(guid):
                            data_background_image=data_background_image
                            )
 
-
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):  # pylint: disable=W0613
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

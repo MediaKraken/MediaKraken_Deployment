@@ -1,27 +1,3 @@
-"""
-User view in webapp
-"""
-# -*- coding: utf-8 -*-
-
-from shlex import split
-
-from flask import Blueprint, render_template, g, request, \
-    redirect, url_for
-from flask_login import current_user
-from flask_login import login_required
-
-blueprint = Blueprint("user_movie", __name__,
-                      url_prefix='/users', static_folder="../static")
-import subprocess
-import sys
-
-sys.path.append('..')
-sys.path.append('../..')
-from common import common_global
-from common import common_network_pika
-from common import common_internationalization
-import database as database_base
-
 
 @blueprint.route('/movie_detail/<guid>', methods=['GET', 'POST'])
 @login_required
@@ -226,20 +202,3 @@ def movie_detail(guid):
                                # data_watched_status=watched_status,
                                # data_sync_status=sync_status
                                )
-
-
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):  # pylint: disable=W0613
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

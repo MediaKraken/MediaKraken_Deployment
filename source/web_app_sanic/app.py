@@ -1,6 +1,6 @@
 import os
 
-import crypto
+import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
@@ -32,6 +32,13 @@ app.static('/static', './web_app_async/static')
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
+
+# setup the pika connection
+credentials = pika.PlainCredentials('guest', 'guest')
+parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
+                                       credentials=credentials)
+connection = pika.BlockingConnection(parameters)
+app.amqp_channel = connection.channel()
 
 
 @app.exception(Exception)
@@ -89,11 +96,6 @@ async def register(request):
     errors['password_errors'] = '<br>'.join(form.password.errors)
     return {'form': form,
             'errors': errors}
-
-
-async def check_password(self, password):
-    temp_pass = await crypto.hash_SHA512(password)
-    return self.password == temp_pass.decode("utf-8")
 
 
 @app.route('/logout')

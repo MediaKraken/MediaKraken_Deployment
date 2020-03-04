@@ -1,36 +1,4 @@
-# -*- coding: utf-8 -*-
 
-import json
-import os
-import sys
-import uuid
-
-import pygal
-
-sys.path.append('..')
-from flask import Blueprint, render_template, g, request, flash, \
-    url_for, redirect, abort
-from flask_login import login_required
-
-blueprint = Blueprint("admins", __name__,
-                      url_prefix='/admin', static_folder="../static")
-# need the following three items for admin check
-import flask
-from flask_login import current_user
-from werkzeug.utils import secure_filename
-from functools import wraps
-from functools import partial
-from MediaKraken.admins.forms import AdminSettingsForm
-from MediaKraken.admins.forms import BookAddForm
-from common import common_internationalization
-from common import common_global
-from common import common_hash
-from common import common_network
-from common import common_string
-from common import common_system
-from common import common_version
-from common import common_zfs
-import database as database_base
 
 ALLOWED_EXTENSIONS = {'py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -417,20 +385,3 @@ def upload_file():
          <input type=submit value=Upload>
     </form>
     '''
-
-
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()

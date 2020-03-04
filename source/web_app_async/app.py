@@ -39,18 +39,19 @@ credentials = pika.PlainCredentials('guest', 'guest')
 parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
                                        credentials=credentials)
 connection = pika.BlockingConnection(parameters)
-app.channel = connection.channel()
+app.amqp_channel = connection.channel()
 
 
 @app.route('/pika')
 async def root_get_pika(request):
-    request.app.channel.basic_publish(exchange='mkque_ffmpeg_ex',
-                                      routing_key='mkffmpeg',
-                                      body=json.dumps(
-                                          {'Type': 'FFProbe', 'Media UUID': '453454',
-                                           'Media Path': 'fakename'}),
-                                      properties=pika.BasicProperties(content_type='text/plain',
-                                                                      delivery_mode=2))
+    request.app.amqp_channel.basic_publish(exchange='mkque_ffmpeg_ex',
+                                           routing_key='mkffmpeg',
+                                           body=json.dumps(
+                                               {'Type': 'FFProbe', 'Media UUID': '453454',
+                                                'Media Path': 'fakename'}),
+                                           properties=pika.BasicProperties(
+                                               content_type='text/plain',
+                                               delivery_mode=2))
     return text("Hello Pika")
 
 

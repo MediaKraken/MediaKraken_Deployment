@@ -1,19 +1,3 @@
-"""
-User view in webapp
-"""
-# -*- coding: utf-8 -*-
-
-from flask import Blueprint, render_template, g
-from flask_login import login_required
-
-blueprint = Blueprint("user_images", __name__,
-                      url_prefix='/users', static_folder="../static")
-import sys
-
-sys.path.append('..')
-sys.path.append('../..')
-from common import common_global
-import database as database_base
 
 
 @blueprint.route('/imagegallery')
@@ -27,18 +11,3 @@ def user_image_gallery():
                                common_global.DLMediaType.Picture))
 
 
-@blueprint.before_request
-def before_request():
-    """
-    Executes before each request
-    """
-    g.db_connection = database_base.MKServerDatabase()
-    g.db_connection.db_open()
-
-
-@blueprint.teardown_request
-def teardown_request(exception):  # pylint: disable=W0613
-    """
-    Executes after each request
-    """
-    g.db_connection.db_close()
