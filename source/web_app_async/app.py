@@ -1,5 +1,5 @@
 import os
-import asyncio
+
 import crypto
 from asyncpg import create_pool
 from common import common_file
@@ -119,7 +119,6 @@ async def register_db(app, loop):
                                     loop=loop,
                                     max_size=100)
     async with app.db_pool.acquire() as db_connection:
-        # await connection.execute('select * from mm_user')
         values = await db_connection.fetch('select * from mm_user')
         print(values)
 
@@ -134,29 +133,10 @@ def jsonify(records):
 @app.get('/db')
 async def root_get(request):
     async with app.pool.acquire() as connection:
-        results = await connection.fetch('SELECT * FROM sanic_post')
+        results = await connection.fetch('SELECT * FROM mm_user')
+        for row_data in results:
+            print(row_data, row_data['email'])
         return json({'posts': jsonify(results)})
-
-
-@app.get('/db_con')
-async def root_get_con(request):
-    if 'POSTGRES_PASSWORD' in os.environ:
-        database_password = os.environ['POSTGRES_PASSWORD']
-    else:
-        try:
-            database_password = common_file.com_file_load_data('/run/secrets/db_password')
-        except FileNotFoundError:
-            raise ServerError("Something bad happened", status_code=500)
-    app.db_pool = await create_pool(user='postgres',
-                                    password='%s' % database_password,
-                                    database='postgres',
-                                    host='mkstack_database',
-                                    loop=asyncio.get_event_loop(),
-                                    max_size=100)
-    async with app.db_pool.acquire() as db_connection:
-        # await connection.execute('select * from mm_user')
-        values = await db_connection.fetch('select * from mm_user')
-        print(values)
 
 
 @app.route("/auth")
