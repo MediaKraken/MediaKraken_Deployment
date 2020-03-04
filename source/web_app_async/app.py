@@ -1,5 +1,5 @@
 import os
-
+import asyncio
 import crypto
 from asyncpg import create_pool
 from common import common_file
@@ -151,7 +151,7 @@ async def root_get_con(request):
                                     password='%s' % database_password,
                                     database='postgres',
                                     host='mkstack_database',
-                                    loop=loop,
+                                    loop=asyncio.get_event_loop(),
                                     max_size=100)
     async with app.db_pool.acquire() as db_connection:
         # await connection.execute('select * from mm_user')
