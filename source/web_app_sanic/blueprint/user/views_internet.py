@@ -1,14 +1,4 @@
 
-# internet sites
-@blueprint.route('/internet')
-@login_required
-def user_internet():
-    """
-    Display internet page
-    """
-    return render_template("users/user_internet.html")
-
-
 # youtube
 @blueprint.route('/internet/internet_youtube', methods=["GET", "POST"])
 @login_required
@@ -48,14 +38,7 @@ def user_internet_youtube_detail(uuid):
                            data_guid=uuid)
 
 
-# vimeo
-@blueprint.route('/internet/internet_vimeo')
-@login_required
-def user_internet_vimeo():
-    """
-    Display vimeo page
-    """
-    return render_template("users/user_internet_vimeo.html")
+
 
 
 @blueprint.route('/internet/internet_vimeo_detail/<guid>')
@@ -115,14 +98,6 @@ def user_internet_twitch_stream_detail(stream_name):
     return render_template("users/user_internet_twitch_stream_detail.html", media=stream_name)
 
 
-# flickr
-@blueprint.route('/internet/internet_flickr')
-@login_required
-def user_internet_flickr():
-    """
-    Display main page for flickr
-    """
-    return render_template("users/user_internet_flickr.html")
 
 
 @blueprint.route('/internet/internet_flickr_detail/<guid>')
