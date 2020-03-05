@@ -2,7 +2,7 @@
 # youtube
 @blueprint.route('/internet/internet_youtube', methods=["GET", "POST"])
 @login_required
-def user_internet_youtube():
+async def url_bp_user_internet_youtube(request):
     """
     Display youtube page
     """
@@ -28,7 +28,7 @@ def user_internet_youtube():
 # youtube detail
 @blueprint.route('/internet/youtube_detail/<uuid>')
 @login_required
-def user_internet_youtube_detail(uuid):
+async def url_bp_user_internet_youtube_detail(request, uuid):
     """
     Display youtube details page
     """
@@ -43,7 +43,7 @@ def user_internet_youtube_detail(uuid):
 
 @blueprint.route('/internet/internet_vimeo_detail/<guid>')
 @login_required
-def user_internet_vimeo_detail(guid):
+async def url_bp_user_internet_vimeo_detail(request, guid):
     """
     Display vimeo page
     """
@@ -53,7 +53,7 @@ def user_internet_vimeo_detail(guid):
 # twitch tv
 @blueprint.route('/internet/internet_twitch')
 @login_required
-def user_internet_twitch():
+async def url_bp_user_internet_twitch(request):
     """
     Display twitchtv page
     """
@@ -88,7 +88,7 @@ def user_internet_twitch():
 # twitch tv detail on stream
 @blueprint.route('/internet/internet_twitch_stream_detail/<stream_name>')
 @login_required
-def user_internet_twitch_stream_detail(stream_name):
+async def url_bp_user_internet_twitch_stream_detail(request, stream_name):
     """
     Show twitch stream detail page
     """
@@ -102,7 +102,7 @@ def user_internet_twitch_stream_detail(stream_name):
 
 @blueprint.route('/internet/internet_flickr_detail/<guid>')
 @login_required
-def user_internet_flickr_detail(guid):
+async def url_bp_user_internet_flickr_detail(request, guid):
     """
     Display main page for flickr
     """
@@ -112,7 +112,7 @@ def user_internet_flickr_detail(guid):
 # iradio
 @blueprint.route('/iradio', methods=['GET', 'POST'])
 @login_required
-def user_iradio_list():
+async def url_bp_user_iradio_list(request):
     """
     Display main page for internet radio
     """
@@ -128,7 +128,7 @@ def user_iradio_list():
 
 @blueprint.route('/iradio_detail/<guid>')
 @login_required
-def user_iradio_detail(guid):
+async def url_bp_user_iradio_detail(request, guid):
     """
     Display main page for internet radio
     """
@@ -136,7 +136,7 @@ def user_iradio_detail(guid):
 
 
 @blueprint.before_request
-def before_request():
+async def before_request():
     """
     Executes before each request
     """

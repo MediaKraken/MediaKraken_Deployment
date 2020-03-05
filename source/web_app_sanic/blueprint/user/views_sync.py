@@ -1,7 +1,7 @@
 
 @blueprint.route('/sync')
 @login_required
-def sync_display_all():
+async def url_bp_user_sync_display_all(request):
     """
     Display sync page
     """
@@ -24,7 +24,7 @@ def sync_display_all():
 
 @blueprint.route('/sync_edit/<guid>', methods=['GET', 'POST'])
 @login_required
-def sync_edit(guid):
+async def url_bp_user_sync_edit(request, guid):
     """
     Allow user to edit sync page
     """
@@ -54,7 +54,7 @@ def sync_edit(guid):
 
 @blueprint.route('/sync_delete', methods=["POST"])
 @login_required
-def admin_sync_delete_page():
+async def url_bp_user_admin_sync_delete_page(request):
     """
     Display sync delete action 'page'
     """

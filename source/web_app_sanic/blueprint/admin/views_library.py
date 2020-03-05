@@ -19,7 +19,7 @@ def admin_required(fn):
 @blueprint.route("/library", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_library():
+async def url_bp_admin_library(request):
     """
     List all media libraries
     """
@@ -61,7 +61,7 @@ def admin_library():
 @blueprint.route("/library_edit", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_library_edit_page():
+async def url_bp_admin_library_edit(request):
     """
     allow user to edit lib
     """
@@ -154,7 +154,7 @@ def admin_library_edit_page():
 @blueprint.route('/library_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_library_delete_page():
+async def url_bp_admin_library_delete(request):
     """
     Delete library action 'page'
     """
@@ -166,7 +166,7 @@ def admin_library_delete_page():
 @blueprint.route('/getLibraryById', methods=['POST'])
 @login_required
 @admin_required
-def getLibraryById():
+async def url_bp_admin_getLibraryById(request):
     result = g.db_connection.db_audit_path_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
@@ -176,7 +176,7 @@ def getLibraryById():
 @blueprint.route('/updateLibrary', methods=['POST'])
 @login_required
 @admin_required
-def updateLibrary():
+async def url_bp_admin_updateLibrary(request):
     g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
                                                  request.form['new_class'],
                                                  request.form['id'])

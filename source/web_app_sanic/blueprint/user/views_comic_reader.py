@@ -1,7 +1,7 @@
 
 @blueprint.route('/comic_view/<guid>')
 @login_required
-def user_comic_view(guid):
+async def url_bp_user__comic_view(request, guid):
     """
     Display image comic view
     """

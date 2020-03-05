@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route("/link_server")
 @login_required
 @admin_required
-def admin_server_link_server():
+async def url_bp_admin_server_link(request):
     """
     Display page for linking server
     """
@@ -42,7 +42,7 @@ def admin_server_link_server():
 @blueprint.route("/link_edit", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_link_edit_page():
+async def url_bp_admin_link_edit(request):
     """
     allow user to edit link
     """
@@ -55,7 +55,7 @@ def admin_link_edit_page():
 @blueprint.route('/link_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_link_delete_page():
+async def url_bp_admin_link_delete(request):
     """
     Delete linked server action 'page'
     """

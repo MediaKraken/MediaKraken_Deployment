@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route("/share", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_share():
+async def url_bp_admin_share(request):
     """
     List all share/mounts
     """
@@ -45,7 +45,7 @@ def admin_share():
 @blueprint.route("/share_edit", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_share_edit_page():
+async def url_bp_admin_share_edit(request):
     """
     allow user to edit share
     """
@@ -118,7 +118,7 @@ def admin_share_edit_page():
 @blueprint.route('/share_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_share_delete_page():
+async def url_bp_admin_share_delete(request):
     """
     Delete share action 'page'
     """
@@ -130,7 +130,7 @@ def admin_share_delete_page():
 @blueprint.route('/getShareById', methods=['POST'])
 @login_required
 @admin_required
-def getShareById():
+async def url_bp_admin_getShareById(request):
     result = g.db_connection.db_audit_share_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_share_dir_guid'],
                        'Path': result['mm_share_dir_path']})
@@ -139,7 +139,7 @@ def getShareById():
 @blueprint.route('/updateShare', methods=['POST'])
 @login_required
 @admin_required
-def updateShare():
+async def url_bp_admin_updateShare(request):
     g.db_connection.db_audit_share_update_by_uuid(request.form['new_share_type'],
                                                   request.form['new_share_user'],
                                                   request.form['new_share_password'],

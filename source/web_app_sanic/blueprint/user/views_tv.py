@@ -3,7 +3,7 @@
 # list of tv shows
 @blueprint.route("/tv", methods=['GET', 'POST'])
 @login_required
-def user_tv_page():
+async def url_bp_user_tv_page(request):
     """
     Display tv shows page
     """
@@ -43,7 +43,7 @@ def user_tv_page():
 # tv show detail
 @blueprint.route("/tv_show_detail/<guid>", methods=['GET', 'POST'])
 @login_required
-def user_tv_show_detail_page(guid):
+async def url_bp_user_tv_show_detail_page(request, guid):
     """
     Display tv show detail page
     """
@@ -168,7 +168,7 @@ def user_tv_show_detail_page(guid):
 # tv show season detail - show guid then season #
 @blueprint.route("/tv_season_detail/<guid>/<season>", methods=['GET', 'POST'])
 @login_required
-def user_tv_season_detail_page(guid, season):
+async def url_bp_user_tv_season_detail_page(request, guid, season):
     """
     Display tv season detail page
     """
@@ -257,7 +257,7 @@ def user_tv_season_detail_page(guid, season):
 # tv show episode detail
 @blueprint.route("/tv_episode_detail/<guid>/<season>/<episode>", methods=['GET', 'POST'])
 @login_required
-def user_tv_episode_detail_page(guid, season, episode):
+async def url_bp_user_tv_episode_detail_page(request, guid, season, episode):
     """
     Display tv episode detail page
     """

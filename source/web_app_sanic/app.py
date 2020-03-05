@@ -20,7 +20,7 @@ app = Sanic(__name__)
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
 app.config['WTF_CSRF_SECRET_KEY'] = 'top secret!'  # TODO!  load from secret I guess
 common_global.auth = Auth(app)
-Session(app)
+common_global.session = Session(app)
 # initialize jinja templating
 common_global.jinja_template = SanicJinja2(app)
 # since I use global jinja....these MUST be after the initialization otherwise template = NONE

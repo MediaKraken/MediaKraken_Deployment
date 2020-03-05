@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route("/game_metadata", methods=["GET", "POST"])
 @login_required
 @admin_required
-def game_metadata():
+async def url_bp_game_metadata(request):
     """
     Game metadata stats and update screen
     """

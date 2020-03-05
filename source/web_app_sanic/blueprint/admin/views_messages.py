@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route("/messages", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_messages():
+async def url_bp_admin_messages(request):
     """
     List all messages
     """
@@ -45,7 +45,7 @@ def admin_messages():
 @blueprint.route('/message_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_messages_delete_page():
+async def url_bp_admin_messages_delete(request):
     """
     Delete messages action 'page'
     """

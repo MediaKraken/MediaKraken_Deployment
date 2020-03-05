@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route("/docker_stat")
 @login_required
 @admin_required
-def docker_stat():
+async def url_bp_admin_docker_stat(request):
     """
     Docker statistics including swarm
     """

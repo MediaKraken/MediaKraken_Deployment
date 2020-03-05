@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route("/transmission")
 @login_required
 @admin_required
-def admin_transmission():
+async def url_bp_admin_transmission(request):
     """
     Display transmission page
     """
@@ -42,7 +42,7 @@ def admin_transmission():
 @blueprint.route('/transmission_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_transmission_delete_page():
+async def url_bp_admin_transmission_delete(request):
     """
     Delete torrent from transmission
     """
@@ -54,7 +54,7 @@ def admin_transmission_delete_page():
 @blueprint.route('/transmission_edit', methods=["POST"])
 @login_required
 @admin_required
-def admin_transmission_edit_page():
+async def url_bp_admin_transmission_edit(request):
     """
     Edit a torrent from transmission
     """
@@ -64,7 +64,7 @@ def admin_transmission_edit_page():
 
 
 @blueprint.before_request
-def before_request():
+async def before_request(request):
     """
     Executes before each request
     """

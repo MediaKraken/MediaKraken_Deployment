@@ -25,7 +25,7 @@ def admin_required(fn):
 @blueprint.route("/")
 @login_required
 @admin_required
-def admins():
+async def url_bp_admin(request):
     """
     Display main server page
     """
@@ -96,14 +96,14 @@ def admins():
 @blueprint.route("/admin_sidenav")
 @login_required
 @admin_required
-def admin_sidenav():
+async def url_bp_admin_sidenav(request):
     return render_template("admin/admin_sidenav.html")
 
 
 @blueprint.route("/messages", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_messages():
+async def url_bp_admin_messages(request):
     """
     List all NAS devices
     """
@@ -114,7 +114,7 @@ def admin_messages():
 @blueprint.route("/nas", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_nas():
+async def url_bp_admin_nas(request):
     """
     List all NAS devices
     """
@@ -125,7 +125,7 @@ def admin_nas():
 @blueprint.route('/books_add', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_books_add():
+async def url_bp_admin_books_add(request):
     """
     Display books add page
     """
@@ -154,7 +154,7 @@ def admin_books_add():
 @blueprint.route("/settings", methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_server_settings():
+async def url_bp_admin_server_settings(request):
     """
     Display server settings page
     """
@@ -227,7 +227,7 @@ def admin_server_settings():
 @blueprint.route("/zfs")
 @login_required
 @admin_required
-def admin_server_zfs():
+async def url_bp_admin_server_zfs(request):
     """
     Display zfs admin page
     """
@@ -238,7 +238,7 @@ def admin_server_zfs():
 @blueprint.route("/cloud")
 @login_required
 @admin_required
-def admin_cloud():
+async def url_bp_admin_cloud(request):
     """
     browse cloud via libcloud
     """
@@ -248,7 +248,7 @@ def admin_cloud():
 @blueprint.route("/chart_browser")
 @login_required
 @admin_required
-def admin_chart_browser():
+async def url_bp_admin_chart_browser():
     line_chart = pygal.Line()
     line_chart.title = 'Browser usage'
     line_chart.x_labels = map(str, range(2002, 2013))
@@ -267,7 +267,7 @@ def admin_chart_browser():
 @blueprint.route("/chart_client_usage")
 @login_required
 @admin_required
-def admin_chart_client_usage():
+async def url_bp_admin_chart_client_usage(request):
     line_chart = pygal.Line()
     line_chart.title = 'Client usage'
     line_chart.x_labels = map(str, range(2002, 2013))
@@ -290,7 +290,7 @@ def admin_chart_client_usage():
 @blueprint.route("/database")
 @login_required
 @admin_required
-def admin_database_statistics():
+async def url_bp_admin_database_statistics(request):
     """
     Display database statistics page
     """
@@ -319,7 +319,7 @@ def admin_database_statistics():
 @blueprint.route('/<path:path>/list', endpoint='listdirpath')
 @login_required
 @admin_required
-def admin_listdir(path):
+async def url_bp_admin_listdir(request, path):
     """
     Local file browser
     """
@@ -359,7 +359,7 @@ def allowed_file(filename):
 @blueprint.route('/upload', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def upload_file():
+async def url_bp_admin_upload_file(request):
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:

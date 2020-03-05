@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route('/cron')
 @login_required
 @admin_required
-def admin_cron_display_all():
+async def url_bp_admin_cron_display_all(request):
     """
     Display cron jobs
     """
@@ -43,7 +43,7 @@ def admin_cron_display_all():
 @blueprint.route('/cron_run/<guid>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_cron_run(guid):
+async def url_bp_admin_cron_run(request, guid):
     """
     Run cron jobs
     """
@@ -63,7 +63,7 @@ def admin_cron_run(guid):
 @blueprint.route('/cron_edit/<guid>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_cron_edit(guid):
+async def url_bp_admin_cron_edit(request, guid):
     """
     Edit cron job page
     """
@@ -82,7 +82,7 @@ def admin_cron_edit(guid):
 @blueprint.route('/cron_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_cron_delete_page():
+async def url_bp_admin_cron_delete(request):
     """
     Delete action 'page'
     """

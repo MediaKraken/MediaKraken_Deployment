@@ -1,7 +1,7 @@
 
 @blueprint.route('/movie_detail/<guid>', methods=['GET', 'POST'])
 @login_required
-def movie_detail(guid):
+async def url_bp_user_movie_detail(request, guid):
     """
     Display move detail page
     """

@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route("/hardware", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_hardware():
+async def url_bp_admin_hardware(request):
     if request.method == 'POST':
         # submit the message
         common_network_pika.com_net_pika_send({'Type': 'Hardware Scan'},
@@ -54,7 +54,7 @@ def admin_hardware():
 @blueprint.route("/chromecast_edit", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_chromecast_edit_page():
+async def url_bp_admin_chromecast_edit(request):
     """
     allow user to edit chromecast
     """
@@ -82,7 +82,7 @@ def admin_chromecast_edit_page():
 @blueprint.route('/chromecast_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_chromecast_delete_page():
+async def url_bp_admin_chromecast_delete(request):
     """
     Delete action 'page'
     """
@@ -94,7 +94,7 @@ def admin_chromecast_delete_page():
 @blueprint.route('/getChromecastById', methods=['POST'])
 @login_required
 @admin_required
-def getChromecastById():
+async def url_bp_admin_getChromecastById(request):
     result = g.db_connection.db_device_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
                        'Name': result['mm_device_json']['Name'],
@@ -104,7 +104,7 @@ def getChromecastById():
 @blueprint.route('/updateChromecast', methods=['POST'])
 @login_required
 @admin_required
-def updateChromecast():
+async def url_bp_admin_updateChromecast(request):
     g.db_connection.db_device_update_by_uuid(request.form['name'],
                                              request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})
@@ -113,7 +113,7 @@ def updateChromecast():
 @blueprint.route("/tvtuner_edit", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_tvtuner_edit_page():
+async def url_bp_admin_tvtuner_edit(request):
     """
     allow user to edit tuner
     """
@@ -141,7 +141,7 @@ def admin_tvtuner_edit_page():
 @blueprint.route('/tvtuner_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_tvtuner_delete_page():
+async def url_bp_admin_tvtuner_delete(request):
     """
     Delete action 'page'
     """
@@ -153,7 +153,7 @@ def admin_tvtuner_delete_page():
 @blueprint.route('/getTVTunerById', methods=['POST'])
 @login_required
 @admin_required
-def getTVTunerById():
+async def url_bp_admin_getTVTunerById(request):
     result = g.db_connection.db_device_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
                        'Name': result['mm_device_json']['Name'],
@@ -163,7 +163,7 @@ def getTVTunerById():
 @blueprint.route('/updateTVTuner', methods=['POST'])
 @login_required
 @admin_required
-def updateTVTuner():
+async def url_bp_admin_updateTVTuner(request):
     g.db_connection.db_device_update_by_uuid(request.form['name'],
                                              request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})

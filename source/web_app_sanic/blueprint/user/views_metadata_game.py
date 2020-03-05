@@ -2,7 +2,7 @@
 
 @blueprint.route('/meta_game_list', methods=["GET", "POST"])
 @login_required
-def metadata_game_list():
+async def url_bp_user_metadata_game_list(request):
     """
     Display game list metadata
     """
@@ -27,7 +27,7 @@ def metadata_game_list():
 
 @blueprint.route('/meta_game_detail/<guid>')
 @login_required
-def metadata_game_detail(guid):
+async def url_bp_user_metadata_game_detail(request, guid):
     """
     Display metadata game detail
     """

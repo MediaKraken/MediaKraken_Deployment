@@ -1,33 +1,10 @@
 
 
-@blueprint.route('/games', methods=['GET', 'POST'])
-@login_required
-def user_games_list():
-    """
-    Display games page
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    session['search_page'] = 'media_games'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.
-                                                  db_meta_game_system_list_count(),
-                                                  record_name='game system(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
-    return render_template("users/user_game_list.html",
-                           media=g.db_connection.db_meta_game_system_list(offset, per_page,
-                                                                          session['search_text']),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
 
 
 @blueprint.route('/games_detail/<guid>', methods=['GET', 'POST'])
 @login_required
-def user_games_detail(guid):
+async def url_bp_user_game_detail(request, guid):
     """
     Display game detail page
     """
@@ -36,7 +13,7 @@ def user_games_detail(guid):
 
 @blueprint.route('/meta_game_detail/<guid>')
 @login_required
-def metadata_game_detail(guid):
+async def url_bp_user_metadata_game_detail(request, guid):
     """
     Display game metadata detail
     """
@@ -48,7 +25,7 @@ def metadata_game_detail(guid):
 
 @blueprint.route('/meta_game_system_list', methods=['GET', 'POST'])
 @login_required
-def metadata_game_system_list():
+async def url_bp_user_metadata_game_system_list(request):
     """
     Display game system metadata
     """
@@ -74,7 +51,7 @@ def metadata_game_system_list():
 
 @blueprint.route('/meta_game_system_detail/<guid>')
 @login_required
-def metadata_game_system_detail(guid):
+async def url_bp_user_metadata_game_system_detail(request, guid):
     """
     Display game system detail metadata
     """

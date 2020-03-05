@@ -2,7 +2,7 @@
 
 @blueprint.route('/meta_periodical_list', methods=['GET', 'POST'])
 @login_required
-def metadata_periodical_list():
+async def url_bp_user_metadata_periodical_list(request):
     """
     Display periodical list page
     """
@@ -32,7 +32,7 @@ def metadata_periodical_list():
 
 @blueprint.route('/meta_periodical_detail/<guid>')
 @login_required
-def metadata_periodical_detail(guid):
+async def url_bp_user_metadata_periodical_detail(request, guid):
     """
     Display periodical detail page
     """

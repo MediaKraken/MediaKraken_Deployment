@@ -20,7 +20,7 @@ def admin_required(fn):
 @blueprint.route('/backup_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_backup_delete_page():
+async def url_bp_admin_backup_delete(request):
     """
     Delete backup file action 'page'
     """
@@ -36,7 +36,7 @@ def admin_backup_delete_page():
 @blueprint.route("/backup", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_backup():
+async def url_bp_admin_backup(request):
     """
     List backups from local fs and cloud
     """
@@ -86,7 +86,7 @@ def admin_backup():
 
 
 @blueprint.before_request
-def before_request():
+def before_request(request):
     """
     Executes before each request
     """

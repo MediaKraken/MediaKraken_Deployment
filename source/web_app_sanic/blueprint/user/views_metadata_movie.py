@@ -1,7 +1,7 @@
 
 @blueprint.route('/meta_movie_detail/<guid>')
 @login_required
-def metadata_movie_detail(guid):
+async def url_bp_user_metadata_movie_detail(request, guid):
     """
     Display metadata movie detail
     """
@@ -58,7 +58,7 @@ def metadata_movie_detail(guid):
 
 @blueprint.route('/meta_movie_list', methods=["GET", "POST"])
 @login_required
-def metadata_movie_list():
+async def url_bp_user_metadata_movie_list(request):
     """
     Display list of movie metadata
     """

@@ -1,7 +1,7 @@
 
 @blueprint.route('/cast/<action>/<guid>')
 @login_required
-def user_cast(action, guid):
+async def url_bp_user_cast(request, action, guid):
     """
     Display chromecast actions page
     """

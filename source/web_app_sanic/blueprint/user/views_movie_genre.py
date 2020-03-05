@@ -2,7 +2,7 @@
 
 @blueprint.route("/movie_genre", methods=['GET', 'POST'])
 @login_required
-def user_movie_genre_page():
+async def url_bp_user_movie_genre_page(request):
     """
     Display movies split up by genre
     """
@@ -18,7 +18,7 @@ def user_movie_genre_page():
 
 @blueprint.route("/movie/<genre>", methods=['GET', 'POST'])
 @login_required
-def user_movie_page(genre):
+async def url_bp_user_movie_page(request, genre):
     """
     Display movie page
     """

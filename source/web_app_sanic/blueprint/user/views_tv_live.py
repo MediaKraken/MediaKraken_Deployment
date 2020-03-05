@@ -2,7 +2,7 @@
 # livetv list
 @blueprint.route("/livetv/<schedule_date>/<schedule_time>")
 @login_required
-def user_livetv_page(schedule_date, schedule_time):
+async def url_bp_user_livetv_page(request, schedule_date, schedule_time):
     """
     Display livetv page
     """
@@ -113,7 +113,7 @@ def user_livetv_page(schedule_date, schedule_time):
 # livetv list detail
 @blueprint.route("/livetv_detail/<guid>")
 @login_required
-def user_livetv_detail_page(guid):
+async def url_bp_user_livetv_detail_page(request, guid):
     """
     Display live tv detail page
     """

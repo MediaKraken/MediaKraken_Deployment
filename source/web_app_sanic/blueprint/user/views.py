@@ -1,6 +1,6 @@
 @blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-def movie_status(guid, event_type):
+async def url_bp_user_movie_status(request, guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -26,7 +26,7 @@ def movie_status(guid, event_type):
 
 @blueprint.route('/movie_metadata_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-def movie_metadata_status(guid, event_type):
+async def url_bp_user_movie_metadata_status(request, guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -39,7 +39,7 @@ def movie_metadata_status(guid, event_type):
 
 @blueprint.route('/tv_status/<guid>/<event_type>', methods=['GET', 'POST'])
 @login_required
-def tv_status(guid, event_type):
+async def url_bp_user_tv_status(request, guid, event_type):
     """
     Set media status for specified media, user
     """

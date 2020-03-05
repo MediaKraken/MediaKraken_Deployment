@@ -15,5 +15,9 @@ class MKServerDatabaseAsync:
     #     db_drop_table
     from database_async.db_base_hardware_async \
         import db_hardware_device_count
+    from database_async.db_base_image_async \
+        import db_image_list, \
+        db_image_count
     from database_async.db_base_media_async \
         import db_media_new
+

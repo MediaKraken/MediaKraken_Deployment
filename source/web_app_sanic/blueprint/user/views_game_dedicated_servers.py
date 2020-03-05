@@ -1,7 +1,7 @@
 
 @blueprint.route('/game_servers', methods=['GET', 'POST'])
 @login_required
-def user_game_server_list():
+async def url_bp_user__game_server_list(request):
     """
     Display game server page
     """

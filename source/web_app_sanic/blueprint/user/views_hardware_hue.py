@@ -2,7 +2,7 @@
 
 @blueprint.route('/hardware_hue')
 @login_required
-def user_hardware_hue():
+async def url_bp_user_hardware_hue(request):
     """
     Display hardware page for hue
     """
@@ -29,7 +29,7 @@ def user_hardware_hue():
 
 @blueprint.route('/hardware_hue_on')
 @login_required
-def user_hardware_hue_on():
+async def url_bp_user_hardware_hue_on(request):
     """
     Hue on
     """
@@ -45,7 +45,7 @@ def user_hardware_hue_on():
 
 @blueprint.route('/hardware_hue_off')
 @login_required
-def user_hardware_hue_off():
+async def url_bp_user_hardware_hue_off(request):
     """
     Hue off
     """

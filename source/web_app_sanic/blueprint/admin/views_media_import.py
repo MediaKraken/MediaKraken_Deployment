@@ -19,7 +19,7 @@ def admin_required(fn):
 @blueprint.route("/mediaimport", methods=["GET", "POST"])
 @login_required
 @admin_required
-def admin_media_import():
+async def url_bp_admin_media_import(request):
     """
     Import media
     """

@@ -2,7 +2,7 @@
 # 3d
 @blueprint.route('/3D')
 @login_required
-def user_3d_list():
+async def url_bp_user_user_3d(request):
     """
     Display 3D media page
     """

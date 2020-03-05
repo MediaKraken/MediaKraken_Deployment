@@ -2,7 +2,7 @@
 
 @blueprint.route('/meta_music_song_list', methods=['GET', 'POST'])
 @login_required
-def metadata_music_song_list():
+async def metadata_music_song_list(request):
     """
     Display metadata music song list
     """
@@ -27,7 +27,7 @@ def metadata_music_song_list():
 
 @blueprint.route('/meta_music_album_list', methods=['GET', 'POST'])
 @login_required
-def metadata_music_album_list():
+async def url_bp_user_metadata_music_album_list(request):
     """
     Display metadata of album list
     """

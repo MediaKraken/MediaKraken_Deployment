@@ -21,7 +21,7 @@ def admin_required(fn):
 @blueprint.route("/users")
 @login_required
 @admin_required
-def admin_users():
+async def url_bp_admin_user(request):
     """
     Display user list
     """
@@ -45,7 +45,7 @@ def admin_users():
 @blueprint.route("/user_detail/<guid>")
 @login_required
 @admin_required
-def admin_user_detail(guid):
+async def url_bp_admin_user_detail(request, guid):
     """
     Display user details
     """
@@ -56,7 +56,7 @@ def admin_user_detail(guid):
 @blueprint.route('/user_delete', methods=["POST"])
 @login_required
 @admin_required
-def admin_user_delete_page():
+async def url_bp_admin_user_delete(request):
     """
     Delete user action 'page'
     """

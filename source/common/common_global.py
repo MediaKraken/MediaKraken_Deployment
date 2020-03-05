@@ -29,6 +29,7 @@ pid_dict = {}
 
 # website ones
 jinja_template = None
+session = None
 
 # stuff in comments are the old class TEXT
 @unique

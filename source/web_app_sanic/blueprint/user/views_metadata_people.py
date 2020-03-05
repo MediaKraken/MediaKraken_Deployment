@@ -2,7 +2,7 @@
 
 @blueprint.route('/meta_person_detail/<guid>')
 @login_required
-def metadata_person_detail(guid):
+async def url_bp_user_metadata_person_detail(request, guid):
     """
     Display person detail page
     """
@@ -28,7 +28,7 @@ def metadata_person_detail(guid):
 
 @blueprint.route('/meta_person_list', methods=['GET', 'POST'])
 @login_required
-def metadata_person_list():
+async def url_bp_user_metadata_person_list(request):
     """
     Display person list page
     """

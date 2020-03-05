@@ -1,7 +1,7 @@
 
 @blueprint.route('/meta_game_system_detail/<guid>')
 @login_required
-def metadata_game_system_detail(guid):
+async def url_bp_user_metadata_game_system_detail(request, guid):
     """
     Display metadata game detail
     """
@@ -11,7 +11,7 @@ def metadata_game_system_detail(guid):
 
 @blueprint.route('/meta_game_system_list', methods=['GET', 'POST'])
 @login_required
-def metadata_game_system_list():
+async def url_bp_user_metadata_game_system_list(request):
     """
     Display list of game system metadata
     """

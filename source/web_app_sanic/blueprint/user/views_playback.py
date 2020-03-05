@@ -2,7 +2,7 @@
 
 @blueprint.route('/playalbum/<guid>')
 @login_required
-def user_album_player(guid):
+async def url_bp_user_album_player(request, guid):
     """
     Obsolete?
     """
@@ -15,7 +15,7 @@ def user_album_player(guid):
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>/<chapter>/<audio>/<sub>', methods=['GET',
                                                                                        'POST'])
 @login_required
-def user_video_player_videojs(mtype, guid, chapter, audio, sub):
+async def url_bp_user_video_player_videojs(request, mtype, guid, chapter, audio, sub):
     """
     Display video playback page
     """
@@ -63,7 +63,7 @@ def user_video_player_videojs(mtype, guid, chapter, audio, sub):
 
 @blueprint.route('/playback/<action>/<guid>', methods=['GET', 'POST'])
 @login_required
-def user_playback(action, guid):
+async def url_bp_user_playback(request, action, guid):
     """
     Display actions page
     """

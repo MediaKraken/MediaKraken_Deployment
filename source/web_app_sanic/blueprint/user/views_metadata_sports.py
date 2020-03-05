@@ -2,7 +2,7 @@
 
 @blueprint.route('/meta_sports_list', methods=['GET', 'POST'])
 @login_required
-def metadata_sports_list():
+async def url_bp_user_metadata_sports_list(request):
     """
     Display sports metadata list
     """
@@ -33,7 +33,7 @@ def metadata_sports_list():
 
 @blueprint.route('/meta_sports_detail/<guid>')
 @login_required
-def metadata_sports_detail(guid):
+async def url_bp_user_metadata_sports_detail(request, guid):
     """
     Display sports detail metadata
     """

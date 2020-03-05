@@ -3,7 +3,7 @@
 
 @blueprint.route('/report_duplicate')
 @login_required
-def report_display_all_duplicates():
+async def url_bp_admin_report_display_all_duplicates(request):
     """
     Display media duplication report page
     """
@@ -26,7 +26,7 @@ def report_display_all_duplicates():
 
 @blueprint.route('/report_duplicate_detail/<guid>')
 @login_required
-def report_display_all_duplicates_detail(guid):
+async def url_bp_admin_report_display_all_duplicates_detail(request, guid):
     """
     Display detail of duplicate list
     """
@@ -63,7 +63,7 @@ def report_display_all_duplicates_detail(guid):
 
 @blueprint.route('/report_all')
 @login_required
-def report_display_all_media():
+async def url_bp_admin_report_display_all_media(request):
     """
     Display all media list
     """
@@ -89,7 +89,7 @@ def report_display_all_media():
 
 @blueprint.route('/report_known_video')
 @login_required
-def report_display_all_media_known_video():
+async def url_bp_admin_report_display_all_media_known_video(request):
     """
     Display list of all matched video
     """
@@ -117,7 +117,7 @@ def report_display_all_media_known_video():
 
 @blueprint.route('/report_unmatched_media')
 @login_required
-def report_display_all_unmatched_media():
+async def url_bp_admin_report_display_all_unmatched_media(request):
     """
     Display list of all unmatched media
     """
@@ -140,7 +140,7 @@ def report_display_all_unmatched_media():
 
 @blueprint.route('/report_top10/<mtype>')
 @login_required
-def report_top10(mtype):
+async def url_bp_admin_report_top10(request, mtype):
     """
     Display top10 pages
     """

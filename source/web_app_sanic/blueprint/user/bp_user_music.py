@@ -1,4 +1,46 @@
 from common import common_global
+from common import common_pagination
 from sanic import Blueprint
 
 blueprint_user_music = Blueprint('name_blueprint_user_music', url_prefix='/user')
+
+
+@blueprint_user_music.route("/album_detail/<guid>")
+@common_global.jinja_template.template('user/user_music_album_detail.html')
+async def url_bp_user_album_detail_page(request, guid):
+    """
+    Display album detail page
+    """
+    return {}
+
+
+@blueprint_user_music.route("/album_list")
+@common_global.jinja_template.template('user/user_music_album.html')
+async def url_bp_user_album_list_page():
+    """
+    Display album page
+    """
+    page, per_page, offset = common_pagination.get_page_items()
+    media = []
+    for row_data in g.db_connection.db_media_album_list(offset, per_page,
+                                                        common_global.session['search_text']):
+        if 'mm_metadata_album_json' in row_data:
+            media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
+                          row_data['mm_metadata_album_json']))
+        else:
+            media.append((row_data['mm_metadata_album_guid'],
+                          row_data['mm_metadata_album_name'], None))
+    common_global.session['search_page'] = 'music_album'
+    pagination = common_pagination.get_pagination(page=page,
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_media_album_count(
+                                                      common_global.session['search_page']),
+                                                  record_name='music album(s)',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                  )
+    return {'media': media,
+            'page': page,
+            'per_page': per_page,
+            'pagination': pagination,
+            }

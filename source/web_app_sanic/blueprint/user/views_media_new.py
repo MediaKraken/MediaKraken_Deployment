@@ -2,7 +2,7 @@
 
 @blueprint.route('/new_media', methods=['GET', 'POST'])
 @login_required
-def user_newmedia_page():
+async def url_bp_user_newmedia_page(request):
     """
     Display new media
     """

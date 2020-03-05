@@ -2,7 +2,7 @@
 
 @blueprint.route('/meta_music_video_list', methods=['GET', 'POST'])
 @login_required
-def metadata_music_video_list():
+async def url_bp_user_metadata_music_video_list(request):
     """
     Display metadata music video
     """
@@ -27,7 +27,7 @@ def metadata_music_video_list():
 
 @blueprint.route('/meta_music_video_detail/<guid>')
 @login_required
-def metadata_music_video_detail(guid):
+async def url_bp_user_metadata_music_video_detail(request, guid):
     """
     Display metadata music video detail
     """
