@@ -1,7 +1,14 @@
+import json
+
+from common import common_global
+from common import common_pagination
+from sanic import Blueprint
+
+blueprint_admin_messages = Blueprint('name_blueprint_admin_messages', url_prefix='/admin')
 
 
-@blueprint.route("/messages", methods=["GET", "POST"])
-@login_required
+@blueprint_admin_messages.route("/messages", methods=["GET", "POST"])
+@common_global.jinja_template.template('admin/admin_messages.html')
 @admin_required
 async def url_bp_admin_messages(request):
     """
@@ -16,17 +23,16 @@ async def url_bp_admin_messages(request):
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template("admin/admin_messages.html",
-                           media_dir=g.db_connection.db_message_list(
-                               offset, per_page),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
+    return {
+        'media_dir': g.db_connection.db_message_list(
+            offset, per_page),
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
 
 
-@blueprint.route('/message_delete', methods=["POST"])
-@login_required
+@blueprint_admin_messages.route('/message_delete', methods=["POST"])
 @admin_required
 async def url_bp_admin_messages_delete(request):
     """
@@ -35,4 +41,3 @@ async def url_bp_admin_messages_delete(request):
     g.db_connection.db_message_delete(request.form['id'])
     g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
-
