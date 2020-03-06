@@ -1,0 +1,29 @@
+from common import common_global
+from common import common_internationalization
+from common import common_transmission
+from sanic import Blueprint
+
+blueprint_admin_transmission = Blueprint('name_blueprint_admin_transmission', url_prefix='/admin')
+
+
+@blueprint_admin_transmission.route("/transmission")
+@common_global.jinja_template.template('admin/admin_transmission.html')
+@admin_required
+async def url_bp_admin_transmission(request):
+    """
+    Display transmission page
+    """
+    trans_connection = common_transmission.CommonTransmission(
+        g.option_config_json)
+    transmission_data = []
+    if trans_connection is not None:
+        torrent_no = 1
+        for torrent in trans_connection.com_trans_get_torrent_list():
+            transmission_data.append(
+                (common_internationalization.com_inter_number_format(torrent_no),
+                 torrent.name, torrent.hashString, torrent.status,
+                 torrent.progress, torrent.ratio))
+            torrent_no += 1
+    return {
+        'data_transmission': transmission_data
+    }

@@ -1,43 +1,7 @@
 
 
-def admin_required(fn):
-    """
-    Admin check
-    """
-
-    @wraps(fn)
-    @login_required
-    def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info',
-                                                {"admin access attempt by": current_user.get_id()})
-        if not current_user.is_admin:
-            return flask.abort(403)  # access denied
-        return fn(*args, **kwargs)
-
-    return decorated_view
 
 
-@blueprint.route('/cron')
-@login_required
-@admin_required
-async def url_bp_admin_cron_display_all(request):
-    """
-    Display cron jobs
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_cron_list_count(False),
-                                                  record_name='Cron Jobs',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
-    return render_template('admin/admin_cron.html',
-                           media_cron=g.db_connection.db_cron_list(False, offset, per_page),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
 
 
 @blueprint.route('/cron_run/<guid>', methods=['GET', 'POST'])
@@ -57,7 +21,7 @@ async def url_bp_admin_cron_run(request, guid):
                                               'exchange_key'],
                                           route_key=cron_job_data['mm_cron_json']['route_key'])
     g.db_connection.db_cron_time_update(cron_job_data['mm_cron_name'])
-    return redirect(url_for('admins_cron.admin_cron_display_all'))
+    return redirect(url_for('admins_cron.admin_cron'))
 
 
 @blueprint.route('/cron_edit/<guid>', methods=['GET', 'POST'])
@@ -79,15 +43,6 @@ async def url_bp_admin_cron_edit(request, guid):
     return render_template('admin/admin_cron_edit.html', guid=guid, form=form)
 
 
-@blueprint.route('/cron_delete', methods=["POST"])
-@login_required
-@admin_required
-async def url_bp_admin_cron_delete(request):
-    """
-    Delete action 'page'
-    """
-    g.db_connection.db_cron_delete(request.form['id'])
-    g.db_connection.db_commit()
-    return json.dumps({'status': 'OK'})
+
 
 

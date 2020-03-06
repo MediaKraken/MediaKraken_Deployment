@@ -18,48 +18,9 @@ def admin_required(fn):
     return decorated_view
 
 
-@blueprint.route("/users")
-@login_required
-@admin_required
-async def url_bp_admin_user(request):
-    """
-    Display user list
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_user_list_name_count(),
-                                                  record_name='users',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
-    return render_template('admin/admin_users.html',
-                           users=g.db_connection.db_user_list_name(
-                               offset, per_page),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
 
 
-@blueprint.route("/user_detail/<guid>")
-@login_required
-@admin_required
-async def url_bp_admin_user_detail(request, guid):
-    """
-    Display user details
-    """
-    return render_template('admin/admin_user_detail.html',
-                           data_user=g.db_connection.db_user_detail(guid))
 
 
-@blueprint.route('/user_delete', methods=["POST"])
-@login_required
-@admin_required
-async def url_bp_admin_user_delete(request):
-    """
-    Delete user action 'page'
-    """
-    g.db_connection.db_user_delete(request.form['id'])
-    g.db_connection.db_commit()
-    return json.dumps({'status': 'OK'})
+
+
