@@ -1,4 +1,3 @@
-
 @blueprint.before_request
 def before_request(request):
     """
@@ -7,4 +6,3 @@ def before_request(request):
     g.db_connection = database_base.MKServerDatabase()
     g.option_config_json = g.db_connection.db_opt_status_read()[0]
     g.db_connection.db_open()
-

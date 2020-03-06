@@ -1,5 +1,3 @@
-
-
 @blueprint.route('/getChromecastById', methods=['POST'])
 @login_required
 @admin_required
@@ -36,4 +34,3 @@ async def url_bp_admin_updatetvtuner(request):
     g.db_connection.db_device_update_by_uuid(request.form['name'],
                                              request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})
-

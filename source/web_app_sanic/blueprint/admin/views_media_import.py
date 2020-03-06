@@ -1,5 +1,3 @@
-
-
 @blueprint.route("/mediaimport", methods=["GET", "POST"])
 @login_required
 @admin_required
@@ -20,4 +18,3 @@ async def url_bp_admin_media_import(request):
     return render_template("admin/admin_media_import.html",
                            media_dir=media_data,
                            )
-

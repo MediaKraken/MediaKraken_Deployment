@@ -1,5 +1,3 @@
-
-
 @blueprint.route("/game_metadata", methods=["GET", "POST"])
 @login_required
 @admin_required
@@ -14,4 +12,3 @@ async def url_bp_game_metadata(request):
     return render_template("admin/admin_games_metadata.html",
                            data_mame_version=data_mame_version,
                            )
-

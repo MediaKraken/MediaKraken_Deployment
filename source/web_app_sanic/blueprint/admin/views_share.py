@@ -1,4 +1,3 @@
-
 @blueprint.route('/getsharebyid', methods=['POST'])
 @login_required
 @admin_required
