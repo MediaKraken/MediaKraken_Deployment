@@ -1,3 +1,5 @@
+import json
+
 from common import common_global
 from common import common_internationalization
 from common import common_transmission
@@ -27,3 +29,25 @@ async def url_bp_admin_transmission(request):
     return {
         'data_transmission': transmission_data
     }
+
+
+@blueprint_admin_transmission.route('/transmission_delete', methods=["POST"])
+@admin_required
+async def url_bp_admin_transmission_delete(request):
+    """
+    Delete torrent from transmission
+    """
+    # g.db_connection.db_Audit_Path_Delete(request.form['id'])
+    # g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})
+
+
+@blueprint_admin_transmission.route('/transmission_edit', methods=["POST"])
+@admin_required
+async def url_bp_admin_transmission_edit(request):
+    """
+    Edit a torrent from transmission
+    """
+    # g.db_connection.db_Audit_Path_Delete(request.form['id'])
+    # g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})

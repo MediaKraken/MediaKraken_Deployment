@@ -1,22 +1,5 @@
 
 
-def admin_required(fn):
-    """
-    Admin check
-    """
-
-    @wraps(fn)
-    @login_required
-    def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                             current_user.get_id()})
-        if not current_user.is_admin:
-            return flask.abort(403)  # access denied
-        return fn(*args, **kwargs)
-
-    return decorated_view
-
-
 @blueprint.route("/hardware", methods=["GET", "POST"])
 @login_required
 @admin_required
@@ -150,20 +133,20 @@ async def url_bp_admin_tvtuner_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/getTVTunerById', methods=['POST'])
+@blueprint.route('/gettvtunerbyid', methods=['POST'])
 @login_required
 @admin_required
-async def url_bp_admin_getTVTunerById(request):
+async def url_bp_admin_gettvtunerbyid(request):
     result = g.db_connection.db_device_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
                        'Name': result['mm_device_json']['Name'],
                        'IP': result['mm_device_json']['IP']})
 
 
-@blueprint.route('/updateTVTuner', methods=['POST'])
+@blueprint.route('/updatetvtuner', methods=['POST'])
 @login_required
 @admin_required
-async def url_bp_admin_updateTVTuner(request):
+async def url_bp_admin_updatetvtuner(request):
     g.db_connection.db_device_update_by_uuid(request.form['name'],
                                              request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})

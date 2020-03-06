@@ -1,22 +1,4 @@
 
-
-def admin_required(fn):
-    """
-    Admin check
-    """
-
-    @wraps(fn)
-    @login_required
-    def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                             current_user.get_id()})
-        if not current_user.is_admin:
-            return flask.abort(403)  # access denied
-        return fn(*args, **kwargs)
-
-    return decorated_view
-
-
 @blueprint.route("/share", methods=["GET", "POST"])
 @login_required
 @admin_required
@@ -127,19 +109,19 @@ async def url_bp_admin_share_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/getShareById', methods=['POST'])
+@blueprint.route('/getsharebyid', methods=['POST'])
 @login_required
 @admin_required
-async def url_bp_admin_getShareById(request):
+async def url_bp_admin_getsharebyid(request):
     result = g.db_connection.db_audit_share_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_share_dir_guid'],
                        'Path': result['mm_share_dir_path']})
 
 
-@blueprint.route('/updateShare', methods=['POST'])
+@blueprint.route('/updateshare', methods=['POST'])
 @login_required
 @admin_required
-async def url_bp_admin_updateShare(request):
+async def url_bp_admin_updateshare(request):
     g.db_connection.db_audit_share_update_by_uuid(request.form['new_share_type'],
                                                   request.form['new_share_user'],
                                                   request.form['new_share_password'],

@@ -1,36 +1,6 @@
 
 
-def admin_required(fn):
-    """
-    Admin check
-    """
 
-    @wraps(fn)
-    @login_required
-    def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                             current_user.get_id()})
-        if not current_user.is_admin:
-            return flask.abort(403)  # access denied
-        return fn(*args, **kwargs)
-
-    return decorated_view
-
-
-@blueprint.route('/backup_delete', methods=["POST"])
-@login_required
-@admin_required
-async def url_bp_admin_backup_delete(request):
-    """
-    Delete backup file action 'page'
-    """
-    file_path, file_type = request.form['id'].split('|')
-    if file_type == "Local":
-        os.remove(file_path)
-    else:
-        pass
-        # TODO, do the actual delete
-    return json.dumps({'status': 'OK'})
 
 
 @blueprint.route("/backup", methods=["GET", "POST"])

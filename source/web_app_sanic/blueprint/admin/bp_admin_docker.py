@@ -1,11 +1,12 @@
+from common import common_docker
 from common import common_global
 from sanic import Blueprint
 
 blueprint_admin_docker = Blueprint('name_blueprint_admin_docker', url_prefix='/admin')
 
 
-@blueprint.route("/docker_stat")
-@login_required
+@blueprint_admin_docker.route("/docker_stat")
+@common_global.jinja_template.template('admin/admin_docker.html')
 @admin_required
 async def url_bp_admin_docker_stat(request):
     """
@@ -20,7 +21,7 @@ async def url_bp_admin_docker_stat(request):
     else:
         docker_swarm = docker_inst.com_docker_swarm_inspect()[
             'JoinTokens']['Worker']
-    return render_template("admin/admin_docker.html",
-                           data_host=docker_info,
-                           data_swam=docker_swarm
-                           )
+    return {
+        'data_host': docker_info,
+        'data_swam': docker_swarm,
+    }
