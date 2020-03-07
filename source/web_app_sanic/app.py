@@ -34,7 +34,7 @@ app.static('/static', './web_app_async/static')
 app.blueprint(blueprint_content_mediakraken)
 
 # setup all the db functions and attempt db connection
-app.db_functions = database_base_async.MKServerDatabaseasync()
+app.db_functions = database_base_async.MKServerDatabaseAsync()
 
 # setup the pika connection
 credentials = pika.PlainCredentials('guest', 'guest')
