@@ -1,5 +1,6 @@
 import os
 
+import database_async as database_base_async
 import pika
 from asyncpg import create_pool
 from common import common_file
@@ -14,7 +15,7 @@ from sanic.response import redirect, text
 from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
-import database_aync as database_base_async
+
 # setup the Sanic app
 app = Sanic(__name__)
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
@@ -142,6 +143,7 @@ async def register_db(app, loop):
     #     values = await db_connection.fetch('select * from mm_user')
     #     print(values)
     # await db_connection.close() - not needed in pool?
+
 
 # route to the default homepage
 @app.route("/")
