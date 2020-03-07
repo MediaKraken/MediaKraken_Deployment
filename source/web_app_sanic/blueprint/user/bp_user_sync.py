@@ -1,6 +1,15 @@
+import json
 
-@blueprint.route('/sync')
-@login_required
+from common import common_global
+from common import common_pagination
+from sanic import Blueprint
+from sanic.response import redirect
+
+blueprint_user_sync = Blueprint('name_blueprint_user_sync', url_prefix='/user')
+
+
+@blueprint_user_sync.route('/sync')
+@common_global.jinja_template.template('user/user_sync.html')
 async def url_bp_user_sync_display_all(request):
     """
     Display sync page
@@ -14,16 +23,26 @@ async def url_bp_user_sync_display_all(request):
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/user_sync.html',
-                           media_sync=g.db_connection.db_sync_list(offset, per_page),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
+    return {
+        'media_sync': g.db_connection.db_sync_list(offset, per_page),
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
 
 
-@blueprint.route('/sync_edit/<guid>', methods=['GET', 'POST'])
-@login_required
+@blueprint_user_sync.route('/sync_delete', methods=["POST"])
+async def url_bp_user_admin_sync_delete_page(request):
+    """
+    Display sync delete action 'page'
+    """
+    g.db_connection.db_sync_delete(request.form['id'])
+    g.db_connection.db_commit()
+    return json.dumps({'status': 'OK'})
+
+
+@blueprint_user_sync.route('/sync_edit/<guid>', methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/user_sync_edit.html')
 async def url_bp_user_sync_edit(request, guid):
     """
     Allow user to edit sync page
@@ -43,22 +62,13 @@ async def url_bp_user_sync_edit(request, guid):
         g.db_connection.db_sync_insert(request.form['name'],
                                        request.form['target_output_path'], json.dumps(sync_json))
         g.db_connection.db_commit()
-        return redirect(url_for('user.movie_detail', guid=guid))
+        return redirect(request.app.url_for('user.movie_detail', guid=guid))
     form = SyncEditForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
     else:
         flash_errors(form)
-    return render_template('users/user_sync_edit.html', guid=guid, form=form)
-
-
-@blueprint.route('/sync_delete', methods=["POST"])
-@login_required
-async def url_bp_user_admin_sync_delete_page(request):
-    """
-    Display sync delete action 'page'
-    """
-    g.db_connection.db_sync_delete(request.form['id'])
-    g.db_connection.db_commit()
-    return json.dumps({'status': 'OK'})
-
+    return {
+        'guid': guid,
+        'form': form
+    }

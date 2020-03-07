@@ -1,6 +1,14 @@
+from common import common_global
+from common import common_internationalization
+from common import common_pagination
+from sanic import Blueprint
 
-@blueprint.route('/meta_movie_detail/<guid>')
-@login_required
+blueprint_user_metadata_movie = Blueprint('name_blueprint_user_metadata_movie',
+                                          url_prefix='/user')
+
+
+@blueprint_user_metadata_movie.route('/meta_movie_detail/<guid>')
+@common_global.jinja_template.template('user/meta_movie_detail.html')
 async def url_bp_user_metadata_movie_detail(request, guid):
     """
     Display metadata movie detail
@@ -41,23 +49,23 @@ async def url_bp_user_metadata_movie_detail(request, guid):
         data_background_image = None
     # grab reviews
     #    review = g.db_connection.db_Review_List(data[1])
-    return render_template('users/metadata/meta_movie_detail.html',
-                           # data_media_ids=data[1],
-                           data_name=data[2],
-                           json_metadata=json_metadata,
-                           data_genres=genres_list[:-2],
-                           data_production=production_list[:-2],
-                           # data_review=review,
-                           data_poster_image=data_poster_image,
-                           data_background_image=data_background_image,
-                           data_vote_count=data_vote_count,
-                           data_budget=common_internationalization.com_inter_number_format(
-                               json_metadata['Meta']['themoviedb']['Meta']['budget'])
-                           )
+    return {
+        # data_media_ids: data[1],
+        'data_name': data[2],
+        'json_metadata': json_metadata,
+        'data_genres': genres_list[:-2],
+        'data_production': production_list[:-2],
+        # data_review: review,
+        'data_poster_image': data_poster_image,
+        'data_background_image': data_background_image,
+        'data_vote_count': data_vote_count,
+        'data_budget': common_internationalization.com_inter_number_format(
+            json_metadata['Meta']['themoviedb']['Meta']['budget'])
+    }
 
 
-@blueprint.route('/meta_movie_list', methods=["GET", "POST"])
-@login_required
+@blueprint_user_metadata_movie.route('/meta_movie_list', methods=["GET", "POST"])
+@common_global.jinja_template.template('user/meta_movie_list.html')
 async def url_bp_user_metadata_movie_list(request):
     """
     Display list of movie metadata
@@ -65,7 +73,8 @@ async def url_bp_user_metadata_movie_list(request):
     page, per_page, offset = common_pagination.get_page_items()
     media = []
     media_count = 0
-    for row_data in g.db_connection.db_meta_movie_list(offset, per_page, session['search_text']):
+    for row_data in g.db_connection.db_meta_movie_list(offset, per_page,
+                                                       common_global.session['search_text']):
         # set watched
         try:
             watched_status \
@@ -119,18 +128,18 @@ async def url_bp_user_metadata_movie_list(request):
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
-    session['search_page'] = 'meta_movie'
+    common_global.session['search_page'] = 'meta_movie'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_movie_count(
-                                                      session['search_text']),
+                                                      common_global.session['search_text']),
                                                   record_name='movie(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_movie_list.html',
-                           media_movie=media,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
+    return {
+        'media_movie': media,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }

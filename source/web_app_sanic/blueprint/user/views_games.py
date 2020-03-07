@@ -2,13 +2,6 @@
 
 
 
-@blueprint.route('/games_detail/<guid>', methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_game_detail(request, guid):
-    """
-    Display game detail page
-    """
-    return render_template("users/user_game_detail.html")
 
 
 @blueprint.route('/meta_game_detail/<guid>')

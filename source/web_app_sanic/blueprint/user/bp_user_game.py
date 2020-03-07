@@ -27,3 +27,12 @@ async def url_bp_user_game(request):
         'per_page': per_page,
         'pagination': pagination,
     }
+
+
+@blueprint_user_game.route('/game_detail/<guid>', methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/user_game_detail.html')
+async def url_bp_user_game_detail(request, guid):
+    """
+    Display game detail page
+    """
+    return {}

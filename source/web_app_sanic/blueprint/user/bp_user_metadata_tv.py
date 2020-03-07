@@ -1,7 +1,14 @@
+import natsort
+from common import common_global
+from common import common_pagination
+from sanic import Blueprint
+
+blueprint_user_metadata_tv = Blueprint('name_blueprint_user_metadata_tv',
+                                       url_prefix='/user')
 
 
-@blueprint.route('/meta_tvshow_detail/<guid>')
-@login_required
+@blueprint_user_metadata_tv.route('/meta_tvshow_detail/<guid>')
+@common_global.jinja_template.template('user/meta_tvshow_detail.html')
 async def url_bp_user_metadata_tvshow_detail(request, guid):
     """
     Display metadata of tvshow
@@ -100,25 +107,88 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     #    production_list = ''
     #    for ndx in range(0,len(json_metadata['production_companies'])):
     #        production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
-    return render_template('users/metadata/meta_tvshow_detail.html',
-                           data_title=data_metadata['mm_metadata_tvshow_name'],
-                           data_runtime=data_runtime,
-                           data_guid=guid,
-                           data_rating=data_rating,
-                           data_first_aired=data_first_aired,
-                           data_poster_image=data_poster_image,
-                           data_background_image=data_background_image,
-                           data_overview=data_overview,
-                           data_season_data=data_season_data,
-                           data_season_count=sorted(
-                               data_season_data),
-                           data_genres_list=data_genres_list[:-2]
-                           )
+    return {
+        'data_title': data_metadata['mm_metadata_tvshow_name'],
+        'data_runtime': data_runtime,
+        'data_guid': guid,
+        'data_rating': data_rating,
+        'data_first_aired': data_first_aired,
+        'data_poster_image': data_poster_image,
+        'data_background_image': data_background_image,
+        'data_overview': data_overview,
+        'data_season_data': data_season_data,
+        'data_season_count': sorted(data_season_data),
+        'data_genres_list': data_genres_list[:-2],
+    }
 
 
 # tv show season detail - show guid then season #
-@blueprint.route("/meta_tvshow_season_detail/<guid>/<season>", methods=['GET', 'POST'])
-@login_required
+@blueprint_user_metadata_tv.route("/meta_tvshow_episode_detail/<guid>/<eps_id>",
+                                  methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/meta_tvshow_episode_detail.html')
+async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id):
+    """
+    Display tvshow episode metadata detail
+    """
+    data_metadata = g.db_connection.db_read_tvmeta_epsisode_by_id(guid, eps_id)
+    # poster image
+    try:
+        data_poster_image = data_metadata[3]
+    except:
+        data_poster_image = None
+    # background image
+    try:
+        if data_metadata['LocalImages']['Backdrop'] is not None:
+            data_background_image = data_metadata['LocalImages']['Backdrop']
+        else:
+            data_background_image = None
+    except:
+        data_background_image = None
+    return {
+        'data': data_metadata[0],
+        'data_guid': guid,
+        'data_title': data_metadata['eps_name'],
+        'data_runtime': data_metadata['eps_runtime'],
+        'data_overview=': data_metadata['eps_overview'],
+        'data_first_aired': data_metadata['eps_first_air'],
+        'data_poster_image': data_poster_image,
+        'data_background_image': data_background_image,
+    }
+
+
+@blueprint_user_metadata_tv.route('/meta_tvshow_list', methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/meta_tvshow_list.html')
+async def url_bp_user_metadata_tvshow_list(request):
+    """
+    Display tvshow metadata list
+    """
+    page, per_page, offset = common_pagination.get_page_items()
+    media_tvshow = []
+    for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page, session['search_text']):
+        media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
+                             row_data['mm_metadata_tvshow_name'], row_data['air_date'],
+                             row_data['image_json']))
+    session['search_page'] = 'meta_tv'
+    pagination = common_pagination.get_pagination(page=page,
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_meta_tvshow_list_count(
+                                                      session['search_text']),
+                                                  record_name='TV show(s)',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                  )
+    return {
+        'media_tvshow': media_tvshow,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
+
+
+# tv show season detail - show guid then season #
+@blueprint_user_metadata_tv.route("/meta_tvshow_season_detail/<guid>/<season>",
+                                  methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/meta_tvshow_season_detail.html')
 async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     """
     Display metadata of tvshow season detail
@@ -192,78 +262,16 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
             data_background_image = None
     except:
         data_background_image = None
-    return render_template("users/metadata/meta_tvshow_season_detail.html",
-                           data=data_metadata['mm_metadata_tvshow_name'],
-                           data_guid=guid,
-                           data_season=season,
-                           data_overview=data_overview,
-                           data_rating=data_rating,
-                           data_first_aired=data_first_aired,
-                           data_runtime=data_runtime,
-                           data_poster_image=data_poster_image,
-                           data_background_image=data_background_image,
-                           data_episode_count=data_episode_count,
-                           data_episode_keys=data_episode_keys
-                           )
-
-
-# tv show season detail - show guid then season #
-@blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>", methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id):
-    """
-    Display tvshow episode metadata detail
-    """
-    data_metadata = g.db_connection.db_read_tvmeta_epsisode_by_id(guid, eps_id)
-    # poster image
-    try:
-        data_poster_image = data_metadata[3]
-    except:
-        data_poster_image = None
-    # background image
-    try:
-        if data_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = data_metadata['LocalImages']['Backdrop']
-        else:
-            data_background_image = None
-    except:
-        data_background_image = None
-    return render_template("users/metadata/meta_tvshow_episode_detail.html", data=data_metadata[0],
-                           data_guid=guid,
-                           data_title=data_metadata['eps_name'],
-                           data_runtime=data_metadata['eps_runtime'],
-                           data_overview=data_metadata['eps_overview'],
-                           data_first_aired=data_metadata['eps_first_air'],
-                           data_poster_image=data_poster_image,
-                           data_background_image=data_background_image
-                           )
-
-
-@blueprint.route('/meta_tvshow_list', methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_metadata_tvshow_list(request):
-    """
-    Display tvshow metadata list
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    media_tvshow = []
-    for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page, session['search_text']):
-        media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
-                             row_data['mm_metadata_tvshow_name'], row_data['air_date'],
-                             row_data['image_json']))
-    session['search_page'] = 'meta_tv'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_meta_tvshow_list_count(
-                                                      session['search_text']),
-                                                  record_name='TV show(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
-    return render_template('users/metadata/meta_tvshow_list.html',
-                           media_tvshow=media_tvshow,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
-
+    return {
+        'data': data_metadata['mm_metadata_tvshow_name'],
+        'data_guid': guid,
+        'data_season': season,
+        'data_overview': data_overview,
+        'data_rating': data_rating,
+        'data_first_aired': data_first_aired,
+        'data_runtime': data_runtime,
+        'data_poster_image': data_poster_image,
+        'data_background_image': data_background_image,
+        'data_episode_count': data_episode_count,
+        'data_episode_keys': data_episode_keys,
+    }

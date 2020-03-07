@@ -1,7 +1,13 @@
+from common import common_global
+from common import common_pagination
+from sanic import Blueprint
+
+blueprint_user_metadata_people = Blueprint('name_blueprint_user_metadata_people',
+                                           url_prefix='/user')
 
 
-@blueprint.route('/meta_person_detail/<guid>')
-@login_required
+@blueprint_user_metadata_people.route('/meta_person_detail/<guid>')
+@common_global.jinja_template.template('user/meta_person_detail.html')
 async def url_bp_user_metadata_person_detail(request, guid):
     """
     Display person detail page
@@ -18,16 +24,16 @@ async def url_bp_user_metadata_person_detail(request, guid):
             person_image = "/static/images/person_missing.png"
     else:
         person_image = "/static/images/person_missing.png"
-    return render_template('users/metadata/meta_people_detail.html',
-                           json_metadata=person_data['mmp_person_meta_json'],
-                           data_person_image=person_image,
-                           data_also_media=g.db_connection.db_meta_person_as_seen_in(
-                               person_data['mmp_id']),
-                           )
+    return {
+        'json_metadata': person_data['mmp_person_meta_json'],
+        'data_person_image': person_image,
+        'data_also_media': g.db_connection.db_meta_person_as_seen_in(
+            person_data['mmp_id']),
+    }
 
 
-@blueprint.route('/meta_person_list', methods=['GET', 'POST'])
-@login_required
+@blueprint_user_metadata_people.route('/meta_person_list', methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/meta_person_list.html')
 async def url_bp_user_metadata_person_list(request):
     """
     Display person list page
@@ -35,7 +41,7 @@ async def url_bp_user_metadata_person_list(request):
     page, per_page, offset = common_pagination.get_page_items()
     person_list = []
     for person_data in g.db_connection.db_meta_person_list(offset, per_page,
-                                                           session['search_text']):
+                                                           common_global.session['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
@@ -51,19 +57,18 @@ async def url_bp_user_metadata_person_list(request):
             person_image = "/static/images/person_missing.png"
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
-    session['search_page'] = 'meta_people'
+    common_global.session['search_page'] = 'meta_people'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_person_list_count(
-                                                      session['search_text']),
+                                                      common_global.session['search_text']),
                                                   record_name='person',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_people_list.html',
-                           media_person=person_list,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
-
+    return {
+        'media_person': person_list,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }

@@ -1,39 +1,20 @@
+from common import common_global
+from common import common_pagination
+from sanic import Blueprint
+
+blueprint_user_metadata_music = Blueprint('name_blueprint_user_metadata_music', url_prefix='/user')
 
 
-@blueprint.route('/meta_music_song_list', methods=['GET', 'POST'])
-@login_required
-async def metadata_music_song_list(request):
-    """
-    Display metadata music song list
-    """
-    page, per_page, offset = common_pagination.get_page_items()
-    session['search_page'] = 'meta_music_song'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_music'),
-                                                  record_name='song(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
-    return render_template('users/metadata/meta_music_list.html',
-                           media=g.db_connection.db_meta_song_list(offset, per_page,
-                                                                   session['search_text']),
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
-
-
-@blueprint.route('/meta_music_album_list', methods=['GET', 'POST'])
-@login_required
+@blueprint_user_metadata_music.route('/meta_music_album_list', methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/meta_music_album_list.html')
 async def url_bp_user_metadata_music_album_list(request):
     """
     Display metadata of album list
     """
     page, per_page, offset = common_pagination.get_page_items()
     media = []
-    for album_data in g.db_connection.db_meta_album_list(offset, per_page, session['search_text']):
+    for album_data in g.db_connection.db_meta_album_list(offset, per_page,
+                                                         common_global.session['search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
                                                          'id': album_data['mm_metadata_album_guid'],
                                                          'name': album_data[
@@ -55,7 +36,7 @@ async def url_bp_user_metadata_music_album_list(request):
             media.append(
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
-    session['search_page'] = 'meta_album'
+    common_global.session['search_page'] = 'meta_album'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
@@ -64,10 +45,34 @@ async def url_bp_user_metadata_music_album_list(request):
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_music_album_list.html',
-                           media=media,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
+    return {
+        'media': media,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
 
+
+@blueprint_user_metadata_music.route('/meta_music_album_song_list', methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/meta_music_album_song_list.html')
+async def metadata_music_album_song_list(request):
+    """
+    Display metadata music song list
+    """
+    page, per_page, offset = common_pagination.get_page_items()
+    common_global.session['search_page'] = 'meta_music_song'
+    pagination = common_pagination.get_pagination(page=page,
+                                                  per_page=per_page,
+                                                  total=g.db_connection.db_table_count(
+                                                      'mm_metadata_music'),
+                                                  record_name='song(s)',
+                                                  format_total=True,
+                                                  format_number=True,
+                                                  )
+    return {
+        'media': g.db_connection.db_meta_song_list(offset, per_page,
+                                                   common_global.session['search_text']),
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
