@@ -97,7 +97,7 @@ async def url_bp_admin_share_edit(request):
                     pass
                 elif not os.path.isdir(request.form['storage_mount_path']):
                     flash("Invalid share path.", 'error')
-                    return redirect(url_for('admins_share.admin_share_edit_page'))
+                    return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_share_check(request.form['storage_mount_path']) == 0:
                     g.db_connection.db_audit_share_add(request.form['storage_mount_type'],
@@ -106,10 +106,10 @@ async def url_bp_admin_share_edit(request):
                                                        request.form['storage_mount_server'],
                                                        request.form['storage_mount_path'])
                     g.db_connection.db_commit()
-                    return redirect(url_for('admins_share.admin_share'))
+                    return redirect(request.app.url_for('admins_share.admin_share'))
                 else:
                     flash("Share already mapped.", 'error')
-                    return redirect(url_for('admins_share.admin_share_edit_page'))
+                    return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
             elif request.form['action_type'] == 'Browse':
                 # browse for smb shares on the host network
                 pass

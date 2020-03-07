@@ -1,37 +1,45 @@
+from common import common_global
+from common import common_isbn
+from common import common_pagination
+from sanic import Blueprint
+
+blueprint_user_metadata_periodical = Blueprint('name_blueprint_user_metadata_periodical',
+                                               url_prefix='/user')
 
 
-@blueprint.route('/meta_periodical_list', methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_metadata_periodical_list(request):
+@blueprint_user_metadata_periodical.route('/meta_periodical', methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/meta_periodical.html')
+async def url_bp_user_metadata_periodical(request):
     """
     Display periodical list page
     """
     page, per_page, offset = common_pagination.get_page_items()
     item_list = []
-    for item_data in g.db_connection.db_meta_book_list(offset, per_page, session['search_text']):
+    for item_data in g.db_connection.db_meta_book_list(offset, per_page,
+                                                       common_global.session['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': item_data})
         item_image = "/static/images/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
-    session['search_page'] = 'meta_periodical'
+    common_global.session['search_page'] = 'meta_periodical'
     pagination = common_pagination.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_book_list_count(
-                                                      session['search_text']),
+                                                      common_global.session['search_text']),
                                                   record_name='periodical(s)',
                                                   format_total=True,
                                                   format_number=True,
                                                   )
-    return render_template('users/metadata/meta_periodical_list.html',
-                           media_person=item_list,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
+    return {
+        'media_person': item_list,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
 
 
-@blueprint.route('/meta_periodical_detail/<guid>')
-@login_required
+@blueprint_user_metadata_periodical.route('/meta_periodical_detail/<guid>')
+@common_global.jinja_template.template('user/meta_periodical_detail.html')
 async def url_bp_user_metadata_periodical_detail(request, guid):
     """
     Display periodical detail page
@@ -61,12 +69,12 @@ async def url_bp_user_metadata_periodical_detail(request, guid):
         data_pages = json_metadata['mm_metadata_book_json']['physical_description_text']
     except KeyError:
         data_pages = 'NA'
-    return render_template('users/metadata/meta_periodical_detail.html',
-                           data_name=data_name,
-                           data_isbn=data_isbn,
-                           data_overview=data_overview,
-                           data_author=data_author,
-                           data_publisher=data_publisher,
-                           data_pages=data_pages,
-                           data_item_image="/static/images/missing_icon.jpg",
-                           )
+    return {
+        'data_name': data_name,
+        'data_isbn': data_isbn,
+        'data_overview': data_overview,
+        'data_author': data_author,
+        'data_publisher': data_publisher,
+        'data_pages': data_pages,
+        'data_item_image': "/static/images/missing_icon.jpg",
+    }

@@ -137,11 +137,6 @@ async def register_db(app, loop):
     #                                                       'be enabled for database!!!!'
     #                                                       '  Exiting!!!'})
     #     sys.exit(1)
-    #
-    # async with app.db_pool.acquire() as db_connection:
-    #     # await connection.execute('select * from mm_user')
-    #     values = await db_connection.fetch('select * from mm_user')
-    #     print(values)
     # await db_connection.close() - not needed in pool?
 
 
