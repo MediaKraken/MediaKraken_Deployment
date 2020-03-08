@@ -18,6 +18,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   curl-dev \
   git \
   gcc \
+  g++ \
   jpeg-dev \
   libffi-dev \
   libxml2-dev \
@@ -42,6 +43,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \
   gcc \
+  g++ \
   git \
   musl-dev \
   linux-headers \
