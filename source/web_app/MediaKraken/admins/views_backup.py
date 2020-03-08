@@ -19,7 +19,7 @@ from MediaKraken.admins.forms import BackupEditForm
 from common import common_network_cloud
 from common import common_file
 from common import common_global
-from common import common_pagination
+from common import common_pagination_flask
 from common import common_string
 import database as database_base
 
@@ -90,8 +90,8 @@ def admin_backup():
                 g.option_config_json['MediaKrakenServer']['BackupContainerName']):
             backup_files.append((backup_cloud.name, backup_cloud.type,
                                  common_string.com_string_bytes2human(backup_cloud.size)))
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=len(backup_files),
                                                   record_name='backups',

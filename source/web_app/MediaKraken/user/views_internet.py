@@ -18,7 +18,7 @@ from common import common_global
 from common import common_google
 from common import common_network_twitchv5
 from common import common_network_youtube
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -164,7 +164,7 @@ def user_iradio_list():
     """
     Display main page for internet radio
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     if session['search_text'] is not None:
         mediadata = g.db_connection.db_iradio_list(offset, per_page,

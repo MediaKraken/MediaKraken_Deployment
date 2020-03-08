@@ -12,7 +12,7 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -22,7 +22,7 @@ def metadata_movie_collection_list():
     """
     Display movie collection metadata
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     for row_data in g.db_connection.db_collection_list(offset, per_page, session['search_text']):
         if 'Poster' in row_data['mm_metadata_collection_imagelocal_json']:
@@ -33,7 +33,7 @@ def metadata_movie_collection_list():
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'], None))
     session['search_page'] = 'meta_movie_collection'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_collection_list_count(
                                                       session['search_text']),

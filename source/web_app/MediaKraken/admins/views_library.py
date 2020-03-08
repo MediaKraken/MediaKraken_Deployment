@@ -20,7 +20,7 @@ from MediaKraken.utils import flash_errors
 from common import common_global
 from common import common_network_cifs
 from common import common_network_pika
-from common import common_pagination
+from common import common_pagination_flask
 from common import common_string
 import database as database_base
 
@@ -60,8 +60,8 @@ def admin_library():
                                                   route_key='mkque')
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_media_dir'),

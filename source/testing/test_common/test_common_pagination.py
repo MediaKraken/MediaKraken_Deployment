@@ -21,28 +21,28 @@ import sys
 import pytest  # pylint: disable=W0611
 
 sys.path.append('.')
-from common import common_pagination
+from common import common_pagination_flask
 
 
 def test_get_css_framework():
     """
     Test function
     """
-    common_pagination.get_css_framework()
+    common_pagination_flask.get_css_framework()
 
 
 def test_get_link_size():
     """
     Test function
     """
-    common_pagination.get_link_size()
+    common_pagination_flask.get_link_size()
 
 
 def test_show_single_page_or_not():
     """
     Test function
     """
-    common_pagination.show_single_page_or_not()
+    common_pagination_flask.show_single_page_or_not()
 
 
 @pytest.mark.parametrize(("client_items_per_page"), [
@@ -52,6 +52,6 @@ def test_get_page_items(client_items_per_page):
     """
     Test function
     """
-    common_pagination.get_page_items(client_items_per_page)
+    common_pagination_flask.get_page_items(client_items_per_page)
 
 # def get_pagination(**kwargs):

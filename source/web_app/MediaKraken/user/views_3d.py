@@ -12,7 +12,7 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -23,9 +23,9 @@ def user_3d_list():
     """
     Display 3D media page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     session['search_page'] = 'media_3d'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_3d_list_count(),
                                                   record_name='3D',

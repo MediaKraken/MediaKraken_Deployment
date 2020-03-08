@@ -12,7 +12,7 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -22,9 +22,9 @@ def metadata_music_video_list():
     """
     Display metadata music video
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     session['search_page'] = 'meta_music_video'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_music_video_count(
                                                       None, session['search_text']),

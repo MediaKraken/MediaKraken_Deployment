@@ -12,7 +12,7 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -22,8 +22,8 @@ def user_game_server_list():
     """
     Display game server page
     """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.
                                                   db_game_server_list_count(),

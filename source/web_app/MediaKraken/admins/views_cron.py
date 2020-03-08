@@ -16,7 +16,7 @@ from functools import wraps
 from MediaKraken.admins.forms import CronEditForm
 from common import common_global
 from common import common_network_pika
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -44,8 +44,8 @@ def admin_cron_display_all():
     """
     Display cron jobs
     """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_cron_list_count(False),
                                                   record_name='Cron Jobs',

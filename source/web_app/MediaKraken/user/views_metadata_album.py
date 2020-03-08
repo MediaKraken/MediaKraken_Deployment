@@ -13,7 +13,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_global
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -23,9 +23,9 @@ def metadata_music_song_list():
     """
     Display metadata music song list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     session['search_page'] = 'meta_music_song'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_music'),
@@ -48,7 +48,7 @@ def metadata_music_album_list():
     """
     Display metadata of album list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     for album_data in g.db_connection.db_meta_album_list(offset, per_page, session['search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
@@ -73,7 +73,7 @@ def metadata_music_album_list():
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
     session['search_page'] = 'meta_album'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_album'),

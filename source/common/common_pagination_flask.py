@@ -1,5 +1,5 @@
 """
-The pagination for the flask server webserver
+The pagination for the flask server
 """
 
 from flask import request, current_app

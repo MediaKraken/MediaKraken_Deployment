@@ -13,7 +13,7 @@ import sys
 sys.path.append('..')
 sys.path.append('../..')
 from common import common_global
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 
 
@@ -24,7 +24,7 @@ def user_sports_page():
     """
     Display sporting events page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     for row_data in g.db_connection.db_media_sports_list(
             common_global.DLMediaType.Sports.value,
@@ -32,7 +32,7 @@ def user_sports_page():
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     session['search_page'] = 'media_sports'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_media_sports_list_count(
                                                       session['search_text']),
