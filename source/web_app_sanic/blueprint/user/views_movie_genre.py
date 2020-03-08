@@ -1,5 +1,3 @@
-
-
 @blueprint.route("/movie_genre", methods=['GET', 'POST'])
 @login_required
 async def url_bp_user_movie_genre_page(request):
@@ -22,7 +20,7 @@ async def url_bp_user_movie_page(request, genre):
     """
     Display movie page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     media = []
     for row_data in g.db_connection.db_web_media_list(
             common_global.DLMediaType.Movie.value,
@@ -84,16 +82,14 @@ async def url_bp_user_movie_page(request, genre):
         common_global.DLMediaType.Movie.value, list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True, search_text=session['search_text'])
     session['search_page'] = 'media_movie'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=total,
-                                                  record_name='movie(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=total,
+                            record_name='movie(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return render_template('users/user_movie_page.html', media=media,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
                            )
-

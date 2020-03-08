@@ -1,6 +1,6 @@
 from common import common_global
 from common import common_isbn
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 
 blueprint_user_metadata_periodical = Blueprint('name_blueprint_user_metadata_periodical',
@@ -13,7 +13,7 @@ async def url_bp_user_metadata_periodical(request):
     """
     Display periodical list page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     item_list = []
     for item_data in g.db_connection.db_meta_book_list(offset, per_page,
                                                        common_global.session['search_text']):
@@ -22,14 +22,13 @@ async def url_bp_user_metadata_periodical(request):
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
     common_global.session['search_page'] = 'meta_periodical'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_meta_book_list_count(
-                                                      common_global.session['search_text']),
-                                                  record_name='periodical(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_meta_book_list_count(
+                                common_global.session['search_text']),
+                            record_name='periodical(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media_person': item_list,
         'page': page,

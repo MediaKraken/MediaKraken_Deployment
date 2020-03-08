@@ -144,7 +144,7 @@ async def url_bp_admin_books_add(request):
                                                                            uuid.uuid4()),
                                                                        'ProviderMetaID': book_item.strip()}))
         g.db_connection.db_commit()
-        return redirect(url_for('admins.admin_books_add'))
+        return redirect(request.app.url_for('admins.admin_books_add'))
     form = BookAddForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         pass
@@ -374,7 +374,7 @@ async def url_bp_admin_upload_file(request):
         if file_handle and allowed_file(file_handle.filename):
             filename = secure_filename(file_handle.filename)
             file_handle.save(os.path.join('/mediakraken/uploads', filename))
-            return redirect(url_for('uploaded_file',
+            return redirect(request.app.url_for('uploaded_file',
                                     filename=filename))
     return '''
     <!doctype html>

@@ -3,6 +3,7 @@ import json
 from common import common_global
 from common import common_network_pika
 from sanic import Blueprint
+from sanic.response import redirect
 
 blueprint_admin_hardware = Blueprint('name_blueprint_admin_hardware', url_prefix='/admin')
 
@@ -73,10 +74,11 @@ async def url_bp_admin_hardware_chromecast_edit(request):
                                                                  'Model': "NA",
                                                                  'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
-                    return redirect(url_for('admins_chromecasts.admin_chromecast'))
+                    return redirect(request.app.url_for('admins_chromecasts.admin_chromecast'))
                 else:
                     flash("Chromecast already in database.", 'error')
-                    return redirect(url_for('admins_chromecasts.admin_chromecast_edit_page'))
+                    return redirect(
+                        request.app.url_for('admins_chromecasts.admin_chromecast_edit_page'))
         else:
             flash_errors(form)
     return {
@@ -103,10 +105,10 @@ async def url_bp_admin_hardware_tvtuner_edit(request):
                                                                  'Model': "NA",
                                                                  'IP': request.form['ipaddr']}))
                     g.db_connection.db_commit()
-                    return redirect(url_for('admins_tvtuners.admin_tvtuners'))
+                    return redirect(request.app.url_for('admins_tvtuners.admin_tvtuners'))
                 else:
                     flash("TV Tuner already in database.", 'error')
-                    return redirect(url_for('admins_tvtuners.admin_tuner_edit_page'))
+                    return redirect(request.app.url_for('admins_tvtuners.admin_tuner_edit_page'))
         else:
             flash_errors(form)
     return {

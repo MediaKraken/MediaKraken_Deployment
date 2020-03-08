@@ -1,6 +1,6 @@
 from common import common_global
 from common import common_internationalization
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 
 blueprint_user_metadata_movie = Blueprint('name_blueprint_user_metadata_movie',
@@ -70,7 +70,7 @@ async def url_bp_user_metadata_movie_list(request):
     """
     Display list of movie metadata
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     media = []
     media_count = 0
     for row_data in g.db_connection.db_meta_movie_list(offset, per_page,
@@ -129,14 +129,13 @@ async def url_bp_user_metadata_movie_list(request):
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
     common_global.session['search_page'] = 'meta_movie'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_meta_movie_count(
-                                                      common_global.session['search_text']),
-                                                  record_name='movie(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_meta_movie_count(
+                                common_global.session['search_text']),
+                            record_name='movie(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media_movie': media,
         'page': page,

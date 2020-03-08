@@ -1,5 +1,5 @@
 from common import common_global
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 
 blueprint_user_media_new = Blueprint('name_blueprint_user_media_new', url_prefix='/user')
@@ -11,7 +11,7 @@ async def url_bp_user_media_new(request):
     """
     Display new media
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     common_global.session['search_page'] = 'new_media'
     media_data = []
     for media_file in g.db_connection.db_read_media_new(offset, per_page,
@@ -20,15 +20,14 @@ async def url_bp_user_media_new(request):
         media_data.append(
             (media_file['mm_media_class_type'],
              media_file['mm_media_name'], None))
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_read_media_new_count(
-                                                      common_global.session['search_text'],
-                                                      days_old=7),
-                                                  record_name='new media',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_read_media_new_count(
+                                common_global.session['search_text'],
+                                days_old=7),
+                            record_name='new media',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media': media_data,
         'page': page,

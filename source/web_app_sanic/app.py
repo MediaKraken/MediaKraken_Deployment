@@ -15,9 +15,30 @@ from sanic.response import redirect, text
 from sanic_auth import Auth
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
+from python_paginate.css.semantic import Semantic
+from python_paginate.web.sanic_paginate import Pagination
 
 # setup the Sanic app
 app = Sanic(__name__)
+# update pagination settings
+settings = dict(PREV_LABEL='<i class="left chevron icon"></i>',
+                NEXT_LABEL='<i class="right chevron icon"></i>',
+                PER_PAGE=30,  # default is 10
+                )
+app.config.update(settings)
+# customize default pagination
+if 'PREV_LABEL' in app.config:
+    Semantic._prev_label = app.config.PREV_LABEL
+if 'NEXT_LABEL' in app.config:
+    Semantic._next_label = app.config.NEXT_LABEL
+Pagination._css = Semantic()  # for cache
+# or
+# Pagination._css_framework = 'semantic'
+# like above line, but little different
+# if you want to get same result, need do below:
+# pass css_prev_label, css_next_label to Pagination for initialize
+Pagination._per_page = app.config.PER_PAGE
+# set login endpoint
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
 app.config['WTF_CSRF_SECRET_KEY'] = 'top secret!'  # TODO!  load from secret I guess
 common_global.auth = Auth(app)

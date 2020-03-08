@@ -1,7 +1,7 @@
 import json
 
 from common import common_global
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 from sanic.response import redirect
 
@@ -14,15 +14,14 @@ async def url_bp_user_sync_display_all(request):
     """
     Display sync page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_sync_list_count(),
-                                                  record_name='sync job(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_sync_list_count(),
+                            record_name='sync job(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media_sync': g.db_connection.db_sync_list(offset, per_page),
         'page': page,

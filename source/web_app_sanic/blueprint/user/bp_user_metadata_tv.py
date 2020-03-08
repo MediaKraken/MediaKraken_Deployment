@@ -1,6 +1,6 @@
 import natsort
 from common import common_global
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 
 blueprint_user_metadata_tv = Blueprint('name_blueprint_user_metadata_tv',
@@ -162,21 +162,20 @@ async def url_bp_user_metadata_tvshow_list(request):
     """
     Display tvshow metadata list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     media_tvshow = []
     for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page, session['search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'], row_data['air_date'],
                              row_data['image_json']))
     session['search_page'] = 'meta_tv'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_meta_tvshow_list_count(
-                                                      session['search_text']),
-                                                  record_name='TV show(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_meta_tvshow_list_count(
+                                session['search_text']),
+                            record_name='TV show(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media_tvshow': media_tvshow,
         'page': page,

@@ -4,9 +4,10 @@ import os
 from common import common_global
 from common import common_network_cifs
 from common import common_network_pika
-from common import common_pagination
 from common import common_string
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
+from sanic.response import redirect
 
 blueprint_admin_library = Blueprint('name_blueprint_admin_library', url_prefix='/admin')
 
@@ -29,15 +30,14 @@ async def url_bp_admin_library(request):
                                                   route_key='mkque')
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_media_dir'),
-                                                  record_name='library dir(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    page, per_page, offset = Pagination.get_page_args(request)
+    pagination = Pagination(request,
+                            total=g.db_connection.db_table_count(
+                                'mm_media_dir'),
+                            record_name='library dir(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return_media = []
     for row_data in g.db_connection.db_audit_paths(offset, per_page):
         return_media.append((row_data['mm_media_dir_path'],
@@ -93,13 +93,15 @@ async def url_bp_admin_library_edit(request):
                                                              'path': path})
                     if addr is None:  # total junk path for UNC
                         flash("Invalid UNC path.", 'error')
-                        return redirect(url_for('admins_library.admin_library_edit_page'))
+                        return redirect(
+                            request.app.url_for('admins_library.admin_library_edit_page'))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(addr)
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
                         smb_stuff.com_cifs_close()
                         flash("Invalid UNC path.", 'error')
-                        return redirect(url_for('admins_library.admin_library_edit_page'))
+                        return redirect(
+                            request.app.url_for('admins_library.admin_library_edit_page'))
                     smb_stuff.com_cifs_close()
                 # TODO these should be mounted under mkmount on docker host
                 # which will break docker swarm....when master moves
@@ -118,7 +120,7 @@ async def url_bp_admin_library_edit(request):
                 elif not os.path.isdir(os.path.join('/mediakraken/mnt',
                                                     request.form['library_path'])):
                     flash("Invalid library path.", 'error')
-                    return redirect(url_for('admins_library.admin_library_edit_page'))
+                    return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add
                 if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
                     try:
@@ -128,10 +130,10 @@ async def url_bp_admin_library_edit(request):
                     g.db_connection.db_audit_path_add(request.form['library_path'],
                                                       request.form['Lib_Class'], lib_share)
                     g.db_connection.db_commit()
-                    return redirect(url_for('admins_library.admin_library'))
+                    return redirect(request.app.url_for('admins_library.admin_library'))
                 else:
                     flash("Path already in library.", 'error')
-                    return redirect(url_for('admins_library.admin_library_edit_page'))
+                    return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
             elif request.form['action_type'] == 'Browse...':  # popup browse form
                 pass
             # popup browse form for synology

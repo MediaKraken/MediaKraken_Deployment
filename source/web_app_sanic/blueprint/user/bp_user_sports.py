@@ -1,5 +1,5 @@
 from common import common_global
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 
 blueprint_user_sports = Blueprint('name_blueprint_user_sports', url_prefix='/user')
@@ -12,7 +12,7 @@ async def url_bp_user_sports(request):
     """
     Display sporting events page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     media = []
     for row_data in g.db_connection.db_media_sports_list(
             common_global.DLMediaType.Sports.value,
@@ -20,14 +20,13 @@ async def url_bp_user_sports(request):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     common_global.session['search_page'] = 'media_sports'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_media_sports_list_count(
-                                                      common_global.session['search_text']),
-                                                  record_name='sporting event(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_media_sports_list_count(
+                                common_global.session['search_text']),
+                            record_name='sporting event(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {'media': media,
             'page': page,
             'per_page': per_page,

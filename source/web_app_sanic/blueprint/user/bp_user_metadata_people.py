@@ -1,5 +1,5 @@
 from common import common_global
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 
 blueprint_user_metadata_people = Blueprint('name_blueprint_user_metadata_people',
@@ -38,7 +38,7 @@ async def url_bp_user_metadata_person_list(request):
     """
     Display person list page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     person_list = []
     for person_data in g.db_connection.db_meta_person_list(offset, per_page,
                                                            common_global.session['search_text']):
@@ -58,14 +58,13 @@ async def url_bp_user_metadata_person_list(request):
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     common_global.session['search_page'] = 'meta_people'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_meta_person_list_count(
-                                                      common_global.session['search_text']),
-                                                  record_name='person',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_meta_person_list_count(
+                                common_global.session['search_text']),
+                            record_name='person',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media_person': person_list,
         'page': page,

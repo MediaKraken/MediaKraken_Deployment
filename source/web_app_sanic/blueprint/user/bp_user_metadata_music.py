@@ -1,5 +1,5 @@
 from common import common_global
-from common import common_pagination
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 
 blueprint_user_metadata_music = Blueprint('name_blueprint_user_metadata_music', url_prefix='/user')
@@ -11,7 +11,7 @@ async def url_bp_user_metadata_music_album_list(request):
     """
     Display metadata of album list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     media = []
     for album_data in g.db_connection.db_meta_album_list(offset, per_page,
                                                          common_global.session['search_text']):
@@ -37,14 +37,13 @@ async def url_bp_user_metadata_music_album_list(request):
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
     common_global.session['search_page'] = 'meta_album'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_album'),
-                                                  record_name='album(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_table_count(
+                                'mm_metadata_album'),
+                            record_name='album(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media': media,
         'page': page,
@@ -59,16 +58,15 @@ async def metadata_music_album_song_list(request):
     """
     Display metadata music song list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     common_global.session['search_page'] = 'meta_music_song'
-    pagination = common_pagination.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_table_count(
-                                                      'mm_metadata_music'),
-                                                  record_name='song(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+    pagination = Pagination(request,
+                            total=g.db_connection.db_table_count(
+                                'mm_metadata_music'),
+                            record_name='song(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
     return {
         'media': g.db_connection.db_meta_song_list(offset, per_page,
                                                    common_global.session['search_text']),

@@ -6,7 +6,7 @@ async def url_bp_user_movie_status(request, guid, event_type):
     """
     common_global.es_inst.com_elastic_index('info', {'movie status': guid, 'event': event_type})
     if event_type == "sync":
-        return redirect(url_for('user.sync_edit', guid=guid))
+        return redirect(request.app.url_for('user.sync_edit', guid=guid))
     else:
         if event_type == "mismatch":
             # TODO ummmm, how do I know which specific media to update?
@@ -54,4 +54,4 @@ async def url_bp_user_tv_status(request, guid, event_type):
         pass
     elif event_type == "mismatch":
         pass
-    return redirect(url_for('user_tv.user_tv_page'))
+    return redirect(request.app.url_for('user_tv.user_tv_page'))

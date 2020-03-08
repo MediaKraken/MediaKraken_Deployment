@@ -5,7 +5,7 @@ async def url_bp_user_iradio_list(request):
     """
     Display main page for internet radio
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = Pagination.get_page_args(request)
     media = []
     if session['search_text'] is not None:
         mediadata = g.db_connection.db_iradio_list(offset, per_page,
