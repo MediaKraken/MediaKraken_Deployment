@@ -12,6 +12,7 @@ blueprint_user_movie = Blueprint('name_blueprint_user_movie', url_prefix='/user'
 
 @blueprint_user_movie.route('/movie_detail/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_movie_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_movie_detail(request, guid):
     """
     Display move detail page

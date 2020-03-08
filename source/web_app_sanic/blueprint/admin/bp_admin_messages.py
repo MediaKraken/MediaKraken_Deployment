@@ -9,7 +9,7 @@ blueprint_admin_messages = Blueprint('name_blueprint_admin_messages', url_prefix
 
 @blueprint_admin_messages.route("/messages", methods=["GET", "POST"])
 @common_global.jinja_template.template('admin/admin_messages.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_messages(request):
     """
     List all messages
@@ -32,7 +32,7 @@ async def url_bp_admin_messages(request):
 
 
 @blueprint_admin_messages.route('/message_delete', methods=["POST"])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_messages_delete(request):
     """
     Delete messages action 'page'

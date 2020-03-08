@@ -10,7 +10,7 @@ blueprint_admin_transmission = Blueprint('name_blueprint_admin_transmission', ur
 
 @blueprint_admin_transmission.route("/transmission")
 @common_global.jinja_template.template('admin/admin_transmission.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_transmission(request):
     """
     Display transmission page
@@ -32,7 +32,7 @@ async def url_bp_admin_transmission(request):
 
 
 @blueprint_admin_transmission.route('/transmission_delete', methods=["POST"])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_transmission_delete(request):
     """
     Delete torrent from transmission
@@ -43,7 +43,7 @@ async def url_bp_admin_transmission_delete(request):
 
 
 @blueprint_admin_transmission.route('/transmission_edit', methods=["POST"])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_transmission_edit(request):
     """
     Edit a torrent from transmission

@@ -10,6 +10,7 @@ blueprint_user_sync = Blueprint('name_blueprint_user_sync', url_prefix='/user')
 
 @blueprint_user_sync.route('/sync')
 @common_global.jinja_template.template('user/user_sync.html')
+@common_global.auth.login_required
 async def url_bp_user_sync_display_all(request):
     """
     Display sync page
@@ -31,6 +32,7 @@ async def url_bp_user_sync_display_all(request):
 
 
 @blueprint_user_sync.route('/sync_delete', methods=["POST"])
+@common_global.auth.login_required
 async def url_bp_user_admin_sync_delete_page(request):
     """
     Display sync delete action 'page'
@@ -42,6 +44,7 @@ async def url_bp_user_admin_sync_delete_page(request):
 
 @blueprint_user_sync.route('/sync_edit/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_sync_edit.html')
+@common_global.auth.login_required
 async def url_bp_user_sync_edit(request, guid):
     """
     Allow user to edit sync page

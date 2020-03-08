@@ -7,6 +7,7 @@ blueprint_user_music_video = Blueprint('name_blueprint_user_music_video', url_pr
 
 @blueprint_user_music_video.route('/music_video', methods=['GET'])
 @common_global.jinja_template.template('user/user_music_video.html')
+@common_global.auth.login_required
 async def url_bp_user_music_video_list(request):
     """
     Display music video page
@@ -30,6 +31,7 @@ async def url_bp_user_music_video_list(request):
 
 
 @blueprint_user_music_video.route('/music_video_detail/<guid>', methods=['GET'])
+@common_global.auth.login_required
 async def url_bp_user_music_video_detail(request, guid):
     """
     Display music video detail page

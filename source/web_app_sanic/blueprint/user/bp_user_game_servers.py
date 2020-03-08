@@ -7,6 +7,7 @@ blueprint_user_game_servers = Blueprint('name_blueprint_user_game_servers', url_
 
 @blueprint_user_game_servers.route('/game_server', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_game_server.html')
+@common_global.auth.login_required
 async def url_bp_user_game_server_list(request):
     """
     Display game server page

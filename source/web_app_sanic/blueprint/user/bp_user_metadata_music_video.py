@@ -8,6 +8,7 @@ blueprint_user_metadata_music_video = Blueprint('name_blueprint_user_metadata_mu
 
 @blueprint_user_metadata_music_video.route('/meta_music_video', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/meta_music_video_list.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_music_video(request):
     """
     Display metadata music video
@@ -32,6 +33,7 @@ async def url_bp_user_metadata_music_video(request):
 
 @blueprint_user_metadata_music_video.route('/meta_music_video_detail/<guid>')
 @common_global.jinja_template.template('user/meta_music_video_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_music_video_detail(request, guid):
     """
     Display metadata music video detail

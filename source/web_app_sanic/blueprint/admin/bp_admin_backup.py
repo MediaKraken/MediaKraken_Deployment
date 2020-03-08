@@ -13,7 +13,7 @@ blueprint_admin_backup = Blueprint('name_blueprint_admin_backup', url_prefix='/a
 
 @blueprint_admin_backup.route("/backup", methods=["GET", "POST"])
 @common_global.jinja_template.template('admin/admin_backup.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_backup(request):
     """
     List backups from local fs and cloud
@@ -64,8 +64,7 @@ async def url_bp_admin_backup(request):
 
 
 @blueprint_admin_backup.route('/backup_delete', methods=["POST"])
-@login_required
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_backup_delete(request):
     """
     Delete backup file action 'page'

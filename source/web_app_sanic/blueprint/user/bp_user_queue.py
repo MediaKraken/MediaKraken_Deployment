@@ -7,6 +7,7 @@ blueprint_user_queue = Blueprint('name_blueprint_user_queue', url_prefix='/user'
 
 @blueprint_user_queue.route("/queue", methods=['GET'])
 @common_global.jinja_template.template('user/user_queue.html')
+@common_global.auth.login_required
 async def url_bp_user_queue_page(request):
     """
     Display queue page

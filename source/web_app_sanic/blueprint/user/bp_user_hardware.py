@@ -6,6 +6,7 @@ blueprint_user_hardware = Blueprint('name_blueprint_user_hardware', url_prefix='
 
 @blueprint_user_hardware.route('/hardware', methods=['GET'])
 @common_global.jinja_template.template('user/user_hardware.html')
+@common_global.auth.login_required
 async def url_bp_user_hardware(request):
     """
     Display hardware page

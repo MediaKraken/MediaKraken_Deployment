@@ -12,7 +12,7 @@ blueprint_admin_share = Blueprint('name_blueprint_admin_share', url_prefix='/adm
 
 @blueprint_admin_share.route("/share", methods=["GET", "POST"])
 @common_global.jinja_template.template('admin/admin_share.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_share(request):
     """
     List all share/mounts
@@ -35,7 +35,7 @@ async def url_bp_admin_share(request):
 
 
 @blueprint_admin_share.route('/share_delete', methods=["POST"])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_share_delete(request):
     """
     Delete share action 'page'
@@ -47,7 +47,7 @@ async def url_bp_admin_share_delete(request):
 
 @blueprint_admin_share.route("/share_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('admin/admin_share_edit.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_share_edit(request):
     """
     allow user to edit share

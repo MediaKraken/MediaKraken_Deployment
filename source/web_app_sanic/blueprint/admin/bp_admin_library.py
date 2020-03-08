@@ -14,7 +14,7 @@ blueprint_admin_library = Blueprint('name_blueprint_admin_library', url_prefix='
 
 @blueprint_admin_library.route("/library", methods=["GET", "POST"])
 @common_global.jinja_template.template('admin/admin_library.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_library(request):
     """
     List all media libraries
@@ -54,7 +54,7 @@ async def url_bp_admin_library(request):
 
 
 @blueprint_admin_library.route('/library_byid', methods=['POST'])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_library_byid(request):
     result = g.db_connection.db_audit_path_by_uuid(request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],
@@ -63,7 +63,7 @@ async def url_bp_admin_library_byid(request):
 
 
 @blueprint_admin_library.route('/library_delete', methods=["POST"])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_library_delete(request):
     """
     Delete library action 'page'
@@ -75,7 +75,7 @@ async def url_bp_admin_library_delete(request):
 
 @blueprint_admin_library.route("/library_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('admin/admin_library_edit.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_library_edit(request):
     """
     allow user to edit lib
@@ -171,7 +171,7 @@ async def url_bp_admin_library_edit(request):
 
 
 @blueprint_admin_library.route('/library_update', methods=['POST'])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_library_update(request):
     g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
                                                  request.form['new_class'],

@@ -11,7 +11,7 @@ blueprint_admin_cron = Blueprint('name_blueprint_admin_cron', url_prefix='/admin
 
 @blueprint_admin_cron.route('/cron')
 @common_global.jinja_template.template('admin/admin_cron.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_cron(request):
     """
     Display cron jobs
@@ -32,7 +32,7 @@ async def url_bp_admin_cron(request):
 
 
 @blueprint_admin_cron.route('/cron_delete', methods=["POST"])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_cron_delete(request):
     """
     Delete action 'page'
@@ -44,7 +44,7 @@ async def url_bp_admin_cron_delete(request):
 
 @blueprint_admin_cron.route('/cron_edit/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('admin/admin_cron_edit.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_cron_edit(request, guid):
     """
     Edit cron job page
@@ -64,7 +64,7 @@ async def url_bp_admin_cron_edit(request, guid):
 
 
 @blueprint_admin_cron.route('/cron_run/<guid>', methods=['GET', 'POST'])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_cron_run(request, guid):
     """
     Run cron jobs

@@ -7,6 +7,7 @@ blueprint_user_music = Blueprint('name_blueprint_user_music', url_prefix='/user'
 
 @blueprint_user_music.route("/album_detail/<guid>")
 @common_global.jinja_template.template('user/user_music_album_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_album_detail_page(request, guid):
     """
     Display album detail page
@@ -16,6 +17,7 @@ async def url_bp_user_album_detail_page(request, guid):
 
 @blueprint_user_music.route("/album_list")
 @common_global.jinja_template.template('user/user_music_album.html')
+@common_global.auth.login_required
 async def url_bp_user_album_list_page(request):
     """
     Display album page

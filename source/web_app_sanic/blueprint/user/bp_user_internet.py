@@ -29,6 +29,7 @@ async def url_bp_user_internet_flickr(request):
 
 
 @blueprint_user_internet.route('/internet/flickr_detail/<guid>')
+@common_global.auth.login_required
 async def url_bp_user_internet_flickr_detail(request, guid):
     """
     Display main page for flickr
@@ -38,6 +39,7 @@ async def url_bp_user_internet_flickr_detail(request, guid):
 
 @blueprint_user_internet.route('/internet/twitch')
 @common_global.jinja_template.template('user/user_twitch.html')
+@common_global.auth.login_required
 async def url_bp_user_internet_twitch(request):
     """
     Display twitchtv page
@@ -74,6 +76,7 @@ async def url_bp_user_internet_twitch(request):
 
 @blueprint_user_internet.route('/internet/twitch_stream_detail/<stream_name>')
 @common_global.jinja_template.template('user/user_twitch_stream_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_internet_twitch_stream_detail(request, stream_name):
     """
     Show twitch stream detail page
@@ -97,7 +100,7 @@ async def url_bp_user_internet_vimeo(request):
 
 
 @blueprint_user_internet.route('/internet/vimeo_detail/<guid>')
-@login_required
+@common_global.auth.login_required
 async def url_bp_user_internet_vimeo_detail(request, guid):
     """
     Display vimeo page
@@ -107,6 +110,7 @@ async def url_bp_user_internet_vimeo_detail(request, guid):
 
 @blueprint_user_internet.route('/internet/youtube', methods=["GET", "POST"])
 @common_global.jinja_template.template('user/user_internet_youtube.html')
+@common_global.auth.login_required
 async def url_bp_user_internet_youtube(request):
     """
     Display youtube page
@@ -133,6 +137,7 @@ async def url_bp_user_internet_youtube(request):
 
 @blueprint_user_internet.route('/internet/youtube_detail/<uuid>')
 @common_global.jinja_template.template('user/user_internet_youtube_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_internet_youtube_detail(request, uuid):
     """
     Display youtube details page

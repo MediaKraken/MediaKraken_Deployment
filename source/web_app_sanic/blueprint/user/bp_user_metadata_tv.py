@@ -9,6 +9,7 @@ blueprint_user_metadata_tv = Blueprint('name_blueprint_user_metadata_tv',
 
 @blueprint_user_metadata_tv.route('/meta_tvshow_detail/<guid>')
 @common_global.jinja_template.template('user/meta_tvshow_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_detail(request, guid):
     """
     Display metadata of tvshow
@@ -126,6 +127,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
 @blueprint_user_metadata_tv.route("/meta_tvshow_episode_detail/<guid>/<eps_id>",
                                   methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/meta_tvshow_episode_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id):
     """
     Display tvshow episode metadata detail
@@ -158,6 +160,7 @@ async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id)
 
 @blueprint_user_metadata_tv.route('/meta_tvshow_list', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/meta_tvshow_list.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_list(request):
     """
     Display tvshow metadata list
@@ -188,6 +191,7 @@ async def url_bp_user_metadata_tvshow_list(request):
 @blueprint_user_metadata_tv.route("/meta_tvshow_season_detail/<guid>/<season>",
                                   methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/meta_tvshow_season_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     """
     Display metadata of tvshow season detail

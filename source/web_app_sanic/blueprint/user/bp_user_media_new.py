@@ -7,6 +7,7 @@ blueprint_user_media_new = Blueprint('name_blueprint_user_media_new', url_prefix
 
 @blueprint_user_media_new.route('/media_new', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_media_new.html')
+@common_global.auth.login_required
 async def url_bp_user_media_new(request):
     """
     Display new media

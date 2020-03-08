@@ -8,8 +8,7 @@ blueprint_admin_users = Blueprint('name_blueprint_admin_users', url_prefix='/adm
 
 
 @blueprint_admin_users.route('/user_delete', methods=["POST"])
-@login_required
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_user_delete(request):
     """
     Delete user action 'page'
@@ -21,7 +20,7 @@ async def url_bp_admin_user_delete(request):
 
 @blueprint_admin_users.route("/user_detail/<guid>")
 @common_global.jinja_template.template('admin/admin_user_detail.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_user_detail(request, guid):
     """
     Display user details
@@ -31,7 +30,7 @@ async def url_bp_admin_user_detail(request, guid):
 
 @blueprint_admin_users.route("/users")
 @common_global.jinja_template.template('admin/admin_users.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_user(request):
     """
     Display user list

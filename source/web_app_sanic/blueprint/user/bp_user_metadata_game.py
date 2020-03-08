@@ -7,6 +7,7 @@ blueprint_user_metadata_game = Blueprint('name_blueprint_user_metadata_game', ur
 
 @blueprint_user_metadata_game.route('/meta_game', methods=["GET", "POST"])
 @common_global.jinja_template.template('user/meta_game.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_game(request):
     """
     Display game list metadata
@@ -31,6 +32,7 @@ async def url_bp_user_metadata_game(request):
 
 @blueprint_user_metadata_game.route('/meta_game_detail/<guid>')
 @common_global.jinja_template.template('user/meta_game_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_game_detail(request, guid):
     """
     Display game metadata detail

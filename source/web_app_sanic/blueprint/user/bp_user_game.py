@@ -7,6 +7,7 @@ blueprint_user_game = Blueprint('name_blueprint_user_game', url_prefix='/user')
 
 @blueprint_user_game.route('/game', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_game.html')
+@common_global.auth.login_required
 async def url_bp_user_game(request):
     """
     Display game page
@@ -30,6 +31,7 @@ async def url_bp_user_game(request):
 
 @blueprint_user_game.route('/game_detail/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_game_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_game_detail(request, guid):
     """
     Display game detail page

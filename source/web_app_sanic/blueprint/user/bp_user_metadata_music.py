@@ -7,6 +7,7 @@ blueprint_user_metadata_music = Blueprint('name_blueprint_user_metadata_music', 
 
 @blueprint_user_metadata_music.route('/meta_music_album_list', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/meta_music_album_list.html')
+@common_global.auth.login_required
 async def url_bp_user_metadata_music_album_list(request):
     """
     Display metadata of album list
@@ -54,6 +55,7 @@ async def url_bp_user_metadata_music_album_list(request):
 
 @blueprint_user_metadata_music.route('/meta_music_album_song_list', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/meta_music_album_song_list.html')
+@common_global.auth.login_required
 async def metadata_music_album_song_list(request):
     """
     Display metadata music song list

@@ -7,6 +7,7 @@ blueprint_user_periodical = Blueprint('name_blueprint_user_periodical', url_pref
 
 @blueprint_user_periodical.route('/periodical', methods=['GET'])
 @common_global.jinja_template.template('user/user_periodical.html')
+@common_global.auth.login_required
 async def url_bp_user_periodical_list(request):
     """
     Display periodical page
@@ -31,6 +32,7 @@ async def url_bp_user_periodical_list(request):
 
 @blueprint_user_periodical.route('/periodical_detail/<guid>', methods=['GET'])
 @common_global.jinja_template.template('user/user_periodical_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_periodical_detail(request, guid):
     """
     Display periodical detail page

@@ -10,6 +10,7 @@ blueprint_user_tv = Blueprint('name_blueprint_user_tv', url_prefix='/user')
 
 @blueprint_user_tv.route("/tv", methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_tv.html')
+@common_global.auth.login_required
 async def url_bp_user_tv(request):
     """
     Display tv shows page
@@ -50,6 +51,7 @@ async def url_bp_user_tv(request):
 
 @blueprint_user_tv.route("/tv_show_detail/<guid>", methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_tv_show_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_tv_show_detail(request, guid):
     """
     Display tv show detail page
@@ -176,6 +178,7 @@ async def url_bp_user_tv_show_detail(request, guid):
 
 @blueprint_user_tv.route("/tv_show_season_detail/<guid>/<season>", methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_tv_show_season_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_tv_show_season_detail_page(request, guid, season):
     """
     Display tv season detail page
@@ -266,6 +269,7 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
 @blueprint_user_tv.route("/tv_show_episode_detail/<guid>/<season>/<episode>",
                          methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_tv_show_episode_detail.html')
+@common_global.auth.login_required
 async def url_bp_user_tv_show_episode_detail_page(request, guid, season, episode):
     """
     Display tv episode detail page

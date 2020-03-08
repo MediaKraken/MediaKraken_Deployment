@@ -9,7 +9,7 @@ blueprint_admin_link = Blueprint('name_blueprint_admin_link', url_prefix='/admin
 
 @blueprint_admin_link.route("/link_server")
 @common_global.jinja_template.template('admin/admin_link.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_server_link(request):
     """
     Display page for linking server
@@ -31,7 +31,7 @@ async def url_bp_admin_server_link(request):
 
 @blueprint_admin_link.route("/link_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('admin/admin_link_edit.html')
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_link_edit(request):
     """
     allow user to edit link
@@ -45,7 +45,7 @@ async def url_bp_admin_link_edit(request):
 
 
 @blueprint_admin_link.route('/link_delete', methods=["POST"])
-@admin_required
+@common_global.auth.login_required
 async def url_bp_admin_link_delete(request):
     """
     Delete linked server action 'page'
