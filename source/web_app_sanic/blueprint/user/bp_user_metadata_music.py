@@ -15,7 +15,7 @@ async def url_bp_user_metadata_music_album_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     for album_data in g.db_connection.db_meta_album_list(offset, per_page,
-                                                         common_global.session['search_text']):
+                                                         request['session']['search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
                                                          'id': album_data['mm_metadata_album_guid'],
                                                          'name': album_data[
@@ -37,7 +37,7 @@ async def url_bp_user_metadata_music_album_list(request):
             media.append(
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
-    common_global.session['search_page'] = 'meta_album'
+    request['session']['search_page'] = 'meta_album'
     pagination = Pagination(request,
                             total=g.db_connection.db_table_count(
                                 'mm_metadata_album'),
@@ -61,7 +61,7 @@ async def metadata_music_album_song_list(request):
     Display metadata music song list
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    common_global.session['search_page'] = 'meta_music_song'
+    request['session']['search_page'] = 'meta_music_song'
     pagination = Pagination(request,
                             total=g.db_connection.db_table_count(
                                 'mm_metadata_music'),
@@ -71,7 +71,7 @@ async def metadata_music_album_song_list(request):
                             )
     return {
         'media': g.db_connection.db_meta_song_list(offset, per_page,
-                                                   common_global.session['search_text']),
+                                                   request['session']['search_text']),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,

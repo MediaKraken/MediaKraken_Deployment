@@ -13,17 +13,17 @@ async def url_bp_user_media_new(request):
     Display new media
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    common_global.session['search_page'] = 'new_media'
+    request['session']['search_page'] = 'new_media'
     media_data = []
     for media_file in g.db_connection.db_read_media_new(offset, per_page,
-                                                        common_global.session['search_text'],
+                                                        request['session']['search_text'],
                                                         days_old=7):
         media_data.append(
             (media_file['mm_media_class_type'],
              media_file['mm_media_name'], None))
     pagination = Pagination(request,
                             total=g.db_connection.db_read_media_new_count(
-                                common_global.session['search_text'],
+                                request['session']['search_text'],
                                 days_old=7),
                             record_name='new media',
                             format_total=True,

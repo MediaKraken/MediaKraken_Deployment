@@ -116,9 +116,9 @@ async def url_bp_user_internet_youtube(request):
     Display youtube page
     """
     youtube_videos = []
-    if common_global.session['search_text'] is not None:
+    if request['session']['search_text'] is not None:
         videos, channels, playlists = g.google_instance.com_google_youtube_search(
-            common_global.session['search_text'])
+            request['session']['search_text'])
         for url_link in videos:
             common_global.es_inst.com_elastic_index('info', {'searchurllink': url_link})
             youtube_videos.append(

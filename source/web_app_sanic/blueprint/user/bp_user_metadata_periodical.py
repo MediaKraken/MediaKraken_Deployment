@@ -17,15 +17,15 @@ async def url_bp_user_metadata_periodical(request):
     page, per_page, offset = Pagination.get_page_args(request)
     item_list = []
     for item_data in g.db_connection.db_meta_book_list(offset, per_page,
-                                                       common_global.session['search_text']):
+                                                       request['session']['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': item_data})
         item_image = "/static/images/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
-    common_global.session['search_page'] = 'meta_periodical'
+    request['session']['search_page'] = 'meta_periodical'
     pagination = Pagination(request,
                             total=g.db_connection.db_meta_book_list_count(
-                                common_global.session['search_text']),
+                                request['session']['search_text']),
                             record_name='periodical(s)',
                             format_total=True,
                             format_number=True,

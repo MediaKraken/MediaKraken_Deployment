@@ -18,7 +18,7 @@ async def url_bp_user_home_media_list(request):
     # TODO wrong movie query
     return {
         'media': g.db_connection.db_meta_movie_list(offset, per_page,
-                                                    common_global.session['search_text'])
+                                                    request['session']['search_text'])
     }
 
 

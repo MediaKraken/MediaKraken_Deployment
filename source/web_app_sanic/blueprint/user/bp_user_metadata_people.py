@@ -43,7 +43,7 @@ async def url_bp_user_metadata_person_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     person_list = []
     for person_data in g.db_connection.db_meta_person_list(offset, per_page,
-                                                           common_global.session['search_text']):
+                                                           request['session']['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
@@ -59,10 +59,10 @@ async def url_bp_user_metadata_person_list(request):
             person_image = "/static/images/person_missing.png"
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
-    common_global.session['search_page'] = 'meta_people'
+    request['session']['search_page'] = 'meta_people'
     pagination = Pagination(request,
                             total=g.db_connection.db_meta_person_list_count(
-                                common_global.session['search_text']),
+                                request['session']['search_text']),
                             record_name='person',
                             format_total=True,
                             format_number=True,

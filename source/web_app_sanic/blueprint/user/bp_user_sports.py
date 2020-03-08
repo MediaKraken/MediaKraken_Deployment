@@ -17,13 +17,13 @@ async def url_bp_user_sports(request):
     media = []
     for row_data in g.db_connection.db_media_sports_list(
             common_global.DLMediaType.Sports.value,
-            offset, per_page, common_global.session['search_text']):
+            offset, per_page, request['session']['search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
-    common_global.session['search_page'] = 'media_sports'
+    request['session']['search_page'] = 'media_sports'
     pagination = Pagination(request,
                             total=g.db_connection.db_media_sports_list_count(
-                                common_global.session['search_text']),
+                                request['session']['search_text']),
                             record_name='sporting event(s)',
                             format_total=True,
                             format_number=True,

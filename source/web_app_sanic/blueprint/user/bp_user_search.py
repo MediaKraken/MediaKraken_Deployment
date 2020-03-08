@@ -97,42 +97,42 @@ async def url_bp_user_search_nav_media(request):
     determine what search results screen to show
     """
     common_global.es_inst.com_elastic_index('info', {
-        "search session": common_global.session['search_page']})
-    common_global.session['search_text'] = request.form.get('nav_search').strip()
-    if common_global.session['search_page'] == 'media_3d':
+        "search session": request['session']['search_page']})
+    request['session']['search_text'] = request.form.get('nav_search').strip()
+    if request['session']['search_page'] == 'media_3d':
         return redirect(request.app.url_for('user_3d.user_3d_list'))
-    elif common_global.session['search_page'] == 'media_album':
+    elif request['session']['search_page'] == 'media_album':
         return redirect(request.app.url_for('user_music.user_album_list_page'))
-    elif common_global.session['search_page'] == 'media_games':
+    elif request['session']['search_page'] == 'media_games':
         return redirect(request.app.url_for('user_games.user_games_list'))
-    elif common_global.session['search_page'] == 'media_movie':
+    elif request['session']['search_page'] == 'media_movie':
         return redirect(request.app.url_for('user_movie_genre.user_movie_page', genre='All'))
-    elif common_global.session['search_page'] == 'media_music_video':
+    elif request['session']['search_page'] == 'media_music_video':
         return redirect(request.app.url_for('user_music_video.user_music_video_list'))
-    elif common_global.session['search_page'] == 'media_periodicals':
+    elif request['session']['search_page'] == 'media_periodicals':
         return redirect(request.app.url_for('user_periodicals.user_books_list'))
-    elif common_global.session['search_page'] == 'media_sports':
+    elif request['session']['search_page'] == 'media_sports':
         return redirect(request.app.url_for('user_sports.user_sports_page'))
-    elif common_global.session['search_page'] == 'media_tv':
+    elif request['session']['search_page'] == 'media_tv':
         return redirect(request.app.url_for('user_tv.user_tv_page'))
     # begin metadata section
-    elif common_global.session['search_page'] == 'meta_album':
+    elif request['session']['search_page'] == 'meta_album':
         return redirect(request.app.url_for('user_metadata_album.metadata_music_album_list'))
-    elif common_global.session['search_page'] == 'meta_game':
+    elif request['session']['search_page'] == 'meta_game':
         return redirect(request.app.url_for('user_metadata_game.metadata_game_list'))
-    elif common_global.session['search_page'] == 'meta_game_system':
+    elif request['session']['search_page'] == 'meta_game_system':
         return redirect(request.app.url_for('user_metadata_game_system.metadata_game_system_list'))
-    elif common_global.session['search_page'] == 'meta_movie':
+    elif request['session']['search_page'] == 'meta_movie':
         return redirect(request.app.url_for('user_metadata_movie.metadata_movie_list'))
-    elif common_global.session['search_page'] == 'meta_movie_collection':
+    elif request['session']['search_page'] == 'meta_movie_collection':
         return redirect(request.app.url_for('user_movie_collection.metadata_movie_collection_list'))
-    elif common_global.session['search_page'] == 'meta_music_video':
+    elif request['session']['search_page'] == 'meta_music_video':
         return redirect(request.app.url_for('user_metadata_music_video.metadata_music_video_list'))
-    elif common_global.session['search_page'] == 'meta_people':
+    elif request['session']['search_page'] == 'meta_people':
         return redirect(request.app.url_for('user_metadata_people.metadata_person_list'))
-    elif common_global.session['search_page'] == 'meta_periodical':
+    elif request['session']['search_page'] == 'meta_periodical':
         return redirect(request.app.url_for('user_metadata_periodical.metadata_periodical_list'))
-    elif common_global.session['search_page'] == 'meta_sports':
+    elif request['session']['search_page'] == 'meta_sports':
         return redirect(request.app.url_for('user_metadata_sports.metadata_sports_list'))
-    elif common_global.session['search_page'] == 'meta_tv':
+    elif request['session']['search_page'] == 'meta_tv':
         return redirect(request.app.url_for('user_metadata_tv.metadata_tvshow_list'))

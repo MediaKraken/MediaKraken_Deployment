@@ -14,11 +14,11 @@ async def url_bp_user_queue_page(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     # TODO union read all four.....then if first "group"....add header in the html
-    common_global.session['search_page'] = 'user_media_queue'
+    request['session']['search_page'] = 'user_media_queue'
     pagination = Pagination(request,
                             total=g.db_connection.db_web_tvmedia_list_count(
                                 None, None,
-                                common_global.session['search_text']),
+                                request['session']['search_text']),
                             record_name='queue',
                             format_total=True,
                             format_number=True,
@@ -26,7 +26,7 @@ async def url_bp_user_queue_page(request):
     return {
         'media': g.db_connection.db_meta_queue_list(current_user.get_id(), offset,
                                                     per_page,
-                                                    common_global.session['search_text']),
+                                                    request['session']['search_text']),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,

@@ -13,7 +13,7 @@ async def url_bp_user_metadata_game(request):
     Display game list metadata
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    common_global.session['search_page'] = 'meta_game'
+    request['session']['search_page'] = 'meta_game'
     pagination = Pagination(request,
                             total=g.db_connection.db_table_count(
                                 'mm_metadata_game_software_info'),
@@ -23,7 +23,7 @@ async def url_bp_user_metadata_game(request):
                             )
     return {
         'media_game': g.db_connection.db_meta_game_list(offset, per_page,
-                                                        common_global.session['search_text']),
+                                                        request['session']['search_text']),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,

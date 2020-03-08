@@ -25,17 +25,17 @@ async def url_bp_user_album_list_page(request):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     for row_data in g.db_connection.db_media_album_list(offset, per_page,
-                                                        common_global.session['search_text']):
+                                                        request['session']['search_text']):
         if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
                           row_data['mm_metadata_album_json']))
         else:
             media.append((row_data['mm_metadata_album_guid'],
                           row_data['mm_metadata_album_name'], None))
-    common_global.session['search_page'] = 'music_album'
+    request['session']['search_page'] = 'music_album'
     pagination = Pagination(request,
                             total=g.db_connection.db_media_album_count(
-                                common_global.session['search_page']),
+                                request['session']['search_page']),
                             record_name='music album(s)',
                             format_total=True,
                             format_number=True,
