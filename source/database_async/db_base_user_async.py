@@ -1,6 +1,3 @@
-import uuid
-
-
 def db_user_count(db_connection):
     return db_connection.fetchval('select count(*) from mm_user')
 
@@ -29,10 +26,10 @@ def db_user_insert(db_connection, user_name, user_email, user_password):
         user_admin = True
     else:
         user_admin = False
-    db_connection.execute(
+    return db_connection.execute(
         'insert into mm_user (id, username, email, password, active, is_admin)'
-        ' values (NULL, %s, %s, %s, True, %s)',
-        (user_name, user_email, user_password, user_admin))
+        ' values (NULL, %s, %s, %s, True, %s) returning id',
+        (user_name, user_email, user_password, user_admin)), user_admin
 
 
 def db_user_login_validation(db_connection, user_name, user_password):
