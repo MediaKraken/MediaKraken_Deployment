@@ -12,7 +12,7 @@ from sanic.exceptions import ServerError
 from sanic.log import logger
 from sanic.request import Request
 from sanic.response import redirect, text
-from sanic_auth import Auth
+from sanic_auth import Auth, User
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
 from python_paginate.css.semantic import Semantic
@@ -86,7 +86,7 @@ async def login(request):
         try:
             user = await db_objects.get(Operator, username=username)
             if await user.check_password(password):
-                login_user = User(id=user.id, name=user.username)
+                login_user = User(id=user.id, name=user.username, admin=user.admin)
                 common_global.auth.login_user(request, login_user)
                 return response.redirect("/")
         except:
@@ -109,7 +109,7 @@ async def register(request):
         # we need to create a new user
         try:
             user = await db_objects.create(Operator, username=username, password=password)
-            login_user = User(id=user.id, name=user.username)
+            login_user = User(id=user.id, name=user.username, admin=user.admin)
             common_global.auth.login_user(request, login_user)
             return response.redirect("/")
         except:
