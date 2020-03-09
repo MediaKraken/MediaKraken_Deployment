@@ -182,13 +182,13 @@ def mk_network_country_code():
         return {'country_code': 'Error', 'country_name': 'Unknown'}
 
 
-def mk_network_service_available(host_dns, host_ip, wait_seconds='120'):
+def mk_network_service_available(host_dns, host_port, wait_seconds='120'):
     if os.path.exists('/mediakraken/wait-for-it-ash.sh'):
         wait_pid = subprocess.Popen(
-            ['/mediakraken/wait-for-it-ash.sh', '-h', host_dns, '-p', host_ip,
+            ['/mediakraken/wait-for-it-ash.sh', '-h', host_dns, '-p', host_port,
              '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
     else:
         wait_pid = subprocess.Popen(
-            ['/mediakraken/wait-for-it-ash-busybox130.sh', '-h', host_dns, '-p', host_ip,
+            ['/mediakraken/wait-for-it-ash-busybox130.sh', '-h', host_dns, '-p', host_port,
              '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
     wait_pid.wait()

@@ -5,6 +5,7 @@ import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
+from common import common_network
 from python_paginate.css.semantic import Semantic
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Sanic
@@ -58,6 +59,7 @@ app.blueprint(blueprint_content_mediakraken)
 app.db_functions = database_base_async.MKServerDatabaseAsync()
 
 # setup the pika connection
+common_network.mk_network_service_available(host_dns='mkstack_rabbitmq', host_port='5672')
 credentials = pika.PlainCredentials('guest', 'guest')
 parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
                                        credentials=credentials)
