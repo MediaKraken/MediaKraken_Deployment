@@ -21,4 +21,7 @@ class MKServerDatabaseAsync:
     from database_async.db_base_media_async \
         import db_media_new
     from database_async.db_base_user_async \
-        import db_user_login_validation
+        import db_user_count, \
+        db_user_delete, \
+        db_user_detail, \
+        db_user_login_validation

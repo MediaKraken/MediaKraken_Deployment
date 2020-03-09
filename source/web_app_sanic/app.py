@@ -5,6 +5,8 @@ import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
+from python_paginate.css.semantic import Semantic
+from python_paginate.web.sanic_paginate import Pagination
 from sanic import Sanic
 from sanic import response
 from sanic.exceptions import SanicException
@@ -15,8 +17,6 @@ from sanic.response import redirect, text
 from sanic_auth import Auth, User
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
-from python_paginate.css.semantic import Semantic
-from python_paginate.web.sanic_paginate import Pagination
 
 # setup the Sanic app
 app = Sanic(__name__)
@@ -84,11 +84,13 @@ async def login(request):
         username = form.username.data
         password = form.password.data
         try:
-            user = await db_objects.get(Operator, username=username)
-            if await user.check_password(password):
-                login_user = User(id=user.id, name=user.username, admin=user.admin)
-                common_global.auth.login_user(request, login_user)
-                return response.redirect("/")
+            async with app.db_pool.acquire() as db_connection:
+                user_id, user_admin = await database_base_async.db_user_login_validation(
+                    db_connection, username, password)
+                if user_id.isnumeric():
+                    common_global.auth.login_user(request,
+                                                  User(id=user_id, name=username, admin=user_admin))
+                    return response.redirect("/")
         except:
             errors['validate_errors'] = "Username or password invalid"
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
@@ -109,8 +111,8 @@ async def register(request):
         # we need to create a new user
         try:
             user = await db_objects.create(Operator, username=username, password=password)
-            login_user = User(id=user.id, name=user.username, admin=user.admin)
-            common_global.auth.login_user(request, login_user)
+            common_global.auth.login_user(request,
+                                          User(id=user.id, name=user.username, admin=user.admin))
             return response.redirect("/")
         except:
             # failed to insert into database
