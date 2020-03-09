@@ -40,6 +40,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install git+https://github.com/MediaKraken/sanic_session \
+  && pip3 install git+https://github.com/MediaKraken/sanic_auth \
   && pip3 install git+https://github.com/MediaKraken/python-paginate \
   && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \
