@@ -163,8 +163,14 @@ async def register_db(app, loop):
     # await db_connection.close() - not needed in pool?
 
 
+def handle_no_auth(request):
+    return redirect('/login')
+    # return response.json(dict(message='unauthorized'), status=401)
+
+
 # route to the default homepage
 @app.route("/")
+@common_global.auth.login_required(user_keyword='user', handle_no_auth=handle_no_auth)
 async def hello(request):
     return redirect(app.url_for('name_blueprint_public_homepage.url_bp_homepage'))
 
