@@ -3,7 +3,7 @@
         <h1>Register</h1>
         <br/>
         <form id="registerForm" class="form form-register" method="POST" action="" role="form">
-            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
             <div class="form-group">
                 {{form.username.label}}
                 {{form.username(placeholder="Username", class_="form-control")}}

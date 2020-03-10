@@ -4,7 +4,7 @@
 {{ errors.token_errors }}
 <span style="color: red;">{{errors.validate_errors}}</span>
     <br>
-{{ form.csrf_token }}
+    {{ form.csrf_token }}
     {{form.username.label}}
     {{form.username(size=32)}}
     <span style="color: red;">{{ errors.username_errors }}</span>
