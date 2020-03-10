@@ -1,6 +1,6 @@
 import json
 import os
-
+import database_async as database_base_async
 from common import common_global
 from common import common_network_cifs
 from common import common_network_pika
@@ -31,16 +31,18 @@ async def url_bp_admin_library(request):
                                                   route_key='mkque')
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
+
+    async with request.app.db_pool.acquire() as db_connection:
+        table_count = await database_base_async.db_table_count(db_connection, 'mm_media_dir')
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_table_count(
-                                'mm_media_dir'),
+                            total=table_count,
                             record_name='library dir(s)',
                             format_total=True,
                             format_number=True,
                             )
     return_media = []
-    for row_data in g.db_connection.db_audit_paths(offset, per_page):
+    for row_data in await database_base_async.db_library_paths(db_connection, offset, per_page):
         return_media.append((row_data['mm_media_dir_path'],
                              row_data['mm_media_class_type'],
                              row_data['mm_media_dir_last_scanned'],
@@ -54,10 +56,11 @@ async def url_bp_admin_library(request):
     }
 
 
-@blueprint_admin_library.route('/library_byid', methods=['POST'])
+@blueprint_admin_library.route('/library_by_id', methods=['POST'])
 @common_global.auth.login_required
-async def url_bp_admin_library_byid(request):
-    result = g.db_connection.db_audit_path_by_uuid(request.form['id'])
+async def url_bp_admin_library_by_id(request):
+    async with request.app.db_pool.acquire() as db_connection:
+        result = await database_base_async.db_library_path_by_uuid(db_connection, request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
                        'Media Class': result['mm_media_dir_class_type']})
@@ -69,7 +72,8 @@ async def url_bp_admin_library_delete(request):
     """
     Delete library action 'page'
     """
-    g.db_connection.db_audit_path_delete(request.form['id'])
+    async with request.app.db_pool.acquire() as db_connection:
+        await database_base_async.db_library_path_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
@@ -129,7 +133,6 @@ async def url_bp_admin_library_edit(request):
                         lib_share = None
                     g.db_connection.db_audit_path_add(request.form['library_path'],
                                                       request.form['Lib_Class'], lib_share)
-                    g.db_connection.db_commit()
                     return redirect(request.app.url_for('admins_library.admin_library'))
                 else:
                     flash("Path already in library.", 'error')
