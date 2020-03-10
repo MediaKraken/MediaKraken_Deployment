@@ -14,7 +14,6 @@ async def url_bp_admin_user_delete(request):
     Delete user action 'page'
     """
     g.db_connection.db_user_delete(request.form['id'])
-    g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
 

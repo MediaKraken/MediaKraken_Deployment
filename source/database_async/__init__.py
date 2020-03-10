@@ -19,6 +19,11 @@ class MKServerDatabaseAsync:
         db_cron_list, \
         db_cron_list_count, \
         db_cron_time_update
+    from database_async.db_base_device_async \
+        import db_device_check, \
+        db_device_delete, \
+        db_device_list, \
+        db_device_upsert
     from database_async.db_base_hardware_async \
         import db_hardware_device_count
     from database_async.db_base_image_async \

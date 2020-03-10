@@ -70,7 +70,6 @@ async def url_bp_admin_library_delete(request):
     Delete library action 'page'
     """
     g.db_connection.db_audit_path_delete(request.form['id'])
-    g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
 

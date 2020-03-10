@@ -42,7 +42,6 @@ async def url_bp_admin_share_delete(request):
     Delete share action 'page'
     """
     g.db_connection.db_audit_share_delete(request.form['id'])
-    g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
 
