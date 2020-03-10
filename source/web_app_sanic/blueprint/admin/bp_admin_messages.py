@@ -23,8 +23,7 @@ async def url_bp_admin_messages(request):
                             format_number=True,
                             )
     return {
-        'media_dir': g.db_connection.db_message_list(
-            offset, per_page),
+        'media_dir': g.db_connection.db_message_list(offset, per_page),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,
@@ -38,5 +37,4 @@ async def url_bp_admin_messages_delete(request):
     Delete messages action 'page'
     """
     g.db_connection.db_message_delete(request.form['id'])
-    g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})

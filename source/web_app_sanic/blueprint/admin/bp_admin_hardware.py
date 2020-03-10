@@ -4,6 +4,7 @@ from common import common_global
 from common import common_network_pika
 from sanic import Blueprint
 from sanic.response import redirect
+from web_app_sanic.blueprint.admin.forms import ChromecastEditForm, TVTunerEditForm
 
 blueprint_admin_hardware = Blueprint('name_blueprint_admin_hardware', url_prefix='/admin')
 
@@ -123,5 +124,4 @@ async def url_bp_admin_hardware_tvtuner_delete(request):
     Delete action 'page'
     """
     g.db_connection.db_device_delete(request.form['id'])
-    g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})

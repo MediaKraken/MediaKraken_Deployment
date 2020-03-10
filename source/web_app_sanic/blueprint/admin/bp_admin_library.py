@@ -8,6 +8,7 @@ from common import common_string
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 from sanic.response import redirect
+from web_app_sanic.blueprint.admin.forms import LibraryAddEditForm
 
 blueprint_admin_library = Blueprint('name_blueprint_admin_library', url_prefix='/admin')
 

@@ -6,6 +6,7 @@ from common import common_network_cifs
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 from sanic.response import redirect
+from web_app_sanic.blueprint.admin.forms import ShareAddEditForm
 
 blueprint_admin_share = Blueprint('name_blueprint_admin_share', url_prefix='/admin')
 

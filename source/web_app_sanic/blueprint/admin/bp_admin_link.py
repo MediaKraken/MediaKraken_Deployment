@@ -3,11 +3,12 @@ import json
 from common import common_global
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
+from web_app_sanic.blueprint.admin.forms import LinkAddEditForm
 
 blueprint_admin_link = Blueprint('name_blueprint_admin_link', url_prefix='/admin')
 
 
-@blueprint_admin_link.route("/link_server")
+@blueprint_admin_link.route("/link")
 @common_global.jinja_template.template('admin/admin_link.html')
 @common_global.auth.login_required
 async def url_bp_admin_server_link(request):

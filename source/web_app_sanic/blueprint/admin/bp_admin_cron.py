@@ -5,6 +5,7 @@ from common import common_network_pika
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 from sanic.response import redirect
+from web_app_sanic.blueprint.admin.forms import CronEditForm
 
 blueprint_admin_cron = Blueprint('name_blueprint_admin_cron', url_prefix='/admin')
 
@@ -38,7 +39,6 @@ async def url_bp_admin_cron_delete(request):
     Delete action 'page'
     """
     g.db_connection.db_cron_delete(request.form['id'])
-    g.db_connection.db_commit()
     return json.dumps({'status': 'OK'})
 
 
