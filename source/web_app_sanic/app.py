@@ -18,7 +18,6 @@ from sanic.response import redirect, text
 from sanic_auth import Auth, User
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
-from blueprint.public.forms import RegisterForm
 
 # setup the Sanic app
 app = Sanic(__name__)
@@ -49,7 +48,8 @@ session = Session(app)
 common_global.jinja_template = SanicJinja2(app)
 # since I use global jinja....these MUST be after the initialization otherwise template = NONE
 from web_app_sanic.blueprint import blueprint_content_mediakraken
-from web_app_sanic.blueprint.public.loginform import LoginForm, RegistrationForm
+from web_app_sanic.blueprint.public.loginform import LoginForm
+from web_app_sanic.blueprint.public.forms import RegisterForm
 
 app.static('/static', './web_app_async/static')
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
