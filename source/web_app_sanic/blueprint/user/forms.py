@@ -5,8 +5,6 @@ from wtforms import TextField, PasswordField, \
     SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
-from .models import User
-
 
 # for editing sync jobs
 class SyncEditForm(Form):

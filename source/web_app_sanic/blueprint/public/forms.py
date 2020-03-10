@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from blueprint.user.models import User
 from sanic_wtf import SanicForm as Form
 from wtforms import TextField, PasswordField
 from wtforms.validators import DataRequired

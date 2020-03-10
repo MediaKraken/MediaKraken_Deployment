@@ -1,6 +1,15 @@
-@blueprint.route('/movie_status/<guid>/<event_type>', methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_movie_status(request, guid, event_type):
+import json
+
+from common import common_global
+from sanic import Blueprint
+from sanic.response import redirect
+
+blueprint_user_media_status = Blueprint('name_blueprint_user_media_status', url_prefix='/user')
+
+
+@blueprint_user_media_status.route('/status_movie/<guid>/<event_type>', methods=['GET', 'POST'])
+@common_global.auth.login_required
+async def url_bp_user_status_movie(request, guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -24,9 +33,10 @@ async def url_bp_user_movie_status(request, guid, event_type):
             return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/movie_metadata_status/<guid>/<event_type>', methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_movie_metadata_status(request, guid, event_type):
+@blueprint_user_media_status.route('/status_movie_metadata/<guid>/<event_type>',
+                                   methods=['GET', 'POST'])
+@common_global.auth.login_required
+async def url_bp_user_status_movie_metadata(request, guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -37,9 +47,9 @@ async def url_bp_user_movie_metadata_status(request, guid, event_type):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint.route('/tv_status/<guid>/<event_type>', methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_tv_status(request, guid, event_type):
+@blueprint_user_media_status.route('/status_tv/<guid>/<event_type>', methods=['GET', 'POST'])
+@common_global.auth.login_required
+async def url_bp_user_status_tv(request, guid, event_type):
     """
     Set media status for specified media, user
     """

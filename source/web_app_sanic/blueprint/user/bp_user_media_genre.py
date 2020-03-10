@@ -1,5 +1,13 @@
-@blueprint.route("/movie_genre", methods=['GET', 'POST'])
-@login_required
+from common import common_global
+from common import common_internationalization
+from python_paginate.web.sanic_paginate import Pagination
+from sanic import Blueprint
+
+blueprint_user_media_genre = Blueprint('name_blueprint_user_media_genre', url_prefix='/user')
+
+
+@blueprint_user_media_genre.route("/movie_genre", methods=['GET', 'POST'])
+@common_global.auth.login_required
 async def url_bp_user_movie_genre_page(request):
     """
     Display movies split up by genre
@@ -14,8 +22,8 @@ async def url_bp_user_movie_genre_page(request):
     return render_template('users/user_movie_genre_page.html', media=sorted(media))
 
 
-@blueprint.route("/movie/<genre>", methods=['GET', 'POST'])
-@login_required
+@blueprint_user_media_genre.route("/movie/<genre>", methods=['GET', 'POST'])
+@common_global.auth.login_required
 async def url_bp_user_movie_page(request, genre):
     """
     Display movie page
