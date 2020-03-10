@@ -12,8 +12,8 @@ blueprint_user_movie = Blueprint('name_blueprint_user_movie', url_prefix='/user'
 
 @blueprint_user_movie.route('/movie_detail/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_movie_detail.html')
-@common_global.auth.login_required
-async def url_bp_user_movie_detail(request, guid):
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_movie_detail(request, user, guid):
     """
     Display move detail page
     """
@@ -21,7 +21,7 @@ async def url_bp_user_movie_detail(request, guid):
         if request.form['playback'] == 'Web Viewer':
             common_network_pika.com_net_pika_send(
                 {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
-                 'User': current_user.get_id(),
+                 'User': user.id,
                  'Data': g.db_connection.db_read_media(guid)['mm_media_path']},
                 rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
@@ -33,11 +33,11 @@ async def url_bp_user_movie_detail(request, guid):
                                     sub=request.form['Video_Play_Subtitles']))
         if request.form['status'] == 'Watched':
             g.db_connection.db_meta_movie_status_update(
-                guid, current_user.get_id(), False)
+                guid, user.id, False)
             return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
             g.db_connection.db_meta_movie_status_update(
-                guid, current_user.get_id(), True)
+                guid, user.id, True)
             return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Sync':
             return redirect(request.app.url_for('user_sync.sync_edit', guid=guid))
@@ -113,7 +113,7 @@ async def url_bp_user_movie_detail(request, guid):
         #             (review_data['author'], review_data['url'], review_data['content']))
         # # set watched and sync
         # try:
-        #     watched_status = json_media['UserStats'][current_user.get_id()]['Watched']
+        #     watched_status = json_media['UserStats'][user.id]['Watched']
         # except:
         #     watched_status = False
         # try:

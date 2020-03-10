@@ -6,11 +6,12 @@ from sanic import Blueprint
 blueprint_user_media_genre = Blueprint('name_blueprint_user_media_genre', url_prefix='/user')
 
 
-@blueprint_user_media_genre.route("/movie_genre", methods=['GET', 'POST'])
+@blueprint_user_media_genre.route("/media_genre", methods=['GET', 'POST'])
+@common_global.jinja_template.template('user/user_media_genre.html')
 @common_global.auth.login_required
-async def url_bp_user_movie_genre_page(request):
+async def url_bp_user_media_genre(request):
     """
-    Display movies split up by genre
+    Display media split up by genre
     """
     media = []
     for row_data in g.db_connection.db_media_movie_count_by_genre(
@@ -19,12 +20,15 @@ async def url_bp_user_movie_genre_page(request):
                       common_internationalization.com_inter_number_format(
                           row_data[1]),
                       row_data[0]['name'] + ".png"))
-    return render_template('users/user_movie_genre_page.html', media=sorted(media))
+    return {
+        'media': sorted(media)
+    }
 
 
 @blueprint_user_media_genre.route("/movie/<genre>", methods=['GET', 'POST'])
-@common_global.auth.login_required
-async def url_bp_user_movie_page(request, genre):
+@common_global.jinja_template.template('user/user_movie.html')
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_movie_page(request, user, genre):
     """
     Display movie page
     """
@@ -42,23 +46,23 @@ async def url_bp_user_movie_page(request, genre):
         # set watched
         try:
             watched_status \
-                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
+                = row_data['mm_metadata_user_json']['UserStats'][user.id]['watched']
         except (KeyError, TypeError):
             watched_status = False
         # set synced
         try:
             sync_status = \
-                row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['sync']
+                row_data['mm_metadata_user_json']['UserStats'][user.id]['sync']
         except (KeyError, TypeError):
             sync_status = False
         # set rating
         if row_data['mm_metadata_user_json'] is not None \
                 and 'UserStats' in row_data['mm_metadata_user_json'] \
-                and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
+                and user.id in row_data['mm_metadata_user_json']['UserStats'] \
                 and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
-            current_user.get_id()]:
+            user.id]:
             rating_status \
-                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
+                = row_data['mm_metadata_user_json']['UserStats'][user.id]['Rating']
             if rating_status == 'favorite':
                 rating_status = '/static/images/favorite-mark.png'
             elif rating_status == 'like':
@@ -96,8 +100,9 @@ async def url_bp_user_movie_page(request, genre):
                             format_total=True,
                             format_number=True,
                             )
-    return render_template('users/user_movie_page.html', media=media,
-                           page=page,
-                           per_page=per_page,
-                           pagination=pagination,
-                           )
+    return {
+        'media': media,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }

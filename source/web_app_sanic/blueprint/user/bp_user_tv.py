@@ -51,8 +51,8 @@ async def url_bp_user_tv(request):
 
 @blueprint_user_tv.route("/tv_show_detail/<guid>", methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_tv_show_detail.html')
-@common_global.auth.login_required
-async def url_bp_user_tv_show_detail(request, guid):
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_tv_show_detail(request, user, guid):
     """
     Display tv show detail page
     """
@@ -61,11 +61,11 @@ async def url_bp_user_tv_show_detail(request, guid):
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
             g.db_connection.db_media_watched_status_update(
-                guid, current_user.get_id(), False)
+                guid, user.id, False)
             return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
         elif request.form['status'] == 'Unwatched':
             g.db_connection.db_media_watched_status_update(
-                guid, current_user.get_id(), True)
+                guid, user.id, True)
             return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
     else:
         # guid, name, id, metajson
@@ -151,7 +151,7 @@ async def url_bp_user_tv_show_detail(request, guid):
         hours, minutes = divmod(minutes, 60)
         # set watched
         try:
-            watched_status = json_metadata['UserStats'][current_user.get_id()]
+            watched_status = json_metadata['UserStats'][user.id]
         except:
             watched_status = False
         return {

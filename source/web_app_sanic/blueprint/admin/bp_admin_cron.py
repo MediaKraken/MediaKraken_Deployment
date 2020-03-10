@@ -64,8 +64,8 @@ async def url_bp_admin_cron_edit(request, guid):
 
 
 @blueprint_admin_cron.route('/cron_run/<guid>', methods=['GET', 'POST'])
-@common_global.auth.login_required
-async def url_bp_admin_cron_run(request, guid):
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_admin_cron_run(request, user, guid):
     """
     Run cron jobs
     """
@@ -73,7 +73,7 @@ async def url_bp_admin_cron_run(request, guid):
     cron_job_data = g.db_connection.db_cron_info(guid)
     # submit the message
     common_network_pika.com_net_pika_send({'Type': cron_job_data['mm_cron_json']['type'],
-                                           'User': current_user.get_id(),
+                                           'User': user.id,
                                            'JSON': cron_job_data['mm_cron_json']},
                                           exchange_name=cron_job_data['mm_cron_json'][
                                               'exchange_key'],

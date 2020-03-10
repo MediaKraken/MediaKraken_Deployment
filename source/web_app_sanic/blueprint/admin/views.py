@@ -14,7 +14,7 @@ def admin_required(fn):
     @login_required
     def decorated_view(*args, **kwargs):
         common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
-                                                             current_user.get_id()})
+                                                             user.id})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)

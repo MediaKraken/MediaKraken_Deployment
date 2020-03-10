@@ -8,8 +8,8 @@ blueprint_user_media_status = Blueprint('name_blueprint_user_media_status', url_
 
 
 @blueprint_user_media_status.route('/status_movie/<guid>/<event_type>', methods=['GET', 'POST'])
-@common_global.auth.login_required
-async def url_bp_user_status_movie(request, guid, event_type):
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_status_movie(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
@@ -22,28 +22,28 @@ async def url_bp_user_status_movie(request, guid, event_type):
             # TODO as some might be right
             g.db_connection.db_media_status_update(
                 g.db_connection.db_metadata_from_media_guid(guid),
-                current_user.get_id(), event_type)
+                user.id, event_type)
             return json.dumps({'status': 'OK'})
         else:
             # g.db_connection.db_media_rating_update(
-            #     guid, current_user.get_id(), event_type)
+            #     guid, user.id, event_type)
             g.db_connection.db_meta_movie_status_update(
                 g.db_connection.db_metadata_from_media_guid(guid),
-                current_user.get_id(), event_type)
+                user.id, event_type)
             return json.dumps({'status': 'OK'})
 
 
 @blueprint_user_media_status.route('/status_movie_metadata/<guid>/<event_type>',
                                    methods=['GET', 'POST'])
-@common_global.auth.login_required
-async def url_bp_user_status_movie_metadata(request, guid, event_type):
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
     common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
                                                      'event': event_type})
     g.db_connection.db_meta_movie_status_update(
-        guid, current_user.get_id(), event_type)
+        guid, user.id, event_type)
     return json.dumps({'status': 'OK'})
 
 
@@ -64,4 +64,4 @@ async def url_bp_user_status_tv(request, guid, event_type):
         pass
     elif event_type == "mismatch":
         pass
-    return redirect(request.app.url_for('user_tv.user_tv_page'))
+    return redirect(request.app.url_for('user_tv.user_tv'))

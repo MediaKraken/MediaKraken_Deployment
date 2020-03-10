@@ -4,6 +4,7 @@ from .bp_user_cctv import blueprint_user_cctv
 from .bp_user_game import blueprint_user_game
 from .bp_user_game_servers import blueprint_user_game_servers
 from .bp_user_hardware import blueprint_user_hardware
+from .bp_user_hardware_chromecast import blueprint_user_hardware_chromecast
 from .bp_user_hardware_hue import blueprint_user_hardware_hue
 from .bp_user_home_media import blueprint_user_home_media
 from .bp_user_homepage import blueprint_user_homepage
@@ -36,6 +37,7 @@ blueprint_user_content = Blueprint.group(blueprint_user_cctv,
                                          blueprint_user_game,
                                          blueprint_user_game_servers,
                                          blueprint_user_hardware,
+                                         blueprint_user_hardware_chromecast,
                                          blueprint_user_hardware_hue,
                                          blueprint_user_home_media,
                                          blueprint_user_homepage,

@@ -45,7 +45,7 @@ async def url_bp_user_video_player_videojs(request, mtype, guid, chapter, audio,
                                                'Audio Track': atracks,
                                                'Subtitle Track': subtracks,
                                                'Target UUID': target_uuid,
-                                               'User': current_user.get_id()},
+                                               'User': user.id},
                                               rabbit_host_name='mkstack_rabbitmq',
                                               exchange_name='mkque_ex',
                                               route_key='mkque')
@@ -68,7 +68,7 @@ async def url_bp_user_playback(request, action, guid):
     Display actions page
     """
     common_global.es_inst.com_elastic_index('info', {'user_playback action': action,
-                                                     'case user': current_user.get_id()})
+                                                     'case user': user.id})
     # pull the media stats
     common_global.es_inst.com_elastic_index('info', {'args': request.args})
     common_global.es_inst.com_elastic_index('info', {'form': request.form})
@@ -86,14 +86,14 @@ async def url_bp_user_playback(request, action, guid):
     elif action == 'stop':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Stop', 'Device': device,
-             'User': current_user.get_id()},
+             'User': user.id},
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'play':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Play', 'Device': device,
-             'User': current_user.get_id(),
+             'User': user.id,
              'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
              'Audio': audio_track,
              'Subtitle': subtitle_track,
@@ -104,7 +104,7 @@ async def url_bp_user_playback(request, action, guid):
     elif action == 'pause':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Pause', 'Device': device,
-             'User': current_user.get_id()},
+             'User': user.id},
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
@@ -113,21 +113,21 @@ async def url_bp_user_playback(request, action, guid):
     elif action == 'mute':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Mute', 'Device': device,
-             'User': current_user.get_id()},
+             'User': user.id},
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'vol_up':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Volume Up', 'Device': device,
-             'User': current_user.get_id()},
+             'User': user.id},
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
     elif action == 'vol down':
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Volume Down', 'Device': device,
-             'User': current_user.get_id()},
+             'User': user.id},
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')

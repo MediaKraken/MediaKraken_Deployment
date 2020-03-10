@@ -2,11 +2,13 @@ from common import common_file
 from common import common_global
 from common import common_network_pika
 from sanic import Blueprint
+from sanic.response import redirect
 
 blueprint_user_hardware_hue = Blueprint('name_blueprint_user_hardware_hue', url_prefix='/user')
 
 
 @blueprint_user_hardware_hue.route('/hardware_hue')
+@common_global.jinja_template.template('user/user_hardware_hue.html')
 @common_global.auth.login_required
 async def url_bp_user_hardware_hue(request):
     """
@@ -28,38 +30,39 @@ async def url_bp_user_hardware_hue(request):
     else:
         # need to do as could provide an empty list and not None
         data_hue_avail = None
-    return render_template("users/user_hardware_hue.html",
-                           data_hue_avail=data_hue_avail,
-                           data_hue_list=g.db_connection.db_device_list('Phue'))
+    return {
+        'data_hue_avail': data_hue_avail,
+        'data_hue_list': g.db_connection.db_device_list('Phue')
+    }
 
 
 @blueprint_user_hardware_hue.route('/hardware_hue_off')
 @common_global.auth.login_required
-async def url_bp_user_hardware_hue_off(request):
+async def url_bp_user_hardware_hue_off(request, target_ip):
     """
     Hue off
     """
     common_network_pika.com_net_pika_send({'Type': 'Hardware', 'Subtype': 'Lights',
                                            'Hardware': 'Hue', 'Action': 'OnOff',
-                                           'Setting': False, 'Target': '10.0.0.225',
+                                           'Setting': False, 'Target': target_ip,
                                            'LightList': (1, 2, 3)},
                                           rabbit_host_name='mkstack_rabbitmq',
                                           exchange_name='mkque_hardware_ex',
                                           route_key='mkhardware')
-    return render_template("users/user_hardware_hue.html")
+    return redirect(request.app.url_for('blueprint_user_hardware_hue.url_bp_user_hardware_hue'))
 
 
 @blueprint_user_hardware_hue.route('/hardware_hue_on')
 @common_global.auth.login_required
-async def url_bp_user_hardware_hue_on(request):
+async def url_bp_user_hardware_hue_on(request, target_ip):
     """
     Hue on
     """
     common_network_pika.com_net_pika_send({'Type': 'Hardware', 'Subtype': 'Lights',
                                            'Hardware': 'Hue', 'Action': 'OnOff',
-                                           'Setting': True, 'Target': '10.0.0.225',
+                                           'Setting': True, 'Target': target_ip,
                                            'LightList': (1, 2, 3)},
                                           rabbit_host_name='mkstack_rabbitmq',
                                           exchange_name='mkque_hardware_ex',
                                           route_key='mkhardware')
-    return render_template("users/user_hardware_hue.html")
+    return redirect(request.app.url_for('blueprint_user_hardware_hue.url_bp_user_hardware_hue'))

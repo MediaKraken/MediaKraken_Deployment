@@ -67,8 +67,8 @@ async def url_bp_user_metadata_movie_detail(request, guid):
 
 @blueprint_user_metadata_movie.route('/meta_movie_list', methods=["GET", "POST"])
 @common_global.jinja_template.template('user/meta_movie_list.html')
-@common_global.auth.login_required
-async def url_bp_user_metadata_movie_list(request):
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_metadata_movie_list(request, user):
     """
     Display list of movie metadata
     """
@@ -80,17 +80,17 @@ async def url_bp_user_metadata_movie_list(request):
         # set watched
         try:
             watched_status \
-                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['watched']
+                = row_data['mm_metadata_user_json']['UserStats'][user.id]['watched']
         except (KeyError, TypeError):
             watched_status = False
         # set rating
         if row_data['mm_metadata_user_json'] is not None \
                 and 'UserStats' in row_data['mm_metadata_user_json'] \
-                and current_user.get_id() in row_data['mm_metadata_user_json']['UserStats'] \
+                and user.id in row_data['mm_metadata_user_json']['UserStats'] \
                 and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
-            current_user.get_id()]:
+            user.id]:
             rating_status \
-                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['Rating']
+                = row_data['mm_metadata_user_json']['UserStats'][user.id]['Rating']
             if rating_status == 'favorite':
                 rating_status = '/static/images/favorite-mark.png'
             elif rating_status == 'like':
@@ -104,13 +104,13 @@ async def url_bp_user_metadata_movie_list(request):
         # set requested
         try:
             request_status \
-                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['requested']
+                = row_data['mm_metadata_user_json']['UserStats'][user.id]['requested']
         except (KeyError, TypeError):
             request_status = None
         # set queue
         try:
             queue_status \
-                = row_data['mm_metadata_user_json']['UserStats'][current_user.get_id()]['queue']
+                = row_data['mm_metadata_user_json']['UserStats'][user.id]['queue']
         except (KeyError, TypeError):
             queue_status = None
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
