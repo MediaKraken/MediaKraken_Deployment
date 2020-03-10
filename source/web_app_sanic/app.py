@@ -18,6 +18,7 @@ from sanic.response import redirect, text
 from sanic_auth import Auth, User
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
+from blueprint.public.forms import RegisterForm
 
 # setup the Sanic app
 app = Sanic(__name__)
@@ -106,26 +107,27 @@ async def login(request):
 @common_global.jinja_template.template('public/register.html')
 async def register(request):
     errors = {}
-    form = RegistrationForm(request)
+    form = RegisterForm(request)
     if request.method == 'POST' and form.validate():
         username = form.username.data
         email = form.email.data
         password = form.password.data
         confirm = form.confirm.data
-        if password != confirm:
-            errors['password_errors'] = "Passwords do not match."
-        else:
-            # we need to create a new user
-            try:
-                async with app.db_pool.acquire() as db_connection:
-                    user_id, user_admin = await database_base_async.db_user_insert(
-                        db_connection, user_name=username, user_email=email, user_password=password)
-                common_global.auth.login_user(request,
-                                              User(id=user_id, name=username, admin=user_admin))
-                return response.redirect("/")
-            except:
-                # failed to insert into database
-                errors['validate_errors'] = "failed to create user"
+        # this is done in the form.validate
+        # if password != confirm:
+        #     errors['password_errors'] = "Passwords do not match."
+        # else:
+        # we need to create a new user
+        try:
+            async with app.db_pool.acquire() as db_connection:
+                user_id, user_admin = await database_base_async.db_user_insert(
+                    db_connection, user_name=username, user_email=email, user_password=password)
+            common_global.auth.login_user(request,
+                                          User(id=user_id, name=username, admin=user_admin))
+            return response.redirect("/")
+        except:
+            # failed to insert into database
+            errors['validate_errors'] = "failed to create user"
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
