@@ -13,6 +13,12 @@ class MKServerDatabaseAsync:
     #     db_query, \
     #     db_parallel_workers, \
     #     db_drop_table
+    from database_async.db_base_cron \
+        import db_cron_delete, \
+        db_cron_info, \
+        db_cron_list, \
+        db_cron_list_count, \
+        db_cron_time_update
     from database_async.db_base_hardware_async \
         import db_hardware_device_count
     from database_async.db_base_image_async \
