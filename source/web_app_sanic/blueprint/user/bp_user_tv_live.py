@@ -6,7 +6,7 @@ blueprint_user_tv_live = Blueprint('name_blueprint_user_tv_live', url_prefix='/u
 
 @blueprint_user_tv_live.route("/tv_live/<schedule_date>/<schedule_time>")
 @common_global.auth.login_required
-async def url_bp_user_livetv_page(request, schedule_date, schedule_time):
+async def url_bp_user_livetv(request, schedule_date, schedule_time):
     """
     Display livetv page
     """
