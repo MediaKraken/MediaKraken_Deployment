@@ -17,19 +17,24 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
     if event_type == "sync":
         return redirect(request.app.url_for('user.sync_edit', guid=guid))
     else:
+        db_connection = await request.app.db_pool.acquire()
         if event_type == "mismatch":
             # TODO ummmm, how do I know which specific media to update?
             # TODO as some might be right
             await request.app.db_functions.db_media_status_update(db_connection,
-                await request.app.db_functions.db_metadata_from_media_guid(db_connection, guid),
-                user.id, event_type)
+                                                                  await request.app.db_functions.db_metadata_from_media_guid(
+                                                                      db_connection, guid),
+                                                                  user.id, event_type)
+            await request.app.db_pool.release(db_connection)
             return json.dumps({'status': 'OK'})
         else:
             # await request.app.db_functions.db_media_rating_update(db_connection,
             #     guid, user.id, event_type)
             await request.app.db_functions.db_meta_movie_status_update(db_connection,
-                await request.app.db_functions.db_metadata_from_media_guid(db_connection, guid),
-                user.id, event_type)
+                                                                       await request.app.db_functions.db_metadata_from_media_guid(
+                                                                           db_connection, guid),
+                                                                       user.id, event_type)
+            await request.app.db_pool.release(db_connection)
             return json.dumps({'status': 'OK'})
 
 
@@ -42,8 +47,10 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     """
     common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
                                                      'event': event_type})
+    db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(db_connection,
-        guid, user.id, event_type)
+                                                               guid, user.id, event_type)
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
 

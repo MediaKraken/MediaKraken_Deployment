@@ -47,12 +47,18 @@ async def url_bp_user_search_media(request):
                 publication_search = True
             elif request.form['search_media_type'] == 'game':
                 game_search = True
+            db_connection = await request.app.db_pool.acquire()
             json_data = json.loads(
-                await request.app.db_functions.db_search(db_connection, request.form['search_string'], search_type='Local',
-                                          search_movie=movie_search, search_tvshow=tvshow_search,
-                                          search_album=album_search, search_image=image_search,
-                                          search_publication=publication_search,
-                                          search_game=game_search))
+                await request.app.db_functions.db_search(db_connection,
+                                                         request.form['search_string'],
+                                                         search_type='Local',
+                                                         search_movie=movie_search,
+                                                         search_tvshow=tvshow_search,
+                                                         search_album=album_search,
+                                                         search_image=image_search,
+                                                         search_publication=publication_search,
+                                                         search_game=game_search))
+            await request.app.db_pool.release(db_connection)
             if 'Movie' in json_data:
                 for search_item in json_data['Movie']:
                     movie.append(search_item)

@@ -15,6 +15,7 @@ async def url_bp_user_chromecast(request, user, action, guid):
     """
     common_global.es_inst.com_elastic_index('info', {'cast action': action,
                                                      'case user': user.id})
+    db_connection = await request.app.db_pool.acquire()
     if action == 'base':
         pass
     elif action == 'back':
@@ -67,7 +68,9 @@ async def url_bp_user_chromecast(request, user, action, guid):
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
+    chromecast_data = await request.app.db_functions.db_device_list(db_connection, 'cast')
+    await request.app.db_pool.release(db_connection)
     return {
         'data_guid': guid,
-        'data_chromecast': await request.app.db_functions.db_device_list(db_connection, 'cast')
+        'data_chromecast': chromecast_data
     }

@@ -1,7 +1,6 @@
 from common import common_global
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
-import database_async as database_base_async
 
 blueprint_user_game_servers = Blueprint('name_blueprint_user_game_servers', url_prefix='/user')
 
@@ -14,14 +13,18 @@ async def url_bp_user_game_server_list(request):
     Display game server page
     """
     page, per_page, offset = Pagination.get_page_args(request)
+    db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_game_server_list_count(db_connection),
+                            total=await request.app.db_functions.db_game_server_list_count(
+                                db_connection),
                             record_name='game servers(s)',
                             format_total=True,
                             format_number=True,
                             )
+    media_data = await request.app.db_functions.db_game_server_list(db_connection, offset, per_page)
+    await request.app.db_pool.release(db_connection)
     return {
-        'media': await request.app.db_functions.db_game_server_list(db_connection, offset, per_page),
+        'media': media_data,
         'page': page,
         'per_page': per_page,
         'pagination': pagination,

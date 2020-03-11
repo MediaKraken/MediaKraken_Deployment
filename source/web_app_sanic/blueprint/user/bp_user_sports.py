@@ -15,19 +15,24 @@ async def url_bp_user_sports(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
+    db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_sports_list(db_connection,
-            common_global.DLMediaType.Sports.value,
-            offset, per_page, request['session']['search_text']):
+                                                                        common_global.DLMediaType.Sports.value,
+                                                                        offset, per_page,
+                                                                        request['session'][
+                                                                            'search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     request['session']['search_page'] = 'media_sports'
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_media_sports_list_count(db_connection,
+                            total=await request.app.db_functions.db_media_sports_list_count(
+                                db_connection,
                                 request['session']['search_text']),
                             record_name='sporting event(s)',
                             format_total=True,
                             format_number=True,
                             )
+    await request.app.db_pool.release(db_connection)
     return {'media': media,
             'page': page,
             'per_page': per_page,
@@ -58,8 +63,11 @@ async def url_bp_user_sports_detail(request, guid):
             data_background_image = None
     except:
         data_background_image = None
+    db_connection = await request.app.db_pool.acquire()
+    media_data = await request.app.db_functions.db_metathesportsdb_select_guid(db_connection, guid)
+    await request.app.db_pool.release(db_connection)
     return {
-        'data': await request.app.db_functions.db_metathesportsdb_select_guid(db_connection, guid),
+        'data': media_data,
         'data_poster_image': data_poster_image,
         'data_background_image': data_background_image,
     }

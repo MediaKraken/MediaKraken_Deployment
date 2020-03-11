@@ -1,4 +1,3 @@
-import database_async as database_base_async
 from common import common_global
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
@@ -14,19 +13,21 @@ async def url_bp_user_cctv(request):
     Display cctv page
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    async with request.app.db_pool.acquire() as db_connection:
-        pagination = Pagination(request,
-                                total=await request.app.db_functions.db_sync_list_count(db_connection),
-                                record_name='CCTV System(s)',
-                                format_total=True,
-                                format_number=True,
-                                )
-        return {
-            'media_sync': await request.app.db_functions.db_sync_list(db_connection, offset, per_page),
-            'page': page,
-            'per_page': per_page,
-            'pagination': pagination,
-            }
+    db_connection = await request.app.db_pool.acquire()
+    pagination = Pagination(request,
+                            total=await request.app.db_functions.db_sync_list_count(db_connection),
+                            record_name='CCTV System(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
+    media_data = await request.app.db_functions.db_sync_list(db_connection, offset, per_page)
+    await request.app.db_pool.release(db_connection)
+    return {
+        'media_sync': media_data,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
 
 
 @blueprint_user_cctv.route('/cctv_detail/<guid>')

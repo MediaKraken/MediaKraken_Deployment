@@ -5,6 +5,7 @@ blueprint_user_tv_live = Blueprint('name_blueprint_user_tv_live', url_prefix='/u
 
 
 @blueprint_user_tv_live.route("/tv_live/<schedule_date>/<schedule_time>")
+@common_global.jinja_template.template('user/user_tv_live.html')
 @common_global.auth.login_required
 async def url_bp_user_livetv(request, schedule_date, schedule_time):
     """
@@ -17,7 +18,9 @@ async def url_bp_user_livetv(request, schedule_date, schedule_time):
     channel_data = ""
     md_used = 2
     last_station = ""
-    for row_data in await request.app.db_functions.db_tv_schedule_by_date(db_connection, schedule_date):
+    db_connection = await request.app.db_pool.acquire()
+    for row_data in await request.app.db_functions.db_tv_schedule_by_date(db_connection,
+                                                                          schedule_date):
         if row_data[0] != last_station and last_station is not None:
             grid_data += '<tr><td>' + last_station + '</td><td>' + row_data[1] + '</td>' \
                          + channel_data + '</tr>'
@@ -109,15 +112,19 @@ async def url_bp_user_livetv(request, schedule_date, schedule_time):
             channel_data += '<td colspan="' + str(next_md) + '\">' + row_data[2]['programID'] \
                             + audio_html + rating_html + '</td>'
             md_used += next_md
+    await request.app.db_pool.release(db_connection)
     # populate last row
     grid_data += '<tr><td>' + last_station + '</td>' + channel_data + '</tr>'
-    return render_template("users/user_livetv_page.html", media=grid_data)
+    return {
+        'media': grid_data
+    }
 
 
 @blueprint_user_tv_live.route("/tv_live_detail/<guid>")
+@common_global.jinja_template.template('user/user_tv_live_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_tv_live_detail(request, guid):
     """
     Display live tv detail page
     """
-    return render_template("users/user_tv_live.html")
+    return {}

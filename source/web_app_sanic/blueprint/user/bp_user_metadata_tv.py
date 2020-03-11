@@ -14,6 +14,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     """
     Display metadata of tvshow
     """
+    db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tvshow_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
@@ -108,6 +109,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     #    production_list = ''
     #    for ndx in range(0,len(json_metadata['production_companies'])):
     #        production_list += (json_metadata['production_companies'][ndx]['name'] + ', ')
+    await request.app.db_pool.release(db_connection)
     return {
         'data_title': data_metadata['mm_metadata_tvshow_name'],
         'data_runtime': data_runtime,
@@ -132,7 +134,10 @@ async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id)
     """
     Display tvshow episode metadata detail
     """
-    data_metadata = await request.app.db_functions.db_read_tvmeta_epsisode_by_id(db_connection, guid, eps_id)
+    db_connection = await request.app.db_pool.acquire()
+    data_metadata = await request.app.db_functions.db_read_tvmeta_epsisode_by_id(db_connection,
+                                                                                 guid, eps_id)
+    await request.app.db_pool.release(db_connection)
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -167,18 +172,23 @@ async def url_bp_user_metadata_tvshow_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media_tvshow = []
-    for row_data in await request.app.db_functions.db_meta_tvshow_list(db_connection, offset, per_page, request['session']['search_text']):
+    db_connection = await request.app.db_pool.acquire()
+    for row_data in await request.app.db_functions.db_meta_tvshow_list(db_connection, offset,
+                                                                       per_page, request['session'][
+                                                                           'search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'], row_data['air_date'],
                              row_data['image_json']))
     request['session']['search_page'] = 'meta_tv'
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_tvshow_list_count(db_connection,
+                            total=await request.app.db_functions.db_meta_tvshow_list_count(
+                                db_connection,
                                 request['session']['search_text']),
                             record_name='TV show(s)',
                             format_total=True,
                             format_number=True,
                             )
+    await request.app.db_pool.release(db_connection)
     return {
         'media_tvshow': media_tvshow,
         'page': page,
@@ -196,6 +206,7 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     """
     Display metadata of tvshow season detail
     """
+    db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tvshow_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
@@ -246,8 +257,10 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    data_episode_count = await request.app.db_functions.db_read_tvmeta_season_eps_list(db_connection,
+    data_episode_count = await request.app.db_functions.db_read_tvmeta_season_eps_list(
+        db_connection,
         guid, int(season))
+    await request.app.db_pool.release(db_connection)
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
     common_global.es_inst.com_elastic_index('info', {'dataepskeys': data_episode_keys})

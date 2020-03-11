@@ -1,7 +1,6 @@
 import json
 import os
 
-import database_async as database_base_async
 from common import common_global
 from common import common_network_cifs
 from common import common_network_pika
@@ -32,22 +31,24 @@ async def url_bp_admin_library(request):
                                                   route_key='mkque')
             request['flash']('Scheduled media scan.', 'success')
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
-    async with request.app.db_pool.acquire() as db_connection:
-        table_count = await request.app.db_functions.db_table_count(db_connection, 'mm_media_dir')
+    db_connection = await request.app.db_pool.acquire()
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=table_count,
+                            total=await request.app.db_functions.db_table_count(db_connection,
+                                                                                'mm_media_dir'),
                             record_name='library dir(s)',
                             format_total=True,
                             format_number=True,
                             )
     return_media = []
-    for row_data in await request.app.db_functions.db_library_paths(db_connection, offset, per_page):
+    for row_data in await request.app.db_functions.db_library_paths(db_connection, offset,
+                                                                    per_page):
         return_media.append((row_data['mm_media_dir_path'],
                              row_data['mm_media_class_type'],
                              row_data['mm_media_dir_last_scanned'],
                              common_global.DLMediaType.row_data['mm_media_class_guid'].name,
                              row_data['mm_media_dir_guid']))
+    await request.app.db_pool.release(db_connection)
     return {
         'media_dir': return_media,
         'page': page,
@@ -59,9 +60,10 @@ async def url_bp_admin_library(request):
 @blueprint_admin_library.route('/library_by_id', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_library_by_id(request):
-    async with request.app.db_pool.acquire() as db_connection:
-        result = await request.app.db_functions.db_library_path_by_uuid(db_connection,
-                                                                   request.form['id'])
+    db_connection = await request.app.db_pool.acquire()
+    result = await request.app.db_functions.db_library_path_by_uuid(db_connection,
+                                                                    request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
                        'Media Class': result['mm_media_dir_class_type']})
@@ -73,8 +75,9 @@ async def url_bp_admin_library_delete(request):
     """
     Delete library action 'page'
     """
-    async with request.app.db_pool.acquire() as db_connection:
-        await request.app.db_functions.db_library_path_delete(db_connection, request.form['id'])
+    db_connection = await request.app.db_pool.acquire()
+    await request.app.db_functions.db_library_path_delete(db_connection, request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
 
@@ -86,6 +89,7 @@ async def url_bp_admin_library_edit(request):
     allow user to edit lib
     """
     form = LibraryAddEditForm(request.form)
+    db_connection = await request.app.db_pool.acquire()
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
@@ -127,17 +131,18 @@ async def url_bp_admin_library_edit(request):
                     request['flash']("Invalid library path.", 'error')
                     return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add
-                if await request.app.db_functions.db_audit_path_check(db_connection, request.form['library_path']) == 0:
+                if await request.app.db_functions.db_audit_path_check(db_connection, request.form[
+                    'library_path']) == 0:
                     try:
                         lib_share = request.form['Lib_Share']
                     except:
                         lib_share = None
-                    async with request.app.db_pool.acquire() as db_connection:
-                        await request.app.db_functions.db_library_path_add(db_connection,
-                                                                      request.form[
-                                                                          'library_path'],
-                                                                      request.form['Lib_Class'],
-                                                                      lib_share)
+                    await request.app.db_functions.db_library_path_add(db_connection,
+                                                                       request.form[
+                                                                           'library_path'],
+                                                                       request.form[
+                                                                           'Lib_Class'],
+                                                                       lib_share)
                     return redirect(request.app.url_for('admins_library.admin_library'))
                 else:
                     request['flash']("Path already in library.", 'error')
@@ -150,11 +155,11 @@ async def url_bp_admin_library_edit(request):
         else:
             flash_errors(form)
     share_list = []
-    async with request.app.db_pool.acquire() as db_connection:
-        for row_data in await request.app.db_functions.db_share(db_connection):
-            share_name = row_data['mm_media_share_server'] + \
-                         ":" + row_data['mm_media_share_path']
-            share_list.append((share_name, row_data['mm_media_share_guid']))
+    for row_data in await request.app.db_functions.db_share(db_connection):
+        share_name = row_data['mm_media_share_server'] + \
+                     ":" + row_data['mm_media_share_path']
+        share_list.append((share_name, row_data['mm_media_share_guid']))
+    await request.app.db_pool.release(db_connection)
     return {
         'form': form,
         'data_class': ((common_global.DLMediaType.Movie.name,
@@ -182,9 +187,10 @@ async def url_bp_admin_library_edit(request):
 @blueprint_admin_library.route('/library_update', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_library_update(request):
-    async with request.app.db_pool.acquire() as db_connection:
-        await request.app.db_functions.db_library_path_update_by_uuid(db_connection,
-                                                                 request.form['new_path'],
-                                                                 request.form['new_class'],
-                                                                 request.form['id'])
+    db_connection = await request.app.db_pool.acquire()
+    await request.app.db_functions.db_library_path_update_by_uuid(db_connection,
+                                                                  request.form['new_path'],
+                                                                  request.form['new_class'],
+                                                                  request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

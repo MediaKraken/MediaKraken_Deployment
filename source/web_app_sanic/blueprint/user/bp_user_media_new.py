@@ -15,6 +15,7 @@ async def url_bp_user_media_new(request):
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'new_media'
     media_data = []
+    db_connection = await request.app.db_pool.acquire()
     for media_file in await request.app.db_functions.db_read_media_new(db_connection, offset, per_page,
                                                         request['session']['search_text'],
                                                         days_old=7):
@@ -29,6 +30,7 @@ async def url_bp_user_media_new(request):
                             format_total=True,
                             format_number=True,
                             )
+    await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
         'page': page,

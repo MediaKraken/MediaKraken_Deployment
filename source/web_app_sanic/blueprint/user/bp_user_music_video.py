@@ -14,16 +14,21 @@ async def url_bp_user_music_video_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'media_music_video'
+    db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_music_video_list_count(db_connection,
+                            total=await request.app.db_functions.db_music_video_list_count(
+                                db_connection,
                                 request['session']['search_text']),
                             record_name='music video(s)',
                             format_total=True,
                             format_number=True,
                             )
+    media_data = await request.app.db_functions.db_music_video_list(db_connection, offset, per_page,
+                                                                    request['session'][
+                                                                        'search_text'])
+    await request.app.db_pool.release(db_connection)
     return {
-        'media_person': await request.app.db_functions.db_music_video_list(db_connection, offset, per_page,
-                                                            request['session']['search_text']),
+        'media_person': media_data,
         'page': page,
         'per_page': per_page,
         'pagination': pagination,

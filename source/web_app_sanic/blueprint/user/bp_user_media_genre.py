@@ -14,6 +14,7 @@ async def url_bp_user_media_genre(request):
     Display media split up by genre
     """
     media = []
+    db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_movie_count_by_genre(db_connection,
             common_global.DLMediaType.Movie.value):
         media.append((row_data['gen']['name'],
@@ -34,6 +35,7 @@ async def url_bp_user_movie_page(request, user, genre):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
+    db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_web_media_list(db_connection,
             common_global.DLMediaType.Movie.value,
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
@@ -93,6 +95,7 @@ async def url_bp_user_movie_page(request, user, genre):
     total = await request.app.db_functions.db_web_media_list_count(db_connection,
         common_global.DLMediaType.Movie.value, list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True, search_text=request['session']['search_text'])
+    await request.app.db_pool.release(db_connection)
     request['session']['search_page'] = 'media_movie'
     pagination = Pagination(request,
                             total=total,

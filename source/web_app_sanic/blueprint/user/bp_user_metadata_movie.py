@@ -14,7 +14,9 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     """
     Display metadata movie detail
     """
+    db_connection = await request.app.db_pool.acquire()
     data = await request.app.db_functions.db_read_media_metadata(db_connection, guid)
+    await request.app.db_pool.release(db_connection)
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
@@ -75,6 +77,7 @@ async def url_bp_user_metadata_movie_list(request, user):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     media_count = 0
+    db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset, per_page,
                                                        request['session']['search_text']):
         # set watched
@@ -138,6 +141,7 @@ async def url_bp_user_metadata_movie_list(request, user):
                             format_total=True,
                             format_number=True,
                             )
+    await request.app.db_pool.release(db_connection)
     return {
         'media_movie': media,
         'page': page,

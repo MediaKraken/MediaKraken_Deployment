@@ -1,6 +1,5 @@
 import json
 
-import database_async as database_base_async
 from common import common_global
 from common import common_network_pika
 from python_paginate.web.sanic_paginate import Pagination
@@ -18,8 +17,8 @@ async def url_bp_admin_cron(request):
     """
     Display cron jobs
     """
-    async with request.app.db_pool.acquire() as db_connection:
-        cron_count = await request.app.db_functions.db_cron_list_count(db_connection, False)
+    db_connection = await request.app.db_pool.acquire()
+    cron_count = await request.app.db_functions.db_cron_list_count(db_connection, False)
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
                             total=cron_count,
@@ -27,8 +26,8 @@ async def url_bp_admin_cron(request):
                             format_total=True,
                             format_number=True,
                             )
-    async with request.app.db_pool.acquire() as db_connection:
-        cron_data = await request.app.db_functions.db_cron_list(db_connection, False, offset, per_page)
+    cron_data = await request.app.db_functions.db_cron_list(db_connection, False, offset, per_page)
+    await request.app.db_pool.release(db_connection)
     return {
         'media_cron': cron_data,
         'page': page,
@@ -43,8 +42,9 @@ async def url_bp_admin_cron_delete(request):
     """
     Delete action 'page'
     """
-    async with request.app.db_pool.acquire() as db_connection:
-        await request.app.db_functions.db_cron_delete(db_connection, request.form['id'])
+    db_connection = await request.app.db_pool.acquire()
+    await request.app.db_functions.db_cron_delete(db_connection, request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
 
@@ -76,8 +76,8 @@ async def url_bp_admin_cron_run(request, user, guid):
     Run cron jobs
     """
     common_global.es_inst.com_elastic_index('info', {'admin cron run': guid})
-    async with request.app.db_pool.acquire() as db_connection:
-        cron_job_data = await request.app.db_functions.db_cron_info(db_connection, guid)
+    db_connection = await request.app.db_pool.acquire()
+    cron_job_data = await request.app.db_functions.db_cron_info(db_connection, guid)
     # submit the message
     common_network_pika.com_net_pika_send({'Type': cron_job_data['mm_cron_json']['type'],
                                            'User': user.id,
@@ -85,8 +85,7 @@ async def url_bp_admin_cron_run(request, user, guid):
                                           exchange_name=cron_job_data['mm_cron_json'][
                                               'exchange_key'],
                                           route_key=cron_job_data['mm_cron_json']['route_key'])
-
-    async with request.app.db_pool.acquire() as db_connection:
-        await request.app.db_functions.db_cron_time_update(db_connection,
-                                                      cron_job_data['mm_cron_name'])
+    await request.app.db_functions.db_cron_time_update(db_connection,
+                                                       cron_job_data['mm_cron_name'])
+    await request.app.db_pool.release(db_connection)
     return redirect(request.app.url_for('admins_cron.admin_cron'))

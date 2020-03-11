@@ -18,6 +18,7 @@ async def url_bp_user_tv(request):
     page, per_page, offset = Pagination.get_page_args(request)
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
+    db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_web_tvmedia_list(db_connection, offset, per_page,
                                                         request['session']['search_text']):
         # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
@@ -41,6 +42,7 @@ async def url_bp_user_tv(request):
                             format_total=True,
                             format_number=True,
                             )
+    await request.app.db_pool.release(db_connection)
     return {
         'media': media,
         'page': page,
@@ -56,6 +58,7 @@ async def url_bp_user_tv_show_detail(request, user, guid):
     """
     Display tv show detail page
     """
+    db_connection = await request.app.db_pool.acquire()
     if request.method == 'POST':
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
@@ -154,6 +157,7 @@ async def url_bp_user_tv_show_detail(request, user, guid):
             watched_status = json_metadata['UserStats'][user.id]
         except:
             watched_status = False
+        await request.app.db_pool.release(db_connection)
         return {
 
             'data': data_metadata[0],
@@ -174,7 +178,7 @@ async def url_bp_user_tv_show_detail(request, user, guid):
             'data_runtime': "%02dH:%02dM:%02dS" % (
                 hours, minutes, seconds)
         }
-
+    await request.app.db_pool.release(db_connection)
 
 @blueprint_user_tv.route("/tv_show_season_detail/<guid>/<season>", methods=['GET', 'POST'])
 @common_global.jinja_template.template('user/user_tv_show_season_detail.html')
@@ -183,6 +187,7 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
     """
     Display tv season detail page
     """
+    db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tvshow_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
@@ -235,6 +240,7 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
 
     data_episode_count = await request.app.db_functions.db_read_tvmeta_season_eps_list(db_connection,
         guid, int(season))
+    await request.app.db_pool.release(db_connection)
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
     common_global.es_inst.com_elastic_index('info', {'dataepskeys': data_episode_keys})
@@ -274,8 +280,10 @@ async def url_bp_user_tv_show_episode_detail_page(request, guid, season, episode
     """
     Display tv episode detail page
     """
+    db_connection = await request.app.db_pool.acquire()
     data_episode_detail = await request.app.db_functions.db_read_tvmeta_episode(db_connection,
         guid, season, episode)
+    await request.app.db_pool.release(db_connection)
     # poster image
     try:
         data_poster_image = data_episode_detail[3]

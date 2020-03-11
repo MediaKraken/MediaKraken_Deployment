@@ -11,7 +11,9 @@ async def url_bp_user_image_gallery(request):
     """
     Display image gallery page
     """
-    async with request.app.db_pool.acquire() as db_connection:
-        return {'image_data':
-                    await request.app.db_functions.db_image_list(db_connection,
-                                                                 common_global.DLMediaType.Picture)}
+    db_connection = await request.app.db_pool.acquire()
+    image_data = await request.app.db_functions.db_image_list(db_connection,
+                                                              common_global.DLMediaType.Picture)
+    await request.app.db_pool.release(db_connection)
+    return {'image_data': image_data
+            }

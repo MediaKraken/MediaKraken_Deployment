@@ -15,15 +15,21 @@ async def url_bp_user_metadata_game_system(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'meta_game_system'
+    db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_game_system_list_count(db_connection),
+                            total=await request.app.db_functions.db_meta_game_system_list_count(
+                                db_connection),
                             record_name='game system(s)',
                             format_total=True,
                             format_number=True
                             )
+    media_data = await request.app.db_functions.db_meta_game_system_list(db_connection, offset,
+                                                                         per_page,
+                                                                         request['session'][
+                                                                             'search_text'])
+    await request.app.db_pool.release(db_connection)
     return {
-        'media': await request.app.db_functions.db_meta_game_system_list(db_connection, offset, per_page,
-                                                          request['session']['search_text']),
+        'media': media_data,
         'page': page,
         'per_page': per_page,
         'pagination': pagination,
@@ -37,7 +43,10 @@ async def url_bp_user_metadata_game_system_detail(request, guid):
     """
     Display metadata game detail
     """
+    db_connection = await request.app.db_pool.acquire()
+    media_data = await request.app.db_functions.db_meta_game_system_by_guid(db_connection, guid)
+    await request.app.db_pool.release(db_connection)
     return {
         'guid': guid,
-        'data': await request.app.db_functions.db_meta_game_system_by_guid(db_connection, guid),
+        'data': media_data,
     }

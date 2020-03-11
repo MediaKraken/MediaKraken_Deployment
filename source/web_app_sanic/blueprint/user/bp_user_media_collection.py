@@ -15,6 +15,7 @@ async def url_bp_user_metadata_movie_collection(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
+    db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_collection_list(db_connection, offset, per_page,
                                                        request['session']['search_text']):
         if 'Poster' in row_data['mm_metadata_collection_imagelocal_json']:
@@ -32,6 +33,7 @@ async def url_bp_user_metadata_movie_collection(request):
                             format_total=True,
                             format_number=True,
                             )
+    await request.app.db_pool.release(db_connection)
     return {
         'media': media,
         'page': page,
@@ -47,7 +49,9 @@ async def url_bp_user_metadata_movie_collection_detail(request, guid):
     """
     Display movie collection metadata detail
     """
+    db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_collection_read_by_guid(db_connection, guid)
+    await request.app.db_pool.release(db_connection)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']
     # poster image

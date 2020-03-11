@@ -16,6 +16,7 @@ async def url_bp_user_metadata_periodical(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     item_list = []
+    db_connection = await request.app.db_pool.acquire()
     for item_data in await request.app.db_functions.db_meta_book_list(db_connection, offset, per_page,
                                                        request['session']['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': item_data})
@@ -30,6 +31,7 @@ async def url_bp_user_metadata_periodical(request):
                             format_total=True,
                             format_number=True,
                             )
+    await request.app.db_pool.release(db_connection)
     return {
         'media_person': item_list,
         'page': page,
@@ -45,7 +47,9 @@ async def url_bp_user_metadata_periodical_detail(request, guid):
     """
     Display periodical detail page
     """
+    db_connection = await request.app.db_pool.acquire()
     json_metadata = await request.app.db_functions.db_meta_book_by_uuid(db_connection, guid)
+    await request.app.db_pool.release(db_connection)
     try:
         data_name = json_metadata['mm_metadata_book_json']['title']
     except KeyError:

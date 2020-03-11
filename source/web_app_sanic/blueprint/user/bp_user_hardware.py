@@ -11,7 +11,10 @@ async def url_bp_user_hardware(request):
     """
     Display hardware page
     """
-    async with request.app.db_pool.acquire() as db_connection:
-        return {'phue':
-                    await request.app.db_functions.db_hardware_device_count(db_connection,
-                                                                            hardware_manufacturer='Phue')}
+    db_connection = await request.app.db_pool.acquire()
+    phue_hardware = await request.app.db_functions.db_hardware_device_count(db_connection,
+                                                                            hardware_manufacturer='Phue')
+    await request.app.db_pool.release(db_connection)
+    return {
+        'phue': phue_hardware
+    }

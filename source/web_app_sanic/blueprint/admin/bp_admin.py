@@ -1,6 +1,5 @@
 import os
 
-import database_async as database_base_async
 from common import common_global
 from common import common_hash
 from common import common_internationalization
@@ -30,15 +29,16 @@ async def url_bp_admin(request):
     data_alerts_dismissable = []
     data_alerts = []
     # read in the notifications
-    async with request.app.db_pool.acquire() as db_connection:
-        for row_data in await request.app.db_functions.db_notification_read(db_connection):
-            if row_data['mm_notification_dismissable']:  # check for dismissable
-                data_alerts_dismissable.append((row_data['mm_notification_guid'],
-                                                row_data['mm_notification_text'],
-                                                row_data['mm_notification_time']))
-            else:
-                data_alerts.append((row_data['mm_notification_guid'],
-                                    row_data['mm_notification_text'], row_data['mm_notification_time']))
+    db_connection = await request.app.db_pool.acquire()
+    for row_data in await request.app.db_functions.db_notification_read(db_connection):
+        if row_data['mm_notification_dismissable']:  # check for dismissable
+            data_alerts_dismissable.append((row_data['mm_notification_guid'],
+                                            row_data['mm_notification_text'],
+                                            row_data['mm_notification_time']))
+        else:
+            data_alerts.append((row_data['mm_notification_guid'],
+                                row_data['mm_notification_text'],
+                                row_data['mm_notification_time']))
     data_transmission_active = False
     if await \
             request.app.db_functions.db_opt_status_read(db_connection)['mm_options_json'][
@@ -47,7 +47,8 @@ async def url_bp_admin(request):
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
-    scanning_json = await request.app.db_functions.db_opt_status_read(db_connection)['mm_status_json']
+    scanning_json = await request.app.db_functions.db_opt_status_read(db_connection)[
+        'mm_status_json']
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in await request.app.db_functions.db_audit_path_status(db_connection):
@@ -56,6 +57,7 @@ async def url_bp_admin(request):
         mediakraken_ip = os.environ['SWARMIP']
     else:
         mediakraken_ip = os.environ['HOST_IP']
+    # TODO pool release
     return {
         'data_user_count': common_internationalization.com_inter_number_format(
             await request.app.db_functions.db_user_list_name_count(db_connection)),

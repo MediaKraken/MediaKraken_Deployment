@@ -16,6 +16,7 @@ async def url_bp_user_sync_display_all(request):
     Display sync page
     """
     page, per_page, offset = Pagination.get_page_args(request)
+    db_connection = await request.app.db_pool.acquire()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_sync_list_count(db_connection),
@@ -23,8 +24,10 @@ async def url_bp_user_sync_display_all(request):
                             format_total=True,
                             format_number=True,
                             )
+    media_data = await request.app.db_functions.db_sync_list(db_connection, offset, per_page)
+    await request.app.db_pool.release(db_connection)
     return {
-        'media_sync': await request.app.db_functions.db_sync_list(db_connection, offset, per_page),
+        'media_sync': media_data,
         'page': page,
         'per_page': per_page,
         'pagination': pagination,
@@ -37,7 +40,9 @@ async def url_bp_user_admin_sync_delete_page(request):
     """
     Display sync delete action 'page'
     """
+    db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_sync_delete(db_connection, request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
 
@@ -49,6 +54,7 @@ async def url_bp_user_sync_edit(request, guid):
     Allow user to edit sync page
     """
     if request.method == 'POST':
+        db_connection = await request.app.db_pool.acquire()
         sync_json = {'Type': request.form['target_type'],
                      'Media GUID': guid,
                      'Options': {'VContainer': request.form['target_container'],
@@ -61,7 +67,9 @@ async def url_bp_user_sync_edit(request, guid):
                      'Status': 'Scheduled',
                      'Progress': 0}
         await request.app.db_functions.db_sync_insert(db_connection, request.form['name'],
-                                       request.form['target_output_path'], json.dumps(sync_json))
+                                                      request.form['target_output_path'],
+                                                      json.dumps(sync_json))
+        await request.app.db_pool.release(db_connection)
         return redirect(request.app.url_for('user.movie_detail', guid=guid))
     form = SyncEditForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():

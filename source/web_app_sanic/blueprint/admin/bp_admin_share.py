@@ -1,7 +1,6 @@
 import json
 import os
 
-import database_async as database_base_async
 from common import common_global
 from common import common_network_cifs
 from python_paginate.web.sanic_paginate import Pagination
@@ -20,28 +19,32 @@ async def url_bp_admin_share(request):
     List all share/mounts
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    async with request.app.db_pool.acquire() as db_connection:
-        pagination = Pagination(request,
-                                total=await request.app.db_functions.db_table_count(db_connection,
-                                                                               'mm_media_share'),
-                                record_name='share(s)',
-                                format_total=True,
-                                format_number=True,
-                                )
-        return {
-            'media_dir': await request.app.db_functions.db_audit_shares(db_connection,
-                                                                   offset, per_page),
-            'page': page,
-            'per_page': per_page,
-            'pagination': pagination,
-        }
+    db_connection = await request.app.db_pool.acquire()
+    pagination = Pagination(request,
+                            total=await request.app.db_functions.db_table_count(db_connection,
+                                                                                'mm_media_share'),
+                            record_name='share(s)',
+                            format_total=True,
+                            format_number=True,
+                            )
+    media_share = await request.app.db_functions.db_audit_shares(db_connection,
+                                                                 offset, per_page)
+    await request.app.db_pool.release(db_connection)
+    return {
+        'media_dir': media_share,
+        'page': page,
+        'per_page': per_page,
+        'pagination': pagination,
+    }
 
 
 @blueprint_admin_share.route('/share_by_id', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_getsharebyid(request):
-    async with request.app.db_pool.acquire() as db_connection:
-        result = await request.app.db_functions.db_audit_share_by_uuid(db_connection, request.form['id'])
+    db_connection = await request.app.db_pool.acquire()
+    result = await request.app.db_functions.db_audit_share_by_uuid(db_connection,
+                                                                   request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'Id': result['mm_share_dir_guid'],
                        'Path': result['mm_share_dir_path']})
 
@@ -52,8 +55,9 @@ async def url_bp_admin_share_delete(request):
     """
     Delete share action 'page'
     """
-    async with request.app.db_pool.acquire() as db_connection:
-        await request.app.db_functions.db_audit_share_delete(db_connection, request.form['id'])
+    db_connection = await request.app.db_pool.acquire()
+    await request.app.db_functions.db_audit_share_delete(db_connection, request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
 
@@ -111,20 +115,25 @@ async def url_bp_admin_share_edit(request):
                     request['flash']("Invalid share path.", 'error')
                     return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
                 # verify it doesn't exit and add
+                db_connection = await request.app.db_pool.acquire()
                 if await request.app.db_functions.db_audit_share_check(db_connection, request.form[
                     'storage_mount_path']) == 0:
                     await request.app.db_functions.db_audit_share_add(db_connection,
-                                                                 request.form['storage_mount_type'],
-                                                                 request.form['storage_mount_user'],
-                                                                 request.form[
-                                                                     'storage_mount_password'],
-                                                                 request.form[
-                                                                     'storage_mount_server'],
-                                                                 request.form['storage_mount_path'])
+                                                                      request.form[
+                                                                          'storage_mount_type'],
+                                                                      request.form[
+                                                                          'storage_mount_user'],
+                                                                      request.form[
+                                                                          'storage_mount_password'],
+                                                                      request.form[
+                                                                          'storage_mount_server'],
+                                                                      request.form[
+                                                                          'storage_mount_path'])
                     return redirect(request.app.url_for('admins_share.admin_share'))
                 else:
                     request['flash']("Share already mapped.", 'error')
                     return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
+                await request.app.db_pool.release(db_connection)
             elif request.form['action_type'] == 'Browse':
                 # browse for smb shares on the host network
                 pass
@@ -136,12 +145,13 @@ async def url_bp_admin_share_edit(request):
 @blueprint_admin_share.route('/share_update', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_updateshare(request):
-    async with request.app.db_pool.acquire() as db_connection:
-        await request.app.db_functions.db_audit_share_update_by_uuid(db_connection,
-                                                                request.form['new_share_type'],
-                                                                request.form['new_share_user'],
-                                                                request.form['new_share_password'],
-                                                                request.form['new_share_server'],
-                                                                request.form['new_share_path'],
-                                                                request.form['id'])
+    db_connection = await request.app.db_pool.acquire()
+    await request.app.db_functions.db_audit_share_update_by_uuid(db_connection,
+                                                                 request.form['new_share_type'],
+                                                                 request.form['new_share_user'],
+                                                                 request.form['new_share_password'],
+                                                                 request.form['new_share_server'],
+                                                                 request.form['new_share_path'],
+                                                                 request.form['id'])
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
