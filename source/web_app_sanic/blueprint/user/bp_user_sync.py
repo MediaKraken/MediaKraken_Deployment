@@ -18,13 +18,13 @@ async def url_bp_user_sync_display_all(request):
     page, per_page, offset = Pagination.get_page_args(request)
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
     pagination = Pagination(request,
-                            total=g.db_connection.db_sync_list_count(db_connection),
+                            total=await database_base_async.db_sync_list_count(db_connection),
                             record_name='sync job(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media_sync': g.db_connection.db_sync_list(db_connection, offset, per_page),
+        'media_sync': await database_base_async.db_sync_list(db_connection, offset, per_page),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,
@@ -37,7 +37,7 @@ async def url_bp_user_admin_sync_delete_page(request):
     """
     Display sync delete action 'page'
     """
-    g.db_connection.db_sync_delete(db_connection, request.form['id'])
+    await database_base_async.db_sync_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
@@ -60,7 +60,7 @@ async def url_bp_user_sync_edit(request, guid):
                      'Priority': request.form['target_priority'],
                      'Status': 'Scheduled',
                      'Progress': 0}
-        g.db_connection.db_sync_insert(db_connection, request.form['name'],
+        await database_base_async.db_sync_insert(db_connection, request.form['name'],
                                        request.form['target_output_path'], json.dumps(sync_json))
         return redirect(request.app.url_for('user.movie_detail', guid=guid))
     form = SyncEditForm(request.form, csrf_enabled=False)

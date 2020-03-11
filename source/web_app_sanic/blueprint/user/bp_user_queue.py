@@ -16,7 +16,7 @@ async def url_bp_user_queue_page(request, user):
     # TODO union read all four.....then if first "group"....add header in the html
     request['session']['search_page'] = 'user_media_queue'
     pagination = Pagination(request,
-                            total=g.db_connection.db_web_tvmedia_list_count(db_connection,
+                            total=await database_base_async.db_web_tvmedia_list_count(db_connection,
                                 None, None,
                                 request['session']['search_text']),
                             record_name='queue',
@@ -24,7 +24,7 @@ async def url_bp_user_queue_page(request, user):
                             format_number=True,
                             )
     return {
-        'media': g.db_connection.db_meta_queue_list(db_connection, user.id, offset,
+        'media': await database_base_async.db_meta_queue_list(db_connection, user.id, offset,
                                                     per_page,
                                                     request['session']['search_text']),
         'page': page,

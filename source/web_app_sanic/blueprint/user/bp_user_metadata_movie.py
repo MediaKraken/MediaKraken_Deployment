@@ -14,7 +14,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     """
     Display metadata movie detail
     """
-    data = g.db_connection.db_read_media_metadata(db_connection, guid)
+    data = await database_base_async.db_read_media_metadata(db_connection, guid)
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
@@ -49,7 +49,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     except:
         data_background_image = None
     # grab reviews
-    #    review = g.db_connection.db_Review_List(db_connection, data[1])
+    #    review = await database_base_async.db_Review_List(db_connection, data[1])
     return {
         # data_media_ids: data[1],
         'data_name': data[2],
@@ -75,7 +75,7 @@ async def url_bp_user_metadata_movie_list(request, user):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     media_count = 0
-    for row_data in g.db_connection.db_meta_movie_list(db_connection, offset, per_page,
+    for row_data in await database_base_async.db_meta_movie_list(db_connection, offset, per_page,
                                                        request['session']['search_text']):
         # set watched
         try:
@@ -132,7 +132,7 @@ async def url_bp_user_metadata_movie_list(request, user):
                       rating_status, request_status, queue_status, deck_start, deck_break))
     request['session']['search_page'] = 'meta_movie'
     pagination = Pagination(request,
-                            total=g.db_connection.db_meta_movie_count(db_connection,
+                            total=await database_base_async.db_meta_movie_count(db_connection,
                                 request['session']['search_text']),
                             record_name='movie(s)',
                             format_total=True,

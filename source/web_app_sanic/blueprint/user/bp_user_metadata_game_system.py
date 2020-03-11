@@ -16,13 +16,13 @@ async def url_bp_user_metadata_game_system(request):
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'meta_game_system'
     pagination = Pagination(request,
-                            total=g.db_connection.db_meta_game_system_list_count(db_connection),
+                            total=await database_base_async.db_meta_game_system_list_count(db_connection),
                             record_name='game system(s)',
                             format_total=True,
                             format_number=True
                             )
     return {
-        'media': g.db_connection.db_meta_game_system_list(db_connection, offset, per_page,
+        'media': await database_base_async.db_meta_game_system_list(db_connection, offset, per_page,
                                                           request['session']['search_text']),
         'page': page,
         'per_page': per_page,
@@ -39,5 +39,5 @@ async def url_bp_user_metadata_game_system_detail(request, guid):
     """
     return {
         'guid': guid,
-        'data': g.db_connection.db_meta_game_system_by_guid(db_connection, guid),
+        'data': await database_base_async.db_meta_game_system_by_guid(db_connection, guid),
     }

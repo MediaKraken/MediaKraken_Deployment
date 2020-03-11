@@ -20,15 +20,15 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
         if event_type == "mismatch":
             # TODO ummmm, how do I know which specific media to update?
             # TODO as some might be right
-            g.db_connection.db_media_status_update(db_connection,
-                g.db_connection.db_metadata_from_media_guid(db_connection, guid),
+            await database_base_async.db_media_status_update(db_connection,
+                await database_base_async.db_metadata_from_media_guid(db_connection, guid),
                 user.id, event_type)
             return json.dumps({'status': 'OK'})
         else:
-            # g.db_connection.db_media_rating_update(db_connection,
+            # await database_base_async.db_media_rating_update(db_connection,
             #     guid, user.id, event_type)
-            g.db_connection.db_meta_movie_status_update(db_connection,
-                g.db_connection.db_metadata_from_media_guid(db_connection, guid),
+            await database_base_async.db_meta_movie_status_update(db_connection,
+                await database_base_async.db_metadata_from_media_guid(db_connection, guid),
                 user.id, event_type)
             return json.dumps({'status': 'OK'})
 
@@ -42,7 +42,7 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     """
     common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
                                                      'event': event_type})
-    g.db_connection.db_meta_movie_status_update(db_connection,
+    await database_base_async.db_meta_movie_status_update(db_connection,
         guid, user.id, event_type)
     return json.dumps({'status': 'OK'})
 

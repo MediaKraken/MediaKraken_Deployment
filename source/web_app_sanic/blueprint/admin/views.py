@@ -40,7 +40,7 @@ async def url_bp_admin(request):
     data_alerts_dismissable = []
     data_alerts = []
     # read in the notifications
-    for row_data in g.db_connection.db_notification_read(db_connection):
+    for row_data in await database_base_async.db_notification_read(db_connection):
         if row_data['mm_notification_dismissable']:  # check for dismissable
             data_alerts_dismissable.append((row_data['mm_notification_guid'],
                                             row_data['mm_notification_text'],
@@ -49,14 +49,14 @@ async def url_bp_admin(request):
             data_alerts.append((row_data['mm_notification_guid'],
                                 row_data['mm_notification_text'], row_data['mm_notification_time']))
     data_transmission_active = False
-    if g.db_connection.db_opt_status_read(db_connection)['mm_options_json']['Transmission']['Host'] is not None:
+    if await database_base_async.db_opt_status_read(db_connection)['mm_options_json']['Transmission']['Host'] is not None:
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
-    scanning_json = g.db_connection.db_opt_status_read(db_connection)['mm_status_json']
+    scanning_json = await database_base_async.db_opt_status_read(db_connection)['mm_status_json']
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
-    for dir_path in g.db_connection.db_audit_path_status(db_connection):
+    for dir_path in await database_base_async.db_audit_path_status(db_connection):
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     if os.environ['SWARMIP'] != 'None':
         mediakraken_ip = os.environ['SWARMIP']
@@ -64,7 +64,7 @@ async def url_bp_admin(request):
         mediakraken_ip = os.environ['HOST_IP']
     return render_template("admin/admins.html",
                            data_user_count=common_internationalization.com_inter_number_format(
-                               g.db_connection.db_user_list_name_count(db_connection)),
+                               await database_base_async.db_user_list_name_count(db_connection)),
                            data_server_info_server_name=data_server_info_server_name,
                            data_host_ip=mediakraken_ip,
                            data_server_info_server_ip=nic_data,
@@ -76,20 +76,20 @@ async def url_bp_admin(request):
                            data_alerts_dismissable=data_alerts_dismissable,
                            data_alerts=data_alerts,
                            data_count_media_files=common_internationalization.com_inter_number_format(
-                               g.db_connection.db_known_media_count(db_connection)),
+                               await database_base_async.db_known_media_count(db_connection)),
                            data_count_matched_media=common_internationalization.com_inter_number_format(
-                               g.db_connection.db_matched_media_count(db_connection)),
+                               await database_base_async.db_matched_media_count(db_connection)),
                            data_count_streamed_media=common_internationalization.com_inter_number_format(
                                0),
                            data_library=common_internationalization.com_inter_number_format(
-                               g.db_connection.db_table_count(db_connection, 'mm_media_dir')),
+                               await database_base_async.db_table_count(db_connection, 'mm_media_dir')),
                            data_share=common_internationalization.com_inter_number_format(
-                               g.db_connection.db_table_count(db_connection, 'mm_media_share')),
+                               await database_base_async.db_table_count(db_connection, 'mm_media_share')),
                            data_transmission_active=data_transmission_active,
                            data_scan_info=data_scan_info,
                            data_messages=data_messages,
                            data_count_meta_fetch=common_internationalization.com_inter_number_format(
-                               g.db_connection.db_table_count(db_connection, 'mm_download_que')),
+                               await database_base_async.db_table_count(db_connection, 'mm_download_que')),
                            )
 
 
@@ -134,9 +134,9 @@ async def url_bp_admin_books_add(request):
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())
-                g.db_connection.db_insert_media(db_connection, media_id, None, class_uuid,
+                await database_base_async.db_insert_media(db_connection, media_id, None, class_uuid,
                                                 None, None, None)
-                g.db_connection.db_download_insert(db_connection, 'Z', 0, json.dumps({'MediaID': media_id,
+                await database_base_async.db_download_insert(db_connection, 'Z', 0, json.dumps({'MediaID': media_id,
                                                                        'Path': None,
                                                                        'ClassID': class_uuid,
                                                                        'Status': None,
@@ -157,7 +157,7 @@ async def url_bp_admin_server_settings(request):
     """
     Display server settings page
     """
-    settings_json = g.db_connection.db_opt_status_read(db_connection)[0]
+    settings_json = await database_base_async.db_opt_status_read(db_connection)[0]
     # setup the crypto
     data = common_hash.CommonHashCrypto()
     mediabrainz_api_key = None
@@ -191,7 +191,7 @@ async def url_bp_admin_server_settings(request):
         settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
         settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
         # save updated info
-        g.db_connection.db_opt_update(db_connection, settings_json)
+        await database_base_async.db_opt_update(db_connection, settings_json)
     '''
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
                                           choices=[('Never', 'Never'), ('1 Day', '1 Day'),
@@ -295,7 +295,7 @@ async def url_bp_admin_database_statistics(request):
     """
     db_stats_count = []
     db_stats_total = 0
-    for row_data in g.db_connection.db_pgsql_row_count(db_connection):
+    for row_data in await database_base_async.db_pgsql_row_count(db_connection):
         db_stats_total += row_data[2]
         db_stats_count.append((row_data[1],
                                common_internationalization.com_inter_number_format(row_data[2])))
@@ -303,7 +303,7 @@ async def url_bp_admin_database_statistics(request):
         ('Total records:', common_internationalization.com_inter_number_format(db_stats_total)))
     db_size_data = []
     db_size_total = 0
-    for row_data in g.db_connection.db_pgsql_table_sizes(db_connection):
+    for row_data in await database_base_async.db_pgsql_table_sizes(db_connection):
         db_size_total += row_data['total_size']
         db_size_data.append(
             (row_data['relation'], common_string.com_string_bytes2human(row_data['total_size'])))
@@ -311,7 +311,7 @@ async def url_bp_admin_database_statistics(request):
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=db_size_data,
                            data_db_count=db_stats_count,
-                           data_workers=g.db_connection.db_parallel_workers(db_connection))
+                           data_workers=await database_base_async.db_parallel_workers(db_connection))
 
 
 @blueprint.route('/', defaults={'path': ''}, endpoint='listdir')

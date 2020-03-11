@@ -2,7 +2,7 @@
 @login_required
 @admin_required
 async def url_bp_admin_getChromecastById(request):
-    result = g.db_connection.db_device_by_uuid(db_connection, request.form['id'])
+    result = await database_base_async.db_device_by_uuid(db_connection, request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
                        'Name': result['mm_device_json']['Name'],
                        'IP': result['mm_device_json']['IP']})
@@ -12,7 +12,7 @@ async def url_bp_admin_getChromecastById(request):
 @login_required
 @admin_required
 async def url_bp_admin_updateChromecast(request):
-    g.db_connection.db_device_update_by_uuid(db_connection, request.form['name'],
+    await database_base_async.db_device_update_by_uuid(db_connection, request.form['name'],
                                              request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})
 
@@ -21,7 +21,7 @@ async def url_bp_admin_updateChromecast(request):
 @login_required
 @admin_required
 async def url_bp_admin_gettvtunerbyid(request):
-    result = g.db_connection.db_device_by_uuid(db_connection, request.form['id'])
+    result = await database_base_async.db_device_by_uuid(db_connection, request.form['id'])
     return json.dumps({'Id': result['mm_device_id'],
                        'Name': result['mm_device_json']['Name'],
                        'IP': result['mm_device_json']['IP']})
@@ -31,6 +31,6 @@ async def url_bp_admin_gettvtunerbyid(request):
 @login_required
 @admin_required
 async def url_bp_admin_updatetvtuner(request):
-    g.db_connection.db_device_update_by_uuid(db_connection, request.form['name'],
+    await database_base_async.db_device_update_by_uuid(db_connection, request.form['name'],
                                              request.form['ipaddr'], request.form['id'])
     return json.dumps({'status': 'OK'})

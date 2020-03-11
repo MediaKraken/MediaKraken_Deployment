@@ -22,7 +22,7 @@ async def url_bp_user_movie_detail(request, user, guid):
             common_network_pika.com_net_pika_send(
                 {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
                  'User': user.id,
-                 'Data': g.db_connection.db_read_media(db_connection, guid)['mm_media_path']},
+                 'Data': await database_base_async.db_read_media(db_connection, guid)['mm_media_path']},
                 rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
                 route_key='mkque')
@@ -32,11 +32,11 @@ async def url_bp_user_movie_detail(request, user, guid):
                                     audio=request.form['Video_Play_Audio_Track'],
                                     sub=request.form['Video_Play_Subtitles']))
         if request.form['status'] == 'Watched':
-            g.db_connection.db_meta_movie_status_update(db_connection,
+            await database_base_async.db_meta_movie_status_update(db_connection,
                 guid, user.id, False)
             return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db_connection.db_meta_movie_status_update(db_connection,
+            await database_base_async.db_meta_movie_status_update(db_connection,
                 guid, user.id, True)
             return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
         elif request.form['status'] == 'Sync':
@@ -51,14 +51,14 @@ async def url_bp_user_movie_detail(request, user, guid):
             # launch ffmpeg to ffserver procecss
             # TODO fire up node cast container!
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
-                                                   g.db_connection.db_media_path_by_uuid(db_connection,
+                                                   await database_base_async.db_media_path_by_uuid(db_connection,
                                                        media_guid_index)[
                                                        0] + '\" http://localhost/stream.ffm'),
                                              stdout=subprocess.PIPE, shell=False)
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
             return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
     else:
-        metadata_data = g.db_connection.db_meta_movie_by_media_uuid(db_connection, guid)
+        metadata_data = await database_base_async.db_meta_movie_by_media_uuid(db_connection, guid)
         # fields returned
         # metadata_data['mm_metadata_json']
         # metadata_data['mm_metadata_localimage_json']
@@ -105,7 +105,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['revenue'])
         # # grab reviews
         # review = []
-        # review_json = g.db_connection.db_review_list_by_tmdb_guid(db_connection, json_metaid['themoviedb'])
+        # review_json = await database_base_async.db_review_list_by_tmdb_guid(db_connection, json_metaid['themoviedb'])
         # if review_json is not None and len(review_json) > 0:
         #     review_json = review_json[0]
         #     for review_data in review_json[1]['themoviedb']['results']:
@@ -124,7 +124,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
         ffprobe_data = {}
         # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
-        for video_version in g.db_connection.db_ffprobe_all_media_guid(db_connection, guid,
+        for video_version in await database_base_async.db_ffprobe_all_media_guid(db_connection, guid,
                                                                        common_global.DLMediaType.Movie.value):
             common_global.es_inst.com_elastic_index('info', {"vid_version": video_version})
             # not all files have ffprobe
@@ -199,7 +199,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         # find all devices to playback media on
         # TODO have reactor return client list?
         playback_devices = []
-        for device_item in g.db_connection.db_device_list(db_connection):
+        for device_item in await database_base_async.db_device_list(db_connection):
             if device_item['mm_device_type'] == 'Chromecast':
                 playback_devices.append(device_item['mm_device_json']['Name'])
             elif device_item['mm_device_type'] == 'Roku':

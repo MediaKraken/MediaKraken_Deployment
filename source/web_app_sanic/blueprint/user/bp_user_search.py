@@ -48,7 +48,7 @@ async def url_bp_user_search_media(request):
             elif request.form['search_media_type'] == 'game':
                 game_search = True
             json_data = json.loads(
-                g.db_connection.db_search(db_connection, request.form['search_string'], search_type='Local',
+                await database_base_async.db_search(db_connection, request.form['search_string'], search_type='Local',
                                           search_movie=movie_search, search_tvshow=tvshow_search,
                                           search_album=album_search, search_image=image_search,
                                           search_publication=publication_search,

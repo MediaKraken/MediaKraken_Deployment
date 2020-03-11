@@ -17,13 +17,13 @@ async def url_bp_admin_server_link(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_link_list_count(db_connection),
+                            total=await database_base_async.db_link_list_count(db_connection),
                             record_name='linked servers',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'data': g.db_connection.db_link_list(db_connection, offset, per_page),
+        'data': await database_base_async.db_link_list(db_connection, offset, per_page),
         'page': page,
         'per_page': per_page,
         'pagination': pagination
@@ -51,5 +51,5 @@ async def url_bp_admin_link_delete(request):
     """
     Delete linked server action 'page'
     """
-    g.db_connection.db_link_delete(db_connection, request.form['id'])
+    await database_base_async.db_link_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})

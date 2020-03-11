@@ -14,7 +14,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     """
     Display metadata of tvshow
     """
-    data_metadata = g.db_connection.db_meta_tvshow_detail(db_connection, guid)
+    data_metadata = await database_base_async.db_meta_tvshow_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
     if 'themoviedb' in json_metadata['Meta']:
@@ -103,7 +103,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
             data_background_image = None
     except:
         data_background_image = None
-    data_season_data = g.db_connection.db_read_tvmeta_eps_season(db_connection, guid)
+    data_season_data = await database_base_async.db_read_tvmeta_eps_season(db_connection, guid)
     #    # build production list
     #    production_list = ''
     #    for ndx in range(0,len(json_metadata['production_companies'])):
@@ -132,7 +132,7 @@ async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id)
     """
     Display tvshow episode metadata detail
     """
-    data_metadata = g.db_connection.db_read_tvmeta_epsisode_by_id(db_connection, guid, eps_id)
+    data_metadata = await database_base_async.db_read_tvmeta_epsisode_by_id(db_connection, guid, eps_id)
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -167,13 +167,13 @@ async def url_bp_user_metadata_tvshow_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media_tvshow = []
-    for row_data in g.db_connection.db_meta_tvshow_list(db_connection, offset, per_page, request['session']['search_text']):
+    for row_data in await database_base_async.db_meta_tvshow_list(db_connection, offset, per_page, request['session']['search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'], row_data['air_date'],
                              row_data['image_json']))
     request['session']['search_page'] = 'meta_tv'
     pagination = Pagination(request,
-                            total=g.db_connection.db_meta_tvshow_list_count(db_connection,
+                            total=await database_base_async.db_meta_tvshow_list_count(db_connection,
                                 request['session']['search_text']),
                             record_name='TV show(s)',
                             format_total=True,
@@ -196,7 +196,7 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     """
     Display metadata of tvshow season detail
     """
-    data_metadata = g.db_connection.db_meta_tvshow_detail(db_connection, guid)
+    data_metadata = await database_base_async.db_meta_tvshow_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
@@ -246,7 +246,7 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(db_connection,
+    data_episode_count = await database_base_async.db_read_tvmeta_season_eps_list(db_connection,
         guid, int(season))
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)

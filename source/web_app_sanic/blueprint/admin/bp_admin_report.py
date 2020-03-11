@@ -17,12 +17,12 @@ async def url_bp_admin_report_all_media(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media_data = []
-    for row_data in g.db_connection.db_known_media(db_connection, offset, per_page):
+    for row_data in await database_base_async.db_known_media(db_connection, offset, per_page):
         media_data.append((row_data['mm_media_path'],
                            common_string.com_string_bytes2human(
                                os.path.getsize(row_data['mm_media_path']))))
     pagination = Pagination(request,
-                            total=g.db_connection.db_known_media_count(db_connection),
+                            total=await database_base_async.db_known_media_count(db_connection),
                             record_name='all media',
                             format_total=True,
                             format_number=True,
@@ -44,13 +44,13 @@ async def url_bp_admin_report_all_duplicate_media(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_media_duplicate_count(db_connection),
+                            total=await database_base_async.db_media_duplicate_count(db_connection),
                             record_name='duplicate media',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media': g.db_connection.db_media_duplicate(db_connection,
+        'media': await database_base_async.db_media_duplicate(db_connection,
             offset, per_page),
         'page': page,
         'per_page': per_page,
@@ -67,7 +67,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
-    for media_data in g.db_connection.db_media_duplicate_detail(db_connection, guid, offset, per_page):
+    for media_data in await database_base_async.db_media_duplicate_detail(db_connection, guid, offset, per_page):
         common_global.es_inst.com_elastic_index('info', {"media": media_data[
             'mm_media_ffprobe_json']})
         if media_data['mm_media_ffprobe_json'] is not None:
@@ -82,7 +82,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
             media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
                           'NA', '999:99:99'))
     pagination = Pagination(request,
-                            total=g.db_connection.db_media_duplicate_detail_count(db_connection, guid)[0],
+                            total=await database_base_async.db_media_duplicate_detail_count(db_connection, guid)[0],
                             record_name='copies',
                             format_total=True,
                             format_number=True,
@@ -104,13 +104,13 @@ async def url_bp_admin_report_top10(request, mtype):
     """
     top10_data = None
     if mtype == '1':  # all time
-        top10_data = g.db_connection.db_usage_top10_alltime(db_connection)
+        top10_data = await database_base_async.db_usage_top10_alltime(db_connection)
     elif mtype == '2':  # movie
-        top10_data = g.db_connection.db_usage_top10_movie(db_connection)
+        top10_data = await database_base_async.db_usage_top10_movie(db_connection)
     elif mtype == '3':  # tv show
-        top10_data = g.db_connection.db_usage_top10_tv_show(db_connection)
+        top10_data = await database_base_async.db_usage_top10_tv_show(db_connection)
     elif mtype == '4':  # tv episode
-        top10_data = g.db_connection.db_usage_top10_tv_episode(db_connection)
+        top10_data = await database_base_async.db_usage_top10_tv_episode(db_connection)
     return {'media': top10_data}
 
 
@@ -123,13 +123,13 @@ async def url_bp_admin_report_display_all_unmatched_media(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_unmatched_list_count(db_connection),
+                            total=await database_base_async.db_unmatched_list_count(db_connection),
                             record_name='unmatched media',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media': g.db_connection.db_unmatched_list(db_connection,
+        'media': await database_base_async.db_unmatched_list(db_connection,
             offset=offset, list_limit=per_page),
         'page': page,
         'per_page': per_page,

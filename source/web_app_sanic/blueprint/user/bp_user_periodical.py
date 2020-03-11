@@ -15,14 +15,14 @@ async def url_bp_user_periodical_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'media_periodicals'
     pagination = Pagination(request,
-                            total=g.db_connection.db_media_book_list_count(db_connection,
+                            total=await database_base_async.db_media_book_list_count(db_connection,
                                 request['session']['search_text']),
                             record_name='periodical(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media': g.db_connection.db_media_book_list(db_connection, offset, per_page,
+        'media': await database_base_async.db_media_book_list(db_connection, offset, per_page,
                                                     request['session']['search_text']),
         'page': page,
         'per_page': per_page,

@@ -13,7 +13,7 @@ async def url_bp_user_metadata_person_detail(request, guid):
     """
     Display person detail page
     """
-    person_data = g.db_connection.db_meta_person_by_guid(db_connection, guid)
+    person_data = await database_base_async.db_meta_person_by_guid(db_connection, guid)
     if person_data['mmp_person_image'] is not None:
         if 'themoviedb' in person_data['mmp_person_image']['Images']:
             try:
@@ -28,7 +28,7 @@ async def url_bp_user_metadata_person_detail(request, guid):
     return {
         'json_metadata': person_data['mmp_person_meta_json'],
         'data_person_image': person_image,
-        'data_also_media': g.db_connection.db_meta_person_as_seen_in(db_connection,
+        'data_also_media': await database_base_async.db_meta_person_as_seen_in(db_connection,
             person_data['mmp_id']),
     }
 
@@ -42,7 +42,7 @@ async def url_bp_user_metadata_person_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     person_list = []
-    for person_data in g.db_connection.db_meta_person_list(db_connection, offset, per_page,
+    for person_data in await database_base_async.db_meta_person_list(db_connection, offset, per_page,
                                                            request['session']['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
@@ -61,7 +61,7 @@ async def url_bp_user_metadata_person_list(request):
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     request['session']['search_page'] = 'meta_people'
     pagination = Pagination(request,
-                            total=g.db_connection.db_meta_person_list_count(db_connection,
+                            total=await database_base_async.db_meta_person_list_count(db_connection,
                                 request['session']['search_text']),
                             record_name='person',
                             format_total=True,

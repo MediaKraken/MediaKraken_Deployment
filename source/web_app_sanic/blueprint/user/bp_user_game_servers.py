@@ -14,13 +14,13 @@ async def url_bp_user_game_server_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_game_server_list_count(db_connection),
+                            total=await database_base_async.db_game_server_list_count(db_connection),
                             record_name='game servers(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media': g.db_connection.db_game_server_list(db_connection, offset, per_page),
+        'media': await database_base_async.db_game_server_list(db_connection, offset, per_page),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,

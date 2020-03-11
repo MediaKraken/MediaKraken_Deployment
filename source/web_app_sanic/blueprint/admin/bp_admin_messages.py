@@ -16,14 +16,14 @@ async def url_bp_admin_messages(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_table_count(db_connection,
+                            total=await database_base_async.db_table_count(db_connection,
                                 'mm_messages'),
                             record_name='messages(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media_dir': g.db_connection.db_message_list(db_connection, offset, per_page),
+        'media_dir': await database_base_async.db_message_list(db_connection, offset, per_page),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,
@@ -36,5 +36,5 @@ async def url_bp_admin_messages_delete(request):
     """
     Delete messages action 'page'
     """
-    g.db_connection.db_message_delete(db_connection, request.form['id'])
+    await database_base_async.db_message_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})

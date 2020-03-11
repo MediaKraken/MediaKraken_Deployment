@@ -14,12 +14,12 @@ async def url_bp_user_cctv(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_sync_list_count(db_connection),
+                            total=await database_base_async.db_sync_list_count(db_connection),
                             record_name='CCTV System(s)',
                             format_total=True,
                             format_number=True,
                             )
-    return {'media_sync': g.db_connection.db_sync_list(db_connection, offset, per_page),
+    return {'media_sync': await database_base_async.db_sync_list(db_connection, offset, per_page),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,
