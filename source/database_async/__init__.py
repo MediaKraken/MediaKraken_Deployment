@@ -21,11 +21,15 @@ class MKServerDatabaseAsync:
         import db_image_count, \
         db_image_list
     from database_async.db_library_async \
-        import db_library_path_by_uuid, \
+        import db_library_path_add, \
+        db_library_path_by_uuid, \
         db_libary_path_delete, \
+        db_library_path_update_by_uuid, \
         db_library_paths
     from database_async.db_base_media_async \
         import db_media_new
+    from database_async.db_base_share_async \
+        import db_share
     from database_async.db_base_user_async \
         import db_user_count, \
         db_user_delete, \

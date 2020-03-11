@@ -1,5 +1,6 @@
 import json
 import os
+
 import database_async as database_base_async
 from common import common_global
 from common import common_network_cifs
@@ -29,7 +30,7 @@ async def url_bp_admin_library(request):
                                                   rabbit_host_name='mkstack_rabbitmq',
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
-            flash("Scheduled media scan.")
+            request['flash']('Scheduled media scan.', 'success')
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
 
     async with request.app.db_pool.acquire() as db_connection:
@@ -60,7 +61,8 @@ async def url_bp_admin_library(request):
 @common_global.auth.login_required
 async def url_bp_admin_library_by_id(request):
     async with request.app.db_pool.acquire() as db_connection:
-        result = await database_base_async.db_library_path_by_uuid(db_connection, request.form['id'])
+        result = await database_base_async.db_library_path_by_uuid(db_connection,
+                                                                   request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
                        'Media Class': result['mm_media_dir_class_type']})
@@ -96,14 +98,14 @@ async def url_bp_admin_library_edit(request):
                                                             {'smb info': addr, 'share': share,
                                                              'path': path})
                     if addr is None:  # total junk path for UNC
-                        flash("Invalid UNC path.", 'error')
+                        request['flash']('Invalid UNC path.', 'error')
                         return redirect(
                             request.app.url_for('admins_library.admin_library_edit_page'))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(addr)
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
                         smb_stuff.com_cifs_close()
-                        flash("Invalid UNC path.", 'error')
+                        request['flash']("Invalid UNC path.", 'error')
                         return redirect(
                             request.app.url_for('admins_library.admin_library_edit_page'))
                     smb_stuff.com_cifs_close()
@@ -123,7 +125,7 @@ async def url_bp_admin_library_edit(request):
                 #     pass
                 elif not os.path.isdir(os.path.join('/mediakraken/mnt',
                                                     request.form['library_path'])):
-                    flash("Invalid library path.", 'error')
+                    request['flash']("Invalid library path.", 'error')
                     return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add
                 if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
@@ -131,11 +133,15 @@ async def url_bp_admin_library_edit(request):
                         lib_share = request.form['Lib_Share']
                     except:
                         lib_share = None
-                    g.db_connection.db_audit_path_add(request.form['library_path'],
-                                                      request.form['Lib_Class'], lib_share)
+                    async with request.app.db_pool.acquire() as db_connection:
+                        await database_base_async.db_library_path_add(db_connection,
+                                                                      request.form[
+                                                                          'library_path'],
+                                                                      request.form['Lib_Class'],
+                                                                      lib_share)
                     return redirect(request.app.url_for('admins_library.admin_library'))
                 else:
-                    flash("Path already in library.", 'error')
+                    request['flash']("Path already in library.", 'error')
                     return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
             elif request.form['action_type'] == 'Browse...':  # popup browse form
                 pass
@@ -145,10 +151,11 @@ async def url_bp_admin_library_edit(request):
         else:
             flash_errors(form)
     share_list = []
-    for row_data in g.db_connection.db_audit_shares():
-        share_name = row_data['mm_media_share_server'] + \
-                     ":" + row_data['mm_media_share_path']
-        share_list.append((share_name, row_data['mm_media_share_guid']))
+    async with request.app.db_pool.acquire() as db_connection:
+        for row_data in await database_base_async.db_share(db_connection):
+            share_name = row_data['mm_media_share_server'] + \
+                         ":" + row_data['mm_media_share_path']
+            share_list.append((share_name, row_data['mm_media_share_guid']))
     return {
         'form': form,
         'data_class': ((common_global.DLMediaType.Movie.name,
@@ -176,7 +183,9 @@ async def url_bp_admin_library_edit(request):
 @blueprint_admin_library.route('/library_update', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_library_update(request):
-    g.db_connection.db_audit_path_update_by_uuid(request.form['new_path'],
-                                                 request.form['new_class'],
-                                                 request.form['id'])
+    async with request.app.db_pool.acquire() as db_connection:
+        await database_base_async.db_library_path_update_by_uuid(db_connection,
+                                                                 request.form['new_path'],
+                                                                 request.form['new_class'],
+                                                                 request.form['id'])
     return json.dumps({'status': 'OK'})

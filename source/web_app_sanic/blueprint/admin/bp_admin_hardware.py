@@ -20,7 +20,7 @@ async def url_bp_admin_hardware(request):
                                               rabbit_host_name='mkstack_rabbitmq',
                                               exchange_name='mkque_hardware_ex',
                                               route_key='mkhardware')
-        flash("Scheduled hardware scan.")
+        request['flash']("Scheduled hardware scan.", "success")
     chromecast_list = []
     async with request.app.db_pool.acquire() as db_connection:
         for row_data in await database_base_async.db_device_list(db_connection, 'Chromecast'):
@@ -82,7 +82,7 @@ async def url_bp_admin_hardware_chromecast_edit(request):
                                                                   'IP': request.form['ipaddr']}))
                         return redirect(request.app.url_for('admins_chromecasts.admin_chromecast'))
                     else:
-                        flash("Chromecast already in database.", 'error')
+                        request['flash']("Chromecast already in database.", 'error')
                         return redirect(
                             request.app.url_for('admins_chromecasts.admin_chromecast_edit_page'))
         else:
@@ -115,7 +115,7 @@ async def url_bp_admin_hardware_tvtuner_edit(request):
                                                                   'IP': request.form['ipaddr']}))
                         return redirect(request.app.url_for('admins_tvtuners.admin_tvtuners'))
                     else:
-                        flash("TV Tuner already in database.", 'error')
+                        request['flash']("TV Tuner already in database.", 'error')
                         return redirect(
                             request.app.url_for('admins_tvtuners.admin_tuner_edit_page'))
         else:

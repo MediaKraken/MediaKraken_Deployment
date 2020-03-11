@@ -67,7 +67,7 @@ async def url_bp_admin_share_edit(request):
                     #                    addr, share, path = common_string.com_string_unc_to_addr_path(\
                     #                        await request.form['storage_mount_path'])
                     #                    if addr is None: # total junk path for UNC
-                    #                        flash("Invalid UNC path.", 'error')
+                    #                        request['flash']("Invalid UNC path.", 'error')
                     #                        return redirect(url_for('admins_share.admin_share_edit_page'))
                     #                    common_global.es_inst.com_elastic_index('info', {'stuff':'unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
@@ -78,7 +78,7 @@ async def url_bp_admin_share_edit(request):
                     #                            request.form['storage_mount_server'], \
                     #                            request.form['storage_mount_path']):
                     #                        smb_stuff.com_cifs_close()
-                    #                        flash("Invalid UNC path.", 'error')
+                    #                        request['flash']("Invalid UNC path.", 'error')
                     #                        return redirect(url_for('admins_share.admin_share_edit_page'))
                     smb_stuff.com_cifs_close()
                 # smb/cifs mounts
@@ -96,7 +96,7 @@ async def url_bp_admin_share_edit(request):
                     # TODO
                     pass
                 elif not os.path.isdir(request.form['storage_mount_path']):
-                    flash("Invalid share path.", 'error')
+                    request['flash']("Invalid share path.", 'error')
                     return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
                 # verify it doesn't exit and add
                 if g.db_connection.db_audit_share_check(request.form['storage_mount_path']) == 0:
@@ -108,7 +108,7 @@ async def url_bp_admin_share_edit(request):
                     g.db_connection.db_commit()
                     return redirect(request.app.url_for('admins_share.admin_share'))
                 else:
-                    flash("Share already mapped.", 'error')
+                    request['flash']("Share already mapped.", 'error')
                     return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
             elif request.form['action_type'] == 'Browse':
                 # browse for smb shares on the host network

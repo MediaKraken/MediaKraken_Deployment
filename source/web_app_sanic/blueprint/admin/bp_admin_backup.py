@@ -27,7 +27,7 @@ async def url_bp_admin_backup(request):
             elif request.form['backup'] == 'Start Backup':
                 g.db_connection.db_trigger_insert(('python3',
                                                    './subprogram_postgresql_backup.py'))  # this commits
-                flash("Postgresql Database Backup Task Submitted.")
+                request['flash']("Postgresql Database Backup Task Submitted.", "success")
         else:
             flash_errors(form)
     backup_enabled = False
