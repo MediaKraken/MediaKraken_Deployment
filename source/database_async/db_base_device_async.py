@@ -5,7 +5,7 @@ def db_device_check(db_connection, device_type, device_name, device_ip):
     """
     Check to see if device exists already on db
     """
-    db_connection.fetchval(
+    return db_connection.fetchval(
         'select count(*) from mm_device'
         ' where mm_device_type = %s mm_device_json->\'Name\' ? %s'
         ' and mm_device_json->\'IP\' ? %s', (device_type, device_name, device_ip))
