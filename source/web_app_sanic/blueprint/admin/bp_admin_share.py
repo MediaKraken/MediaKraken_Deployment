@@ -20,14 +20,14 @@ async def url_bp_admin_share(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_table_count(
+                            total=g.db_connection.db_table_count(db_connection,
                                 'mm_media_share'),
                             record_name='share(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media_dir': g.db_connection.db_audit_shares(
+        'media_dir': g.db_connection.db_audit_shares(db_connection,
             offset, per_page),
         'page': page,
         'per_page': per_page,
@@ -41,7 +41,7 @@ async def url_bp_admin_share_delete(request):
     """
     Delete share action 'page'
     """
-    g.db_connection.db_audit_share_delete(request.form['id'])
+    g.db_connection.db_audit_share_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
@@ -99,13 +99,12 @@ async def url_bp_admin_share_edit(request):
                     request['flash']("Invalid share path.", 'error')
                     return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
                 # verify it doesn't exit and add
-                if g.db_connection.db_audit_share_check(request.form['storage_mount_path']) == 0:
-                    g.db_connection.db_audit_share_add(request.form['storage_mount_type'],
+                if g.db_connection.db_audit_share_check(db_connection, request.form['storage_mount_path']) == 0:
+                    g.db_connection.db_audit_share_add(db_connection, request.form['storage_mount_type'],
                                                        request.form['storage_mount_user'],
                                                        request.form['storage_mount_password'],
                                                        request.form['storage_mount_server'],
                                                        request.form['storage_mount_path'])
-                    g.db_connection.db_commit()
                     return redirect(request.app.url_for('admins_share.admin_share'))
                 else:
                     request['flash']("Share already mapped.", 'error')

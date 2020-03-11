@@ -16,14 +16,14 @@ async def url_bp_user_metadata_music_video(request):
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'meta_music_video'
     pagination = Pagination(request,
-                            total=g.db_connection.db_meta_music_video_count(
+                            total=g.db_connection.db_meta_music_video_count(db_connection,
                                 None, request['session']['search_text']),
                             record_name='music video(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media': g.db_connection.db_meta_music_video_list(offset, per_page,
+        'media': g.db_connection.db_meta_music_video_list(db_connection, offset, per_page,
                                                           request['session']['search_text']),
         'page': page,
         'per_page': per_page,
@@ -39,5 +39,5 @@ async def url_bp_user_metadata_music_video_detail(request, guid):
     Display metadata music video detail
     """
     return {
-        'media': g.db_connection.db_meta_music_video_detail_uuid(guid)
+        'media': g.db_connection.db_meta_music_video_detail_uuid(db_connection, guid)
     }

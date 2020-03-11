@@ -32,7 +32,6 @@ async def url_bp_admin_library(request):
                                                   route_key='mkque')
             request['flash']('Scheduled media scan.', 'success')
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
-
     async with request.app.db_pool.acquire() as db_connection:
         table_count = await database_base_async.db_table_count(db_connection, 'mm_media_dir')
     page, per_page, offset = Pagination.get_page_args(request)
@@ -128,7 +127,7 @@ async def url_bp_admin_library_edit(request):
                     request['flash']("Invalid library path.", 'error')
                     return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add
-                if g.db_connection.db_audit_path_check(request.form['library_path']) == 0:
+                if g.db_connection.db_audit_path_check(db_connection, request.form['library_path']) == 0:
                     try:
                         lib_share = request.form['Lib_Share']
                     except:

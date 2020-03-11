@@ -14,7 +14,7 @@ async def url_bp_user_media_genre(request):
     Display media split up by genre
     """
     media = []
-    for row_data in g.db_connection.db_media_movie_count_by_genre(
+    for row_data in g.db_connection.db_media_movie_count_by_genre(db_connection,
             common_global.DLMediaType.Movie.value):
         media.append((row_data['gen']['name'],
                       common_internationalization.com_inter_number_format(
@@ -34,7 +34,7 @@ async def url_bp_user_movie_page(request, user, genre):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
-    for row_data in g.db_connection.db_web_media_list(
+    for row_data in g.db_connection.db_web_media_list(db_connection,
             common_global.DLMediaType.Movie.value,
             list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
             offset=offset, include_remote=True, search_text=session['search_text']):
@@ -90,7 +90,7 @@ async def url_bp_user_movie_page(request, user, genre):
         else:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,
                           watched_status, sync_status, rating_status, match_status))
-    total = g.db_connection.db_web_media_list_count(
+    total = g.db_connection.db_web_media_list_count(db_connection,
         common_global.DLMediaType.Movie.value, list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True, search_text=session['search_text'])
     session['search_page'] = 'media_movie'

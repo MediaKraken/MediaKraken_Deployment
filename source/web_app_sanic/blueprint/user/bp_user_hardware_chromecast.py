@@ -32,7 +32,7 @@ async def url_bp_user_chromecast(request, user, action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Cast',
              'User': user.id,
-             'Data': g.db_connection.db_read_media(guid)['mm_media_path'],
+             'Data': g.db_connection.db_read_media(db_connection, guid)['mm_media_path'],
              'Target': '10.0.0.220'},
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
@@ -69,5 +69,5 @@ async def url_bp_user_chromecast(request, user, action, guid):
             route_key='mkque')
     return {
         'data_guid': guid,
-        'data_chromecast': g.db_connection.db_device_list('cast')
+        'data_chromecast': g.db_connection.db_device_list(db_connection, 'cast')
     }

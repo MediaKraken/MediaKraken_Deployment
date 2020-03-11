@@ -18,7 +18,7 @@ async def url_bp_user_tv(request):
     page, per_page, offset = Pagination.get_page_args(request)
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
-    for row_data in g.db_connection.db_web_tvmedia_list(offset, per_page,
+    for row_data in g.db_connection.db_web_tvmedia_list(db_connection, offset, per_page,
                                                         request['session']['search_text']):
         # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
         # 3 - mm_metadata_tvshow_localimage_json
@@ -35,7 +35,7 @@ async def url_bp_user_tv(request):
                 row_data['mm_count'])))
     request['session']['search_page'] = 'media_tv'
     pagination = Pagination(request,
-                            total=g.db_connection.db_web_tvmedia_list_count(
+                            total=g.db_connection.db_web_tvmedia_list_count(db_connection,
                                 None, None, request['session']['search_text']),
                             record_name='TV show(s)',
                             format_total=True,
@@ -60,16 +60,16 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            g.db_connection.db_media_watched_status_update(
+            g.db_connection.db_media_watched_status_update(db_connection,
                 guid, user.id, False)
             return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            g.db_connection.db_media_watched_status_update(
+            g.db_connection.db_media_watched_status_update(db_connection,
                 guid, user.id, True)
             return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
     else:
         # guid, name, id, metajson
-        data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
+        data_metadata = g.db_connection.db_meta_tvshow_detail(db_connection, guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
             # data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
@@ -143,8 +143,8 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         except:
             data_background_image = None
         # grab reviews
-        # review = g.db_connection.db_Review_List(data[0])
-        data_season_data = g.db_connection.db_read_tvmeta_eps_season(guid)
+        # review = g.db_connection.db_Review_List(db_connection, data[0])
+        data_season_data = g.db_connection.db_read_tvmeta_eps_season(db_connection, guid)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime
         minutes, seconds = divmod((float(data_runtime) * 60), 60)
@@ -183,7 +183,7 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
     """
     Display tv season detail page
     """
-    data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
+    data_metadata = g.db_connection.db_meta_tvshow_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
@@ -233,7 +233,7 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
 
-    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(
+    data_episode_count = g.db_connection.db_read_tvmeta_season_eps_list(db_connection,
         guid, int(season))
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
@@ -274,7 +274,7 @@ async def url_bp_user_tv_show_episode_detail_page(request, guid, season, episode
     """
     Display tv episode detail page
     """
-    data_episode_detail = g.db_connection.db_read_tvmeta_episode(
+    data_episode_detail = g.db_connection.db_read_tvmeta_episode(db_connection,
         guid, season, episode)
     # poster image
     try:

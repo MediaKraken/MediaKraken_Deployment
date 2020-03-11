@@ -15,13 +15,13 @@ async def url_bp_user_game(request):
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'media_games'
     pagination = Pagination(request,
-                            total=g.db_connection.db_meta_game_system_list_count(),
+                            total=g.db_connection.db_meta_game_system_list_count(db_connection),
                             record_name='game system(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media': g.db_connection.db_meta_game_system_list(offset, per_page,
+        'media': g.db_connection.db_meta_game_system_list(db_connection, offset, per_page,
                                                           request['session']['search_text']),
         'page': page,
         'per_page': per_page,

@@ -15,7 +15,7 @@ async def url_bp_user_metadata_sports_detail(request, guid):
     """
     return {
         'guid': guid,
-        'data': g.db_connection.db_meta_sports_guid_by_thesportsdb(guid)
+        'data': g.db_connection.db_meta_sports_guid_by_thesportsdb(db_connection, guid)
     }
 
 
@@ -28,20 +28,20 @@ async def url_bp_user_metadata_sports_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
-    for row_data in g.db_connection.db_meta_sports_list(
+    for row_data in g.db_connection.db_meta_sports_list(db_connection,
             offset, per_page, request['session']['search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     request['session']['search_page'] = 'meta_sports'
     pagination = Pagination(request,
-                            total=g.db_connection.db_meta_sports_list_count(
+                            total=g.db_connection.db_meta_sports_list_count(db_connection,
                                 request['session']['search_text']),
                             record_name='sporting event(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media_sports_list': g.db_connection.db_meta_sports_list(offset, per_page,
+        'media_sports_list': g.db_connection.db_meta_sports_list(db_connection, offset, per_page,
                                                                  request['session'][
                                                                      'search_text']),
         'page': page,

@@ -13,7 +13,7 @@ async def url_bp_admin_user_delete(request):
     """
     Delete user action 'page'
     """
-    g.db_connection.db_user_delete(request.form['id'])
+    g.db_connection.db_user_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
@@ -24,7 +24,7 @@ async def url_bp_admin_user_detail(request, guid):
     """
     Display user details
     """
-    return {'data_user': g.db_connection.db_user_detail(guid)}
+    return {'data_user': g.db_connection.db_user_detail(db_connection, guid)}
 
 
 @blueprint_admin_users.route("/users")
@@ -36,13 +36,13 @@ async def url_bp_admin_user(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
-                            total=g.db_connection.db_user_list_name_count(),
+                            total=g.db_connection.db_user_list_name_count(db_connection),
                             record_name='users',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'users': g.db_connection.db_user_list_name(offset, per_page),
+        'users': g.db_connection.db_user_list_name(db_connection, offset, per_page),
         'page': page,
         'per_page': per_page,
         'pagination': pagination,
