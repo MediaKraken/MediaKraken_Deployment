@@ -167,14 +167,14 @@ async def url_bp_user_metadata_tvshow_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media_tvshow = []
-    for row_data in g.db_connection.db_meta_tvshow_list(db_connection, offset, per_page, session['search_text']):
+    for row_data in g.db_connection.db_meta_tvshow_list(db_connection, offset, per_page, request['session']['search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'], row_data['air_date'],
                              row_data['image_json']))
-    session['search_page'] = 'meta_tv'
+    request['session']['search_page'] = 'meta_tv'
     pagination = Pagination(request,
                             total=g.db_connection.db_meta_tvshow_list_count(db_connection,
-                                session['search_text']),
+                                request['session']['search_text']),
                             record_name='TV show(s)',
                             format_total=True,
                             format_number=True,
