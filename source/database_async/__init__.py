@@ -28,6 +28,8 @@ class MKServerDatabaseAsync:
         db_library_paths
     from database_async.db_base_media_async \
         import db_media_new
+    from database_async.db_base_option_status_async \
+        import db_opt_status_read
     from database_async.db_base_share_async \
         import db_share
     from database_async.db_base_user_async \
