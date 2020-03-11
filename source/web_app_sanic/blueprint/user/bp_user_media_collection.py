@@ -15,7 +15,7 @@ async def url_bp_user_metadata_movie_collection(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
-    for row_data in await database_base_async.db_collection_list(db_connection, offset, per_page,
+    for row_data in await request.app.db_functions.db_collection_list(db_connection, offset, per_page,
                                                        request['session']['search_text']):
         if 'Poster' in row_data['mm_metadata_collection_imagelocal_json']:
             media.append((row_data['mm_metadata_collection_guid'],
@@ -26,7 +26,7 @@ async def url_bp_user_metadata_movie_collection(request):
                           row_data['mm_metadata_collection_name'], None))
     request['session']['search_page'] = 'meta_movie_collection'
     pagination = Pagination(request,
-                            total=await database_base_async.db_collection_list_count(db_connection,
+                            total=await request.app.db_functions.db_collection_list_count(db_connection,
                                 request['session']['search_text']),
                             record_name='movie collection(s)',
                             format_total=True,
@@ -47,7 +47,7 @@ async def url_bp_user_metadata_movie_collection_detail(request, guid):
     """
     Display movie collection metadata detail
     """
-    data_metadata = await database_base_async.db_collection_read_by_guid(db_connection, guid)
+    data_metadata = await request.app.db_functions.db_collection_read_by_guid(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']
     # poster image

@@ -16,18 +16,19 @@ async def url_bp_admin_server_link(request):
     Display page for linking server
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    pagination = Pagination(request,
-                            total=await database_base_async.db_link_list_count(db_connection),
-                            record_name='linked servers',
-                            format_total=True,
-                            format_number=True,
-                            )
-    return {
-        'data': await database_base_async.db_link_list(db_connection, offset, per_page),
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination
-    }
+    async with request.app.db_pool.acquire() as db_connection:
+        pagination = Pagination(request,
+                                total=await request.app.db_functions.db_link_list_count(db_connection),
+                                record_name='linked servers',
+                                format_total=True,
+                                format_number=True,
+                                )
+        return {
+            'data': await request.app.db_functions.db_link_list(db_connection, offset, per_page),
+            'page': page,
+            'per_page': per_page,
+            'pagination': pagination
+        }
 
 
 @blueprint_admin_link.route("/link_edit", methods=["GET", "POST"])
@@ -51,5 +52,6 @@ async def url_bp_admin_link_delete(request):
     """
     Delete linked server action 'page'
     """
-    await database_base_async.db_link_delete(db_connection, request.form['id'])
+    async with request.app.db_pool.acquire() as db_connection:
+        await request.app.db_functions.db_link_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})

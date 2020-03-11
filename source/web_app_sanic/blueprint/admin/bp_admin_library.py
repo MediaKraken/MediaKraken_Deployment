@@ -33,7 +33,7 @@ async def url_bp_admin_library(request):
             request['flash']('Scheduled media scan.', 'success')
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     async with request.app.db_pool.acquire() as db_connection:
-        table_count = await database_base_async.db_table_count(db_connection, 'mm_media_dir')
+        table_count = await request.app.db_functions.db_table_count(db_connection, 'mm_media_dir')
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
                             total=table_count,
@@ -42,7 +42,7 @@ async def url_bp_admin_library(request):
                             format_number=True,
                             )
     return_media = []
-    for row_data in await database_base_async.db_library_paths(db_connection, offset, per_page):
+    for row_data in await request.app.db_functions.db_library_paths(db_connection, offset, per_page):
         return_media.append((row_data['mm_media_dir_path'],
                              row_data['mm_media_class_type'],
                              row_data['mm_media_dir_last_scanned'],
@@ -60,7 +60,7 @@ async def url_bp_admin_library(request):
 @common_global.auth.login_required
 async def url_bp_admin_library_by_id(request):
     async with request.app.db_pool.acquire() as db_connection:
-        result = await database_base_async.db_library_path_by_uuid(db_connection,
+        result = await request.app.db_functions.db_library_path_by_uuid(db_connection,
                                                                    request.form['id'])
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
@@ -74,7 +74,7 @@ async def url_bp_admin_library_delete(request):
     Delete library action 'page'
     """
     async with request.app.db_pool.acquire() as db_connection:
-        await database_base_async.db_library_path_delete(db_connection, request.form['id'])
+        await request.app.db_functions.db_library_path_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
@@ -127,13 +127,13 @@ async def url_bp_admin_library_edit(request):
                     request['flash']("Invalid library path.", 'error')
                     return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add
-                if await database_base_async.db_audit_path_check(db_connection, request.form['library_path']) == 0:
+                if await request.app.db_functions.db_audit_path_check(db_connection, request.form['library_path']) == 0:
                     try:
                         lib_share = request.form['Lib_Share']
                     except:
                         lib_share = None
                     async with request.app.db_pool.acquire() as db_connection:
-                        await database_base_async.db_library_path_add(db_connection,
+                        await request.app.db_functions.db_library_path_add(db_connection,
                                                                       request.form[
                                                                           'library_path'],
                                                                       request.form['Lib_Class'],
@@ -151,7 +151,7 @@ async def url_bp_admin_library_edit(request):
             flash_errors(form)
     share_list = []
     async with request.app.db_pool.acquire() as db_connection:
-        for row_data in await database_base_async.db_share(db_connection):
+        for row_data in await request.app.db_functions.db_share(db_connection):
             share_name = row_data['mm_media_share_server'] + \
                          ":" + row_data['mm_media_share_path']
             share_list.append((share_name, row_data['mm_media_share_guid']))
@@ -183,7 +183,7 @@ async def url_bp_admin_library_edit(request):
 @common_global.auth.login_required
 async def url_bp_admin_library_update(request):
     async with request.app.db_pool.acquire() as db_connection:
-        await database_base_async.db_library_path_update_by_uuid(db_connection,
+        await request.app.db_functions.db_library_path_update_by_uuid(db_connection,
                                                                  request.form['new_path'],
                                                                  request.form['new_class'],
                                                                  request.form['id'])

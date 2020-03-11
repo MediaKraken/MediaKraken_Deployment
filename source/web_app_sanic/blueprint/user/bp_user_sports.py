@@ -15,14 +15,14 @@ async def url_bp_user_sports(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
-    for row_data in await database_base_async.db_media_sports_list(db_connection,
+    for row_data in await request.app.db_functions.db_media_sports_list(db_connection,
             common_global.DLMediaType.Sports.value,
             offset, per_page, request['session']['search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     request['session']['search_page'] = 'media_sports'
     pagination = Pagination(request,
-                            total=await database_base_async.db_media_sports_list_count(db_connection,
+                            total=await request.app.db_functions.db_media_sports_list_count(db_connection,
                                 request['session']['search_text']),
                             record_name='sporting event(s)',
                             format_total=True,
@@ -59,7 +59,7 @@ async def url_bp_user_sports_detail(request, guid):
     except:
         data_background_image = None
     return {
-        'data': await database_base_async.db_metathesportsdb_select_guid(db_connection, guid),
+        'data': await request.app.db_functions.db_metathesportsdb_select_guid(db_connection, guid),
         'data_poster_image': data_poster_image,
         'data_background_image': data_background_image,
     }

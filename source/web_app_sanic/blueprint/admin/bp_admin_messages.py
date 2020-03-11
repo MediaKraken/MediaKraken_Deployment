@@ -15,19 +15,20 @@ async def url_bp_admin_messages(request):
     List all messages
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    pagination = Pagination(request,
-                            total=await database_base_async.db_table_count(db_connection,
-                                'mm_messages'),
-                            record_name='messages(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
-    return {
-        'media_dir': await database_base_async.db_message_list(db_connection, offset, per_page),
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
-    }
+    async with request.app.db_pool.acquire() as db_connection:
+        pagination = Pagination(request,
+                                total=await request.app.db_functions.db_table_count(db_connection,
+                                    'mm_messages'),
+                                record_name='messages(s)',
+                                format_total=True,
+                                format_number=True,
+                                )
+        return {
+            'media_dir': await request.app.db_functions.db_message_list(db_connection, offset, per_page),
+            'page': page,
+            'per_page': per_page,
+            'pagination': pagination,
+        }
 
 
 @blueprint_admin_messages.route('/message_delete', methods=["POST"])
@@ -36,5 +37,6 @@ async def url_bp_admin_messages_delete(request):
     """
     Delete messages action 'page'
     """
-    await database_base_async.db_message_delete(db_connection, request.form['id'])
+    async with request.app.db_pool.acquire() as db_connection:
+        await request.app.db_functions.db_message_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})

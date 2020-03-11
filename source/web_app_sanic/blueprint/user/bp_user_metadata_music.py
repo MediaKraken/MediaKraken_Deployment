@@ -14,7 +14,7 @@ async def url_bp_user_metadata_music_album_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
-    for album_data in await database_base_async.db_meta_album_list(db_connection, offset, per_page,
+    for album_data in await request.app.db_functions.db_meta_album_list(db_connection, offset, per_page,
                                                          request['session']['search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
                                                          'id': album_data['mm_metadata_album_guid'],
@@ -39,7 +39,7 @@ async def url_bp_user_metadata_music_album_list(request):
                  album_image))
     request['session']['search_page'] = 'meta_album'
     pagination = Pagination(request,
-                            total=await database_base_async.db_table_count(db_connection,
+                            total=await request.app.db_functions.db_table_count(db_connection,
                                 'mm_metadata_album'),
                             record_name='album(s)',
                             format_total=True,
@@ -63,14 +63,14 @@ async def metadata_music_album_song_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     request['session']['search_page'] = 'meta_music_song'
     pagination = Pagination(request,
-                            total=await database_base_async.db_table_count(db_connection,
+                            total=await request.app.db_functions.db_table_count(db_connection,
                                 'mm_metadata_music'),
                             record_name='song(s)',
                             format_total=True,
                             format_number=True,
                             )
     return {
-        'media': await database_base_async.db_meta_song_list(db_connection, offset, per_page,
+        'media': await request.app.db_functions.db_meta_song_list(db_connection, offset, per_page,
                                                    request['session']['search_text']),
         'page': page,
         'per_page': per_page,

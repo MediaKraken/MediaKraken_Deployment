@@ -32,7 +32,7 @@ async def url_bp_user_hardware_hue(request):
         data_hue_avail = None
     return {
         'data_hue_avail': data_hue_avail,
-        'data_hue_list': await database_base_async.db_device_list(db_connection, 'Phue')
+        'data_hue_list': await request.app.db_functions.db_device_list(db_connection, 'Phue')
     }
 
 

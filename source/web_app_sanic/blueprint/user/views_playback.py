@@ -7,9 +7,9 @@ async def url_bp_user_album_player(request, guid):
     Obsolete?
     """
     return render_template("users/user_album_playback.html",
-                           data_desc=await database_base_async.db_meta_album_by_guid(db_connection,
+                           data_desc=await request.app.db_functions.db_meta_album_by_guid(db_connection,
                                guid),
-                           data_song_list=await database_base_async.db_meta_songs_by_album_guid(db_connection, guid))
+                           data_song_list=await request.app.db_functions.db_meta_songs_by_album_guid(db_connection, guid))
 
 
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>/<chapter>/<audio>/<sub>', methods=['GET',
@@ -24,7 +24,7 @@ async def url_bp_user_video_player_videojs(request, mtype, guid, chapter, audio,
                                             {"videojs": mtype, 'guid': guid, 'chapter': chapter,
                                              'audio': audio, 'sub': sub})
     # grab the guid from the comboindex
-    media_path = await database_base_async.db_media_path_by_uuid(db_connection, guid)
+    media_path = await request.app.db_functions.db_media_path_by_uuid(db_connection, guid)
     # set ffpmeg options with the play_data
     atracks = '-map ' + audio
     if sub is not None:
@@ -94,7 +94,7 @@ async def url_bp_user_playback(request, action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Play', 'Device': device,
              'User': user.id,
-             'Data': await database_base_async.db_read_media(db_connection, guid)['mm_media_path'],
+             'Data': await request.app.db_functions.db_read_media(db_connection, guid)['mm_media_path'],
              'Audio': audio_track,
              'Subtitle': subtitle_track,
              'Target': playback_device},

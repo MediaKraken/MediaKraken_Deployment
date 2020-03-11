@@ -88,7 +88,7 @@ async def login(request):
         password = form.password.data
         try:
             async with app.db_pool.acquire() as db_connection:
-                user_id, user_admin = await database_base_async.db_user_login_validation(
+                user_id, user_admin = await request.app.db_functions.db_user_login_validation(
                     db_connection, username, password)
                 if user_id.isnumeric():
                     common_global.auth.login_user(request,
@@ -120,7 +120,7 @@ async def register(request):
         # we need to create a new user
         try:
             async with app.db_pool.acquire() as db_connection:
-                user_id, user_admin = await database_base_async.db_user_insert(
+                user_id, user_admin = await request.app.db_functions.db_user_insert(
                     db_connection, user_name=username, user_email=email, user_password=password)
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))

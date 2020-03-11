@@ -17,7 +17,7 @@ async def url_bp_user_livetv(request, schedule_date, schedule_time):
     channel_data = ""
     md_used = 2
     last_station = ""
-    for row_data in await database_base_async.db_tv_schedule_by_date(db_connection, schedule_date):
+    for row_data in await request.app.db_functions.db_tv_schedule_by_date(db_connection, schedule_date):
         if row_data[0] != last_station and last_station is not None:
             grid_data += '<tr><td>' + last_station + '</td><td>' + row_data[1] + '</td>' \
                          + channel_data + '</tr>'
