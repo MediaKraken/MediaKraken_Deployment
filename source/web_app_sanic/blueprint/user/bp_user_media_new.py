@@ -16,14 +16,14 @@ async def url_bp_user_media_new(request):
     request['session']['search_page'] = 'new_media'
     media_data = []
     db_connection = await request.app.db_pool.acquire()
-    for media_file in await request.app.db_functions.db_read_media_new(db_connection, offset, per_page,
+    for media_file in await request.app.db_functions.db_media_new(db_connection, offset, per_page,
                                                         request['session']['search_text'],
                                                         days_old=7):
         media_data.append(
             (media_file['mm_media_class_type'],
              media_file['mm_media_name'], None))
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_read_media_new_count(db_connection,
+                            total=await request.app.db_functions.db_media_new_count(db_connection,
                                 request['session']['search_text'],
                                 days_old=7),
                             record_name='new media',

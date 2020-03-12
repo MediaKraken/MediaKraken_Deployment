@@ -15,7 +15,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     Display metadata of tvshow
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_meta_tvshow_detail(db_connection, guid)
+    data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
     if 'themoviedb' in json_metadata['Meta']:

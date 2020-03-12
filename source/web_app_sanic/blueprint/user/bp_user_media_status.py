@@ -25,8 +25,6 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
                                                                   await request.app.db_functions.db_metadata_from_media_guid(
                                                                       db_connection, guid),
                                                                   user.id, event_type)
-            await request.app.db_pool.release(db_connection)
-            return json.dumps({'status': 'OK'})
         else:
             # await request.app.db_functions.db_media_rating_update(db_connection,
             #     guid, user.id, event_type)
@@ -34,8 +32,8 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
                                                                        await request.app.db_functions.db_metadata_from_media_guid(
                                                                            db_connection, guid),
                                                                        user.id, event_type)
-            await request.app.db_pool.release(db_connection)
-            return json.dumps({'status': 'OK'})
+        await request.app.db_pool.release(db_connection)
+        return json.dumps({'status': 'OK'})
 
 
 @blueprint_user_media_status.route('/status_movie_metadata/<guid>/<event_type>',

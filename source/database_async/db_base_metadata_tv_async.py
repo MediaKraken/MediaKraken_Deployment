@@ -1,3 +1,16 @@
+def db_meta_tv_detail(self, db_connection, guid):
+    """
+    # return metadata for tv show
+    """
+    return db_connection.fetchrow('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
+                                  ' mm_metadata_tvshow_localimage_json,'
+                                  ' COALESCE(mm_metadata_tvshow_localimage_json'
+                                  '->\'Images\'->\'tvmaze\'->>\'Poster\','
+                                  ' mm_metadata_tvshow_localimage_json'
+                                  '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
+                                  ' where mm_metadata_tvshow_guid = %s', (guid,))
+
+
 def db_meta_tv_list(self, db_connection, offset=0, records=None, search_value=None):
     """
     # return list of tvshows

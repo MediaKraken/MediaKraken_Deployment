@@ -100,14 +100,52 @@ def db_media_known_count(self, db_connection):
     return db_connection.fetchval('select count(*) from mm_media')
 
 
-def db_media_new(self, db_connection, days_old=7):
-    return db_connection.fetchval('select count(*)'
-                                  ' from mm_media, mm_metadata_movie'
+def db_media_matched_count(self, db_connection):
+    """
+    # count matched media
+    """
+    return db_connection.fetchval('select count(*) from mm_media'
+                                  ' where mm_media_metadata_guid is not NULL')
+
+
+def db_media_new(self, db_connection, offset=None, records=None, search_value=None, days_old=7):
+    """
+    # new media
+    """
+    if offset is None:
+        return db_connection.fetch('select mm_media_name,'
+                                   ' mm_media_guid,'
+                                   ' mm_media_class_type'
+                                   ' from mm_media, mm_metadata_movie'
+                                   ' where mm_media_metadata_guid = mm_metadata_guid'
+                                   ' and mm_media_json->>\'DateAdded\' >= %s'
+                                   ' order by LOWER(mm_media_name),'
+                                   ' mm_media_class_type',
+                                   ((datetime.datetime.now()
+                                     - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
+    else:
+        return db_connection.fetch('select mm_media_name,'
+                                   ' mm_media_guid,'
+                                   ' mm_media_class_type'
+                                   ' from mm_media, mm_metadata_movie'
+                                   ' where mm_media_metadata_guid = mm_metadata_guid'
+                                   ' and mm_media_json->>\'DateAdded\' >= %s'
+                                   ' order by LOWER(mm_media_name),'
+                                   ' mm_media_class_type offset %s limit %s',
+                                   ((datetime.datetime.now()
+                                     - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),
+                                    offset, records))
+
+
+def db_media_new_count(self, db_connection, search_value=None, days_old=7):
+    """
+    # new media count
+    """
+    return db_connection.fetchval('select count(*) from mm_media, mm_metadata_movie'
                                   ' where mm_media_metadata_guid = mm_metadata_guid'
                                   ' and mm_media_json->>\'DateAdded\' >= %s',
                                   ((datetime.datetime.now()
-                                    - datetime.timedelta(days=days_old)).strftime(
-                                      "%Y-%m-%d"),))
+                                    - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
 
 
 def db_media_path_by_uuid(self, db_connection, media_uuid):

@@ -72,7 +72,7 @@ async def url_bp_user_tv_show_detail(request, user, guid):
             return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
     else:
         # guid, name, id, metajson
-        data_metadata = await request.app.db_functions.db_meta_tvshow_detail(db_connection, guid)
+        data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
             # data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
@@ -188,7 +188,7 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
     Display tv season detail page
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_meta_tvshow_detail(db_connection, guid)
+    data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:

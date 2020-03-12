@@ -74,7 +74,7 @@ async def url_bp_admin(request):
         'data_count_media_files': common_internationalization.com_inter_number_format(
             await request.app.db_functions.db_media_known_count(db_connection)),
         'data_count_matched_media': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_matched_media_count(db_connection)),
+            await request.app.db_functions.db_media_matched_count(db_connection)),
         'data_count_streamed_media': common_internationalization.com_inter_number_format(
             0),
         'data_library': common_internationalization.com_inter_number_format(
