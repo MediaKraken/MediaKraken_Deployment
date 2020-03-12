@@ -131,7 +131,7 @@ async def url_bp_admin_library_edit(request):
                     request['flash']("Invalid library path.", 'error')
                     return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
                 # verify it doesn't exist and add
-                if await request.app.db_functions.db_audit_path_check(db_connection, request.form[
+                if await request.app.db_functions.db_library_path_check(db_connection, request.form[
                     'library_path']) == 0:
                     try:
                         lib_share = request.form['Lib_Share']

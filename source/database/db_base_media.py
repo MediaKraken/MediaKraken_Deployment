@@ -93,31 +93,6 @@ def db_matched_media_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_known_media_all_unmatched_count(self):
-    """
-    # count all media that is NULL for meatadata match
-    """
-    self.db_cursor.execute(
-        'select count(*) from mm_media where mm_media_metadata_guid is NULL')
-    return self.db_cursor.fetchone()[0]
-
-
-def db_known_media_all_unmatched(self, offset=0, records=None):
-    """
-    # read all media that is NULL for metadata match
-    """
-    self.db_cursor.execute('select mm_media_guid,'
-                           ' mm_media_class_guid,'
-                           ' mm_media_path'
-                           ' from mm_media'
-                           ' where mm_media_guid'
-                           ' in (select mm_media_guid'
-                           ' from mm_media'
-                           ' where mm_media_metadata_guid is NULL offset %s limit %s)'
-                           ' order by mm_media_path', (offset, records))
-    return self.db_cursor.fetchall()
-
-
 def db_media_duplicate_count(self):
     """
     # count the duplicates for pagination

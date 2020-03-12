@@ -1,7 +1,7 @@
 import uuid
 
 
-def db_device_by_uuid(db_connection, guid):
+def db_device_by_uuid(self, db_connection, guid):
     """
     Return details from database via uuid
     """
@@ -11,7 +11,7 @@ def db_device_by_uuid(db_connection, guid):
                                ' where mm_device_id = %s', (guid,))
 
 
-def db_device_check(db_connection, device_type, device_name, device_ip):
+def db_device_check(self, db_connection, device_type, device_name, device_ip):
     """
     Check to see if device exists already on db
     """
@@ -21,7 +21,7 @@ def db_device_check(db_connection, device_type, device_name, device_ip):
         ' and mm_device_json->\'IP\' ? %s', (device_type, device_name, device_ip))
 
 
-def db_device_delete(db_connection, guid):
+def db_device_delete(self, db_connection, guid):
     """
     Remove a device from the database via uuid
     """
@@ -30,7 +30,7 @@ def db_device_delete(db_connection, guid):
         ' where mm_device_id = %s', (guid,))
 
 
-def db_device_list(db_connection, device_type=None, offset=0, records=None, search_value=None):
+def db_device_list(self, db_connection, device_type=None, offset=0, records=None, search_value=None):
     """
     Return list of devices in database
     """
@@ -50,7 +50,7 @@ def db_device_list(db_connection, device_type=None, offset=0, records=None, sear
                                    (device_type, offset, records))
 
 
-def db_device_upsert(db_connection, device_type, device_json):
+def db_device_upsert(self, db_connection, device_type, device_json):
     """
     Upsert a device into the database
     """

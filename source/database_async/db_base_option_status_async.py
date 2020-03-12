@@ -1,4 +1,4 @@
-def db_opt_status_read(db_connection):
+def db_opt_status_read(self, db_connection):
     """
     Read options
     """

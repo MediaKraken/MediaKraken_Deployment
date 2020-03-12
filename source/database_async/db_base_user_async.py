@@ -1,8 +1,8 @@
-def db_user_count(db_connection):
+def db_user_count(self, db_connection):
     return db_connection.fetchval('select count(*) from mm_user')
 
 
-def db_user_delete(db_connection, user_guid):
+def db_user_delete(self, db_connection, user_guid):
     """
     # remove user
     """
@@ -10,7 +10,7 @@ def db_user_delete(db_connection, user_guid):
                           ' where id = %s', (user_guid,))
 
 
-def db_user_detail(db_connection, guid):
+def db_user_detail(self, db_connection, guid):
     """
     # return all data for specified user
     """
@@ -18,11 +18,11 @@ def db_user_detail(db_connection, guid):
                                ' where id = %s', (guid,))
 
 
-def db_user_insert(db_connection, user_name, user_email, user_password):
+def db_user_insert(self, db_connection, user_name, user_email, user_password):
     """
     # insert user
     """
-    if db_user_count(db_connection) == 0:
+    if self.db_user_count(db_connection) == 0:
         user_admin = True
     else:
         user_admin = False
@@ -32,7 +32,7 @@ def db_user_insert(db_connection, user_name, user_email, user_password):
         (user_name, user_email, user_password, user_admin)), user_admin
 
 
-def db_user_list_name(db_connection, offset=0, records=None):
+def db_user_list_name(self, db_connection, offset=0, records=None):
     """
     # return user list
     """
@@ -49,7 +49,7 @@ def db_user_list_name(db_connection, offset=0, records=None):
                                ' offset %s limit %s) order by LOWER(username)', (offset, records))
 
 
-def db_user_login_validation(db_connection, user_name, user_password):
+def db_user_login_validation(self, db_connection, user_name, user_password):
     """
     # verify user logon
     """

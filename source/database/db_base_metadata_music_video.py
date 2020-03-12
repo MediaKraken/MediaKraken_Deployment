@@ -47,7 +47,7 @@ def db_meta_music_video_add(self, new_guid, artist_name, artist_song, id_json,
 
 def db_meta_music_video_detail_uuid(self, item_guid):
     """
-    Grab metadata for specififed music video
+    Grab metadata for specified music video
     """
     self.db_cursor.execute('select mm_media_music_video_band,'
                            ' mm_media_music_video_song,'

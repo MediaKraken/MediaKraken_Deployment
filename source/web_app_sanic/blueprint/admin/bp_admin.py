@@ -72,7 +72,7 @@ async def url_bp_admin(request):
         'data_alerts_dismissable': data_alerts_dismissable,
         'data_alerts': data_alerts,
         'data_count_media_files': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_known_media_count(db_connection)),
+            await request.app.db_functions.db_media_known_count(db_connection)),
         'data_count_matched_media': common_internationalization.com_inter_number_format(
             await request.app.db_functions.db_matched_media_count(db_connection)),
         'data_count_streamed_media': common_internationalization.com_inter_number_format(

@@ -1,11 +1,11 @@
-def db_link_delete(db_connection, sync_guid):
+def db_link_delete(self, db_connection, sync_guid):
     """
     Delete server link
     """
     db_connection.execute('delete from mm_link where mm_link_guid = %s', (sync_guid,))
 
 
-def db_link_list(db_connection, offset=0, records=None, search_value=None):
+def db_link_list(self, db_connection, offset=0, records=None, search_value=None):
     """
     Return list of linked server
     Complete list for admins
@@ -28,7 +28,7 @@ def db_link_list(db_connection, offset=0, records=None, search_value=None):
                             ' offset %s limit %s)', (offset, records))
 
 
-def db_link_list_count(db_connection, search_value=None):
+def db_link_list_count(self, db_connection, search_value=None):
     """
     Return count of linked servers
     """

@@ -1,4 +1,4 @@
-def db_image_count(db_connection, class_guid, search_value=None):
+def db_image_count(self, db_connection, class_guid, search_value=None):
     """
     Image list count
     """
@@ -9,7 +9,7 @@ def db_image_count(db_connection, class_guid, search_value=None):
                                   ' and mm_media_class_guid = %s', (class_guid,))
 
 
-def db_image_list(db_connection, class_guid, offset=0, records=None, search_value=None):
+def db_image_list(self, db_connection, class_guid, offset=0, records=None, search_value=None):
     """
     Image list
     """

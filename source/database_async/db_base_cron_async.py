@@ -1,7 +1,7 @@
 import datetime
 
 
-def db_cron_delete(db_connection, cron_uuid):
+def db_cron_delete(self, db_connection, cron_uuid):
     """
     Delete cron job
     """
@@ -10,7 +10,7 @@ def db_cron_delete(db_connection, cron_uuid):
                           (cron_uuid,))
 
 
-def db_cron_info(db_connection, cron_uuid):
+def db_cron_info(self, db_connection, cron_uuid):
     """
     Cron job info
     """
@@ -25,7 +25,7 @@ def db_cron_info(db_connection, cron_uuid):
                                ' where mm_cron_guid = %s', (cron_uuid,))
 
 
-def db_cron_list(db_connection, enabled_only=False, offset=0, records=None):
+def db_cron_list(self, db_connection, enabled_only=False, offset=0, records=None):
     """
     Return cron list
     """
@@ -56,7 +56,7 @@ def db_cron_list(db_connection, enabled_only=False, offset=0, records=None):
                                    ' order by mm_cron_name', (offset, records))
 
 
-def db_cron_list_count(db_connection, enabled_only=False):
+def db_cron_list_count(self, db_connection, enabled_only=False):
     """
     Return number of cron jobs
     """
@@ -68,7 +68,7 @@ def db_cron_list_count(db_connection, enabled_only=False):
             ' where mm_cron_enabled = true')
 
 
-def db_cron_time_update(db_connection, cron_type):
+def db_cron_time_update(self, db_connection, cron_type):
     """
     Update the datetime in which a cron job was run
     """

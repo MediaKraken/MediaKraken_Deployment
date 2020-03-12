@@ -173,7 +173,7 @@ async def url_bp_user_metadata_tvshow_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     media_tvshow = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_meta_tvshow_list(db_connection, offset,
+    for row_data in await request.app.db_functions.db_meta_tv_list(db_connection, offset,
                                                                        per_page, request['session'][
                                                                            'search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
@@ -181,7 +181,7 @@ async def url_bp_user_metadata_tvshow_list(request):
                              row_data['image_json']))
     request['session']['search_page'] = 'meta_tv'
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_tvshow_list_count(
+                            total=await request.app.db_functions.db_meta_tv_list_count(
                                 db_connection,
                                 request['session']['search_text']),
                             record_name='TV show(s)',
@@ -207,7 +207,7 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     Display metadata of tvshow season detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_meta_tvshow_detail(db_connection, guid)
+    data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:

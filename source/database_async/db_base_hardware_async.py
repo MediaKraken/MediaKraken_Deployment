@@ -1,4 +1,4 @@
-def db_hardware_device_count(db_connection, hardware_manufacturer, model_name=None):
+def db_hardware_device_count(self, db_connection, hardware_manufacturer, model_name=None):
     """
     Return json for machine/model
     """

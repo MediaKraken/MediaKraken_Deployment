@@ -1,7 +1,7 @@
 import uuid
 
 
-def db_sync_delete(db_connection, sync_guid):
+def db_sync_delete(self, db_connection, sync_guid):
     """
     # delete sync job
     """
@@ -10,7 +10,7 @@ def db_sync_delete(db_connection, sync_guid):
         ' where mm_sync_guid = %s', (sync_guid,))
 
 
-def db_sync_insert(db_connection, sync_path, sync_path_to, sync_json):
+def db_sync_insert(self, db_connection, sync_path, sync_path_to, sync_json):
     """
     # insert sync job
     """
@@ -25,7 +25,7 @@ def db_sync_insert(db_connection, sync_path, sync_path_to, sync_json):
     return new_guid
 
 
-def db_sync_list(db_connection, offset=0, records=None, user_guid=None):
+def db_sync_list(self, db_connection, offset=0, records=None, user_guid=None):
     """
     # return list of sync jobs
     """

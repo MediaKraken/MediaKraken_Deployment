@@ -1,7 +1,8 @@
 import uuid
 
 
-def db_share_add(db_connection, share_type, share_user, share_password, share_server, share_path):
+def db_share_add(self, db_connection, share_type, share_user, share_password, share_server,
+                 share_path):
     """
     # add share path
     """
@@ -18,7 +19,7 @@ def db_share_add(db_connection, share_type, share_user, share_password, share_se
     return new_guid
 
 
-def db_share_list(db_connection, offset=0, records=None):
+def db_share_list(self, db_connection, offset=0, records=None):
     """
     # read the shares list
     """
@@ -33,7 +34,8 @@ def db_share_list(db_connection, offset=0, records=None):
                                ' mm_media_share_path offset %s limit %s', (offset, records))
 
 
-def db_share_update_by_uuid(db_connection, share_type, share_user, share_password, share_server,
+def db_share_update_by_uuid(self, db_connection, share_type, share_user, share_password,
+                            share_server,
                             share_path, share_id):
     """
     # update share

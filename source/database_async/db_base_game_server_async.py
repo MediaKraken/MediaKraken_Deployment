@@ -1,4 +1,4 @@
-def db_game_server_list(db_connection, offset=0, records=None):
+def db_game_server_list(self, db_connection, offset=0, records=None):
     """
     Return game server list
     """

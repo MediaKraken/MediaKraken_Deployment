@@ -1,7 +1,7 @@
 import uuid
 
 
-def db_library_path_add(db_connection, dir_path, class_guid, share_guid):
+def db_library_path_add(self, db_connection, dir_path, class_guid, share_guid):
     """
     # add media path
     """
@@ -17,7 +17,7 @@ def db_library_path_add(db_connection, dir_path, class_guid, share_guid):
     return new_guid
 
 
-def db_library_path_by_uuid(db_connection, self, dir_id):
+def db_library_path_by_uuid(self, db_connection, dir_id):
     """
     # lib data per id
     """
@@ -28,7 +28,15 @@ def db_library_path_by_uuid(db_connection, self, dir_id):
                                ' where mm_media_dir_share_guid = %s', (dir_id,))
 
 
-def db_library_path_delete(db_connection, lib_guid):
+def db_library_path_check(self, db_connection, dir_path):
+    """
+    # lib path check (dupes)
+    """
+    return db_connection.fetchval('select count(*) from mm_media_dir where mm_media_dir_path = %s',
+                                  (dir_path,))
+
+
+def db_library_path_delete(self, db_connection, lib_guid):
     """
     # remove media path
     """
@@ -36,7 +44,18 @@ def db_library_path_delete(db_connection, lib_guid):
         'delete from mm_media_dir where mm_media_dir_share_guid = %s', (lib_guid,))
 
 
-def db_library_path_update_by_uuid(db_connection, lib_path, class_guid, lib_guid):
+def db_library_path_status(self, db_connection):
+    """
+    # read scan status
+    """
+    return db_connection.fetch('select mm_media_dir_path,'
+                               ' mm_media_dir_status'
+                               ' from mm_media_dir'
+                               ' where mm_media_dir_status IS NOT NULL'
+                               ' order by mm_media_dir_path')
+
+
+def db_library_path_update_by_uuid(self, db_connection, lib_path, class_guid, lib_guid):
     """
     # update audit path
     """
@@ -46,7 +65,7 @@ def db_library_path_update_by_uuid(db_connection, lib_path, class_guid, lib_guid
                           (lib_path, class_guid, lib_guid))
 
 
-def db_library_paths(db_connection, offset=0, records=None):
+def db_library_paths(self, db_connection, offset=0, records=None):
     """
     # read the paths to audit
     """

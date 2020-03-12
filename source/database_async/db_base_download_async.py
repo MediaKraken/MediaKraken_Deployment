@@ -1,7 +1,7 @@
 import uuid
 
 
-def db_download_insert(db_connection, provider, que_type, down_json):
+def db_download_insert(self, db_connection, provider, que_type, down_json):
     """
     Create/insert a download into the que
     """

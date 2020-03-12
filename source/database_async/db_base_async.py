@@ -1,4 +1,4 @@
-def db_table_count(db_connection, table_name):
+def db_table_count(self, db_connection, table_name):
     """
     # return count of records in table
     """

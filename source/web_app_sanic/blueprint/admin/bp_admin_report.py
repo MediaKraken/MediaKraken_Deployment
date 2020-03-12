@@ -18,12 +18,12 @@ async def url_bp_admin_report_all_media(request):
     page, per_page, offset = Pagination.get_page_args(request)
     media_data = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_known_media(db_connection, offset, per_page):
+    for row_data in await request.app.db_functions.db_media_known(db_connection, offset, per_page):
         media_data.append((row_data['mm_media_path'],
                            common_string.com_string_bytes2human(
                                os.path.getsize(row_data['mm_media_path']))))
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_known_media_count(
+                            total=await request.app.db_functions.db_media_known_count(
                                 db_connection),
                             record_name='all media',
                             format_total=True,
@@ -138,15 +138,15 @@ async def url_bp_admin_report_display_all_unmatched_media(request):
     page, per_page, offset = Pagination.get_page_args(request)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_unmatched_list_count(
+                            total=await request.app.db_functions.db_media_unmatched_list_count(
                                 db_connection),
                             record_name='unmatched media',
                             format_total=True,
                             format_number=True,
                             )
-    unmatched_media = await request.app.db_functions.db_unmatched_list(db_connection,
-                                                                       offset=offset,
-                                                                       list_limit=per_page)
+    unmatched_media = await request.app.db_functions.db_media_unmatched_list(db_connection,
+                                                                             offset=offset,
+                                                                             list_limit=per_page)
     await request.app.db_pool.release(db_connection)
     return {
         'media': unmatched_media,
