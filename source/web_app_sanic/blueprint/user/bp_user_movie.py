@@ -129,7 +129,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
         ffprobe_data = {}
         # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
-        for video_version in await request.app.db_functions.db_ffprobe_all_media_guid(db_connection,
+        for video_version in await request.app.db_functions.db_media_ffprobe_all_guid(db_connection,
                                                                                       guid,
                                                                                       common_global.DLMediaType.Movie.value):
             common_global.es_inst.com_elastic_index('info', {"vid_version": video_version})

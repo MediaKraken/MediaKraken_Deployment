@@ -7,9 +7,9 @@ async def url_bp_user_album_player(request, guid):
     Obsolete?
     """
     return render_template("users/user_album_playback.html",
-                           data_desc=await request.app.db_functions.db_meta_album_by_guid(db_connection,
+                           data_desc=await request.app.db_functions.db_meta_music_album_by_guid(db_connection,
                                guid),
-                           data_song_list=await request.app.db_functions.db_meta_songs_by_album_guid(db_connection, guid))
+                           data_song_list=await request.app.db_functions.db_meta_music_songs_by_album_guid(db_connection, guid))
 
 
 @blueprint.route('/playvideo_videojs/<mtype>/<guid>/<chapter>/<audio>/<sub>', methods=['GET',

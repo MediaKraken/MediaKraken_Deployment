@@ -21,7 +21,7 @@ import uuid
 
 def db_meta_song_list(self, offset=0, records=None, search_value=None):
     """
-    # return songs metadatalist
+    # return song metadata list
     """
     # TODO, only grab the poster locale from json
     return self.db_cursor.fetchall()

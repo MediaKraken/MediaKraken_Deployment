@@ -130,7 +130,7 @@ async def url_bp_admin_database_statistics(request):
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=db_size_data,
                            data_db_count=db_stats_count,
-                           data_workers=await request.app.db_functions.db_parallel_workers(
+                           data_workers=await request.app.db_functions.db_pgsql_parallel_workers(
                                db_connection))
 
 

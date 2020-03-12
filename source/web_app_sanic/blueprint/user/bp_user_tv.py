@@ -146,7 +146,7 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         except:
             data_background_image = None
         # grab reviews
-        # review = await request.app.db_functions.db_Review_List(db_connection, data[0])
+        review = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, guid)
         data_season_data = await request.app.db_functions.db_read_tvmeta_eps_season(db_connection, guid)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime

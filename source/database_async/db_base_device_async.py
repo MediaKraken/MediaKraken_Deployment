@@ -30,7 +30,8 @@ def db_device_delete(self, db_connection, guid):
         ' where mm_device_id = %s', (guid,))
 
 
-def db_device_list(self, db_connection, device_type=None, offset=0, records=None, search_value=None):
+def db_device_list(self, db_connection, device_type=None, offset=0, records=None,
+                   search_value=None):
     """
     Return list of devices in database
     """
@@ -48,6 +49,15 @@ def db_device_list(self, db_connection, device_type=None, offset=0, records=None
                                    ' from mm_device'
                                    ' where mm_device_type = %s offset %s limit %s',
                                    (device_type, offset, records))
+
+
+def db_device_update_by_uuid(self, db_connection, guid, device_type, device_json):
+    """
+    Update the device in the database
+    """
+    db_connection.execute('update mm_device set mm_device_type = %s,'
+                          ' mm_device_json = %s'
+                          ' where mm_device_id = %s', (device_type, device_json, guid))
 
 
 def db_device_upsert(self, db_connection, device_type, device_json):

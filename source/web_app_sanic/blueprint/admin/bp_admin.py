@@ -51,7 +51,7 @@ async def url_bp_admin(request):
         'mm_status_json']
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
-    for dir_path in await request.app.db_functions.db_audit_path_status(db_connection):
+    for dir_path in await request.app.db_functions.db_library_path_status(db_connection):
         data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     if os.environ['SWARMIP'] != 'None':
         mediakraken_ip = os.environ['SWARMIP']

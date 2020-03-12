@@ -51,6 +51,37 @@ def db_media_duplicate_detail_count(self, db_connection, guid):
                                   (guid,))
 
 
+def db_media_ffprobe_all_guid(self, db_connection, media_uuid, media_class_uuid):
+    """
+    # fetch all media with METADATA match
+    """
+    return db_connection.fetch.execute(
+        'select distinct mm_media_guid,'
+        'mm_media_ffprobe_json'
+        ' from mm_media, mm_metadata_movie'
+        ' where mm_media_metadata_guid = '
+        '(select mm_media_metadata_guid'
+        ' from mm_media where mm_media_guid = %s)'
+        ' and mm_media_class_guid = %s',
+        (media_uuid, media_class_uuid))
+
+
+def db_media_insert(self, db_connection, media_uuid, media_path, media_class_uuid,
+                    media_metadata_uuid, media_ffprobe_json, media_json):
+    """
+    # insert media into database
+    """
+    db_connection.execute('insert into mm_media (mm_media_guid,'
+                          ' mm_media_class_guid,'
+                          ' mm_media_path,'
+                          ' mm_media_metadata_guid,'
+                          ' mm_media_ffprobe_json,'
+                          ' mm_media_json)'
+                          ' values (%s,%s,%s,%s,%s,%s)',
+                          (media_uuid, media_class_uuid, media_path,
+                           media_metadata_uuid, media_ffprobe_json, media_json))
+
+
 def db_media_known(self, db_connection, offset=0, records=None):
     """
     # find all known media

@@ -37,7 +37,7 @@ async def url_bp_admin_transmission_delete(request):
     """
     Delete torrent from transmission
     """
-    # await request.app.db_functions.db_Audit_Path_Delete(db_connection, request.form['id'])
+    # await request.app.db_functions.db_transmission_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})
 
 
@@ -47,5 +47,5 @@ async def url_bp_admin_transmission_edit(request):
     """
     Edit a torrent from transmission
     """
-    # await request.app.db_functions.db_Audit_Path_Delete(db_connection, request.form['id'])
+    # await request.app.db_functions.db_transmission_delete(db_connection, request.form['id'])
     return json.dumps({'status': 'OK'})

@@ -16,7 +16,6 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     """
     db_connection = await request.app.db_pool.acquire()
     data = await request.app.db_functions.db_read_media_metadata(db_connection, guid)
-    await request.app.db_pool.release(db_connection)
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
@@ -51,7 +50,8 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     except:
         data_background_image = None
     # grab reviews
-    #    review = await request.app.db_functions.db_Review_List(db_connection, data[1])
+    review = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, data[1])
+    await request.app.db_pool.release(db_connection)
     return {
         # data_media_ids: data[1],
         'data_name': data[2],

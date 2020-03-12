@@ -19,6 +19,23 @@ def db_share_add(self, db_connection, share_type, share_user, share_password, sh
     return new_guid
 
 
+def db_share_check(self, db_connection, dir_path):
+    """
+    # share path check (dupes)
+    """
+    return db_connection.fetchval(
+        'select count(*) from mm_media_share where mm_media_share_path = %s',
+        (dir_path,))
+
+
+def db_share_delete(self, db_connection, share_guid):
+    """
+    # remove share
+    """
+    db_connection.execute('delete from mm_media_share where mm_media_share_guid = %s',
+                          (share_guid,))
+
+
 def db_share_list(self, db_connection, offset=0, records=None):
     """
     # read the shares list

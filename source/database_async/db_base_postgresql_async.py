@@ -1,3 +1,10 @@
+def db_pgsql_parallel_workers(self, db_connection):
+    """
+    Return number of workers
+    """
+    return db_connection.fetchval('show max_parallel_workers_per_gather')
+
+
 # query provided by postgresql wiki
 def db_pgsql_row_count(self, db_connection):
     """

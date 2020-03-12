@@ -33,4 +33,3 @@ async def before_request():
     g.google_instance = common_google.CommonGoogle(await request.app.db_functions.db_opt_status_read(db_connection)[0])
     g.twitch_api = common_network_twitchv5.CommonNetworkTwitchV5(
         await request.app.db_functions.db_opt_status_read(db_connection)[0])
-    await request.app.db_functions.db_open()

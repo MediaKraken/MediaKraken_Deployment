@@ -19,7 +19,7 @@ async def url_bp_admin_periodical_add(request):
             if len(book_item) > 2:
                 media_id = str(uuid.uuid4())
                 db_connection = await request.app.db_pool.acquire()
-                await request.app.db_functions.db_insert_media(db_connection, media_id, None,
+                await request.app.db_functions.db_media_insert(db_connection, media_id, None,
                                                                class_uuid,
                                                                None, None, None)
                 await request.app.db_functions.db_download_insert(db_connection, 'Z', 0,

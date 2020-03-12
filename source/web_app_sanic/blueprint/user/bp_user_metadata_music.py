@@ -15,10 +15,10 @@ async def url_bp_user_metadata_music_album_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for album_data in await request.app.db_functions.db_meta_album_list(db_connection, offset,
-                                                                        per_page,
-                                                                        request['session'][
-                                                                            'search_text']):
+    for album_data in await request.app.db_functions.db_meta_music_album_list(db_connection, offset,
+                                                                              per_page,
+                                                                              request['session'][
+                                                                                  'search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
                                                          'id': album_data['mm_metadata_album_guid'],
                                                          'name': album_data[
@@ -74,8 +74,10 @@ async def metadata_music_album_song_list(request):
                             format_total=True,
                             format_number=True,
                             )
-    media_data = await request.app.db_functions.db_meta_song_list(db_connection, offset, per_page,
-                                                                  request['session']['search_text'])
+    media_data = await request.app.db_functions.db_meta_music_song_list(db_connection, offset,
+                                                                        per_page,
+                                                                        request['session'][
+                                                                            'search_text'])
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

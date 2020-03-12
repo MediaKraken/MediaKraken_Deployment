@@ -155,7 +155,7 @@ async def url_bp_admin_library_edit(request):
         else:
             flash_errors(form)
     share_list = []
-    for row_data in await request.app.db_functions.db_share(db_connection):
+    for row_data in await request.app.db_functions.db_share_list(db_connection):
         share_name = row_data['mm_media_share_server'] + \
                      ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
