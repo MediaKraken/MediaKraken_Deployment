@@ -83,8 +83,6 @@ class MKServerDatabase:
         db_known_media_count, \
         db_known_media, \
         db_matched_media_count, \
-        db_known_media_all_unmatched_count, \
-        db_known_media_all_unmatched, \
         db_media_duplicate_count, \
         db_media_duplicate, \
         db_media_duplicate_detail_count, \
