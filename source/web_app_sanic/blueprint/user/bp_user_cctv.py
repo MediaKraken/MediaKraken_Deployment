@@ -15,7 +15,8 @@ async def url_bp_user_cctv(request):
     page, per_page, offset = Pagination.get_page_args(request)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_sync_list_count(db_connection),
+                            total=await request.app.db_functions.db_table_count(db_connection,
+                                                                                'TODOO'),
                             record_name='CCTV System(s)',
                             format_total=True,
                             format_number=True,

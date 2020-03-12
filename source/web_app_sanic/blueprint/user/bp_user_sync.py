@@ -19,7 +19,8 @@ async def url_bp_user_sync_display_all(request):
     db_connection = await request.app.db_pool.acquire()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_sync_list_count(db_connection),
+                            total=await request.app.db_functions.db_table_count(db_connection,
+                                                                                'mm_sync'),
                             record_name='sync job(s)',
                             format_total=True,
                             format_number=True,

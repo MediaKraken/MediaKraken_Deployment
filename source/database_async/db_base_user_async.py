@@ -32,6 +32,23 @@ def db_user_insert(db_connection, user_name, user_email, user_password):
         (user_name, user_email, user_password, user_admin)), user_admin
 
 
+def db_user_list_name(db_connection, offset=0, records=None):
+    """
+    # return user list
+    """
+    return db_connection.fetch('select id,'
+                               ' username,'
+                               ' email,'
+                               ' created_at,'
+                               ' active,'
+                               ' is_admin,'
+                               ' lang'
+                               ' from mm_user'
+                               ' where id in (select id from mm_user'
+                               ' order by LOWER(username)'
+                               ' offset %s limit %s) order by LOWER(username)', (offset, records))
+
+
 def db_user_login_validation(db_connection, user_name, user_password):
     """
     # verify user logon

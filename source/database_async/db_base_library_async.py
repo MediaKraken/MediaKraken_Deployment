@@ -28,7 +28,7 @@ def db_library_path_by_uuid(db_connection, self, dir_id):
                                ' where mm_media_dir_share_guid = %s', (dir_id,))
 
 
-def db_libary_path_delete(db_connection, lib_guid):
+def db_library_path_delete(db_connection, lib_guid):
     """
     # remove media path
     """

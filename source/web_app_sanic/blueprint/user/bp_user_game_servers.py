@@ -15,8 +15,8 @@ async def url_bp_user_game_server_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_game_server_list_count(
-                                db_connection),
+                            total=await request.app.db_functions.db_table_count(
+                                db_connection, 'mm_game_dedicated_servers'),
                             record_name='game servers(s)',
                             format_total=True,
                             format_number=True,

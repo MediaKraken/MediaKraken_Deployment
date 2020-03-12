@@ -1,6 +1,16 @@
 import uuid
 
 
+def db_device_by_uuid(db_connection, guid):
+    """
+    Return details from database via uuid
+    """
+    return db_connection.fetch('select mm_device_type,'
+                               ' mm_device_json'
+                               ' from mm_device'
+                               ' where mm_device_id = %s', (guid,))
+
+
 def db_device_check(db_connection, device_type, device_name, device_ip):
     """
     Check to see if device exists already on db
