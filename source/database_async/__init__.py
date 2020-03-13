@@ -58,6 +58,9 @@ class MKServerDatabaseAsync:
         db_media_rating_update, \
         db_media_unmatched_list, \
         db_media_unmatched_list_count
+    from database_async.db_base_media_movie_async \
+        import db_media_movie_list, \
+        db_media_movie_list_count
     from database_async.db_base_media_music_async \
         import db_media_album_count, \
         db_media_album_list
@@ -70,6 +73,13 @@ class MKServerDatabaseAsync:
     from database_async.db_base_media_sports_async \
         import db_media_sports_list, \
         db_media_sports_list_count
+    from database_async.db_base_media_tv_async \
+        import db_media_tv_list, \
+        db_media_tv_list_count
+    from database_async.db_base_media_tv_live_async \
+        import db_tv_schedule_by_date
+    from database_async.db_base_metadata_async \
+        import db_metadata_guid_from_media_guid
     from database_async.db_base_metadata_game_async \
         import db_meta_game_by_guid, \
         db_meta_game_list
@@ -79,6 +89,7 @@ class MKServerDatabaseAsync:
         db_meta_game_system_list
     from database_async.db_base_metadata_movie_async \
         import db_meta_movie_by_media_uuid, \
+        db_meta_movie_detail, \
         db_meta_movie_list, \
         db_meta_movie_count, \
         db_meta_movie_status_update
@@ -110,8 +121,12 @@ class MKServerDatabaseAsync:
         db_meta_sports_list_count
     from database_async.db_base_metadata_tv_async \
         import db_meta_tv_detail, \
+        db_meta_tv_episode, \
+        db_meta_tv_epsisode_by_id, \
+        db_meta_tv_eps_season, \
         db_meta_tv_list, \
-        db_meta_tv_list_count
+        db_meta_tv_list_count, \
+        db_meta_tv_season_eps_list
     from database_async.db_base_option_status_async \
         import db_opt_update, \
         db_opt_status_read
