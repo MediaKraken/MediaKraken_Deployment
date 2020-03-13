@@ -42,6 +42,52 @@ def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_nu
         (show_guid, str(season_number), str(episode_number)))
 
 
+def db_meta_tv_epsisode_by_id(self, db_connection, show_guid, show_episode_id):
+    """
+    # grab episode detail by eps id
+    """
+    # TODO tvmaze
+    # TODO injection fix
+    return db_connection.fetchrow('select eps_data->\'EpisodeName\' as eps_name,'
+                                  ' eps_data->\'FirstAired\' as eps_first_air,'
+                                  ' eps_data->\'Runtime\' as eps_runtime,'
+                                  ' eps_data->\'Overview\' as eps_overview,'
+                                  ' eps_data->\'filename\' as eps_filename'
+                                  ' from (select jsonb_array_elements_text('
+                                  'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
+                                  ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
+                                  ' as select_eps_data where eps_data @> \'{ "id": "'
+                                  + str(show_episode_id) + '" }\'', (show_guid,))
+
+
+def db_meta_tv_eps_season(self, db_connection, show_guid):
+    """
+    # grab tvmaze ep data for eps per season
+    """
+    season_data = {}
+    # self.db_cursor.execute('select jsonb_array_elements_text(COALESCE((mm_metadata_tvshow_json'
+    #                        '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\', '
+    #                         '(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')'
+    #                         '::jsonb->\'SeasonNumber\')),'
+    #                         'jsonb_array_elements_text(COALESCE((mm_metadata_tvshow_json'
+    #                         '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\','
+    #                         '(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')'
+    #                         '::jsonb->\'EpisodeNumber\'))'
+    #                         'from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s', (show_guid,))
+    for row_data in db_connection.fetch(
+            'select count(*) as ep_count, jsonb_array_elements_text(mm_metadata_tvshow_json'
+            '->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\' as season_num'
+            ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s'
+            ' group by season_num', (show_guid,)):
+        # if row_data[0] in season_data:
+        #     if season_data[row_data[0]] < row_data[1]:
+        #         season_data[row_data[0]] = row_data[1]
+        # else:
+        #     season_data[row_data[0]] = row_data[1]
+        season_data[int(row_data['season_num'])] = row_data['ep_count']
+    return season_data
+
+
 def db_meta_tv_list(self, db_connection, offset=0, records=None, search_value=None):
     """
     # return list of tvshows
@@ -81,3 +127,42 @@ def db_meta_tv_detail(self, db_connection, guid):
                                   ' mm_metadata_tvshow_localimage_json'
                                   '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
                                   ' where mm_metadata_tvshow_guid = %s', (guid,))
+
+
+def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_number):
+    """
+    # grab episodes within the season
+    """
+    episode_data = {}
+    # self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_tvshow_json'
+    #     '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'season\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'number\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'name\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'id\', mm_metadata_tvshow_localimage_json'
+    #     '->\'Images\'->\'tvmaze\'->\'Episodes\','
+
+    # TODO security check the seasonumber since from webpage addy - injection
+    self.db_cursor.execute(
+        'select eps_data->\'id\' as eps_id, eps_data->\'EpisodeNumber\' as eps_num,'
+        ' eps_data->\'EpisodeName\' as eps_name,'
+        ' eps_data->\'filename\' as eps_filename'
+        ' from (select jsonb_array_elements_text('
+        'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
+        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
+        ' as select_eps_data where eps_data @> \'{ "SeasonNumber": "'
+        + str(season_number) + '" }\'', (show_guid,))
+    # id, episode_number, episode_name, filename
+    for row_data in self.db_cursor.fetchall():
+        if row_data['eps_filename'] is None:
+            episode_data[row_data['eps_num']] \
+                = (row_data['eps_name'], 'missing_icon.jpg', row_data['eps_id'],
+                   str(season_number))
+        else:
+            episode_data[row_data['eps_num']] \
+                = (
+                row_data['eps_name'], row_data['eps_filename'], row_data['eps_id'],
+                str(season_number))
+    return episode_data

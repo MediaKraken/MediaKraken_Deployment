@@ -147,7 +147,7 @@ async def url_bp_user_tv_show_detail(request, user, guid):
             data_background_image = None
         # grab reviews
         review = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, guid)
-        data_season_data = await request.app.db_functions.db_read_tvmeta_eps_season(db_connection, guid)
+        data_season_data = await request.app.db_functions.db_meta_tv_eps_season(db_connection, guid)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime
         minutes, seconds = divmod((float(data_runtime) * 60), 60)
@@ -237,8 +237,7 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-
-    data_episode_count = await request.app.db_functions.db_read_tvmeta_season_eps_list(db_connection,
+    data_episode_count = await request.app.db_functions.db_meta_tv_season_eps_list(db_connection,
         guid, int(season))
     await request.app.db_pool.release(db_connection)
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})

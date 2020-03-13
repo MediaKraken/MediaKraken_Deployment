@@ -104,7 +104,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
             data_background_image = None
     except:
         data_background_image = None
-    data_season_data = await request.app.db_functions.db_read_tvmeta_eps_season(db_connection, guid)
+    data_season_data = await request.app.db_functions.db_meta_tv_eps_season(db_connection, guid)
     #    # build production list
     #    production_list = ''
     #    for ndx in range(0,len(json_metadata['production_companies'])):
@@ -135,8 +135,8 @@ async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id)
     Display tvshow episode metadata detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_read_tvmeta_epsisode_by_id(db_connection,
-                                                                                 guid, eps_id)
+    data_metadata = await request.app.db_functions.db_meta_tv_epsisode_by_id(db_connection,
+                                                                             guid, eps_id)
     await request.app.db_pool.release(db_connection)
     # poster image
     try:
@@ -174,8 +174,8 @@ async def url_bp_user_metadata_tvshow_list(request):
     media_tvshow = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_tv_list(db_connection, offset,
-                                                                       per_page, request['session'][
-                                                                           'search_text']):
+                                                                   per_page, request['session'][
+                                                                       'search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'], row_data['air_date'],
                              row_data['image_json']))
@@ -257,7 +257,7 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
                 data_genres_list += (ndx + ', ')
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
-    data_episode_count = await request.app.db_functions.db_read_tvmeta_season_eps_list(
+    data_episode_count = await request.app.db_functions.db_meta_tv_season_eps_list(
         db_connection,
         guid, int(season))
     await request.app.db_pool.release(db_connection)
