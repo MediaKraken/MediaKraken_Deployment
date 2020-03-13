@@ -12,6 +12,20 @@ def db_meta_movie_by_media_uuid(self, db_connection, media_guid):
                                   ' and mm_media_guid = %s', (media_guid,))
 
 
+def db_meta_movie_detail(self, db_connection, media_guid):
+    """
+    # read in the media with corresponding metadata
+    """
+    return db_connection.fetchrow('select mm_metadata_guid,'
+                                  ' mm_metadata_media_id,'
+                                  ' mm_media_name,'
+                                  ' mm_metadata_json,'
+                                  ' mm_metadata_localimage_json,'
+                                  ' mm_metadata_user_json'
+                                  ' from mm_metadata_movie'
+                                  ' where mm_metadata_guid = %s', (media_guid,))
+
+
 def db_meta_movie_list(self, db_connection, offset=0, records=None, search_value=None):
     """
     # return list of movies

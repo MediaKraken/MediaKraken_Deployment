@@ -15,7 +15,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     Display metadata movie detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data = await request.app.db_functions.db_read_media_metadata(db_connection, guid)
+    data = await request.app.db_functions.db_meta_movie_detail(db_connection, guid)
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format

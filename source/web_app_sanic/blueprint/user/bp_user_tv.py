@@ -63,11 +63,11 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         # do NOT need to check for play video here,
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
-            await request.app.db_functions.db_media_watched_status_update(db_connection,
+            await request.app.db_functions.db_meta_tv_status_update(db_connection,
                 guid, user.id, False)
             return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
         elif request.form['status'] == 'Unwatched':
-            await request.app.db_functions.db_media_watched_status_update(db_connection,
+            await request.app.db_functions.db_meta_tv_status_update(db_connection,
                 guid, user.id, True)
             return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
     else:
@@ -281,7 +281,7 @@ async def url_bp_user_tv_show_episode_detail_page(request, guid, season, episode
     Display tv episode detail page
     """
     db_connection = await request.app.db_pool.acquire()
-    data_episode_detail = await request.app.db_functions.db_read_tvmeta_episode(db_connection,
+    data_episode_detail = await request.app.db_functions.db_meta_tv_episode(db_connection,
         guid, season, episode)
     await request.app.db_pool.release(db_connection)
     # poster image

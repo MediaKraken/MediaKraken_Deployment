@@ -42,7 +42,7 @@ async def url_bp_admin_user(request):
     page, per_page, offset = Pagination.get_page_args(request)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_user_list_name_count(db_connection),
+                            total=await request.app.db_functions.db_user_count(db_connection),
                             record_name='users',
                             format_total=True,
                             format_number=True,

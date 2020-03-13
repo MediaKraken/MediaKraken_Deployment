@@ -1,3 +1,6 @@
+from common import common_global
+
+
 def db_meta_tv_detail(self, db_connection, guid):
     """
     # return metadata for tv show
@@ -9,6 +12,34 @@ def db_meta_tv_detail(self, db_connection, guid):
                                   ' mm_metadata_tvshow_localimage_json'
                                   '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
                                   ' where mm_metadata_tvshow_guid = %s', (guid,))
+
+
+def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_number):
+    """
+    # grab episode detail
+    """
+    common_global.es_inst.com_elastic_index('info', {"show guid": show_guid,
+                                                     'season': season_number,
+                                                     'eps': episode_number})
+    # self.db_cursor.execute('(select
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'name\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'airstamp\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','
+    #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
+    #     '->\'_embedded\'->\'episodes\')::jsonb->\'summary\','
+    return db_connection.fetch(
+        'select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
+        '->\'Episode\')::jsonb->\'EpisodeName\' as eps_name,'
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
+        '->\'Episode\')::jsonb->\'FirstAired\' as eps_first_air,'
+        ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Runtime\' as eps_runtime,'
+        ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
+        '->\'Episode\')::jsonb->\'Overview\' as eps_overview'
+        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s',
+        (show_guid, str(season_number), str(episode_number)))
 
 
 def db_meta_tv_list(self, db_connection, offset=0, records=None, search_value=None):

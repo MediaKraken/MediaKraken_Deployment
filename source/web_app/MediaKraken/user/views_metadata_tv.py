@@ -225,7 +225,7 @@ def metadata_tvshow_season_detail_page(guid, season):
                            )
 
 
-# tv show season detail - show guid then season #
+# tv show episode detail - show guid then episode #
 @blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>", methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_episode_detail_page(guid, eps_id):

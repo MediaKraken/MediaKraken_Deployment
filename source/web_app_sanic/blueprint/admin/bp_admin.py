@@ -60,7 +60,7 @@ async def url_bp_admin(request):
     # TODO pool release
     return {
         'data_user_count': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_user_list_name_count(db_connection)),
+            await request.app.db_functions.db_user_count(db_connection)),
         'data_server_info_server_name': data_server_info_server_name,
         'data_host_ip': mediakraken_ip,
         'data_server_info_server_ip': nic_data,
