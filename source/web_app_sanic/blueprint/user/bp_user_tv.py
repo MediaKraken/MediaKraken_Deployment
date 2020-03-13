@@ -19,7 +19,7 @@ async def url_bp_user_tv(request):
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_web_tvmedia_list(db_connection, offset, per_page,
+    for row_data in await request.app.db_functions.db_media_tv_list(db_connection, offset, per_page,
                                                         request['session']['search_text']):
         # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
         # 3 - mm_metadata_tvshow_localimage_json
@@ -36,7 +36,7 @@ async def url_bp_user_tv(request):
                 row_data['mm_count'])))
     request['session']['search_page'] = 'media_tv'
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_web_tvmedia_list_count(db_connection,
+                            total=await request.app.db_functions.db_media_tv_list_count(db_connection,
                                 None, None, request['session']['search_text']),
                             record_name='TV show(s)',
                             format_total=True,

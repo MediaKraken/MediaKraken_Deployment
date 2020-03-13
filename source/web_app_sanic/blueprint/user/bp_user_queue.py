@@ -17,7 +17,7 @@ async def url_bp_user_queue_page(request, user):
     request['session']['search_page'] = 'user_media_queue'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_web_tvmedia_list_count(
+                            total=await request.app.db_functions.db_meta_queue_list_count(
                                 db_connection,
                                 None, None,
                                 request['session']['search_text']),

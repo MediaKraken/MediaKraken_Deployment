@@ -16,7 +16,7 @@ async def url_bp_user_media_genre(request):
     media = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_movie_count_by_genre(db_connection,
-            common_global.DLMediaType.Movie.value):
+                                                                                 common_global.DLMediaType.Movie.value):
         media.append((row_data['gen']['name'],
                       common_internationalization.com_inter_number_format(
                           row_data[1]),
@@ -36,10 +36,17 @@ async def url_bp_user_movie_page(request, user, genre):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_web_media_list(db_connection,
-            common_global.DLMediaType.Movie.value,
-            list_type='movie', list_genre=genre, list_limit=per_page, group_collection=False,
-            offset=offset, include_remote=True, search_text=request['session']['search_text']):
+    for row_data in await request.app.db_functions.db_media_movie_list(db_connection,
+                                                                       common_global.DLMediaType.Movie.value,
+                                                                       list_type='movie',
+                                                                       list_genre=genre,
+                                                                       list_limit=per_page,
+                                                                       group_collection=False,
+                                                                       offset=offset,
+                                                                       include_remote=True,
+                                                                       search_text=
+                                                                       request['session'][
+                                                                           'search_text']):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_metadata_user_json,
         # 3 - mm_metadata_localimage_json
         common_global.es_inst.com_elastic_index('info',
@@ -92,9 +99,14 @@ async def url_bp_user_movie_page(request, user, genre):
         else:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'], None,
                           watched_status, sync_status, rating_status, match_status))
-    total = await request.app.db_functions.db_web_media_list_count(db_connection,
-        common_global.DLMediaType.Movie.value, list_type='movie', list_genre=genre,
-        group_collection=False, include_remote=True, search_text=request['session']['search_text'])
+    total = await request.app.db_functions.db_media_movie_list_count(db_connection,
+                                                                     common_global.DLMediaType.Movie.value,
+                                                                     list_type='movie',
+                                                                     list_genre=genre,
+                                                                     group_collection=False,
+                                                                     include_remote=True,
+                                                                     search_text=request['session'][
+                                                                         'search_text'])
     await request.app.db_pool.release(db_connection)
     request['session']['search_page'] = 'media_movie'
     pagination = Pagination(request,
