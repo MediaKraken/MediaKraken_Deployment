@@ -75,13 +75,22 @@ file_handle.write('    """\n')
 file_handle.write('    Main database class for async database access\n')
 file_handle.write('    """\n')
 for file_name in init_dict.keys():
-    first_record = True
-    file_handle.write(
-        '    from database_async.%s \\\n' % os.path.basename(file_name).split('.py')[0])
-    for db_call in init_dict[file_name]:
-        if first_record:
-            first_record = False
-            file_handle.write('        import %s, \\\n' % db_call)
-        else:
-            file_handle.write('        %s, \\\n' % db_call)
+    if len(init_dict[file_name]) > 0:
+        first_record = True
+        file_handle.write(
+            '    from database_async.%s \\\n' % os.path.basename(file_name).split('.py')[0])
+        db_call_count = 0
+        for db_call in init_dict[file_name]:
+            db_call_count += 1
+            if first_record:
+                first_record = False
+                if db_call_count == len(init_dict[file_name]):
+                    file_handle.write('        import %s\n' % db_call)
+                else:
+                    file_handle.write('        import %s, \\\n' % db_call)
+            else:
+                if db_call_count == len(init_dict[file_name]):
+                    file_handle.write('        %s\n' % db_call)
+                else:
+                    file_handle.write('        %s, \\\n' % db_call)
 file_handle.close()
