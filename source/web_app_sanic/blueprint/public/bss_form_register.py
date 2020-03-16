@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo
 
 
-class BSSRegistrationForm(SanicForm):
+class BSSRegisterForm(SanicForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
