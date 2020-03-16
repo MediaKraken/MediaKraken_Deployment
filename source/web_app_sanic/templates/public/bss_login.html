@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-
+{% block content %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -33,7 +31,7 @@
                                         <hr>
                                     </form>
                                     <div class="text-center"><a class="small" href="./web_app_async/templates/public/bss_forgot_password.html">Forgot Password?</a></div>
-                                    <div class="text-center"><a class="small" href="./web_app_async/templates/public/bss_register.html">Create an Account!</a></div>
+                                    <div class="text-center"><a class="small" href="/register">Create an Account!</a></div>
                                 </div>
                             </div>
                         </div>
@@ -48,5 +46,4 @@
     <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
 </body>
-
-</html>
+{% endblock %}
