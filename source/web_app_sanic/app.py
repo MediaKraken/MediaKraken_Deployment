@@ -48,8 +48,8 @@ session = Session(app)
 common_global.jinja_template = SanicJinja2(app)
 # since I use global jinja....these MUST be after the initialization otherwise template = NONE
 from web_app_sanic.blueprint import blueprint_content_mediakraken
-from web_app_sanic.blueprint.public.loginform import LoginForm
-from web_app_sanic.blueprint.public.forms import RegisterForm
+from web_app_sanic.blueprint.public.bss_form_login import BSSLoginForm
+from web_app_sanic.blueprint.public.bss_form_register import BSSRegisterForm
 
 app.static('/static', './web_app_async/static')
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
@@ -79,9 +79,9 @@ async def no_details_to_user(request: Request, exception: Exception):
 
 
 @app.route("/login", methods=['GET', 'POST'])
-@common_global.jinja_template.template('public/login.html')
+@common_global.jinja_template.template('public/bss_login.html')
 async def login(request):
-    form = LoginForm(request)
+    form = BSSLoginForm(request)
     errors = {}
     if request.method == 'POST' and form.validate():
         username = form.username.data
@@ -106,19 +106,14 @@ async def login(request):
 
 
 @app.route("/register", methods=['GET', 'POST'])
-@common_global.jinja_template.template('public/register.html')
+@common_global.jinja_template.template('public/bss_register.html')
 async def register(request):
     errors = {}
-    form = RegisterForm(request)
+    form = BSSRegisterForm(request)
     if request.method == 'POST' and form.validate():
         username = form.username.data
         email = form.email.data
         password = form.password.data
-        confirm = form.confirm.data
-        # this is done in the form.validate
-        # if password != confirm:
-        #     errors['password_errors'] = "Passwords do not match."
-        # else:
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
         try:
