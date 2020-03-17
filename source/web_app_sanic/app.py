@@ -69,7 +69,7 @@ connection = pika.BlockingConnection(parameters)
 app.amqp_channel = connection.channel()
 
 
-@app.errorhandler(NotFound)
+@app.exception(NotFound)
 async def page_not_found(request, exception):
     return text('This route does not exist {}'.format(request.url))
 
