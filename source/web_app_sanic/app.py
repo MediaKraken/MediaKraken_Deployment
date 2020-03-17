@@ -10,6 +10,7 @@ from python_paginate.css.semantic import Semantic
 from python_paginate.web.sanic_paginate import Pagination
 from sanic import Sanic
 from sanic import response
+from sanic.exceptions import NotFound
 from sanic.exceptions import SanicException
 from sanic.exceptions import ServerError
 from sanic.log import logger
@@ -66,6 +67,11 @@ parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
                                        credentials=credentials)
 connection = pika.BlockingConnection(parameters)
 app.amqp_channel = connection.channel()
+
+
+@app.errorhandler(NotFound)
+async def page_not_found(request, exception):
+    return text('This route does not exist {}'.format(request.url))
 
 
 @app.exception(Exception)
