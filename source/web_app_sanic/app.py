@@ -72,6 +72,7 @@ app.amqp_channel = connection.channel()
 @app.exception(NotFound)
 async def page_not_found(request, exception):
     print('This route does not exist {}'.format(request.url))
+    return {}
 
 
 @app.exception(Exception)
