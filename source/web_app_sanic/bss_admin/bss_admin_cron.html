@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Table - Brand</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/bss_user/bss_user_home.html">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-pastafarianism"></i></div>&nbsp;Mediakraken</a>
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/bss_admin/bss_admin_home.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a><a class="nav-link" href="/bss_admin/bss_admin_backup.html"><i class="far fa-hdd"></i><span>Backup</span></a>
+                        <a
+                            class="nav-link" href="/bss_admin/bss_admin_cron.html"><i class="fas fa-toolbox"></i><span>Cron/Housekeeping</span></a><a class="nav-link" href="blank.html"><i class="fas fa-cloud"></i><span>Cloud</span></a><a class="nav-link" href="/bss_admin/bss_admin_db_statistics.html"><i class="fas fa-database"></i><span>DB Statistics</span></a>
+                            <a
+                                class="nav-link" href="/bss_admin/bss_admin_docker.html"><i class="fab fa-docker"></i><span>Docker Statistics</span></a><a class="nav-link" href="blank.html"><i class="fas fa-gamepad"></i><span>Game Metadata</span></a><a class="nav-link" href="blank.html"><i class="fas fa-microchip"></i><span>Hardware</span></a>
+                                <a
+                                    class="nav-link" href="/bss_admin/bss_admin_library.html"><i class="fas fa-ticket-alt"></i><span>Library</span></a><a class="nav-link" href="blank.html"><i class="fas fa-clipboard-list"></i><span>Reports</span></a><a class="nav-link" href="blank.html"><i class="fas fa-cogs"></i><span>Server</span></a>
+                                    <a
+                                        class="nav-link" href="blank.html"><i class="fas fa-link"></i><span>Server Links</span></a><a class="nav-link" href="blank.html"><i class="fas fa-share"></i><span>Shares (UNC/SMB/NFS)</span></a><a class="nav-link" href="blank.html"><i class="fas fa-bolt"></i><span>Transmission</span></a>
+                                        <a
+                                            class="nav-link" href="/bss_admin/bss_admin_user.html"><i class="fas fa-user-alt"></i><span>Users</span></a>
+                    </li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div class="container-fluid">
+                    <fieldset>
+                        <legend><strong>Cron/Housekeeping Jobs</strong><br></legend><div>    {% if media_cron %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Cron Name</th>
+                    <th>Description</th>
+                    <th>Enabled</th>
+                    <th>Schedule</th>
+                    <th>Last Run</th>
+                    <th>Run</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row_data in media_cron %}
+                <tr>
+                    <td>{{ loop.index + (page - 1) * per_page }}</td>
+                    <td>{{ row_data[1] }}</td>
+                    <td>{{ row_data[2] }}</td>
+                    <td>{{ row_data[3] }}</td>
+                    <td>{{ row_data[4] }}</td>
+                    <td>{{ row_data[5] }}</td>
+                    <td>
+                        <a href= "{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}" id="play_button">
+                            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/play.png') }}" height="20" width="20">
+                        </a>
+                    </td>
+                    <div class="pull-right action-buttons">
+                        <td>
+                            <p><button> <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editCronModal" onclick="EditCron(this)" ><span class="fas pencil-alt"></span></button></a>
+                        </td>
+                        <td>
+                            <p><button> <a data-id={{ row_data[0] }} onclick="ConfirmCronDelete(this)" ><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button></a>
+                        </td>
+                    </div>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="confirm_cron" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button>
+                    <h4 class="modal-title custom_align" id="Heading">Run this Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to run this cron?</div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" onclick="Cron_Run()" ><span class="fas check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editCronModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="editModalLabel">Update Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Path:</label>
+                            <input type="text" class="form-control" id="editPath">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Media Class:</label>
+                            <textarea class="form-control" id="editClass"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnCronUpdate">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete_cron" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button>
+                    <h4 class="modal-title custom_align" id="Heading">Delete this Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to delete this cron?</div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" onclick="Cron_Delete()" ><span class="fas check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ pagination.links }}
+    {% else %}
+    <p id="general_text">No cron jobs found.</p>
+    {% endif %</div></fieldset>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="/assets/js/script.min.js"></script>
+</body>
+
+</html>

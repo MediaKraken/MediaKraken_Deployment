@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>MKSanic</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
+</head>
+
+<body>
+    <!-- Start: Navigation with Button -->
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+        <div class="container"><a class="navbar-brand" href="/bss_user/bss_user_home.html">MediaKraken</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div
+                class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="#">Sync</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Metadata</a>
+                        <div class="dropdown-menu" role="menu">
+                            <!-- Start: metadata_movie --><a class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_movie.html">Movie</a>
+                            <!-- End: metadata_movie --><a class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_movie_collection.html">Movie Collection</a><a class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_tv.html">TV Show</a>
+                            <a
+                                class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_music_album.html">Music Album</a><a class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_sports.html">Sports</a><a class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_game.html">Games</a>
+                                <a
+                                    class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_game_systems.html">Game Systems</a><a class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_person.html">Person</a><a class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_book.html">Book/Periodical</a>
+                                    <a
+                                        class="dropdown-item" role="presentation" href="/bss_user/metadata/bss_user_metadata_music_video.html">Music Video</a>
+                        </div>
+                    </li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/bss_user/bss_user_profile.html">Profile</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/bss_admin/bss_admin_home.html">Admin</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="#">About</a></li>
+                </ul><span class="navbar-text actions"> <a class="login" href="#">Log Out</a></span></div>
+        </div>
+    </nav>
+    <!-- End: Navigation with Button -->
+    <div><div>    {% if data_name %}
+    <div id="movie_detail">
+        <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" id="fs_bg_image" />
+        <div id="movie_image_div" class="table-responsive">
+            <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" >
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <div style="clear: both;"></div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="movie_detail_div" class="table-responsive">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <div id="textbox">
+                            <p class="alignleft">Title: {{data_name}}</p>
+                        </div>
+                        <div style="clear: both;"></div>
+                        {% if data_genres %}
+                        <p>Genres: {{data_genres}}</p>
+                        {% endif %}
+                        {% if json_metadata['overview'] %}
+                        <div style="clear: both;"></div>
+                        <p>Overview: {{json_metadata['overview']}}</p>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <p id="general_text">No info found. ERROR! You should never see this message.</p>
+    {% endif %}
+</div></div>
+    <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+            <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
+        </div>
+    </footer>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="/assets/js/script.min.js"></script>
+</body>
+
+</html>

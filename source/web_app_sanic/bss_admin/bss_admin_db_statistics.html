@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Table - Brand</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/bss_user/bss_user_home.html">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-pastafarianism"></i></div>&nbsp;Mediakraken</a>
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/bss_admin/bss_admin_home.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a><a class="nav-link" href="/bss_admin/bss_admin_backup.html"><i class="far fa-hdd"></i><span>Backup</span></a>
+                        <a
+                            class="nav-link" href="/bss_admin/bss_admin_cron.html"><i class="fas fa-toolbox"></i><span>Cron/Housekeeping</span></a><a class="nav-link" href="blank.html"><i class="fas fa-cloud"></i><span>Cloud</span></a><a class="nav-link" href="/bss_admin/bss_admin_db_statistics.html"><i class="fas fa-database"></i><span>DB Statistics</span></a>
+                            <a
+                                class="nav-link" href="/bss_admin/bss_admin_docker.html"><i class="fab fa-docker"></i><span>Docker Statistics</span></a><a class="nav-link" href="blank.html"><i class="fas fa-gamepad"></i><span>Game Metadata</span></a><a class="nav-link" href="blank.html"><i class="fas fa-microchip"></i><span>Hardware</span></a>
+                                <a
+                                    class="nav-link" href="/bss_admin/bss_admin_library.html"><i class="fas fa-ticket-alt"></i><span>Library</span></a><a class="nav-link" href="blank.html"><i class="fas fa-clipboard-list"></i><span>Reports</span></a><a class="nav-link" href="blank.html"><i class="fas fa-cogs"></i><span>Server</span></a>
+                                    <a
+                                        class="nav-link" href="blank.html"><i class="fas fa-link"></i><span>Server Links</span></a><a class="nav-link" href="blank.html"><i class="fas fa-share"></i><span>Shares (UNC/SMB/NFS)</span></a><a class="nav-link" href="blank.html"><i class="fas fa-bolt"></i><span>Transmission</span></a>
+                                        <a
+                                            class="nav-link" href="/bss_admin/bss_admin_user.html"><i class="fas fa-user-alt"></i><span>Users</span></a>
+                    </li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold"><strong>Parallel Workers: {{data_workers}}</strong></p>
+                        </div>
+                        <div class="card-body">
+                            <fieldset>
+                                <legend>Database Record Count</legend>
+                            </fieldset><div>        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Table</th>
+                    <th>Record(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row_data in data_db_count %}
+                <tr>
+                    <td>{{ row_data[0] }}</td>
+                    <td>{{ row_data[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div></div>
+                        <div class="card-body">
+                            <fieldset>
+                                <legend>Database Table Size<br></legend>
+                            </fieldset><div>        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Table</th>
+                    <th>Size</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row_data in data_db_size %}
+                <tr>
+                    <td>{{ row_data[0] }}</td>
+                    <td>{{ row_data[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div></div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="/assets/js/script.min.js"></script>
+</body>
+
+</html>
