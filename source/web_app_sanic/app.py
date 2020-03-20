@@ -52,8 +52,8 @@ from web_app_sanic.blueprint import blueprint_content_mediakraken
 from web_app_sanic.blueprint.public.bss_form_login import BSSLoginForm
 from web_app_sanic.blueprint.public.bss_form_register import BSSRegisterForm
 
-app.static('/static', './web_app_async/static')
-app.static('/assets', './web_app_async/assets')
+app.static('/static', './web_app_sanic/static')
+app.static('/assets', './web_app_sanic/assets')
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
