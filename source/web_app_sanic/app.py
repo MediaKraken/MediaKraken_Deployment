@@ -91,11 +91,6 @@ async def no_details_to_user(request: Request, exception: Exception):
     return text('Server error', 500)
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
 @app.route("/login", methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_public/bss_login.html')
 async def login(request):
