@@ -53,6 +53,7 @@ from web_app_sanic.blueprint import blueprint_content_mediakraken
 from web_app_sanic.blueprint.public.bss_form_login import BSSLoginForm
 from web_app_sanic.blueprint.public.bss_form_register import BSSRegisterForm
 
+# keep in this order as sanic-jinja2 seems to grab the last one for it's url_for's
 app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
 app.static('/static', './web_app_sanic/static')
 #app.static('/assets', './web_app_sanic/assets', name='assets')
