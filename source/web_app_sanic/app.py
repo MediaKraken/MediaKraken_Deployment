@@ -1,4 +1,5 @@
 import os
+import traceback
 
 import database_async as database_base_async
 import pika
@@ -81,8 +82,10 @@ async def no_details_to_user(request: Request, exception: Exception):
     if isinstance(exception, SanicException):
         str_code = str(exception.status_code)
         logger.info(f'[{str_code}]')
+        traceback.print_exc()
         return text(str_code, exception.status_code)
     logger.exception(exception)
+    traceback.print_exc()
     return text('Server error', 500)
 
 
