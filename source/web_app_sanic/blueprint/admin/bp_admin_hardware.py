@@ -10,7 +10,7 @@ blueprint_admin_hardware = Blueprint('name_blueprint_admin_hardware', url_prefix
 
 
 @blueprint_admin_hardware.route("/hardware", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_hardware.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_hardware.html')
 @common_global.auth.login_required
 async def url_bp_admin_hardware(request):
     if request.method == 'POST':
@@ -60,7 +60,7 @@ async def url_bp_admin_hardware_chromecast_delete(request):
 
 
 @blueprint_admin_hardware.route("/hardware_chromecast_edit", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_hardware_chromecast_edit.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_hardware_chromecast_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_hardware_chromecast_edit(request):
     """
@@ -94,7 +94,7 @@ async def url_bp_admin_hardware_chromecast_edit(request):
 
 
 @blueprint_admin_hardware.route("/hardware_tvtuner_edit", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_hardware_tuner_edit.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_hardware_tuner_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_hardware_tvtuner_edit(request):
     """

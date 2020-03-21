@@ -14,7 +14,7 @@ blueprint_admin_library = Blueprint('name_blueprint_admin_library', url_prefix='
 
 
 @blueprint_admin_library.route("/library", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_library.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_library.html')
 @common_global.auth.login_required
 async def url_bp_admin_library(request):
     """
@@ -82,7 +82,7 @@ async def url_bp_admin_library_delete(request):
 
 
 @blueprint_admin_library.route("/library_edit", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_library_edit.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_library_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_library_edit(request):
     """

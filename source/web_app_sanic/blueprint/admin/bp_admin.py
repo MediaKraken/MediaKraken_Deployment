@@ -12,7 +12,7 @@ blueprint_admin = Blueprint('name_blueprint_admin', url_prefix='/admin')
 
 
 @blueprint_admin.route("/")
-@common_global.jinja_template.template('admin/admin.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_home.html')
 @common_global.auth.login_required
 async def url_bp_admin(request):
     """
@@ -90,7 +90,7 @@ async def url_bp_admin(request):
 
 
 @blueprint_admin.route("/admin_settings", methods=['GET', 'POST'])
-@common_global.jinja_template.template('admin/admin_server_settings.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_settings.html')
 @common_global.auth.login_required
 async def url_bp_admin_server_settings(request):
     """
@@ -163,8 +163,8 @@ async def url_bp_admin_server_settings(request):
     }
 
 
-@blueprint_admin.route("/admin_sidenav")
-@common_global.jinja_template.template('admin/admin_sidenav.html')
-@common_global.auth.login_required
-async def url_bp_admin_sidenav(request):
-    return {}
+# @blueprint_admin.route("/admin_sidenav")
+# @common_global.jinja_template.template('admin/admin_sidenav.html')
+# @common_global.auth.login_required
+# async def url_bp_admin_sidenav(request):
+#     return {}

@@ -8,7 +8,7 @@ blueprint_admin_messages = Blueprint('name_blueprint_admin_messages', url_prefix
 
 
 @blueprint_admin_messages.route("/messages", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_messages.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_messages.html')
 @common_global.auth.login_required
 async def url_bp_admin_messages(request):
     """

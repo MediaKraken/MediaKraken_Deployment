@@ -11,7 +11,7 @@ blueprint_admin_cron = Blueprint('name_blueprint_admin_cron', url_prefix='/admin
 
 
 @blueprint_admin_cron.route('/cron')
-@common_global.jinja_template.template('admin/admin_cron.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_cron.html')
 @common_global.auth.login_required
 async def url_bp_admin_cron(request):
     """
@@ -49,7 +49,7 @@ async def url_bp_admin_cron_delete(request):
 
 
 @blueprint_admin_cron.route('/cron_edit/<guid>', methods=['GET', 'POST'])
-@common_global.jinja_template.template('admin/admin_cron_edit.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_cron_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_cron_edit(request, guid):
     """
@@ -88,4 +88,4 @@ async def url_bp_admin_cron_run(request, user, guid):
     await request.app.db_functions.db_cron_time_update(db_connection,
                                                        cron_job_data['mm_cron_name'])
     await request.app.db_pool.release(db_connection)
-    return redirect(request.app.url_for('admins_cron.admin_cron'))
+    return redirect(request.app.url_for('blueprint_admin_cron.url_bp_admin_cron'))

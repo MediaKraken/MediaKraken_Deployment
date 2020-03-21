@@ -9,7 +9,7 @@ blueprint_admin_transmission = Blueprint('name_blueprint_admin_transmission', ur
 
 
 @blueprint_admin_transmission.route("/transmission")
-@common_global.jinja_template.template('admin/admin_transmission.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_transmission.html')
 @common_global.auth.login_required
 async def url_bp_admin_transmission(request):
     """

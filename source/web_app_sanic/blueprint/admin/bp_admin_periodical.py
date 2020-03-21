@@ -8,7 +8,7 @@ blueprint_admin_periodical = Blueprint('name_blueprint_admin_periodical', url_pr
 
 
 @blueprint_admin_periodical.route('/periodical_add', methods=['GET', 'POST'])
-@common_global.jinja_template.template('admin/admin_periodical_add.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_periodical_add.html')
 async def url_bp_admin_periodical_add(request):
     """
     Display periodical add page

@@ -12,7 +12,7 @@ blueprint_admin_share = Blueprint('name_blueprint_admin_share', url_prefix='/adm
 
 
 @blueprint_admin_share.route("/share", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_share.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_share.html')
 @common_global.auth.login_required
 async def url_bp_admin_share(request):
     """
@@ -62,7 +62,7 @@ async def url_bp_admin_share_delete(request):
 
 
 @blueprint_admin_share.route("/share_edit", methods=["GET", "POST"])
-@common_global.jinja_template.template('admin/admin_share_edit.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_share_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_share_edit(request):
     """

@@ -20,7 +20,7 @@ async def url_bp_admin_user_delete(request):
 
 
 @blueprint_admin_users.route("/user_detail/<guid>")
-@common_global.jinja_template.template('admin/admin_user_detail.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_user_detail.html')
 @common_global.auth.login_required
 async def url_bp_admin_user_detail(request, guid):
     """
@@ -33,7 +33,7 @@ async def url_bp_admin_user_detail(request, guid):
 
 
 @blueprint_admin_users.route("/users")
-@common_global.jinja_template.template('admin/admin_users.html')
+@common_global.jinja_template.template('bss_admin/bss_admin_user.html')
 @common_global.auth.login_required
 async def url_bp_admin_user(request):
     """
