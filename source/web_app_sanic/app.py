@@ -57,7 +57,6 @@ app.static('/static', './web_app_sanic/static')
 app.static('/assets', './web_app_sanic/assets', name='assets')
 app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
 
-# app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
 
