@@ -55,6 +55,8 @@ from web_app_sanic.blueprint.public.bss_form_register import BSSRegisterForm
 
 app.static('/static', './web_app_sanic/static')
 app.static('/assets', './web_app_sanic/assets')
+app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
+
 # app.add_url_rule('/favicon.ico', redirect_to=url_for('static', filename='favicon.ico'))
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
@@ -88,6 +90,11 @@ async def no_details_to_user(request: Request, exception: Exception):
     traceback.print_exc()
     return text('Server error', 500)
 
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route("/login", methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_public/bss_login.html')
