@@ -92,7 +92,7 @@ async def page_not_found(request, exception):
 
 
 @app.route("/login", methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_public/bss_login.html')
+@common_global.jinja_template.template('bss_public/bss_public_login.html')
 async def login(request):
     form = BSSLoginForm(request)
     errors = {}
@@ -119,7 +119,7 @@ async def login(request):
 
 
 @app.route("/register", methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_public/bss_register.html')
+@common_global.jinja_template.template('bss_public/bss_public_register.html')
 async def register(request):
     errors = {}
     form = BSSRegisterForm(request)
