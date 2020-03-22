@@ -68,7 +68,7 @@ services:
   database:
     image: mediakraken/mkdatabase:latest
     environment:
-      - MAX_CONNECTIONS=100
+      - MAX_CONNECTIONS=125
       - MAX_WAL_SENDERS=10
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB

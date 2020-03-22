@@ -70,7 +70,7 @@ services:
   database:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
     environment:
-      - MAX_CONNECTIONS=100
+      - MAX_CONNECTIONS=125
       - MAX_WAL_SENDERS=10
       - SHARED_BUFFERS=4096MB
       - WORK_MEM=256MB
@@ -317,7 +317,7 @@ services:
 
   # Runs the web service for the main server application
   webapp:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebapp:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebappsanic:dev
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
@@ -329,7 +329,7 @@ services:
       - pgbouncer
       - rabbit
       - redis
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- uwsgi --pcre-jit --gevent 100 --http11-socket :8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- gunicorn web_app_sanic.app:app -b :8080 -w 4 -k uvicorn.workers.UvicornWorker
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
