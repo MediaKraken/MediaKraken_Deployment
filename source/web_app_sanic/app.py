@@ -112,7 +112,7 @@ async def login(request):
         except:
             errors['validate_errors'] = "Username or password invalid"
         await request.app.db_pool.release(db_connection)
-    errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
+    # TODO errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
     return {'form': form,
