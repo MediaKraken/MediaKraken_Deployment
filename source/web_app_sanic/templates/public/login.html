@@ -3,7 +3,7 @@
     {% block content %}
     <form action="" method="post">
     {{ errors.token_errors }}
-    <span style="color: red;">{{errors.validate_errors}}</span>
+        <span style="color: red;">{{errors.validate_errors}}</span>
         <br>
         {{ form.csrf_token }}
         {{form.username.label}}
