@@ -10,6 +10,8 @@ from sanic import Blueprint
 
 blueprint_admin = Blueprint('name_blueprint_admin', url_prefix='/admin')
 
+outside_ip = None
+
 
 @blueprint_admin.route("/")
 @common_global.jinja_template.template('bss_admin/bss_admin_home.html')
@@ -42,8 +44,7 @@ async def url_bp_admin(request):
     data_transmission_active = False
     if await \
             request.app.db_functions.db_opt_status_read(db_connection)['mm_options_json'][
-                'Transmission'][
-                'Host'] is not None:
+                'Transmission']['Host'] is not None:
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
@@ -161,7 +162,6 @@ async def url_bp_admin_server_settings(request):
         'mediabrainz_api_key': mediabrainz_api_key,
         'opensubtitles_api_key': opensubtitles_api_key
     }
-
 
 # @blueprint_admin.route("/admin_sidenav")
 # @common_global.jinja_template.template('admin/admin_sidenav.html')
