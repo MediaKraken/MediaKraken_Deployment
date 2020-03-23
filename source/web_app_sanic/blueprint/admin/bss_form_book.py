@@ -1,9 +1,9 @@
-from sanic_wtf import SanicForm as Form
+from sanic_wtf import SanicForm
 from wtforms import TextAreaField
 from wtforms.validators import DataRequired
 
 
-class BookAddForm(Form):
+class BookAddForm(SanicForm):
     """
     # for adding books
     """

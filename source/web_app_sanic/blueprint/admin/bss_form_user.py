@@ -1,9 +1,9 @@
-from sanic_wtf import SanicForm as Form
+from sanic_wtf import SanicForm
 from wtforms import TextField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
-class UserEditForm(Form):
+class UserEditForm(SanicForm):
     """
     for editing user
     """

@@ -1,28 +1,3 @@
-# iradio
-@blueprint.route('/iradio', methods=['GET', 'POST'])
-@login_required
-async def url_bp_user_iradio_list(request):
-    """
-    Display main page for internet radio
-    """
-    page, per_page, offset = Pagination.get_page_args(request)
-    media = []
-    if request['session']['search_text'] is not None:
-        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset, per_page,
-                                                   search_value=request['session']['search_text'])
-    else:
-        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset, per_page)
-    return render_template("users/user_iradio_list.html")
-
-
-@blueprint.route('/iradio_detail/<guid>')
-@login_required
-async def url_bp_user_iradio_detail(request, guid):
-    """
-    Display main page for internet radio
-    """
-    pass
-
 
 @blueprint.before_request
 async def before_request():

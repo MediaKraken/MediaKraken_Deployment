@@ -1,8 +1,8 @@
-from sanic_wtf import SanicForm as Form
+from sanic_wtf import SanicForm
 from wtforms import TextField, SelectField
 
 
-class ShareAddEditForm(Form):
+class ShareAddEditForm(SanicForm):
     """
     for editing the shares
     """

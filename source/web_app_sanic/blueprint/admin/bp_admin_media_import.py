@@ -1,6 +1,13 @@
-@blueprint.route("/mediaimport", methods=["GET", "POST"])
-@login_required
-@admin_required
+from common import common_file
+from common import common_global
+from sanic import Blueprint
+
+blueprint_admin_media_import = Blueprint('name_blueprint_admin_media_import', url_prefix='/admin')
+
+
+@blueprint_admin_media_import.route("/media_import", methods=["GET", "POST"])
+@common_global.jinja_template.template('bss_admin/bss_admin_media_import.html')
+@common_global.auth.login_required
 async def url_bp_admin_media_import(request):
     """
     Import media
@@ -15,6 +22,6 @@ async def url_bp_admin_media_import(request):
     if media_file_list is not None:
         for media_file in media_file_list:
             media_data.append((media_file[0], media_file[1]))
-    return render_template("admin/admin_media_import.html",
-                           media_dir=media_data,
-                           )
+    return {
+        'media_dir': media_data,
+    }

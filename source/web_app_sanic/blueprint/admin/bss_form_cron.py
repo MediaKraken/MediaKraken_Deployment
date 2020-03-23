@@ -1,11 +1,11 @@
 from decimal import ROUND_UP
 
-from sanic_wtf import SanicForm as Form
+from sanic_wtf import SanicForm
 from wtforms import TextField, TextAreaField, BooleanField, SelectField, DecimalField
 from wtforms.validators import DataRequired
 
 
-class CronEditForm(Form):
+class CronEditForm(SanicForm):
     """
     for editing the cron jobs
     """

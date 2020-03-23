@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
-
-from sanic_wtf import SanicForm as Form
-from wtforms import TextField, PasswordField, \
-    SelectField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from sanic_wtf import SanicForm
+from wtforms import TextField, SelectField
+from wtforms.validators import DataRequired, Length
 
 
 # for editing sync jobs
-class SyncEditForm(Form):
+class SyncEditForm(SanicForm):
     # fields
     name = TextField("Name", validators=[DataRequired()])
     target_type = SelectField("Sync Type", choices=[('Local File System', 'Local File System'),
@@ -74,89 +71,6 @@ class SyncEditForm(Form):
 
     def validate(self):
         initial_validation = super(SyncEditForm, self).validate()
-        if not initial_validation:
-            return False
-        return True
-
-
-# new user registration
-class RegisterForm(Form):
-    username = TextField('Username',
-                         validators=[DataRequired(), Length(min=3, max=25)])
-    email = TextField('Email',
-                      validators=[DataRequired(), Email(), Length(min=6, max=40)])
-    password = PasswordField('Password',
-                             validators=[DataRequired(), Length(min=6, max=40)])
-    confirm = PasswordField('Verify password',
-                            [DataRequired(), EqualTo('password', message='Passwords must match')])
-
-    def __init__(self, *args, **kwargs):
-        super(RegisterForm, self).__init__(*args, **kwargs)
-        self.user = None
-
-    def validate(self):
-        initial_validation = super(RegisterForm, self).validate()
-        if not initial_validation:
-            return False
-        user = User.query.filter_by(username=self.username.data).first()
-        if user:
-            self.username.errors.append("Username already registered")
-            return False
-        user = User.query.filter_by(email=self.email.data).first()
-        if user:
-            self.email.errors.append("Email already registered")
-            return False
-        return True
-
-
-# for searching
-class SearchEditForm(Form):
-    # fields
-    search_string = TextField("Search string", validators=[DataRequired()])
-    search_media_type = SelectField("Media Type", choices=[('any', 'Any'),
-                                                           ('video', 'Video'),
-                                                           ('audio', 'Audio'),
-                                                           ('image', 'Image'),
-                                                           ('publication', 'Publication'),
-                                                           ('game', 'Game')])
-    # TODO populate from all lang found on media?
-    search_primary_language = SelectField("Language", choices=[('any', 'Any'),
-                                                               ('sd', 'SD'),
-                                                               ('hd', 'HD'),
-                                                               ('uhd', 'UHD')])
-    # TODO populate from all subtitle lang found on media?
-    search_secondary_language = SelectField("Subtitle", choices=[('any', 'Any'),
-                                                                 ('sd', 'SD'),
-                                                                 ('hd', 'HD'),
-                                                                 ('uhd', 'UHD')])
-    search_resolution = SelectField("Resolution", choices=[('any', 'Any'),
-                                                           ('sd', 'SD'),
-                                                           ('hd', 'HD'),
-                                                           ('uhd', 'UHD')])
-    search_audio_channels = SelectField("Audio Channel(s)", choices=[('any', 'Any'),
-                                                                     ('1.0', '1.0 Mono'),
-                                                                     ('2.0', '2.0 Stereo'),
-                                                                     ('3.0', '3.0 Surround'),
-                                                                     ('5.1', '5.1 Surround'),
-                                                                     ('6.1', '6.1 Surround'),
-                                                                     ('7.1', '7.1 Surround')])
-    search_audio_codec = SelectField("Audio Codec", choices=[('any', 'Any'),
-                                                             ('aac', 'AAC (Advanced Audio Coding)'),
-                                                             ('ac3', 'ATSC A/52A (AC-3)'),
-                                                             (
-                                                                 'dts',
-                                                                 'DCA (DTS Coherent Acoustics)'),
-                                                             ('flac', 'FLAC'),
-                                                             ('mp3', 'MP3'),
-                                                             ('opus', 'Opus'),
-                                                             ('truehd', 'TrueHD'),
-                                                             ('vorbis', 'Vorbis')])
-
-    def __init__(self, *args, **kwargs):
-        super(SearchEditForm, self).__init__(*args, **kwargs)
-
-    def validate(self):
-        initial_validation = super(SearchEditForm, self).validate()
         if not initial_validation:
             return False
         return True

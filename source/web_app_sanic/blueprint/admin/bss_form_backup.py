@@ -1,8 +1,8 @@
-from sanic_wtf import SanicForm as Form
+from sanic_wtf import SanicForm
 from wtforms import BooleanField
 
 
-class BackupEditForm(Form):
+class BackupEditForm(SanicForm):
     """
     for editing backups
     """

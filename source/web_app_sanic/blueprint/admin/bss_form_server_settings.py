@@ -1,10 +1,10 @@
 from bss_form_required_if import RequiredIf
-from sanic_wtf import SanicForm as Form
+from sanic_wtf import SanicForm
 from wtforms import TextField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length
 
 
-class AdminSettingsForm(Form):
+class AdminSettingsForm(SanicForm):
     """
     for editing user
     """

@@ -1,8 +1,8 @@
-from sanic_wtf import SanicForm as Form
+from sanic_wtf import SanicForm
 from wtforms import TextField
 
 
-class LibraryAddEditForm(Form):
+class LibraryAddEditForm(SanicForm):
     """
     for editing the library
     """
