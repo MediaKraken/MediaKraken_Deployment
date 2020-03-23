@@ -20,49 +20,6 @@ def admin_required(fn):
     return decorated_view
 
 
-@blueprint.route("/messages", methods=["GET", "POST"])
-@login_required
-@admin_required
-async def url_bp_admin_messages(request):
-    """
-    List all NAS devices
-    """
-    messages = []
-    return render_template("admin/admin_messages.html", data_messages=messages)
-
-
-@blueprint.route("/nas", methods=["GET", "POST"])
-@login_required
-@admin_required
-async def url_bp_admin_nas(request):
-    """
-    List all NAS devices
-    """
-    nas_devices = []
-    return render_template("admin/admin_nas.html", data_nas=nas_devices)
-
-
-@blueprint.route("/zfs")
-@login_required
-@admin_required
-async def url_bp_admin_server_zfs(request):
-    """
-    Display zfs admin page
-    """
-    return render_template("admin/admin_server_zfs.html",
-                           data_zpool=common_zfs.com_zfs_zpool_list())
-
-
-@blueprint.route("/cloud")
-@login_required
-@admin_required
-async def url_bp_admin_cloud(request):
-    """
-    browse cloud via libcloud
-    """
-    return render_template("admin/admin_cloud.html")
-
-
 @blueprint.route("/chart_browser")
 @login_required
 @admin_required
@@ -103,35 +60,6 @@ async def url_bp_admin_chart_client_usage(request):
                              9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5])
     line_chart = line_chart.render(is_unicode=True)
     return render_template("admin/chart/chart_base_usage.html", line_chart=line_chart)
-
-
-@blueprint.route("/database")
-@login_required
-@admin_required
-async def url_bp_admin_database_statistics(request):
-    """
-    Display database statistics page
-    """
-    db_stats_count = []
-    db_stats_total = 0
-    for row_data in await request.app.db_functions.db_pgsql_row_count(db_connection):
-        db_stats_total += row_data[2]
-        db_stats_count.append((row_data[1],
-                               common_internationalization.com_inter_number_format(row_data[2])))
-    db_stats_count.append(
-        ('Total records:', common_internationalization.com_inter_number_format(db_stats_total)))
-    db_size_data = []
-    db_size_total = 0
-    for row_data in await request.app.db_functions.db_pgsql_table_sizes(db_connection):
-        db_size_total += row_data['total_size']
-        db_size_data.append(
-            (row_data['relation'], common_string.com_string_bytes2human(row_data['total_size'])))
-    db_size_data.append(('Total Size:', common_string.com_string_bytes2human(db_size_total)))
-    return render_template("admin/admin_server_database_stats.html",
-                           data_db_size=db_size_data,
-                           data_db_count=db_stats_count,
-                           data_workers=await request.app.db_functions.db_pgsql_parallel_workers(
-                               db_connection))
 
 
 @blueprint.route('/', defaults={'path': ''}, endpoint='listdir')
