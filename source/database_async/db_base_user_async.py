@@ -63,4 +63,4 @@ def db_user_login_validation(self, db_connection, user_name, user_password):
             return result['id'], result['is_admin']
         else:
             return 'invalid_password', None
-    return 'user_notfound', None
+    return None, None

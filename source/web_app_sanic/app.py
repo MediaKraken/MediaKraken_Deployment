@@ -101,16 +101,14 @@ async def login(request):
         username = form.username.data
         password = form.password.data
         db_connection = await request.app.db_pool.acquire()
-        try:
-            user_id, user_admin = await request.app.db_functions.db_user_login_validation(
-                db_connection, username, password)
-            if user_id.isnumeric():
-                common_global.auth.login_user(request,
-                                              User(id=user_id, name=username, admin=user_admin))
-                await app.db_pool.release(db_connection)
-                return response.redirect("/")
-        except:
-            errors['validate_errors'] = "Username or password invalid"
+        user_id, user_admin = await request.app.db_functions.db_user_login_validation(
+            db_connection, username, password)
+        if user_id.isnumeric():  # valid user
+            common_global.auth.login_user(request,
+                                          User(id=user_id, name=username, admin=user_admin))
+            await app.db_pool.release(db_connection)
+            return response.redirect("/")
+        errors['validate_errors'] = "Username or password invalid"
         await request.app.db_pool.release(db_connection)
     # TODO errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
@@ -130,16 +128,15 @@ async def register(request):
         password = form.password.data
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
-        try:
-            user_id, user_admin = await request.app.db_functions.db_user_insert(
-                db_connection, user_name=username, user_email=email, user_password=password)
+        user_id, user_admin = await request.app.db_functions.db_user_insert(
+            db_connection, user_name=username, user_email=email, user_password=password)
+        if user_id.isnumeric():  # valid user
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
             await request.app.db_pool.release(db_connection)
             return response.redirect("/")
-        except:
-            # failed to insert into database
-            errors['validate_errors'] = "failed to create user"
+        # failed to insert into database
+        errors['validate_errors'] = "Failed to create user"
         await request.app.db_pool.release(db_connection)
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
