@@ -1,6 +1,5 @@
 import os
 
-from bss_form_server_settings import AdminSettingsForm
 from common import common_global
 from common import common_hash
 from common import common_internationalization
@@ -8,6 +7,7 @@ from common import common_network
 from common import common_system
 from common import common_version
 from sanic import Blueprint
+from web_app_sanic.blueprint.admin.bss_form_server_settings import BSSAdminSettingsForm
 
 blueprint_admin = Blueprint('name_blueprint_admin', url_prefix='/admin')
 
@@ -158,7 +158,7 @@ async def url_bp_admin_server_settings(request):
                                                                   Length(min=1, max=250)])
     '''
     return {
-        'form': AdminSettingsForm(request.form),
+        'form': BSSAdminSettingsForm(request.form),
         'settings_json': settings_json,
         'mediabrainz_api_key': mediabrainz_api_key,
         'opensubtitles_api_key': opensubtitles_api_key

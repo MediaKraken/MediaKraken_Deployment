@@ -4,7 +4,7 @@ from wtforms import TextField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length
 
 
-class AdminSettingsForm(SanicForm):
+class BSSAdminSettingsForm(SanicForm):
     """
     for editing user
     """
