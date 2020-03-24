@@ -49,7 +49,7 @@ def db_user_list_name(self, db_connection, offset=0, records=None):
                                ' offset %s limit %s) order by LOWER(username)', (offset, records))
 
 
-def db_user_login_validation(self, db_connection, user_name, user_password):
+async def db_user_login_validation(self, db_connection, user_name, user_password):
     """
     # verify user logon
     """

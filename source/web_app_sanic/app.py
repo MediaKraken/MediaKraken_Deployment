@@ -100,7 +100,7 @@ async def login(request):
         password = form.password.data
         db_connection = await request.app.db_pool.acquire()
         print('after db connection')
-        user_id, user_admin = request.app.db_functions.db_user_login_validation(
+        user_id, user_admin = await request.app.db_functions.db_user_login_validation(
             db_connection, username, password)
         print(user_id, user_admin)
         if user_id.isnumeric():  # valid user
