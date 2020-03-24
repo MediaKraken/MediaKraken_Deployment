@@ -57,6 +57,8 @@ def db_user_login_validation(self, db_connection, user_name, user_password):
                                     ' from mm_user where username = %s',
                                     (user_name,))
     if result is not None:
+        print(result)
+        print(type(result))
         if result['active'] is False:
             return 'inactive_account', None
         if user_password == result['password']:
