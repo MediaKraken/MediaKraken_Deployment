@@ -98,11 +98,14 @@ async def login(request):
     form = BSSLoginForm(request)
     errors = {}
     if request.method == 'POST' and form.validate():
+        print('here i am in post')
         username = form.username.data
         password = form.password.data
         db_connection = await request.app.db_pool.acquire()
+        print('after db connection')
         user_id, user_admin = await request.app.db_functions.db_user_login_validation(
             db_connection, username, password)
+        print(user_id, user_admin)
         if user_id.isnumeric():  # valid user
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
