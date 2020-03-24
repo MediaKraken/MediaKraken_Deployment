@@ -3,7 +3,7 @@ from common import common_global
 
 def db_meta_tv_detail(self, db_connection, guid):
     """
-    # return metadata for tv show
+    # return metadata for tvshow
     """
     return db_connection.fetchrow('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
                                   ' mm_metadata_tvshow_localimage_json,'
@@ -30,7 +30,7 @@ def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_nu
     #     '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','
     #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
     #     '->\'_embedded\'->\'episodes\')::jsonb->\'summary\','
-    return db_connection.fetch(
+    return db_connection.fetchrow(
         'select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
         '->\'Episode\')::jsonb->\'EpisodeName\' as eps_name,'
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
@@ -116,19 +116,6 @@ def db_meta_tv_list_count(self, db_connection, search_value=None):
         return db_connection.fetchval('select count(*) from mm_metadata_tvshow')
 
 
-def db_meta_tv_detail(self, db_connection, guid):
-    """
-    # return metadata for tvshow
-    """
-    return db_connection.fetchrow('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
-                                  ' mm_metadata_tvshow_localimage_json,'
-                                  ' COALESCE(mm_metadata_tvshow_localimage_json'
-                                  '->\'Images\'->\'tvmaze\'->>\'Poster\','
-                                  ' mm_metadata_tvshow_localimage_json'
-                                  '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
-                                  ' where mm_metadata_tvshow_guid = %s', (guid,))
-
-
 def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_number):
     """
     # grab episodes within the season
@@ -145,7 +132,7 @@ def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_number):
     #     '->\'Images\'->\'tvmaze\'->\'Episodes\','
 
     # TODO security check the seasonumber since from webpage addy - injection
-    self.db_cursor.execute(
+    db_connection.fetch(
         'select eps_data->\'id\' as eps_id, eps_data->\'EpisodeNumber\' as eps_num,'
         ' eps_data->\'EpisodeName\' as eps_name,'
         ' eps_data->\'filename\' as eps_filename'

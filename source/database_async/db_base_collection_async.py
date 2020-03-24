@@ -58,7 +58,7 @@ def db_collection_read_by_guid(self, db_connection, media_uuid):
     """
     Collection details
     """
-    return db_connection.fetch('select mm_metadata_collection_json,'
-                               'mm_metadata_collection_imagelocal_json'
-                               ' from mm_metadata_collection'
-                               ' where mm_metadata_collection_guid = %s', (media_uuid,))
+    return db_connection.fetchrow('select mm_metadata_collection_json,'
+                                  'mm_metadata_collection_imagelocal_json'
+                                  ' from mm_metadata_collection'
+                                  ' where mm_metadata_collection_guid = %s', (media_uuid,))

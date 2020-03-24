@@ -14,8 +14,8 @@ def db_user_detail(self, db_connection, guid):
     """
     # return all data for specified user
     """
-    return db_connection.fetch('select * from mm_user'
-                               ' where id = %s', (guid,))
+    return db_connection.fetchrow('select * from mm_user'
+                                  ' where id = %s', (guid,))
 
 
 def db_user_insert(self, db_connection, user_name, user_email, user_password):
@@ -54,8 +54,8 @@ def db_user_login_validation(self, db_connection, user_name, user_password):
     # verify user logon
     """
     result = db_connection.fetchrow('select id, password, active, is_admin'
-                                 ' from mm_user where username = %s',
-                                 (user_name,))
+                                    ' from mm_user where username = %s',
+                                    (user_name,))
     if result is not None:
         if result['active'] is False:
             return 'inactive_account', None

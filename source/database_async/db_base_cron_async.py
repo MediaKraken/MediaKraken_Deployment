@@ -14,15 +14,15 @@ def db_cron_info(self, db_connection, cron_uuid):
     """
     Cron job info
     """
-    return db_connection.fetch('select mm_cron_guid,'
-                               ' mm_cron_name,'
-                               ' mm_cron_description,'
-                               ' mm_cron_enabled,'
-                               ' mm_cron_schedule,'
-                               ' mm_cron_last_run,'
-                               ' mm_cron_json'
-                               ' from mm_cron'
-                               ' where mm_cron_guid = %s', (cron_uuid,))
+    return db_connection.fetchrow('select mm_cron_guid,'
+                                  ' mm_cron_name,'
+                                  ' mm_cron_description,'
+                                  ' mm_cron_enabled,'
+                                  ' mm_cron_schedule,'
+                                  ' mm_cron_last_run,'
+                                  ' mm_cron_json'
+                                  ' from mm_cron'
+                                  ' where mm_cron_guid = %s', (cron_uuid,))
 
 
 def db_cron_list(self, db_connection, enabled_only=False, offset=0, records=None):

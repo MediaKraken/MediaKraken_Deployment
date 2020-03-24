@@ -55,7 +55,7 @@ def db_media_ffprobe_all_guid(self, db_connection, media_uuid, media_class_uuid)
     """
     # fetch all media with METADATA match
     """
-    return db_connection.fetch.execute(
+    return db_connection.fetch(
         'select distinct mm_media_guid,'
         'mm_media_ffprobe_json'
         ' from mm_media, mm_metadata_movie'

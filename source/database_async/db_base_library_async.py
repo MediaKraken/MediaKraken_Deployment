@@ -21,11 +21,11 @@ def db_library_path_by_uuid(self, db_connection, dir_id):
     """
     # lib data per id
     """
-    return db_connection.fetch('select mm_media_dir_guid,'
-                               ' mm_media_dir_path,'
-                               ' mm_media_dir_class_type'
-                               ' from mm_media_dir'
-                               ' where mm_media_dir_share_guid = %s', (dir_id,))
+    return db_connection.fetchrow('select mm_media_dir_guid,'
+                                  ' mm_media_dir_path,'
+                                  ' mm_media_dir_class_type'
+                                  ' from mm_media_dir'
+                                  ' where mm_media_dir_share_guid = %s', (dir_id,))
 
 
 def db_library_path_check(self, db_connection, dir_path):
@@ -48,11 +48,11 @@ def db_library_path_status(self, db_connection):
     """
     # read scan status
     """
-    return db_connection.fetch('select mm_media_dir_path,'
-                               ' mm_media_dir_status'
-                               ' from mm_media_dir'
-                               ' where mm_media_dir_status IS NOT NULL'
-                               ' order by mm_media_dir_path')
+    return db_connection.fetchrow('select mm_media_dir_path,'
+                                  ' mm_media_dir_status'
+                                  ' from mm_media_dir'
+                                  ' where mm_media_dir_status IS NOT NULL'
+                                  ' order by mm_media_dir_path')
 
 
 def db_library_path_update_by_uuid(self, db_connection, lib_path, class_guid, lib_guid):
