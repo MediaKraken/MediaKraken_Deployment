@@ -53,7 +53,7 @@ def db_user_login_validation(self, db_connection, user_name, user_password):
     """
     # verify user logon
     """
-    result = db_connection.fetch('select id, password, active, is_admin'
+    result = db_connection.fetchrow('select id, password, active, is_admin'
                                  ' from mm_user where username = %s',
                                  (user_name,))
     if result is not None:
