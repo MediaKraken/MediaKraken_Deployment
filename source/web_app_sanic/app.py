@@ -1,5 +1,4 @@
 import os
-import traceback
 
 import database_async as database_base_async
 import pika
@@ -12,10 +11,7 @@ from python_paginate.web.sanic_paginate import Pagination
 from sanic import Sanic
 from sanic import response
 from sanic.exceptions import NotFound
-from sanic.exceptions import SanicException
 from sanic.exceptions import ServerError
-from sanic.log import logger
-from sanic.request import Request
 from sanic.response import redirect, text
 from sanic_auth import Auth, User
 from sanic_jinja2 import SanicJinja2
@@ -56,8 +52,8 @@ from web_app_sanic.blueprint.public.bss_form_register import BSSRegisterForm
 # keep in this order as sanic-jinja2 seems to grab the last one for it's url_for's
 app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
 app.static('/static', './web_app_sanic/static')
-#app.static('/assets', './web_app_sanic/assets', name='assets')
-#app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
+# app.static('/assets', './web_app_sanic/assets', name='assets')
+# app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
 
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
@@ -104,7 +100,7 @@ async def login(request):
         password = form.password.data
         db_connection = await request.app.db_pool.acquire()
         print('after db connection')
-        user_id, user_admin = await request.app.db_functions.db_user_login_validation(
+        user_id, user_admin = request.app.db_functions.db_user_login_validation(
             db_connection, username, password)
         print(user_id, user_admin)
         if user_id.isnumeric():  # valid user
