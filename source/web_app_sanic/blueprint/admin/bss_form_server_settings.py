@@ -1,5 +1,5 @@
-from bss_form_required_if import RequiredIf
 from sanic_wtf import SanicForm
+from web_app_sanic.blueprint.admin.bss_form_required_if import RequiredIf
 from wtforms import TextField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length
 
