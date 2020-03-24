@@ -97,6 +97,7 @@ async def page_not_found(request, exception):
 async def login(request):
     form = BSSLoginForm(request)
     errors = {}
+    print('b4', request.method)
     if request.method == 'POST' and form.validate():
         print('here i am in post')
         username = form.username.data
