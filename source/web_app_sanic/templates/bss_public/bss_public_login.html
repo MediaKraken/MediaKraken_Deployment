@@ -24,7 +24,7 @@
                                     <div class="text-center">
                                         <h4 class="text-dark mb-4">Welcome Back!</h4>
                                     </div>
-                                    <form class="user" method="post">
+                                    <form action="/login" class="user" method="post">
                                         {{ errors.token_errors }}
                                         <span style="color: red;">{{errors.validate_errors}}</span>
                                         <div class="form-group">
@@ -39,7 +39,6 @@
                                             <span style="color: red;">{{ errors.password_errors }}</span>
                                         </div>
                                         <button class="btn btn-primary btn-block text-white btn-user" type="submit">Login</button>
-                                        {{form.submit()}}
                                         <hr>
                                         <a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Login with Google</a>
                                         <a class="btn btn-primary btn-block text-white btn-github btn-user" role="button"><i class="fab fa-github"></i>&nbsp; Login with Github</a>
