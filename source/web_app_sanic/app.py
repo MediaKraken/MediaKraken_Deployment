@@ -91,7 +91,7 @@ async def page_not_found(request, exception):
 @app.route("/login", methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_public/bss_public_login.html')
 async def login(request):
-    form = BSSLoginForm(request)
+    form = BSSLoginForm(request.POST)
     errors = {}
     print('b4', request.method)
     if request.method == 'POST' and form.validate():
