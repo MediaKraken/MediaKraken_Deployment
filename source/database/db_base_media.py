@@ -303,23 +303,23 @@ def db_read_media_new(self, offset=None, records=None, search_value=None, days_o
     if offset is None:
         self.db_cursor.execute('select mm_media_name,'
                                ' mm_media_guid,'
-                               ' mm_media_class_type'
+                               ' mm_media_class_guid'
                                ' from mm_media, mm_metadata_movie'
                                ' where mm_media_metadata_guid = mm_metadata_guid'
                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                ' order by LOWER(mm_media_name),'
-                               ' mm_media_class_type',
+                               ' mm_media_class_guid',
                                ((datetime.datetime.now()
                                  - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
     else:
         self.db_cursor.execute('select mm_media_name,'
                                ' mm_media_guid,'
-                               ' mm_media_class_type'
+                               ' mm_media_class_guid'
                                ' from mm_media, mm_metadata_movie'
                                ' where mm_media_metadata_guid = mm_metadata_guid'
                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                ' order by LOWER(mm_media_name),'
-                               ' mm_media_class_type offset %s limit %s',
+                               ' mm_media_class_guid offset %s limit %s',
                                ((datetime.datetime.now()
                                  - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),
                                 offset, records))

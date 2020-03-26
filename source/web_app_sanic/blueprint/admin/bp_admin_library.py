@@ -44,7 +44,7 @@ async def url_bp_admin_library(request):
     for row_data in await request.app.db_functions.db_library_paths(db_connection, offset,
                                                                     per_page):
         return_media.append((row_data['mm_media_dir_path'],
-                             row_data['mm_media_class_type'],
+                             row_data['mm_media_class_guid'],
                              row_data['mm_media_dir_last_scanned'],
                              common_global.DLMediaType.row_data['mm_media_class_guid'].name,
                              row_data['mm_media_dir_guid']))
