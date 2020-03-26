@@ -6,7 +6,7 @@ async def db_media_album_count(self, db_connection, search_value=None):
         # this could possibly return null since search hence the try/catch below
         return await db_connection.fetchval('select count(*) from mm_metadata_album, mm_media'
                                             ' where mm_media_metadata_guid = mm_metadata_album_guid '
-                                            ' and mm_metadata_album_name %% %s'
+                                            ' and mm_metadata_album_name %% $1'
                                             ' group by mm_metadata_album_guid',
                                             (search_value,))
     else:
@@ -28,10 +28,10 @@ async def db_media_album_list(self, db_connection, offset=0, per_page=None, sear
                                          'mm_metadata_album_json'
                                          ' from mm_metadata_album, mm_media'
                                          ' where mm_media_metadata_guid = mm_metadata_album_guid'
-                                         ' and mm_metadata_album_name %% %s'
+                                         ' and mm_metadata_album_name %% $1'
                                          ' group by mm_metadata_album_guid'
                                          ' order by LOWER(mm_metadata_album_name)'
-                                         ' offset %s limit %s', (search_value, offset, per_page))
+                                         ' offset $2 limit $3', (search_value, offset, per_page))
     else:
         return await db_connection.fetch('select mm_metadata_album_guid,'
                                          'mm_metadata_album_name,'
@@ -40,4 +40,4 @@ async def db_media_album_list(self, db_connection, offset=0, per_page=None, sear
                                          ' where mm_media_metadata_guid = mm_metadata_album_guid'
                                          ' group by mm_metadata_album_guid'
                                          ' order by LOWER(mm_metadata_album_name)'
-                                         ' offset %s limit %s', (offset, per_page))
+                                         ' offset $1 limit $2', (offset, per_page))

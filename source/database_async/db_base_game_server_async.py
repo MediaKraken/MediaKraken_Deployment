@@ -6,5 +6,5 @@ async def db_game_server_list(self, db_connection, offset=0, records=None):
                                      ' mm_game_server_name,'
                                      ' mm_game_server_json'
                                      ' from mm_game_dedicated_servers'
-                                     ' order by mm_game_server_name offset %s limit %s)',
+                                     ' order by mm_game_server_name offset $1 limit $2)',
                                      (offset, records))

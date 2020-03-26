@@ -15,7 +15,7 @@ async def db_media_duplicate(self, db_connection, offset=0, records=None):
                                      ' and mm_media_metadata_guid = mm_metadata_guid'
                                      ' group by mm_media_metadata_guid,'
                                      ' mm_media_name HAVING count(*) > 1 order by LOWER(mm_media_name)'
-                                     ' offset %s limit %s', (offset, records))
+                                     ' offset $1 limit $2', (offset, records))
 
 
 async def db_media_duplicate_count(self, db_connection):
@@ -38,7 +38,7 @@ async def db_media_duplicate_detail(self, db_connection, guid, offset=0, records
                                      'mm_media_ffprobe_json'
                                      ' from mm_media where mm_media_guid'
                                      ' in (select mm_media_guid from mm_media'
-                                     ' where mm_media_metadata_guid = %s offset %s limit %s)',
+                                     ' where mm_media_metadata_guid = $1 offset $2 limit $3)',
                                      (guid, offset, records))
 
 
@@ -47,7 +47,7 @@ async def db_media_duplicate_detail_count(self, db_connection, guid):
     # duplicate detail count
     """
     return await db_connection.fetchval('select count(*) from mm_media'
-                                        ' where mm_media_metadata_guid = %s',
+                                        ' where mm_media_metadata_guid = $1',
                                         (guid,))
 
 
@@ -61,8 +61,8 @@ async def db_media_ffprobe_all_guid(self, db_connection, media_uuid, media_class
         ' from mm_media, mm_metadata_movie'
         ' where mm_media_metadata_guid = '
         '(select mm_media_metadata_guid'
-        ' from mm_media where mm_media_guid = %s)'
-        ' and mm_media_class_guid = %s',
+        ' from mm_media where mm_media_guid = $1)'
+        ' and mm_media_class_guid = $2',
         (media_uuid, media_class_uuid))
 
 
@@ -77,7 +77,7 @@ async def db_media_insert(self, db_connection, media_uuid, media_path, media_cla
                                 ' mm_media_metadata_guid,'
                                 ' mm_media_ffprobe_json,'
                                 ' mm_media_json)'
-                                ' values (%s,%s,%s,%s,%s,%s)',
+                                ' values ($1, $2, $3, $4, $5, $6)',
                                 (media_uuid, media_class_uuid, media_path,
                                  media_metadata_uuid, media_ffprobe_json, media_json))
 
@@ -90,7 +90,7 @@ async def db_media_known(self, db_connection, offset=0, records=None):
                                      ' from mm_media where mm_media_guid'
                                      ' in (select mm_media_guid'
                                      ' from mm_media order by mm_media_path'
-                                     ' offset %s limit %s) order by mm_media_path',
+                                     ' offset $1 limit $2) order by mm_media_path',
                                      (offset, records))
 
 
@@ -120,7 +120,7 @@ async def db_media_new(self, db_connection, offset=None, records=None, search_va
                                          ' mm_media_class_type'
                                          ' from mm_media, mm_metadata_movie'
                                          ' where mm_media_metadata_guid = mm_metadata_guid'
-                                         ' and mm_media_json->>\'DateAdded\' >= %s'
+                                         ' and mm_media_json->>\'DateAdded\' >= $1'
                                          ' order by LOWER(mm_media_name),'
                                          ' mm_media_class_type',
                                          ((datetime.datetime.now()
@@ -132,9 +132,9 @@ async def db_media_new(self, db_connection, offset=None, records=None, search_va
                                          ' mm_media_class_type'
                                          ' from mm_media, mm_metadata_movie'
                                          ' where mm_media_metadata_guid = mm_metadata_guid'
-                                         ' and mm_media_json->>\'DateAdded\' >= %s'
+                                         ' and mm_media_json->>\'DateAdded\' >= $1'
                                          ' order by LOWER(mm_media_name),'
-                                         ' mm_media_class_type offset %s limit %s',
+                                         ' mm_media_class_type offset $2 limit $3',
                                          ((datetime.datetime.now()
                                            - datetime.timedelta(days=days_old)).strftime(
                                              "%Y-%m-%d"),
@@ -147,7 +147,7 @@ async def db_media_new_count(self, db_connection, search_value=None, days_old=7)
     """
     return await db_connection.fetchval('select count(*) from mm_media, mm_metadata_movie'
                                         ' where mm_media_metadata_guid = mm_metadata_guid'
-                                        ' and mm_media_json->>\'DateAdded\' >= %s',
+                                        ' and mm_media_json->>\'DateAdded\' >= $1',
                                         ((datetime.datetime.now()
                                           - datetime.timedelta(days=days_old)).strftime(
                                             "%Y-%m-%d"),))
@@ -158,7 +158,7 @@ async def db_media_path_by_uuid(self, db_connection, media_uuid):
     # find path for media by uuid
     """
     return await db_connection.fetchval('select mm_media_path from mm_media'
-                                        ' where mm_media_guid = %s',
+                                        ' where mm_media_guid = $1',
                                         (media_uuid,))
 
 
@@ -173,7 +173,7 @@ async def db_media_rating_update(self, db_connection, media_guid, user_id, statu
         status_text = 'Rating'
     try:
         json_data = await db_connection.fetchval('SELECT mm_media_json from mm_media'
-                                                 ' where mm_media_guid = %s FOR UPDATE',
+                                                 ' where mm_media_guid = $1 FOR UPDATE',
                                                  (media_guid,))
         if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
@@ -193,7 +193,7 @@ async def db_media_unmatched_list(self, db_connection, offset=0, list_limit=None
     return await db_connection.fetch('select mm_media_guid,'
                                      ' mm_media_path from mm_media'
                                      ' where mm_media_metadata_guid is NULL'
-                                     ' order by mm_media_path offset %s limit %s',
+                                     ' order by mm_media_path offset $1 limit $2',
                                      (offset, list_limit))
 
 

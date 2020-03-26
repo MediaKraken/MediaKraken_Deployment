@@ -10,6 +10,6 @@ async def db_download_insert(self, db_connection, provider, que_type, down_json)
                                 'mdq_provider,'
                                 'mdq_que_type,'
                                 'mdq_download_json)'
-                                ' values (%s,%s,%s,%s)',
+                                ' values ($1, $2, $3, $4)',
                                 (new_guid, provider, que_type, down_json))
     return new_guid

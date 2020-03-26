@@ -8,7 +8,7 @@ async def db_device_by_uuid(self, db_connection, guid):
     return await db_connection.fetchrow('select mm_device_type,'
                                         ' mm_device_json'
                                         ' from mm_device'
-                                        ' where mm_device_id = %s', (guid,))
+                                        ' where mm_device_id = $1', (guid,))
 
 
 async def db_device_check(self, db_connection, device_type, device_name, device_ip):
@@ -17,8 +17,8 @@ async def db_device_check(self, db_connection, device_type, device_name, device_
     """
     return await db_connection.fetchval(
         'select count(*) from mm_device'
-        ' where mm_device_type = %s mm_device_json->\'Name\' ? %s'
-        ' and mm_device_json->\'IP\' ? %s', (device_type, device_name, device_ip))
+        ' where mm_device_type = $1 mm_device_json->\'Name\' ? $2'
+        ' and mm_device_json->\'IP\' ? $3', (device_type, device_name, device_ip))
 
 
 async def db_device_delete(self, db_connection, guid):
@@ -27,7 +27,7 @@ async def db_device_delete(self, db_connection, guid):
     """
     await db_connection.execute(
         'delete from mm_device'
-        ' where mm_device_id = %s', (guid,))
+        ' where mm_device_id = $1', (guid,))
 
 
 async def db_device_list(self, db_connection, device_type=None, offset=0, records=None,
@@ -41,13 +41,13 @@ async def db_device_list(self, db_connection, device_type=None, offset=0, record
                                          ' mm_device_json'
                                          ' from mm_device'
                                          ' order by mm_device_type'
-                                         ' offset %s limit %s', (offset, records))
+                                         ' offset $1 limit $2', (offset, records))
     else:
         return await db_connection.fetch('select mm_device_id,'
                                          ' mm_device_type,'
                                          ' mm_device_json'
                                          ' from mm_device'
-                                         ' where mm_device_type = %s offset %s limit %s',
+                                         ' where mm_device_type = $1 offset $2 limit $3',
                                          (device_type, offset, records))
 
 
@@ -55,9 +55,9 @@ async def db_device_update_by_uuid(self, db_connection, guid, device_type, devic
     """
     Update the device in the database
     """
-    await db_connection.execute('update mm_device set mm_device_type = %s,'
-                                ' mm_device_json = %s'
-                                ' where mm_device_id = %s', (device_type, device_json, guid))
+    await db_connection.execute('update mm_device set mm_device_type = $1,'
+                                ' mm_device_json = $2'
+                                ' where mm_device_id = $3', (device_type, device_json, guid))
 
 
 async def db_device_upsert(self, db_connection, device_type, device_json):
@@ -68,8 +68,8 @@ async def db_device_upsert(self, db_connection, device_type, device_json):
     await db_connection.execute('INSERT INTO mm_device (mm_device_id,'
                                 ' mm_device_type,'
                                 ' mm_device_json)'
-                                ' VALUES (%s, %s, %s)'
+                                ' VALUES ($1, $2, $3)'
                                 ' ON CONFLICT ((mm_device_json->>"IP"))'
-                                ' DO UPDATE SET mm_device_type = %s, mm_device_json = %s',
+                                ' DO UPDATE SET mm_device_type = $4, mm_device_json = $5',
                                 (new_guid, device_type, device_json, device_type, device_json))
     return new_guid

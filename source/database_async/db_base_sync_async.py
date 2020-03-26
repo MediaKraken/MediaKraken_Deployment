@@ -7,7 +7,7 @@ async def db_sync_delete(self, db_connection, sync_guid):
     """
     await db_connection.execute(
         'delete from mm_sync'
-        ' where mm_sync_guid = %s', (sync_guid,))
+        ' where mm_sync_guid = $1', (sync_guid,))
 
 
 async def db_sync_insert(self, db_connection, sync_path, sync_path_to, sync_json):
@@ -19,7 +19,7 @@ async def db_sync_insert(self, db_connection, sync_path, sync_path_to, sync_json
                                 ' mm_sync_path,'
                                 ' mm_sync_path_to,'
                                 ' mm_sync_options_json)'
-                                ' values (%s, %s, %s, %s)', (new_guid, sync_path,
+                                ' values ($1, $2, $3, $4)', (new_guid, sync_path,
                                                              sync_path_to,
                                                              sync_json))
     return new_guid
@@ -41,7 +41,7 @@ async def db_sync_list(self, db_connection, offset=0, records=None, user_guid=No
                                          ' from mm_sync'
                                          ' order by mm_sync_options_json->\'Priority\''
                                          ' desc, mm_sync_path'
-                                         ' offset %s limit %s)'
+                                         ' offset $1 limit $2)'
                                          ' order by mm_sync_options_json->\'Priority\''
                                          ' desc, mm_sync_path', (offset, records))
     else:
@@ -52,8 +52,8 @@ async def db_sync_list(self, db_connection, offset=0, records=None, user_guid=No
                                          ' from mm_sync'
                                          ' where mm_sync_guid in (select mm_sync_guid'
                                          ' from mm_sync'
-                                         ' where mm_sync_options_json->\'User\'::text = %s'
+                                         ' where mm_sync_options_json->\'User\'::text = $1'
                                          ' order by mm_sync_options_json->\'Priority\''
-                                         ' desc, mm_sync_path  offset %s limit %s)'
+                                         ' desc, mm_sync_path offset $2 limit $3)'
                                          ' order by mm_sync_options_json->\'Priority\''
                                          ' desc, mm_sync_path', (str(user_guid), offset, records))

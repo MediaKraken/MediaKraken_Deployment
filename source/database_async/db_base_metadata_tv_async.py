@@ -11,7 +11,7 @@ async def db_meta_tv_detail(self, db_connection, guid):
                                         '->\'Images\'->\'tvmaze\'->>\'Poster\','
                                         ' mm_metadata_tvshow_localimage_json'
                                         '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
-                                        ' where mm_metadata_tvshow_guid = %s', (guid,))
+                                        ' where mm_metadata_tvshow_guid = $1', (guid,))
 
 
 async def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_number):
@@ -38,7 +38,7 @@ async def db_meta_tv_episode(self, db_connection, show_guid, season_number, epis
         ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Runtime\' as eps_runtime,'
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
         '->\'Episode\')::jsonb->\'Overview\' as eps_overview'
-        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s',
+        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = $1',
         (show_guid, str(season_number), str(episode_number)))
 
 
@@ -55,7 +55,7 @@ async def db_meta_tv_epsisode_by_id(self, db_connection, show_guid, show_episode
                                         ' eps_data->\'filename\' as eps_filename'
                                         ' from (select jsonb_array_elements_text('
                                         'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
-                                        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
+                                        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = $1)'
                                         ' as select_eps_data where eps_data @> \'{ "id": "'
                                         + str(show_episode_id) + '" }\'', (show_guid,))
 
@@ -77,7 +77,7 @@ async def db_meta_tv_eps_season(self, db_connection, show_guid):
     for row_data in await db_connection.fetch(
             'select count(*) as ep_count, jsonb_array_elements_text(mm_metadata_tvshow_json'
             '->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\' as season_num'
-            ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s'
+            ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = $1'
             ' group by season_num', (show_guid,)):
         # if row_data[0] in season_data:
         #     if season_data[row_data[0]] < row_data[1]:
@@ -102,7 +102,7 @@ async def db_meta_tv_list(self, db_connection, offset=0, records=None, search_va
                                      '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
                                      ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
                                      ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
-                                     ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)',
+                                     ' offset $1 limit $2) order by LOWER(mm_metadata_tvshow_name)',
                                      (offset, records))
 
 
@@ -138,7 +138,7 @@ async def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_numb
         ' eps_data->\'filename\' as eps_filename'
         ' from (select jsonb_array_elements_text('
         'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
-        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
+        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = $1)'
         ' as select_eps_data where eps_data @> \'{ "SeasonNumber": "'
         + str(season_number) + '" }\'', (show_guid,))
     # id, episode_number, episode_name, filename
