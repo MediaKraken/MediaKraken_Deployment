@@ -53,7 +53,7 @@ from web_app_sanic.blueprint.public.bss_form_register import BSSRegisterForm
 app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
 app.static('/static', './web_app_sanic/static')
 # app.static('/assets', './web_app_sanic/assets', name='assets')
-# app.static('/favicon.ico', './web_app_sanic/static/images/favicon.ico')
+
 
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
@@ -160,6 +160,7 @@ async def logout(request):
 @app.listener('before_server_start')
 async def register_db(app, loop):
     # need to leave this here so the "loop" is defined
+    print('DB connection start')
     if 'POSTGRES_PASSWORD' in os.environ:
         database_password = os.environ['POSTGRES_PASSWORD']
     else:
@@ -173,20 +174,7 @@ async def register_db(app, loop):
                                     host='mkstack_database',
                                     loop=loop,
                                     max_size=100)
-    # TODO, test for trigam, etc
-    # self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
-    # self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
-    #                        multiprocessing.cpu_count())
-    # # do here since the db cursor is created now
-    # # verify the trigram extension is enabled for the database
-    # self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
-    # if self.db_cursor.fetchone()[0] == 0:
-    #     common_global.es_inst.com_elastic_index('critical',
-    #                                             {'stuff': 'pg_trgm extension needs to '
-    #                                                       'be enabled for database!!!!'
-    #                                                       '  Exiting!!!'})
-    #     sys.exit(1)
-    # await db_connection.close() - not needed in pool?
+    print('DB pool created')
 
 
 def handle_no_auth(request):
