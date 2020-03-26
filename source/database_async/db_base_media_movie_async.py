@@ -29,10 +29,10 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' and mm_media_json->>\'DateAdded\' >= $2) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d")))
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"))
                     else:
                         return await db_connection.fetch('select * from (select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
@@ -43,11 +43,11 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $3 limit $4',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d"),
-                                                          offset, list_limit))
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         offset, list_limit)
                 else:
                     if offset is None:
                         return await db_connection.fetch('select * from ((select distinct'
@@ -65,14 +65,14 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' = mm_metadata_guid and mmr_media_json->>\'DateAdded\' >= $4) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d"),
-                                                          class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d")))
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"))
                     else:
                         return await db_connection.fetch('select * from ((select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
@@ -91,15 +91,15 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $5 limit $6',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d"),
-                                                          class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d"),
-                                                          offset, list_limit))
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         offset, list_limit)
             else:
                 if offset is None:
                     return await db_connection.fetch('select 1')
@@ -120,7 +120,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' and mm_media_metadata_guid = mm_metadata_guid) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid,))
+                                                         class_guid)
                     else:
                         return await db_connection.fetch('select * from (select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name,'
@@ -135,7 +135,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
                                                          ' offset $2 limit $3',
-                                                         (class_guid, offset, list_limit))
+                                                         class_guid, offset, list_limit)
                 else:
                     if offset is None:
                         return await db_connection.fetch('select * from ((select distinct'
@@ -157,7 +157,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' = mm_metadata_guid)) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid, class_guid))
+                                                         class_guid, class_guid)
                     else:
                         return await db_connection.fetch('select * from ((select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name,'
@@ -178,8 +178,8 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $3 limit $4',
-                                                         (class_guid, class_guid, offset,
-                                                          list_limit))
+                                                         class_guid, class_guid, offset,
+                                                         list_limit)
             else:
                 if not include_remote:
                     if offset is None:
@@ -200,7 +200,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' from mm_metadata_collection) as temp'
                                                          ' order by LOWER(name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid,))
+                                                         class_guid)
                     else:
                         return await db_connection.fetch('select * from (select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name as name,'
@@ -220,7 +220,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $2 limit $3',
-                                                         (class_guid, offset, list_limit))
+                                                         class_guid, offset, list_limit)
                 else:
                     if offset is None:
                         return await db_connection.fetch('select * from (select distinct'
@@ -243,7 +243,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ') as temp'
                                                          ' order by LOWER(name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid,))
+                                                         class_guid)
                     else:
                         return await db_connection.fetch('select * from (select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name as name,'
@@ -266,7 +266,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $2 limit $3',
-                                                         (class_guid, offset, list_limit))
+                                                         class_guid, offset, list_limit)
     else:
         if list_type == "recent_addition":
             if not group_collection:
@@ -286,11 +286,11 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d"),
-                                                          list_genre))
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         list_genre)
                     else:
                         return await db_connection.fetch('select * from (select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name,'
@@ -308,11 +308,11 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $4 limit $5',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
-                                                                     days=7)).strftime(
-                                                             "%Y-%m-%d"),
-                                                          list_genre, offset, list_limit))
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         list_genre, offset, list_limit)
                 else:
                     if offset is None:
                         return await db_connection.fetch('select * from ((select distinct'
@@ -341,16 +341,16 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %6)) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         list_genre, class_guid,
+                                                         (datetime.datetime.now()
+                                                          - datetime.timedelta(
                                                                      days=7)).strftime(
                                                              "%Y-%m-%d"),
-                                                          list_genre, class_guid,
-                                                          (datetime.datetime.now()
-                                                           - datetime.timedelta(
-                                                                      days=7)).strftime(
-                                                              "%Y-%m-%d"),
-                                                          list_genre))
+                                                         list_genre)
                     else:
                         return await db_connection.fetch('select * from ((select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
@@ -379,16 +379,16 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $7 limit $8',
-                                                         (class_guid, (datetime.datetime.now()
-                                                                       - datetime.timedelta(
+                                                         class_guid, (datetime.datetime.now()
+                                                                      - datetime.timedelta(
+                                        days=7)).strftime(
+                                "%Y-%m-%d"),
+                                                         list_genre, class_guid,
+                                                         (datetime.datetime.now()
+                                                          - datetime.timedelta(
                                                                      days=7)).strftime(
                                                              "%Y-%m-%d"),
-                                                          list_genre, class_guid,
-                                                          (datetime.datetime.now()
-                                                           - datetime.timedelta(
-                                                                      days=7)).strftime(
-                                                              "%Y-%m-%d"),
-                                                          list_genre, offset, list_limit))
+                                                         list_genre, offset, list_limit)
 
             else:
                 return await db_connection.fetch('select 1')
@@ -409,7 +409,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid, list_genre))
+                                                         class_guid, list_genre)
                     else:
                         return await db_connection.fetch('select * from (select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name, mm_media_guid,'
@@ -424,8 +424,8 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $3 limit $4',
-                                                         (class_guid, list_genre, offset,
-                                                          list_limit))
+                                                         class_guid, list_genre, offset,
+                                                         list_limit)
 
                 else:
                     if offset is None:
@@ -453,8 +453,8 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $4)) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
-                                                         (class_guid, list_genre, class_guid,
-                                                          list_genre))
+                                                         class_guid, list_genre, class_guid,
+                                                         list_genre)
                     else:
                         return await db_connection.fetch('select * from ((select distinct'
                                                          ' on (mm_media_metadata_guid) mm_media_name,'
@@ -482,9 +482,9 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $5 limit $6',
-                                                         (class_guid, list_genre, class_guid,
-                                                          list_genre,
-                                                          offset, list_limit))
+                                                         class_guid, list_genre, class_guid,
+                                                         list_genre,
+                                                         offset, list_limit)
             else:
                 if offset is None:
                     return await db_connection.fetch('select 1')
@@ -514,9 +514,9 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' = mm_metadata_guid'
                                                         ' and mm_media_json->>\'DateAdded\' >= $2)'
                                                         ' as temp',
-                                                        (class_guid, (datetime.datetime.now()
-                                                                      - datetime.timedelta(
-                                                                    days=7)).strftime("%Y-%m-%d"),))
+                                                        class_guid, (datetime.datetime.now()
+                                                                     - datetime.timedelta(
+                                    days=7)).strftime("%Y-%m-%d"), )
                 else:
                     return await db_connection.fetchval('select count(*) from ((select distinct'
                                                         ' mm_metadata_guid from mm_media, mm_metadata_movie'
@@ -529,14 +529,14 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' mm_metadata_movie where mmr_media_class_guid = $3'
                                                         ' and mmr_media_metadata_guid = mm_metadata_guid'
                                                         ' and mm_media_json->>\'DateAdded\' >= $4)) as temp',
-                                                        (class_guid, (datetime.datetime.now()
-                                                                      - datetime.timedelta(
-                                                                    days=7)).strftime(
-                                                            "%Y-%m-%d"),
-                                                         class_guid, (datetime.datetime.now()
-                                                                      - datetime.timedelta(
-                                                                    days=7)).strftime(
-                                                            "%Y-%m-%d")))
+                                                        class_guid, (datetime.datetime.now()
+                                                                     - datetime.timedelta(
+                                    days=7)).strftime(
+                            "%Y-%m-%d"),
+                                                        class_guid, (datetime.datetime.now()
+                                                                     - datetime.timedelta(
+                                    days=7)).strftime(
+                            "%Y-%m-%d"))
             else:
                 return await db_connection.fetchval('select 1')
         else:
@@ -548,7 +548,7 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' where mm_media_class_guid = $1'
                                                         ' and mm_media_metadata_guid'
                                                         ' = mm_metadata_guid) as temp',
-                                                        (class_guid,))
+                                                        class_guid)
                 else:
                     return await db_connection.fetchval('select count(*) from ((select distinct'
                                                         ' mm_metadata_guid from mm_media, mm_metadata_movie'
@@ -558,7 +558,7 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' from mm_media_remote, mm_metadata_movie'
                                                         ' where mmr_media_class_guid = $1'
                                                         ' and mmr_media_metadata_guid = mm_metadata_guid)) as temp',
-                                                        (class_guid, class_guid))
+                                                        class_guid, class_guid)
             else:
                 if not include_remote:
                     return await db_connection.fetchval('select count(*) as row_count'
@@ -567,7 +567,7 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' and mm_media_metadata_guid = mm_metadata_guid'
                                                         ' and (mm_metadata_json->>\'belongs_to_collection\') is null)'
                                                         ' union (select count(*) from xxxx as row_count)) as temp',
-                                                        (class_guid, class_guid))
+                                                        class_guid, class_guid)
                 else:
                     return await db_connection.fetchval('select 1')
     else:
@@ -580,10 +580,10 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' = mm_metadata_guid and mm_media_json->>\'DateAdded\' >= $2'
                                                         ' and mm_metadata_json->\'Meta\''
                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3) as temp',
-                                                        (class_guid, (datetime.datetime.now()
-                                                                      - datetime.timedelta(
-                                                                    days=7)).strftime(
-                                                            "%Y-%m-%d"), list_genre))
+                                                        class_guid, (datetime.datetime.now()
+                                                                     - datetime.timedelta(
+                                    days=7)).strftime(
+                            "%Y-%m-%d"), list_genre)
                 else:
                     return await db_connection.fetchval('select count(*) from ((select distinct'
                                                         ' mm_metadata_guid from mm_media, mm_metadata_movie'
@@ -596,14 +596,14 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' and mmr_media_metadata_guid = mm_metadata_guid'
                                                         ' and mmr_media_json->>\'DateAdded\' >= $5'
                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $6)) as temp',
-                                                        (class_guid, (datetime.datetime.now()
-                                                                      - datetime.timedelta(
-                                                                    days=7)).strftime(
-                                                            "%Y-%m-%d"), list_genre,
-                                                         class_guid, (datetime.datetime.now()
-                                                                      - datetime.timedelta(
-                                                                    days=7)).strftime(
-                                                            "%Y-%m-%d"), list_genre))
+                                                        class_guid, (datetime.datetime.now()
+                                                                     - datetime.timedelta(
+                                    days=7)).strftime(
+                            "%Y-%m-%d"), list_genre,
+                                                        class_guid, (datetime.datetime.now()
+                                                                     - datetime.timedelta(
+                                    days=7)).strftime(
+                            "%Y-%m-%d"), list_genre)
             else:
                 return await db_connection.fetchval('select 1')
         else:
@@ -614,7 +614,7 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' where mm_media_class_guid = $1 and mm_media_metadata_guid'
                                                         ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2)'
-                                                        ' as temp', (class_guid, list_genre))
+                                                        ' as temp', class_guid, list_genre)
                 else:
                     return await db_connection.fetchval('select count(*) from ((select distinct'
                                                         ' mm_metadata_guid'
@@ -626,7 +626,7 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' mm_metadata_movie where mmr_media_class_guid = $3'
                                                         ' and mmr_media_metadata_guid = mm_metadata_guid'
                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $4)) as temp',
-                                                        (class_guid, list_genre, class_guid,
-                                                         list_genre))
+                                                        class_guid, list_genre, class_guid,
+                                                        list_genre)
             else:
                 return await db_connection.fetchval('select 1')

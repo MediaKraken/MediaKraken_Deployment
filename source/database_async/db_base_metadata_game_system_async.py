@@ -4,7 +4,7 @@ async def db_meta_game_system_by_guid(self, db_connection, guid):
     """
     return await db_connection.fetchrow('select * from mm_metadata_game_systems_info'
                                         ' where gs_id = %s',
-                                        (guid,))
+                                        guid)
 
 
 async def db_meta_game_system_list_count(self, db_connection, search_value=None):
@@ -14,7 +14,7 @@ async def db_meta_game_system_list_count(self, db_connection, search_value=None)
     if search_value is not None:
         return await db_connection.fetchval('select count(*) from mm_metadata_game_systems_info'
                                             ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
-                                            ' and gs_game_system_name %% %s', (search_value,))
+                                            ' and gs_game_system_name %% %s', search_value)
     else:
         return await db_connection.fetchval('select count(*) from mm_metadata_game_systems_info'
                                             ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
@@ -37,7 +37,7 @@ async def db_meta_game_system_list(self, db_connection, offset=0, records=None, 
                                          'order by gs_game_system_json->\'description\''
                                          ' offset %s limit %s)'
                                          ' order by gs_game_system_json->\'description\'',
-                                         (search_value, offset, records))
+                                         search_value, offset, records)
     else:
         return await db_connection.fetch('select gs_id,gs_game_system_name,'
                                          'gs_game_system_json->\'description\','
@@ -49,4 +49,4 @@ async def db_meta_game_system_list(self, db_connection, offset=0, records=None, 
                                          ' ? \'yes\' order by gs_game_system_json->\'description\''
                                          ' offset %s limit %s)'
                                          ' order by gs_game_system_json->\'description\'',
-                                         (offset, records))
+                                         offset, records)

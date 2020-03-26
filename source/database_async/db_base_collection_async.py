@@ -10,7 +10,7 @@ async def db_collection_list(self, db_connection, offset=None, records=None, sea
                                              ' from mm_metadata_collection'
                                              ' where mm_metadata_collection_name %% $1'
                                              ' order by mm_metadata_collection_name',
-                                             (search_value,))
+                                             search_value)
         else:
             return await db_connection.fetch('select mm_metadata_collection_guid,'
                                              'mm_metadata_collection_name,'
@@ -29,7 +29,7 @@ async def db_collection_list(self, db_connection, offset=None, records=None, sea
                                              ' where mm_metadata_collection_name %% $1'
                                              ' order by mm_metadata_collection_name'
                                              ' offset $2 limit $3) order by mm_metadata_collection_name',
-                                             (search_value, offset, records))
+                                             search_value, offset, records)
         else:
             return await db_connection.fetch('select mm_metadata_collection_guid,'
                                              'mm_metadata_collection_name,'
@@ -40,7 +40,7 @@ async def db_collection_list(self, db_connection, offset=None, records=None, sea
                                              ' from mm_metadata_collection'
                                              ' order by mm_metadata_collection_name'
                                              ' offset $1 limit $2) order by mm_metadata_collection_name',
-                                             (offset, records))
+                                             offset, records)
 
 
 async def db_collection_list_count(self, db_connection, search_value=None):
@@ -48,7 +48,7 @@ async def db_collection_list_count(self, db_connection, search_value=None):
         return await db_connection.fetchval('select count(*)'
                                             ' from mm_metadata_collection'
                                             ' where mm_metadata_collection_name %% $1',
-                                            (search_value,))
+                                            search_value)
     else:
         return await db_connection.fetchval('select count(*)'
                                             ' from mm_metadata_collection')
@@ -61,4 +61,4 @@ async def db_collection_read_by_guid(self, db_connection, media_uuid):
     return await db_connection.fetchrow('select mm_metadata_collection_json,'
                                         'mm_metadata_collection_imagelocal_json'
                                         ' from mm_metadata_collection'
-                                        ' where mm_metadata_collection_guid = $1', (media_uuid,))
+                                        ' where mm_metadata_collection_guid = $1', media_uuid)

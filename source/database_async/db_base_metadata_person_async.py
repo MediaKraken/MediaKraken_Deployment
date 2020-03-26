@@ -45,7 +45,7 @@ async def db_meta_person_by_guid(self, db_connection, guid):
                                      ' mmp_person_meta_json,'
                                      ' mmp_person_image, mmp_person_name,'
                                      ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                                     ' from mm_metadata_person where mmp_id = %s', (guid,))
+                                     ' from mm_metadata_person where mmp_id = %s', guid)
 
 
 async def db_meta_person_list(self, db_connection, offset=0, records=None, search_value=None):
@@ -59,12 +59,12 @@ async def db_meta_person_list(self, db_connection, offset=0, records=None, searc
                                          ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                          ' from mm_metadata_person where mmp_person_name %% %s'
                                          ' order by LOWER(mmp_person_name) offset %s limit %s',
-                                         (search_value, offset, records))
+                                         search_value, offset, records)
     else:
         return await db_connection.fetch('select mmp_id,mmp_person_name,mmp_person_image,'
                                          ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                          ' from mm_metadata_person order by LOWER(mmp_person_name)'
-                                         ' offset %s limit %s', (offset, records))
+                                         ' offset %s limit %s', offset, records)
 
 
 async def db_meta_person_list_count(self, db_connection, search_value=None):
@@ -73,6 +73,6 @@ async def db_meta_person_list_count(self, db_connection, search_value=None):
     """
     if search_value is not None:
         return await db_connection.fetchval('select count(*) from mm_metadata_person'
-                                            ' where mmp_person_name %% %s', (search_value,))
+                                            ' where mmp_person_name %% %s', search_value)
     else:
         return await db_connection.fetchval('select count(*) from mm_metadata_person')

@@ -14,8 +14,8 @@ async def db_share_add(self, db_connection, share_type, share_user, share_passwo
                                 ' mm_media_share_server,'
                                 ' mm_media_share_path)'
                                 ' values ($1, $2, $3, $4, $5, $6)',
-                                (new_guid, share_type, share_user,
-                                 share_password, share_server, share_path))
+                                new_guid, share_type, share_user,
+                                share_password, share_server, share_path)
     return new_guid
 
 
@@ -25,7 +25,7 @@ async def db_share_check(self, db_connection, dir_path):
     """
     return await db_connection.fetchval(
         'select count(*) from mm_media_share where mm_media_share_path = $1',
-        (dir_path,))
+        dir_path)
 
 
 async def db_share_delete(self, db_connection, share_guid):
@@ -33,7 +33,7 @@ async def db_share_delete(self, db_connection, share_guid):
     # remove share
     """
     await db_connection.execute('delete from mm_media_share where mm_media_share_guid = $1',
-                                (share_guid,))
+                                share_guid)
 
 
 async def db_share_list(self, db_connection, offset=0, records=None):
@@ -48,7 +48,7 @@ async def db_share_list(self, db_connection, offset=0, records=None):
                                      ' mm_media_share_path'
                                      ' from mm_media_share'
                                      ' order by mm_media_share_type, mm_media_share_server,'
-                                     ' mm_media_share_path offset $1 limit $2', (offset, records))
+                                     ' mm_media_share_path offset $1 limit $2', offset, records)
 
 
 async def db_share_update_by_uuid(self, db_connection, share_type, share_user, share_password,
@@ -63,5 +63,5 @@ async def db_share_update_by_uuid(self, db_connection, share_type, share_user, s
                                 ' mm_media_share_server = $4',
                                 ' where mm_media_share_path = $5',
                                 ' and mm_media_share_guid = $6',
-                                (share_type, share_user, share_password, share_server,
-                                 share_path, share_id))
+                                share_type, share_user, share_password, share_server,
+                                share_path, share_id)

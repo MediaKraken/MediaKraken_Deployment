@@ -10,4 +10,4 @@ async def db_tv_schedule_by_date(self, db_connection, display_date):
                                      ' and mm_tv_schedule_date = %s'
                                      ' order by LOWER(mm_tv_station_name),'
                                      ' mm_tv_schedule_json->\'airDateTime\'',
-                                     (display_date,))
+                                     display_date)

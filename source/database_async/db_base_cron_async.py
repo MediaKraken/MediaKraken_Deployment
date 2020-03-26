@@ -7,7 +7,7 @@ async def db_cron_delete(self, db_connection, cron_uuid):
     """
     await db_connection.execute('delete from mm_cron'
                                 ' where mm_cron_guid = $1',
-                                (cron_uuid,))
+                                cron_uuid)
 
 
 async def db_cron_info(self, db_connection, cron_uuid):
@@ -22,7 +22,7 @@ async def db_cron_info(self, db_connection, cron_uuid):
                                         ' mm_cron_last_run,'
                                         ' mm_cron_json'
                                         ' from mm_cron'
-                                        ' where mm_cron_guid = $1', (cron_uuid,))
+                                        ' where mm_cron_guid = $1', cron_uuid)
 
 
 async def db_cron_list(self, db_connection, enabled_only=False, offset=0, records=None):
@@ -40,7 +40,7 @@ async def db_cron_list(self, db_connection, enabled_only=False, offset=0, record
                                          ' from mm_cron where mm_cron_guid'
                                          ' in (select mm_cron_guid from mm_cron'
                                          ' order by mm_cron_name offset $1 limit $2)'
-                                         ' order by mm_cron_name', (offset, records))
+                                         ' order by mm_cron_name', offset, records)
     else:
         return await db_connection.fetch('select mm_cron_guid,'
                                          ' mm_cron_name,'
@@ -53,7 +53,7 @@ async def db_cron_list(self, db_connection, enabled_only=False, offset=0, record
                                          ' in (select mm_cron_guid from mm_cron'
                                          ' where mm_cron_enabled = true'
                                          ' order by mm_cron_name offset $1 limit $2)'
-                                         ' order by mm_cron_name', (offset, records))
+                                         ' order by mm_cron_name', offset, records)
 
 
 async def db_cron_list_count(self, db_connection, enabled_only=False):
@@ -74,4 +74,4 @@ async def db_cron_time_update(self, db_connection, cron_type):
     """
     await db_connection.execute('update mm_cron set mm_cron_last_run = $1'
                                 ' where mm_cron_name = $2',
-                                (datetime.datetime.now(), cron_type))
+                                datetime.datetime.now(), cron_type)
