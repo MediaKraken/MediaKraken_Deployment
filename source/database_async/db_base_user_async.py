@@ -56,10 +56,12 @@ async def db_user_login_validation(self, db_connection, user_name, user_password
     result = await db_connection.fetchrow('select id, password, active, is_admin'
                                           ' from mm_user where username = $1', user_name)
     if result is not None:
-        print(result)
-        print(type(result))
+        print(result, flush=True)
+        print(type(result), flush=True)
         if result['active'] is False:
             return 'inactive_account', None
+        print(user_password, len(user_password), result['password'], len(result['password']),
+              flush=True)
         if user_password == result['password']:
             return result['id'], result['is_admin']
         else:
