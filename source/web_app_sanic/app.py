@@ -107,13 +107,13 @@ async def login(request):
             errors['username_errors'] = "Username invalid"
         elif user_id == 'inactive_account':
             errors['username_errors'] = "Username inactive"
-        elif user_id.isnumeric():  # valid user
+        elif user_id == 'invalid_password':  # invalid_password
+            errors['password_errors'] = "Password invalid"
+        else:  # should be valid
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
             await app.db_pool.release(db_connection)
             return response.redirect("/")
-        else:  # invalid_password
-            errors['password_errors'] = "Password invalid"
         await request.app.db_pool.release(db_connection)
     # TODO errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
