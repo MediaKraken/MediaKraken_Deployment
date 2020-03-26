@@ -1,20 +1,20 @@
 from common import common_global
 
 
-def db_meta_tv_detail(self, db_connection, guid):
+async def db_meta_tv_detail(self, db_connection, guid):
     """
     # return metadata for tvshow
     """
-    return db_connection.fetchrow('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
-                                  ' mm_metadata_tvshow_localimage_json,'
-                                  ' COALESCE(mm_metadata_tvshow_localimage_json'
-                                  '->\'Images\'->\'tvmaze\'->>\'Poster\','
-                                  ' mm_metadata_tvshow_localimage_json'
-                                  '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
-                                  ' where mm_metadata_tvshow_guid = %s', (guid,))
+    return await db_connection.fetchrow('select mm_metadata_tvshow_name, mm_metadata_tvshow_json,'
+                                        ' mm_metadata_tvshow_localimage_json,'
+                                        ' COALESCE(mm_metadata_tvshow_localimage_json'
+                                        '->\'Images\'->\'tvmaze\'->>\'Poster\','
+                                        ' mm_metadata_tvshow_localimage_json'
+                                        '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow'
+                                        ' where mm_metadata_tvshow_guid = %s', (guid,))
 
 
-def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_number):
+async def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """
@@ -30,7 +30,7 @@ def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_nu
     #     '->\'_embedded\'->\'episodes\')::jsonb->\'runtime\','
     #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
     #     '->\'_embedded\'->\'episodes\')::jsonb->\'summary\','
-    return db_connection.fetchrow(
+    return await db_connection.fetchrow(
         'select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
         '->\'Episode\')::jsonb->\'EpisodeName\' as eps_name,'
         ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
@@ -42,25 +42,25 @@ def db_meta_tv_episode(self, db_connection, show_guid, season_number, episode_nu
         (show_guid, str(season_number), str(episode_number)))
 
 
-def db_meta_tv_epsisode_by_id(self, db_connection, show_guid, show_episode_id):
+async def db_meta_tv_epsisode_by_id(self, db_connection, show_guid, show_episode_id):
     """
     # grab episode detail by eps id
     """
     # TODO tvmaze
     # TODO injection fix
-    return db_connection.fetchrow('select eps_data->\'EpisodeName\' as eps_name,'
-                                  ' eps_data->\'FirstAired\' as eps_first_air,'
-                                  ' eps_data->\'Runtime\' as eps_runtime,'
-                                  ' eps_data->\'Overview\' as eps_overview,'
-                                  ' eps_data->\'filename\' as eps_filename'
-                                  ' from (select jsonb_array_elements_text('
-                                  'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
-                                  ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
-                                  ' as select_eps_data where eps_data @> \'{ "id": "'
-                                  + str(show_episode_id) + '" }\'', (show_guid,))
+    return await db_connection.fetchrow('select eps_data->\'EpisodeName\' as eps_name,'
+                                        ' eps_data->\'FirstAired\' as eps_first_air,'
+                                        ' eps_data->\'Runtime\' as eps_runtime,'
+                                        ' eps_data->\'Overview\' as eps_overview,'
+                                        ' eps_data->\'filename\' as eps_filename'
+                                        ' from (select jsonb_array_elements_text('
+                                        'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
+                                        ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s)'
+                                        ' as select_eps_data where eps_data @> \'{ "id": "'
+                                        + str(show_episode_id) + '" }\'', (show_guid,))
 
 
-def db_meta_tv_eps_season(self, db_connection, show_guid):
+async def db_meta_tv_eps_season(self, db_connection, show_guid):
     """
     # grab tvmaze ep data for eps per season
     """
@@ -74,7 +74,7 @@ def db_meta_tv_eps_season(self, db_connection, show_guid):
     #                         '(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')'
     #                         '::jsonb->\'EpisodeNumber\'))'
     #                         'from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s', (show_guid,))
-    for row_data in db_connection.fetch(
+    for row_data in await db_connection.fetch(
             'select count(*) as ep_count, jsonb_array_elements_text(mm_metadata_tvshow_json'
             '->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\' as season_num'
             ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s'
@@ -88,35 +88,35 @@ def db_meta_tv_eps_season(self, db_connection, show_guid):
     return season_data
 
 
-def db_meta_tv_list(self, db_connection, offset=0, records=None, search_value=None):
+async def db_meta_tv_list(self, db_connection, offset=0, records=None, search_value=None):
     """
     # return list of tvshows
     """
     # TODO order by release date
     # COALESCE - priority over one column
-    return db_connection.fetch('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-                               ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
-                               ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
-                               '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
-                               '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
-                               ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
-                               ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
-                               ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)',
-                               (offset, records))
+    return await db_connection.fetch('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
+                                     ' COALESCE(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\'->\'premiered\','
+                                     ' mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Series\''
+                                     '->\'FirstAired\') as air_date, COALESCE(mm_metadata_tvshow_localimage_json->\'Images\''
+                                     '->\'tvmaze\'->>\'Poster\', mm_metadata_tvshow_localimage_json->\'Images\''
+                                     '->\'thetvdb\'->>\'Poster\') as image_json from mm_metadata_tvshow'
+                                     ' where mm_metadata_tvshow_guid in (select mm_metadata_tvshow_guid'
+                                     ' from mm_metadata_tvshow order by LOWER(mm_metadata_tvshow_name)'
+                                     ' offset %s limit %s) order by LOWER(mm_metadata_tvshow_name)',
+                                     (offset, records))
 
 
-def db_meta_tv_list_count(self, db_connection, search_value=None):
+async def db_meta_tv_list_count(self, db_connection, search_value=None):
     """
     # tvshow count
     """
     if search_value is None:
-        return db_connection.fetchval('select count(*) from mm_metadata_tvshow')
+        return await db_connection.fetchval('select count(*) from mm_metadata_tvshow')
     else:
-        return db_connection.fetchval('select count(*) from mm_metadata_tvshow')
+        return await db_connection.fetchval('select count(*) from mm_metadata_tvshow')
 
 
-def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_number):
+async def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_number):
     """
     # grab episodes within the season
     """
@@ -132,7 +132,7 @@ def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_number):
     #     '->\'Images\'->\'tvmaze\'->\'Episodes\','
 
     # TODO security check the seasonumber since from webpage addy - injection
-    db_connection.fetch(
+    await db_connection.fetch(
         'select eps_data->\'id\' as eps_id, eps_data->\'EpisodeNumber\' as eps_num,'
         ' eps_data->\'EpisodeName\' as eps_name,'
         ' eps_data->\'filename\' as eps_filename'

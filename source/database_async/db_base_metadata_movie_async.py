@@ -1,72 +1,72 @@
 import json
 
 
-def db_meta_movie_by_media_uuid(self, db_connection, media_guid):
+async def db_meta_movie_by_media_uuid(self, db_connection, media_guid):
     """
     # read in metadata via media id
     """
-    return db_connection.fetchrow('select mm_metadata_json,'
-                                  'mm_metadata_localimage_json '
-                                  'from mm_media, mm_metadata_movie'
-                                  ' where mm_media_metadata_guid = mm_metadata_guid'
-                                  ' and mm_media_guid = %s', (media_guid,))
+    return await db_connection.fetchrow('select mm_metadata_json,'
+                                        'mm_metadata_localimage_json '
+                                        'from mm_media, mm_metadata_movie'
+                                        ' where mm_media_metadata_guid = mm_metadata_guid'
+                                        ' and mm_media_guid = %s', (media_guid,))
 
 
-def db_meta_movie_detail(self, db_connection, media_guid):
+async def db_meta_movie_detail(self, db_connection, media_guid):
     """
     # read in the media with corresponding metadata
     """
-    return db_connection.fetchrow('select mm_metadata_guid,'
-                                  ' mm_metadata_media_id,'
-                                  ' mm_media_name,'
-                                  ' mm_metadata_json,'
-                                  ' mm_metadata_localimage_json,'
-                                  ' mm_metadata_user_json'
-                                  ' from mm_metadata_movie'
-                                  ' where mm_metadata_guid = %s', (media_guid,))
+    return await db_connection.fetchrow('select mm_metadata_guid,'
+                                        ' mm_metadata_media_id,'
+                                        ' mm_media_name,'
+                                        ' mm_metadata_json,'
+                                        ' mm_metadata_localimage_json,'
+                                        ' mm_metadata_user_json'
+                                        ' from mm_metadata_movie'
+                                        ' where mm_metadata_guid = %s', (media_guid,))
 
 
-def db_meta_movie_list(self, db_connection, offset=0, records=None, search_value=None):
+async def db_meta_movie_list(self, db_connection, offset=0, records=None, search_value=None):
     """
     # return list of movies
     """
     if search_value is not None:
-        return db_connection.fetch('select mm_metadata_guid,mm_media_name,'
-                                   'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                   'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json'
-                                   ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
-                                   ' from mm_metadata_movie where mm_media_name %% %s'
-                                   ' order by mm_media_name offset %s limit %s)'
-                                   ' order by mm_media_name, mm_date',
-                                   (search_value, offset, records))
+        return await db_connection.fetch('select mm_metadata_guid,mm_media_name,'
+                                         'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
+                                         'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+                                         'mm_metadata_user_json'
+                                         ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                                         ' from mm_metadata_movie where mm_media_name %% %s'
+                                         ' order by mm_media_name offset %s limit %s)'
+                                         ' order by mm_media_name, mm_date',
+                                         (search_value, offset, records))
     else:
-        return db_connection.fetch('select mm_metadata_guid,mm_media_name,'
-                                   'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                   'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
-                                   'mm_metadata_user_json'
-                                   ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
-                                   ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
-                                   ' order by mm_media_name, mm_date', (offset, records))
+        return await db_connection.fetch('select mm_metadata_guid,mm_media_name,'
+                                         'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
+                                         'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+                                         'mm_metadata_user_json'
+                                         ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                                         ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
+                                         ' order by mm_media_name, mm_date', (offset, records))
 
 
-def db_meta_movie_count(self, db_connection, search_value=None):
+async def db_meta_movie_count(self, db_connection, search_value=None):
     if search_value is not None:
-        return db_connection.fetchval('select count(*) from mm_metadata_movie '
-                                      ' where mm_media_name %% %s',
-                                      (search_value,))
+        return await db_connection.fetchval('select count(*) from mm_metadata_movie '
+                                            ' where mm_media_name %% %s',
+                                            (search_value,))
     else:
-        return db_connection.fetchval('select count(*) from mm_metadata_movie')
+        return await db_connection.fetchval('select count(*) from mm_metadata_movie')
 
 
-def db_meta_movie_status_update(self, db_connection, metadata_guid, user_id, status_text):
+async def db_meta_movie_status_update(self, db_connection, metadata_guid, user_id, status_text):
     """
     # set status's for metadata
     """
-    json_data = db_connection.fetchrow('SELECT mm_metadata_user_json'
-                                       ' from mm_metadata_movie'
-                                       ' where mm_metadata_guid = %s FOR UPDATE',
-                                       (metadata_guid,))['mm_metadata_user_json']
+    json_data = await db_connection.fetchrow('SELECT mm_metadata_user_json'
+                                             ' from mm_metadata_movie'
+                                             ' where mm_metadata_guid = %s FOR UPDATE',
+                                             (metadata_guid,))['mm_metadata_user_json']
     if status_text == 'watched' or status_text == 'requested':
         status_setting = True
     else:
