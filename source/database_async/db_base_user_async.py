@@ -7,7 +7,7 @@ async def db_user_delete(self, db_connection, user_guid):
     # remove user
     """
     await db_connection.execute('delete from mm_user'
-                                ' where id = $1', (user_guid,))
+                                ' where id = $1', user_guid)
 
 
 async def db_user_detail(self, db_connection, guid):
@@ -15,7 +15,7 @@ async def db_user_detail(self, db_connection, guid):
     # return all data for specified user
     """
     return await db_connection.fetchrow('select * from mm_user'
-                                        ' where id = $1', (guid,))
+                                        ' where id = $1', guid)
 
 
 async def db_user_insert(self, db_connection, user_name, user_email, user_password):
@@ -29,7 +29,7 @@ async def db_user_insert(self, db_connection, user_name, user_email, user_passwo
     return await db_connection.execute(
         'insert into mm_user (id, username, email, password, active, is_admin)'
         ' values (NULL, $1, $2, $3, True, $4) returning id',
-        (user_name, user_email, user_password, user_admin)), user_admin
+        user_name, user_email, user_password, user_admin), user_admin
 
 
 async def db_user_list_name(self, db_connection, offset=0, records=None):
@@ -47,7 +47,7 @@ async def db_user_list_name(self, db_connection, offset=0, records=None):
                                      ' where id in (select id from mm_user'
                                      ' order by LOWER(username)'
                                      ' offset $1 limit $2) order by LOWER(username)',
-                                     (offset, records))
+                                     offset, records)
 
 
 async def db_user_login_validation(self, db_connection, user_name, user_password):

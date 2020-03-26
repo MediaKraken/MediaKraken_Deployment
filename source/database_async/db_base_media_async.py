@@ -123,9 +123,9 @@ async def db_media_new(self, db_connection, offset=None, records=None, search_va
                                          ' and mm_media_json->>\'DateAdded\' >= $1'
                                          ' order by LOWER(mm_media_name),'
                                          ' mm_media_class_guid',
-                                         ((datetime.datetime.now()
-                                           - datetime.timedelta(days=days_old)).strftime(
-                                             "%Y-%m-%d"),))
+                                         (datetime.datetime.now()
+                                          - datetime.timedelta(days=days_old)).strftime(
+                                             "%Y-%m-%d"))
     else:
         return await db_connection.fetch('select mm_media_name,'
                                          ' mm_media_guid,'
@@ -135,10 +135,10 @@ async def db_media_new(self, db_connection, offset=None, records=None, search_va
                                          ' and mm_media_json->>\'DateAdded\' >= $1'
                                          ' order by LOWER(mm_media_name),'
                                          ' mm_media_class_guid offset $2 limit $3',
-                                         ((datetime.datetime.now()
-                                           - datetime.timedelta(days=days_old)).strftime(
+                                         (datetime.datetime.now()
+                                          - datetime.timedelta(days=days_old)).strftime(
                                              "%Y-%m-%d"),
-                                          offset, records))
+                                         offset, records)
 
 
 async def db_media_new_count(self, db_connection, search_value=None, days_old=7):
@@ -148,9 +148,9 @@ async def db_media_new_count(self, db_connection, search_value=None, days_old=7)
     return await db_connection.fetchval('select count(*) from mm_media, mm_metadata_movie'
                                         ' where mm_media_metadata_guid = mm_metadata_guid'
                                         ' and mm_media_json->>\'DateAdded\' >= $1',
-                                        ((datetime.datetime.now()
+                                        (datetime.datetime.now()
                                           - datetime.timedelta(days=days_old)).strftime(
-                                            "%Y-%m-%d"),))
+                                            "%Y-%m-%d"))
 
 
 async def db_media_path_by_uuid(self, db_connection, media_uuid):
@@ -159,7 +159,7 @@ async def db_media_path_by_uuid(self, db_connection, media_uuid):
     """
     return await db_connection.fetchval('select mm_media_path from mm_media'
                                         ' where mm_media_guid = $1',
-                                        (media_uuid,))
+                                        media_uuid)
 
 
 async def db_media_rating_update(self, db_connection, media_guid, user_id, status_text):
@@ -174,7 +174,7 @@ async def db_media_rating_update(self, db_connection, media_guid, user_id, statu
     try:
         json_data = await db_connection.fetchval('SELECT mm_media_json from mm_media'
                                                  ' where mm_media_guid = $1 FOR UPDATE',
-                                                 (media_guid,))
+                                                 media_guid)
         if 'UserStats' not in json_data:
             json_data['UserStats'] = {}
         if user_id in json_data['UserStats']:
@@ -194,7 +194,7 @@ async def db_media_unmatched_list(self, db_connection, offset=0, list_limit=None
                                      ' mm_media_path from mm_media'
                                      ' where mm_media_metadata_guid is NULL'
                                      ' order by mm_media_path offset $1 limit $2',
-                                     (offset, list_limit))
+                                     offset, list_limit)
 
 
 async def db_media_unmatched_list_count(self, db_connection):
