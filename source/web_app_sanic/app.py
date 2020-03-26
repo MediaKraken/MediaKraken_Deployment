@@ -72,7 +72,7 @@ app.amqp_channel = connection.channel()
 
 @app.exception(NotFound)
 async def page_not_found(request, exception):
-    print('This route does not exist {}'.format(request.url))
+    print('This route does not exist {}'.format(request.url), flush=True)
     return text("MOO, page not found: {}".format(request.url))
 
 
@@ -93,16 +93,16 @@ async def page_not_found(request, exception):
 async def login(request):
     form = BSSLoginForm(request)
     errors = {}
-    print('b4', request.method)
+    print('b4', request.method, flush=True)
     if request.method == 'POST' and form.validate():
-        print('here i am in post')
+        print('here i am in post', flush=True)
         username = form.username.data
         password = form.password.data
         db_connection = await request.app.db_pool.acquire()
-        print('after db connection')
+        print('after db connection', flush=True)
         user_id, user_admin = await request.app.db_functions.db_user_login_validation(
             db_connection, username, password)
-        print(user_id, user_admin)
+        print(user_id, user_admin, flush=True)
         if user_id is None:  # invalid user name
             errors['username_errors'] = "Username invalid"
         elif user_id == 'inactive_account':
@@ -160,7 +160,7 @@ async def logout(request):
 @app.listener('before_server_start')
 async def register_db(app, loop):
     # need to leave this here so the "loop" is defined
-    print('DB connection start')
+    print('DB connection start', flush=True)
     if 'POSTGRES_PASSWORD' in os.environ:
         database_password = os.environ['POSTGRES_PASSWORD']
     else:
@@ -174,7 +174,7 @@ async def register_db(app, loop):
                                     host='mkstack_database',
                                     loop=loop,
                                     max_size=100)
-    print('DB pool created')
+    print('DB pool created', flush=True)
 
 
 def handle_no_auth(request):
@@ -191,7 +191,7 @@ async def hello(request):
 
 # print out all routes for debugging purposes
 for handler, (rule, router) in app.router.routes_names.items():
-    print(rule)
+    print(rule, flush=True)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
