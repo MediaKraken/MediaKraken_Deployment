@@ -113,7 +113,7 @@ async def login(request):
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
             await app.db_pool.release(db_connection)
-            return response.redirect("/")
+            return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
         await request.app.db_pool.release(db_connection)
     # TODO errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
@@ -139,7 +139,7 @@ async def register(request):
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
             await request.app.db_pool.release(db_connection)
-            return response.redirect("/")
+            return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
         # failed to insert into database
         errors['validate_errors'] = "Failed to create user"
         await request.app.db_pool.release(db_connection)
