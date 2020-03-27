@@ -14,7 +14,7 @@ blueprint_admin = Blueprint('name_blueprint_admin', url_prefix='/admin')
 outside_ip = None
 
 
-@blueprint_admin.route("/")
+@blueprint_admin.route("/admin_home")
 @common_global.jinja_template.template('bss_admin/bss_admin_home.html')
 @common_global.auth.login_required
 async def url_bp_admin(request):
