@@ -110,6 +110,7 @@ async def login(request):
         elif user_id == 'invalid_password':  # invalid_password
             errors['password_errors'] = "Password invalid"
         else:  # should be valid
+            request['session']['search_text'] = None
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
             await app.db_pool.release(db_connection)
@@ -136,6 +137,7 @@ async def register(request):
         user_id, user_admin = await request.app.db_functions.db_user_insert(
             db_connection, user_name=username, user_email=email, user_password=password)
         if user_id.isnumeric():  # valid user
+            request['session']['search_text'] = None
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
             await request.app.db_pool.release(db_connection)
