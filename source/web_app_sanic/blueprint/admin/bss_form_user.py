@@ -3,7 +3,7 @@ from wtforms import TextField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
-class UserEditForm(SanicForm):
+class BSSUserEditForm(SanicForm):
     """
     for editing user
     """
@@ -19,10 +19,10 @@ class UserEditForm(SanicForm):
     is_admin = BooleanField('Admin')
 
     def __init__(self, *args, **kwargs):
-        super(UserEditForm, self).__init__(*args, **kwargs)
+        super(BSSUserEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(UserEditForm, self).validate()
+        initial_validation = super(BSSUserEditForm, self).validate()
         if not initial_validation:
             return False
         return True

@@ -3,7 +3,7 @@ from wtforms import TextField, BooleanField
 from wtforms.validators import DataRequired
 
 
-class ChromecastEditForm(SanicForm):
+class BSSChromecastEditForm(SanicForm):
     """
     for editing the chromecast devices
     """
@@ -12,10 +12,10 @@ class ChromecastEditForm(SanicForm):
     enabled = BooleanField('Enabled')
 
     def __init__(self, *args, **kwargs):
-        super(ChromecastEditForm, self).__init__(*args, **kwargs)
+        super(BSSChromecastEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(ChromecastEditForm, self).validate()
+        initial_validation = super(BSSChromecastEditForm, self).validate()
         if not initial_validation:
             return False
         return True

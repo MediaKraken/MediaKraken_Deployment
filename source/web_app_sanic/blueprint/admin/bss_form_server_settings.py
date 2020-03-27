@@ -46,10 +46,10 @@ class BSSAdminSettingsForm(SanicForm):
     docker_wireshark = BooleanField('Start Wireshark (network sniffer)')
 
     def __init__(self, *args, **kwargs):
-        super(AdminSettingsForm, self).__init__(*args, **kwargs)
+        super(BSSAdminSettingsForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(AdminSettingsForm, self).validate()
+        initial_validation = super(BSSAdminSettingsForm, self).validate()
         if not initial_validation:
             return False
         return True

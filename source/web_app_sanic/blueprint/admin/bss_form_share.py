@@ -2,7 +2,7 @@ from sanic_wtf import SanicForm
 from wtforms import TextField, SelectField
 
 
-class ShareAddEditForm(SanicForm):
+class BSSShareAddEditForm(SanicForm):
     """
     for editing the shares
     """
@@ -15,10 +15,10 @@ class ShareAddEditForm(SanicForm):
     storage_mount_path = TextField('Path')
 
     def __init__(self, *args, **kwargs):
-        super(ShareAddEditForm, self).__init__(*args, **kwargs)
+        super(BSSShareAddEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(ShareAddEditForm, self).validate()
+        initial_validation = super(BSSShareAddEditForm, self).validate()
         if not initial_validation:
             return False
         return True

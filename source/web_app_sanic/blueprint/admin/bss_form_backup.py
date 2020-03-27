@@ -2,7 +2,7 @@ from sanic_wtf import SanicForm
 from wtforms import BooleanField
 
 
-class BackupEditForm(SanicForm):
+class BSSBackupEditForm(SanicForm):
     """
     for editing backups
     """
@@ -13,10 +13,10 @@ class BackupEditForm(SanicForm):
     # time = DecimalField('Time', places = 2, rounding=ROUND_UP)
 
     def __init__(self, *args, **kwargs):
-        super(BackupEditForm, self).__init__(*args, **kwargs)
+        super(BSSBackupEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(BackupEditForm, self).validate()
+        initial_validation = super(BSSBackupEditForm, self).validate()
         if not initial_validation:
             return False
         return True

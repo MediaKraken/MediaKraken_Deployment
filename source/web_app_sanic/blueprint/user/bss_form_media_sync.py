@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Length
 
 
 # for editing sync jobs
-class SyncEditForm(SanicForm):
+class BSSSyncEditForm(SanicForm):
     # fields
     name = TextField("Name", validators=[DataRequired()])
     target_type = SelectField("Sync Type", choices=[('Local File System', 'Local File System'),
@@ -67,10 +67,10 @@ class SyncEditForm(SanicForm):
                                                               Length(min=1, max=255)])
 
     def __init__(self, *args, **kwargs):
-        super(SyncEditForm, self).__init__(*args, **kwargs)
+        super(BSSSyncEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(SyncEditForm, self).validate()
+        initial_validation = super(BSSSyncEditForm, self).validate()
         if not initial_validation:
             return False
         return True

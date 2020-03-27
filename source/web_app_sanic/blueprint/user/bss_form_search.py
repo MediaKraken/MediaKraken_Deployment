@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 
 # for searching
-class SearchEditForm(SanicForm):
+class BSSSearchEditForm(SanicForm):
     # fields
     search_string = TextField("Search string", validators=[DataRequired()])
     search_media_type = SelectField("Media Type", choices=[('any', 'Any'),
@@ -47,10 +47,10 @@ class SearchEditForm(SanicForm):
                                                              ('vorbis', 'Vorbis')])
 
     def __init__(self, *args, **kwargs):
-        super(SearchEditForm, self).__init__(*args, **kwargs)
+        super(BSSSearchEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(SearchEditForm, self).validate()
+        initial_validation = super(BSSSearchEditForm, self).validate()
         if not initial_validation:
             return False
         return True

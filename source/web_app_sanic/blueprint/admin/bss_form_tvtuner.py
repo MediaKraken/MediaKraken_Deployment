@@ -3,7 +3,7 @@ from wtforms import TextField, BooleanField
 from wtforms.validators import DataRequired
 
 
-class TVTunerEditForm(SanicForm):
+class BSSTVTunerEditForm(SanicForm):
     """
     for editing the tvtuner devices
     """
@@ -12,10 +12,10 @@ class TVTunerEditForm(SanicForm):
     enabled = BooleanField('Enabled')
 
     def __init__(self, *args, **kwargs):
-        super(TVTunerEditForm, self).__init__(*args, **kwargs)
+        super(BSSTVTunerEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(TVTunerEditForm, self).validate()
+        initial_validation = super(BSSTVTunerEditForm, self).validate()
         if not initial_validation:
             return False
         return True

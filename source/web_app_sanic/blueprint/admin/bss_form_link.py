@@ -2,7 +2,7 @@ from sanic_wtf import SanicForm
 from wtforms import TextField
 
 
-class LinkAddEditForm(SanicForm):
+class BSSLinkAddEditForm(SanicForm):
     """
     for editing the link
     """
@@ -10,10 +10,10 @@ class LinkAddEditForm(SanicForm):
         'Link Path')  # , validators=[DataRequired(), Length(min=1, max=255)])  # remove required due to browse buttons
 
     def __init__(self, *args, **kwargs):
-        super(LinkAddEditForm, self).__init__(*args, **kwargs)
+        super(BSSLinkAddEditForm, self).__init__(*args, **kwargs)
 
     def validate(self):
-        initial_validation = super(LinkAddEditForm, self).validate()
+        initial_validation = super(BSSLinkAddEditForm, self).validate()
         if not initial_validation:
             return False
         return True
