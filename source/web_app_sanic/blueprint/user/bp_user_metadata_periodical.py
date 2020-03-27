@@ -7,8 +7,8 @@ blueprint_user_metadata_periodical = Blueprint('name_blueprint_user_metadata_per
                                                url_prefix='/user')
 
 
-@blueprint_user_metadata_periodical.route('/meta_periodical', methods=['GET', 'POST'])
-@common_global.jinja_template.template('user/meta_periodical.html')
+@blueprint_user_metadata_periodical.route('/user_meta_periodical', methods=['GET', 'POST'])
+@common_global.jinja_template.template('bss_user/meta_periodical.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_periodical(request):
     """
@@ -40,8 +40,8 @@ async def url_bp_user_metadata_periodical(request):
     }
 
 
-@blueprint_user_metadata_periodical.route('/meta_periodical_detail/<guid>')
-@common_global.jinja_template.template('user/meta_periodical_detail.html')
+@blueprint_user_metadata_periodical.route('/user_meta_periodical_detail/<guid>')
+@common_global.jinja_template.template('bss_user/meta_periodical_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_periodical_detail(request, guid):
     """

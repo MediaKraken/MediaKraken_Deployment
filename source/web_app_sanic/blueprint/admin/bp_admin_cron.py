@@ -10,7 +10,7 @@ from web_app_sanic.blueprint.admin.forms import CronEditForm
 blueprint_admin_cron = Blueprint('name_blueprint_admin_cron', url_prefix='/admin')
 
 
-@blueprint_admin_cron.route('/cron')
+@blueprint_admin_cron.route('/admin_cron')
 @common_global.jinja_template.template('bss_admin/bss_admin_cron.html')
 @common_global.auth.login_required
 async def url_bp_admin_cron(request):
@@ -36,7 +36,7 @@ async def url_bp_admin_cron(request):
     }
 
 
-@blueprint_admin_cron.route('/cron_delete', methods=["POST"])
+@blueprint_admin_cron.route('/admin_cron_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_cron_delete(request):
     """
@@ -48,7 +48,7 @@ async def url_bp_admin_cron_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_cron.route('/cron_edit/<guid>', methods=['GET', 'POST'])
+@blueprint_admin_cron.route('/admin_cron_edit/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_admin/bss_admin_cron_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_cron_edit(request, guid):
@@ -69,7 +69,7 @@ async def url_bp_admin_cron_edit(request, guid):
     }
 
 
-@blueprint_admin_cron.route('/cron_run/<guid>', methods=['GET', 'POST'])
+@blueprint_admin_cron.route('/admin_cron_run/<guid>', methods=['GET', 'POST'])
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_admin_cron_run(request, user, guid):
     """

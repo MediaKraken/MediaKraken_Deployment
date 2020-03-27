@@ -9,7 +9,7 @@ from web_app_sanic.blueprint.admin.forms import ChromecastEditForm, TVTunerEditF
 blueprint_admin_hardware = Blueprint('name_blueprint_admin_hardware', url_prefix='/admin')
 
 
-@blueprint_admin_hardware.route("/hardware", methods=["GET", "POST"])
+@blueprint_admin_hardware.route("/admin_hardware", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_hardware.html')
 @common_global.auth.login_required
 async def url_bp_admin_hardware(request):
@@ -47,7 +47,7 @@ async def url_bp_admin_hardware(request):
     }
 
 
-@blueprint_admin_hardware.route('/hardware_chromecast_delete', methods=["POST"])
+@blueprint_admin_hardware.route('/admin_hardware_chromecast_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_hardware_chromecast_delete(request):
     """
@@ -59,7 +59,7 @@ async def url_bp_admin_hardware_chromecast_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_hardware.route("/hardware_chromecast_edit", methods=["GET", "POST"])
+@blueprint_admin_hardware.route("/admin_hardware_chromecast_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_hardware_chromecast_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_hardware_chromecast_edit(request):
@@ -93,7 +93,7 @@ async def url_bp_admin_hardware_chromecast_edit(request):
     }
 
 
-@blueprint_admin_hardware.route("/hardware_tvtuner_edit", methods=["GET", "POST"])
+@blueprint_admin_hardware.route("/admin_hardware_tvtuner_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_hardware_tuner_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_hardware_tvtuner_edit(request):
@@ -127,7 +127,7 @@ async def url_bp_admin_hardware_tvtuner_edit(request):
     }
 
 
-@blueprint_admin_hardware.route('/hardware_tvtuner_delete', methods=["POST"])
+@blueprint_admin_hardware.route('/admin_hardware_tvtuner_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_hardware_tvtuner_delete(request):
     """

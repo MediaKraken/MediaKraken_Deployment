@@ -7,7 +7,7 @@ blueprint_admin_hardware_chromecast = Blueprint('name_blueprint_admin_hardware_c
                                                 url_prefix='/admin')
 
 
-@blueprint_admin_hardware_chromecast.route('/chromecast_update', methods=['POST'])
+@blueprint_admin_hardware_chromecast.route('/admin_chromecast_update', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_chromecast_update(request):
     db_connection = await request.app.db_pool.acquire()
@@ -18,7 +18,7 @@ async def url_bp_admin_chromecast_update(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_hardware_chromecast.route('/chromecast_by_id', methods=['POST'])
+@blueprint_admin_hardware_chromecast.route('/admin_chromecast_by_id', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_getChromecastById(request):
     db_connection = await request.app.db_pool.acquire()

@@ -12,7 +12,7 @@ from web_app_sanic.blueprint.admin.forms import BackupEditForm
 blueprint_admin_backup = Blueprint('name_blueprint_admin_backup', url_prefix='/admin')
 
 
-@blueprint_admin_backup.route("/backup", methods=["GET", "POST"])
+@blueprint_admin_backup.route("/admin_backup", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_backup.html')
 @common_global.auth.login_required
 async def url_bp_admin_backup(request):
@@ -66,7 +66,7 @@ async def url_bp_admin_backup(request):
     }
 
 
-@blueprint_admin_backup.route('/backup_delete', methods=["POST"])
+@blueprint_admin_backup.route('/admin_backup_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_backup_delete(request):
     """

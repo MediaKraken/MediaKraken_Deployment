@@ -8,7 +8,7 @@ from web_app_sanic.blueprint.admin.forms import LinkAddEditForm
 blueprint_admin_link = Blueprint('name_blueprint_admin_link', url_prefix='/admin')
 
 
-@blueprint_admin_link.route("/link")
+@blueprint_admin_link.route("/admin_link")
 @common_global.jinja_template.template('bss_admin/bss_admin_link.html')
 @common_global.auth.login_required
 async def url_bp_admin_server_link(request):
@@ -33,7 +33,7 @@ async def url_bp_admin_server_link(request):
     }
 
 
-@blueprint_admin_link.route("/link_edit", methods=["GET", "POST"])
+@blueprint_admin_link.route("/admin_link_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_link_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_link_edit(request):
@@ -48,7 +48,7 @@ async def url_bp_admin_link_edit(request):
     }
 
 
-@blueprint_admin_link.route('/link_delete', methods=["POST"])
+@blueprint_admin_link.route('/admin_link_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_link_delete(request):
     """

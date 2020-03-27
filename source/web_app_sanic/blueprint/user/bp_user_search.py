@@ -7,8 +7,8 @@ from sanic.response import redirect
 blueprint_user_search = Blueprint('name_blueprint_user_search', url_prefix='/user')
 
 
-@blueprint_user_search.route("/search", methods=["GET", "POST"])
-@common_global.jinja_template.template('user/user_search.html')
+@blueprint_user_search.route("/user_search", methods=["GET", "POST"])
+@common_global.jinja_template.template('bss_user/user_search.html')
 @common_global.auth.login_required
 async def url_bp_user_search_media(request):
     """
@@ -96,7 +96,7 @@ async def url_bp_user_search_media(request):
     }
 
 
-@blueprint_user_search.route("/search_nav", methods=["GET", "POST"])
+@blueprint_user_search.route("/user_search_nav", methods=["GET", "POST"])
 @common_global.auth.login_required
 async def url_bp_user_search_nav_media(request):
     """

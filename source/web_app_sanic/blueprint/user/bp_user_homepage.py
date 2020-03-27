@@ -4,7 +4,7 @@ from sanic import Blueprint
 blueprint_user_homepage = Blueprint('name_blueprint_user_homepage', url_prefix='/user')
 
 
-@blueprint_user_homepage.route('/home', methods=['GET', 'POST'])
+@blueprint_user_homepage.route('/user_home', methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/bss_user_home.html')
 @common_global.auth.login_required
 async def url_bp_user_homepage(request):

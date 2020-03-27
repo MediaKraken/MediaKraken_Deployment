@@ -4,7 +4,7 @@ from sanic import Blueprint
 blueprint_user_playback_comic = Blueprint('name_blueprint_user_playback_comic', url_prefix='/user')
 
 
-@blueprint_user_playback_comic.route('/comic_view/<guid>', methods=['GET', 'POST'])
+@blueprint_user_playback_comic.route('/user_comic_view/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/bss_user_playback_comic.html')
 @common_global.auth.login_required
 async def url_bp_user_playback_comic(request, guid):

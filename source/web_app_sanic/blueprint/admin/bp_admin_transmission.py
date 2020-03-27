@@ -8,7 +8,7 @@ from sanic import Blueprint
 blueprint_admin_transmission = Blueprint('name_blueprint_admin_transmission', url_prefix='/admin')
 
 
-@blueprint_admin_transmission.route("/transmission")
+@blueprint_admin_transmission.route("/admin_transmission")
 @common_global.jinja_template.template('bss_admin/bss_admin_transmission.html')
 @common_global.auth.login_required
 async def url_bp_admin_transmission(request):
@@ -31,7 +31,7 @@ async def url_bp_admin_transmission(request):
     }
 
 
-@blueprint_admin_transmission.route('/transmission_delete', methods=["POST"])
+@blueprint_admin_transmission.route('/admin_transmission_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_transmission_delete(request):
     """
@@ -41,7 +41,7 @@ async def url_bp_admin_transmission_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_transmission.route('/transmission_edit', methods=["POST"])
+@blueprint_admin_transmission.route('/admin_transmission_edit', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_transmission_edit(request):
     """

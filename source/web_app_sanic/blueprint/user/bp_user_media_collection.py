@@ -6,8 +6,8 @@ blueprint_user_media_collection = Blueprint('name_blueprint_user_media_colletion
                                             url_prefix='/user')
 
 
-@blueprint_user_media_collection.route('/media_movie_collection', methods=['GET', 'POST'])
-@common_global.jinja_template.template('user/media_movie_collection.html')
+@blueprint_user_media_collection.route('/user_media_movie_collection', methods=['GET', 'POST'])
+@common_global.jinja_template.template('bss_user/media_movie_collection.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_movie_collection(request):
     """
@@ -42,8 +42,8 @@ async def url_bp_user_metadata_movie_collection(request):
     }
 
 
-@blueprint_user_media_collection.route('/media_movie_collection_detail/<guid>')
-@common_global.jinja_template.template('user/media_movie_collection_detail.html')
+@blueprint_user_media_collection.route('/user_media_movie_collection_detail/<guid>')
+@common_global.jinja_template.template('bss_user/media_movie_collection_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_movie_collection_detail(request, guid):
     """

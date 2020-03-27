@@ -5,8 +5,8 @@ from sanic import Blueprint
 blueprint_user_metadata_music = Blueprint('name_blueprint_user_metadata_music', url_prefix='/user')
 
 
-@blueprint_user_metadata_music.route('/meta_music_album_list', methods=['GET', 'POST'])
-@common_global.jinja_template.template('user/meta_music_album_list.html')
+@blueprint_user_metadata_music.route('/user_meta_music_album_list', methods=['GET', 'POST'])
+@common_global.jinja_template.template('bss_user/meta_music_album_list.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_music_album_list(request):
     """
@@ -57,8 +57,8 @@ async def url_bp_user_metadata_music_album_list(request):
     }
 
 
-@blueprint_user_metadata_music.route('/meta_music_album_song_list', methods=['GET', 'POST'])
-@common_global.jinja_template.template('user/meta_music_album_song_list.html')
+@blueprint_user_metadata_music.route('/user_meta_music_album_song_list', methods=['GET', 'POST'])
+@common_global.jinja_template.template('bss_user/meta_music_album_song_list.html')
 @common_global.auth.login_required
 async def metadata_music_album_song_list(request):
     """

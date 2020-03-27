@@ -5,7 +5,7 @@ from sanic import Blueprint
 blueprint_admin_docker = Blueprint('name_blueprint_admin_docker', url_prefix='/admin')
 
 
-@blueprint_admin_docker.route("/docker_stat")
+@blueprint_admin_docker.route("/admin_docker_stat")
 @common_global.jinja_template.template('bss_admin/bss_admin_docker.html')
 @common_global.auth.login_required
 async def url_bp_admin_docker_stat(request):

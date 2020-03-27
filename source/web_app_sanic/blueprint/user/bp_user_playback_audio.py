@@ -4,7 +4,7 @@ from sanic import Blueprint
 blueprint_user_playback_audio = Blueprint('name_blueprint_user_playback_audio', url_prefix='/user')
 
 
-@blueprint_user_playback_audio.route('/play_album/<guid>', methods=['GET', 'POST'])
+@blueprint_user_playback_audio.route('/user_play_album/<guid>', methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/bss_user_album_playback.html')
 @common_global.auth.login_required
 async def url_bp_user_playback_album(request, guid):

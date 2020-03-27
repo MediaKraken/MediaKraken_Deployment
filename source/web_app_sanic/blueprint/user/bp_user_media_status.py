@@ -7,7 +7,7 @@ from sanic.response import redirect
 blueprint_user_media_status = Blueprint('name_blueprint_user_media_status', url_prefix='/user')
 
 
-@blueprint_user_media_status.route('/status_movie/<guid>/<event_type>', methods=['GET', 'POST'])
+@blueprint_user_media_status.route('/user_status_movie/<guid>/<event_type>', methods=['GET', 'POST'])
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_status_movie(request, user, guid, event_type):
     """
@@ -36,7 +36,7 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
         return json.dumps({'status': 'OK'})
 
 
-@blueprint_user_media_status.route('/status_movie_metadata/<guid>/<event_type>',
+@blueprint_user_media_status.route('/user_status_movie_metadata/<guid>/<event_type>',
                                    methods=['GET', 'POST'])
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
@@ -52,7 +52,7 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_user_media_status.route('/status_tv/<guid>/<event_type>', methods=['GET', 'POST'])
+@blueprint_user_media_status.route('/user_status_tv/<guid>/<event_type>', methods=['GET', 'POST'])
 @common_global.auth.login_required
 async def url_bp_user_status_tv(request, guid, event_type):
     """

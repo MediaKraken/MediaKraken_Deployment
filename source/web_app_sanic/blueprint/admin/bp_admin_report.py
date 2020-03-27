@@ -8,7 +8,7 @@ from sanic import Blueprint
 blueprint_admin_report = Blueprint('name_blueprint_admin_report', url_prefix='/admin')
 
 
-@blueprint_admin_report.route('/report_all_media')
+@blueprint_admin_report.route('/admin_report_all_media')
 @common_global.jinja_template.template('bss_admin/bss_admin_report_all_media.html')
 @common_global.auth.login_required
 async def url_bp_admin_report_all_media(request):
@@ -38,7 +38,7 @@ async def url_bp_admin_report_all_media(request):
     }
 
 
-@blueprint_admin_report.route('/report_duplicate')
+@blueprint_admin_report.route('/admin_report_duplicate')
 @common_global.jinja_template.template('bss_admin/bss_admin_report_all_duplicate_media.html')
 @common_global.auth.login_required
 async def url_bp_admin_report_all_duplicate_media(request):
@@ -65,7 +65,7 @@ async def url_bp_admin_report_all_duplicate_media(request):
     }
 
 
-@blueprint_admin_report.route('/report_duplicate_detail/<guid>')
+@blueprint_admin_report.route('/admin_report_duplicate_detail/<guid>')
 @common_global.jinja_template.template('bss_admin/bss_admin_report_duplicate_media_detail.html')
 @common_global.auth.login_required
 async def url_bp_admin_report_duplicate_detail(request, guid):
@@ -107,7 +107,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
     }
 
 
-@blueprint_admin_report.route('/report_top10/<mtype>')
+@blueprint_admin_report.route('/admin_report_top10/<mtype>')
 @common_global.jinja_template.template('bss_admin/bss_admin_report_top10_base.html')
 @common_global.auth.login_required
 async def url_bp_admin_report_top10(request, mtype):
@@ -128,7 +128,7 @@ async def url_bp_admin_report_top10(request, mtype):
     return {'media': top10_data}
 
 
-@blueprint_admin_report.route('/report_unmatched_media')
+@blueprint_admin_report.route('/admin_report_unmatched_media')
 @common_global.jinja_template.template('bss_admin/bss_admin_report_unmatched_media.html')
 @common_global.auth.login_required
 async def url_bp_admin_report_display_all_unmatched_media(request):

@@ -6,8 +6,8 @@ blueprint_user_hardware_chromecast = Blueprint('name_blueprint_user_hardware_chr
                                                url_prefix='/user')
 
 
-@blueprint_user_hardware_chromecast.route('/chromecast/<action>/<guid>')
-@common_global.jinja_template.template('user/user_chromecast_playback.html')
+@blueprint_user_hardware_chromecast.route('/user_chromecast/<action>/<guid>')
+@common_global.jinja_template.template('bss_user/user_chromecast_playback.html')
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_chromecast(request, user, action, guid):
     """

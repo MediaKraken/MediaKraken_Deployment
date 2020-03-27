@@ -7,8 +7,8 @@ blueprint_user_metadata_movie = Blueprint('name_blueprint_user_metadata_movie',
                                           url_prefix='/user')
 
 
-@blueprint_user_metadata_movie.route('/meta_movie_detail/<guid>')
-@common_global.jinja_template.template('user/meta_movie_detail.html')
+@blueprint_user_metadata_movie.route('/user_meta_movie_detail/<guid>')
+@common_global.jinja_template.template('bss_user/meta_movie_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_movie_detail(request, guid):
     """
@@ -67,8 +67,8 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     }
 
 
-@blueprint_user_metadata_movie.route('/meta_movie_list', methods=["GET", "POST"])
-@common_global.jinja_template.template('user/meta_movie_list.html')
+@blueprint_user_metadata_movie.route('/user_meta_movie_list', methods=["GET", "POST"])
+@common_global.jinja_template.template('bss_user/meta_movie_list.html')
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_metadata_movie_list(request, user):
     """

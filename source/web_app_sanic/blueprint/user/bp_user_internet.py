@@ -8,8 +8,8 @@ from sanic import Blueprint
 blueprint_user_internet = Blueprint('name_blueprint_user_internet', url_prefix='/user')
 
 
-@blueprint_user_internet.route('/internet', methods=['GET'])
-@common_global.jinja_template.template('user/user_internet.html')
+@blueprint_user_internet.route('/user_internet', methods=['GET'])
+@common_global.jinja_template.template('bss_user/user_internet.html')
 @common_global.auth.login_required
 async def url_bp_user_internet(request):
     """
@@ -18,8 +18,8 @@ async def url_bp_user_internet(request):
     return {}
 
 
-@blueprint_user_internet.route('/internet/flickr')
-@common_global.jinja_template.template('user/user_internet_flickr.html')
+@blueprint_user_internet.route('/user_internet/flickr')
+@common_global.jinja_template.template('bss_user/user_internet_flickr.html')
 @common_global.auth.login_required
 async def url_bp_user_internet_flickr(request):
     """
@@ -28,7 +28,7 @@ async def url_bp_user_internet_flickr(request):
     return {}
 
 
-@blueprint_user_internet.route('/internet/flickr_detail/<guid>')
+@blueprint_user_internet.route('/user_internet/flickr_detail/<guid>')
 @common_global.auth.login_required
 async def url_bp_user_internet_flickr_detail(request, guid):
     """
@@ -37,8 +37,8 @@ async def url_bp_user_internet_flickr_detail(request, guid):
     return {}
 
 
-@blueprint_user_internet.route('/internet/twitch')
-@common_global.jinja_template.template('user/user_twitch.html')
+@blueprint_user_internet.route('/user_internet/twitch')
+@common_global.jinja_template.template('bss_user/user_twitch.html')
 @common_global.auth.login_required
 async def url_bp_user_internet_twitch(request):
     """
@@ -74,8 +74,8 @@ async def url_bp_user_internet_twitch(request):
     }
 
 
-@blueprint_user_internet.route('/internet/twitch_stream_detail/<stream_name>')
-@common_global.jinja_template.template('user/user_twitch_stream_detail.html')
+@blueprint_user_internet.route('/user_internet/twitch_stream_detail/<stream_name>')
+@common_global.jinja_template.template('bss_user/user_twitch_stream_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_internet_twitch_stream_detail(request, stream_name):
     """
@@ -89,8 +89,8 @@ async def url_bp_user_internet_twitch_stream_detail(request, stream_name):
     }
 
 
-@blueprint_user_internet.route('/internet/vimeo')
-@common_global.jinja_template.template('user/user_internet_vimeo.html')
+@blueprint_user_internet.route('/user_internet/vimeo')
+@common_global.jinja_template.template('bss_user/user_internet_vimeo.html')
 @common_global.auth.login_required
 async def url_bp_user_internet_vimeo(request):
     """
@@ -99,7 +99,7 @@ async def url_bp_user_internet_vimeo(request):
     return {}
 
 
-@blueprint_user_internet.route('/internet/vimeo_detail/<guid>')
+@blueprint_user_internet.route('/user_internet/vimeo_detail/<guid>')
 @common_global.auth.login_required
 async def url_bp_user_internet_vimeo_detail(request, guid):
     """
@@ -108,8 +108,8 @@ async def url_bp_user_internet_vimeo_detail(request, guid):
     pass
 
 
-@blueprint_user_internet.route('/internet/youtube', methods=["GET", "POST"])
-@common_global.jinja_template.template('user/user_internet_youtube.html')
+@blueprint_user_internet.route('/user_internet/youtube', methods=["GET", "POST"])
+@common_global.jinja_template.template('bss_user/user_internet_youtube.html')
 @common_global.auth.login_required
 async def url_bp_user_internet_youtube(request):
     """
@@ -135,8 +135,8 @@ async def url_bp_user_internet_youtube(request):
     }
 
 
-@blueprint_user_internet.route('/internet/youtube_detail/<uuid>')
-@common_global.jinja_template.template('user/user_internet_youtube_detail.html')
+@blueprint_user_internet.route('/user_internet/youtube_detail/<uuid>')
+@common_global.jinja_template.template('bss_user/user_internet_youtube_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_internet_youtube_detail(request, uuid):
     """

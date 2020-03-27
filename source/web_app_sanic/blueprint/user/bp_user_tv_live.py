@@ -4,8 +4,8 @@ from sanic import Blueprint
 blueprint_user_tv_live = Blueprint('name_blueprint_user_tv_live', url_prefix='/user')
 
 
-@blueprint_user_tv_live.route("/tv_live/<schedule_date>/<schedule_time>")
-@common_global.jinja_template.template('user/user_tv_live.html')
+@blueprint_user_tv_live.route("/user_tv_live/<schedule_date>/<schedule_time>")
+@common_global.jinja_template.template('bss_user/user_tv_live.html')
 @common_global.auth.login_required
 async def url_bp_user_livetv(request, schedule_date, schedule_time):
     """
@@ -120,8 +120,8 @@ async def url_bp_user_livetv(request, schedule_date, schedule_time):
     }
 
 
-@blueprint_user_tv_live.route("/tv_live_detail/<guid>")
-@common_global.jinja_template.template('user/user_tv_live_detail.html')
+@blueprint_user_tv_live.route("/user_tv_live_detail/<guid>")
+@common_global.jinja_template.template('bss_user/user_tv_live_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_tv_live_detail(request, guid):
     """

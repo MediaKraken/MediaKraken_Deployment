@@ -11,7 +11,7 @@ from web_app_sanic.blueprint.admin.forms import ShareAddEditForm
 blueprint_admin_share = Blueprint('name_blueprint_admin_share', url_prefix='/admin')
 
 
-@blueprint_admin_share.route("/share", methods=["GET", "POST"])
+@blueprint_admin_share.route("/admin_share", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_share.html')
 @common_global.auth.login_required
 async def url_bp_admin_share(request):
@@ -38,7 +38,7 @@ async def url_bp_admin_share(request):
     }
 
 
-@blueprint_admin_share.route('/share_by_id', methods=['POST'])
+@blueprint_admin_share.route('/admin_share_by_id', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_share_by_id(request):
     db_connection = await request.app.db_pool.acquire()
@@ -49,7 +49,7 @@ async def url_bp_admin_share_by_id(request):
                        'Path': result['mm_share_dir_path']})
 
 
-@blueprint_admin_share.route('/share_delete', methods=["POST"])
+@blueprint_admin_share.route('/admin_share_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_share_delete(request):
     """
@@ -61,7 +61,7 @@ async def url_bp_admin_share_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_share.route("/share_edit", methods=["GET", "POST"])
+@blueprint_admin_share.route("/admin_share_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_share_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_share_edit(request):
@@ -144,7 +144,7 @@ async def url_bp_admin_share_edit(request):
     return {'form': form}
 
 
-@blueprint_admin_share.route('/share_update', methods=['POST'])
+@blueprint_admin_share.route('/admin_share_update', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_share_update(request):
     db_connection = await request.app.db_pool.acquire()

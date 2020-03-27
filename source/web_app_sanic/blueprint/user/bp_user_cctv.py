@@ -5,8 +5,8 @@ from sanic import Blueprint
 blueprint_user_cctv = Blueprint('name_blueprint_user_cctv', url_prefix='/user')
 
 
-@blueprint_user_cctv.route('/cctv')
-@common_global.jinja_template.template('user/user_cctv.html')
+@blueprint_user_cctv.route('/user_cctv')
+@common_global.jinja_template.template('bss_user/bss_user_cctv.html')
 @common_global.auth.login_required
 async def url_bp_user_cctv(request):
     """
@@ -31,8 +31,8 @@ async def url_bp_user_cctv(request):
     }
 
 
-@blueprint_user_cctv.route('/cctv_detail/<guid>')
-@common_global.jinja_template.template('user/user_cctv_detail.html')
+@blueprint_user_cctv.route('/user_cctv_detail/<guid>')
+@common_global.jinja_template.template('bss_user/bss_user_cctv_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_cctv_detail(request, guid):
     """

@@ -13,7 +13,7 @@ from web_app_sanic.blueprint.admin.forms import LibraryAddEditForm
 blueprint_admin_library = Blueprint('name_blueprint_admin_library', url_prefix='/admin')
 
 
-@blueprint_admin_library.route("/library", methods=["GET", "POST"])
+@blueprint_admin_library.route("/admin_library", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_library.html')
 @common_global.auth.login_required
 async def url_bp_admin_library(request):
@@ -57,7 +57,7 @@ async def url_bp_admin_library(request):
     }
 
 
-@blueprint_admin_library.route('/library_by_id', methods=['POST'])
+@blueprint_admin_library.route('/admin_library_by_id', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_library_by_id(request):
     db_connection = await request.app.db_pool.acquire()
@@ -69,7 +69,7 @@ async def url_bp_admin_library_by_id(request):
                        'Media Class': result['mm_media_dir_class_type']})
 
 
-@blueprint_admin_library.route('/library_delete', methods=["POST"])
+@blueprint_admin_library.route('/admin_library_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_library_delete(request):
     """
@@ -81,7 +81,7 @@ async def url_bp_admin_library_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_library.route("/library_edit", methods=["GET", "POST"])
+@blueprint_admin_library.route("/admin_library_edit", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_library_edit.html')
 @common_global.auth.login_required
 async def url_bp_admin_library_edit(request):
@@ -184,7 +184,7 @@ async def url_bp_admin_library_edit(request):
     }
 
 
-@blueprint_admin_library.route('/library_update', methods=['POST'])
+@blueprint_admin_library.route('/admin_library_update', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_library_update(request):
     db_connection = await request.app.db_pool.acquire()

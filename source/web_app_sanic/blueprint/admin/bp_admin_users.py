@@ -7,7 +7,7 @@ from sanic import Blueprint
 blueprint_admin_users = Blueprint('name_blueprint_admin_users', url_prefix='/admin')
 
 
-@blueprint_admin_users.route('/user_delete', methods=["POST"])
+@blueprint_admin_users.route('/admin_user_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_user_delete(request):
     """
@@ -19,7 +19,7 @@ async def url_bp_admin_user_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_users.route("/user_detail/<guid>")
+@blueprint_admin_users.route("/admin_user_detail/<guid>")
 @common_global.jinja_template.template('bss_admin/bss_admin_user_detail.html')
 @common_global.auth.login_required
 async def url_bp_admin_user_detail(request, guid):
@@ -32,7 +32,7 @@ async def url_bp_admin_user_detail(request, guid):
     return {'data_user': data_user}
 
 
-@blueprint_admin_users.route("/users")
+@blueprint_admin_users.route("/admin_users")
 @common_global.jinja_template.template('bss_admin/bss_admin_user.html')
 @common_global.auth.login_required
 async def url_bp_admin_user(request):

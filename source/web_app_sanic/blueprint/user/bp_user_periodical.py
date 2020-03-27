@@ -5,8 +5,8 @@ from sanic import Blueprint
 blueprint_user_periodical = Blueprint('name_blueprint_user_periodical', url_prefix='/user')
 
 
-@blueprint_user_periodical.route('/periodical', methods=['GET'])
-@common_global.jinja_template.template('user/user_periodical.html')
+@blueprint_user_periodical.route('/user_periodical', methods=['GET'])
+@common_global.jinja_template.template('bss_user/user_periodical.html')
 @common_global.auth.login_required
 async def url_bp_user_periodical_list(request):
     """
@@ -35,8 +35,8 @@ async def url_bp_user_periodical_list(request):
     }
 
 
-@blueprint_user_periodical.route('/periodical_detail/<guid>', methods=['GET'])
-@common_global.jinja_template.template('user/user_periodical_detail.html')
+@blueprint_user_periodical.route('/user_periodical_detail/<guid>', methods=['GET'])
+@common_global.jinja_template.template('bss_user/user_periodical_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_periodical_detail(request, guid):
     """

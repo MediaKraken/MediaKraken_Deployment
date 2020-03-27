@@ -7,7 +7,7 @@ from sanic import Blueprint
 blueprint_admin_periodical = Blueprint('name_blueprint_admin_periodical', url_prefix='/admin')
 
 
-@blueprint_admin_periodical.route('/periodical_add', methods=['GET', 'POST'])
+@blueprint_admin_periodical.route('/admin_periodical_add', methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_admin/bss_admin_periodical_add.html')
 async def url_bp_admin_periodical_add(request):
     """

@@ -8,8 +8,8 @@ from sanic.response import redirect
 blueprint_user_sync = Blueprint('name_blueprint_user_sync', url_prefix='/user')
 
 
-@blueprint_user_sync.route('/sync')
-@common_global.jinja_template.template('user/user_sync.html')
+@blueprint_user_sync.route('/user_sync')
+@common_global.jinja_template.template('bss_user/user_sync.html')
 @common_global.auth.login_required
 async def url_bp_user_sync_display_all(request):
     """
@@ -35,7 +35,7 @@ async def url_bp_user_sync_display_all(request):
     }
 
 
-@blueprint_user_sync.route('/sync_delete', methods=["POST"])
+@blueprint_user_sync.route('/user_sync_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_user_admin_sync_delete_page(request):
     """
@@ -47,8 +47,8 @@ async def url_bp_user_admin_sync_delete_page(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_user_sync.route('/sync_edit/<guid>', methods=['GET', 'POST'])
-@common_global.jinja_template.template('user/user_sync_edit.html')
+@blueprint_user_sync.route('/user_sync_edit/<guid>', methods=['GET', 'POST'])
+@common_global.jinja_template.template('bss_user/user_sync_edit.html')
 @common_global.auth.login_required
 async def url_bp_user_sync_edit(request, guid):
     """

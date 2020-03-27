@@ -6,7 +6,7 @@ from sanic import Blueprint
 blueprint_admin_database = Blueprint('name_blueprint_admin_database', url_prefix='/admin')
 
 
-@blueprint_admin_database.route("/database")
+@blueprint_admin_database.route("/admin_database")
 @common_global.jinja_template.template('bss_admin/bss_admin_db_statistics.html')
 @common_global.auth.login_required
 async def url_bp_admin_database_statistics(request):

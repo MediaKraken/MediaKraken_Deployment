@@ -7,8 +7,8 @@ from sanic.response import redirect
 blueprint_user_hardware_hue = Blueprint('name_blueprint_user_hardware_hue', url_prefix='/user')
 
 
-@blueprint_user_hardware_hue.route('/hardware_hue')
-@common_global.jinja_template.template('user/user_hardware_hue.html')
+@blueprint_user_hardware_hue.route('/user_hardware_hue')
+@common_global.jinja_template.template('bss_user/user_hardware_hue.html')
 @common_global.auth.login_required
 async def url_bp_user_hardware_hue(request):
     """
@@ -39,7 +39,7 @@ async def url_bp_user_hardware_hue(request):
     }
 
 
-@blueprint_user_hardware_hue.route('/hardware_hue_off')
+@blueprint_user_hardware_hue.route('/user_hardware_hue_off')
 @common_global.auth.login_required
 async def url_bp_user_hardware_hue_off(request, target_ip):
     """
@@ -55,7 +55,7 @@ async def url_bp_user_hardware_hue_off(request, target_ip):
     return redirect(request.app.url_for('blueprint_user_hardware_hue.url_bp_user_hardware_hue'))
 
 
-@blueprint_user_hardware_hue.route('/hardware_hue_on')
+@blueprint_user_hardware_hue.route('/user_hardware_hue_on')
 @common_global.auth.login_required
 async def url_bp_user_hardware_hue_on(request, target_ip):
     """

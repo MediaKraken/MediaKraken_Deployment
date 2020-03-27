@@ -7,7 +7,7 @@ blueprint_admin_hardware_tvtuner = Blueprint('name_blueprint_admin_hardware_tvtu
                                              url_prefix='/admin')
 
 
-@blueprint_admin_hardware_tvtuner.route('/tvtuner_by_id', methods=['POST'])
+@blueprint_admin_hardware_tvtuner.route('/admin_tvtuner_by_id', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_gettvtunerbyid(request):
     db_connection = await request.app.db_pool.acquire()
@@ -18,7 +18,7 @@ async def url_bp_admin_gettvtunerbyid(request):
                        'IP': result['mm_device_json']['IP']})
 
 
-@blueprint_admin_hardware_tvtuner.route('/tvtuner_update', methods=['POST'])
+@blueprint_admin_hardware_tvtuner.route('/admin_tvtuner_update', methods=['POST'])
 @common_global.auth.login_required
 async def url_bp_admin_updatetvtuner(request):
     db_connection = await request.app.db_pool.acquire()

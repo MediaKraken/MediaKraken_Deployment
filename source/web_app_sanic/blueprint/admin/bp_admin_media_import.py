@@ -5,7 +5,7 @@ from sanic import Blueprint
 blueprint_admin_media_import = Blueprint('name_blueprint_admin_media_import', url_prefix='/admin')
 
 
-@blueprint_admin_media_import.route("/media_import", methods=["GET", "POST"])
+@blueprint_admin_media_import.route("/admin_media_import", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_media_import.html')
 @common_global.auth.login_required
 async def url_bp_admin_media_import(request):

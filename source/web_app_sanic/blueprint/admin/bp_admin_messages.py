@@ -7,7 +7,7 @@ from sanic import Blueprint
 blueprint_admin_messages = Blueprint('name_blueprint_admin_messages', url_prefix='/admin')
 
 
-@blueprint_admin_messages.route("/messages", methods=["GET", "POST"])
+@blueprint_admin_messages.route("/admin_messages", methods=["GET", "POST"])
 @common_global.jinja_template.template('bss_admin/bss_admin_messages.html')
 @common_global.auth.login_required
 async def url_bp_admin_messages(request):
@@ -33,7 +33,7 @@ async def url_bp_admin_messages(request):
     }
 
 
-@blueprint_admin_messages.route('/message_delete', methods=["POST"])
+@blueprint_admin_messages.route('/admin_message_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_messages_delete(request):
     """
