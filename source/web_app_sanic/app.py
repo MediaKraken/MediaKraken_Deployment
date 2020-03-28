@@ -94,7 +94,7 @@ async def login(request):
     form = BSSLoginForm(request)
     errors = {}
     print('b4', request.method, flush=True)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':  # and form.validate():
         print('here i am in post', flush=True)
         username = form.username.data
         password = form.password.data
@@ -128,7 +128,7 @@ async def login(request):
 async def register(request):
     errors = {}
     form = BSSRegisterForm(request)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':  # and form.validate():
         username = form.username.data
         email = form.email.data
         password = form.password.data
