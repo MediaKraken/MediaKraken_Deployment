@@ -27,12 +27,14 @@ async def url_bp_user_media_genre(request):
 
 
 @blueprint_user_media_genre.route("/user_movie/<genre>", methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/user_movie.html')
+@common_global.jinja_template.template('bss_user/bss_user_media_genre_video.html')
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_movie_page(request, user, genre):
     """
     Display movie page
     """
+    print('current user - url_bp_user_movie_page', common_global.auth.current_user(request),
+          flush=True)
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
@@ -68,8 +70,7 @@ async def url_bp_user_movie_page(request, user, genre):
         if row_data['mm_metadata_user_json'] is not None \
                 and 'UserStats' in row_data['mm_metadata_user_json'] \
                 and user.id in row_data['mm_metadata_user_json']['UserStats'] \
-                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
-            user.id]:
+                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][user.id]:
             rating_status \
                 = row_data['mm_metadata_user_json']['UserStats'][user.id]['Rating']
             if rating_status == 'favorite':

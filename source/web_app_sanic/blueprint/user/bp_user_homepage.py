@@ -11,6 +11,8 @@ async def url_bp_user_homepage(request):
     """
     Display user home page
     """
+    print('current user - url_bp_user_homepage', common_global.auth.current_user(request),
+          flush=True)
     db_connection = await request.app.db_pool.acquire()
     media_data = await request.app.db_functions.db_media_new(db_connection, days_old=7)
     await request.app.db_pool.release(db_connection)
