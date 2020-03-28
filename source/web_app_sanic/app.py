@@ -102,6 +102,7 @@ async def login(request):
         print('after db connection', flush=True)
         user_id, user_admin = await request.app.db_functions.db_user_login_validation(
             db_connection, username, password)
+        await app.db_pool.release(db_connection)
         print(user_id, user_admin, flush=True)
         if user_id is None:  # invalid user name
             errors['username_errors'] = "Username invalid"
@@ -113,9 +114,8 @@ async def login(request):
             request['session']['search_text'] = None
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
-            await app.db_pool.release(db_connection)
+            print('current user', common_global.auth.current_user(request), flush=True)
             return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
-        await request.app.db_pool.release(db_connection)
     # TODO errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
@@ -136,15 +136,14 @@ async def register(request):
         db_connection = await request.app.db_pool.acquire()
         user_id, user_admin = await request.app.db_functions.db_user_insert(
             db_connection, user_name=username, user_email=email, user_password=password)
+        await app.db_pool.release(db_connection)
         if user_id.isnumeric():  # valid user
             request['session']['search_text'] = None
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
-            await request.app.db_pool.release(db_connection)
             return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
         # failed to insert into database
         errors['validate_errors'] = "Failed to create user"
-        await request.app.db_pool.release(db_connection)
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
