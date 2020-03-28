@@ -1,5 +1,5 @@
 from sanic_wtf import SanicForm
-from web_app_sanic.blueprint.admin.bss_form_required_if import RequiredIf
+from web_app_sanic.blueprint.admin.bss_form_required_if import BSSRequiredIf
 from wtforms import TextField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length
 
@@ -34,7 +34,7 @@ class BSSAdminSettingsForm(SanicForm):
     metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
     docker_musicbrainz = BooleanField(
         'Start MusicBrainz (brainzcode required https://lime-technology.com/forums/topic/42909-support-linuxserverio-musicbrainz/)')
-    docker_musicbrainz_code = TextField('Brainzcode', validators=[RequiredIf('docker_musicbrainz'),
+    docker_musicbrainz_code = TextField('Brainzcode', validators=[BSSRequiredIf('docker_musicbrainz'),
                                                                   Length(min=1, max=250)])
 
     docker_mumble = BooleanField('Start Mumble (chat server)')
