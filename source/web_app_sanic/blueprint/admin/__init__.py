@@ -10,8 +10,13 @@ from .bp_admin_hardware import blueprint_admin_hardware
 from .bp_admin_hardware_chromecast import blueprint_admin_hardware_chromecast
 from .bp_admin_hardware_tvtuner import blueprint_admin_hardware_tvtuner
 from .bp_admin_library import blueprint_admin_library
+from .bp_admin_link import blueprint_admin_link
 from .bp_admin_media_import import blueprint_admin_media_import
+from .bp_admin_messages import blueprint_admin_messages
+from .bp_admin_periodical import blueprint_admin_periodical
 from .bp_admin_report import blueprint_admin_report
+from .bp_admin_share import blueprint_admin_share
+from .bp_admin_transmission import blueprint_admin_transmission
 from .bp_admin_users import blueprint_admin_users
 
 blueprint_admin_content = Blueprint.group(blueprint_admin,
@@ -24,7 +29,12 @@ blueprint_admin_content = Blueprint.group(blueprint_admin,
                                           blueprint_admin_hardware_chromecast,
                                           blueprint_admin_hardware_tvtuner,
                                           blueprint_admin_library,
+                                          blueprint_admin_link,
                                           blueprint_admin_media_import,
+                                          blueprint_admin_messages,
+                                          blueprint_admin_periodical,
                                           blueprint_admin_report,
+                                          blueprint_admin_share,
+                                          blueprint_admin_transmission,
                                           blueprint_admin_users,
                                           )

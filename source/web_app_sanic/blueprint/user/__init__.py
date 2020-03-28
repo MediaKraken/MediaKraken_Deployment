@@ -11,12 +11,15 @@ from .bp_user_homepage import blueprint_user_homepage
 from .bp_user_image import blueprint_user_image
 from .bp_user_internet import blueprint_user_internet
 from .bp_user_media_collection import blueprint_user_media_collection
+from .bp_user_media_genre import blueprint_user_media_genre
 from .bp_user_media_iradio import blueprint_user_media_iradio
 from .bp_user_media_new import blueprint_user_media_new
 from .bp_user_media_status import blueprint_user_media_status
 from .bp_user_metadata_game import blueprint_user_metadata_game
 from .bp_user_metadata_game_system import blueprint_user_metadata_game_system
 from .bp_user_metadata_movie import blueprint_user_metadata_movie
+from .bp_user_metadata_music import blueprint_user_metadata_music
+from .bp_user_metadata_music_video import blueprint_user_metadata_music_video
 from .bp_user_metadata_people import blueprint_user_metadata_people
 from .bp_user_metadata_periodical import blueprint_user_metadata_periodical
 from .bp_user_metadata_sports import blueprint_user_metadata_sports
@@ -46,15 +49,18 @@ blueprint_user_content = Blueprint.group(blueprint_user_cctv,
                                          blueprint_user_image,
                                          blueprint_user_internet,
                                          blueprint_user_media_collection,
+                                         blueprint_user_media_genre,
                                          blueprint_user_media_iradio,
                                          blueprint_user_media_new,
                                          blueprint_user_media_status,
                                          blueprint_user_metadata_game,
                                          blueprint_user_metadata_game_system,
-                                         blueprint_user_metadata_sports,
                                          blueprint_user_metadata_movie,
+                                         blueprint_user_metadata_music,
+                                         blueprint_user_metadata_music_video,
                                          blueprint_user_metadata_people,
                                          blueprint_user_metadata_periodical,
+                                         blueprint_user_metadata_sports,
                                          blueprint_user_metadata_tv,
                                          blueprint_user_music,
                                          blueprint_user_music_video,
