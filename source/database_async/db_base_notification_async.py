@@ -10,7 +10,8 @@ async def db_notification_insert(self, db_connection, notification_data, notific
                                 'mm_notification_text,'
                                 'mm_notification_time,'
                                 'mm_notification_dismissable)'
-                                ' values (%s,%s,CURRENT_TIMESTAMP,%s)', new_guid, notification_data,
+                                ' values ($1, $2, CURRENT_TIMESTAMP, $3)', new_guid,
+                                notification_data,
                                 notification_dismissable)
     return new_guid
 
@@ -24,7 +25,7 @@ async def db_notification_read(self, db_connection, offset=0, records=None):
                                      ' mm_notification_time,'
                                      ' mm_notification_dismissable'
                                      ' from mm_notification'
-                                     ' order by mm_notification_time desc offset %s limit %s',
+                                     ' order by mm_notification_time desc offset $1 limit $2',
                                      offset, records)
 
 
@@ -33,5 +34,5 @@ async def db_notification_delete(self, db_connection, notification_uuid):
     # remove notifications
     """
     await db_connection.execute('delete from mm_notification'
-                                ' where mm_notification_guid = %s',
+                                ' where mm_notification_guid = $1',
                                 notification_uuid)
