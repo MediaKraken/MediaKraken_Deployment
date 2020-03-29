@@ -20,6 +20,8 @@ from sanic_session import Session
 
 # setup the Sanic app
 app = Sanic(__name__)
+# fire up ES logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webappsanic')
 # update pagination settings
 settings = dict(PREV_LABEL='<i class="left chevron icon"></i>',
                 NEXT_LABEL='<i class="right chevron icon"></i>',
@@ -196,5 +198,4 @@ for handler, (rule, router) in app.router.routes_names.items():
     print(rule, flush=True)
 
 if __name__ == "__main__":
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
     app.run(host="0.0.0.0", port=8080, debug=True)
