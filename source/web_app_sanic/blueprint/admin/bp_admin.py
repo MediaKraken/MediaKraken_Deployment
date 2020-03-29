@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 from common import common_global
 from common import common_hash
 from common import common_internationalization
@@ -48,8 +49,7 @@ async def url_bp_admin(request):
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
-    scanning_json = await request.app.db_functions.db_opt_status_read(db_connection)[
-        'mm_status_json']
+    scanning_json = json.loads(await request.app.db_functions.db_status_json_read(db_connection))
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
     for dir_path in await request.app.db_functions.db_library_path_status(db_connection):
