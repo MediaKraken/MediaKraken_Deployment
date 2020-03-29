@@ -42,9 +42,8 @@ async def url_bp_admin(request):
                                 row_data['mm_notification_text'],
                                 row_data['mm_notification_time']))
     data_transmission_active = False
-    if await \
-            request.app.db_functions.db_opt_status_read(db_connection)['mm_options_json'][
-                'Transmission']['Host'] is not None:
+    row_data = await request.app.db_functions.db_opt_status_read(db_connection)
+    if row_data['mm_options_json']['Transmission']['Host'] is not None:
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
