@@ -21,6 +21,6 @@ async def db_status_json_read(self, db_connection):
     """
     Read options
     """
-    return await db_connection.fetchrow(
+    return await db_connection.fetchval(
         'select mm_status_json'
         ' from mm_options_and_status')
