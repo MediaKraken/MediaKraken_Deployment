@@ -44,7 +44,6 @@ async def url_bp_admin(request):
                                 row_data['mm_notification_time']))
     data_transmission_active = False
     row_data = json.loads(await request.app.db_functions.db_opt_json_read(db_connection))
-    print(row_data)
     if row_data['Docker Instances']['transmission'] is True:
         data_transmission_active = True
     # set the scan info
@@ -52,8 +51,10 @@ async def url_bp_admin(request):
     scanning_json = json.loads(await request.app.db_functions.db_status_json_read(db_connection))
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
-    for dir_path in await request.app.db_functions.db_library_path_status(db_connection):
-        data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
+    row_data = await request.app.db_functions.db_library_path_status(db_connection)
+    if row_data is not None:
+        for dir_path in row_data:
+            data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
     if os.environ['SWARMIP'] != 'None':
         mediakraken_ip = os.environ['SWARMIP']
     else:
