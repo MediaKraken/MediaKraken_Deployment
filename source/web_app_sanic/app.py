@@ -5,6 +5,7 @@ import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
+from common import common_logging_elasticsearch
 from common import common_network
 from python_paginate.css.semantic import Semantic
 from python_paginate.web.sanic_paginate import Pagination
@@ -195,4 +196,5 @@ for handler, (rule, router) in app.router.routes_names.items():
     print(rule, flush=True)
 
 if __name__ == "__main__":
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
     app.run(host="0.0.0.0", port=8080, debug=True)
