@@ -133,7 +133,8 @@ class MKServerDatabaseAsync:
         db_notification_delete
     from database_async.db_base_option_status_async \
         import db_opt_update, \
-        db_opt_status_read
+        db_opt_json_read, \
+        db_status_json_read
     from database_async.db_base_postgresql_async \
         import db_pgsql_parallel_workers, \
         db_pgsql_row_count, \

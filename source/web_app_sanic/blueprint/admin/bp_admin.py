@@ -42,7 +42,7 @@ async def url_bp_admin(request):
                                 row_data['mm_notification_text'],
                                 row_data['mm_notification_time']))
     data_transmission_active = False
-    row_data = json.loads(await request.app.db_functions.db_opt_status_read(db_connection))
+    row_data = json.loads(await request.app.db_functions.db_opt_json_read(db_connection))
     print(row_data)
     if row_data['mm_options_json']['Docker Instances']['transmission'] is True:
         data_transmission_active = True

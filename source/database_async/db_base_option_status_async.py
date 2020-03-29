@@ -8,10 +8,19 @@ async def db_opt_update(self, db_connection, option_json):
                                 option_json)
 
 
-async def db_opt_status_read(self, db_connection):
+async def db_opt_json_read(self, db_connection):
+    """
+    Read options
+    """
+    return await db_connection.fetchval(
+        'select mm_options_json'
+        ' from mm_options_and_status')
+
+
+async def db_status_json_read(self, db_connection):
     """
     Read options
     """
     return await db_connection.fetchrow(
-        'select mm_options_json, mm_status_json'
+        'select mm_status_json'
         ' from mm_options_and_status')
