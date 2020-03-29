@@ -8,7 +8,7 @@ blueprint_user_hardware_hue = Blueprint('name_blueprint_user_hardware_hue', url_
 
 
 @blueprint_user_hardware_hue.route('/user_hardware_hue')
-@common_global.jinja_template.template('bss_user/user_hardware_hue.html')
+@common_global.jinja_template.template('bss_user/hardware/bss_user_hardware_hue.html')
 @common_global.auth.login_required
 async def url_bp_user_hardware_hue(request):
     """

@@ -7,7 +7,7 @@ blueprint_user_metadata_people = Blueprint('name_blueprint_user_metadata_people'
 
 
 @blueprint_user_metadata_people.route('/user_meta_person_detail/<guid>')
-@common_global.jinja_template.template('bss_user/meta_person_detail.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_metadata_person_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_person_detail(request, guid):
     """
@@ -37,7 +37,7 @@ async def url_bp_user_metadata_person_detail(request, guid):
 
 
 @blueprint_user_metadata_people.route('/user_meta_person_list', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/meta_person_list.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_metadata_person_list.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_person_list(request):
     """

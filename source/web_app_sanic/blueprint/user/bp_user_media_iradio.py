@@ -6,7 +6,7 @@ blueprint_user_media_iradio = Blueprint('name_blueprint_user_media_iradio', url_
 
 
 @blueprint_user_media_iradio.route('/user_iradio', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/bss_user_media_iradio.html')
+@common_global.jinja_template.template('bss_user/media_bss_user_media_iradio.html')
 @common_global.auth.login_required
 async def url_bp_user_iradio_list(request):
     """
@@ -26,7 +26,7 @@ async def url_bp_user_iradio_list(request):
 
 
 @blueprint_user_media_iradio.route('/user_iradio_detail/<guid>')
-@common_global.jinja_template.template('bss_user/user_media_iradio.html')
+@common_global.jinja_template.template('bss_user/media_bss_user_media_iradio.html')
 @common_global.auth.login_required
 async def url_bp_user_iradio_detail(request, guid):
     """

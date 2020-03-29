@@ -11,7 +11,7 @@ blueprint_user_movie = Blueprint('name_blueprint_user_movie', url_prefix='/user'
 
 
 @blueprint_user_movie.route('/user_movie_detail/<guid>', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/user_movie_detail.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_movie_detail.html')
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_movie_detail(request, user, guid):
     """

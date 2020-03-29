@@ -7,7 +7,7 @@ blueprint_user_metadata_sports = Blueprint('name_blueprint_user_metadata_sports'
 
 
 @blueprint_user_metadata_sports.route('/user_meta_sports_detail/<guid>')
-@common_global.jinja_template.template('bss_user/meta_sports_detail.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_metadata_sports_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_sports_detail(request, guid):
     """
@@ -24,7 +24,7 @@ async def url_bp_user_metadata_sports_detail(request, guid):
 
 
 @blueprint_user_metadata_sports.route('/user_meta_sports_list', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/meta_sports_list.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_metadata_sports_list.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_sports_list(request):
     """

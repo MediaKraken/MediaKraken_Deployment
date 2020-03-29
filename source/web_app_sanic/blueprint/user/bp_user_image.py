@@ -5,7 +5,7 @@ blueprint_user_image = Blueprint('name_blueprint_user_image', url_prefix='/user'
 
 
 @blueprint_user_image.route('/user_imagegallery')
-@common_global.jinja_template.template('bss_user/user_image_gallery_view.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_image_gallery.html')
 @common_global.auth.login_required
 async def url_bp_user_image_gallery(request):
     """

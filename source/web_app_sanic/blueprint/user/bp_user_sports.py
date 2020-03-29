@@ -7,7 +7,7 @@ blueprint_user_sports = Blueprint('name_blueprint_user_sports', url_prefix='/use
 
 # list of spoting events
 @blueprint_user_sports.route("/user_sports", methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/user_sports.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_sports.html')
 @common_global.auth.login_required
 async def url_bp_user_sports(request):
     """
@@ -41,7 +41,7 @@ async def url_bp_user_sports(request):
 
 
 @blueprint_user_sports.route("/user_sports_detail/<guid>", methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/user_sports_detail.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_sports_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_sports_detail(request, guid):
     """

@@ -7,7 +7,7 @@ blueprint_user_media_genre = Blueprint('name_blueprint_user_media_genre', url_pr
 
 
 @blueprint_user_media_genre.route("/user_media_genre", methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/user_media_genre.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_genre.html')
 @common_global.auth.login_required
 async def url_bp_user_media_genre(request):
     """
@@ -27,7 +27,7 @@ async def url_bp_user_media_genre(request):
 
 
 @blueprint_user_media_genre.route("/user_movie/<genre>", methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/bss_user_media_genre_video.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_genre_video.html')
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_movie_page(request, user, genre):
     """
