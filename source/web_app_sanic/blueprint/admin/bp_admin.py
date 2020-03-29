@@ -24,7 +24,6 @@ async def url_bp_admin(request):
     global outside_ip
     if outside_ip is None:
         outside_ip = common_network.mk_network_get_outside_ip()
-    data_messages = 0
     data_server_info_server_name = 'Spoots Media'
     nic_data = []
     for key, value in common_network.mk_network_ip_addr().items():
@@ -85,7 +84,6 @@ async def url_bp_admin(request):
             await request.app.db_functions.db_table_count(db_connection, 'mm_media_share')),
         'data_transmission_active': data_transmission_active,
         'data_scan_info': data_scan_info,
-        'data_messages': data_messages,
         'data_count_meta_fetch': common_internationalization.com_inter_number_format(
             await request.app.db_functions.db_table_count(db_connection, 'mm_download_que')),
     }
