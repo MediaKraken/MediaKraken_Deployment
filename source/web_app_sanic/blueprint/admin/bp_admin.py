@@ -44,7 +44,7 @@ async def url_bp_admin(request):
     data_transmission_active = False
     row_data = await request.app.db_functions.db_opt_status_read(db_connection)
     print(row_data)
-    if row_data['mm_options_json']['Transmission']['Host'] is not None:
+    if row_data['mm_options_json']['Docker Instances']['transmission'] is True:
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
