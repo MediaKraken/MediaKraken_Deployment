@@ -62,8 +62,9 @@ class CommonDocker:
         print('id by name', flush=True)
         for container_inst in self.com_docker_container_list():
             common_global.es_inst.com_elastic_index('info', {'container_inst name': container_inst})
-            print(container_inst, flush=True)
+            print('con inst', container_inst, flush=True)
             if container_inst['Names'][0] == container_name:
+                print(container_inst['Id'], flush=True)
                 return container_inst['Id']
 
     def com_docker_info(self):
