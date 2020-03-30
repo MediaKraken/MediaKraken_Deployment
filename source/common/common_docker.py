@@ -157,10 +157,10 @@ class CommonDocker:
         """
         run command in a container via exec
         """
-        return self.cli.exec_create(self, container=container_id, cmd=docker_command,
-                                    stdout=True, stderr=True, stdin=False, tty=False,
-                                    privileged=False, user='',
-                                    environment=None, workdir=None, detach_keys=None)
+        return self.cli_api.exec_create(self, container=container_id, cmd=docker_command,
+                                        stdout=True, stderr=True, stdin=False, tty=False,
+                                        privileged=False, user='',
+                                        environment=None, workdir=None, detach_keys=None)
 
     # https://docker-py.readthedocs.io/en/stable/containers.html
     def com_docker_run_container(self, container_data_list):
