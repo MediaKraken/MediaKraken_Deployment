@@ -55,7 +55,7 @@ async def url_bp_admin_cron_edit(request, guid):
     """
     Edit cron job page
     """
-    form = CronEditForm(request.form, csrf_enabled=False)
+    form = CronEditForm(request, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate_on_submit():
             request.form['name']

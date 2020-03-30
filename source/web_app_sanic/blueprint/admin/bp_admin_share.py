@@ -68,7 +68,7 @@ async def url_bp_admin_share_edit(request):
     """
     allow user to edit share
     """
-    form = ShareAddEditForm(request.form)
+    form = ShareAddEditForm(request)
     common_global.es_inst.com_elastic_index('info', {'stuff': 'hereeditshare'})
     if request.method == 'POST':
         common_global.es_inst.com_elastic_index('info', {'stuff': 'herepost'})

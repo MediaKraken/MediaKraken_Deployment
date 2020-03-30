@@ -14,7 +14,7 @@ async def url_bp_user_search_media(request):
     """
     Display search page
     """
-    form = SearchEditForm(request.form)
+    form = SearchEditForm(request)
     movie = []
     tvshow = []
     album = []

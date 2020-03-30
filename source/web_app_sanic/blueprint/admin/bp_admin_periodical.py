@@ -32,7 +32,7 @@ async def url_bp_admin_periodical_add(request):
                                                                               'ProviderMetaID': book_item.strip()}))
                 await request.app.db_pool.release(db_connection)
         return redirect(request.app.url_for('admins.admin_books_add'))
-    form = BookAddForm(request.form, csrf_enabled=False)
+    form = BookAddForm(request, csrf_enabled=False)
     if form.validate_on_submit():
         pass
     return {

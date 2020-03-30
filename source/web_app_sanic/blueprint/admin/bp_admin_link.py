@@ -40,7 +40,7 @@ async def url_bp_admin_link_edit(request):
     """
     allow user to edit link
     """
-    form = LinkAddEditForm(request.form)
+    form = LinkAddEditForm(request)
     return {
         'form': form,
         'data_class': None,

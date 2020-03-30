@@ -88,7 +88,7 @@ async def url_bp_admin_library_edit(request):
     """
     allow user to edit lib
     """
-    form = LibraryAddEditForm(request.form)
+    form = LibraryAddEditForm(request)
     db_connection = await request.app.db_pool.acquire()
     if request.method == 'POST':
         if form.validate_on_submit():

@@ -157,7 +157,7 @@ async def url_bp_admin_server_settings(request):
                                                                   Length(min=1, max=250)])
     '''
     return {
-        'form': BSSAdminSettingsForm(request.form),
+        'form': BSSAdminSettingsForm(request),
         'settings_json': settings_json,
         'mediabrainz_api_key': mediabrainz_api_key,
         'opensubtitles_api_key': opensubtitles_api_key

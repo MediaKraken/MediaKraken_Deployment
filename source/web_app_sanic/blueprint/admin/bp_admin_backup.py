@@ -19,7 +19,7 @@ async def url_bp_admin_backup(request):
     """
     List backups from local fs and cloud
     """
-    form = BackupEditForm(request.form)
+    form = BackupEditForm(request)
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['backup'] == 'Update':

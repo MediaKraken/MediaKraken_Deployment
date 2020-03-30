@@ -72,7 +72,7 @@ async def url_bp_user_sync_edit(request, guid):
                                                       json.dumps(sync_json))
         await request.app.db_pool.release(db_connection)
         return redirect(request.app.url_for('user.movie_detail', guid=guid))
-    form = SyncEditForm(request.form, csrf_enabled=False)
+    form = SyncEditForm(request, csrf_enabled=False)
     if form.validate_on_submit():
         pass
     else:

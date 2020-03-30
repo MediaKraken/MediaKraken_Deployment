@@ -66,7 +66,7 @@ async def url_bp_admin_hardware_chromecast_edit(request):
     """
     allow user to edit chromecast
     """
-    form = ChromecastEditForm(request.form)
+    form = ChromecastEditForm(request)
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
@@ -100,7 +100,7 @@ async def url_bp_admin_hardware_tvtuner_edit(request):
     """
     allow user to edit tuner
     """
-    form = TVTunerEditForm(request.form)
+    form = TVTunerEditForm(request)
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
