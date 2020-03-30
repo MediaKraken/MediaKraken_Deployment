@@ -17,8 +17,9 @@ def com_database_backup():
     print(docker_command_to_exec, flush=True)
     docker_inst = common_docker.CommonDocker()
     # run command to backup against the database
-    docker_inst.com_docker_run_command_via_exec(
-        docker_inst.com_docker_container_id_by_name('/mkstack_database'), docker_command_to_exec)
+    docker_id = docker_inst.com_docker_container_id_by_name('/mkstack_database')
+    print(type(docker_id), flush=True)
+    docker_inst.com_docker_run_command_via_exec(docker_id, docker_command_to_exec)
 
 
 def com_database_restore(restore_image_name):
