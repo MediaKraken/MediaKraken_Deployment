@@ -24,6 +24,8 @@ async def url_bp_admin_backup(request):
     errors = {}
     if request.method == 'POST':
         if form.validate_on_submit():
+            print('validated', flush=True)
+            print(request.form['backup'], flush=True)
             if request.form['backup'] == 'Update Backup':
                 pass
             elif request.form['backup'] == 'Start Backup':

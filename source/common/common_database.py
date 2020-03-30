@@ -13,6 +13,7 @@ def com_database_backup():
         'POSTGRES_PASSWORD'] + ' pg_dump -h mkstack_database -U postgres postgres -F c -f ' \
                              + os.path.join('/mediakraken/backup', backup_file_name)
     # setup docker connection
+    print('docker con', docker_command_to_exec, flush=True)
     docker_inst = common_docker.CommonDocker()
     # run command to backup against the database
     docker_inst.com_docker_run_command_via_exec(
