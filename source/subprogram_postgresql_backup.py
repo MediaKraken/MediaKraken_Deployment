@@ -40,15 +40,15 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 backup_file_name = 'MediaKraken_Database_Backup_' + \
                    time.strftime("%Y%m%d%H%M%S") + '.dump'
 
-os.system('PGPASSWORD=' + os.environ['POSTGRES_PASSWORD']
-          + ' pg_dump -h mkstack_database -U postgres postgres -F c -f '
-          + os.path.join('/mediakraken/backup', backup_file_name))
+docker_command_to_exec = 'PGPASSWORD=' + os.environ[
+    'POSTGRES_PASSWORD'] + ' pg_dump -h mkstack_database -U postgres postgres -F c -f ' \
+                         + os.path.join('/mediakraken/backup', backup_file_name)
 
 # setup docker connection
 docker_inst = common_docker.CommonDocker()
 docker_inst.com_docker_run_command_via_exec(
     container_id=docker_inst.com_docker_container_id_by_name(container_name='/mkstack_database'),
-    docker_command='')
+    docker_command=docker_command_to_exec)
 
 if option_config_json['Backup']['BackupType'] != 'local':
     cloud_handle = common_network_cloud.CommonLibCloud(option_config_json)

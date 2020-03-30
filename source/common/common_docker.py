@@ -63,8 +63,7 @@ class CommonDocker:
             common_global.es_inst.com_elastic_index('info', {'container_inst name': container_inst})
             print(container_inst, flush=True)
             if container_inst['Names'][0] == container_name:
-                # TODO must find the fields
-                return container_inst
+                return container_inst['Id']
 
     def com_docker_info(self):
         """
