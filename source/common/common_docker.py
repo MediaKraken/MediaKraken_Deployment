@@ -158,7 +158,7 @@ class CommonDocker:
         """
         run command in a container via exec
         """
-        return self.cli_api.exec_create(self, container=container_id, cmd=docker_command,
+        return self.cli_api.exec_create(self, container_id, docker_command,
                                         stdout=True, stderr=True, stdin=False, tty=False,
                                         privileged=False, user='',
                                         environment=None, workdir=None, detach_keys=None)
