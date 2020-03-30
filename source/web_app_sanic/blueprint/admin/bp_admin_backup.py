@@ -21,6 +21,7 @@ async def url_bp_admin_backup(request):
     List backups from local fs and cloud
     """
     form = BackupEditForm(request)
+    errors = {}
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['backup'] == 'Update Backup':
@@ -55,6 +56,7 @@ async def url_bp_admin_backup(request):
                             )
     return {
         'form': form,
+        'errors': errors,
         'backup_list': sorted(backup_files, reverse=True),
         'data_interval': ('Hours', 'Days', 'Weekly'),
         'data_class': common_network_cloud.supported_providers,
