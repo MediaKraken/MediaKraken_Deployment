@@ -81,6 +81,7 @@ services:
     stop_signal: SIGTERM
     volumes:
       - mediakraken_vol_postgresql:/var/lib/postgresql/data
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -409,6 +410,8 @@ services:
       - mediakraken_vol_phue:/mediakraken/phue
       # server will generate salt/key
       - /var/opt/mediakraken/secure:/mediakraken/secure:ro
+      # db backups
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -438,6 +441,7 @@ volumes:
   mediakraken_vol_phue:
   mediakraken_vol_portainer:
   mediakraken_vol_postgresql:
+  mediakraken_vol_postgresql_backup:
   mediakraken_vol_rabbit:
   mediakraken_vol_static:
   mediakraken_vol_teamspeak:
