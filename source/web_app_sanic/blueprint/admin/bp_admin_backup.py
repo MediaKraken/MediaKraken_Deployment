@@ -23,7 +23,7 @@ async def url_bp_admin_backup(request):
     form = BackupEditForm(request)
     if request.method == 'POST':
         if form.validate_on_submit():
-            if request.form['backup'] == 'Update':
+            if request.form['backup'] == 'Update Backup':
                 pass
             elif request.form['backup'] == 'Start Backup':
                 common_database.com_database_backup()

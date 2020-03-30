@@ -39,73 +39,93 @@
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <div class="container-fluid">
-                    <div class="row flex-wrap">
-                        <div class="col">
-                            <fieldset>
-                                <legend>Backup Configuration</legend>
-                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Enable automatic backup</label></div><select><optgroup label="This is a group"><option value="12" selected="">Daily</option><option value="13">Weekly</option><option value="14">Monthly</option></optgroup></select>
-                                <input
-                                    type="time"><button class="btn btn-primary" type="button">Submit Backup</button></fieldset>
+                    <form action="/admin/admin_backup" method="post">
+                        {{ errors.token_errors }}
+                        <span style="color: red;">{{errors.validate_errors}}</span>
+                        {{form.csrf_token}}
+                        <div class="row flex-wrap">
+                            <div class="col">
+                                <fieldset>
+                                    <legend>Backup Configuration</legend>
+                                    <div class="form-group">
+                                        {{form.enabled.label}}
+                                        {{form.enabled(checked=data_enabled, class_="form-control")}}
+                                    </div>
+                                    <select><optgroup label="This is a group"><option value="12" selected="">Daily</option>
+                                        <option value="13">Weekly</option>
+                                        <option value="14">Monthly</option>
+                                    </optgroup></select>
+                                    <input type="time">
+                                    <select name="Backup_Class", id="backup_class">
+                                        {% for class_data in data_class %}
+                                        <option value={{class_data[1]}}>{{class_data[0]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button class="btn btn-primary btn-block text-white btn-user" type="submit" name="backup">Update Backup</button>
+                                    <button class="btn btn-primary btn-block text-white btn-user" type="submit" name="backup">Submit Backup</button>
+                                </fieldset>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <fieldset><div>    {% if backup_list %}
-    {{ pagination.info }}
-    {{ pagination.links }}
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Backup</th>
-                    <th>Location</th>
-                    <th>Size</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row_data in backup_list %}
-                <tr>
-                    <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td>{{ row_data[0] }}</td>
-                    <td>{{ row_data[1] }}</td>
-                    <td>{{ row_data[2] }}</td>
-                    <div class="pull-right action-buttons">
-                        <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] + "|" + row_data[1] }} onclick="ConfirmBackupDelete(this)" ><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></a>
-                        </td>
-                    </div>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="modal fade" id="delete_backup" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button>
-                    <h4 class="modal-title custom_align" id="Heading">Delete this backup</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to delete this backup?</div>
-                </div>
-                <div class="modal-footer ">
-                    <button type="button" class="btn btn-success" onclick="Backup_Delete()" ><span class="fas check-circle"></span> Yes</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{ pagination.links }}
-    {% else %}
-    <p>No backups found.</p>
-    {% endif %}</div>
-                                <legend>Current Backups</legend>
-                            </fieldset>
+                        <div class="row">
+                            <div class="col">
+                                <fieldset>
+                                    {% if backup_list %}
+                                    {{ pagination.info }}
+                                    {{ pagination.links }}
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Backup</th>
+                                                    <th>Location</th>
+                                                    <th>Size</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for row_data in backup_list %}
+                                                <tr>
+                                                    <td>{{ loop.index + (page - 1) * per_page }}</td>
+                                                    <td>{{ row_data[0] }}</td>
+                                                    <td>{{ row_data[1] }}</td>
+                                                    <td>{{ row_data[2] }}</td>
+                                                    <div class="pull-right action-buttons">
+                                                        <td>
+                                                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] + "|" + row_data[1] }} onclick="ConfirmBackupDelete(this)" ><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></a>
+                                                        </td>
+                                                    </div>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal fade" id="delete_backup" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button>
+                                                    <h4 class="modal-title custom_align" id="Heading">Delete this backup</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to delete this backup?</div>
+                                                </div>
+                                                <div class="modal-footer ">
+                                                    <button type="button" class="btn btn-success" onclick="Backup_Delete()" ><span class="fas check-circle"></span> Yes</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ pagination.links }}
+                                    {% else %}
+                                    <p>No backups found.</p>
+                                    {% endif %}
+                                    <legend>Current Backups</legend>
+                                </fieldset>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
@@ -117,7 +137,7 @@
     </div>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
 </body>
 {% endblock %}
