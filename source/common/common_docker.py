@@ -160,11 +160,11 @@ class CommonDocker:
         """
         return self.cli_api.exec_create(container_id, docker_command)
 
-    def com_docker_start_exec(self, exec_id):
+    def com_docker_start_exec(self, exec_id, stream_output=False):
         """
         start the exec setup from run command
         """
-        return self.cli_api.exec_start(exec_id=exec_id, detach=False, stream=False)
+        return self.cli_api.exec_start(exec_id=exec_id, detach=False, stream=stream_output)
 
     # https://docker-py.readthedocs.io/en/stable/containers.html
     def com_docker_run_container(self, container_data_list):
