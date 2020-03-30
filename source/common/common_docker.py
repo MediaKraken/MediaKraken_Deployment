@@ -49,13 +49,22 @@ class CommonDocker:
         """
         return self.cli_api.containers()
 
-    def com_docker_container_bind(self, container_name='/mkserver', bind_match='/data/devices'):
+    def com_docker_container_bind(self, container_name='/mkstack_server',
+                                  bind_match='/data/devices'):
         for container_inst in self.com_docker_container_list():
-            # common_global.es_inst.com_elastic_index('info', {'container_inst': container_inst})
+            common_global.es_inst.com_elastic_index('info', {'container_inst': container_inst})
             if container_inst['Names'][0] == container_name:
                 for mount_points in container_inst['Mounts']:
                     if mount_points['Source'].endswith(bind_match):
                         return mount_points['Source'].replace(bind_match, '')
+
+    def com_docker_container_id_by_name(self, container_name='/mkstack_database'):
+        for container_inst in self.com_docker_container_list():
+            common_global.es_inst.com_elastic_index('info', {'container_inst name': container_inst})
+            print(container_inst, flush=True)
+            if container_inst['Names'][0] == container_name:
+                # TODO must find the fields
+                return container_inst
 
     def com_docker_info(self):
         """
@@ -138,11 +147,20 @@ class CommonDocker:
         """
         return self.cli_api.volumes()
 
-    def com_docker_run_command(self, container_id, docker_command):
+    def com_docker_run_command(self, docker_command):
         """
         run command in a container
         """
         return self.cli.exec_run(cmd=docker_command)
+
+    def com_docker_run_command_via_exec(self, container_id, docker_command):
+        """
+        run command in a container via exec
+        """
+        return self.cli.exec_create(self, container=container_id, cmd=docker_command,
+                                    stdout=True, stderr=True, stdin=False, tty=False,
+                                    privileged=False, user='',
+                                    environment=None, workdir=None, detach_keys=None)
 
     # https://docker-py.readthedocs.io/en/stable/containers.html
     def com_docker_run_container(self, container_data_list):
@@ -280,7 +298,8 @@ class CommonDocker:
                                                          'mode': 'rw'}
                                                     },
                                            environment={'POSTGRES_DB': os.environ['POSTGRES_DB'],
-                                                        'POSTGRES_USER': os.environ['POSTGRES_USER'],
+                                                        'POSTGRES_USER': os.environ[
+                                                            'POSTGRES_USER'],
                                                         'POSTGRES_PASSWORD': os.environ[
                                                             'POSTGRES_PASSWORD'],
                                                         'DEBUG': os.environ['DEBUG'],
