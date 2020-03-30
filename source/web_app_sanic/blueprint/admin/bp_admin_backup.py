@@ -2,6 +2,7 @@ import json
 import os
 
 from common import common_file
+from common import common_database
 from common import common_global
 from common import common_network_cloud
 from common import common_string
@@ -25,10 +26,7 @@ async def url_bp_admin_backup(request):
             if request.form['backup'] == 'Update':
                 pass
             elif request.form['backup'] == 'Start Backup':
-                db_connection = await request.app.db_pool.acquire()
-                await request.app.db_functions.db_trigger_insert(db_connection, ('python3',
-                                                                                 './subprogram_postgresql_backup.py'))  # this commits
-                await request.app.db_pool.release(db_connection)
+                common_database.com_database_backup()
                 request['flash']("Postgresql Database Backup Task Submitted.", "success")
         else:
             flash_errors(form)
