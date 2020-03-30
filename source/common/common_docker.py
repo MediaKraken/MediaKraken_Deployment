@@ -59,6 +59,7 @@ class CommonDocker:
                         return mount_points['Source'].replace(bind_match, '')
 
     def com_docker_container_id_by_name(self, container_name='/mkstack_database'):
+        print('id by name', flush=True)
         for container_inst in self.com_docker_container_list():
             common_global.es_inst.com_elastic_index('info', {'container_inst name': container_inst})
             print(container_inst, flush=True)
