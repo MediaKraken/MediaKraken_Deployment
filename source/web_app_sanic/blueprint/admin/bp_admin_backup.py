@@ -40,13 +40,14 @@ async def url_bp_admin_backup(request):
         for backup_local in local_file_backups:
             backup_files.append((backup_local[0], 'Local',
                                  common_string.com_string_bytes2human(backup_local[1])))
-    # cloud backup list
-    if len(g.option_config_json['Cloud']) > 0:  # to see if the json has been populated
-        cloud_handle = common_network_cloud.CommonLibCloud(g.option_config_json)
-        for backup_cloud in cloud_handle.com_net_cloud_list_data_in_container(
-                g.option_config_json['MediaKrakenServer']['BackupContainerName']):
-            backup_files.append((backup_cloud.name, backup_cloud.type,
-                                 common_string.com_string_bytes2human(backup_cloud.size)))
+    # TODO
+    # # cloud backup list
+    # if len(g.option_config_json['Cloud']) > 0:  # to see if the json has been populated
+    #     cloud_handle = common_network_cloud.CommonLibCloud(g.option_config_json)
+    #     for backup_cloud in cloud_handle.com_net_cloud_list_data_in_container(
+    #             g.option_config_json['MediaKrakenServer']['BackupContainerName']):
+    #         backup_files.append((backup_cloud.name, backup_cloud.type,
+    #                              common_string.com_string_bytes2human(backup_cloud.size)))
     page, per_page, offset = Pagination.get_page_args(request)
     pagination = Pagination(request,
                             total=len(backup_files),
