@@ -31,6 +31,7 @@ from .bp_user_periodical import blueprint_user_periodical
 from .bp_user_playback_audio import blueprint_user_playback_audio
 from .bp_user_playback_comic import blueprint_user_playback_comic
 from .bp_user_playback_video import blueprint_user_playback_video
+from .bp_user_profile import blueprint_user_profile
 from .bp_user_queue import blueprint_user_queue
 from .bp_user_search import blueprint_user_search
 from .bp_user_sports import blueprint_user_sports
@@ -69,6 +70,7 @@ blueprint_user_content = Blueprint.group(blueprint_user_cctv,
                                          blueprint_user_playback_audio,
                                          blueprint_user_playback_comic,
                                          blueprint_user_playback_video,
+                                         blueprint_user_profile,
                                          blueprint_user_queue,
                                          blueprint_user_search,
                                          blueprint_user_sports,

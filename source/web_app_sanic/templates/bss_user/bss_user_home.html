@@ -12,53 +12,53 @@
 <body>
     <!-- Start: Navigation with Button -->
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
-        <div class="container"><a class="navbar-brand" href="/user/user_home">MediaKraken</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container"><a class="navbar-brand" href="{{ url_for('name_blueprint_user_homepage.url_bp_user_homepage') }}">MediaKraken</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div
                 class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav mr-auto">
                     <li class="nav-item" role="presentation"></li>
                     <li class="nav-item" role="presentation"></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/user/user_sync">Sync</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}">Sync</a></li>
                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Metadata</a>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_movie_list">Movie</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_media_movie_collection">Movie Collection</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_tvshow_list">TV Show</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_music_album_list">Music Album</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_sports_list">Sports</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_game">Games</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_game_system">Game Systems</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_person_list">Person</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_periodical">Book/Periodical</a>
-                            <a class="dropdown-item" role="presentation" href="/user/user_meta_music_video">Music Video</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_movie.url_bp_user_metadata_movie_list') }}">Movie</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_media_colletion.url_bp_user_metadata_movie_collection') }}">Movie Collection</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_tv.url_bp_user_metadata_tvshow_list') }}">TV Show</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_music.url_bp_user_metadata_music_album_list') }}">Music Album</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_sports.url_bp_user_metadata_sports_list') }}">Sports</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_game.url_bp_user_metadata_game') }}">Games</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_game_system.url_bp_user_metadata_game_system') }}">Game Systems</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_people.url_bp_user_metadata_person_list') }}">Person</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_periodical.url_bp_user_metadata_periodical') }}">Book/Periodical</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_music_video.url_bp_user_metadata_music_video') }}">Music Video</a>
                         </div>
                     </li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="../bss_user_profile.html">Profile</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/admin/admin_home">Admin</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="#">About</a></li>
-                </ul><span class="navbar-text actions"> <a class="login" href="/user/logout">Log Out</a></span></div>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('name_blueprint_user_profile.url_bp_user_profile') }}">Profile</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('name_blueprint_admin.url_bp_admin') }}">Admin</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('app.about') }}">About</a></li>
+                </ul><span class="navbar-text actions"> <a class="login" href="{{ url_for('app.logout') }}">Log Out</a></span></div>
         </div>
     </nav>
     <!-- End: Navigation with Button -->
     <div>
-    <a href="/user/user_media_new"><img src="/static/img/new.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_queue"><img src="/static/img/rectangles_black.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_movie/all"><img src="/static/img/movie_ticket.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_album_list"><img src="/static/img/headphone.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_tv"><img src="/static/img/television.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_sports"><img src="/static/img/stadium.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_tv_live"><img src="/static/img/television_live.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_imagegallery"><img src="/static/img/photo.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_game"><img src="/static/img/vid_game.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_periodical"><img src="/static/img/books.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_iradio"><img src="/static/img/radio.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_home_media"><img src="/static/img/vid_camera.png" width="200" height="200" loading="lazy"></a>
-    <a href="/bss_user/media/bss_user_media_3d.html"><img src="/static/img/3D.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_internet"><img src="/static/img/planet-earth.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_music_video"><img src="/static/img/listening-music-video-clip-with-auricular.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_cctv"><img src="/static/img/surveillance-cctv-symbol-in-rounded-triangle.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_search"><img src="/static/img/magnifying-glass.png" width="200" height="200" loading="lazy"></a>
-    <a href="/user/user_hardware"><img src="/static/img/circuit-board.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_media_new"><img src="/static/img/new.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_queue"><img src="/static/img/rectangles_black.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_movie/all"><img src="/static/img/movie_ticket.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_album_list"><img src="/static/img/headphone.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_tv"><img src="/static/img/television.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_sports"><img src="/static/img/stadium.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_tv_live"><img src="/static/img/television_live.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_imagegallery"><img src="/static/img/photo.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_game"><img src="/static/img/vid_game.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_periodical"><img src="/static/img/books.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_iradio"><img src="/static/img/radio.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_home_media"><img src="/static/img/vid_camera.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/bss_user/media/bss_user_media_3d.html"><img src="/static/img/3D.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_internet"><img src="/static/img/planet-earth.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_music_video"><img src="/static/img/listening-music-video-clip-with-auricular.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_cctv"><img src="/static/img/surveillance-cctv-symbol-in-rounded-triangle.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_search"><img src="/static/img/magnifying-glass.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_hardware"><img src="/static/img/circuit-board.png" width="200" height="200" loading="lazy"></a>
     </div>
     <footer
         class="bg-white sticky-footer">
