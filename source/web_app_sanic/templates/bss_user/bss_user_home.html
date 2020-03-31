@@ -35,30 +35,30 @@
                     </li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('name_blueprint_user_profile.url_bp_user_profile') }}">Profile</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('name_blueprint_admin.url_bp_admin') }}">Admin</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('app.about') }}">About</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{ url_for('name_blueprint_public_about.url_bp_public_about') }}">About</a></li>
                 </ul><span class="navbar-text actions"> <a class="login" href="{{ url_for('app.logout') }}">Log Out</a></span></div>
         </div>
     </nav>
     <!-- End: Navigation with Button -->
     <div>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_media_new"><img src="/static/img/new.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_queue"><img src="/static/img/rectangles_black.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_media_new.url_bp_user_media_new') }}"><img src="/static/img/new.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_queue.url_bp_user_queue') }}"><img src="/static/img/rectangles_black.png" width="200" height="200" loading="lazy"></a>
     <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_movie/all"><img src="/static/img/movie_ticket.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_album_list"><img src="/static/img/headphone.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_tv"><img src="/static/img/television.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_sports"><img src="/static/img/stadium.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_tv_live"><img src="/static/img/television_live.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_imagegallery"><img src="/static/img/photo.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_game"><img src="/static/img/vid_game.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_periodical"><img src="/static/img/books.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_iradio"><img src="/static/img/radio.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_home_media"><img src="/static/img/vid_camera.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/bss_user/media/bss_user_media_3d.html"><img src="/static/img/3D.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_internet"><img src="/static/img/planet-earth.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_music_video"><img src="/static/img/listening-music-video-clip-with-auricular.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_cctv"><img src="/static/img/surveillance-cctv-symbol-in-rounded-triangle.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_search"><img src="/static/img/magnifying-glass.png" width="200" height="200" loading="lazy"></a>
-    <a href="{{ url_for('name_blueprint_user_sync.url_bp_user_sync_display_all') }}/user/user_hardware"><img src="/static/img/circuit-board.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_music.url_bp_user_album_list') }}"><img src="/static/img/headphone.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_tv.url_bp_user_tv') }}"><img src="/static/img/television.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_sports.url_bp_user_sports') }}"><img src="/static/img/stadium.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_tv_live.url_bp_user_tv_live') }}"><img src="/static/img/television_live.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_image.url_bp_user_image_gallery') }}"><img src="/static/img/photo.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_game.url_bp_user_game') }}"><img src="/static/img/vid_game.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_periodical.url_bp_user_periodical_list') }}"><img src="/static/img/books.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_media_iradio.url_bp_user_iradio_list') }}"><img src="/static/img/radio.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_home_media.url_bp_user_home_media_list') }}"><img src="/static/img/vid_camera.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_media_3d.url_bp_user_media_3d') }}"><img src="/static/img/3D.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_internet.url_bp_user_internet') }}"><img src="/static/img/planet-earth.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_music_video.url_bp_user_music_video_list') }}"><img src="/static/img/listening-music-video-clip-with-auricular.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_cctv.url_bp_user_cctv') }}"><img src="/static/img/surveillance-cctv-symbol-in-rounded-triangle.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_search.url_bp_user_search_media') }}"><img src="/static/img/magnifying-glass.png" width="200" height="200" loading="lazy"></a>
+    <a href="{{ url_for('name_blueprint_user_hardware.url_bp_user_hardware') }}"><img src="/static/img/circuit-board.png" width="200" height="200" loading="lazy"></a>
     </div>
     <footer
         class="bg-white sticky-footer">
