@@ -92,7 +92,7 @@
                                                     <td>{{ row_data[1] }}</td>
                                                     <td>{{ row_data[2] }}</td>
                                                     <td>
-                                                        <a href= "{{ url_for('name_blueprint_admin_backup.url_bp_admin_backup_restore', filename=row_data[0]) }}" id="play_button">
+                                                        <a href= "{{ url_for('name_blueprint_admin_backup.url_bp_admin_backup_restore', backup_filename=row_data[0]) }}" id="play_button">
                                                             <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/play.png') }}" height="20" width="20">
                                                         </a>
                                                     </td>
