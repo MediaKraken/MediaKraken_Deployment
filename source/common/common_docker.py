@@ -17,6 +17,7 @@
 """
 
 import os
+import shlex
 import socket
 import subprocess
 
@@ -158,7 +159,7 @@ class CommonDocker:
         """
         run command in a container via exec
         """
-        return self.cli_api.exec_create(container_id, docker_command)
+        return self.cli_api.exec_create(container_id, shlex.split(docker_command))
 
     def com_docker_start_exec(self, exec_id, stream_output=False):
         """
