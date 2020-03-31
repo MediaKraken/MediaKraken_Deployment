@@ -41,7 +41,13 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div></div></div>
+    <div>
+    {% if phue > 0 %}
+    <a href="{{ url_for('name_blueprint_user_hardware.url_bp_user_hardware_phue') }}" id="user_hardware_page">
+        <img src="/static/img/light-bulb.png" width="200" height="200">
+    </a>
+    {% endif %}
+    </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>

@@ -18,3 +18,11 @@ async def url_bp_user_hardware(request):
     return {
         'phue': phue_hardware
     }
+
+
+@blueprint_user_hardware.route('/user_hardware_phue', methods=['GET'])
+@common_global.jinja_template.template('bss_user/hardware/bss_user_hardware_phue.html')
+@common_global.auth.login_required
+async def url_bp_user_hardware_phue(request):
+    return {
+    }
