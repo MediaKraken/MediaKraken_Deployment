@@ -46,43 +46,44 @@
                         <div class="card-body">
                             <fieldset>
                                 <legend>Database Record Count</legend>
-                            </fieldset><div>        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Table</th>
-                    <th>Record(s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row_data in data_db_count %}
-                <tr>
-                    <td>{{ row_data[0] }}</td>
-                    <td>{{ row_data[1] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-</div></div>
+                            </fieldset><div>
+                            <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Table</th>
+                                            <th>Record(s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for row_data in data_db_count %}
+                                        <tr>
+                                            <td>{{ row_data[0] }}</td>
+                                            <td>{{ row_data[1] }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                        </div></div>
                         <div class="card-body">
                             <fieldset>
                                 <legend>Database Table Size<br></legend>
                             </fieldset><div>        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Table</th>
-                    <th>Size</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row_data in data_db_size %}
-                <tr>
-                    <td>{{ row_data[0] }}</td>
-                    <td>{{ row_data[1] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-</div></div>
+                                <thead>
+                                    <tr>
+                                        <th>Table</th>
+                                        <th>Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row_data in data_db_size %}
+                                    <tr>
+                                        <td>{{ row_data[0] }}</td>
+                                        <td>{{ row_data[1] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    </div></div>
                     </div>
                 </div>
             </div>
@@ -92,9 +93,9 @@
                 </div>
             </footer>
         </div>
-    </div><div>    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-<</div>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
