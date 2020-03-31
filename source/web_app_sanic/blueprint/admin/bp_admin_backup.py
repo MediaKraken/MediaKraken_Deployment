@@ -85,3 +85,13 @@ async def url_bp_admin_backup_delete(request):
         pass
         # TODO, do the actual delete
     return json.dumps({'status': 'OK'})
+
+
+@blueprint_admin_backup.route('/admin_backup_restore/<filename>', methods=["POST"])
+@common_global.auth.login_required
+async def url_bp_admin_backup_restore(request, filename):
+    """
+    run restore script on db container
+    """
+    common_database.com_database_restore(filename)
+    return json.dumps({'status': 'OK'})
