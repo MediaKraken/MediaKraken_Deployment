@@ -22,7 +22,7 @@ def com_database_backup():
     exec_instance = docker_inst.com_docker_run_command_via_exec(docker_id, docker_command_to_exec)
     print(exec_instance, flush=True)
     docker_output = docker_inst.com_docker_start_exec(exec_instance['Id'], stream_output=True)
-    print(docker_output)
+    print(docker_output, flush=True)
 
 
 def com_database_restore(restore_image_name):
