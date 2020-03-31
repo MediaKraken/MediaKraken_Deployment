@@ -40,7 +40,7 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div>    {% if media_game %}
+    {% if media_game %}
     {{ pagination.info }}
     {{ pagination.links }}
     <div class="table-responsive">
@@ -57,7 +57,7 @@
                 {% for row_data in media_game %}
                 <tr>
                     <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td><a href ="{{ url_for('user_metadata_game.metadata_game_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
+                    <td><a href ="{{ url_for('name_blueprint_user_metadata_game.url_bp_user_metadata_game_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
                     <td>{{ row_data[2] }}</td>
                     <td>{{ row_data[3] }}</td>
                 </tr>
@@ -68,7 +68,7 @@
     {{ pagination.links }}
     {% else %}
     <p id="general_text">No game metadata found.</p>
-    {% endif %}</div></div>
+    {% endif %}
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>

@@ -40,7 +40,7 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div>    {% if media_sports_list %}
+    {% if media_sports_list %}
     {{ pagination.info }}
     {{ pagination.links }}
     <div class="table-responsive">
@@ -56,7 +56,7 @@
                 {% for row_data in media_sports_list %}
                 <tr>
                     <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td><a href = "{{ url_for('user_metadata_sports.metadata_sports_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
+                    <td><a href = "{{ url_for('name_blueprint_user_sports.url_bp_user_sports_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
                     {% if row_data[2] != None %}
                     <td>{{ row_data[2] }}</td>
                     {% else %}
@@ -71,7 +71,6 @@
     {% else %}
     <p id="general_text">No sporting event metadata found.</p>
     {% endif %}
-</div></div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
