@@ -47,7 +47,7 @@
                     </td>
                     <div class="pull-right action-buttons">
                         <td>
-                            <p><button> <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editCronModal" onclick="EditCron(this)" ><span class="fas pencil-alt"></span></button></a>
+                            <p><button> <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editCronModal" onclick="EditCron(this)" ><span class="fas fa-pencil-alt"></span></button></a>
                         </td>
                         <td>
                             <p><button> <a data-id={{ row_data[0] }} onclick="ConfirmCronDelete(this)" ><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button></a>
@@ -66,10 +66,10 @@
                     <h4 class="modal-title custom_align" id="Heading">Run this Cron</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to run this cron?</div>
+                    <div class="alert alert-danger"><span class="fas fa-exclamation-triangle"></span> Are you sure you want to run this cron?</div>
                 </div>
                 <div class="modal-footer ">
-                    <button type="button" class="btn btn-success" onclick="Cron_Run()" ><span class="fas check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-success" onclick="Cron_Run()" ><span class="fas fa-check-circle"></span> Yes</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
                 </div>
             </div>
@@ -110,10 +110,10 @@
                     <h4 class="modal-title custom_align" id="Heading">Delete this Cron</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to delete this cron?</div>
+                    <div class="alert alert-danger"><span class="fas fa-exclamation-triangle"></span> Are you sure you want to delete this cron?</div>
                 </div>
                 <div class="modal-footer ">
-                    <button type="button" class="btn btn-success" onclick="Cron_Delete()" ><span class="fas check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-success" onclick="Cron_Delete()" ><span class="fas fa-check-circle"></span> Yes</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
                 </div>
             </div>

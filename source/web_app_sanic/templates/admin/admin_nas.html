@@ -34,10 +34,10 @@
                     <td>{{ row_data[3] }}</td>
                     <div class="pull-right action-buttons">
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editNASModal" onclick="EditNAS(this)" ><span class="fas pencil-alt"></span></button></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editNASModal" onclick="EditNAS(this)" ><span class="fas fa-pencil-alt"></span></button></a>
                         </td>
                         <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] }} onclick="ConfirmNASDelete(this)" ><span class="fas trash-alt"></span></a>
+                            <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" <a data-id={{ row_data[0] }} onclick="ConfirmNASDelete(this)" ><span class="fas fa-trash-alt"></span></a>
                         </td>
                     </div>
                     {% endfor %}
