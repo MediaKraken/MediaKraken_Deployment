@@ -2,6 +2,7 @@ from sanic import Blueprint
 
 from .bp_admin import blueprint_admin
 from .bp_admin_backup import blueprint_admin_backup
+from .bp_admin_cloud import blueprint_admin_cloud
 from .bp_admin_cron import blueprint_admin_cron
 from .bp_admin_database import blueprint_admin_database
 from .bp_admin_docker import blueprint_admin_docker
@@ -21,6 +22,7 @@ from .bp_admin_users import blueprint_admin_users
 
 blueprint_admin_content = Blueprint.group(blueprint_admin,
                                           blueprint_admin_backup,
+                                          blueprint_admin_cloud,
                                           blueprint_admin_cron,
                                           blueprint_admin_database,
                                           blueprint_admin_docker,

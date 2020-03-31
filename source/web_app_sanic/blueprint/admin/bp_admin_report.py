@@ -8,6 +8,13 @@ from sanic import Blueprint
 blueprint_admin_report = Blueprint('name_blueprint_admin_report', url_prefix='/admin')
 
 
+@blueprint_admin_report.route('/admin_report')
+@common_global.jinja_template.template('bss_admin/bss_admin_report.html')
+@common_global.auth.login_required
+async def url_bp_admin_report(request):
+    return {}
+
+
 @blueprint_admin_report.route('/admin_report_all_media')
 @common_global.jinja_template.template('bss_admin/bss_admin_report_all_media.html')
 @common_global.auth.login_required
