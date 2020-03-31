@@ -10,7 +10,7 @@ def com_database_backup():
                        time.strftime("%Y%m%d%H%M%S") + '.dump'
     print('docker', flush=True)
     # create backup command
-    docker_command_to_exec = 'PGPASSWORD=' + os.environ[
+    docker_command_to_exec = '/bin/sh -c PGPASSWORD=' + os.environ[
         'POSTGRES_PASSWORD'] + ' pg_dump -h mkstack_database -U postgres postgres -F c -f ' \
                              + os.path.join('/mediakraken/backup', backup_file_name)
     # setup docker connection
