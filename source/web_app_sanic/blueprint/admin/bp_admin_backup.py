@@ -94,5 +94,5 @@ async def url_bp_admin_backup_restore(request, backup_filename):
     run restore script on db container
     """
     # since I have to strip the first / as url_for gets mad
-    common_database.com_database_restore("/" + backup_filename)
+    common_database.com_database_restore(backup_filename.replace('*', '/'))
     return json.dumps({'status': 'OK'})
