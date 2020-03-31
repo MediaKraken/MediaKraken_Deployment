@@ -1,8 +1,8 @@
 import json
 import os
 
-from common import common_file
 from common import common_database
+from common import common_file
 from common import common_global
 from common import common_network_cloud
 from common import common_string
@@ -36,8 +36,10 @@ async def url_bp_admin_backup(request):
             flash_errors(form)
     backup_enabled = False
     backup_files = []
-    local_file_backups = common_file.com_file_dir_list('/mediakraken/backup',
-                                                       'dump', False, False, True)
+    local_file_backups = common_file.com_file_dir_list(dir_name='/mediakraken/backup',
+                                                       filter_text='dump', walk_dir=False,
+                                                       skip_junk=False, file_size=True,
+                                                       directory_only=False, file_modified=False)
     if local_file_backups is not None:
         for backup_local in local_file_backups:
             backup_files.append((backup_local[0], 'Local',
