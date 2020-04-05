@@ -13,7 +13,7 @@ async def db_media_tv_list(self, db_connection, genre_type=None, list_limit=None
                                          '->\'Images\'->\'thetvdb\'->>\'Poster\')'
                                          ' from mm_metadata_tvshow,'
                                          ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-                                         ' and mm_metadata_tvshow_name %% %s'
+                                         ' and mm_metadata_tvshow_name = %s'
                                          ' group by mm_metadata_tvshow_guid'
                                          ' order by LOWER(mm_metadata_tvshow_name)'
                                          ' offset %s limit %s', search_value, offset, list_limit)
