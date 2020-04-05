@@ -49,3 +49,4 @@ def com_net_steam_game_server_data_download():
         cols = [ele.text.strip() for ele in cols]
         steam_servers.append([ele for ele in cols if ele])
     print(steam_servers)
+    return steam_servers
