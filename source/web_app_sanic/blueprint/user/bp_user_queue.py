@@ -19,7 +19,7 @@ async def url_bp_user_queue(request, user):
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_queue_list_count(
                                 db_connection,
-                                None, None,
+                                user.id,
                                 request['session']['search_text']),
                             record_name='queue',
                             format_total=True,
