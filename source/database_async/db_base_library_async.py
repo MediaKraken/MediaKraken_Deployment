@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 
@@ -13,7 +14,7 @@ async def db_library_path_add(self, db_connection, dir_path, class_guid, share_g
                                 ' mm_media_dir_share_guid)'
                                 ' values ($1, $2, $3, $4, $5)',
                                 new_guid, dir_path, class_guid,
-                                psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), share_guid)
+                                datetime.datetime(1970, 1, 1, 0, 0, 1), share_guid)
     return new_guid
 
 
