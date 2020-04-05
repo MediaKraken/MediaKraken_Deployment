@@ -7,8 +7,8 @@ blueprint_user_queue = Blueprint('name_blueprint_user_queue', url_prefix='/user'
 
 @blueprint_user_queue.route("/user_queue", methods=['GET'])
 @common_global.jinja_template.template('bss_user/user_queue.html')
-@common_global.auth.login_required(user_keyword='user')
-async def url_bp_user_queue(request, user):
+@common_global.auth.login_required()
+async def url_bp_user_queue(request):
     """
     Display queue page
     """
@@ -19,7 +19,7 @@ async def url_bp_user_queue(request, user):
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_queue_list_count(
                                 db_connection,
-                                user.id,
+                                common_global.auth.current_user(request)['id'],
                                 request['session']['search_text']),
                             record_name='queue',
                             format_total=True,
