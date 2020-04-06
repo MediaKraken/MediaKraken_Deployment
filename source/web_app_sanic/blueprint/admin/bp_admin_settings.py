@@ -9,7 +9,7 @@ blueprint_admin_settings = Blueprint('name_blueprint_admin_settings', url_prefix
 @blueprint_admin_settings.route("/admin_settings", methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_admin/bss_admin_settings.html')
 @common_global.auth.login_required
-async def url_bp_admin_server_settings(request):
+async def url_bp_admin_settings(request):
     """
     Display server settings page
     """
