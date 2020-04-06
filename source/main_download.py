@@ -4,7 +4,7 @@ import os
 import shlex
 import subprocess
 import time
-
+import validators
 import pika
 import xmltodict
 from common import common_config_ini
@@ -180,11 +180,14 @@ class MKConsumer:
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local Save Path'])
             elif json_message['Subtype'] == 'Youtube':
-                # TODO little bobby tables
-                dl_pid = subprocess.Popen(shlex.split(
-                    'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
-                    + json_message['URL']), stdout=subprocess.PIPE, shell=False)
-                dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
+                if validators.url.url(json_message['URL']):
+                    dl_pid = subprocess.Popen(shlex.split(
+                        'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
+                        + json_message['URL']), stdout=subprocess.PIPE, shell=False)
+                    dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
+                else:
+                    # TODO log error by user requested
+                    pass
             elif json_message['Subtype'] == 'HDTrailers':
                 # try to grab the RSS feed itself
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(

@@ -57,10 +57,21 @@ async def url_bp_admin(request):
         mediakraken_ip = os.environ['SWARMIP']
     else:
         mediakraken_ip = os.environ['HOST_IP']
-    # TODO pool release
+    user_count = common_internationalization.com_inter_number_format(
+        await request.app.db_functions.db_user_count(db_connection))
+    media_file_count = common_internationalization.com_inter_number_format(
+        await request.app.db_functions.db_media_known_count(db_connection))
+    media_matched_count = common_internationalization.com_inter_number_format(
+        await request.app.db_functions.db_media_matched_count(db_connection))
+    media_library_count = common_internationalization.com_inter_number_format(
+        await request.app.db_functions.db_table_count(db_connection, 'mm_media_dir'))
+    share_count = common_internationalization.com_inter_number_format(
+        await request.app.db_functions.db_table_count(db_connection, 'mm_media_share'))
+    metadata_to_fetch = common_internationalization.com_inter_number_format(
+        await request.app.db_functions.db_table_count(db_connection, 'mm_download_que'))
+    await request.app.db_pool.release(db_connection)
     return {
-        'data_user_count': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_user_count(db_connection)),
+        'data_user_count': user_count,
         'data_server_info_server_name': data_server_info_server_name,
         'data_host_ip': mediakraken_ip,
         'data_server_info_server_ip': nic_data,
@@ -71,20 +82,15 @@ async def url_bp_admin(request):
             0),
         'data_alerts_dismissable': data_alerts_dismissable,
         'data_alerts': data_alerts,
-        'data_count_media_files': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_media_known_count(db_connection)),
-        'data_count_matched_media': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_media_matched_count(db_connection)),
+        'data_count_media_files': media_file_count,
+        'data_count_matched_media': media_matched_count,
         'data_count_streamed_media': common_internationalization.com_inter_number_format(
             0),
-        'data_library': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_table_count(db_connection, 'mm_media_dir')),
-        'data_share': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_table_count(db_connection, 'mm_media_share')),
+        'data_library': media_library_count,
+        'data_share': share_count,
         'data_transmission_active': data_transmission_active,
         'data_scan_info': data_scan_info,
-        'data_count_meta_fetch': common_internationalization.com_inter_number_format(
-            await request.app.db_functions.db_table_count(db_connection, 'mm_download_que')),
+        'data_count_meta_fetch': metadata_to_fetch,
     }
 
 # @blueprint_admin.route("/admin_sidenav")

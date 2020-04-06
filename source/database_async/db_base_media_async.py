@@ -6,7 +6,7 @@ async def db_media_duplicate(self, db_connection, offset=0, records=None):
     """
     # list duplicates
     """
-    # TODO technically this will "dupe" things like subtitles atm
+    # TODO technically this will "dupe" things like subtitles atm, so group by class guid?
     return await db_connection.fetch('select mm_media_metadata_guid,'
                                      'mm_media_name,'
                                      'count(*)'

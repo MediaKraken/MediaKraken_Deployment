@@ -31,6 +31,7 @@ common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_i
 
 # TODO?  # grab container list - do here since server could have restarted on other port
 # TODO?  how/why would the above happen
+# TODO I have this hardcoded........not good
 docker_port = None
 while docker_port is None:
     for container_json in docker_inst.com_docker_container_list():

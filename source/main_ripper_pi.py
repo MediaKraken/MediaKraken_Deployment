@@ -58,6 +58,8 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
 else:
     if os.uname()[4][:3] == 'arm':
         # TODO find real resolution
+        window_sizes = Window.size
+        print('window', window_sizes, flush=True)
         # TODO this is currently set to the "official" raspberry pi touchscreen
         Config.set('graphics', 'width', 800)
         Config.set('graphics', 'height', 480)
