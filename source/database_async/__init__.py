@@ -14,6 +14,10 @@ class MKServerDatabaseAsync:
         db_library_path_status, \
         db_library_path_update_by_uuid, \
         db_library_paths
+    from database_async.db_base_media_iradio_async \
+        import db_iradio_insert, \
+        db_iradio_list, \
+        db_iradio_list_count
     from database_async.db_base_async \
         import db_table_count
     from database_async.db_base_media_periodical_async \
