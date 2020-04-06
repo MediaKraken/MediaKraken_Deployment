@@ -288,9 +288,6 @@ def tv_intros(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
 
 
-
-
-
 def on_message(channel, method_frame, header_frame, body):
     """
     Process pika message
