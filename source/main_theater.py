@@ -50,6 +50,7 @@ from twisted.python import log
 import kivy
 from kivy.app import App
 from kivy.config import Config
+from kivy.core.window import Window
 
 # moving here before anything is setup for Kivy or it doesn't work
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -58,6 +59,8 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
 else:
     if os.uname()[4][:3] == 'arm':
         # TODO find real resolution
+        window_sizes = Window.size
+        print('window', window_sizes, flush=True)
         # TODO this is currently set to the "official" raspberry pi touchscreen
         Config.set('graphics', 'width', 800)
         Config.set('graphics', 'height', 480)
@@ -66,7 +69,6 @@ else:
 kivy.require('1.11.0')
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
-from kivy.core.window import Window
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
