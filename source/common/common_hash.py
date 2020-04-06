@@ -187,7 +187,7 @@ def com_hash_thesubdb(file_name):
     """
     Hash for thesubdb
     """
-    readsize = 64 * 1024
+    readsize = 65536  # 64 * 1024
     with open(file_name, 'rb') as file_handle:
         # size = os.path.getsize(file_name)
         data = file_handle.read(readsize)
@@ -208,7 +208,7 @@ def com_hash_opensubtitles(file_name):
         file_handle = open(file_name, "rb")
         filesize = os.path.getsize(file_name)
         hash = filesize
-        if filesize < 65536 * 2:
+        if filesize < 131072:  # 65536 * 2:
             return "SizeError"
         for ndx in range(65536 / bytesize):  # pylint: disable=W0612
             buffer = file_handle.read(bytesize)
