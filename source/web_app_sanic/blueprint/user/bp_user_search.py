@@ -3,6 +3,7 @@ import json
 from common import common_global
 from sanic import Blueprint
 from sanic.response import redirect
+from web_app_sanic.blueprint.user.bss_form_search import BSSSearchEditForm
 
 blueprint_user_search = Blueprint('name_blueprint_user_search', url_prefix='/user')
 
