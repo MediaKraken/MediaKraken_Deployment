@@ -13,10 +13,10 @@ async def db_media_tv_list(self, db_connection, genre_type=None, list_limit=None
                                          '->\'Images\'->\'thetvdb\'->>\'Poster\')'
                                          ' from mm_metadata_tvshow,'
                                          ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-                                         ' and mm_metadata_tvshow_name = %s'
+                                         ' and mm_metadata_tvshow_name = $1'
                                          ' group by mm_metadata_tvshow_guid'
                                          ' order by LOWER(mm_metadata_tvshow_name)'
-                                         ' offset %s limit %s', search_value, offset, list_limit)
+                                         ' offset $2 limit $3', search_value, offset, list_limit)
     else:
         return await db_connection.fetch('select mm_metadata_tvshow_name,'
                                          ' mm_metadata_tvshow_guid,'
@@ -29,7 +29,7 @@ async def db_media_tv_list(self, db_connection, genre_type=None, list_limit=None
                                          ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
                                          ' group by mm_metadata_tvshow_guid'
                                          ' order by LOWER(mm_metadata_tvshow_name)'
-                                         ' offset %s limit %s', offset, list_limit)
+                                         ' offset $1 limit $2', offset, list_limit)
 
 
 async def db_media_tv_list_count(self, db_connection, genre_type=None, group_collection=False,
