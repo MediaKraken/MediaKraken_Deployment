@@ -12,22 +12,11 @@ async def url_bp_user_cctv(request):
     """
     Display cctv page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
     db_connection = await request.app.db_pool.acquire()
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_table_count(db_connection,
-                                                                                'TODOO'),
-                            record_name='CCTV System(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
-    media_data = await request.app.db_functions.db_sync_list(db_connection, offset, per_page)
+    media_data = await request.app.db_functions.db_sync_list(db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_sync': media_data,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
     }
 
 
