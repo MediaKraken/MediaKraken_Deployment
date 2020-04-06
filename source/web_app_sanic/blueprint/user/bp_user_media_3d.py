@@ -7,8 +7,8 @@ blueprint_user_media_3d = Blueprint('name_blueprint_user_media_3d', url_prefix='
 @blueprint_user_media_3d.route('/user_media_3d', methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/media/bss_user_media_3d.html')
 @common_global.auth.login_required
-async def url_bp_user_media_3d(request, guid):
+async def url_bp_user_media_3d(request):
     """
-    Display 3
+    Display 3d
     """
     return {}
