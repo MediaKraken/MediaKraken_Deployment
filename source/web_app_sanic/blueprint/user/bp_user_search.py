@@ -9,7 +9,7 @@ blueprint_user_search = Blueprint('name_blueprint_user_search', url_prefix='/use
 
 
 @blueprint_user_search.route("/user_search", methods=["GET", "POST"])
-@common_global.jinja_template.template('bss_user/user_search.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_search.html')
 @common_global.auth.login_required
 async def url_bp_user_search_media(request):
     """
@@ -103,6 +103,7 @@ async def url_bp_user_search_nav_media(request):
     """
     determine what search results screen to show
     """
+    # TODO!
     common_global.es_inst.com_elastic_index('info', {
         "search session": request['session']['search_page']})
     request['session']['search_text'] = request.form.get('nav_search').strip()
