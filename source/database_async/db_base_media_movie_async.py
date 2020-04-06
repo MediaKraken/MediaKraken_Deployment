@@ -552,11 +552,11 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                 else:
                     return await db_connection.fetchval('select count(*) from ((select distinct'
                                                         ' mm_metadata_guid from mm_media, mm_metadata_movie'
-                                                        ' where mm_media_class_guid = %s and mm_media_metadata_guid'
+                                                        ' where mm_media_class_guid = $1 and mm_media_metadata_guid'
                                                         ' = mm_metadata_guid)'
                                                         ' union (select distinct mm_metadata_guid'
                                                         ' from mm_media_remote, mm_metadata_movie'
-                                                        ' where mmr_media_class_guid = $1'
+                                                        ' where mmr_media_class_guid = $2'
                                                         ' and mmr_media_metadata_guid = mm_metadata_guid)) as temp',
                                                         class_guid, class_guid)
             else:

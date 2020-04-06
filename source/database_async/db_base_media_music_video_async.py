@@ -13,7 +13,7 @@ async def db_music_video_list_count(self, db_connection, search_value=None):
         return await db_connection.fetchval('select count(*)'
                                             ' from mm_metadata_music_video, mm_media'
                                             ' where mm_media_metadata_guid = mm_metadata_music_video_guid group'
-                                            ' and mm_media_music_video_song %% $1', search_value)
+                                            ' and mm_media_music_video_song % $1', search_value)
     else:
         return await db_connection.fetchval('select count(*)'
                                             ' from mm_metadata_music_video, mm_media'

@@ -17,7 +17,7 @@ async def db_link_list(self, db_connection, offset=0, records=None, search_value
                                          ' from mm_link'
                                          ' where mm_link_guid in (select mm_link_guid'
                                          ' from mm_link'
-                                         ' where mm_link_name %% $1 offset $2 limit $3)',
+                                         ' where mm_link_name % $1 offset $2 limit $3)',
                                          search_value, offset, records)
     else:
         return await db_connection.fetch('select mm_link_guid,'
@@ -34,7 +34,7 @@ async def db_link_list_count(self, db_connection, search_value=None):
     """
     if search_value is not None:
         return await db_connection.fetchval('select count(*)'
-                                            ' from mm_link where mm_link_name %% $1',
+                                            ' from mm_link where mm_link_name % $1',
                                             search_value)
     else:
         return await db_connection.fetchval('select count(*) from mm_link')

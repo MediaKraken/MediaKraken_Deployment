@@ -73,7 +73,7 @@ async def db_meta_tv_eps_season(self, db_connection, show_guid):
     #                         '->\'Meta\'->\'tvmaze\'->\'_embedded\'->\'episodes\')::jsonb->\'number\','
     #                         '(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')'
     #                         '::jsonb->\'EpisodeNumber\'))'
-    #                         'from mm_metadata_tvshow where mm_metadata_tvshow_guid = %s', (show_guid,))
+    #                         'from mm_metadata_tvshow where mm_metadata_tvshow_guid = $1', (show_guid,))
     for row_data in await db_connection.fetch(
             'select count(*) as ep_count, jsonb_array_elements_text(mm_metadata_tvshow_json'
             '->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb->\'SeasonNumber\' as season_num'
@@ -111,7 +111,8 @@ async def db_meta_tv_list_count(self, db_connection, search_value=None):
     # tvshow count
     """
     if search_value is None:
-        return await db_connection.fetchval('select count(*) from mm_metadata_tvshow')
+        return await db_connection.fetchval('select count(*) from mm_metadata_tvshow '
+                                            'where mm_metadata_tvshow_name % $1', search_value)
     else:
         return await db_connection.fetchval('select count(*) from mm_metadata_tvshow')
 

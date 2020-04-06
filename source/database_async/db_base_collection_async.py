@@ -8,7 +8,7 @@ async def db_collection_list(self, db_connection, offset=None, records=None, sea
                                              'mm_metadata_collection_name,'
                                              'mm_metadata_collection_imagelocal_json'
                                              ' from mm_metadata_collection'
-                                             ' where mm_metadata_collection_name %% $1'
+                                             ' where mm_metadata_collection_name % $1'
                                              ' order by mm_metadata_collection_name',
                                              search_value)
         else:
@@ -26,7 +26,7 @@ async def db_collection_list(self, db_connection, offset=None, records=None, sea
                                              ' where mm_metadata_collection_guid'
                                              ' in (select mm_metadata_collection_guid'
                                              ' from mm_metadata_collection'
-                                             ' where mm_metadata_collection_name %% $1'
+                                             ' where mm_metadata_collection_name % $1'
                                              ' order by mm_metadata_collection_name'
                                              ' offset $2 limit $3) order by mm_metadata_collection_name',
                                              search_value, offset, records)
@@ -47,7 +47,7 @@ async def db_collection_list_count(self, db_connection, search_value=None):
     if search_value is not None:
         return await db_connection.fetchval('select count(*)'
                                             ' from mm_metadata_collection'
-                                            ' where mm_metadata_collection_name %% $1',
+                                            ' where mm_metadata_collection_name % $1',
                                             search_value)
     else:
         return await db_connection.fetchval('select count(*)'

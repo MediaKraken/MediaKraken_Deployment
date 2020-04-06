@@ -19,7 +19,7 @@ async def db_meta_sports_list(self, db_connection, offset=0, records=None, searc
                                          ' from mm_metadata_sports'
                                          ' where mm_metadata_sports_guid'
                                          ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                                         ' where mm_metadata_sports_name %% $1'
+                                         ' where mm_metadata_sports_name % $1'
                                          ' order by LOWER(mm_metadata_sports_name) offset $2 limit $3)'
                                          ' order by LOWER(mm_metadata_sports_name)',
                                          search_value, offset, records)
@@ -38,6 +38,6 @@ async def db_meta_sports_list_count(self, db_connection, search_value=None):
     """
     if search_value is not None:
         return await db_connection.fetchval('select count(*) from mm_metadata_sports'
-                                            ' where mm_metadata_sports_name %% $1', search_value)
+                                            ' where mm_metadata_sports_name % $1', search_value)
     else:
         return await db_connection.fetchval('select count(*) from mm_metadata_sports')

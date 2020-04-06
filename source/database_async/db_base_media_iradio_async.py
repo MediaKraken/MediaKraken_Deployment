@@ -28,7 +28,7 @@ async def db_iradio_list(self, db_connection, offset=0, records=None, active_sta
                                          ' mm_radio_address'
                                          ' from mm_radio where mm_radio_guid '
                                          'in (select mm_radio_guid from mm_radio'
-                                         ' where mm_radio_active = $1 and mm_radio_name = $2'
+                                         ' where mm_radio_active = $1 and mm_radio_name % $2'
                                          ' order by LOWER(mm_radio_name) offset $3 limit $4)'
                                          ' order by LOWER(mm_radio_name)',
                                          active_station, search_value, offset, records)
