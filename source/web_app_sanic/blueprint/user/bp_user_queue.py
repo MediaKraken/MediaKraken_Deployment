@@ -19,13 +19,15 @@ async def url_bp_user_queue(request):
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_queue_list_count(
                                 db_connection,
-                                common_global.auth.current_user(request)['id'],
+                                common_global.auth.current_user(request)[0],
                                 request['session']['search_text']),
                             record_name='queue',
                             format_total=True,
                             format_number=True,
                             )
-    media_data = await request.app.db_functions.db_meta_queue_list(db_connection, user.id, offset,
+    media_data = await request.app.db_functions.db_meta_queue_list(db_connection,
+                                                                   common_global.auth.current_user(request)[0],
+                                                                   offset,
                                                                    per_page,
                                                                    request['session'][
                                                                        'search_text'])
