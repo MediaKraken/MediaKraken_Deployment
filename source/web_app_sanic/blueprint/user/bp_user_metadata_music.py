@@ -30,7 +30,7 @@ async def url_bp_user_metadata_music_album_list(request):
                 try:
                     album_image = album_data['mm_metadata_album_image']['Images'][
                         'musicbrainz'].replace(
-                        '/mediakraken/web_app/MediaKraken', '')
+                        '/mediakraken/web_app_sanic/MediaKraken', '')
                 except:
                     album_image = "/static/images/music_album_missing.png"
             else:

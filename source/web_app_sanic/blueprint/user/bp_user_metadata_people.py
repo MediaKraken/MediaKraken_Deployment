@@ -19,7 +19,7 @@ async def url_bp_user_metadata_person_detail(request, guid):
         if 'themoviedb' in person_data['mmp_person_image']['Images']:
             try:
                 person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace(
-                    '/mediakraken/web_app/MediaKraken', '') + person_data['mmp_meta']
+                    '/mediakraken/web_app_sanic/MediaKraken', '') + person_data['mmp_meta']
             except:
                 person_image = "/static/images/person_missing.png"
         else:
@@ -56,7 +56,7 @@ async def url_bp_user_metadata_person_list(request):
             if 'themoviedb' in person_data['mmp_person_image']['Images']:
                 try:
                     person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace(
-                        '/mediakraken/web_app/MediaKraken', '') + person_data['mmp_meta']
+                        '/mediakraken/web_app_sanic/MediaKraken', '') + person_data['mmp_meta']
                 except:
                     person_image = "/static/images/person_missing.png"
             else:

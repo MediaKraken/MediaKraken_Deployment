@@ -114,7 +114,7 @@ compose_text += "\n\n  # Main app server which controls the show\n" \
                 "      - /var/opt/mediakraken/backup:/mediakraken/backup\n" \
                 "      - /home/mediakraken:/mediakraken/mnt\n" \
                 "      - /var/run/docker.sock:/var/run/docker.sock\n" \
-                "      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images\n" \
+                "      - /var/opt/mediakraken/images:/mediakraken/web_app_sanic/MediaKraken/static/meta/images\n" \
                 "    networks:\n" \
                 "      - mediakraken_network\n" \
                 "      - mediakraken_dbnetwork\n" \
@@ -137,11 +137,11 @@ compose_text += "\n\n  # Runs the web service for the main server application\n"
                 "      - pgbounce\n" \
                 "      - rabbit\n" \
                 "      - redis\n" \
-                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app --ini ./web_app/mediakraken_uwsgi_alpine.ini\n" \
+                "    entrypoint: ./wait-for-it-ash.sh -h pgbounce -p 6432 -t 30 -- uwsgi --socket 0.0.0.0:8080 --protocol http --chdir=./web_app_sanic --ini ./web_app/mediakraken_uwsgi_alpine.ini\n" \
                 "    volumes:\n" \
                 "      - /var/log/mediakraken:/mediakraken/log\n" \
                 "      - /home/mediakraken:/mediakraken/mnt\n" \
-                "      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images\n" \
+                "      - /var/opt/mediakraken/images:/mediakraken/web_app_sanic/MediaKraken/static/meta/images\n" \
                 "      - /var/run/docker.sock:/var/run/docker.sock\n" \
                 "    networks:\n" \
                 "      - mediakraken_network\n" \
@@ -164,7 +164,7 @@ compose_text += "\n\n  # runs the server to fetch/process all metadata\n" \
                 "    volumes:\n" \
                 "      - /var/log/mediakraken:/mediakraken/log\n" \
                 "      - /home/mediakraken:/mediakraken/mnt\n" \
-                "      - /var/opt/mediakraken/images:/mediakraken/web_app/MediaKraken/static/meta/images\n" \
+                "      - /var/opt/mediakraken/images:/mediakraken/web_app_sanic/MediaKraken/static/meta/images\n" \
                 "    networks:\n" \
                 "      - mediakraken_network\n" \
                 "      - mediakraken_dbnetwork\n" \

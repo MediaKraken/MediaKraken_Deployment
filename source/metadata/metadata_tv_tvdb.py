@@ -127,7 +127,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                       {'Type': 'download', 'Subtype': 'image',
                                                        'url': 'https://thetvdb.com/banners/'
                                                               + episode_info['filename'],
-                                                       'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                       'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
                                                                 + episode_info['filename']}),
                                                   properties=pika.BasicProperties(
                                                       content_type='text/plain',
@@ -142,7 +142,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                    'url': 'https://thetvdb.com/banners/'
                                                           + xml_show_data['Data']['Episode'][
                                                               'filename'],
-                                                   'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                   'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
                                                             + xml_show_data['Data']
                                                             ['Episode']['filename']}),
                                               properties=pika.BasicProperties(
@@ -158,7 +158,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                'url': 'https://thetvdb.com/banners/'
                                                       + xml_show_data['Data'][
                                                           'Episode']['filename'],
-                                               'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                               'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
                                                         + xml_show_data['Data']
                                                         ['Episode']['filename']}),
                                           properties=pika.BasicProperties(content_type='text/plain',

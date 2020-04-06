@@ -61,13 +61,13 @@ def com_meta_image_file_path(media_name, media_type):
     try:
         # first char of filename
         if re.search(pattern, os.path.basename(media_name)[0]):
-            file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
+            file_path = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/images',
                                      media_type, random.choice(string.ascii_lowercase))
         else:
-            file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
+            file_path = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/images',
                                      media_type, os.path.basename(media_name)[0].lower())
     except:
-        file_path = os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
+        file_path = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/images',
                                  media_type, random.choice(string.ascii_lowercase))
     # os.path.join should be adding the terminating slash
     common_global.es_inst.com_elastic_index('info', {'file image path': file_path})
