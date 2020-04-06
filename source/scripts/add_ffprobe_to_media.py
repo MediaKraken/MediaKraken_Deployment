@@ -17,16 +17,13 @@
 """
 
 import json
-import subprocess
 
 import pika
 from common import common_config_ini
+from common import common_network
 
-# fire off wait for it script to allow rabbitmq connection
-wait_pid = subprocess.Popen(['/mediakraken/wait-for-it-ash.sh', '-h',
-                             'mkstack_rabbitmq', '-p', ' 5672', '-t', '30'],
-                            stdout=subprocess.PIPE, shell=False)
-wait_pid.wait()
+# fire off wait for it script to allow connection
+common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
 # Open a connection to RabbitMQ on localhost using all default parameters
 connection = pika.BlockingConnection()
