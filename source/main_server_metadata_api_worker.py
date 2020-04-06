@@ -288,16 +288,7 @@ def tv_intros(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tvshowtime'][0]
-             / common_metadata_limiter.API_LIMIT['tvshowtime'][1])
-def tvshowtime(thread_db, download_data):
-    """
-    Rate limiter for TVShowTime
-    """
-    common_global.es_inst.com_elastic_index('info', {"here i am in tvshowtime rate":
-        datetime.datetime.now().strftime(
-            "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'tvshowtime', download_data)
+
 
 
 def on_message(channel, method_frame, header_frame, body):
@@ -409,8 +400,6 @@ while True:
             tv_intros(thread_db, row_data)
         # elif content_providers == 'tvmaze':
         #     tvmaze(thread_db, row_data)
-        elif content_providers == 'tvshowtime':
-            tvshowtime(thread_db, row_data)
         # Z records are the start of all lookups
         elif content_providers == 'Z':
             common_global.es_inst.com_elastic_index('info', {'worker Z meta api':

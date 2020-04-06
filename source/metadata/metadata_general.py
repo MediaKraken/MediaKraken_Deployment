@@ -209,8 +209,6 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
     #             update_provider = 'thetvdb'
     #         else:
     #             set_fetch = True
-    elif provider_name == 'tvshowtime':
-        lookup_halt = True
     elif provider_name == 'twitch':
         lookup_halt = True
 
