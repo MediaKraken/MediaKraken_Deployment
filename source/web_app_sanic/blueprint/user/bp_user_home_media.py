@@ -14,12 +14,12 @@ async def url_bp_user_home_media_list(request):
     Display home page for home media
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    media = []
-    # TODO wrong movie query
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_meta_movie_list(db_connection, offset, per_page,
-                                                                   request['session'][
-                                                                       'search_text'])
+    # TODO still wrong......this is HOME movies
+    media_data = await request.app.db_functions.db_media_movie_list(db_connection, offset=offset,
+                                                                    list_limit=per_page,
+                                                                    search_text=request['session'][
+                                                                        'search_text'])
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data
