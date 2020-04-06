@@ -3,7 +3,7 @@ async def db_meta_game_system_by_guid(self, db_connection, guid):
     # return game system data
     """
     return await db_connection.fetchrow('select * from mm_metadata_game_systems_info'
-                                        ' where gs_id = %s',
+                                        ' where gs_id = $1',
                                         guid)
 
 
@@ -14,7 +14,7 @@ async def db_meta_game_system_list_count(self, db_connection, search_value=None)
     if search_value is not None:
         return await db_connection.fetchval('select count(*) from mm_metadata_game_systems_info'
                                             ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
-                                            ' and gs_game_system_name %% %s', search_value)
+                                            ' and gs_game_system_name = $1', search_value)
     else:
         return await db_connection.fetchval('select count(*) from mm_metadata_game_systems_info'
                                             ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
@@ -33,9 +33,9 @@ async def db_meta_game_system_list(self, db_connection, offset=0, records=None, 
                                          ' where gs_id in (select gs_id'
                                          ' from mm_metadata_game_systems_info'
                                          ' where gs_game_system_json->\'@isdevice\''
-                                         ' ? \'yes\' and gs_game_system_name %% %s '
+                                         ' ? \'yes\' and gs_game_system_name = $1 '
                                          'order by gs_game_system_json->\'description\''
-                                         ' offset %s limit %s)'
+                                         ' offset $2 limit $2)'
                                          ' order by gs_game_system_json->\'description\'',
                                          search_value, offset, records)
     else:
@@ -47,6 +47,6 @@ async def db_meta_game_system_list(self, db_connection, offset=0, records=None, 
                                          ' from mm_metadata_game_systems_info'
                                          ' where gs_game_system_json->\'@isdevice\''
                                          ' ? \'yes\' order by gs_game_system_json->\'description\''
-                                         ' offset %s limit %s)'
+                                         ' offset $1 limit $2)'
                                          ' order by gs_game_system_json->\'description\'',
                                          offset, records)
