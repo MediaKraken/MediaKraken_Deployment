@@ -8,7 +8,7 @@ blueprint_user_metadata_tv = Blueprint('name_blueprint_user_metadata_tv',
 
 
 @blueprint_user_metadata_tv.route('/user_meta_tvshow_detail/<guid>')
-@common_global.jinja_template.template('bss_user/metadata/bss_metadata_tvshow_detail.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_tv_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_detail(request, guid):
     """
@@ -128,7 +128,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
 # tv show season detail - show guid then season #
 @blueprint_user_metadata_tv.route("/user_meta_tvshow_episode_detail/<guid>/<eps_id>",
                                   methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/metadata/bss_metadata_tvshow_episode_detail.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_metadata_tv_episode_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id):
     """
@@ -164,7 +164,7 @@ async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id)
 
 
 @blueprint_user_metadata_tv.route('/user_meta_tvshow_list', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/metadata/bss_metadata_tvshow_list.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_tv.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_list(request):
     """
@@ -200,7 +200,7 @@ async def url_bp_user_metadata_tvshow_list(request):
 # tv show season detail - show guid then season #
 @blueprint_user_metadata_tv.route("/user_meta_tvshow_season_detail/<guid>/<season>",
                                   methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/metadata/bss_metadata_tvshow_season_detail.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_tv_season_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     """

@@ -7,7 +7,7 @@ blueprint_user_media_collection = Blueprint('name_blueprint_user_media_colletion
 
 
 @blueprint_user_media_collection.route('/user_media_movie_collection', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/media_movie_collection.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_movie_collection.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_movie_collection(request):
     """
@@ -16,8 +16,10 @@ async def url_bp_user_metadata_movie_collection(request):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_collection_list(db_connection, offset, per_page,
-                                                       request['session']['search_text']):
+    for row_data in await request.app.db_functions.db_collection_list(db_connection, offset,
+                                                                      per_page,
+                                                                      request['session'][
+                                                                          'search_text']):
         if 'Poster' in row_data['mm_metadata_collection_imagelocal_json']:
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'],
@@ -27,7 +29,8 @@ async def url_bp_user_metadata_movie_collection(request):
                           row_data['mm_metadata_collection_name'], None))
     request['session']['search_page'] = 'meta_movie_collection'
     pagination = Pagination(request,
-                            total=await request.app.db_functions.db_collection_list_count(db_connection,
+                            total=await request.app.db_functions.db_collection_list_count(
+                                db_connection,
                                 request['session']['search_text']),
                             record_name='movie collection(s)',
                             format_total=True,
@@ -43,7 +46,8 @@ async def url_bp_user_metadata_movie_collection(request):
 
 
 @blueprint_user_media_collection.route('/user_media_movie_collection_detail/<guid>')
-@common_global.jinja_template.template('bss_user/media_movie_collection_detail.html')
+@common_global.jinja_template.template(
+    'bss_user/metadata/bss_user_metadata_movie_collection_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_movie_collection_detail(request, guid):
     """

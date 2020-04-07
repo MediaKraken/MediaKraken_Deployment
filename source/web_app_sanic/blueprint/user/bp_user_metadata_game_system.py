@@ -7,7 +7,7 @@ blueprint_user_metadata_game_system = Blueprint('name_blueprint_user_metadata_ga
 
 
 @blueprint_user_metadata_game_system.route('/user_meta_game_system', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/metadata/bss_metadata_game_system.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_game_system.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_game_system(request):
     """
@@ -37,7 +37,8 @@ async def url_bp_user_metadata_game_system(request):
 
 
 @blueprint_user_metadata_game_system.route('/user_meta_game_system_detail/<guid>')
-@common_global.jinja_template.template('bss_user/metadata/bss_metadata_game_system_detail.html')
+@common_global.jinja_template.template(
+    'bss_user/metadata/bss_user_metadata_game_system_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_game_system_detail(request, guid):
     """
