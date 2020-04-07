@@ -78,9 +78,7 @@ async def url_bp_admin_cron_run(request, user, guid):
     common_global.es_inst.com_elastic_index('info', {'admin cron run': guid})
     db_connection = await request.app.db_pool.acquire()
     cron_job_data = await request.app.db_functions.db_cron_info(db_connection, guid)
-    print(cron_job_data, flush=True)
     cron_json_data = json.loads(cron_job_data['mm_cron_json'])
-    print(cron_job_data, flush=True)
     # submit the message
     common_network_pika.com_net_pika_send({'Type': cron_json_data['type'],
                                            'User': user.id,
