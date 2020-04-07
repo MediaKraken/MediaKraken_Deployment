@@ -91,4 +91,4 @@ async def url_bp_admin_cron_run(request, user, guid):
     await request.app.db_functions.db_cron_time_update(db_connection,
                                                        cron_job_data['mm_cron_name'])
     await request.app.db_pool.release(db_connection)
-    return redirect(request.app.url_for('blueprint_admin_cron.url_bp_admin_cron'))
+    return redirect(request.app.url_for('name_blueprint_admin_cron.url_bp_admin_cron'))
