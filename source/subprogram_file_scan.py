@@ -320,8 +320,9 @@ if len(audit_directories) > 0:
 db_connection.db_commit()
 
 # vacuum tables that had records added
-db_connection.db_pgsql_vacuum_table('mm_media')
-db_connection.db_pgsql_vacuum_table('mm_download_que')
+# TODO psycopg2.errors.ActiveSqlTransaction: VACUUM cannot run inside a transaction block
+# db_connection.db_pgsql_vacuum_table('mm_media')
+# db_connection.db_pgsql_vacuum_table('mm_download_que')
 
 # Cancel the consumer and return any pending messages
 channel.cancel()
