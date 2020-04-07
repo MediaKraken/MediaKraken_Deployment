@@ -17,7 +17,7 @@ async def db_opt_json_read(self, db_connection):
     """
     return json.loads(await db_connection.fetchval(
         'select mm_options_json'
-        ' from mm_options_and_status'))
+        ' from mm_options_and_status')['mm_options_json'])
 
 
 async def db_status_json_read(self, db_connection):
@@ -26,4 +26,4 @@ async def db_status_json_read(self, db_connection):
     """
     return json.loads(await db_connection.fetchval(
         'select mm_status_json'
-        ' from mm_options_and_status'))
+        ' from mm_options_and_status')['mm_status_json'])
