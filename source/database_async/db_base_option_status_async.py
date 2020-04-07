@@ -1,3 +1,6 @@
+import json
+
+
 async def db_opt_update(self, db_connection, option_json):
     """
     Update option json
@@ -12,15 +15,15 @@ async def db_opt_json_read(self, db_connection):
     """
     Read options
     """
-    return await db_connection.fetchval(
+    return json.loads(await db_connection.fetchval(
         'select mm_options_json'
-        ' from mm_options_and_status')
+        ' from mm_options_and_status'))
 
 
 async def db_status_json_read(self, db_connection):
     """
     Read options
     """
-    return await db_connection.fetchval(
+    return json.loads(await db_connection.fetchval(
         'select mm_status_json'
-        ' from mm_options_and_status')
+        ' from mm_options_and_status'))
