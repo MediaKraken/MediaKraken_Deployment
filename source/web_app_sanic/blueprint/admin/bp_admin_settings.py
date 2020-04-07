@@ -13,8 +13,8 @@ async def url_bp_admin_settings(request):
     """
     Display server settings page
     """
-    async with request.app.db_pool.acquire() as db_connection:
-        settings_json = await request.app.db_functions.db_opt_status_read(db_connection)[0]
+    db_connection = await request.app.db_pool.acquire()
+    settings_json = await request.app.db_functions.db_opt_json_read(db_connection)
     # setup the crypto
     data = common_hash.CommonHashCrypto()
     mediabrainz_api_key = None
@@ -72,6 +72,7 @@ async def url_bp_admin_settings(request):
     docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
                                                                   Length(min=1, max=250)])
     '''
+    await request.app.db_pool.release(db_connection)
     return {
         'form': BSSAdminSettingsForm(request),
         'settings_json': settings_json,
