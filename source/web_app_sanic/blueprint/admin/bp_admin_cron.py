@@ -79,13 +79,15 @@ async def url_bp_admin_cron_run(request, user, guid):
     db_connection = await request.app.db_pool.acquire()
     cron_job_data = await request.app.db_functions.db_cron_info(db_connection, guid)
     print(cron_job_data, flush=True)
+    cron_json_data = json.loads(cron_job_data['mm_cron_json'])
+    print(cron_job_data, flush=True)
     # submit the message
-    common_network_pika.com_net_pika_send({'Type': cron_job_data['mm_cron_json']['type'],
+    common_network_pika.com_net_pika_send({'Type': cron_json_data['type'],
                                            'User': user.id,
-                                           'JSON': cron_job_data['mm_cron_json']},
-                                          exchange_name=cron_job_data['mm_cron_json'][
+                                           'JSON': cron_json_data},
+                                          exchange_name=cron_json_data[
                                               'exchange_key'],
-                                          route_key=cron_job_data['mm_cron_json']['route_key'])
+                                          route_key=cron_json_data['route_key'])
     await request.app.db_functions.db_cron_time_update(db_connection,
                                                        cron_job_data['mm_cron_name'])
     await request.app.db_pool.release(db_connection)
