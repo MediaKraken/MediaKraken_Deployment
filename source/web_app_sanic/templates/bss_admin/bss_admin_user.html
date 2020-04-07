@@ -65,7 +65,7 @@
                                             {% for row_data in users %}
                                             <tr>
                                                 <td>{{ loop.index + (page - 1) * per_page }}</td>
-                                                <td><a href = "{{ url_for('admins_users.admin_user_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
+                                                <td><a href = "{{ url_for('name_blueprint_admin_users.url_bp_admin_user_detail', guid=row_data[0]) }}">{{ row_data[1] }}</a></td>
                                                 <td>{{ row_data[2] }}</td>
                                                 <td>{{ row_data[3] }}</td>
                                                 <td>{{ row_data[4] }}</td>
