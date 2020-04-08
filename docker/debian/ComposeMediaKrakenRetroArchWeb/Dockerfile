@@ -2,7 +2,7 @@
 #
 # docker run --rm -it -p 8080:80 inglebard/retroarch-web
 #
-FROM debian:stretch
+FROM debian:buster
 
 LABEL maintainer "David 'Inglebard' RICQ <davidricq87@orange.fr>"
 
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 
 # https://github.com/libretro/RetroArch/tree/master/pkg/emscripten
 # https://buildbot.libretro.com/stable/
-ENV RETROARCH_VERSION 1.7.7
+ENV RETROARCH_VERSION 1.8.5
 ENV ROOT_WWW_PATH /var/www/html
 
 
@@ -46,4 +46,6 @@ WORKDIR ${ROOT_WWW_PATH}
 
 EXPOSE 80
 
-CMD [ "nginx", "-g", "daemon off;" ]
+COPY entrypoint.sh /
+
+CMD [ "sh", "/entrypoint.sh"]
