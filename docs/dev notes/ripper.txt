@@ -1,4 +1,4 @@
-debian on main box for ease of makemkv and eject commands
+﻿debian on main box for ease of makemkv and eject commands
 
 server listens via twisted
 
@@ -11,7 +11,7 @@ just crossover cable/adapter
 **********************************
 
 Horizontal stepper - moves entire arm assembly on tracks left/right
-veritical stepper - moves arm assembly on track up/down
+vertical stepper - moves arm assembly on track up/down
 
 spinner stepper - rotates cd for buffing
 
