@@ -9,7 +9,7 @@ async def db_meta_queue_list_count(self, db_connection, user_id, search_value=No
                                             search_value, user_id)
     else:
         return await db_connection.fetchval('select count(*) from mm_user_queue'
-                                            'where mm_user_queue_user_id = $1', user_id)
+                                            ' where mm_user_queue_user_id = $1', user_id)
 
 # TODO create table!
 """
