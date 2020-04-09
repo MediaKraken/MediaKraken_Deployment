@@ -16,7 +16,6 @@
   MA 02110-1301, USA.
 """
 
-import multiprocessing
 import os
 import sys
 import time
@@ -59,7 +58,7 @@ def db_open(self):
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
-                           multiprocessing.cpu_count())
+                           os.cpu_count())
     # do here since the db cursor is created now
     # verify the trigram extension is enabled for the database
     self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
