@@ -1,5 +1,5 @@
 # Download base image
-FROM alpine:3.11.3
+FROM alpine:3.11.5
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This holds the image for pgbouncer"
