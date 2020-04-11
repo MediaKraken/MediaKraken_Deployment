@@ -4,7 +4,7 @@ version: '3.6'
 services:
   # Main app server
   appserver:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
+    image: mediakraken/mkserver:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
@@ -31,7 +31,7 @@ services:
 
   # start broadcast server (so clients can find server)
   broadcast:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkbroadcast:dev
+    image: mediakraken/mkbroadcast:latest
     environment:
       # so it knows what ip to broadcast on
       - SWARMIP=${SWARMIP}
@@ -51,7 +51,7 @@ services:
 
   # runs cron
   cron:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
+    image: mediakraken/mkcron:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -68,7 +68,7 @@ services:
 
   # Postgresql server
   database:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
+    image: mediakraken/mkdatabase:latest
     environment:
       - MAX_CONNECTIONS=125
       - MAX_WAL_SENDERS=10
@@ -87,7 +87,7 @@ services:
 
   # Runs the download services
   download:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
+    image: mediakraken/mkdownload:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -106,7 +106,7 @@ services:
 
   # runs ffprobe
   ffprobe:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkffprobe:dev
+    image: mediakraken/mkffprobe:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -125,7 +125,7 @@ services:
 
   # runs hardware
   hardware:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkhardware:dev
+    image: mediakraken/mkhardware:latest
     environment:
       - DEBUG=${DEBUG}
     volumes:
@@ -143,7 +143,7 @@ services:
 
   # runs the server to fetch/process all metadata
   metadata:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
+    image: mediakraken/mkmetadata:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -166,7 +166,7 @@ services:
 
   # runs the nginx proxy service
   nginx:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mknginx:dev
+    image: mediakraken/mknginx:latest
     container_name: mkstack_nginx
     depends_on:
       - webapp
@@ -186,7 +186,7 @@ services:
 
   # pgbouncer
   pgbouncer:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:dev
+    image: mediakraken/mkpgbouncer:latest
     environment:
       - DB_HOST=mkstack_database
       - DB_PASSWORD=${DBPASS}
@@ -206,7 +206,7 @@ services:
 
   # pika
   pika:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
+    image: mediakraken/mkpika:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -243,7 +243,7 @@ services:
 
   # rabbit
   rabbit:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrabbitmq:dev
+    image: mediakraken/mkrabbitmq:latest
     container_name: mkstack_rabbitmq
     hostname: mkstack_rabbitmq
     environment:
@@ -265,7 +265,7 @@ services:
 
   # Main reactor
   reactor:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
+    image: mediakraken/mkreactor:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -291,7 +291,7 @@ services:
 
   # runs roku thumbnail
   rokuthumb:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrokuthumb:dev
+    image: mediakraken/mkrokuthumb:latest
     environment:
       - DEBUG=${DEBUG}
     container_name: mkstack_rokuthumb
@@ -308,7 +308,7 @@ services:
 
   # Runs the web service for the main server application
   webapp:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebappsanic:dev
+    image: mediakraken/mkwebappsanic:latest
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
