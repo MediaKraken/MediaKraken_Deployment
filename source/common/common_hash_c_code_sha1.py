@@ -2,7 +2,6 @@ import zipfile
 
 from np_inline import inline_debug as inline
 
-# TODO perhaps just call openssl to do the sha1?
 
 def com_hash_sha1_c(file_name):
     """
@@ -21,6 +20,7 @@ def com_hash_sha1_c(file_name):
         num += 1
         if num > 5:
             break
+
 
 # All C code below is following license
 '''

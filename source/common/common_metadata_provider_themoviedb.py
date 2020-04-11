@@ -96,9 +96,9 @@ class CommonMetadataTMDB:
         Fetch all metadata by id to reduce calls
         """
         if tmdb_id[0:2].lower() == 'tt':
-            # imdb id......so, run find and then do the requests
+            # imdb_id......so, run find and then do the requests
             # TODO
-            # tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
+            # tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(imdb_id)
             pass
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'

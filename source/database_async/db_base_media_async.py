@@ -23,6 +23,7 @@ async def db_media_duplicate_count(self, db_connection):
     # count the duplicates for pagination
     """
     # TODO technically this will "dupe" things like subtitles atm
+    # TODO perhaps group by classid?
     return await db_connection.fetchval('select count(*) from (select mm_media_metadata_guid'
                                         ' from mm_media'
                                         ' where mm_media_metadata_guid is not null'

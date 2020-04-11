@@ -124,7 +124,7 @@ if not os.path.exists(file_name):
                         # TODO this fails if only one game
                         print(len(json_data['softwarelist']['software']))
                         if '@name' in json_data['softwarelist']['software']:
-                            # TODO check to see if exists....if so, update
+                            # TODO check to see if exists....upsert instead
                             db_connection.db_meta_game_insert(game_short_name_guid,
                                                               json_data['softwarelist']['software'][
                                                                   '@name'],
@@ -135,7 +135,7 @@ if not os.path.exists(file_name):
                             for json_game in json_data['softwarelist']['software']:
                                 print(('xml: %s', json_game))
                                 # json_game = json.loads(json_game)
-                                # TODO check to see if exists....if so, update
+                                # TODO check to see if exists....upsert instead
                                 # build args and insert the record
                                 db_connection.db_meta_game_insert(game_short_name_guid,
                                                                   json_game['@name'],
@@ -145,7 +145,7 @@ if not os.path.exists(file_name):
                     # could be no games in list
                     if 'hash' in json_data['hashfile']:
                         if '@name' in json_data['hashfile']['hash']:
-                            # TODO check to see if exists....if so, update
+                            # TODO check to see if exists....upsert instead
                             db_connection.db_meta_game_insert(game_short_name_guid,
                                                               json_data['hashfile']['hash'][
                                                                   '@name'],
@@ -155,7 +155,7 @@ if not os.path.exists(file_name):
                         else:
                             for json_game in json_data['hashfile']['hash']:
                                 print('hsi: %s' % json_game)
-                                # TODO check to see if exists....if so, update
+                                # TODO check to see if exists....upsert instead
                                 # build args and insert the record
                                 db_connection.db_meta_game_insert(game_short_name_guid,
                                                                   json_game['@name'],
