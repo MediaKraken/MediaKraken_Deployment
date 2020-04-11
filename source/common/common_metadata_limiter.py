@@ -28,7 +28,7 @@ API_LIMIT = {
     'televisiontunes': (1, 1),  # since I'm scraping
     'theaudiodb': (9999, 1),  # no mention of limits 7/29/2016
     'thegamesdb': (9999, 1),  # no mention of limits 7/29/2016
-    'thelogodb': (9999, 1),  # no mention of limits 7/29/2016
+#    'thelogodb': (9999, 1),  # no mention of limits 7/29/2016
     'themoviedb': (35, 10),  # We currently rate limit requests to 40
     # requests every 10 seconds. (12-05-2016)
     'thesportsdb': (9999, 1),  # no mention of limits 7/29/2016
