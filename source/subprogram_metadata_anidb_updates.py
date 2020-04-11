@@ -27,7 +27,7 @@ from common import common_metadata_scudlee
 from common import common_signal
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anidb_updates')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_metadata_anidb_updates')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

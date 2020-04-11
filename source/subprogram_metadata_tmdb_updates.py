@@ -26,7 +26,7 @@ from common import common_metadata_provider_themoviedb
 from common import common_signal
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_tmdb_updates')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_metadata_tmdb_updates')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
