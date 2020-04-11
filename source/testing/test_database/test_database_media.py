@@ -81,24 +81,6 @@ class TestDatabaseMedia:
         self.db_connection.db_rollback()
         self.db_connection.db_matched_media_count()
 
-    def test_db_known_media_all_unmatched_count(self):
-        """
-        # count all media that is NULL for meatadata match
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_known_media_all_unmatched_count()
-
-    @pytest.mark.parametrize(("offset", "records"), [
-        (None, None),
-        (100, 100),
-        (100000000, 1000)])
-    def test_db_known_media_all_unmatched(self, offset, records):
-        """
-        # read all media that is NULL for metadata match
-        """
-        self.db_connection.db_rollback()
-        self.db_connection.db_known_media_all_unmatched(offset, records)
-
     def test_db_media_duplicate_count(self):
         """
         # count the duplicates for pagination

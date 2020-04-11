@@ -32,7 +32,12 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:" \
-                              + os.environ['POSTGRES_PASSWORD'] \
-                              + "@mkstack_pgbouncer:6432/postgres"
+    # this is here to handle going back to docker-compose with else for docker swarm
+    if 'POSTGRES_PASSWORD' in os.environ:
+        database_password = os.environ['POSTGRES_PASSWORD']
+    else:
+        database_password = common_file.com_file_load_data('/run/secrets/db_password')
+    SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://postgres:\'" \
+                              + database_password.strip() \
+                              + "\'@mkstack_pgbouncer:6432/postgres"
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar

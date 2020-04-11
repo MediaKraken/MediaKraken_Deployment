@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+import gevent.monkey
+import psycogreen.gevent
 
+gevent.monkey.patch_all()
+psycogreen.gevent.patch_psycopg()
 
 import os
 import sys
@@ -14,7 +18,6 @@ from common import common_global
 from common import common_logging_elasticsearch
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp',
-                                                                         debug_override='print')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webapp')
 common_global.es_inst.com_elastic_index('info', {'stuff': 'Creating webapp instance'})
 application = create_app()

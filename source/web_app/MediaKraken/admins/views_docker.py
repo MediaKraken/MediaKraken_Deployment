@@ -13,12 +13,9 @@ import flask
 from flask_login import current_user
 from functools import wraps
 
-from common import common_config_ini
 from common import common_docker
 from common import common_global
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):

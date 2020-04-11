@@ -13,13 +13,10 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
-from common import common_pagination
+from common import common_pagination_flask
 from common import common_string
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/report_duplicate')
@@ -28,8 +25,8 @@ def report_display_all_duplicates():
     """
     Display media duplication report page
     """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_media_duplicate_count(),
                                                   record_name='duplicate media',
@@ -51,7 +48,7 @@ def report_display_all_duplicates_detail(guid):
     """
     Display detail of duplicate list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     for media_data in g.db_connection.db_media_duplicate_detail(guid, offset, per_page):
         common_global.es_inst.com_elastic_index('info', {"media": media_data[
@@ -67,7 +64,7 @@ def report_display_all_duplicates_detail(guid):
         else:
             media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
                           'NA', '999:99:99'))
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.
                                                   db_media_duplicate_detail_count(guid)[0],
@@ -88,13 +85,13 @@ def report_display_all_media():
     """
     Display all media list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media_data = []
     for row_data in g.db_connection.db_known_media(offset, per_page):
         media_data.append((row_data['mm_media_path'],
                            common_string.com_string_bytes2human(
                                os.path.getsize(row_data['mm_media_path']))))
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_known_media_count(),
                                                   record_name='all media',
@@ -114,8 +111,8 @@ def report_display_all_media_known_video():
     """
     Display list of all matched video
     """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_media_list_count(
                                                       common_global.DLMediaType.Movie.value),
@@ -142,8 +139,8 @@ def report_display_all_unmatched_media():
     """
     Display list of all unmatched media
     """
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_unmatched_list_count(),
                                                   record_name='unmatched media',

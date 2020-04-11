@@ -321,5 +321,19 @@ if db_connection.db_version_check() < 25:
     db_connection.db_version_update(25)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 26:
+    # game servers
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_game_dedicated_servers (mm_game_server_id uuid'
+        ' CONSTRAINT mm_game_server_id primary key,'
+        ' mm_game_server_name text,'
+        ' mm_game_server_json jsonb)')
+    if db_connection.db_table_index_check('mm_game_server_name_idx') is None:
+        db_connection.db_query(
+            'CREATE INDEX mm_game_server_name_idx'
+            ' ON mm_game_dedicated_servers(mm_game_server_name)')
+    db_connection.db_version_update(26)
+    db_connection.db_commit()
+
 # close the database
 db_connection.db_close()

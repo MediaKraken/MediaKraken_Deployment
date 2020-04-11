@@ -33,7 +33,7 @@ class CommonHardwarePILCD16x2:
 
     def com_hard_pi_lcd_text(self):
         # Remember that your sentences can only be 16 characters long!
-        print("Writing to display")
+        print("Writing to display", flush=True)
         self.display.lcd_display_string("Greetings Human!",
                                         1)  # Write line of text to first line of display
         self.display.lcd_display_string("Demo Pi Guy code",

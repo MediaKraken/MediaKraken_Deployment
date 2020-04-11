@@ -2,7 +2,7 @@ FROM alpine:3.9
 MAINTAINER Consul Team <consul@hashicorp.com>
 
 # This is the release of Consul to pull in.
-ENV CONSUL_VERSION=1.6.0
+ENV CONSUL_VERSION=1.7.0
 
 # This is the location of the releases.
 ENV HASHICORP_RELEASES=https://releases.hashicorp.com
@@ -13,15 +13,16 @@ RUN addgroup consul && \
     adduser -S -G consul consul
 
 # Set up certificates, base tools, and Consul.
+# libc6-compat is needed to symlink the shared libraries for ARM builds
 RUN set -eux && \
-    apk add --no-cache ca-certificates curl dumb-init gnupg libcap openssl su-exec iputils jq && \
+    apk add --no-cache ca-certificates curl dumb-init gnupg libcap openssl su-exec iputils jq libc6-compat && \
     gpg --keyserver pgp.mit.edu --recv-keys 91A6E7F85D05C65630BEF18951852D87348FFC4C && \
     mkdir -p /tmp/build && \
     cd /tmp/build && \
     apkArch="$(apk --print-arch)" && \
     case "${apkArch}" in \
         aarch64) consulArch='arm64' ;; \
-        armhf) consulArch='arm' ;; \
+        armhf) consulArch='armhfv6' ;; \
         x86) consulArch='386' ;; \
         x86_64) consulArch='amd64' ;; \
         *) echo >&2 "error: unsupported architecture: ${apkArch} (see ${HASHICORP_RELEASES}/consul/${CONSUL_VERSION}/)" && exit 1 ;; \

@@ -29,7 +29,7 @@ class CommonEbookRead:
     def __init__(self, filename):
         book = epub.read_epub(filename)
         for image in book.get_items_of_type(ebooklib.ITEM_IMAGE):
-            print(image)
+            print(image, flush=True)
 
 
 class CommonEbookWrite:

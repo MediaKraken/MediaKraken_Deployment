@@ -13,13 +13,10 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
 from common import common_internationalization
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/movie_genre", methods=['GET', 'POST'])
@@ -44,7 +41,7 @@ def user_movie_page(genre):
     """
     Display movie page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     for row_data in g.db_connection.db_web_media_list(
             common_global.DLMediaType.Movie.value,
@@ -106,7 +103,7 @@ def user_movie_page(genre):
         common_global.DLMediaType.Movie.value, list_type='movie', list_genre=genre,
         group_collection=False, include_remote=True, search_text=session['search_text'])
     session['search_page'] = 'media_movie'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=total,
                                                   record_name='movie(s)',

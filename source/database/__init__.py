@@ -62,6 +62,11 @@ class MKServerDatabase:
         db_download_que_exists
     from database.db_base_extensions import db_extension_available, \
         db_extension_installed
+    from database.db_base_game_dedicated_servers import db_game_server_insert, \
+        db_game_server_list_count, \
+        db_game_server_list, \
+        db_game_server_delete, \
+        db_game_server_detail
     from database.db_base_hardware import db_hardware_json_read, \
         db_hardware_insert, \
         db_hardware_delete
@@ -78,8 +83,6 @@ class MKServerDatabase:
         db_known_media_count, \
         db_known_media, \
         db_matched_media_count, \
-        db_known_media_all_unmatched_count, \
-        db_known_media_all_unmatched, \
         db_media_duplicate_count, \
         db_media_duplicate, \
         db_media_duplicate_detail_count, \
@@ -198,7 +201,7 @@ class MKServerDatabase:
         db_meta_song_add, \
         db_meta_songs_by_album_guid, \
         db_meta_album_list, \
-        db_meta_muscian_list, \
+        db_meta_musician_list, \
         db_meta_album_image_random, \
         db_meta_music_by_provider_uuid
     from database.db_base_metadata_music_video import db_meta_music_video_lookup, \

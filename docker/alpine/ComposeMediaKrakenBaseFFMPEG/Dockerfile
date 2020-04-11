@@ -1,4 +1,4 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.11.5 as builder
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -97,7 +97,7 @@ RUN buildDeps="autoconf \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
    ./configure \
-	--target-os=linux \
+    --target-os=linux \
         --bindir="${SRC}/bin" \
         --extra-libs=-ldl \
         --extra-cflags="-I${SRC}/include" \
@@ -149,7 +149,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.10
+FROM alpine:3.11.5
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe

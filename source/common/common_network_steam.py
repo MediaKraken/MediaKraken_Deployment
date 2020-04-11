@@ -17,6 +17,8 @@
 """
 
 from steam import SteamID
+from bs4 import BeautifulSoup
+from . import common_network
 
 
 # https://developer.valvesoftware.com/wiki/Steam_Web_API
@@ -31,3 +33,20 @@ class CommonNetworkSteam:
 
 def com_net_steam_id_from_user(user_name):
     return SteamID.from_url('https://steamcommunity.com/id/%s', (user_name,))
+
+
+def com_net_steam_game_server_data_download():
+    """
+    Server 	 ID SteamCMD > Steam Client > Anonymous Login > Notes
+    """
+    steam_servers = []
+    data = BeautifulSoup(common_network.mk_network_fetch_from_url(
+        "https://developer.valvesoftware.com/wiki/Dedicated_Servers_List", None),
+        features="html.parser").find_all('table')[1]
+    rows = data.find_all('tr')
+    for row in rows:
+        cols = row.find_all('td')
+        cols = [ele.text.strip() for ele in cols]
+        steam_servers.append([ele for ele in cols if ele])
+    print(steam_servers, flush=True)
+    return steam_servers

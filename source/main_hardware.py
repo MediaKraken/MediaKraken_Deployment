@@ -18,9 +18,10 @@
 
 import functools
 import json
-import time
+import subprocess
 
 import pika
+import time
 from common import common_global
 from common import common_hardware_hue
 from common import common_logging_elasticsearch
@@ -194,6 +195,11 @@ class MKConsumer:
                             hardware_hue.com_hardware_hue_light_set(json_message['LightList'],
                                                                     'bri',
                                                                     json_message['Setting'])
+            elif json_message['Type'] == 'Hardware Scan':
+                hardware_proc = subprocess.Popen('/mediakraken/main_hardware_discover.py',
+                                               stdout=subprocess.PIPE,
+                                               shell=False)
+                #hardware_proc.wait()  # do NOT wait, as it's blocking
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):

@@ -49,12 +49,12 @@ class CommonHardwareHue:
         self.hue_inst.set_light(light_list, function_type, var_value)
 
 # test = CommonHardwareHue('10.0.0.225')
-# print(test.com_hardware_hue_get_api())
-# # print(test.com_hardware_hue_get_lights())
-# # print(test.com_hardware_hue_light_onoff(1))
-# print(test.com_hardware_hue_light_set((1, 2, 3), 'on', False))
-# print(test.com_hardware_hue_light_set((1, 2, 3), 'bri', 10))
-# print(test.com_hardware_hue_light_name(1))
+# print(test.com_hardware_hue_get_api(), flush=True)
+# # print(test.com_hardware_hue_get_lights(), flush=True)
+# # print(test.com_hardware_hue_light_onoff(1), flush=True)
+# print(test.com_hardware_hue_light_set((1, 2, 3), 'on', False), flush=True)
+# print(test.com_hardware_hue_light_set((1, 2, 3), 'bri', 10), flush=True)
+# print(test.com_hardware_hue_light_name(1), flush=True)
 
 # # You can also use light names instead of the id
 # b.get_light('Kitchen')

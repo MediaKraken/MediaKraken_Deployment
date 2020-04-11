@@ -17,15 +17,12 @@ from flask_login import current_user
 from functools import wraps
 from MediaKraken.admins.forms import LibraryAddEditForm
 from MediaKraken.utils import flash_errors
-from common import common_config_ini
 from common import common_global
 from common import common_network_cifs
 from common import common_network_pika
-from common import common_pagination
+from common import common_pagination_flask
 from common import common_string
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):
@@ -63,8 +60,8 @@ def admin_library():
                                                   route_key='mkque')
             flash("Scheduled media scan.")
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
-    page, per_page, offset = common_pagination.get_page_items()
-    pagination = common_pagination.get_pagination(page=page,
+    page, per_page, offset = common_pagination_flask.get_page_items()
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_media_dir'),
@@ -75,7 +72,7 @@ def admin_library():
     return_media = []
     for row_data in g.db_connection.db_audit_paths(offset, per_page):
         return_media.append((row_data['mm_media_dir_path'],
-                             row_data['mm_media_class_type'],
+                             row_data['mm_media_class_guid'],
                              row_data['mm_media_dir_last_scanned'],
                              common_global.DLMediaType.row_data['mm_media_class_guid'].name,
                              row_data['mm_media_dir_guid']))

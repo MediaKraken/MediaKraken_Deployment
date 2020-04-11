@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <script src="{{ url_for('static', filename='js/html5.js') }}"></script>
+        <![endif]-->
+        <link href="{{ url_for('static', filename='css/style.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
+    </head>
+    {% if media_cron %}
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Cron Name</th>
+                    <th>Description</th>
+                    <th>Enabled</th>
+                    <th>Schedule</th>
+                    <th>Last Run</th>
+                    <th>Run</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row_data in media_cron %}
+                <tr>
+                    <td>{{ loop.index + (page - 1) * per_page }}</td>
+                    <td>{{ row_data[1] }}</td>
+                    <td>{{ row_data[2] }}</td>
+                    <td>{{ row_data[3] }}</td>
+                    <td>{{ row_data[4] }}</td>
+                    <td>{{ row_data[5] }}</td>
+                    <td>
+                        <a href= "{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}" id="play_button">
+                            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/play.png') }}" height="20" width="20">
+                        </a>
+                    </td>
+                    <div class="pull-right action-buttons">
+                        <td>
+                            <p><button> <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editCronModal" onclick="EditCron(this)" ><span class="fas fa-pencil-alt"></span></button></a>
+                        </td>
+                        <td>
+                            <p><button> <a data-id={{ row_data[0] }} onclick="ConfirmCronDelete(this)" ><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button></a>
+                        </td>
+                    </div>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="confirm_cron" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button>
+                    <h4 class="modal-title custom_align" id="Heading">Run this Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="fas fa-exclamation-triangle"></span> Are you sure you want to run this cron?</div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" onclick="Cron_Run()" ><span class="fas fa-check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editCronModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="editModalLabel">Update Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Path:</label>
+                            <input type="text" class="form-control" id="editPath">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Media Class:</label>
+                            <textarea class="form-control" id="editClass"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnCronUpdate">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete_cron" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button>
+                    <h4 class="modal-title custom_align" id="Heading">Delete this Cron</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="fas fa-exclamation-triangle"></span> Are you sure you want to delete this cron?</div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" onclick="Cron_Delete()" ><span class="fas fa-check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ pagination.links }}
+    {% else %}
+    <p id="general_text">No cron jobs found.</p>
+    {% endif %}
+    <p><input class="btn btn-default btn-submit" type="submit" value="Create New"></p>
+    <script src="{{ url_for('static', filename='js/jquery.tmpl.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp_delete.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp_update.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp_run.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+    <script>
+        ;(function() {
+            // Initialize
+            var bLazy = new Blazy();
+        })();
+    </script>
+</body>
+{% endblock %}

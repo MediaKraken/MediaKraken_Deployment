@@ -27,6 +27,8 @@ client_devices = []
 # store pids of things running
 pid_dict = {}
 
+# website ones
+jinja_template = None
 
 # stuff in comments are the old class TEXT
 @unique

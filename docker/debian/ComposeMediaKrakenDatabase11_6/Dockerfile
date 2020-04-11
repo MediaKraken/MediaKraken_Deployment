@@ -170,6 +170,7 @@ VOLUME /var/lib/postgresql/data
 COPY docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN mkdir /mediakraken && mkdir /mediakraken/backup
 #RUN ln -s /usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 

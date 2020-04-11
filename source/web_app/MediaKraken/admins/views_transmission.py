@@ -14,13 +14,10 @@ import flask
 from flask_login import current_user
 from functools import wraps
 
-from common import common_config_ini
 from common import common_global
 from common import common_internationalization
 from common import common_transmission
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):
@@ -48,7 +45,7 @@ def admin_transmission():
     Display transmission page
     """
     trans_connection = common_transmission.CommonTransmission(
-        option_config_json)
+        g.option_config_json)
     transmission_data = []
     if trans_connection is not None:
         torrent_no = 1
@@ -92,6 +89,7 @@ def before_request():
     Executes before each request
     """
     g.db_connection = database_base.MKServerDatabase()
+    g.option_config_json = g.db_connection.db_opt_status_read()[0]
     g.db_connection.db_open()
 
 

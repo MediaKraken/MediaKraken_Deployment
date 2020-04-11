@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block page_title %}MediaKraken Server error{% endblock %}
+{% block content %}
+<div class="{% block content_class %}container{% endblock content_class %}">
+    <div class="jumbotron">
+        <div class="text-center">
+            <h1>500 - Application failure</h1>
+            <img src="{{ url_for('static', filename='images/bricks-wall-and-demolition-ball.png') }}">
+            <p>Sorry, something went wrong on our system. Don't panic, we are fixing it! Please try again later.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

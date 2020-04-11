@@ -19,9 +19,9 @@
 import os
 from datetime import date
 
-from gevent import monkey  # pylint: disable=import-error
-
-monkey.patch_all()
+# from gevent import monkey  # pylint: disable=import-error
+#
+# monkey.patch_all()
 import libcloud
 
 from . import common_global

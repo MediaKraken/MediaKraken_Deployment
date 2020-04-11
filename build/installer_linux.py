@@ -68,7 +68,7 @@ except KeyError:
     sys.exit(0)
 
 # install wget
-# print('Installing wget...')
+# print('Installing wget...', flush=True)
 # install_pid = subprocess.Popen([, 'wget'], stdout=subprocess.PIPE, shell=False)
 # install_pid.wait()
 

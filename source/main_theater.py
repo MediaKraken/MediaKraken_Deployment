@@ -50,6 +50,7 @@ from twisted.python import log
 import kivy
 from kivy.app import App
 from kivy.config import Config
+from kivy.core.window import Window
 
 # moving here before anything is setup for Kivy or it doesn't work
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -57,7 +58,9 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 else:
     if os.uname()[4][:3] == 'arm':
-        # TODO find real resolution
+        # find real resolution
+        window_sizes = Window.size
+        print('window', window_sizes, flush=True)
         # TODO this is currently set to the "official" raspberry pi touchscreen
         Config.set('graphics', 'width', 800)
         Config.set('graphics', 'height', 480)
@@ -66,7 +69,6 @@ else:
 kivy.require('1.11.0')
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
-from kivy.core.window import Window
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
@@ -465,63 +467,60 @@ class MediaKrakenApp(App):
             else:
                 common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
 
+    def build_config(self, config):
+        """
+        Build base config
+        """
+        config.setdefaults('MediaKrakenServer', {
+            'Host': 'None',
+            'Port': 8903})
+        config.setdefaults('Audio', {
+            'Default_Device': 'Default',
+            'Channels': '7.1'})
+        config.setdefaults('Passthrough', {
+            'Enable': False,
+            'Device': 'Default',
+            'DTS': False,
+            'DTSHD': False,
+            'DTSX': False,
+            'AC3': False,
+            'EAC3': False,
+            'TRUEHD': False,
+            'Atmos': False})
+        config.setdefaults('MediaKraken', {
+            'Default_Device': 'Default'})
+        config.setdefaults('Video', {
+            'Blank_Displays': False,
+            'Display_Screen': 'Display #1',
+            'Resolution': 'Window Size',
+            'Fullscreen': True,
+            'Fullscreen_Window': False,
+            'Sleep_Time': '3 min'})
+        config.setdefaults('Library', {
+            'Show_Plot_Unwatched': True,
+            'Flatten_TV_Show_Seasons': 'If Only One Season',
+            'Group_Movies_in_Sets': True})
+        config.setdefaults('Playback', {
+            'Preferred_Audio_Language': 'Original Stream Language',
+            'Play_Next_Media_Automatically': False})
 
-def build_config(self, config):
-    """
-    Build base config
-    """
-    config.setdefaults('MediaKrakenServer', {
-        'Host': 'None',
-        'Port': 8903})
-    config.setdefaults('Audio', {
-        'Default_Device': 'Default',
-        'Channels': '7.1'})
-    config.setdefaults('Passthrough', {
-        'Enable': False,
-        'Device': 'Default',
-        'DTS': False,
-        'DTSHD': False,
-        'DTSX': False,
-        'AC3': False,
-        'EAC3': False,
-        'TRUEHD': False,
-        'Atmos': False})
-    config.setdefaults('MediaKraken', {
-        'Default_Device': 'Default'})
-    config.setdefaults('Video', {
-        'Blank_Displays': False,
-        'Display_Screen': 'Display #1',
-        'Resolution': 'Window Size',
-        'Fullscreen': True,
-        'Fullscreen_Window': False,
-        'Sleep_Time': '3 min'})
-    config.setdefaults('Library', {
-        'Show_Plot_Unwatched': True,
-        'Flatten_TV_Show_Seasons': 'If Only One Season',
-        'Group_Movies_in_Sets': True})
-    config.setdefaults('Playback', {
-        'Preferred_Audio_Language': 'Original Stream Language',
-        'Play_Next_Media_Automatically': False})
+    def build_settings(self, settings):
+        settings.add_json_panel('MediaKraken', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_base_json)
+        settings.add_json_panel('Audio', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_audio_json)
+        settings.add_json_panel('Video', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_video_json)
+        settings.add_json_panel('Library', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_library_json)
+        settings.add_json_panel('Playback', self.config,
+                                data=MediaKrakenSettings.mediakraken_settings_playback_json)
 
-
-def build_settings(self, settings):
-    settings.add_json_panel('MediaKraken', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_base_json)
-    settings.add_json_panel('Audio', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_audio_json)
-    settings.add_json_panel('Video', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_video_json)
-    settings.add_json_panel('Library', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_library_json)
-    settings.add_json_panel('Playback', self.config,
-                            data=MediaKrakenSettings.mediakraken_settings_playback_json)
-
-
-def on_config_change(self, config, section, key, value):
-    common_global.es_inst.com_elastic_index('info', {'stuff': {'config': config,
-                                                               'section': section,
-                                                               'key': key,
-                                                               'value': value}})
+    def on_config_change(self, config, section, key, value):
+        common_global.es_inst.com_elastic_index('info', {'stuff': {'config': config,
+                                                                   'section': section,
+                                                                   'key': key,
+                                                                   'value': value}})
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -663,11 +662,12 @@ def on_config_change(self, config, section, key, value):
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
         self.send_twisted_message(msg)
 
+    # in order from the KV file
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
         common_global.es_inst.com_elastic_index('info', {'stuff': "home press: %s" % args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
-                or args[0] == 'Movie' or args[0] == 'video':
+                or args[0] == 'movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'tv':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_TV_List'
@@ -713,7 +713,7 @@ def on_config_change(self, config, section, key, value):
         common_global.es_inst.com_elastic_index('info', {'stuff': "image refresh"})
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
-            # refreshs for movie stuff
+            # refreshes for movie stuff
             # request main screen background refresh
             self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
                                                   'Image Media Type': 'Demo',
@@ -730,27 +730,30 @@ def on_config_change(self, config, section, key, value):
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Movie',
                                               'Image Media Type': 'In Progress',
                                               'Image Type': 'Backdrop'}))
-        # refreshs for tv stuff
+        # refreshes for tv stuff
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
-                                              'Image Media Type': 'TV', 'Image Type': 'Backdrop'}))
+                                              'Image Media Type': 'TV',
+                                              'Image Type': 'Backdrop'}))
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'TV',
                                               'Image Media Type': 'Live TV',
                                               'Image Type': 'Backdrop'}))
-        # refreshs for game stuff
+        # refreshes for game stuff
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Game',
                                               'Image Media Type': 'Game',
                                               'Image Type': 'Backdrop'}))
-        # refreshs for books stuff
+        # refreshes for books stuff
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Book',
-                                              'Image Media Type': 'Book', 'Image Type': 'Cover'}))
-        # refresh music stuff
+                                              'Image Media Type': 'Book',
+                                              'Image Type': 'Cover'}))
+        # refreshes music stuff
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
-                                              'Image Media Type': 'Album', 'Image Type': 'Cover'}))
+                                              'Image Media Type': 'Album',
+                                              'Image Type': 'Cover'}))
         # request main screen background refresh
         self.send_twisted_message(json.dumps({'Type': 'Image', 'Subtype': 'Music',
                                               'Image Media Type': 'Video',

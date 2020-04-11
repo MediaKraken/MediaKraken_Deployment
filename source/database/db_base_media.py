@@ -93,31 +93,6 @@ def db_matched_media_count(self):
     return self.db_cursor.fetchone()[0]
 
 
-def db_known_media_all_unmatched_count(self):
-    """
-    # count all media that is NULL for meatadata match
-    """
-    self.db_cursor.execute(
-        'select count(*) from mm_media where mm_media_metadata_guid is NULL')
-    return self.db_cursor.fetchone()[0]
-
-
-def db_known_media_all_unmatched(self, offset=0, records=None):
-    """
-    # read all media that is NULL for metadata match
-    """
-    self.db_cursor.execute('select mm_media_guid,'
-                           ' mm_media_class_guid,'
-                           ' mm_media_path'
-                           ' from mm_media'
-                           ' where mm_media_guid'
-                           ' in (select mm_media_guid'
-                           ' from mm_media'
-                           ' where mm_media_metadata_guid is NULL offset %s limit %s)'
-                           ' order by mm_media_path', (offset, records))
-    return self.db_cursor.fetchall()
-
-
 def db_media_duplicate_count(self):
     """
     # count the duplicates for pagination
@@ -328,23 +303,23 @@ def db_read_media_new(self, offset=None, records=None, search_value=None, days_o
     if offset is None:
         self.db_cursor.execute('select mm_media_name,'
                                ' mm_media_guid,'
-                               ' mm_media_class_type'
+                               ' mm_media_class_guid'
                                ' from mm_media, mm_metadata_movie'
                                ' where mm_media_metadata_guid = mm_metadata_guid'
                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                ' order by LOWER(mm_media_name),'
-                               ' mm_media_class_type',
+                               ' mm_media_class_guid',
                                ((datetime.datetime.now()
                                  - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),))
     else:
         self.db_cursor.execute('select mm_media_name,'
                                ' mm_media_guid,'
-                               ' mm_media_class_type'
+                               ' mm_media_class_guid'
                                ' from mm_media, mm_metadata_movie'
                                ' where mm_media_metadata_guid = mm_metadata_guid'
                                ' and mm_media_json->>\'DateAdded\' >= %s'
                                ' order by LOWER(mm_media_name),'
-                               ' mm_media_class_type offset %s limit %s',
+                               ' mm_media_class_guid offset %s limit %s',
                                ((datetime.datetime.now()
                                  - datetime.timedelta(days=days_old)).strftime("%Y-%m-%d"),
                                 offset, records))
@@ -394,8 +369,9 @@ def db_ffprobe_all_media_guid(self, media_uuid, media_class_uuid):
     # fetch all media with METADATA match
     """
     self.db_cursor.execute(
-        'select distinct mm_media_guid,mm_media_ffprobe_json'
-        ' from mm_media,mm_metadata_movie'
+        'select distinct mm_media_guid,'
+        'mm_media_ffprobe_json'
+        ' from mm_media, mm_metadata_movie'
         ' where mm_media_metadata_guid = '
         '(select mm_media_metadata_guid'
         ' from mm_media where mm_media_guid = %s)'

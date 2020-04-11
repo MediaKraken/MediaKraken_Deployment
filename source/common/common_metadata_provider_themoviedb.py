@@ -63,11 +63,11 @@ class CommonMetadataTMDB:
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
         if len(search) > 0:
             for res in search:
-                # print(res.id)
-                # print(res.title)
-                # print(res.overview)
-                # print(res.poster_path)
-                # print(res.vote_average)
+                # print(res.id, flush=True)
+                # print(res.title, flush=True)
+                # print(res.overview, flush=True)
+                # print(res.poster_path, flush=True)
+                # print(res.vote_average, flush=True)
                 common_global.es_inst.com_elastic_index('info', {"result": res.title, 'id': res.id,
                                                                  'date':
                                                                      res.release_date.split('-', 1)[
@@ -96,9 +96,9 @@ class CommonMetadataTMDB:
         Fetch all metadata by id to reduce calls
         """
         if tmdb_id[0:2].lower() == 'tt':
-            # imdb id......so, run find and then do the requests
+            # imdb_id......so, run find and then do the requests
             # TODO
-            # tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(tmdb_id)
+            # tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(imdb_id)
             pass
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'

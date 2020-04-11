@@ -12,11 +12,8 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/meta_game_list', methods=["GET", "POST"])
@@ -25,9 +22,9 @@ def metadata_game_list():
     """
     Display game list metadata
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     session['search_page'] = 'meta_game'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_table_count(
                                                       'mm_metadata_game_software_info'),

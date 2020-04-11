@@ -16,15 +16,14 @@
   MA 02110-1301, USA.
 """
 
-import multiprocessing
 import os
 import sys
 import time
 
 import psycopg2
 import psycopg2.extras
+from common import common_file
 from common import common_global
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
 
@@ -38,12 +37,17 @@ def db_open(self):
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     # TODO throws tuple error if comma
+    # this is here to handle going back to docker-compose with else for docker swarm
+    if 'POSTGRES_PASSWORD' in os.environ:
+        database_password = os.environ['POSTGRES_PASSWORD']
+    else:
+        database_password = common_file.com_file_load_data('/run/secrets/db_password')
     while True:
         try:
             self.sql3_conn = psycopg2.connect(
                 "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
-                " port=6432 password='%s'"
-                % os.environ['POSTGRES_PASSWORD'])
+                " port=6432 password='%s' connect_timeout=5"
+                % database_password.strip())
         except (psycopg2.OperationalError, psycopg2.DatabaseError):
             time.sleep(10)
         else:
@@ -54,7 +58,7 @@ def db_open(self):
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
-                           multiprocessing.cpu_count())
+                           os.cpu_count())
     # do here since the db cursor is created now
     # verify the trigram extension is enabled for the database
     self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")

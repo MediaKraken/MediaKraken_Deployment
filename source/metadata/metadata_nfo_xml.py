@@ -73,12 +73,11 @@ def nfo_xml_file(media_file_path):
     return nfo_data, xml_data
 
 
-def nfo_xml_file_tv(media_file_path):
+def nfo_file_tv(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
     nfo_data = None
-    xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
     # TODO should check for one dir back too I suppose
     nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
@@ -100,7 +99,7 @@ def nfo_xml_file_tv(media_file_path):
                 pass
             except UnicodeDecodeError:
                 pass
-    return nfo_data, xml_data
+    return nfo_data
 
 
 def nfo_xml_id_lookup(nfo_data, xml_data):
@@ -159,7 +158,7 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
     return imdb_id, tmdb_id
 
 
-def nfo_xml_id_lookup_tv(nfo_data, xml_data):
+def nfo_id_lookup_tv(nfo_data):
     """
     Look up id's in nfo/xml lookup for tv
     """
@@ -186,26 +185,7 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
                 imdb_id = None
         except KeyError:
             pass
-    if xml_data is not None:
-        try:
-            tvdb_id = xml_data['episodedetails']['tvdbid']
-            if len(tvdb_id) == 0:
-                tvdb_id = None
-        except KeyError:
-            pass
-        try:
-            tmdb_id = xml_data['episodedetails']['tmdbid']
-            if len(tmdb_id) == 0:
-                tmdb_id = None
-        except KeyError:
-            pass
-        try:
-            imdb_id = xml_data['episodedetails']['imdbid']
-            if len(imdb_id) == 0:
-                imdb_id = None
-        except KeyError:
-            pass
-    common_global.es_inst.com_elastic_index('info', {'nfo/xml tv imdb': imdb_id,
+    common_global.es_inst.com_elastic_index('info', {'nfo tv imdb': imdb_id,
                                                      'tvdb': tvdb_id,
                                                      'tmdb': tmdb_id})
     return imdb_id, tvdb_id, tmdb_id

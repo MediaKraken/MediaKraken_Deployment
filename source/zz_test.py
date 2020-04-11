@@ -12,7 +12,7 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch()
 # common_network.mk_network_fetch_from_url(file_name, 'movie.gz')
 # json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
 # for json_row in json_data.splitlines():
-#     print(json.loads(json_row)['id'])
+#     print(json.loads(json_row)['id'], flush=True)
 #     break
 
 '''

@@ -14,14 +14,11 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
 from common import common_internationalization
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 import natsort
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 # list of tv shows
@@ -31,7 +28,7 @@ def user_tv_page():
     """
     Display tv shows page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     for row_data in g.db_connection.db_web_tvmedia_list(offset, per_page, session['search_text']):
@@ -49,7 +46,7 @@ def user_tv_page():
                           None, common_internationalization.com_inter_number_format(
                 row_data['mm_count'])))
     session['search_page'] = 'media_tv'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
                                                       None, None, session['search_text']),

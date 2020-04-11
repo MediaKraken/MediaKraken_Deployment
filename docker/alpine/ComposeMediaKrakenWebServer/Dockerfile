@@ -1,5 +1,5 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase38py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase311_5py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the image for the web server app"
@@ -36,6 +36,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-numpy \
   py3-psycopg2 \
   py3-psutil \
+  py3-gevent \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
@@ -50,6 +51,9 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libressl-dev \
   && rm requirements.txt \
   && apk add --no-cache \
+  uwsgi \
+  uwsgi-http \
+  uwsgi-gevent3 \
   uwsgi-python3 \
   uwsgi-router_uwsgi \
   py-setuptools \
@@ -57,7 +61,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-COPY wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash-busybox130.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 

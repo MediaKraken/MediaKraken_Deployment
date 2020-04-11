@@ -13,12 +13,9 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/meta_tvshow_detail/<guid>')
@@ -228,7 +225,7 @@ def metadata_tvshow_season_detail_page(guid, season):
                            )
 
 
-# tv show season detail - show guid then season #
+# tv show episode detail - show guid then episode #
 @blueprint.route("/meta_tvshow_episode_detail/<guid>/<eps_id>", methods=['GET', 'POST'])
 @login_required
 def metadata_tvshow_episode_detail_page(guid, eps_id):
@@ -266,14 +263,14 @@ def metadata_tvshow_list():
     """
     Display tvshow metadata list
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media_tvshow = []
     for row_data in g.db_connection.db_meta_tvshow_list(offset, per_page, session['search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'], row_data['air_date'],
                              row_data['image_json']))
     session['search_page'] = 'meta_tv'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_tvshow_list_count(
                                                       session['search_text']),

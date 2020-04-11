@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
+    </head>
+    <form id="bookaddform" class="form form-bookaddform" method="POST" action="" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{form.book_list.label}}
+            {{form.book_list(placeholder="", class_="form-control")}}
+        </div>
+        <p><input class="btn btn-default btn-submit" type="submit" value="Add Book(s)"></p>
+    </form>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+</body>
+{% endblock %}

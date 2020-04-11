@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block style %}
+{{ super() }}
+{% for widget in manager.get_widgets('style') %}
+<link rel="stylesheet" type="text/css" href="{{ widget.href }}"/>
+{% endfor %}
+{% endblock %}
+{% block header %}
+{% if files %}
+    <head>
+        <title>MediaKraken Browser - {{ path }}</title>
+        <link rel="stylesheet" href="{{ url_for('user.static', filename='/static/css/fs_style.css') }}" />
+    </head>
+    <body class="list">
+        {% if path != '.' %}
+            <div>
+                <img src="{{ url_for('user.static', filename='/static/images/fs/parent.png') }}" />
+                <a href="{{ url_for('admins.admin_listdir', path=parent) }}">
+                    Parent Directory
+                </a>
+            </div>
+        {% endif %}
+        {% for file in files %}
+            {% if file['type'] == 'f' %}
+                <div>
+                    {{ file['filename'] }}
+                </div>
+            {% endif %}
+            {% if file['type'] == 'd' %}
+                <div>
+                    <img src="{{ url_for('user.static', filename='/static/images/fs/directory.png') }}" />
+                    <a href="{{ file['link'] }}">
+                        {{ file['filename'] }}
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </body>
+    <p><input class="btn btn-default btn-submit" type="submit" name="select" value="Select Directory"></p>
+{% else %}
+<p>No files in directory</p>
+{% endif %}
+{% endblock %}

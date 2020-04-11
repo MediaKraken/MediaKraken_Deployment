@@ -27,7 +27,7 @@ from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_update_create_collections')
+    'subprogram_metadata_update_create_collections')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

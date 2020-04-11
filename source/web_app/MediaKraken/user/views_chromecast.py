@@ -13,12 +13,9 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
 from common import common_network_pika
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/cast/<action>/<guid>')
@@ -82,7 +79,7 @@ def user_cast(action, guid):
             exchange_name='mkque_ex',
             route_key='mkque')
     return render_template("users/user_playback_cast.html", data_guid=guid,
-                           data_chromecast=db_connection.db_device_list('cast'))
+                           data_chromecast=g.db_connection.db_device_list('cast'))
 
 
 @blueprint.before_request

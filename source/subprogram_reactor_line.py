@@ -40,8 +40,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for twisted connections!'})
         for cast_devices in self.db_connection.db_device_list(device_type='cast'):
             common_global.client_devices.append(('cast', cast_devices))
-        for cast_devices in self.db_connection.db_device_list(device_type='roku'):
-            common_global.client_devices.append(('roku', cast_devices))
+        for roku_devices in self.db_connection.db_device_list(device_type='roku'):
+            common_global.client_devices.append(('roku', roku_devices))
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

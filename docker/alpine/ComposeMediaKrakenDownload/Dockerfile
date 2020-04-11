@@ -1,5 +1,5 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase38py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase311_5py3:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the downloader app"
@@ -21,7 +21,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libxml2-dev \
   linux-headers \
   musl-dev \
-  py3-libcloud \
+  py3-apache-libcloud \
   py3-psycopg2 \
   python3-dev \
   xmlsec-dev \
@@ -32,7 +32,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   git \
   && rm requirements.txt
 
-COPY wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash-busybox130.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 

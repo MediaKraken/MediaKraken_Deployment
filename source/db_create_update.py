@@ -919,6 +919,16 @@ if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
 if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
     db_connection.db_query('CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
 
+# game servers
+db_connection.db_query('create table IF NOT EXISTS mm_game_dedicated_servers'
+                       ' (mm_game_server_id uuid'
+                       ' CONSTRAINT mm_game_server_id primary key,'
+                       ' mm_game_server_name text,'
+                       ' mm_game_server_json jsonb)')
+if db_connection.db_table_index_check('mm_game_server_name_idx') is None:
+    db_connection.db_query(
+        'CREATE INDEX mm_game_server_name_idx ON mm_game_dedicated_servers(mm_game_server_name)')
+
 # create indexes for pg_trgm
 if db_connection.db_table_index_check('mm_metadata_tvshow_name_trigram_idx') is None:
     db_connection.db_query(

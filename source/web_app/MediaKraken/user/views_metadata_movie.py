@@ -13,13 +13,10 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 from common import common_global
 from common import common_internationalization
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/meta_movie_detail/<guid>')
@@ -85,7 +82,7 @@ def metadata_movie_list():
     """
     Display list of movie metadata
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     media_count = 0
     for row_data in g.db_connection.db_meta_movie_list(offset, per_page, session['search_text']):
@@ -143,7 +140,7 @@ def metadata_movie_list():
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
     session['search_page'] = 'meta_movie'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_meta_movie_count(
                                                       session['search_text']),

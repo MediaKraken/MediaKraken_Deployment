@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>MediaKraken Video Player</title>
+        <link href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" rel="stylesheet" type="text/css">
+    </head>
+    <body id="data_background">
+        <div>
+            <a href= "{{ url_for('user_playback.user_playback', action='back', guid=data_guid, device=1) }}" id="play_back_button">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/arrow_left.png') }}" height="50" width="50">
+            </a>
+            <a href= "{{ url_for('user_playback.user_playback', action='rewind', guid=data_guid, device=1) }}" id="play_rewind_button">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/rewind.png') }}" height="50" width="50">
+            </a>
+            <a href= "{{ url_for('user_playback.user_playback', action='stop', guid=data_guid, device=1) }}" id="play_stop_button">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/stop.png') }}" height="50" width="50">
+            </a>
+            <a href= "{{ url_for('user_playback.user_playback', action='play', guid=data_guid, device=1) }}" id="play_play_button">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/play.png') }}" height="50" width="50">
+            </a>
+            <a href= "{{ url_for('user_playback.user_playback', action='pause', guid=data_guid, device=1) }}" id="play_pause_button">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/pause.png') }}" height="50" width="50">
+            </a>
+            <a href= "{{ url_for('user_playback.user_playback', action='ff', guid=data_guid, device=1) }}" id="play_ff_button">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/forward.png') }}" height="50" width="50">
+            </a>
+            <a href= "{{ url_for('user_playback.user_playback', action='forward', guid=data_guid, device=1) }}" id="play_forward_button">
+            <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="{{ url_for('static', filename='images/navigation/arrow_right.png') }}" height="50" width="50">
+            </a>
+        </div>
+        <script src="{{ url_for('static', filename='js/blazy.min.js') }}"></script>
+        <script>
+            ;(function() {
+                // Initialize
+                var bLazy = new Blazy();
+            })();
+        </script>
+    </body>
+</html>
+{% endblock %}

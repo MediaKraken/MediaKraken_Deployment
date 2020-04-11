@@ -21,7 +21,7 @@ import uuid
 
 def db_meta_song_list(self, offset=0, records=None, search_value=None):
     """
-    # return songs metadatalist
+    # return song metadata list
     """
     # TODO, only grab the poster locale from json
     return self.db_cursor.fetchall()
@@ -144,23 +144,23 @@ def db_meta_album_list(self, offset=0, records=None, search_value=None):
     # TODO order by release year
     if search_value is not None:
         self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-                               ' mm_metadata_album_json, mm_metadata_album_image'
+                               ' mm_metadata_album_json, mm_metadata_album_localimage'
                                ' from mm_metadata_album'
                                ' where mm_metadata_album_name %% %s'
                                ' order by LOWER(mm_metadata_album_name)'
                                ' offset %s limit %s', (search_value, offset, records))
     else:
         self.db_cursor.execute('select mm_metadata_album_guid, mm_metadata_album_name,'
-                               ' mm_metadata_album_json, mm_metadata_album_image'
+                               ' mm_metadata_album_json, mm_metadata_album_localimage'
                                ' from mm_metadata_album'
                                ' order by LOWER(mm_metadata_album_name)'
                                ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()
 
 
-def db_meta_muscian_list(self, offset=0, records=None, search_value=None):
+def db_meta_musician_list(self, offset=0, records=None, search_value=None):
     """
-    # return muscian metadatalist
+    # return musician metadatalist
     """
     # TODO, only grab the poster locale from json
     if search_value is not None:

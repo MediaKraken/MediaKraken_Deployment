@@ -15,12 +15,9 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
 from MediaKraken.utils import flash_errors
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/sync')
@@ -29,9 +26,9 @@ def sync_display_all():
     """
     Display sync page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_sync_list_count(),
                                                   record_name='sync job(s)',

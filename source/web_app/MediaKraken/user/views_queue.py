@@ -13,11 +13,8 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/queue", methods=['GET', 'POST'])
@@ -26,10 +23,10 @@ def user_queue_page():
     """
     Display queue page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     # TODO union read all four.....then if first "group"....add header in the html
     session['search_page'] = 'user_media_queue'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_web_tvmedia_list_count(
                                                       None, None, session['search_text']),

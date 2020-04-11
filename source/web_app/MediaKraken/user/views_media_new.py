@@ -12,11 +12,8 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/new_media', methods=['GET', 'POST'])
@@ -25,15 +22,15 @@ def user_newmedia_page():
     """
     Display new media
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     session['search_page'] = 'new_media'
     media_data = []
     for media_file in g.db_connection.db_read_media_new(offset, per_page, session['search_text'],
                                                         days_old=7):
         media_data.append(
-            (media_file['mm_media_class_type'],
+            (media_file['mm_media_class_guid'],
              media_file['mm_media_name'], None))
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_read_media_new_count(
                                                       session['search_text'],

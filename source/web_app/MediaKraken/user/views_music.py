@@ -12,11 +12,8 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
-from common import common_pagination
+from common import common_pagination_flask
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route("/album_list")
@@ -25,7 +22,7 @@ def user_album_list_page():
     """
     Display album page
     """
-    page, per_page, offset = common_pagination.get_page_items()
+    page, per_page, offset = common_pagination_flask.get_page_items()
     media = []
     for row_data in g.db_connection.db_media_album_list(offset, per_page, session['search_text']):
         if 'mm_metadata_album_json' in row_data:
@@ -35,7 +32,7 @@ def user_album_list_page():
             media.append((row_data['mm_metadata_album_guid'],
                           row_data['mm_metadata_album_name'], None))
     session['search_page'] = 'music_album'
-    pagination = common_pagination.get_pagination(page=page,
+    pagination = common_pagination_flask.get_pagination(page=page,
                                                   per_page=per_page,
                                                   total=g.db_connection.db_media_album_count(
                                                       session['search_page']),

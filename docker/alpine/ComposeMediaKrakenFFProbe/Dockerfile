@@ -29,7 +29,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   net-snmp \
   net-snmp-dev \
   python3-dev \
-  py3-libcloud \
+  py3-apache-libcloud \
   py3-psycopg2 \
   py3-psutil \
   openrc \

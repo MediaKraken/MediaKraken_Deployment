@@ -19,20 +19,25 @@ server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(address)
 
 docker_inst = common_docker.CommonDocker()
-if os.environ['SWARMIP'] != 'None':
-    mediakraken_ip = os.environ['SWARMIP']
-else:
-    mediakraken_ip = os.environ['HOST_IP']
+try:
+    if os.environ['SWARMIP'] != 'None':
+        mediakraken_ip = os.environ['SWARMIP']
+    else:
+        mediakraken_ip = os.environ['HOST_IP']
+except KeyError:  # this is to handle running from local host and NOT within docker
+    mediakraken_ip = socket.gethostbyname(socket.gethostname())
 
 common_global.es_inst.com_elastic_index('info', {'mediakraken_ip': mediakraken_ip})
 
 # TODO?  # grab container list - do here since server could have restarted on other port
 # TODO?  how/why would the above happen
+# TODO I have this hardcoded........not good
 docker_port = None
 while docker_port is None:
     for container_json in docker_inst.com_docker_container_list():
+        common_global.es_inst.com_elastic_index('info', {'container_json': container_json})
         # grab ports for server
-        if container_json['Names'][0] == '/mkreactor':
+        if container_json['Names'][0].find('mkstack_reactor') != -1:
             docker_port = str(
                 docker_inst.com_docker_port(container_json['Id'], 8903)[0]['HostPort'])
             break

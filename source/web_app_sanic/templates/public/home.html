@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<body id="data_background">
+<div class="{% block content_class %}container{% endblock content_class %}">
+    <div class="jumbotron">
+        <h1>Welcome to MediaKraken</h1>
+        <p>This is the front-end to MediaKraken Audio/Video streaming suite.</p>
+        {% if user.is_authenticated == False %}
+        <p>Please sign-in or register to get started.</p>
+        {% endif %}
+        <p><a href="https://github.com/MediaKraken/MediaKraken_Deployment/wiki" class="btn btn-primary btn-large" id="public_home_webpage_link">Learn more &raquo;</a></p>
+    </div>
+</div>
+</body>
+{% endblock %}

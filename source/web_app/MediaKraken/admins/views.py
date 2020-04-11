@@ -22,7 +22,6 @@ from functools import wraps
 from functools import partial
 from MediaKraken.admins.forms import AdminSettingsForm
 from MediaKraken.admins.forms import BookAddForm
-from common import common_config_ini
 from common import common_internationalization
 from common import common_global
 from common import common_hash
@@ -36,7 +35,6 @@ import database as database_base
 ALLOWED_EXTENSIONS = {'py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 outside_ip = None
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def admin_required(fn):
@@ -346,7 +344,7 @@ def admin_database_statistics():
     return render_template("admin/admin_server_database_stats.html",
                            data_db_size=db_size_data,
                            data_db_count=db_stats_count,
-                           data_workers=db_connection.db_parallel_workers())
+                           data_workers=g.db_connection.db_parallel_workers())
 
 
 @blueprint.route('/', defaults={'path': ''}, endpoint='listdir')

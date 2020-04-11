@@ -33,7 +33,7 @@ def create_app(config_object=ProdConfig):
 
 def register_extensions(app):
     assets.init_app(app)
-    bcrypt.init_app(app)
+    bcrypt.init_app(app)  # used for password hashing, etc
     db.init_app(app)
     login_manager.init_app(app)
     return None
@@ -48,6 +48,7 @@ def register_blueprints(app):
     app.register_blueprint(user.views_cctv.blueprint)
     app.register_blueprint(user.views_chromecast.blueprint)
     app.register_blueprint(user.views_comic_reader.blueprint)
+    app.register_blueprint(user.views_game_dedicated_servers.blueprint)
     app.register_blueprint(user.views_games.blueprint)
     app.register_blueprint(user.views_hardware.blueprint)
     app.register_blueprint(user.views_hardware_hue.blueprint)

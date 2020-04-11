@@ -45,6 +45,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_progress_movie_image
@@ -53,6 +54,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 2
                 Button:
@@ -67,6 +69,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_new_movie_image
@@ -75,6 +78,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 3
                 Button:
@@ -89,6 +93,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_vid_game_image
@@ -97,6 +102,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 4
                 Button:
@@ -111,6 +117,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_music_vid_image
@@ -119,6 +126,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 5
                 Button:
@@ -133,6 +141,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_demo_image
@@ -141,6 +150,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 6
                 Button:
@@ -155,6 +165,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_photo_image
@@ -163,6 +174,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 7
                 Button:
@@ -177,6 +189,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_radio_image
@@ -185,10 +198,11 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 8
                 Button:
-                    id: button_main_home_peridocials
+                    id: button_main_home_periodicals
                     pos: (self.parent.width - (self.parent.width * 0.2) + 1,self.parent.height - ((self.parent.height * 0.2) * 3))
                     on_press: app.main_mediakraken_event_button_home('periodicals')
                     size_hint: None, None
@@ -199,6 +213,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_books_image
@@ -207,6 +222,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 9
                 Button:
@@ -221,12 +237,13 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 10
                 Button:
                     id: button_main_home_music
                     pos: (0,self.parent.height - ((self.parent.height * 0.2) * 5))
-                    on_press: app.main_mediakraken_event_button_home('Music')
+                    on_press: app.main_mediakraken_event_button_home('music')
                     size_hint: None, None
                     size: self.parent.width * 0.2, self.parent.height * 0.2
                     Image:
@@ -235,6 +252,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_headphone_image
@@ -243,12 +261,13 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 11
                 Button:
                     id: button_main_home_movie
                     pos: ((self.parent.width * 0.2) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
-                    on_press: app.main_mediakraken_event_button_home('Movie')
+                    on_press: app.main_mediakraken_event_button_home('movie')
                     size_hint: None, None
                     size: self.parent.width * 0.2, self.parent.height * 0.2
                     Image:
@@ -257,6 +276,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_movie_image
@@ -265,12 +285,13 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 12
                 Button:
                     id: button_main_home_tv
                     pos: (((self.parent.width * 0.2) * 2) + 1,self.parent.height - ((self.parent.height * 0.2) * 5))
-                    on_press: app.main_mediakraken_event_button_home('TV')
+                    on_press: app.main_mediakraken_event_button_home('tv')
                     size_hint: None, None
                     size: self.parent.width * 0.2, self.parent.height * 0.2
                     Image:
@@ -279,6 +300,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_television_image
@@ -287,6 +309,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 13
                 Button:
@@ -301,6 +324,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_television_live_image
@@ -309,6 +333,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
                 # 14
                 Button:
@@ -323,6 +348,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.25
                     Image:
                         id: main_home_video_image
@@ -331,6 +357,7 @@
                         x: self.parent.x
                         size: self.parent.width, self.parent.height
                         allow_stretch: True
+                        nocache: True
                         opacity: 0.5
             Screen:
                 name: 'Main_Theater_Media_Video_List'
@@ -498,6 +525,8 @@
                         id: theater_media_video_videoplayer
                         size_hint: None, None
                         size: self.parent.width, self.parent.height
+                        allow_stretch: True
+                        nocache: True
             Screen:
                 name: 'Main_Theater_Media_Music_List'
             Screen: 
@@ -588,6 +617,7 @@
                                 x: self.parent.x
                                 size: 50, 50
                                 allow_stretch: True
+                                nocache: True
                         Button:
                             id: button_main_remote_right
                             pos: (((self.parent.width - self.width)/2) + 50), (self.parent.height - 125)
@@ -600,6 +630,7 @@
                                 x: self.parent.x
                                 size: 50, 50
                                 allow_stretch: True
+                                nocache: True
                     BoxLayout:
                         id: main_right_box
                         orientation: 'vertical'

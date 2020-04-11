@@ -123,6 +123,7 @@ def com_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
     """
     proc = subprocess.Popen(
         ['zfs', 'set', 'compression=on', zpool], stdout=subprocess.PIPE, shell=False)
+    proc.wait()
     proc = subprocess.Popen(['zfs', 'set', 'compression=gzip-' + zpool_compression, zpool],
                             stdout=subprocess.PIPE, shell=False)
     return proc.stdout.read()

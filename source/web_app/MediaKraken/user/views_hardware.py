@@ -12,10 +12,7 @@ import sys
 
 sys.path.append('..')
 sys.path.append('../..')
-from common import common_config_ini
 import database as database_base
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 @blueprint.route('/hardware')
@@ -25,7 +22,7 @@ def user_hardware():
     Display hardware page
     """
     return render_template("users/user_hardware.html",
-                           phue=db_connection.db_device_count('Phue'))
+                           phue=g.db_connection.db_device_count('Phue'))
 
 
 @blueprint.before_request

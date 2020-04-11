@@ -17,9 +17,8 @@
 """
 
 import os
-import time
 
-from common import common_file
+import time
 # https://github.com/MediaKraken-Dependancies/picamera
 from picamera import PiCamera
 
@@ -48,8 +47,7 @@ class CommonHardwarePICamera:
 
     def com_hardware_pi_camera_timelapse(self, seconds, file_save_path):
         for filename in self.camera.capture_continuous('img{counter:03d}.jpg'):
-            self.com_hardware_pi_camera_image(
-                common_file.com_file_save_data(os.path.join(file_save_path, filename)))
+            self.com_hardware_pi_camera_image(os.path.join(file_save_path, filename))
             time.sleep(seconds)
 
     def com_hardware_pi_camera_led(self, led_status=False):

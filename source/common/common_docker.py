@@ -49,13 +49,23 @@ class CommonDocker:
         """
         return self.cli_api.containers()
 
-    def com_docker_container_bind(self, container_name='/mkserver', bind_match='/data/devices'):
+    def com_docker_container_bind(self, container_name='/mkstack_server',
+                                  bind_match='/data/devices'):
         for container_inst in self.com_docker_container_list():
-            # common_global.es_inst.com_elastic_index('info', {'container_inst': container_inst})
+            common_global.es_inst.com_elastic_index('info', {'container_inst': container_inst})
             if container_inst['Names'][0] == container_name:
                 for mount_points in container_inst['Mounts']:
                     if mount_points['Source'].endswith(bind_match):
                         return mount_points['Source'].replace(bind_match, '')
+
+    def com_docker_container_id_by_name(self, container_name='/mkstack_database'):
+        print('id by name', flush=True)
+        for container_inst in self.com_docker_container_list():
+            common_global.es_inst.com_elastic_index('info', {'container_inst name': container_inst})
+            print('con inst', container_inst, flush=True)
+            if container_inst['Names'][0] == container_name:
+                print(container_inst['Id'], flush=True)
+                return container_inst['Id']
 
     def com_docker_info(self):
         """
@@ -138,11 +148,23 @@ class CommonDocker:
         """
         return self.cli_api.volumes()
 
-    def com_docker_run_command(self, container_id, docker_command):
+    def com_docker_run_command(self, docker_command):
         """
         run command in a container
         """
         return self.cli.exec_run(cmd=docker_command)
+
+    def com_docker_run_command_via_exec(self, container_id, docker_command):
+        """
+        run command in a container via exec
+        """
+        return self.cli_api.exec_create(container_id, docker_command)
+
+    def com_docker_start_exec(self, exec_id, stream_output=False):
+        """
+        start the exec setup from run command
+        """
+        return self.cli_api.exec_start(exec_id=exec_id, detach=False, stream=stream_output)
 
     # https://docker-py.readthedocs.io/en/stable/containers.html
     def com_docker_run_container(self, container_data_list):
@@ -242,7 +264,7 @@ class CommonDocker:
 
     def com_docker_run_elk(self, current_host_working_directory):
         if current_host_working_directory is not None \
-                and os.path.exists(os.path.join(current_host_working_directory, 'data/elk')):
+                and os.path.exists(os.path.join(current_host_working_directory, 'elkdata')):
             self.com_docker_delete_container('mkelk')
             self.com_docker_network_create('mediakraken_network_backend')
             return self.cli.containers.run(image='mediakraken/mkelk',
@@ -280,7 +302,8 @@ class CommonDocker:
                                                          'mode': 'rw'}
                                                     },
                                            environment={'POSTGRES_DB': os.environ['POSTGRES_DB'],
-                                                        'POSTGRES_USER': os.environ['POSTGRES_USER'],
+                                                        'POSTGRES_USER': os.environ[
+                                                            'POSTGRES_USER'],
                                                         'POSTGRES_PASSWORD': os.environ[
                                                             'POSTGRES_PASSWORD'],
                                                         'DEBUG': os.environ['DEBUG'],

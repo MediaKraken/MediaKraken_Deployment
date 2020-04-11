@@ -45,11 +45,11 @@ class CommonSpeechRec:
 
     def com_decode_audio(self):
         try:
-            print("Sphinx thinks you said " + self.recognizer.recognize_sphinx(self.audio))
+            print("Sphinx thinks you said " + self.recognizer.recognize_sphinx(self.audio), flush=True)
             return self.recognizer.recognize_sphinx(self.audio)
         except sr.UnknownValueError:
-            print("Sphinx could not understand audio")
+            print("Sphinx could not understand audio", flush=True)
             return None
         except sr.RequestError as e:
-            print("Sphinx error; {0}".format(e))
+            print("Sphinx error; {0}".format(e), flush=True)
             return None
