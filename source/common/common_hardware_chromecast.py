@@ -42,13 +42,13 @@ def com_hard_chrome_discover(timeout=5, retries=1):
         chrome_info = com_hard_chrome_info(ssdp_device_location)
         # verify that it is indeed a chromecast
         if chrome_info['root']['device']['deviceType'] == 'urn:dial-multiscreen-org:device:dial:1':
-            print(ssdp_device_location)
-            # print(type(chrome_info))
-            # print(chrome_info['root'])
-            # print(chrome_info['root']['device'])
-            # print(chrome_info['root']['device']['deviceType'])
-            # print(chrome_info['root']['device']['modelName'])
-            # print(chrome_info['root']['device']['friendlyName'])
+            print(ssdp_device_location, flush=True)
+            # print(type(chrome_info), flush=True)
+            # print(chrome_info['root'], flush=True)
+            # print(chrome_info['root']['device'], flush=True)
+            # print(chrome_info['root']['device']['deviceType'], flush=True)
+            # print(chrome_info['root']['device']['modelName'], flush=True)
+            # print(chrome_info['root']['device']['friendlyName'], flush=True)
             devices_found.append((ssdp_device_location.rsplit(':', 1)[0].split('//', 1)[1],
                                   chrome_info['root']['device']['modelName'],
                                   chrome_info['root']['device']['friendlyName']))

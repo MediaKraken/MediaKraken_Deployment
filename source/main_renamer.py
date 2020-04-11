@@ -104,10 +104,10 @@ class MainRenamer(App):
         return browser
 
     def fbrowser_canceled(self, instance):
-        print('cancelled, Close self.')
+        print('cancelled, Close self.', flush=True)
 
     def fbrowser_success(self, instance):
-        print(instance.selection)
+        print(instance.selection, flush=True)
 
 
 Factory.register('Root', cls=Root)

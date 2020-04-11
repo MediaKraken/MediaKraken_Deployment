@@ -36,7 +36,7 @@ for platform in \
 list(GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items())[0]:
     if platform != 'Platform':
         for game_systems in platform:
-            print(game_systems)
+            print(game_systems, flush=True)
             if db_connection.db_meta_games_system_guid_by_short_name(
                     game_systems['name']) is None:
                 # fetch platform info

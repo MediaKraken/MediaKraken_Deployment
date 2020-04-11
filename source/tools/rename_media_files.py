@@ -31,27 +31,27 @@ for root, dirs, files in walk('X:\\zz_movie'):
                 if 'year' in guessit_name:
                     media_files += 1
                     print(filename, ':',
-                          guessit_name['title'] + ' (' + str(guessit_name['year']) + ')')
+                          guessit_name['title'] + ' (' + str(guessit_name['year']) + ')', flush=True)
                     user_answer = input('Should I rename/move it?')
                     if user_answer == 'y':
                         os.rename(os.path.join(root, file_name_loop), os.path.join(
                             'X:\\zz_movie', guessit_name['title']
                                             + ' (' + str(
                                 guessit_name['year']) + ')' + file_extension))
-                        # print(os.path.join(root, file_name_loop))
+                        # print(os.path.join(root, file_name_loop), flush=True)
             else:
-                print(filename)
-                print(root)
+                print(filename, flush=True)
+                print(root, flush=True)
                 guessit_name = guessit(root)
                 if 'title' in guessit_name:
                     if 'year' in guessit_name:
                         media_files += 1
                         print(root, ':',
-                              guessit_name['title'] + ' (' + str(guessit_name['year']) + ')')
+                              guessit_name['title'] + ' (' + str(guessit_name['year']) + ')', flush=True)
                         user_answer = input('Should I rename/move it?')
                         if user_answer == 'y':
                             os.rename(os.path.join(root, filename + file_extension), os.path.join(
                                 'X:\\zz_movie', guessit_name['title']
                                                 + ' (' + str(
                                     guessit_name['year']) + ')' + file_extension))
-print(media_files)
+print(media_files, flush=True)

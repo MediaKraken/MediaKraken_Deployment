@@ -38,12 +38,12 @@ class CommonNetMPVSocat:
                 self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):
-                    print("Connection was refused")
+                    print("Connection was refused", flush=True)
                     continue
             except OSError as e:
                 # if e.errno == e.ENOENT:
                 #     # do your FileNotFoundError code here
-                print("File not found")
+                print("File not found", flush=True)
                 continue
             else:
                 break
@@ -56,7 +56,7 @@ class CommonNetMPVSocat:
             shlex.split('echo \'' + command + '\' | socat - ' + self.sockfile),
             stdout=subprocess.PIPE, stderr=None, shell=True)
         output = self.sub_output.communicate()
-        print(('subout: ', output))
+        print(('subout: ', output), flush=True)
 
     def close(self):
         os.remove(self.sockfile)
@@ -73,12 +73,12 @@ class CommonNetMPV:
                 self.socket_stream.connect(sockfile)
             except socket.error as sock_err:
                 if (sock_err.errno == socket.errno.ECONNREFUSED):
-                    print("Connection was refused")
+                    print("Connection was refused", flush=True)
                     continue
             except OSError as e:
                 # if e.errno == e.ENOENT:
                 #     # do your FileNotFoundError code here
-                print("File not found")
+                print("File not found", flush=True)
                 continue
             else:
                 break

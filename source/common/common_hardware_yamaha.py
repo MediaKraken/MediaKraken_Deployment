@@ -24,5 +24,5 @@ def com_hardware_yamaha_find():
     Discover Yamaha receivers
     """
     receivers = rxv.find()
-    print(receivers)
+    print(receivers, flush=True)
     return receivers

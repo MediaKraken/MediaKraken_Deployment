@@ -55,5 +55,5 @@ class CommonMetadataOpenweatherMap:
         with gzip.open('city.list.json.gz', 'rb') as file_handle:
             file_content = file_handle.read()
         for json_item in file_content:
-            print(json_item)
+            print(json_item, flush=True)
         file_handle.close()

@@ -24,10 +24,10 @@ async_db_files = common_file.com_file_dir_list('./database_async', '.py',
 # read in all the sanic files
 sanic_db_call_table = []
 for sanic_file in sanic_db_files:
-    print('Sanic File:', sanic_file)
+    print('Sanic File:', sanic_file, flush=True)
     file_handle = open(sanic_file, 'r')
     for file_line in file_handle.readlines():
-        # print(file_line)
+        # print(file_line, flush=True)
         if file_line.find('request.app.db_functions.') != -1:
             db_call = file_line.split('request.app.db_functions.')[1].split('(')[0]
             if db_call in sanic_db_call_table:
@@ -35,19 +35,19 @@ for sanic_file in sanic_db_files:
             else:
                 sanic_db_call_table.append(db_call)
     file_handle.close()
-print('Unique Calls ', len(sanic_db_call_table), sanic_db_call_table)
+print('Unique Calls ', len(sanic_db_call_table), sanic_db_call_table, flush=True)
 
 # read in all the db files
 async_db_call_table = []
 need_to_code = sanic_db_call_table
 init_dict = {}
 for db_file in async_db_files:
-    print('DB File:', db_file)
+    print('DB File:', db_file, flush=True)
     if os.path.basename(db_file) != '__init__.py':
         file_handle = open(db_file, 'r')
         db_file_call = []
         for file_line in file_handle.readlines():
-            # print(file_line)
+            # print(file_line, flush=True)
             if file_line.find('def ') != -1:
                 db_call = file_line.split('def ')[1].split('(')[0]
                 if db_call in db_file_call:
@@ -64,9 +64,9 @@ for db_file in async_db_files:
                     pass
         file_handle.close()
         init_dict[db_file] = db_file_call
-print('Unique Calls DB', len(async_db_call_table), async_db_call_table)
+print('Unique Calls DB', len(async_db_call_table), async_db_call_table, flush=True)
 
-print('Need to Code', len(need_to_code), sorted(need_to_code))
+print('Need to Code', len(need_to_code), sorted(need_to_code), flush=True)
 
 # generate the init file
 file_handle = open('./database_async/__init__.py', 'w')

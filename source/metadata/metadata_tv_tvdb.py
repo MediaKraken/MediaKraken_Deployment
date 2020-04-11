@@ -114,7 +114,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
         if 'Episode' in xml_show_data['Data']:
             # checking id instead of filename as id should always exist
             try:
-                print(('len %s', len(xml_show_data['Data']['Episode'][0]['id'])))
+                print(('len %s', len(xml_show_data['Data']['Episode'][0]['id'])), flush=True)
                 if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
                     # thetvdb is Episode
                     for episode_info in xml_show_data['Data']['Episode']:

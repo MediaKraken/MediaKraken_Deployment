@@ -33,7 +33,7 @@ LOOP = asyncio.get_event_loop()
 #     atvs = await pyatv.scan_for_apple_tvs(loop, timeout=5)
 #     if not atvs:
 #         return False
-#     print('Connecting to {0}'.format(atvs[0].address))
+#     print('Connecting to {0}'.format(atvs[0].address), flush=True)
 #
 #
 # class CommonHardwareAppleTV:

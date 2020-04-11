@@ -62,7 +62,7 @@ for lib_row in db_connection.db_library_paths():
             common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
 
 # TODO put in the notifications
-print(('Total subtitle download attempts: %s' % total_download_attempts))
+print(('Total subtitle download attempts: %s' % total_download_attempts), flush=True)
 
 # close DB
 db_connection.db_close()

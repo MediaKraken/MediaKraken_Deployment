@@ -21,7 +21,7 @@ import sys
 try:
     from common import common_docker
 except ModuleNotFoundError:
-    print('Must install docker via "pip3 install docker".  Exiting...')
+    print('Must install docker via "pip3 install docker".  Exiting...', flush=True)
     sys.exit()
 # map count limit, vm.max_map_count
 with open('/proc/sys/vm/max_map_count') as f:
@@ -29,7 +29,7 @@ with open('/proc/sys/vm/max_map_count') as f:
 if max_map_count < 262144:
     print(
         'Map count too small.  Run "sysctl -w vm.max_map_count=262144" as root and rerun.'
-        '  Exiting...')
+        '  Exiting...', flush=True)
     sys.exit()
 
 docker_inst = common_docker.CommonDocker()

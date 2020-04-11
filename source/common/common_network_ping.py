@@ -207,19 +207,18 @@ def verbose_ping(dest_addr, timeout=2, count=4):
     the result.
     """
     for i in range(count):
-        print("ping %s..." % dest_addr, end=' ')
+        print("ping %s..." % dest_addr, end=' ', flush=True)
         try:
             delay = do_one(dest_addr, timeout)
         except socket.gaierror as e:
-            print("failed. (socket error: '%s')" % e[1])
+            print("failed. (socket error: '%s')" % e[1], flush=True)
             break
 
         if delay is None:
-            print("failed. (timeout within %ssec.)" % timeout)
+            print("failed. (timeout within %ssec.)" % timeout, flush=True)
         else:
             delay = delay * 1000
-            print("get ping in %0.4fms" % delay)
-    print()
+            print("get ping in %0.4fms" % delay, flush=True)
 
 # if __name__ == '__main__':
 #     verbose_ping("heise.de")

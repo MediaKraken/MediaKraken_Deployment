@@ -140,7 +140,7 @@ class HashGenerate(Thread):
                     sha1_hash_data = SHA1.hexdigest()
                     hash_dict[os.path.basename(
                         self.file_name)] = sha1_hash_data
-                    print(("single: %s", self.file_name, sha1_hash_data))
+                    print(("single: %s", self.file_name, sha1_hash_data), flush=True)
                 except:
                     lock.acquire()
                     Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)

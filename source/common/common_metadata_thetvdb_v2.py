@@ -37,7 +37,7 @@ class CommonMetadataTheTVDBv2:
         self.base_api_url = 'https://api.thetvdb.com/'
 
     def com_meta_thetvdbv2_login(self):
-        print(('header %s', self.headers))
+        print(('header %s', self.headers), flush=True)
         resp = requests.post(self.base_api_url + "login", headers=self.headers)
         common_global.es_inst.com_elastic_index('info', {"thetvdbv2_login Info Status":
                                                              resp.status_code, 'json': resp.json()})

@@ -43,7 +43,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # loop through all media
 for media in db_connection.db_read_media():
-    print(('media: %s' % media))
+    print(('media: %s' % media), flush=True)
     if media['mm_media_ffprobe_json'] is None:
         # Send a message so ffprobe runs
         channel.basic_publish(exchange='mkque_ffmpeg_ex',

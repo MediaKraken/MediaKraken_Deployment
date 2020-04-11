@@ -38,7 +38,7 @@ def main(argv):
 
 # TODO this should go through the limiter
 if __name__ == "__main__":
-    print(('bomb game info download attempts: %s' % total_download_attempts))
+    print(('bomb game info download attempts: %s' % total_download_attempts), flush=True)
     # send notifications
     if total_download_attempts > 0:
         db_connection.db_notification_insert(

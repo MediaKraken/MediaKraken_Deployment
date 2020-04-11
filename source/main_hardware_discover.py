@@ -59,7 +59,7 @@ common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
-    print(row_tuner)
+    print(row_tuner, flush=True)
 # tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 # tuner_api.com_hdhomerun_discover()
 # for row_tuner in tuner_api.com_hdhomerun_list():

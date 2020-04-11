@@ -64,7 +64,7 @@ for directory_local in dir_to_parse:
         files_grabbed.extend(glob.glob(files))
     # parse the results
     for file in files_grabbed:
-        print('File: ', file)
+        print('File: ', file, flush=True)
         new_dir_name = file.rsplit('.', 1)[0]
         file_extension = extension = os.path.splitext(file)[1]
         if new_dir_name.find('_') == -1:
@@ -76,9 +76,9 @@ for directory_local in dir_to_parse:
                              + old_dir_name + '.' + file_extension + '\" ' \
                              + os.path.join(master_directory, directory_local) + "/\"" \
                              + new_dir_name + "." + file_extension + "\""
-            print(command_to_run)
+            print(command_to_run, flush=True)
             os.system(command_to_run)
-        print(os.path.join(master_directory, directory_local, new_dir_name))
+        print(os.path.join(master_directory, directory_local, new_dir_name), flush=True)
         if not os.path.exists(os.path.join(master_directory, directory_local, new_dir_name)):
             # create the directory for the video files
             os.mkdir(os.path.join(master_directory, directory_local, new_dir_name))
@@ -91,23 +91,23 @@ for directory_local in dir_to_parse:
                          + new_dir_name + '\".* ' \
                          + os.path.join(master_directory,
                                         directory_local) + "/\"" + new_dir_name + "\"/."
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
         command_to_run = 'mv ' + os.path.join(master_directory, directory_local) + "/\"" \
                          + new_dir_name + '-\"* ' \
                          + os.path.join(master_directory,
                                         directory_local) + "/\"" + new_dir_name + "\"/."
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
         # change ownership of files
         command_to_run = 'chown -R spoot: \"' + os.path.join(master_directory, directory_local,
                                                              new_dir_name) + '\"'
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
         # change rights just in case
         command_to_run = 'chmod -R 755 \"' + os.path.join(master_directory, directory_local,
                                                           new_dir_name) + '\"'
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
 
 '''
@@ -119,7 +119,7 @@ os.chdir(master_directory + directory_local)
 allFiles = os.listdir(master_directory + directory_local)
 for file in allFiles:
     # parse the results
-    print(file)
+    print(file, flush=True)
     if not os.path.isdir(file):
         new_dir_name = file.rsplit('-',1)[0].strip()
         print "zui:",new_dir_name

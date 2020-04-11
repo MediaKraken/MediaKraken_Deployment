@@ -63,11 +63,11 @@ class CommonMetadataTMDB:
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
         if len(search) > 0:
             for res in search:
-                # print(res.id)
-                # print(res.title)
-                # print(res.overview)
-                # print(res.poster_path)
-                # print(res.vote_average)
+                # print(res.id, flush=True)
+                # print(res.title, flush=True)
+                # print(res.overview, flush=True)
+                # print(res.poster_path, flush=True)
+                # print(res.vote_average, flush=True)
                 common_global.es_inst.com_elastic_index('info', {"result": res.title, 'id': res.id,
                                                                  'date':
                                                                      res.release_date.split('-', 1)[

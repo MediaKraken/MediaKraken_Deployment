@@ -48,5 +48,5 @@ def com_net_steam_game_server_data_download():
         cols = row.find_all('td')
         cols = [ele.text.strip() for ele in cols]
         steam_servers.append([ele for ele in cols if ele])
-    print(steam_servers)
+    print(steam_servers, flush=True)
     return steam_servers

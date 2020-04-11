@@ -32,16 +32,16 @@ while time.time() - started < 10:
             try:
                 print("Trying ONVIFCamera({ip}, {port}, {user}, {passwd})".format(
                     ip=ip, port=port, user=authinfo[0], passwd=authinfo[1]
-                ))
+                ), flush=True)
                 mycam = ONVIFCamera(ip, port, authinfo[0], authinfo[1])
             except ONVIFError as e:
-                print("Got error {}".format(e))
+                print("Got error {}".format(e), flush=True)
                 continue
-            print(" Scopes:")
+            print(" Scopes:", flush=True)
             scopes = service.getScopes()
             for scope in scopes:
-                print("  {}({})".format(type(scope), repr(scope)))
-            print(" Streams:")
+                print("  {}({})".format(type(scope), repr(scope)), flush=True)
+            print(" Streams:", flush=True)
             media_service = mycam.create_media_service()
             profiles = media_service.GetProfiles()
             for profile in profiles:
@@ -49,10 +49,10 @@ while time.time() - started < 10:
                     params = media_service.create_type('GetStreamUri')
                     params.ProfileToken = profile._token
                     resp = media_service.GetStreamUri(params)
-                    print("  {}".format(resp.Uri))
+                    print("  {}".format(resp.Uri), flush=True)
                 except ONVIFError as e:
-                    print("Got error {} from GetStreamUri({})".format(e, params))
-                    print("Encoder config was {}".format(enc))
+                    print("Got error {} from GetStreamUri({})".format(e, params), flush=True)
+                    print("Encoder config was {}".format(enc), flush=True)
                     continue
             break
 wsd.stop()
