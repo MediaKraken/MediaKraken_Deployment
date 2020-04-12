@@ -1,3 +1,0 @@
-# find all templates in ZFSDir storage
-# pvesm list ZFSDir -content vztmpl
-
