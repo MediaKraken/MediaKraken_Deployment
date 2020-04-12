@@ -42,7 +42,11 @@ Pagination._css = Semantic()  # for cache
 Pagination._per_page = app.config.PER_PAGE
 # set login endpoint
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
-app.config['WTF_CSRF_SECRET_KEY'] = 'top secret!'  # TODO!  load from secret I guess
+if 'CSRF_SECRET_KEY' in os.environ:
+    csrf_key = os.environ['CSRF_SECRET_KEY']
+else:
+    csrf_key = common_file.com_file_load_data('/run/secrets/csrf_key')
+app.config['WTF_CSRF_SECRET_KEY'] = csrf_key
 common_global.auth = Auth(app)
 session = Session(app)
 # initialize jinja templating
