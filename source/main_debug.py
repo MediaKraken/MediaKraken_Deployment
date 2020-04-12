@@ -43,7 +43,7 @@ current_host_working_directory = docker_inst.com_docker_container_bind(container
                                                                        bind_match='/data/certs')
 if current_host_working_directory is None:
     print('Please start the containers so path can be found.'
-          '  Exiting...')
+          '  Exiting...', flush=True)
     sys.exit()
 
 docker_inst.com_docker_network_prune()

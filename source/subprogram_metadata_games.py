@@ -116,13 +116,13 @@ if not os.path.exists(file_name):
                 if game_short_name_guid is None:
                     game_short_name_guid = db_connection.db_meta_games_system_insert(
                         None, file_name.split('/', 1)[1], None)
-                print('json: %s' % json_data)
+                print('json: %s' % json_data, flush=True)
                 if ext == ".xml":
                     # could be no games in list
                     if 'software' in json_data['softwarelist']:
-                        print(json_data['softwarelist']['software'])
+                        print(json_data['softwarelist']['software'], flush=True)
                         # TODO this fails if only one game
-                        print(len(json_data['softwarelist']['software']))
+                        print(len(json_data['softwarelist']['software']), flush=True)
                         if '@name' in json_data['softwarelist']['software']:
                             # TODO check to see if exists....upsert instead
                             db_connection.db_meta_game_insert(game_short_name_guid,
@@ -133,7 +133,7 @@ if not os.path.exists(file_name):
                                                               json_data['softwarelist']['software'])
                         else:
                             for json_game in json_data['softwarelist']['software']:
-                                print(('xml: %s', json_game))
+                                print(('xml: %s', json_game), flush=True)
                                 # json_game = json.loads(json_game)
                                 # TODO check to see if exists....upsert instead
                                 # build args and insert the record
@@ -154,7 +154,7 @@ if not os.path.exists(file_name):
                                                               json_data['hashfile']['hash'])
                         else:
                             for json_game in json_data['hashfile']['hash']:
-                                print('hsi: %s' % json_game)
+                                print('hsi: %s' % json_game, flush=True)
                                 # TODO check to see if exists....upsert instead
                                 # build args and insert the record
                                 db_connection.db_meta_game_insert(game_short_name_guid,
@@ -205,9 +205,9 @@ if not os.path.exists(file_name):
             elif line.find("$end") == 0:  # goes by position if found
                 add_to_desc = False
                 for game in game_titles:
-                    print('game: %s' % game)
+                    print('game: %s' % game, flush=True)
                     game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[0]
-                    print('data: %s' % game_data)
+                    print('data: %s' % game_data, flush=True)
                     if game_data is None:
                         db_connection.db_meta_game_insert(
                             db_connection.db_meta_games_system_guid_by_short_name(
@@ -216,7 +216,7 @@ if not os.path.exists(file_name):
                         total_software += 1
                     else:
                         game_data['gi_game_info_json']['overview'] = game_desc
-                        print(game_data['gi_id'])
+                        print(game_data['gi_id'], flush=True)
                         db_connection.db_meta_game_update_by_guid(game_data['gi_id'],
                                                                   json.dumps(game_data[
                                                                                  'gi_game_info_json']))
