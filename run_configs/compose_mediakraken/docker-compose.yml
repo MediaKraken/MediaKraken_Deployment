@@ -339,7 +339,7 @@ services:
       # server will generate salt/key
       - /var/opt/mediakraken/secure:/mediakraken/secure:ro
       # db backups
-      - mediakraken_vol_postgresql_backup:/mediakraken/backup:ro
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
     networks:
       - mediakraken_network
     restart: unless-stopped
