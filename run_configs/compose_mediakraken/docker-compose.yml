@@ -8,6 +8,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
+      - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
       - DEBUG=${DEBUG}

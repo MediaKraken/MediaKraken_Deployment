@@ -381,7 +381,9 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
+      - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
       - DEBUG=${DEBUG}
+      # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}
     container_name: mkstack_webapp
