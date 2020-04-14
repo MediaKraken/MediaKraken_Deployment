@@ -59,7 +59,7 @@ class CommonHashCrypto:
         )
         if 'SECURE' in os.environ:  # docker compose
             self.hash_key = base64.urlsafe_b64encode(
-                kdf.derive(os.environ['SECURE']))
+                kdf.derive(os.environ['SECURE'].encode('utf-8')))
         else:  # docker swarm
             self.hash_key = base64.urlsafe_b64encode(
                 kdf.derive(common_file.com_file_load_data('/run/secrets/secure_key')))
