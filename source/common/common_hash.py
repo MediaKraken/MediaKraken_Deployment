@@ -38,10 +38,6 @@ class CommonHashCrypto:
     """
 
     def __init__(self):
-        self.hash_key = None
-        self.fernet = None
-
-    def com_hash_gen_crypt_key(self):
         if not os.path.isfile('/mediakraken/secure/data.zip'):
             salt = os.urandom(16)
             common_file.com_file_save_data(file_name='/mediakraken/secure/data.zip',

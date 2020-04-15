@@ -5,6 +5,7 @@ import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
+from common import common_hash
 from common import common_logging_elasticsearch
 from common import common_network
 from python_paginate.css.semantic import Semantic
@@ -22,6 +23,8 @@ from sanic_session import Session
 app = Sanic(__name__)
 # fire up ES logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webappsanic')
+# setup the crypto
+app_crypto = common_hash.CommonHashCrypto()
 # update pagination settings
 settings = dict(PREV_LABEL='<i class="left chevron icon"></i>',
                 NEXT_LABEL='<i class="right chevron icon"></i>',
@@ -104,7 +107,7 @@ async def login(request):
     if request.method == 'POST':  # and form.validate():
         print('here i am in post', flush=True)
         username = form.username.data
-        password = form.password.data
+        password = app_crypto.com_hash_gen_crypt_encode(form.password.data)
         db_connection = await request.app.db_pool.acquire()
         print('after db connection', flush=True)
         user_id, user_admin = await request.app.db_functions.db_user_login_validation(
@@ -138,7 +141,7 @@ async def register(request):
     if request.method == 'POST':  # and form.validate():
         username = form.username.data
         email = form.email.data
-        password = form.password.data
+        password = app_crypto.com_hash_gen_crypt_encode(form.password.data)
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
         user_id, user_admin = await request.app.db_functions.db_user_insert(
