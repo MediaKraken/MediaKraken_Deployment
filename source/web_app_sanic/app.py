@@ -126,7 +126,7 @@ async def login(request):
                                           User(id=user_id, name=username, admin=user_admin))
             print('current user', common_global.auth.current_user(request), flush=True)
             return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
-    # TODO errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
+    errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)
     return {'form': form,
