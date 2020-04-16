@@ -22,13 +22,14 @@
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Create an Account!</h4>
                             </div>
-                            <form class="user">
+                            <form action="/register" class="user" method="post">
                                 <div class="form-group"><input class="form-control form-control-user" type="text" id="inputusername" placeholder="User Name" name="user_name"></div>
                                 <div class="form-group"><input class="form-control form-control-user" type="email" id="inputemail" aria-describedby="emailHelp" placeholder="Email Address" name="email"></div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password"></div>
                                     <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
-                                </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Register Account</button>
+                                </div>
+                                <button class="btn btn-primary btn-block text-white btn-user" type="submit">Register Account</button>
                                 <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Register with Google</a><a class="btn btn-primary btn-block text-white btn-github btn-user" role="button"><i class="fab fa-github"></i>&nbsp; Register with Github</a>
                                 <hr>
                             </form>
