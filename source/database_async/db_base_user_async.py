@@ -27,8 +27,8 @@ async def db_user_insert(self, db_connection, user_name, user_email, user_passwo
     else:
         user_admin = False
     return await db_connection.execute(
-        'insert into mm_user (id, username, email, password, active, is_admin)'
-        ' values (NULL, $1, $2, $3, True, $4) returning id',
+        'insert into mm_user (username, email, password, active, is_admin)'
+        ' values ($1, $2, $3, True, $4) returning id',
         user_name, user_email, user_password, user_admin), user_admin
 
 
