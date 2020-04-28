@@ -26,7 +26,7 @@ async def db_user_insert(self, db_connection, user_name, user_email, user_passwo
     """
     # insert user
     """
-    if self.db_user_count(db_connection) == 0:
+    if await self.db_user_count(db_connection) == 0:
         user_admin = True
     else:
         user_admin = False
