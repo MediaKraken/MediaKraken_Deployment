@@ -216,18 +216,6 @@ def thegamesdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'thegamesdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thelogodb'][0]
-             / common_metadata_limiter.API_LIMIT['thelogodb'][1])
-def thelogodb(thread_db, download_data):
-    """
-    Rate limiter for thelogodb
-    """
-    common_global.es_inst.com_elastic_index('info', {"here i am in thelogodb rate":
-        datetime.datetime.now().strftime(
-            "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'thelogodb', download_data)
-
-
 @ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
              / common_metadata_limiter.API_LIMIT['themoviedb'][1])
 def themoviedb(thread_db, download_data, download_que_type):
