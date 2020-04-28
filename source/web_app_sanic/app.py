@@ -144,16 +144,20 @@ async def register(request):
         password = app_crypto.com_hash_gen_crypt_encode(form.password.data)
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
-        user_id, user_admin = await request.app.db_functions.db_user_insert(
-            db_connection, user_name=username, user_email=email, user_password=password)
-        await app.db_pool.release(db_connection)
-        if user_id.isnumeric():  # valid user
-            request['session']['search_text'] = None
-            common_global.auth.login_user(request,
-                                          User(id=user_id, name=username, admin=user_admin))
-            return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
-        # failed to insert into database
-        errors['validate_errors'] = "Failed to create user"
+        # verify user doesn't already exist on database
+        if await request.app.db_functions.db_user_count(username) == 0:
+            user_id, user_admin = await request.app.db_functions.db_user_insert(
+                db_connection, user_name=username, user_email=email, user_password=password)
+            await app.db_pool.release(db_connection)
+            if user_id.isnumeric():  # valid user
+                request['session']['search_text'] = None
+                common_global.auth.login_user(request,
+                                              User(id=user_id, name=username, admin=user_admin))
+                return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
+            # failed to insert into database
+            errors['validate_errors'] = "Failed to create user"
+        else:
+            errors['validate_errors'] = "Username already exists"
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
     errors['username_errors'] = '<br>'.join(form.username.errors)
     errors['password_errors'] = '<br>'.join(form.password.errors)

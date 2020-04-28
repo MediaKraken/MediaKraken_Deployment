@@ -1,5 +1,9 @@
-async def db_user_count(self, db_connection):
-    return await db_connection.fetchval('select count(*) from mm_user')
+async def db_user_count(self, db_connection, user_name=None):
+    if user_name is None:
+        return await db_connection.fetchval('select count(*) from mm_user')
+    else:
+        return await db_connection.fetchval('select count(*) from mm_user'
+                                            ' where mm_user = $1', user_name)
 
 
 async def db_user_delete(self, db_connection, user_guid):
