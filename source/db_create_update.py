@@ -454,7 +454,7 @@ if db_connection.db_table_index_check('mm_notification_idx_dismissable') is None
 
 # create table for user
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user (id SERIAL PRIMARY KEY,'
-                       ' username text, email text, password text,'
+                       ' username text, email text, password bytea,'
                        ' created_at timestamp with time zone,'
                        ' active boolean, is_admin boolean, user_json jsonb, lang text)')
 if db_connection.db_table_index_check('mm_user_idx_username') is None:

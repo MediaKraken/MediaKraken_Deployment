@@ -63,13 +63,11 @@ class CommonHashCrypto:
 
     def com_hash_gen_crypt_encode(self, encode_string):
         # encode, since it needs bytes
-        # then decode, otherwise it return bytes
-        return self.fernet.encrypt(encode_string.encode()).decode()
+        return self.fernet.encrypt(encode_string.encode())
 
     def com_hash_gen_crypt_decode(self, decode_string):
         # encode, since it needs bytes
-        # then decode, otherwise it return bytes
-        return self.fernet.decrypt(decode_string.encode()).decode()
+        return self.fernet.decrypt(decode_string.encode())
 
 
 def com_hash_sha1_by_filename(file_name, enter_archive=False):

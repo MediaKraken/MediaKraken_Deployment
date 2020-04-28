@@ -569,7 +569,7 @@ CREATE TABLE public.mm_user (
     id integer NOT NULL,
     username text,
     email text,
-    password text,
+    password bytea,
     created_at timestamp with time zone,
     active boolean,
     is_admin boolean,
