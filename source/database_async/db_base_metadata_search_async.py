@@ -44,8 +44,9 @@ async def db_metadata_search(self, db_connection, search_string, search_type='Lo
                                           ' ORDER BY sml DESC, LOWER(mm_metadata_album_name);',
                                           search_string, search_string))
         if search_image:
+            # image section
             # TODO image search
-            pass
+            json_return_data['Image'] = json.dumps()
         if search_publication:
             # publication section
             json_return_data['Publication'] = json.dumps(
