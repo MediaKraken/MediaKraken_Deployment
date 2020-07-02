@@ -66,6 +66,7 @@ def worker(audit_directory):
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
                 # TODO can I do os.path.join with UNC?
+                # TODO as of right now this will break with spaces in share/dir/filename
                 file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]
                                  + '\\' + file_name)
         smb_stuff.com_cifs_close()

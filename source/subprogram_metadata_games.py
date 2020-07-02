@@ -62,6 +62,7 @@ if not os.path.exists(file_name):
         for child_of_root in json_data['mame']['machine']:
             common_global.es_inst.com_elastic_index('info', {'child': child_of_root,
                                                              'childname': child_of_root['@name']})
+            # TODO change this to upsert
             # see if exists then need to update
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
                 # TODO handle shortname properly
