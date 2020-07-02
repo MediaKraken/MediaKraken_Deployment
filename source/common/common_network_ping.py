@@ -181,8 +181,8 @@ def do_one(dest_addr, timeout):
     icmp = socket.getprotobyname("icmp")
     try:
         my_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
-    except socket.error as xxx_todo_changeme:
-        (errno, msg) = xxx_todo_changeme.args
+    except socket.error as except_error_data:
+        (errno, msg) = except_error_data.args
         if errno == 1:
             # Operation not permitted
             msg = msg + (

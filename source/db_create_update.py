@@ -510,7 +510,6 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
 
 base_cron = [
     # metadata
-    # TODO CODE
     ('Anime', 'Match anime via Scudlee and Manami data',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime',
       'program': '/mediakraken/subprogram_match_anime_id.py'}),
@@ -520,7 +519,6 @@ base_cron = [
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Collection',
       'program': '/mediakraken/subprogram_metadata_update_create_collections.py'}),
 
-    # TODO CODE
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
      {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update',
       'program': '/mediakraken/subprogram_schedules_direct_updates.py'}),
@@ -780,11 +778,14 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
     }), json.dumps({'thetvdb_Updated_Epoc': 0}))
 
 # create table game_info
+# TODO do I wish to just use jin index for json which will have that cec32/sha1 data?
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_info (gi_id uuid'
                        ' CONSTRAINT gi_id_mpk PRIMARY KEY,'
                        ' gi_system_id uuid,'
                        ' gi_game_info_short_name text,'
                        ' gi_game_info_name text,'
+                       ' gi_game_info_crc32 text,'
+                       ' gi_game_info_sha1 text,'
                        ' gi_game_info_json jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
@@ -928,6 +929,19 @@ db_connection.db_query('create table IF NOT EXISTS mm_game_dedicated_servers'
 if db_connection.db_table_index_check('mm_game_server_name_idx') is None:
     db_connection.db_query(
         'CREATE INDEX mm_game_server_name_idx ON mm_game_dedicated_servers(mm_game_server_name)')
+
+# user queue
+db_connection.db_query(
+    'create table IF NOT EXISTS mm_user_queue (mm_user_queue_id uuid'
+    ' CONSTRAINT mm_user_queue_id primary key,'
+    ' mm_user_queue_name_idx text,'
+    ' mm_user_queue_user_id uuid,'
+    ' mm_user_queue_media_type smallint,'
+    ' mm_user_queue_media_guid uuid)')
+if db_connection.db_table_index_check('mm_user_queue_name_idx') is None:
+    db_connection.db_query(
+        'CREATE INDEX mm_user_queue_name_idx'
+        ' ON mm_user_queue(mm_user_queue_name)')
 
 # create indexes for pg_trgm
 if db_connection.db_table_index_check('mm_metadata_tvshow_name_trigram_idx') is None:

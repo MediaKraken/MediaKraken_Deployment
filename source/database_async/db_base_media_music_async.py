@@ -21,7 +21,7 @@ async def db_media_album_list(self, db_connection, offset=0, per_page=None, sear
     """
     Album list
     """
-    # TODO only grab the image part of the json for list
+    # TODO only grab the image part of the json for list, might want runtime, etc as well
     if search_value is not None:
         return await db_connection.fetch('select mm_metadata_album_guid,'
                                          'mm_metadata_album_name,'

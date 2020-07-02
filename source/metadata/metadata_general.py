@@ -83,8 +83,8 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
                                                                  'title'])
         if metadata_uuid is None:
             if match_result is None:
-                # TODO this could start an infinate loop....don't
-                update_provider = 'themoviedb'
+                # do lookup halt as we'll start all movies in tmdb
+                lookup_halt = True
             else:
                 set_fetch = True
     elif provider_name == 'chart_lyrics':

@@ -9,6 +9,14 @@ async def db_meta_game_by_guid(self, db_connection, guid):
                                         ' where gi_id = $1', guid)
 
 
+async def db_meta_game_by_sha1(self, db_connection, sha1_hash):
+    """
+    # return game uuid by sha1 hash
+    """
+    return await db_connection.fetchone('select gi_id'
+                                        ' from mm_metadata_game_software_info'
+                                        ' where gi_game_info_sha1 = $1', sha1_hash)
+
 async def db_meta_game_list(self, db_connection, offset=0, records=None, search_value=None):
     """
     # return list of games

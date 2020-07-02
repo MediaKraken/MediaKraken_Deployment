@@ -335,5 +335,23 @@ if db_connection.db_version_check() < 26:
     db_connection.db_version_update(26)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 27:
+    # user queue
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_user_queue (mm_user_queue_id uuid'
+        ' CONSTRAINT mm_user_queue_id primary key,'
+        ' mm_user_queue_name_idx text,'
+        ' mm_user_queue_user_id uuid,'
+        ' mm_user_queue_media_type smallint,'
+        ' mm_user_queue_media_guid uuid)')
+    if db_connection.db_table_index_check('mm_user_queue_name_idx') is None:
+        db_connection.db_query(
+            'CREATE INDEX mm_user_queue_name_idx'
+            ' ON mm_user_queue(mm_user_queue_name)')
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_crc32 text;')
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_sha1 text;')
+    db_connection.db_version_update(27)
+    db_connection.db_commit()
+
 # close the database
 db_connection.db_close()

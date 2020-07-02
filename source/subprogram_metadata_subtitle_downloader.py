@@ -41,7 +41,6 @@ total_download_attempts = 0
 # parse arguments
 sub_lang = "en"
 # loop through all the libraries
-# TODO this lib path read will have to recoded since I deleted during async sanic, oops
 for lib_row in db_connection.db_library_paths():
     # search the directory for filter files
     for media_row in common_file.com_file_dir_list(lib_row['mm_media_dir_path'],

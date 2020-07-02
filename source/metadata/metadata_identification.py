@@ -90,8 +90,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
             sha1_hash = common_hash.com_hash_sha1_by_filename(
                 download_que_json['Path'])
             if sha1_hash is not None:
-                # TODO lookup the sha1
-                pass
+                metadata_uuid = db_connection.db_meta_game_by_sha1(sha1_hash)
     elif class_text == "Magazine":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
                                                                          download_que_json,

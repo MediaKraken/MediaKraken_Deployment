@@ -97,9 +97,7 @@ class CommonMetadataTMDB:
         """
         if tmdb_id[0:2].lower() == 'tt':
             # imdb_id......so, run find and then do the requests
-            # TODO
-            # tmdb_id = metadata_movie.movie_fetch_tmdb_imdb(imdb_id)
-            pass
+            tmdb_id = metadata_movie_imdb.com_imdb_id_search(tmdb_id[0:2])
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
