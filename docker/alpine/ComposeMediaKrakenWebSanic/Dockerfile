@@ -42,7 +42,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install git+https://github.com/MediaKraken/sanic_session \
   && pip3 install git+https://github.com/MediaKraken/sanic-auth \
   && pip3 install git+https://github.com/MediaKraken/python-paginate \
-  && pip3 install -e git+https://github.com/LevPasha/Instagram-API-python.git#egg=InstagramAPI \
   && apk del \
   gcc \
   g++ \
