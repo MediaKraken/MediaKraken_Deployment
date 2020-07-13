@@ -15,10 +15,12 @@ COPY requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
-# pip3 is installed with python3
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+# pip3 is installed now in community, hence the first sed
+RUN sed -i "2 s/^#//" /etc/apk/repositories \
+  && sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add  --no-cache \
   python3 \
+  py3-pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && adduser -DHs /sbin/nologin metaman
