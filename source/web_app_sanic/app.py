@@ -107,11 +107,10 @@ async def login(request):
     if request.method == 'POST':  # and form.validate():
         print('here i am in post', flush=True)
         username = form.username.data
-        password = app_crypto.com_hash_gen_crypt_encode(form.password.data)
         db_connection = await request.app.db_pool.acquire()
         print('after db connection', flush=True)
         user_id, user_admin = await request.app.db_functions.db_user_login_validation(
-            db_connection, username, password)
+            db_connection, username, app_crypto.com_hash_gen_crypt_encode(form.password.data))
         await app.db_pool.release(db_connection)
         print(user_id, user_admin, flush=True)
         if user_id is None:  # invalid user name
@@ -140,14 +139,13 @@ async def register(request):
     form = BSSRegisterForm(request)
     if request.method == 'POST':  # and form.validate():
         username = form.username.data
-        email = form.email.data
-        password = app_crypto.com_hash_gen_crypt_encode(form.password.data)
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
         # verify user doesn't already exist on database
         if await request.app.db_functions.db_user_count(db_connection, username) == 0:
             user_id, user_admin = await request.app.db_functions.db_user_insert(
-                db_connection, user_name=username, user_email=email, user_password=password)
+                db_connection, user_name=username, user_email=form.email.data,
+                user_password=app_crypto.com_hash_gen_crypt_encode(form.password.data))
             await app.db_pool.release(db_connection)
             if user_id.isnumeric():  # valid user
                 request['session']['search_text'] = None
