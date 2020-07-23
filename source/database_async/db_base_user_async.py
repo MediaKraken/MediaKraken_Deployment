@@ -67,6 +67,7 @@ async def db_user_login_validation(self, db_connection, user_name, user_password
             return 'inactive_account', None
         print(user_password, len(user_password), result['password'], len(result['password']),
               flush=True)
+        # the user_password should be app_crypto.com_hash_gen_crypt_encode at this point already
         if user_password == result['password']:
             return result['id'], result['is_admin']
         else:
