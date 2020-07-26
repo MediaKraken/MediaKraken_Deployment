@@ -33,7 +33,7 @@ async def db_user_insert(self, db_connection, user_name, user_email, user_passwo
     return await db_connection.execute(
         'insert into mm_user (username, email, password, active, is_admin)'
         ' values ($1, crypt($2, gen_salt("bf", 30)), $3, True, $4) returning id',
-        user_name, user_email, user_password, user_admin), user_admin
+        user_name, user_email, user_password, user_admin)
 
 
 async def db_user_list_name(self, db_connection, offset=0, records=None):
@@ -61,7 +61,7 @@ async def db_user_login_validation(self, db_connection, user_name, user_password
     result = await db_connection.fetchrow('select id, active, is_admin'
                                           ' from mm_user where username = $1'
                                           ' and password = crypt($2, password);',
-                                          (user_name, user_password))
+                                          user_name, user_password)
     if result is not None:
         print(result, flush=True)
         if result['active'] is False:
