@@ -33,7 +33,7 @@ async def db_user_insert(self, db_connection, user_name, user_email, user_passwo
     return await db_connection.execute(
         'insert into mm_user (username, email, password, active, is_admin)'
         ' values ($1, $2, $3, True, $4) returning id',
-        user_name, user_email, user_password, user_admin), user_admin
+        user_name, user_email, user_password.decode("utf-8") , user_admin), user_admin
 
 
 async def db_user_list_name(self, db_connection, offset=0, records=None):
@@ -65,10 +65,11 @@ async def db_user_login_validation(self, db_connection, user_name, user_password
         print(type(result), flush=True)
         if result['active'] is False:
             return 'inactive_account', None
-        print(user_password, len(user_password), result['password'], len(result['password']),
+        print(user_password.decode("utf-8") , len(user_password), result['password'],
+              len(result['password']),
               flush=True)
         # the user_password should be app_crypto.com_hash_gen_crypt_encode at this point already
-        if user_password == result['password']:
+        if user_password.decode("utf-8") == result['password']:
             return result['id'], result['is_admin']
         else:
             return 'invalid_password', None
