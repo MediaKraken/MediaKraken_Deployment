@@ -15,8 +15,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   alpine-sdk \
   libffi-dev \
-  libressl \
-  libressl-dev \
+  openssl \
+  openssl-dev \
   cifs-utils \
   curl-dev \
   nfs-utils \
@@ -48,7 +48,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libxml2-dev \
   libxslt-dev \
   linux-headers \
-  libressl-dev \
+  openssl-dev \
   musl-dev \
   net-snmp-dev \
   && rm requirements.txt \
