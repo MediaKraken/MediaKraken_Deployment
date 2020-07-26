@@ -5,7 +5,7 @@ import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
-from common import common_hash
+# from common import common_hash
 from common import common_logging_elasticsearch
 from common import common_network
 from python_paginate.css.semantic import Semantic
@@ -24,7 +24,7 @@ app = Sanic(__name__)
 # fire up ES logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webappsanic')
 # setup the crypto
-app_crypto = common_hash.CommonHashCrypto()
+# app_crypto = common_hash.CommonHashCrypto()
 # update pagination settings
 settings = dict(PREV_LABEL='<i class="left chevron icon"></i>',
                 NEXT_LABEL='<i class="right chevron icon"></i>',
@@ -110,7 +110,7 @@ async def login(request):
         db_connection = await request.app.db_pool.acquire()
         print('after db connection', flush=True)
         user_id, user_admin = await request.app.db_functions.db_user_login_validation(
-            db_connection, username, app_crypto.com_hash_gen_crypt_encode(form.password.data))
+            db_connection, username, form.password.data)
         await app.db_pool.release(db_connection)
         print(user_id, user_admin, flush=True)
         if user_id is None:  # invalid user name
@@ -145,7 +145,7 @@ async def register(request):
         if await request.app.db_functions.db_user_count(db_connection, username) == 0:
             user_id, user_admin = await request.app.db_functions.db_user_insert(
                 db_connection, user_name=username, user_email=form.email.data,
-                user_password=app_crypto.com_hash_gen_crypt_encode(form.password.data))
+                user_password=form.password.data)
             await app.db_pool.release(db_connection)
             if user_id.isnumeric():  # valid user
                 request['session']['search_text'] = None
