@@ -21,7 +21,7 @@ SET row_security = off;
 --
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
-
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 
 --
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: 
