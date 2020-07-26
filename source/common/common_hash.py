@@ -39,7 +39,7 @@ class CommonHashCrypto:
 
     def __init__(self):
         if not os.path.isfile('/mediakraken/secure/data.zip'):
-            salt = os.urandom(16)
+            salt = os.urandom(30)
             common_file.com_file_save_data(file_name='/mediakraken/secure/data.zip',
                                            data_block=salt,
                                            as_pickle=True)
