@@ -52,12 +52,8 @@ image_dir = [
 
 def build_image_dirs():
     for image_info in image_dir:
-        os.makedirs(os.path.join(
-            '/mediakraken/web_app_sanic/MediaKraken/static/meta/images', image_info),
-            exist_ok=True)
         for i in ascii_lowercase:
-            os.mkdir(os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/images',
+            os.mkdir(os.path.join('/mediakraken/web_app_sanic/static/meta/images',
                                   image_info, i))
     # since a-z won't be used
-    os.makedirs(
-        '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/episodes', exist_ok=True)
+    os.makedirs('/mediakraken/web_app_sanic/static/meta/images/episodes', exist_ok=True)

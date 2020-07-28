@@ -30,11 +30,8 @@ trailer_dir = [
 
 def build_trailer_dirs():
     for trailer_info in trailer_dir:
-        os.makedirs(
-            os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/trailers',
-                         trailer_info), exist_ok=True)
         for ndx in ascii_lowercase:
             os.makedirs(
-                os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/trailers',
+                os.path.join('/mediakraken/web_app_sanic/static/meta/trailers',
                              trailer_info,
                              ndx), exist_ok=True)
