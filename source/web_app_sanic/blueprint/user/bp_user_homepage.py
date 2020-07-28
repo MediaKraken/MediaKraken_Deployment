@@ -17,5 +17,6 @@ async def url_bp_user_homepage(request):
     media_data = await request.app.db_functions.db_media_new(db_connection, days_old=7)
     await request.app.db_pool.release(db_connection)
     return {
-        'data_new_media': media_data
+        'data_new_media': media_data,
+        'data_user_media_queue': False
     }
