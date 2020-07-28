@@ -231,7 +231,7 @@ services:
     volumes:
       - ./mkmount:/mediakraken/mnt
       # stores posters/etc so webserver can present
-      - mediakraken_vol_static:/mediakraken/web_app_sanic/MediaKraken/static
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static
       # stores the xml/json xref files for anime match
       - mediakraken_vol_cache:/mediakraken/cache
     networks:
@@ -275,7 +275,7 @@ services:
     volumes:
       - mediakraken_vol_nginx:/var/log/mediakraken/nginx
       - mediakraken_vol_certs:/etc/nginx/certs:ro
-      - mediakraken_vol_static:/mediakraken/web_app_sanic/MediaKraken/static:ro
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static:ro
     ports:
       - "8900:8900"
     networks:
@@ -518,7 +518,7 @@ services:
     volumes:
       - ./mkmount:/mediakraken/mnt
       # must not be read only as it stores cache here
-      - mediakraken_vol_static:/mediakraken/web_app_sanic/MediaKraken/static
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static
       - mediakraken_vol_webkey:/mediakraken/key
       - mediakraken_vol_webpid:/var/run
       - ./data/uploads:/mediakraken/uploads
