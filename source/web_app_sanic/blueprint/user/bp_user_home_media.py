@@ -15,7 +15,6 @@ async def url_bp_user_home_media_list(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     db_connection = await request.app.db_pool.acquire()
-    # TODO still wrong......this is HOME movies
     media_data = await request.app.db_functions.db_media_movie_list(db_connection,
                                                                     class_guid=common_global.DLMediaType.Movie_Home.value,
                                                                     list_type=None,
