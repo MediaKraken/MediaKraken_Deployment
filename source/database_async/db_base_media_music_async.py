@@ -3,14 +3,11 @@ async def db_media_album_count(self, db_connection, search_value=None):
     Album count
     """
     if search_value is not None:
-        # this could possibly return null since search hence the try/catch below
         return await db_connection.fetchval('select count(*) from mm_metadata_album, mm_media'
                                             ' where mm_media_metadata_guid = mm_metadata_album_guid '
-                                            ' and mm_metadata_album_name % $1'
-                                            ' group by mm_metadata_album_guid',
+                                            ' and mm_metadata_album_name % $1',
                                             search_value)
     else:
-        # this could possibly return null in the distinct hence the try/catch below
         return await db_connection.fetchval(
             'select count(*) from (select distinct mm_metadata_album_guid'
             ' from mm_metadata_album, mm_media'
