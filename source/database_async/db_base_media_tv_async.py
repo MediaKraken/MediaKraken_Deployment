@@ -38,8 +38,7 @@ async def db_media_tv_list_count(self, db_connection, genre_type=None, group_col
     # grab tv data count
     """
     sql_data = await db_connection.fetch('select count(*) from mm_metadata_tvshow, mm_media'
-                                         ' where mm_media_metadata_guid = mm_metadata_tvshow_guid'
-                                         ' group by mm_metadata_tvshow_guid')
+                                         ' where mm_media_metadata_guid = mm_metadata_tvshow_guid')
     if sql_data is None:
         return 0
     return len(sql_data)
