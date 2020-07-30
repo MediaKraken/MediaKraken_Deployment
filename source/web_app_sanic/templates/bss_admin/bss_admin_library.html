@@ -42,7 +42,13 @@
                     <div class="row flex-wrap">
                         <div class="col">
                             <fieldset>
-                                <legend>Media library setup</legend><button class="btn btn-primary" type="button">Submit Media Scan</button></fieldset>
+                                <legend>Media library setup</legend>
+                                <form method="post">
+                                    <input class="btn btn-large btn-primary" type="submit" name="scan" value="Submit Media Scan">
+                                </form>
+                                <button class="btn" type="button">Add Media Directory</button>
+                                <a href="{{ url_for('blueprint_admin_library.url_bp_admin_library_edit') }}" class="btn btn-large">Add Media Directory</a>
+                            </fieldset>
                         </div>
                     </div>
                     <div class="row">
