@@ -17,7 +17,6 @@
 """
 
 import os
-import sys
 import time
 
 import psycopg2
@@ -58,15 +57,6 @@ def db_open(self):
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
                            os.cpu_count())
-    # do here since the db cursor is created now
-    # verify the trigram extension is enabled for the database
-    self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
-    if self.db_cursor.fetchone()[0] == 0:
-        common_global.es_inst.com_elastic_index('critical',
-                                                {'stuff': 'pg_trgm extension needs to '
-                                                          'be enabled for database!!!!'
-                                                          '  Exiting!!!'})
-        sys.exit(1)
 
 
 def db_close(self):
