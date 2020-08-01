@@ -30,10 +30,16 @@ async def db_user_insert(self, db_connection, user_name, user_email, user_passwo
         user_admin = True
     else:
         user_admin = False
+    # TODO re-enable this when bug fixed
+    # return await db_connection.execute(
+    #     'insert into mm_user (username, email, password, active, is_admin)'
+    #     ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4) returning id',
+    #     user_name, user_email, user_password, user_admin)
     return await db_connection.execute(
         'insert into mm_user (username, email, password, active, is_admin)'
-        ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4) returning id',
-        user_name, user_email, user_password, user_admin)
+        ' values ($1, $2, crypt(' + user_password
+        + ', gen_salt(\'bf\', 10)), True, True) returning id',
+        user_name, user_email)
 
 
 async def db_user_list_name(self, db_connection, offset=0, records=None):
