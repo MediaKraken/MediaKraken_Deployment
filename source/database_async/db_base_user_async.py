@@ -37,8 +37,8 @@ async def db_user_insert(self, db_connection, user_name, user_email, user_passwo
     #     user_name, user_email, user_password, user_admin)
     return await db_connection.execute(
         'insert into mm_user (username, email, password, active, is_admin)'
-        ' values ($1, $2, crypt(' + user_password
-        + ', gen_salt(\'bf\', 10)), True, True) returning id',
+        ' values ($1, $2, crypt(\'' + user_password
+        + '\', gen_salt(\'bf\', 10)), True, True) returning id',
         user_name, user_email)
 
 
