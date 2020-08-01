@@ -27,79 +27,31 @@ def metadata_tvshow_detail(guid):
     data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
-    if 'themoviedb' in json_metadata['Meta']:
-        if 'episode_run_time' in json_metadata['Meta']['themoviedb']:
-            try:
-                data_runtime = json_metadata['Meta']['themoviedb']['episode_run_time'][0]
-            except:
-                data_runtime = json_metadata['Meta']['themoviedb']['episode_run_time']
-        else:
-            data_runtime = None
-        # TODO there must be sum rating on stuff......
-        if 'rating' in json_metadata['Meta']['themoviedb']:
-            data_rating = json_metadata['Meta']['themoviedb']['rating']
-        else:
-            data_rating = None
-        if 'first_air_date' in json_metadata['Meta']['themoviedb']:
-            data_first_aired = json_metadata['Meta']['themoviedb']['first_air_date']
-        else:
-            data_first_aired = None
-        if 'overview' in json_metadata['Meta']['themoviedb']:
-            data_overview = json_metadata['Meta']['themoviedb']['overview']
-        else:
-            data_overview = None
-        # build gen list
-        data_genres_list = ''
-        if 'genres' in json_metadata['Meta']['themoviedb']:
-            for ndx in json_metadata['Meta']['themoviedb']['genres']:
-                data_genres_list += (ndx + ', ')
-    elif 'tvmaze' in json_metadata['Meta']:
-        if 'runtime' in json_metadata['Meta']['tvmaze']:
-            data_runtime = json_metadata['Meta']['tvmaze']['runtime']
-        else:
-            data_runtime = None
-        if 'rating' in json_metadata['Meta']['tvmaze']:
-            data_rating = json_metadata['Meta']['tvmaze']['rating']['average']
-        else:
-            data_rating = None
-        if 'premiered' in json_metadata['Meta']['tvmaze']:
-            data_first_aired = json_metadata['Meta']['tvmaze']['premiered']
-        else:
-            data_first_aired = None
-        if 'summary' in json_metadata['Meta']['tvmaze']:
-            data_overview = json_metadata['Meta']['tvmaze']['summary']
-        else:
-            data_overview = None
-        # build gen list
-        data_genres_list = ''
-        if 'genres' in json_metadata['Meta']['tvmaze']:
-            for ndx in json_metadata['Meta']['tvmaze']['genres']:
-                data_genres_list += (ndx + ', ')
-    elif 'thetvdb' in json_metadata['Meta']:
-        if 'Runtime' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_runtime = json_metadata['Meta']['thetvdb']['Meta']['Series']['Runtime']
-        else:
-            data_runtime = None
-        if 'ContentRating' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_rating = json_metadata['Meta']['thetvdb']['Meta']['Series']['ContentRating']
-        else:
-            data_rating = None
-        if 'FirstAired' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_first_aired = json_metadata['Meta']['thetvdb']['Meta']['Series']['FirstAired']
-        else:
-            data_first_aired = None
-        if 'Overview' in json_metadata['Meta']['thetvdb']['Meta']['Series']:
-            data_overview = json_metadata['Meta']['thetvdb']['Meta']['Series']['Overview']
-        else:
-            data_overview = None
-        # build gen list
-        data_genres_list = ''
-        if 'Genre' in json_metadata['Meta']['thetvdb']['Meta']['Series'] \
-                and json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'] is not None:
-            for ndx in json_metadata['Meta']['thetvdb']['Meta']['Series']['Genre'].split("|"):
-                data_genres_list += (ndx + ', ')
-            # since | is at first and end....chop off first and last comma
-            data_genres_list = data_genres_list[2:-2]
+    if 'episode_run_time' in json_metadata:
+        try:
+            data_runtime = json_metadata['episode_run_time'][0]
+        except:
+            data_runtime = json_metadata['episode_run_time']
+    else:
+        data_runtime = None
+    # TODO there must be sum rating on stuff......
+    if 'rating' in json_metadata:
+        data_rating = json_metadata['rating']
+    else:
+        data_rating = None
+    if 'first_air_date' in json_metadata:
+        data_first_aired = json_metadata['first_air_date']
+    else:
+        data_first_aired = None
+    if 'overview' in json_metadata:
+        data_overview = json_metadata['overview']
+    else:
+        data_overview = None
+    # build gen list
+    data_genres_list = ''
+    if 'genres' in json_metadata:
+        for ndx in json_metadata['genres']:
+            data_genres_list += (ndx + ', ')
     # poster image
     try:
         data_poster_image = data_metadata[3]
@@ -107,8 +59,8 @@ def metadata_tvshow_detail(guid):
         data_poster_image = None
     # background image
     try:
-        if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop']
+        if json_metadata['Backdrop'] is not None:
+            data_background_image = json_metadata['Backdrop']
         else:
             data_background_image = None
     except:
@@ -148,14 +100,6 @@ def metadata_tvshow_season_detail_page(guid, season):
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']
         else:
             data_runtime = None
-        if 'rating' in json_metadata['Meta']['tvmaze']:
-            data_rating = json_metadata['Meta']['tvmaze']['rating']['average']
-        else:
-            data_rating = None
-        if 'premiered' in json_metadata['Meta']['tvmaze']:
-            data_first_aired = json_metadata['Meta']['tvmaze']['premiered']
-        else:
-            data_first_aired = None
         if 'summary' in json_metadata['Meta']['tvmaze']:
             data_overview \
                 = json_metadata['Meta']['tvmaze']['summary'].replace('<p>', '').replace('</p>', '')
@@ -204,8 +148,8 @@ def metadata_tvshow_season_detail_page(guid, season):
         data_poster_image = None
     # background image
     try:
-        if json_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = json_metadata['LocalImages']['Backdrop']
+        if json_metadata['Backdrop'] is not None:
+            data_background_image = json_metadata['Backdrop']
         else:
             data_background_image = None
     except:
@@ -240,8 +184,8 @@ def metadata_tvshow_episode_detail_page(guid, eps_id):
         data_poster_image = None
     # background image
     try:
-        if data_metadata['LocalImages']['Backdrop'] is not None:
-            data_background_image = data_metadata['LocalImages']['Backdrop']
+        if data_metadata['Backdrop'] is not None:
+            data_background_image = data_metadata['Backdrop']
         else:
             data_background_image = None
     except:

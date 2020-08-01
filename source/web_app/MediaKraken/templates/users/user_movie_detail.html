@@ -100,17 +100,17 @@
                 <div class="row">
                     <div class="table-responsive">
                         <p>
-                            <span style="float: left">Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title']}}</span>
-                            <span style="float: right">Release Date: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['release_date']}}</span>
+                            <span style="float: left">Title: {{json_metadata['mm_metadata_json']['title']}}</span>
+                            <span style="float: right">Release Date: {{json_metadata['mm_metadata_json']['release_date']}}</span>
                         </p>
                     </div>
-                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] and
-                    json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline'] != '-' %}
-                    <p>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['tagline']}}</p>
+                    {% if json_metadata['mm_metadata_json']['tagline'] and
+                    json_metadata['mm_metadata_json']['tagline'] != '-' %}
+                    <p>{{json_metadata['mm_metadata_json']['tagline']}}</p>
                     {% endif %}
-                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] and
-                    json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title'] != json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['title'] %}
-                    <p>Alternate Title: {{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['original_title']}}</p>
+                    {% if json_metadata['mm_metadata_json']['original_title'] and
+                    json_metadata['mm_metadata_json']['original_title'] != json_metadata['mm_metadata_json']['title'] %}
+                    <p>Alternate Title: {{json_metadata['mm_metadata_json']['original_title']}}</p>
                     {% endif %}
                     <BR>
                     {% for genre in data_genres %}
@@ -132,10 +132,10 @@
                                value="Sync">
                         {% endif %}
                     </p>
-                    {% if json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage'] %}
-                    <p>Homepage: <a href={{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}>{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['homepage']}}</a></p>
+                    {% if json_metadata['mm_metadata_json']['homepage'] %}
+                    <p>Homepage: <a href={{json_metadata['mm_metadata_json']['homepage']}}>{{json_metadata['mm_metadata_json']['homepage']}}</a></p>
                     {% endif %}
-                    <p><input id="movie_rating_stars" class="rating rating-loading" value="{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_average']}}" data-min="0" data-max="10" data-step="0.5" data-size="md"></p>
+                    <p><input id="movie_rating_stars" class="rating rating-loading" value="{{json_metadata['mm_metadata_json']['vote_average']}}" data-min="0" data-max="10" data-step="0.5" data-size="md"></p>
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
                     Overview
                 </div>
                 <div class="card-body">
-                    <p class="card-text">{{json_metadata['mm_metadata_json']['Meta']['themoviedb']['Meta']['overview']}}<p>
+                    <p class="card-text">{{json_metadata['mm_metadata_json']['overview']}}<p>
                 </div>
             </div>
         </div>

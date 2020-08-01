@@ -20,31 +20,28 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
     data_vote_count = common_internationalization.com_inter_number_format(
-        json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
+        json_metadata['vote_count'])
     # build gen list
     genres_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
-        genres_list += (json_metadata['Meta']['themoviedb']
-                        ['Meta']['genres'][ndx]['name'] + ', ')
+    for ndx in range(0, len(json_metadata['genres'])):
+        genres_list += (json_metadata[ndx]['name'] + ', ')
     # build production list
     production_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
+    for ndx in range(0, len(json_metadata['production_companies'])):
         production_list \
-            += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
-                + ', ')
+            += (json_metadata['production_companies'][ndx]['name'] + ', ')
     # poster image
     try:
-        if json_imagedata['Images']['themoviedb']['Poster'] is not None:
-            data_poster_image \
-                = json_imagedata['Images']['themoviedb']['Poster']
+        if json_imagedata['Poster'] is not None:
+            data_poster_image = json_imagedata['Poster']
         else:
             data_poster_image = None
     except:
         data_poster_image = None
     # background image
     try:
-        if json_imagedata['Images']['themoviedb']['Backdrop'] is not None:
-            data_background_image = json_imagedata['Images']['themoviedb']['Backdrop']
+        if json_imagedata['Backdrop'] is not None:
+            data_background_image = json_imagedata['Backdrop']
         else:
             data_background_image = None
     except:
@@ -58,12 +55,12 @@ async def url_bp_user_metadata_movie_detail(request, guid):
         'json_metadata': json_metadata,
         'data_genres': genres_list[:-2],
         'data_production': production_list[:-2],
-        # data_review: review,
+        'data_review': review,
         'data_poster_image': data_poster_image,
         'data_background_image': data_background_image,
         'data_vote_count': data_vote_count,
         'data_budget': common_internationalization.com_inter_number_format(
-            json_metadata['Meta']['themoviedb']['Meta']['budget'])
+            json_metadata['budget'])
     }
 
 

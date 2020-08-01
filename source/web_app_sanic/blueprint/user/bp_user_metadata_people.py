@@ -53,13 +53,9 @@ async def url_bp_user_metadata_person_list(request):
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
-            if 'themoviedb' in person_data['mmp_person_image']['Images']:
-                try:
-                    person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace(
-                        '/mediakraken/web_app_sanic/MediaKraken', '') + person_data['mmp_meta']
-                except:
-                    person_image = "/static/images/person_missing.png"
-            else:
+            try:
+                person_image = person_data['mmp_person_image'] + person_data['mmp_meta']
+            except:
                 person_image = "/static/images/person_missing.png"
         else:
             person_image = "/static/images/person_missing.png"

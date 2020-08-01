@@ -343,7 +343,7 @@ ALTER TABLE public.mm_metadata_logo OWNER TO postgres;
 
 CREATE TABLE public.mm_metadata_movie (
     mm_metadata_guid uuid NOT NULL,
-    mm_metadata_media_id jsonb,
+    mm_metadata_media_id integer,
     mm_media_name text,
     mm_metadata_json jsonb,
     mm_metadata_localimage_json jsonb,
@@ -409,7 +409,7 @@ CREATE TABLE public.mm_metadata_person (
     mmp_id uuid NOT NULL,
     mmp_person_media_id jsonb,
     mmp_person_meta_json jsonb,
-    mmp_person_image jsonb,
+    mmp_person_image text,
     mmp_person_name text
 );
 

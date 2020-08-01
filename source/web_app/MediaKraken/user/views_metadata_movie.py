@@ -30,31 +30,29 @@ def metadata_movie_detail(guid):
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
     data_vote_count = common_internationalization.com_inter_number_format(
-        json_metadata['Meta']['themoviedb']['Meta']['vote_count'])
+        json_metadata['vote_count'])
     # build gen list
     genres_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['genres'])):
-        genres_list += (json_metadata['Meta']['themoviedb']
-                        ['Meta']['genres'][ndx]['name'] + ', ')
+    for ndx in range(0, len(json_metadata['genres'])):
+        genres_list += (json_metadata['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
-    for ndx in range(0, len(json_metadata['Meta']['themoviedb']['Meta']['production_companies'])):
+    for ndx in range(0, len(json_metadata['production_companies'])):
         production_list \
-            += (json_metadata['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
+            += (json_metadata['production_companies'][ndx]['name']
                 + ', ')
     # poster image
     try:
-        if json_imagedata['Images']['themoviedb']['Poster'] is not None:
-            data_poster_image \
-                = json_imagedata['Images']['themoviedb']['Poster']
+        if json_imagedata['Poster'] is not None:
+            data_poster_image = json_imagedata['Poster']
         else:
             data_poster_image = None
     except:
         data_poster_image = None
     # background image
     try:
-        if json_imagedata['Images']['themoviedb']['Backdrop'] is not None:
-            data_background_image = json_imagedata['Images']['themoviedb']['Backdrop']
+        if json_imagedata['Backdrop'] is not None:
+            data_background_image = json_imagedata['Backdrop']
         else:
             data_background_image = None
     except:
@@ -72,7 +70,7 @@ def metadata_movie_detail(guid):
                            data_background_image=data_background_image,
                            data_vote_count=data_vote_count,
                            data_budget=common_internationalization.com_inter_number_format(
-                               json_metadata['Meta']['themoviedb']['Meta']['budget'])
+                               json_metadata['budget'])
                            )
 
 
@@ -141,13 +139,13 @@ def metadata_movie_list():
                       rating_status, request_status, queue_status, deck_start, deck_break))
     session['search_page'] = 'meta_movie'
     pagination = common_pagination_flask.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_meta_movie_count(
-                                                      session['search_text']),
-                                                  record_name='movie(s)',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+                                                        per_page=per_page,
+                                                        total=g.db_connection.db_meta_movie_count(
+                                                            session['search_text']),
+                                                        record_name='movie(s)',
+                                                        format_total=True,
+                                                        format_number=True,
+                                                        )
     return render_template('users/metadata/meta_movie_list.html',
                            media_movie=media,
                            page=page,

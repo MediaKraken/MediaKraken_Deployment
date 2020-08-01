@@ -318,27 +318,23 @@ class MediaKrakenApp(App):
         elif json_message['Type'] == "Media":
             if json_message['Subtype'] == "Detail":
                 self.root.ids.theater_media_video_title.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['title']
+                    = json_message['Data']['title']
                 self.root.ids.theater_media_video_subtitle.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['tagline']
+                    = json_message['Data']['tagline']
                 # self.root.ids.theater_media_video_rating = row_data[3]['']
                 self.root.ids.theater_media_video_runtime.text \
-                    = str(json_message['Data']['Meta']['themoviedb']['Meta']['runtime'])
+                    = str(json_message['Data']['runtime'])
                 self.root.ids.theater_media_video_overview.text \
-                    = json_message['Data']['Meta']['themoviedb']['Meta']['overview']
+                    = json_message['Data']['overview']
                 genres_list = ''
-                for ndx in range(0,
-                                 len(json_message['Data']['Meta']['themoviedb']['Meta']['genres'])):
-                    genres_list += (
-                            json_message['Data']['Meta']['themoviedb']['Meta']['genres'][ndx][
-                                'name'] + ', ')
+                for ndx in range(0, len(json_message['Data']['genres'])):
+                    genres_list += (json_message['Data']['genres'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_genres.text = genres_list[:-2]
                 # "LocalImages": {"Banner": "", "Fanart": "",
                 # "Poster": "../images/poster/f/9mhyID0imBjaRj3FJkARuXXSiQU.jpg", "Backdrop": null},
                 production_list = ''
-                for ndx in range(0, len(json_message['Data']['Meta']['themoviedb']['Meta'][
-                                            'production_companies'])):
-                    production_list += (json_message['Data']['Meta']['themoviedb']['Meta'][
+                for ndx in range(0, len(json_message['Data']['production_companies'])):
+                    production_list += (json_message['Data'][
                                             'production_companies'][ndx]['name'] + ', ')
                 self.root.ids.theater_media_video_production_companies.text = production_list[
                                                                               :-2]

@@ -13,28 +13,10 @@ async def db_meta_person_as_seen_in(self, db_connection, person_guid):
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         return await db_connection.fetch('select mm_metadata_guid,mm_media_name,'
-                                         'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
-                                         ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
+                                         'mm_metadata_localimage_json->\'Poster\''
+                                         ' from mm_metadata_movie where mm_metadata_json->\'credits\'->\'cast\''
                                          ' @> \'[{"id": $1}]\' order by LOWER(mm_media_name)',
                                          sql_params)
-    elif 'tvmaze' in row_data['mmp_person_media_id']:
-        sql_params = int(row_data['mmp_person_media_id']['tvmaze']),
-        common_global.es_inst.com_elastic_index('info', {'sql paramts': sql_params})
-        return await db_connection.fetch('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-                                         'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
-                                         ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-                                         '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": $1}}]\' order by LOWER(mm_metadata_tvshow_name)',
-                                         sql_params)
-        # TODO won't this need to be like below?
-    elif 'thetvdb' in row_data['mmp_person_media_id']:
-        # sql_params = str(row_data[1]['thetvdb']),
-        # TODO little bobby tables
-        return await db_connection.fetch('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-                                         'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\''
-                                         ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
-                                         '->\'Cast\'->\'Actor\' @> \'[{"id": \"'
-                                         + str(row_data['mmp_person_media_id']['thetvdb'])
-                                         + '\"}]\' order by LOWER(mm_metadata_tvshow_name)')  # , sql_params)  #TODO
 
 
 async def db_meta_person_by_guid(self, db_connection, guid):

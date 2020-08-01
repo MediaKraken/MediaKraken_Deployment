@@ -99,21 +99,21 @@ def db_meta_person_id_count(self, host_type, guid):
 
 
 def db_meta_person_insert(self, person_name, media_id_json, person_json,
-                          image_json=None):
+                          image_path=None):
     """
     # insert person
     """
     common_global.es_inst.com_elastic_index('info', {'db pers insert': {'name': person_name,
                                                                         'id': media_id_json,
                                                                         'person': person_json,
-                                                                        'image': image_json}})
+                                                                        'image': image_path}})
     new_guid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
                            ' mmp_person_media_id,'
                            ' mmp_person_meta_json,'
                            ' mmp_person_image)'
                            ' values (%s,%s,%s,%s,%s)', (new_guid, person_name, media_id_json,
-                                                        person_json, image_json))
+                                                        person_json, image_path))
     self.db_commit()
     return new_guid
 
@@ -126,8 +126,7 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
                            'mmp_person_image = %s'
                            ' where mmp_person_media_id->\''
                            + provider_name + '\' ? %s',
-                           (json.dumps(person_bio), json.dumps(person_image),
-                            str(provider_uuid)))
+                           (json.dumps(person_bio), person_image, str(provider_uuid)))
     self.db_commit()
 
 
@@ -147,24 +146,14 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     if multiple_person:
         for person_data in person_json:
             common_global.es_inst.com_elastic_index('info', {"person data": person_data})
-            if meta_type == "tvmaze":
-                person_id = person_data['person']['id']
-                person_name = person_data['person']['name']
-            elif meta_type == "themoviedb":
+            if meta_type == "themoviedb":
                 person_id = person_data['id']
                 person_name = person_data['name']
-            elif meta_type == "thetvdb":
-                # handle "array" with only one person
-                try:
-                    person_id = person_data['id']
-                    person_name = person_data['Name']
-                except:
-                    person_id = person_json['id']
-                    person_name = person_json['Name']
             else:
                 person_id = None
                 person_name = None
             if person_id is not None:
+                # TODO do an upsert instead
                 if self.db_meta_person_id_count(meta_type, person_id) > 0:
                     common_global.es_inst.com_elastic_index('info', {
                         'db_meta_person_insert_cast_crew': "skip insert as person exists"})
@@ -183,19 +172,13 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                    {meta_type: str(person_id)}),
                                                None, None)
     else:
-        if meta_type == "tvmaze":
-            person_id = person_json['person']['id']
-            person_name = person_json['person']['name']
-        elif meta_type == "themoviedb":
+        if meta_type == "themoviedb":
             # cast/crew can exist but be blank
             try:
                 person_id = person_json['id']
                 person_name = person_json['name']
             except:
                 person_id = None
-        elif meta_type == "thetvdb":
-            person_id = person_json['id']
-            person_name = person_json['Name']
         else:
             person_id = None
             # person_name = None # not used later so don't set
@@ -230,27 +213,9 @@ def db_meta_person_as_seen_in(self, person_guid):
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-                               'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\''
-                               ' from mm_metadata_movie where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'credits\'->\'cast\''
+                               'mm_metadata_localimage_json->\'Poster\''
+                               ' from mm_metadata_movie where mm_metadata_json->\'credits\'->\'cast\''
                                ' @> \'[{"id": %s}]\' order by LOWER(mm_media_name)', sql_params)
-    elif 'tvmaze' in row_data['mmp_person_media_id']:
-        sql_params = int(row_data['mmp_person_media_id']['tvmaze']),
-        common_global.es_inst.com_elastic_index('info', {'sql paramts': sql_params})
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-                               'mm_metadata_tvshow_localimage_json->\'Images\'->\'tvmaze\'->\'Poster\''
-                               ' from mm_metadata_tvshow WHERE mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
-                               '->\'_embedded\'->\'cast\' @> \'[{"person": {"id": %s}}]\' order by LOWER(mm_metadata_tvshow_name)',
-                               sql_params)
-        # TODO won't this need to be like below?
-    elif 'thetvdb' in row_data['mmp_person_media_id']:
-        # sql_params = str(row_data[1]['thetvdb']),
-        # TODO little bobby tables
-        self.db_cursor.execute('select mm_metadata_tvshow_guid,mm_metadata_tvshow_name,'
-                               'mm_metadata_tvshow_localimage_json->\'Images\'->\'thetvdb\'->\'Poster\''
-                               ' from mm_metadata_tvshow where mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
-                               '->\'Cast\'->\'Actor\' @> \'[{"id": \"'
-                               + str(row_data['mmp_person_media_id']['thetvdb'])
-                               + '\"}]\' order by LOWER(mm_metadata_tvshow_name)')  # , sql_params)  #TODO
     return self.db_cursor.fetchall()
 
 # works

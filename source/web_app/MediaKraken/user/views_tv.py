@@ -84,23 +84,10 @@ def user_tv_show_detail_page(guid):
         data_metadata = g.db_connection.db_meta_tvshow_detail(guid)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
-            # data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
+            # data_runtime = json_metadata.get(['runtime'], None)
             if 'runtime' in json_metadata['Meta']['tvmaze']:
                 data_runtime = json_metadata['Meta']['tvmaze']['runtime']
-            else:
-                data_runtime = None
-            if 'rating' in json_metadata['Meta']['tvmaze']:
-                data_rating = json_metadata['Meta']['tvmaze']['rating']['average']
-            else:
-                data_rating = None
-            if 'premiered' in json_metadata['Meta']['tvmaze']:
-                data_first_aired = json_metadata['Meta']['tvmaze']['premiered']
-            else:
-                data_first_aired = None
-            if 'summary' in json_metadata['Meta']['tvmaze']:
-                data_overview = json_metadata['Meta']['tvmaze']['summary'].replace('<p>',
-                                                                                   '').replace(
-                    '</p>', '')
+
             else:
                 data_overview = None
             # build gen list

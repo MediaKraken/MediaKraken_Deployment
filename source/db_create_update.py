@@ -325,7 +325,7 @@ if db_connection.db_table_index_check('mm_metadata_anime_idxgin_user_json') is N
 # create table for metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_movie (mm_metadata_guid uuid'
                        ' CONSTRAINT mm_metadata_pk PRIMARY KEY,'
-                       ' mm_metadata_media_id jsonb,'
+                       ' mm_metadata_media_id integer,'
                        ' mm_media_name text,'
                        ' mm_metadata_json jsonb,'
                        ' mm_metadata_localimage_json jsonb,'
@@ -827,7 +827,7 @@ db_connection.db_query('create table IF NOT EXISTS mm_metadata_person (mmp_id uu
                        ' CONSTRAINT mmp_id_pk primary key,'
                        ' mmp_person_media_id jsonb,'
                        ' mmp_person_meta_json jsonb,'
-                       ' mmp_person_image jsonb,'
+                       ' mmp_person_image text,'
                        ' mmp_person_name text)')
 if db_connection.db_table_index_check('mm_metadata_person_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_person_idx_name'

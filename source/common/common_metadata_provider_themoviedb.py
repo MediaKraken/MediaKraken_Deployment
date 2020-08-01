@@ -97,7 +97,8 @@ class CommonMetadataTMDB:
         """
         if tmdb_id[0:2].lower() == 'tt':
             # imdb_id......so, run find and then do the requests
-            tmdb_id = metadata_movie_imdb.com_imdb_id_search(tmdb_id[0:2])
+            pass
+            # tmdb_id = metadata_movie_imdb.com_imdb_id_search(tmdb_id[0:2])
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
@@ -147,7 +148,7 @@ class CommonMetadataTMDB:
                             'https://image.tmdb.org/t/p/original' + result_json['profile_path'],
                             image_file_path + result_json['profile_path'])
         # set local image json
-        return ({'Images': {'themoviedb': image_file_path}})
+        return image_file_path
 
     def com_tmdb_metadata_id_max(self):
         """
@@ -318,13 +319,7 @@ class CommonMetadataTMDB:
                                                          + result_json['backdrop_path'],
                                                          image_file_path)
             backdrop_file_path = image_file_path
-        # its a number so make it a string just in case
-        if 'imdb_id' in result_json:  # in movies only
-            series_id_json = json.dumps({'imdb': result_json['imdb_id'],
-                                         'themoviedb': str(result_json['id'])})
-        else:
-            series_id_json = json.dumps({'themoviedb': str(result_json['id'])})
         # set local image json
-        image_json = ({'Images': {'themoviedb': {'Backdrop': backdrop_file_path,
-                                                 'Poster': poster_file_path}}})
-        return series_id_json, result_json, image_json
+        image_json = ({'Backdrop': backdrop_file_path,
+                       'Poster': poster_file_path})
+        return result_json['id'], result_json, image_json

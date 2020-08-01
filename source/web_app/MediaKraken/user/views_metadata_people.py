@@ -56,27 +56,20 @@ def metadata_person_list():
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
-            if 'themoviedb' in person_data['mmp_person_image']['Images']:
-                try:
-                    person_image = person_data['mmp_person_image']['Images']['themoviedb'].replace(
-                        '/mediakraken/web_app/MediaKraken', '') + person_data['mmp_meta']
-                except:
-                    person_image = "/static/images/person_missing.png"
-            else:
-                person_image = "/static/images/person_missing.png"
+            person_image = person_data['mmp_person_image'] + person_data['mmp_meta']
         else:
             person_image = "/static/images/person_missing.png"
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     session['search_page'] = 'meta_people'
     pagination = common_pagination_flask.get_pagination(page=page,
-                                                  per_page=per_page,
-                                                  total=g.db_connection.db_meta_person_list_count(
-                                                      session['search_text']),
-                                                  record_name='person',
-                                                  format_total=True,
-                                                  format_number=True,
-                                                  )
+                                                        per_page=per_page,
+                                                        total=g.db_connection.db_meta_person_list_count(
+                                                            session['search_text']),
+                                                        record_name='person',
+                                                        format_total=True,
+                                                        format_number=True,
+                                                        )
     return render_template('users/metadata/meta_people_list.html',
                            media_person=person_list,
                            page=page,

@@ -93,7 +93,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         series_id_json, result_json, image_json \
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
         # set and insert the record
-        meta_json = ({'Meta': {'themoviedb': {'Meta': result_json}}})
+        meta_json = {result_json}
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
         try:

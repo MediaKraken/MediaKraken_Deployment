@@ -86,28 +86,27 @@ async def url_bp_user_movie_detail(request, user, guid):
         # build gen list
         genres_list = []
         for ndx in range(0, len(
-                metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'])):
+                metadata_data['mm_metadata_json']['genres'])):
             genres_list.append(
-                metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['genres'][
-                    ndx]['name'])
+                metadata_data['mm_metadata_json']['genres'][ndx]['name'])
 
         # not sure if the following with display anymore
         # # vote count format
         # data_vote_count = common_internationalization.com_inter_number_format(
-        #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['vote_count'])
+        #     metadata_data['mm_metadata_json']['vote_count'])
         # # build production list
         # production_list = ''
         # for ndx in range(0,
-        #                  len(metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['production_companies'])):
+        #                  len(metadata_data['mm_metadata_json']['production_companies'])):
         #     production_list \
-        #         += (metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['production_companies'][ndx]['name']
+        #         += (metadata_data['mm_metadata_json']['production_companies'][ndx]['name']
         #             + ', ')
         # # budget format
         # budget = common_internationalization.com_inter_number_format(
-        #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['budget'])
+        #     metadata_data['mm_metadata_json']['budget'])
         # # revenue format
         # revenue = common_internationalization.com_inter_number_format(
-        #     metadata_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['revenue'])
+        #     metadata_data['mm_metadata_json']['revenue'])
         # # grab reviews
         # review = []
         # review_json = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, json_metaid['themoviedb'])
