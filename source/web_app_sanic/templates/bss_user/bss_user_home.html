@@ -43,10 +43,10 @@
     <div>
     {% if data_new_media %}
         <a href="{{ url_for('name_blueprint_user_media_new.url_bp_user_media_new') }}"><img src="/static/img/new.png" width="200" height="200" loading="lazy"></a>
-    {% endfor %}
+    {% endif %}
     {% if data_user_media_queue %}
         <a href="{{ url_for('name_blueprint_user_queue.url_bp_user_queue') }}"><img src="/static/img/rectangles_black.png" width="200" height="200" loading="lazy"></a>
-    {% endfor %}
+    {% endif %}
     <a href="{{ url_for('name_blueprint_user_media_genre.url_bp_user_movie_page', genre='all') }}"><img src="/static/img/movie_ticket.png" width="200" height="200" loading="lazy"></a>
     <a href="{{ url_for('name_blueprint_user_music.url_bp_user_album_list') }}"><img src="/static/img/headphone.png" width="200" height="200" loading="lazy"></a>
     <a href="{{ url_for('name_blueprint_user_tv.url_bp_user_tv') }}"><img src="/static/img/television.png" width="200" height="200" loading="lazy"></a>
