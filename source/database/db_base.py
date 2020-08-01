@@ -55,8 +55,6 @@ def db_open(self):
     # this is the default postgresql settings
     self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
-                           os.cpu_count())
 
 
 def db_close(self):
