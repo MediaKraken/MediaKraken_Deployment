@@ -189,23 +189,25 @@ class MKConsumer:
                 # try to grab the RSS feed itself
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(
                     "http://feeds.hd-trailers.net/hd-trailers", directory=None))
+                common_global.es_inst.com_elastic_index('info', {
+                    'download': ('hdtrailer_json %s', data)})
                 if data is not None:
-                    for item in data['item']:
+                    for item in data['channel']['item']:
                         common_global.es_inst.com_elastic_index('info', {'item': item})
                         download_link = None
-                        if ('(Trailer' in data['item']['title']
+                        if ('(Trailer' in data['title']
                             and option_config_json['Trailer']['Trailer'] is True) \
-                                or ('(Behind' in data['item']['title']
+                                or ('(Behind' in data['title']
                                     and option_config_json['Trailer']['Behind'] is True) \
-                                or ('(Clip' in data['item']['title']
+                                or ('(Clip' in data['title']
                                     and option_config_json['Trailer']['Clip'] is True) \
-                                or ('(Featurette' in data['item']['title']
+                                or ('(Featurette' in data['title']
                                     and option_config_json['Trailer']['Featurette'] is True) \
-                                or ('(Carpool' in data['item']['title']
+                                or ('(Carpool' in data['title']
                                     and option_config_json['Trailer']['Carpool'] is True):
-                            for trailer_url in data['item']['enclosure url']:
+                            for trailer_url in data['enclosure url']:
                                 if '1080p' in trailer_url:
-                                    download_link = data['item']['enclosure url']
+                                    download_link = data['enclosure url']
                                     break
                         if download_link is not None:
                             file_save_name = os.path.join('/static/meta/trailer/',
