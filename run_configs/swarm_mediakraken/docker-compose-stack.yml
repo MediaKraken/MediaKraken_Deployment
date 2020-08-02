@@ -411,9 +411,6 @@ services:
       - RABBITMQ_IO_THREAD_POOL_SIZE=256
     stop_grace_period: 30s
     stop_signal: SIGTERM
-    ports:
-      # http management port
-      - "15672:15672"
     volumes:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     networks:
