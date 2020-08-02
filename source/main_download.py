@@ -173,10 +173,10 @@ class MKConsumer:
             common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
             # no reason to check for type download.....it has to be to get into this program
-            if json_message['Subtype'] == 'File':
+            if json_message['Type'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local Save Path'])
-            elif json_message['Subtype'] == 'Youtube':
+            elif json_message['Type'] == 'Youtube':
                 if validators.url.url(json_message['URL']):
                     dl_pid = subprocess.Popen(shlex.split(
                         'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
@@ -185,7 +185,7 @@ class MKConsumer:
                 else:
                     # TODO log error by user requested
                     pass
-            elif json_message['Subtype'] == 'HDTrailers':
+            elif json_message['Type'] == 'HDTrailers':
                 # try to grab the RSS feed itself
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(
                     "http://feeds.hd-trailers.net/hd-trailers", directory=None))
