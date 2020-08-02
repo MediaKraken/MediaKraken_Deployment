@@ -190,9 +190,9 @@ class MKConsumer:
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(
                     "http://feeds.hd-trailers.net/hd-trailers", directory=None))
                 common_global.es_inst.com_elastic_index('info', {
-                    'download': ('hdtrailer_json %s', data)})
+                    'download': ('hdtrailer_json', data)})
                 if data is not None:
-                    for item in data['channel']['item']:
+                    for item in data['rss']['channel']['item']:
                         common_global.es_inst.com_elastic_index('info', {'item': item})
                         download_link = None
                         if ('(Trailer' in data['title']
