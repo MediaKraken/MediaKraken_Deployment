@@ -16,11 +16,8 @@ from common import common_signal
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
 
-# set signal exit breaks
-common_signal.com_signal_set_break()
-
 # open the database
-option_config_json = common_config_ini.com_config_read(close_db=True)
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 class MKConsumer:
@@ -298,9 +295,10 @@ class MKConsumer:
 
 
 def main():
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # fire off wait for it script to allow connection
     common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
-
     mk_rabbit = MKConsumer('amqp://guest:guest@mkstack_rabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
