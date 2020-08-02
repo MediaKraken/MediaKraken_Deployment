@@ -210,10 +210,7 @@ class MKConsumer:
                                 or ('(Carpool' in item['title']
                                     and option_config_json['Metadata']['Trailer'][
                                         'Carpool'] is True):
-                            for trailer_url in item['enclosure url']:
-                                if '1080p' in trailer_url:
-                                    download_link = item['enclosure url']
-                                    break
+                            download_link = item['enclosure']['@url']
                         if download_link is not None:
                             file_save_name = os.path.join('/static/meta/trailer/',
                                                           download_link.rsplit('/', 1))
