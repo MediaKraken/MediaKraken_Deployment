@@ -18,6 +18,7 @@
 
 import json
 import os
+import sys
 import time
 import uuid
 from datetime import datetime  # to handle threading
@@ -32,6 +33,7 @@ from common import common_logging_elasticsearch
 from common import common_network_cifs
 from common import common_signal
 from common import common_string
+from common import common_system
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')
@@ -240,6 +242,11 @@ def worker(audit_directory):
     thread_db.db_close()
     return
 
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_file_scan.py'):
+    sys.exit(0)
 
 # don't need to check this as the subprogram_pika will do it
 # fire off wait for it script to allow connection

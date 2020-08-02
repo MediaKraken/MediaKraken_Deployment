@@ -17,6 +17,7 @@
 """
 
 import json
+import sys
 import uuid
 
 from common import common_config_ini
@@ -24,9 +25,16 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_provider_themoviedb
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_metadata_tmdb_updates.py'):
+    sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_metadata_tmdb_updates')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
+    'subprogram_metadata_tmdb_updates')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

@@ -18,6 +18,7 @@
 
 import json
 import os
+import sys
 import zipfile
 
 import xmltodict
@@ -27,7 +28,13 @@ from common import common_internationalization
 from common import common_logging_elasticsearch
 from common import common_network
 from common import common_signal
+from common import common_system
 from common import common_version
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_metadata_games.py'):
+    sys.exit(0)
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(

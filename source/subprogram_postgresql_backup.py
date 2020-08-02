@@ -17,6 +17,7 @@
 """
 
 import os
+import sys
 import time
 
 from common import common_config_ini
@@ -25,6 +26,12 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network_cloud
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_postgresql_backup.py'):
+    sys.exit(0)
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(

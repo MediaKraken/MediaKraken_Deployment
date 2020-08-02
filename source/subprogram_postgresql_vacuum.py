@@ -4,11 +4,18 @@ Vacuum tables
 # based on code from
 # http://rendykstan.github.io/blog/2013/04/04/postgresql-vacuum-and-analyze-maintenance-and-performance/
 
+import sys
 
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_postgresql_vacuum.py'):
+    sys.exit(0)
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(

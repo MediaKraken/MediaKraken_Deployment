@@ -18,6 +18,7 @@
 
 import shlex
 import subprocess
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 
@@ -26,6 +27,7 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_signal
+from common import common_system
 from common import common_xfer
 
 
@@ -105,6 +107,11 @@ def worker(row_data):
     thread_db.db_close()
     return
 
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_sync.py'):
+    sys.exit(0)
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_sync')

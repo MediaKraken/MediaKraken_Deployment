@@ -16,9 +16,17 @@
   MA 02110-1301, USA.
 """
 
+import sys
+
 from common import common_config_ini
 from common import common_internationalization
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_metadata_giantbomb.py'):
+    sys.exit(0)
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
