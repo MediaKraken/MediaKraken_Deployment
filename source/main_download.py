@@ -4,8 +4,9 @@ import os
 import shlex
 import subprocess
 import time
-import validators
+
 import pika
+import validators
 import xmltodict
 from common import common_config_ini
 from common import common_global
@@ -196,15 +197,19 @@ class MKConsumer:
                         common_global.es_inst.com_elastic_index('info', {'item': item})
                         download_link = None
                         if ('(Trailer' in item['title']
-                            and option_config_json['Trailer']['Trailer'] is True) \
+                            and option_config_json['Metadata']['Trailer']['Trailer'] is True) \
                                 or ('(Behind' in item['title']
-                                    and option_config_json['Trailer']['Behind'] is True) \
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Behind'] is True) \
                                 or ('(Clip' in item['title']
-                                    and option_config_json['Trailer']['Clip'] is True) \
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Clip'] is True) \
                                 or ('(Featurette' in item['title']
-                                    and option_config_json['Trailer']['Featurette'] is True) \
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Featurette'] is True) \
                                 or ('(Carpool' in item['title']
-                                    and option_config_json['Trailer']['Carpool'] is True):
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Carpool'] is True):
                             for trailer_url in item['enclosure url']:
                                 if '1080p' in trailer_url:
                                     download_link = item['enclosure url']
