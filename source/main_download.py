@@ -195,19 +195,19 @@ class MKConsumer:
                     for item in data['rss']['channel']['item']:
                         common_global.es_inst.com_elastic_index('info', {'item': item})
                         download_link = None
-                        if ('(Trailer' in data['title']
+                        if ('(Trailer' in item['title']
                             and option_config_json['Trailer']['Trailer'] is True) \
-                                or ('(Behind' in data['title']
+                                or ('(Behind' in item['title']
                                     and option_config_json['Trailer']['Behind'] is True) \
-                                or ('(Clip' in data['title']
+                                or ('(Clip' in item['title']
                                     and option_config_json['Trailer']['Clip'] is True) \
-                                or ('(Featurette' in data['title']
+                                or ('(Featurette' in item['title']
                                     and option_config_json['Trailer']['Featurette'] is True) \
-                                or ('(Carpool' in data['title']
+                                or ('(Carpool' in item['title']
                                     and option_config_json['Trailer']['Carpool'] is True):
-                            for trailer_url in data['enclosure url']:
+                            for trailer_url in item['enclosure url']:
                                 if '1080p' in trailer_url:
-                                    download_link = data['enclosure url']
+                                    download_link = item['enclosure url']
                                     break
                         if download_link is not None:
                             file_save_name = os.path.join('/static/meta/trailer/',
