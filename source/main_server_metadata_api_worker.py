@@ -373,8 +373,8 @@ while True:
             theaudiodb(thread_db, row_data)
         elif content_providers == 'thegamesdb':
             thegamesdb(thread_db, row_data)
-        elif content_providers == 'thelogodb':
-            thelogodb(thread_db, row_data)
+        # elif content_providers == 'thelogodb':
+        #     thelogodb(thread_db, row_data)
         elif content_providers == 'themoviedb':
             themoviedb(thread_db, row_data, row_data['mdq_que_type'])
         elif content_providers == 'thesportsdb':
