@@ -212,19 +212,19 @@ class MKConsumer:
             common_global.es_inst.com_elastic_index('info', {"body": body})
             json_message = json.loads(body)
             common_global.es_inst.com_elastic_index('info', {'json body': json_message})
-            if json_message['Type'] == 'Cron Run':
+            if json_message['type'] == 'Cron Run':
                 if os.path.splitext(json_message['JSON']['program'])[1] == '.py':
                     subprocess.Popen(['python3', json_message['JSON']['program']],
                                      stdout=subprocess.PIPE, shell=False)
                 else:
                     subprocess.Popen(['/usr/sbin', json_message['JSON']['program']],
                                      stdout=subprocess.PIPE, shell=False)
-            elif json_message['Type'] == 'Library Scan':
+            elif json_message['type'] == 'Library Scan':
                 # This is split out since can be done via admin website and cron jobs
                 # TODO launch a container to do this.....so, if it gets stuck the others still go
                 subprocess.Popen(['python3', '/mediakraken/subprogram_file_scan.py'],
                                  stdout=subprocess.PIPE, shell=False)
-            elif json_message['Type'] == 'Playback':
+            elif json_message['type'] == 'Playback':
                 if json_message['Subtype'] == 'Play':
                     # to address the 30 char name limit for container
                     name_container = (json_message['User'] + '_'
