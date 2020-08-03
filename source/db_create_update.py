@@ -544,7 +544,7 @@ base_cron = [
       'program': '/mediakraken/subprogram_metadata_tmdb_updates.py'}),
 
     # will run within the pike container via "cron"
-    ('Retro game data', 'Grab updated metadata for retro game(s)',
+    ('Retro Game Data', 'Grab updated metadata for retro game(s)',
      {'exchange_key': 'mkque_ex',
       'route_key': 'mkque',
       'type': 'Cron Run',

@@ -128,7 +128,7 @@ class TestDatabaseMetadata:
         self.db_connection.db_meta_movie_list(offset, records)
 
     # grab the current metadata json id
-    # def db_meta_fetch_media_id_json(self, media_id_type, media_id_id, collection_media=False):
+    # def db_meta_fetch_media_id_json(self, media_id_id, collection_media=False):
     #        self.db_connection.db_rollback()
 
     @pytest.mark.parametrize(("media_name", "media_year"), [

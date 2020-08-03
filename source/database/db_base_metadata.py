@@ -47,10 +47,10 @@ def db_meta_update(self, series_id_json, result_json, image_json):
                            ' mm_media_name = %s,'
                            ' mm_metadata_json = %s,'
                            ' mm_metadata_localimage_json = %s'
-                           ' where mm_metadata_media_id->\'themoviedb\' ? %s',
+                           ' where mm_metadata_media_id = %s',
                            (series_id_json, result_json['title'],
                             json.dumps(result_json), json.dumps(image_json),
-                            str(result_json['id'])))
+                            result_json['id']))
     self.db_commit()
 
 
@@ -59,7 +59,7 @@ def db_meta_genre_list_count(self):
     # count all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                           '->\'Meta\'->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb'
+                           '->\'genres\')::jsonb'
                            ' from mm_metadata_movie')
     return len(self.db_cursor.fetchall())
 
@@ -69,9 +69,8 @@ def db_meta_genre_list(self, offset=0, records=None):
     # grab all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                           '->\'Meta\'->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb from mm_metadata_movie'
-                           ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'themoviedb\''
-                           '->\'Meta\'->\'genres\')::jsonb offset %s limit %s',
+                           '->\'genres\')::jsonb from mm_metadata_movie'
+                           ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb offset %s limit %s',
                            (offset, records))
     return self.db_cursor.fetchall()
 
@@ -80,11 +79,10 @@ def db_meta_movie_count_genre(self):
     """
     # movie count by genre
     """
-    self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_json->\'Meta\''
-                           '->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb as gen, count(mm_metadata_json->\'Meta\''
-                           '->\'themoviedb\'->\'Meta\'->\'genres\') from mm_metadata_movie group by gen'
-                           ' order by jsonb_array_elements_text(mm_metadata_json->\'Meta\'->\'themoviedb\''
-                           '->\'Meta\'->\'genres\')::jsonb ')
+    self.db_cursor.execute(
+        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb as gen,'
+        ' count(mm_metadata_json->\'genres\') from mm_metadata_movie group by gen'
+        ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb ')
     return self.db_cursor.fetchall()
 
 
@@ -101,39 +99,14 @@ def db_meta_guid_by_imdb(self, imdb_uuid):
         return None
 
 
-def db_meta_guid_by_tvdb(self, thetvdb_uuid):
-    """
-    # metadata guid by tv id
-    """
-    self.db_cursor.execute('select mm_metadata_guid'
-                           ' from mm_metadata_movie'
-                           ' where mm_metadata_media_id->\'thetvdb\' ? %s', (thetvdb_uuid,))
-    try:
-        return self.db_cursor.fetchone()['mm_metadata_guid']
-    except:
-        return None
-
-
 def db_meta_guid_by_tmdb(self, tmdb_uuid):
     """
     # see if metadata exists type and id
     """
     self.db_cursor.execute('select mm_metadata_guid'
                            ' from mm_metadata_movie'
-                           ' where mm_metadata_media_id->\'themoviedb\' ? %s',
-                           (str(tmdb_uuid),))
-    try:
-        return self.db_cursor.fetchone()['mm_metadata_guid']
-    except:
-        return None
-
-
-def db_meta_guid_by_rt(self, rt_uuid):
-    """
-    # see if metadata exists type and id
-    """
-    self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
-                           ' where mm_metadata_media_id->\'rt\' ? %s', (str(rt_uuid),))
+                           ' where mm_metadata_media_id = %s',
+                           (tmdb_uuid,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_guid']
     except:
@@ -160,7 +133,7 @@ def db_meta_tmdb_count(self, tmdb_id):
     # see if metadata exists via themovedbid
     """
     self.db_cursor.execute('select count(*) from mm_metadata_movie'
-                           ' where mm_metadata_media_id->\'themoviedb\' ? %s', (str(tmdb_id),))
+                           ' where mm_metadata_media_id = %s', (tmdb_id,))
     return self.db_cursor.fetchone()[0]
 
 
@@ -180,26 +153,28 @@ def db_meta_movie_list(self, offset=0, records=None, search_value=None):
     """
     if search_value is not None:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-                               'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                               'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+                               'mm_metadata_json->\'release_date\' as mm_date,'
+                               'mm_metadata_localimage_json->\'Poster\' as mm_poster,'
                                'mm_metadata_user_json'
-                               ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                               ' from mm_metadata_movie where mm_metadata_guid'
+                               ' in (select mm_metadata_guid'
                                ' from mm_metadata_movie where mm_media_name %% %s'
                                ' order by mm_media_name offset %s limit %s)'
                                ' order by mm_media_name, mm_date',
                                (search_value, offset, records))
     else:
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
-                               'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                               'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+                               'mm_metadata_json->\'release_date\' as mm_date,'
+                               'mm_metadata_localimage_json->\'Poster\' as mm_poster,'
                                'mm_metadata_user_json'
-                               ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                               ' from mm_metadata_movie '
+                               'where mm_metadata_guid in (select mm_metadata_guid'
                                ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
                                ' order by mm_media_name, mm_date', (offset, records))
     return self.db_cursor.fetchall()
 
 
-def db_meta_fetch_media_id_json(self, media_id_type, media_id_id,
+def db_meta_fetch_media_id_json(self, media_id_id,
                                 collection_media=False):
     """
     # grab the current metadata json id
@@ -208,21 +183,21 @@ def db_meta_fetch_media_id_json(self, media_id_type, media_id_id,
         self.db_cursor.execute('select mm_metadata_guid,'
                                ' mm_metadata_media_id'
                                ' from mm_metadata_movie'
-                               ' where mm_metadata_media_id->>%s = %s',
-                               (media_id_type, media_id_id))
+                               ' where mm_metadata_media_id = %s',
+                               (media_id_id,))
     else:
         self.db_cursor.execute('select mm_metadata_collection_guid,'
                                ' mm_metadata_collection_media_ids'
                                ' from mm_metadata_collection'
                                ' where mm_metadata_collection_media_ids->>%s = %s',
-                               (media_id_type, media_id_id))
+                               (media_id_id,))
     try:
         return self.db_cursor.fetchone()
     except:
         return None
 
 
-def db_meta_fetch_series_media_id_json(self, media_id_type, media_id_id,
+def db_meta_fetch_series_media_id_json(self, media_id_id,
                                        collection_media=False):
     """
     Fetch series json by id
@@ -231,8 +206,8 @@ def db_meta_fetch_series_media_id_json(self, media_id_type, media_id_id,
         self.db_cursor.execute('select mm_metadata_tvshow_guid,'
                                ' mm_metadata_media_tvshow_id'
                                ' from mm_metadata_tvshow'
-                               ' where mm_metadata_media_tvshow_id->>%s = %s',
-                               (media_id_type, media_id_id))
+                               ' where mm_metadata_media_tvshow_id = %s',
+                               (media_id_id,))
         try:
             return self.db_cursor.fetchone()
         except:
@@ -248,8 +223,8 @@ def db_find_metadata_guid(self, media_name, media_release_year):
         # for year and -3/+3 year as well
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'original_title\') = %s)'
-                               ' and substring(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'release_date\' from 0 for 5)'
+                               ' or LOWER(mm_metadata_json->\'original_title\') = %s)'
+                               ' and substring(mm_metadata_json->\'release_date\' from 0 for 5)'
                                ' in (%s,%s,%s,%s,%s,%s,%s)',
                                (media_name.lower(), media_name.lower(), str(media_release_year),
                                 str(int(media_release_year) + 1),
@@ -261,7 +236,7 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     else:
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'original_title\') = %s)',
+                               ' or LOWER(mm_metadata_json->\'original_title\') = %s)',
                                (media_name.lower(), media_name.lower()))
     for row_data in self.db_cursor.fetchall():
         # TODO should probably handle multiple results better.   Perhaps a notification?
@@ -287,7 +262,7 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
         media_type = 'anidb'
         media_id = media_aniid
     # lookup id from metadata json or collections
-    row_data = self.db_meta_fetch_media_id_json(media_type, media_id, False)
+    row_data = self.db_meta_fetch_media_id_json(media_id, False)
     # do the update if a record is found
     if row_data is not None:
         # update json data

@@ -214,6 +214,7 @@ class MKConsumer:
                         if download_link is not None:
                             file_save_name = os.path.join('/static/meta/trailer/',
                                                           download_link.rsplit('/', 1))
+                            #  verify it doesn't exist in meta folder
                             if not os.path.exists(file_save_name):
                                 common_network.mk_network_fetch_from_url(download_link,
                                                                          directory=file_save_name)
