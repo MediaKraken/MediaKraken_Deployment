@@ -28,19 +28,19 @@ from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
 def db_open(self):
     """
-    # open database and pull in config and create db if not exist
+    # open database
     """
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
-    # TODO throws tuple error if comma
     # this is here to handle going back to docker-compose with else for docker swarm
     if 'POSTGRES_PASSWORD' in os.environ:
         database_password = os.environ['POSTGRES_PASSWORD']
     else:
         database_password = common_file.com_file_load_data('/run/secrets/db_password')
+    # keep trying to connect every 10 seconds, hence sleep later in while
     while True:
         try:
             self.sql3_conn = psycopg2.connect(
@@ -51,9 +51,6 @@ def db_open(self):
             time.sleep(10)
         else:
             break
-    # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-    # this is the default postgresql settings
-    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
