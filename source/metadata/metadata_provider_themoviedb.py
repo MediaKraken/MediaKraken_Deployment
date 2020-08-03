@@ -17,9 +17,9 @@
 """
 
 import json
+import time
 
 import psycopg2
-import time
 from common import common_config_ini
 from common import common_global
 from common import common_metadata
@@ -92,13 +92,13 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                                                              result_json.json()})
         series_id_json, result_json, image_json \
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
-        # set and insert the record
-        meta_json = {result_json}
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
         try:
-            db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
-                                              result_json['title'], json.dumps(meta_json),
+            db_connection.db_meta_insert_tmdb(metadata_uuid,
+                                              series_id_json,
+                                              result_json['title'],
+                                              json.dumps(result_json),
                                               json.dumps(image_json))
             if 'credits' in result_json:  # cast/crew doesn't exist on all media
                 if 'cast' in result_json['credits']:
