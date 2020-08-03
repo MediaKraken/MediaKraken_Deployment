@@ -145,9 +145,7 @@ class MKServerDatabase:
         db_meta_genre_list, \
         db_meta_movie_count_genre, \
         db_meta_guid_by_imdb, \
-        db_meta_guid_by_tvdb, \
         db_meta_guid_by_tmdb, \
-        db_meta_guid_by_rt, \
         db_meta_insert_tmdb, \
         db_meta_tmdb_count, \
         db_meta_movie_count, \
