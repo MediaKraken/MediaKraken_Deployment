@@ -75,7 +75,8 @@ async def url_bp_user_metadata_movie_list(request, user):
     media = []
     media_count = 0
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset, per_page,
+    for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
+                                                                      per_page,
                                                        request['session']['search_text']):
         # set watched
         try:
