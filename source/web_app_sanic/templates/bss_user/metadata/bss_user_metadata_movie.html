@@ -51,7 +51,7 @@
                 <div data-id={{row_data[0]}}>
                     <a href= "{{ url_for('name_blueprint_user_metadata_movie.url_bp_user_metadata_movie_detail', guid=row_data[0]) }}" >
                         {% if row_data[3] == None %}
-                            <img src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='img/Movie-icon.png') }}" loading="lazy" height="300" width="200">
+                            <img src="{{ url_for('static', filename='img/Movie-icon.png') }}" loading="lazy" height="300" width="200">
                             {% if row_data[4] == True %}
                             <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" loading="lazy" height="25" width="25">
                             {% endif %}
@@ -69,7 +69,7 @@
                                 <p class="description_content_left">{{row_data[1]}}</p>
                             </div>
                         {% else %}
-                            <img src=data: data-src= "{{ url_for('static', filename='meta/images/' + row_data[3] ) }}" loading="lazy" height="300" width="200">
+                            <img src= "{{ url_for('static', filename='meta/images/' + row_data[3] ) }}" loading="lazy" height="300" width="200">
                             {% if row_data[4] == True %}
                             <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" loading="lazy" height="25" width="25">
                             {% endif %}

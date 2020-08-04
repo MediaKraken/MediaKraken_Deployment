@@ -50,9 +50,9 @@
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href = "{{ url_for('user_metadata_tv.metadata_tvshow_detail', guid=row_data[0]) }}" >
                 {% if row_data[3] == None %}
-                <img src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='img/missing_icon.jpg') }}" loading="lazy" height="300" width="200">
+                <img src= "{{ url_for('static', filename='img/missing_icon.jpg') }}" loading="lazy" height="300" width="200">
                 {% else %}
-                <img src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[3]) }}" loading="lazy" height="300" width="200">
+                <img src= "{{ url_for('static', filename='meta/images/' + row_data[3]) }}" loading="lazy" height="300" width="200">
                 {% endif %}
                 </a>
                 {% if row_data[2] != None %}
