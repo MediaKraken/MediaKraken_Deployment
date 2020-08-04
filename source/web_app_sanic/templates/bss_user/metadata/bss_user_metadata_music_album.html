@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link href="{{ url_for('static', filename='fonts/fontawesome-all.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/styles.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}" media="all" type="text/css"/>
 </head>
 
 <body>
@@ -49,7 +50,7 @@
             <div class="media_context_right" data-id={{row_data[0]}}>
                 {% if row_data[3] == None %}
                 <a href= "{{ url_for('user_metadata_album.metadata_album_detail', guid=row_data[0]) }}" >
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='img/headphone.png') }}" height="300" width="200">
+                <img src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='img/headphone.png') }}" loading="lazy" height="300" width="200">
                 </a>
                 {% if row_data[2] == "" %}
                     <div class="description">
@@ -62,7 +63,7 @@
                 {% endif %}
                 {% else %}
                 <a href= "{{ url_for('user_metadata_album.metadata_album_detail', guid=row_data[0]) }}" >
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[3]) }}" height="300" width="200">
+                <img src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + row_data[3]) }}" loading="lazy" height="300" width="200">
                 </a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[2]}}</p>

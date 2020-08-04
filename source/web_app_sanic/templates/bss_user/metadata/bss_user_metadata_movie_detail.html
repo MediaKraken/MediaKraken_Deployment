@@ -40,18 +40,19 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div>    {% if data_name %}
+    <div><div>
+    {% if data_name %}
     <div id="movie_detail">
         {% if data_background_image is none %}
-        <img alt="fs_bg_image" src= "{{ url_for('static', filename='img/movie_ticket.png') }}" id="fs_bg_image" />
+        <img alt="fs_bg_image" src= "{{ url_for('static', filename='img/movie_ticket.png') }}" loading="lazy" id="fs_bg_image" />
         {% else %}
-        <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image) }}" id="fs_bg_image" />
+        <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image) }}" loading="lazy" id="fs_bg_image" />
         {% endif %}
         <div id="movie_image_div" class="table-responsive">
             {% if data_poster_image is none %}
-            <img class="center" src= "{{ url_for('static', filename='img/Movie-icon.png') }}" >
+            <img class="center" src= "{{ url_for('static', filename='img/Movie-icon.png') }}" loading="lazy">
             {% else %}
-            <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image) }}" >
+            <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image) }}" loading="lazy">
             {% endif %}
             <table class="table table-hover">
                 <tbody>
@@ -108,7 +109,8 @@
     </div>
     {% else %}
     <p id="general_text">No info found. ERROR! You should never see this message.</p>
-    {% endif %}</div></div>
+    {% endif %}
+    </div></div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>

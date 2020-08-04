@@ -40,9 +40,10 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div>    {% if data_name %}
+    <div><div>
+    {% if data_name %}
     <div id="movie_detail">
-        <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image }}" id="fs_bg_image" />
+        <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image }}" loading="lazy" id="fs_bg_image" />
         <div id="movie_image_div" class="table-responsive">
             <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image }}" >
             <table class="table table-hover">
