@@ -57,13 +57,13 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     elif result_json.status_code == 200:
         series_id_json, result_json, image_json \
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
-        # set and insert the record
-        meta_json = {result_json}
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
         try:
-            db_connection.db_metatv_insert_tmdb(metadata_uuid, series_id_json,
-                                                result_json['name'], json.dumps(meta_json),
+            db_connection.db_metatv_insert_tmdb(metadata_uuid,
+                                                series_id_json,
+                                                result_json['name'],
+                                                json.dumps(result_json),
                                                 json.dumps(image_json))
             # store the cast and crew
             if 'credits' in result_json:  # cast/crew doesn't exist on all media
