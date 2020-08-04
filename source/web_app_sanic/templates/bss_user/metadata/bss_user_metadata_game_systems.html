@@ -49,13 +49,13 @@
             <div class="media_context_right" data-id={{row_data[0]}}>
                 {% if row_data[2] == "" or row_data[2] == None %}
                 <a href= "{{ url_for('user_metadata_game.metadata_game_detail', guid=row_data[0]) }}">
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='images/vid_game.png') }}" height="200" width="300"></a>
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='img/vid_game.png') }}" height="200" width="300"></a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[1]}}</p>
                 </div>
                 {% else %}
                 <a href= "{{ url_for('user_metadata_game.metadata_game_detail', guid=row_data[0]) }}">
-                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + (row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', ''))) }}" height="200" width="300">
+                <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src= "{{ url_for('static', filename='meta/images/' + (row_data[2])) }}" height="200" width="300">
                 </a>
                 {% endif %}
             </div>
