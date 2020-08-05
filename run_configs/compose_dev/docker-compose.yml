@@ -408,7 +408,6 @@ services:
       # must not be read only as it stores cache here
       - mediakraken_vol_static:/mediakraken/web_app_sanic/static
       - mediakraken_vol_webkey:/mediakraken/key
-      - mediakraken_vol_webpid:/var/run
       - ./data/uploads:/mediakraken/uploads
       # needed to show docker/swarm info
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -456,4 +455,3 @@ volumes:
   mediakraken_vol_transmission:
   mediakraken_vol_transmission_incomplete:
   mediakraken_vol_webkey:
-  mediakraken_vol_webpid:
