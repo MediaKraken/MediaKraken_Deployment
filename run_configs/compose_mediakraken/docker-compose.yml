@@ -235,6 +235,7 @@ services:
   portainer:
     image: portainer/portainer
     command: -H unix:///var/run/docker.sock
+    container_name: mkstack_portainer
     ports:
       - "9000:9000"
       - "8000:8000"
@@ -280,7 +281,7 @@ services:
     volumes:
       # for start of SSL server
       - mediakraken_vol_certs:/mediakraken/key:ro
-      - ./data/backup:/mediakraken/backup
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
       - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
