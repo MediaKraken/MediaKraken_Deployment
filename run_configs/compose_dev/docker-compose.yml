@@ -8,6 +8,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
+      - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
       - DEBUG=${DEBUG}
@@ -145,6 +146,7 @@ services:
     environment:
       - DEBUG=${DEBUG}
     volumes:
+      # TODO why not store this in the db with the device as postgresql crypt
       # this stores the "push button" key
       - mediakraken_vol_phue:/mediakraken/phue
     container_name: mkstack_hardware
@@ -168,7 +170,7 @@ services:
       - /proc:/hostfs/proc:ro
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
       - /:/hostfs:ro
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - mediakraken_vol_metricbeat:/usr/share/metricbeat/data
     environment:
       - ELASTICSEARCH_HOST=th-elk-1.beaverbay.local
@@ -227,14 +229,13 @@ services:
     container_name: mkstack_nginx
     depends_on:
       - webapp
-    entrypoint: /usr/bin/wait-for-it-ash-busybox130.sh -h webapp -p 8080 -t 60 -- nginx
+    entrypoint: /usr/bin/wait-for-it-ash-busybox130.sh -h webapp -p 8080 -t 120 -- nginx
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:
       - mediakraken_vol_nginx:/var/log/mediakraken/nginx
       - mediakraken_vol_certs:/etc/nginx/certs:ro
       - mediakraken_vol_static:/mediakraken/web_app_sanic/static:ro
-#      - mediakraken_vol_webpid:/var/run:ro
     ports:
       - "8900:8900"
     networks:
@@ -269,7 +270,7 @@ services:
     container_name: mkstack_pgbouncer
     depends_on:
       - database
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h database -p 5432 -t 30 -- ./entrypoint.sh
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h database -p 5432 -t 60 -- ./entrypoint.sh
     stop_grace_period: 30s
     stop_signal: SIGTERM
     networks:
@@ -292,7 +293,7 @@ services:
     volumes:
       # for start of SSL server
       - mediakraken_vol_certs:/mediakraken/key:ro
-      - ./data/backup:/mediakraken/backup
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
       - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
       - /var/run/docker.sock:/var/run/docker.sock:ro

@@ -1,4 +1,5 @@
 version: '3.6'
+# Volumes are HOST directory and then CONTAINER directory
 
 services:
   # Main app server
@@ -173,6 +174,7 @@ services:
   hardware:
     image: mediakraken/mkhardware:latest
     volumes:
+      # TODO why not store this in the db with the device as postgresql crypt
       # this stores the "push button" key
       - mediakraken_vol_phue:/mediakraken/phue
     entrypoint: python3 main_hardware.py
@@ -275,23 +277,6 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  pgadmin:
-    image: mediakraken/mkpgadmin:latest
-    stop_grace_period: 30s
-    stop_signal: SIGTERM
-    networks:
-      - mediakraken_network_backend
-    ports:
-      - "5050:5050"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: spootdev@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: metaman
-    volumes:
-      - mediakraken_vol_pgadmin:/data
-    deploy:
-      mode: replicated
-      replicas: 0
-
   # pgbouncer
   pgbouncer:
     image: mediakraken/mkpgbouncer:latest
@@ -300,7 +285,7 @@ services:
       - POOL_MODE=transaction
       #- POOL_MODE=session  # this might not work in docker swarm
       - MAX_CLIENT_CONN=1024
-      - DEFAULT_POOL_SIZE=75
+      - DEFAULT_POOL_SIZE=85
       - SERVER_RESET_QUERY=DISCARD ALL
     secrets:
       - db_password
@@ -324,7 +309,7 @@ services:
     volumes:
       # for start of SSL server
       - mediakraken_vol_certs:/mediakraken/key:ro
-      - ./data/backup:/mediakraken/backup
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
       - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
