@@ -381,6 +381,7 @@ services:
     volumes:
       # for start of SSL server
       - mediakraken_vol_certs:/mediakraken/key:ro
+      # do I need this?  is pika what does the backup?
       - mediakraken_vol_postgresql_backup:/mediakraken/backup
       - ./mkmount:/mediakraken/mnt
       # so it can start docker containers
