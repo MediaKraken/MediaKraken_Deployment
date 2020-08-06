@@ -505,7 +505,6 @@ volumes:
   mediakraken_vol_nginx:
   mediakraken_vol_pgadmin:
   mediakraken_vol_phue:
-  mediakraken_vol_portainer:
   mediakraken_vol_postgresql:
   mediakraken_vol_postgresql_backup:
   mediakraken_vol_rabbit:
