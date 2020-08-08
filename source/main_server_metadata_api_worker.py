@@ -333,8 +333,6 @@ queue = channel.queue_declare(queue=content_providers,
 channel.queue_bind(exchange="mkque_metadata_ex",
                    queue=content_providers)
 channel.basic_qos(prefetch_count=1)
-# channel.basic_consume(on_message, queue=content_providers, no_ack=False)
-# channel.start_consuming(inactivity_timeout=1)
 
 # setup last used id's per thread
 metadata_last_id = None
