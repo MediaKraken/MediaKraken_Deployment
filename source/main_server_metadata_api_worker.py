@@ -371,18 +371,12 @@ while True:
             theaudiodb(thread_db, row_data)
         elif content_providers == 'thegamesdb':
             thegamesdb(thread_db, row_data)
-        # elif content_providers == 'thelogodb':
-        #     thelogodb(thread_db, row_data)
         elif content_providers == 'themoviedb':
             themoviedb(thread_db, row_data, row_data['mdq_que_type'])
         elif content_providers == 'thesportsdb':
             thesportsdb(thread_db, row_data)
-        # elif content_providers == 'thetvdb':
-        #     thetvdb(thread_db, row_data)
         elif content_providers == 'tv_intros':
             tv_intros(thread_db, row_data)
-        # elif content_providers == 'tvmaze':
-        #     tvmaze(thread_db, row_data)
         # Z records are the start of all lookups
         elif content_providers == 'Z':
             common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
@@ -433,7 +427,6 @@ while True:
                 except KeyError:
                     metadata_last_year = None
             else:  # invalid guessit guess so set to ZZ to skip for now
-                # commit in function
                 thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
                 thread_db.db_commit()
             # update the media row with the json media id AND THE proper NAME!!!
@@ -449,12 +442,12 @@ while True:
                 thread_db.db_download_delete(row_data['mdq_id'])
                 thread_db.db_commit()
     time.sleep(1)
-    # grab message from rabbitmq if available
-    try:  # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
-        on_message(channel, method_frame, header_frame, body)
-    except:
-        pass
+    # # grab message from rabbitmq if available
+    # try:  # since can get connection drops
+    #     method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
+    #     on_message(channel, method_frame, header_frame, body)
+    # except:
+    #     pass
 # Cancel the consumer and return any pending messages
 channel.cancel()
 connection.close()
