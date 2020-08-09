@@ -291,7 +291,7 @@ if db_connection.db_version_check() < 23:
     db_connection.db_cron_insert('Retro game data', 'Grab updated metadata for retro game(s)',
                                  False, 'Days 1', psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
                                  json.dumps({'exchange_key': 'mkque_ex', 'route_key': 'mkque',
-                                             'type': 'Cron Run',
+                                             'Type': 'Cron Run',
                                              'program': '/mediakraken/subprogram_metadata_games.py'}),
 
                                  )

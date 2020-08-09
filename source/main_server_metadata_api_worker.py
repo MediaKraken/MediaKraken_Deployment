@@ -443,11 +443,11 @@ while True:
                 thread_db.db_commit()
     time.sleep(1)
     # # grab message from rabbitmq if available
-    # try:  # since can get connection drops
-    #     method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
-    #     on_message(channel, method_frame, header_frame, body)
-    # except:
-    #     pass
+    try:  # since can get connection drops
+        method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
+        on_message(channel, method_frame, header_frame, body)
+    except:
+        pass
 # Cancel the consumer and return any pending messages
 channel.cancel()
 connection.close()

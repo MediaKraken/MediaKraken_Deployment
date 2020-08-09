@@ -66,7 +66,7 @@ while 1:
             channel.basic_publish(exchange=row_data['mm_cron_json']['exchange_key'],
                                   routing_key=row_data['mm_cron_json']['route_key'],
                                   body=json.dumps(
-                                      {'type': row_data['mm_cron_json']['type'],
+                                      {'Type': row_data['mm_cron_json']['type'],
                                        'JSON': row_data['mm_cron_json']}),
                                   properties=pika.BasicProperties(
                                       content_type='text/plain',

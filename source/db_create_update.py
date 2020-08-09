@@ -513,80 +513,80 @@ base_cron = [
     ('Anime', 'Match anime via Scudlee and Manami data',
      {'exchange_key': 'mkque_metadata_ex',
       'route_key': 'Z',
-      'type': 'Anime Xref',
+      'Type': 'Anime Xref',
       'program': '/mediakraken/subprogram_match_anime_id.py'}),
 
     # will run within the metadata_api_worker by provider
     ('Collections', 'Create and update collection(s)',
      {'exchange_key': 'mkque_metadata_ex',
       'route_key': 'themoviedb',
-      'type': 'Update Collection',
+      'Type': 'Update Collection',
       'program': '/mediakraken/subprogram_metadata_update_create_collections.py'}),
 
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
      {'exchange_key': 'mkque_metadata_ex',
       'route_key': 'schedulesdirect',
-      'type': 'Update',
+      'Type': 'Update',
       'program': '/mediakraken/subprogram_schedules_direct_updates.py'}),
 
     # since file scan could do this
     # ('Subtitle', 'Download missing subtitles for media',
     #  {'exchange_key': 'mkque_metadata_ex',
     #  'route_key': 'Z',
-    #  'type': 'Subtitle',
+    #  'Type': 'Subtitle',
     #  'program': '/mediakraken/subprogram_subtitle_downloader.py'}),
 
     # will run within the metadata_api_worker by provider
     ('The Movie Database', 'Grab updated metadata for movie(s) and TV show(s)',
      {'exchange_key': 'mkque_metadata_ex',
       'route_key': 'themoviedb',
-      'type': 'Update Metadata',
+      'Type': 'Update Metadata',
       'program': '/mediakraken/subprogram_metadata_tmdb_updates.py'}),
 
     # will run within the pike container via "cron"
     ('Retro Game Data', 'Grab updated metadata for retro game(s)',
      {'exchange_key': 'mkque_ex',
       'route_key': 'mkque',
-      'type': 'Cron Run',
+      'Type': 'Cron Run',
       'program': '/mediakraken/subprogram_metadata_games.py'}),
 
     # ('Giantbomb Game Update', 'Grab updated Giantbomb game metadata',
     #  {'exchange_key': 'mkque_metadata_ex',
     #  'route_key': 'giantbomb',
-    #  'type': 'Update',
+    #  'Type': 'Update',
     #  'program': '/mediakraken/subprogram_metadata_giantbomb.py'}),
 
     # ('TheTVDB Update', 'Grab updated TheTVDB metadata',
     #  {'exchange_key': 'mkque_metadata_ex',
     #  'route_key': 'thetvdb',
-    #  'type': 'Update',
+    #  'Type': 'Update',
     #  'program': '/mediakraken/subprogram_metadata_thetvdb_updates.py'}),
 
     # ('TVmaze Update', 'Grab updated TVmaze metadata',
     #  {'exchange_key': 'mkque_metadata_ex',
     #  'route_key': 'tvmaze',
-    #  'type': 'Update',
+    #  'Type': 'Update',
     #  'program': '/mediakraken/subprogram_metadata_tvmaze_updates.py'}),
 
     # All code to run this is in the download docker image
     ('Trailer', 'Download new trailer(s)',
      {'exchange_key': 'mkque_download_ex',
       'route_key': 'mkdownload',
-      'type': 'HDTrailers'}),
+      'Type': 'HDTrailers'}),
 
     # normal subprograms
     # Will simply run in reactor with cron run
     ('Backup', 'Backup PostgreSQL DB',
      {'exchange_key': 'mkque_ex',
       'route_key': 'mkque',
-      'type': 'Cron Run',
+      'Type': 'Cron Run',
       'program': '/mediakraken/subprogram_postgresql_backup.py'}),
 
     # Will simply run in reactor
     ('DB Vacuum', 'PostgreSQL Vacuum Analyze all tables',
      {'exchange_key': 'mkque_ex',
       'route_key': 'mkque',
-      'type': 'Cron Run',
+      'Type': 'Cron Run',
       'program': '/mediakraken/subprogram_postgresql_vacuum.py'}),
 
     # ('iRadio Scan', 'Scan for iRadio stations',
@@ -599,13 +599,13 @@ base_cron = [
     ('Media Scan', 'Scan for new media',
      {'exchange_key': 'mkque_ex',
       'route_key': 'mkque',
-      'type': 'Library Scan'}),
+      'Type': 'Library Scan'}),
 
     # will simply run in reactor
     ('Sync', 'Sync and transcode media',
      {'exchange_key': 'mkque_ex',
       'route_key': 'mkque',
-      'type': 'Cron Run',
+      'Type': 'Cron Run',
       'program': '/mediakraken/subprogram_sync.py'}),
 ]
 # create base cron entries
