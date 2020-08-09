@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 
 def db_web_tvmedia_list(self, genre_type=None, list_limit=None,
@@ -23,22 +23,28 @@ def db_web_tvmedia_list(self, genre_type=None, list_limit=None,
     # grab tv data
     """
     if search_value is not None:
-        self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'
-                               ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
+        self.db_cursor.execute('select mm_metadata_tvshow_name,'
+                               ' mm_metadata_tvshow_guid,'
+                               ' count(*) as mm_count,'
+                               ' COALESCE(mm_metadata_tvshow_localimage_json'
                                '->\'Images\'->\'tvmaze\'->>\'Poster\','
                                ' mm_metadata_tvshow_localimage_json'
-                               '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
+                               '->\'Images\'->\'thetvdb\'->>\'Poster\')'
+                               ' from mm_metadata_tvshow,'
                                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
                                ' and mm_metadata_tvshow_name %% %s'
                                ' group by mm_metadata_tvshow_guid'
                                ' order by LOWER(mm_metadata_tvshow_name)'
                                ' offset %s limit %s', (search_value, offset, list_limit))
     else:
-        self.db_cursor.execute('select mm_metadata_tvshow_name, mm_metadata_tvshow_guid,'
-                               ' count(*) as mm_count, COALESCE(mm_metadata_tvshow_localimage_json'
+        self.db_cursor.execute('select mm_metadata_tvshow_name,'
+                               ' mm_metadata_tvshow_guid,'
+                               ' count(*) as mm_count,'
+                               ' COALESCE(mm_metadata_tvshow_localimage_json'
                                '->\'Images\'->\'tvmaze\'->>\'Poster\','
                                ' mm_metadata_tvshow_localimage_json'
-                               '->\'Images\'->\'thetvdb\'->>\'Poster\') from mm_metadata_tvshow,'
+                               '->\'Images\'->\'thetvdb\'->>\'Poster\')'
+                               ' from mm_metadata_tvshow,'
                                ' mm_media where mm_media_metadata_guid = mm_metadata_tvshow_guid'
                                ' group by mm_metadata_tvshow_guid'
                                ' order by LOWER(mm_metadata_tvshow_name)'

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -36,7 +36,7 @@ for platform in \
 list(GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items())[0]:
     if platform != 'Platform':
         for game_systems in platform:
-            print(game_systems)
+            print(game_systems, flush=True)
             if db_connection.db_meta_games_system_guid_by_short_name(
                     game_systems['name']) is None:
                 # fetch platform info

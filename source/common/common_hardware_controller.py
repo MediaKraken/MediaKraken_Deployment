@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 # from . import common_hardware_controller_eiscp
 # from . import common_hardware_controller_ir
@@ -34,7 +34,7 @@ class CommonHardwareController:
     """
 
     # db_hardware_json_read will populate the json
-    def __init__(self, device_json, device_ip=None, device_port=None):
+    def __init__(self, device_json, device_ip=None, device_port=None, source_remote_ip=None):
         self.device_inst = None
         self.device_json = device_json
         if self.device_json['Manufacturer'] == 'Marantz':
@@ -45,7 +45,7 @@ class CommonHardwareController:
                 device_ip=device_ip, device_port=device_port)
         elif self.device_json['Manufacturer'] == 'Samsung':
             self.device_inst = common_hardware_samsung.CommonHardwareSamsung(
-                device_ip=device_ip)
+                source_remote_ip=source_remote_ip, device_ip=device_ip)
         else:
             # setup the initial connection that aren't setup above
             if self.device_json['Protocol']['Method'] == "EISCP":

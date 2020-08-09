@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,47 +14,44 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
-import multiprocessing
 import os
-import sys
+import time
 
 import psycopg2
 import psycopg2.extras
+from common import common_file
 from common import common_global
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT  # pylint: disable=W0611
+from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
 
 def db_open(self):
     """
-    # open database and pull in config and create db if not exist
+    # open database
     """
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
-    # TODO throws tuple error if comma
-    self.sql3_conn = psycopg2.connect(
-        "dbname='%s' user='%s' host='mkpgbouncer' port=6432 password='%s'"
-        % (os.environ['POSTGRES_DB'], os.environ['POSTGRES_USER'],
-           os.environ['POSTGRES_PASSWORD']))
-    self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-    # self.sql3_conn.set_isolation_level(ISOLATION_LEVEL_READ_COMMITTED)
+    # this is here to handle going back to docker-compose with else for docker swarm
+    if 'POSTGRES_PASSWORD' in os.environ:
+        database_password = os.environ['POSTGRES_PASSWORD']
+    else:
+        database_password = common_file.com_file_load_data('/run/secrets/db_password')
+    # keep trying to connect every 10 seconds, hence sleep later in while
+    while True:
+        try:
+            self.sql3_conn = psycopg2.connect(
+                "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
+                " port=6432 password='%s' connect_timeout=5"
+                % database_password.strip())
+        except (psycopg2.OperationalError, psycopg2.DatabaseError):
+            time.sleep(10)
+        else:
+            break
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
-    self.db_cursor.execute('SET max_parallel_workers_per_gather TO %s;' %
-                           multiprocessing.cpu_count())
-    # do here since the db cursor is created now
-    # verify the trigram extension is enabled for the database
-    self.db_cursor.execute("select count(*) from pg_extension where extname = 'pg_trgm'")
-    if self.db_cursor.fetchone()[0] == 0:
-        common_global.es_inst.com_elastic_index('critical',
-                                                {'stuff': 'pg_trgm extension needs to '
-                                                          'be enabled for database!!!!'
-                                                          '  Exiting!!!'})
-        sys.exit(1)
 
 
 def db_close(self):
@@ -63,6 +60,14 @@ def db_close(self):
     """
     common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
     self.sql3_conn.close()
+
+
+def db_begin(self):
+    """
+    # start a transaction
+    """
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db begin'})
+    self.sql3_conn.begin()
 
 
 def db_commit(self):

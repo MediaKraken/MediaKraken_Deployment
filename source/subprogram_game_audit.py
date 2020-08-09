@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import copy
 import hashlib
@@ -140,7 +140,7 @@ class HashGenerate(Thread):
                     sha1_hash_data = SHA1.hexdigest()
                     hash_dict[os.path.basename(
                         self.file_name)] = sha1_hash_data
-                    print(("single: %s", self.file_name, sha1_hash_data))
+                    print(("single: %s", self.file_name, sha1_hash_data), flush=True)
                 except:
                     lock.acquire()
                     Client_GlobalData.skipped_files.append(os.path.normpath(self.file_name)

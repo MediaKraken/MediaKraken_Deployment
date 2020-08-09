@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 from common import common_network_telnet
 
@@ -27,8 +27,7 @@ class CommandHardwareControllerRS232:
     # db_hardware_json_read will populate the json
     def __init__(self, device_json):
         self.device_json = device_json
-        self.device_inst = common_network_telnet.CommonNetworkTelnet()
-        self.device_inst.com_net_telnet_open_device(
+        self.device_inst = common_network_telnet.CommonNetworkTelnet(
             self.device_json["Protocol"]["Host IP"],
             self.device_json["Protocol"]["Host Port"],
             self.device_json["Protocol"]["User"],

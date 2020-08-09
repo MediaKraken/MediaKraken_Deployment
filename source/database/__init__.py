@@ -4,6 +4,7 @@ class MKServerDatabase:
     """
     from database.db_base import db_open, \
         db_close, \
+        db_begin, \
         db_commit, \
         db_rollback, \
         db_table_index_check, \
@@ -61,6 +62,11 @@ class MKServerDatabase:
         db_download_que_exists
     from database.db_base_extensions import db_extension_available, \
         db_extension_installed
+    from database.db_base_game_dedicated_servers import db_game_server_insert, \
+        db_game_server_list_count, \
+        db_game_server_list, \
+        db_game_server_delete, \
+        db_game_server_detail
     from database.db_base_hardware import db_hardware_json_read, \
         db_hardware_insert, \
         db_hardware_delete
@@ -77,8 +83,6 @@ class MKServerDatabase:
         db_known_media_count, \
         db_known_media, \
         db_matched_media_count, \
-        db_known_media_all_unmatched_count, \
-        db_known_media_all_unmatched, \
         db_media_duplicate_count, \
         db_media_duplicate, \
         db_media_duplicate_detail_count, \
@@ -102,11 +106,6 @@ class MKServerDatabase:
         db_ffprobe_all_media_guid
     from database.db_base_media_books import db_media_book_list_count, \
         db_media_book_list
-    from database.db_base_media_class import db_media_class_list_count, \
-        db_media_class_insert, \
-        db_media_class_list, \
-        db_media_class_by_uuid, \
-        db_media_uuid_by_class
     from database.db_base_media_games import db_media_game_system_list_count, \
         db_media_game_system_list, \
         db_media_game_list_by_system_count, \
@@ -146,9 +145,7 @@ class MKServerDatabase:
         db_meta_genre_list, \
         db_meta_movie_count_genre, \
         db_meta_guid_by_imdb, \
-        db_meta_guid_by_tvdb, \
         db_meta_guid_by_tmdb, \
-        db_meta_guid_by_rt, \
         db_meta_insert_tmdb, \
         db_meta_tmdb_count, \
         db_meta_movie_count, \
@@ -202,7 +199,7 @@ class MKServerDatabase:
         db_meta_song_add, \
         db_meta_songs_by_album_guid, \
         db_meta_album_list, \
-        db_meta_muscian_list, \
+        db_meta_musician_list, \
         db_meta_album_image_random, \
         db_meta_music_by_provider_uuid
     from database.db_base_metadata_music_video import db_meta_music_video_lookup, \
@@ -227,9 +224,9 @@ class MKServerDatabase:
         db_metathesports_update, \
         db_metathesportsdb_select_guid
     from database.db_base_metadata_thetvdb import db_metatvdb_insert, \
-        db_metatvdb_update
+        db_metatvdb_update, \
+        db_metatv_guid_by_tvdb
     from database.db_base_metadata_tv import db_metatv_guid_by_imdb, \
-        db_metatv_guid_by_tvdb, \
         db_metatv_guid_by_tvmaze, \
         db_metatv_guid_by_tmdb, \
         db_metatv_guid_by_rt, \

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import shlex
@@ -70,10 +70,11 @@ class NetworkEvents(basic.LineReceiver):
                 disc_id_found = False
                 # TODO if NOT in DB already
                 if disc_id_found is True:
+                    # put disc in duplicate output spindle
                     pass
                 else:
                     subprocess.Popen(shlex.split(['abcde', '-d', json_message['Target']]))
-            else:
+            else:  # as rest will call makemkv
                 if json_message['Data'] == "DVD":
                     # TODO id disc
                     # TODO see if in db already

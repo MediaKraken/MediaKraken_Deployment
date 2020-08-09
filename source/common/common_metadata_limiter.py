@@ -24,18 +24,17 @@ API_LIMIT = {
     'omdb': (20, 1),  # 7/29/2016 says 20 concurrent connections
     'openlibrary': (100, 300),  # 1/14/2017 100 every 5 minutes
     'pitchfork': (9999, 1),  # no mention of limits 7/29/2016
-    'pornhub': (1, 1),  # TODO check limits
+    'pornhub': (1, 1),  # since I'm scraping
     'televisiontunes': (1, 1),  # since I'm scraping
     'theaudiodb': (9999, 1),  # no mention of limits 7/29/2016
     'thegamesdb': (9999, 1),  # no mention of limits 7/29/2016
-    'thelogodb': (9999, 1),  # no mention of limits 7/29/2016
+#    'thelogodb': (9999, 1),  # no mention of limits 7/29/2016
     'themoviedb': (35, 10),  # We currently rate limit requests to 40
     # requests every 10 seconds. (12-05-2016)
     'thesportsdb': (9999, 1),  # no mention of limits 7/29/2016
-    'thetvdb': (9999, 1),  # no mention of limits besides play nice (4-16-2016)
+#    'thetvdb': (9999, 1),  # no mention of limits besides play nice (4-16-2016)
     'tv_intros': (1, 1),  # since I'm scraping
-    'tvmaze': (20, 10),  # 20 every 10 (6-11-2017)
-    'tvshowtime': (10, 60),  # 10 requests per minute (4-16-2016)
+#    'tvmaze': (20, 10),  # 20 every 10 (6-11-2017)
     'twitch': (1, 1),  # (12-10-2017)
     'Z': (None, None),  # catch all for limiter api program
 }

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,24 +14,13 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_anidb
 
 from . import metadata_nfo_xml
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# verify provider key exists
-if option_config_json['API']['anidb'] is not None:
-    # setup the connection class
-    ANIDB_CONNECTION = common_metadata_provider_anidb.CommonMetadataANIdb(option_config_json)
-else:
-    ANIDB_CONNECTION = None
 
 
 def metadata_anime_lookup(db_connection, download_que_json, download_que_id, file_name):
@@ -43,26 +32,21 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
         metadata_anime_lookup.metadata_last_id = None
         metadata_anime_lookup.metadata_last_imdb = None
         metadata_anime_lookup.metadata_last_tmdb = None
-        metadata_anime_lookup.metadata_last_rt = None
         metadata_anime_lookup.metadata_last_anidb = None
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'meta anime look filename': str(file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(file_name)
-    imdb_id, tmdb_id, rt_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
+    imdb_id, tmdb_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
         nfo_data, xml_data)
     common_global.es_inst.com_elastic_index('info', {"meta anime look": imdb_id, 'tmdb': tmdb_id,
-                                                     'rt_id': rt_id, 'ani': anidb_id})
+                                                     'ani': anidb_id})
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_anime_lookup.metadata_last_imdb:
         db_connection.db_download_delete(download_que_id)
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
     if tmdb_id is not None and tmdb_id == metadata_anime_lookup.metadata_last_tmdb:
-        db_connection.db_download_delete(download_que_id)
-        # don't need to set last......since they are equal
-        return metadata_anime_lookup.metadata_last_id
-    if rt_id is not None and rt_id == metadata_anime_lookup.metadata_last_rt:
         db_connection.db_download_delete(download_que_id)
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
@@ -75,8 +59,6 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
         metadata_uuid = db_connection.db_meta_guid_by_tmdb(tmdb_id)
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
-    if rt_id is not None and metadata_uuid is None:
-        metadata_uuid = db_connection.db_meta_guid_by_rt(rt_id)
     if anidb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_meta_guid_by_anidb(anidb_id)
     # if ids from nfo/xml on local db
@@ -95,10 +77,12 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
                     metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update(
                         {'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
+                    db_connection.db_begin()
                     db_connection.db_download_update(json.dumps(download_que_json),
                                                      download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     db_connection.db_download_update_provider('themoviedb', download_que_id)
+                    db_connection.db_commit()
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
@@ -110,10 +94,12 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
                     metadata_uuid = download_que_json['MetaNewID']
                     download_que_json.update(
                         {'Status': 'Fetch', 'ProviderMetaID': imdb_id})
+                    db_connection.db_begin()
                     db_connection.db_download_update(json.dumps(download_que_json),
                                                      download_que_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     db_connection.db_download_update_provider('themoviedb', download_que_id)
+                    db_connection.db_commit()
                 else:
                     db_connection.db_download_delete(download_que_id)
                     metadata_uuid = dl_meta
@@ -151,11 +137,13 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
                 metadata_uuid = download_que_json['MetaNewID']
                 download_que_json.update(
                     {'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
+                db_connection.db_begin()
                 db_connection.db_download_update(json.dumps(download_que_json),
                                                  download_que_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 db_connection.db_download_update_provider(
                     'anidb', download_que_id)
+                db_connection.db_commit()
             else:
                 db_connection.db_download_delete(download_que_id)
                 metadata_uuid = dl_meta
@@ -171,23 +159,21 @@ def metadata_anime_lookup(db_connection, download_que_json, download_que_id, fil
             metadata_uuid = db_connection.db_find_metadata_guid(
                 file_name['title'], None)
         common_global.es_inst.com_elastic_index('info', {"meta movie db meta": metadata_uuid})
-        if metadata_uuid is not None:
-            # match found by title/year on local db so purge dl record
-            db_connection.db_download_delete(download_que_id)
-        else:
+        if metadata_uuid is None:
             # no matches by name/year
             # search themoviedb since not matched above via DB or nfo/xml
             download_que_json.update({'Status': 'Search'})
             # save the updated status
+            db_connection.db_begin()
             db_connection.db_download_update(json.dumps(download_que_json),
                                              download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider('themoviedb', download_que_id)
+            db_connection.db_commit()
     common_global.es_inst.com_elastic_index('info', {"meta anime metadata_uuid c": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_anime_lookup.metadata_last_id = metadata_uuid
     metadata_anime_lookup.metadata_last_imdb = imdb_id
     metadata_anime_lookup.metadata_last_tmdb = tmdb_id
-    metadata_anime_lookup.metadata_last_rt = rt_id
     metadata_anime_lookup.metadata_last_anidb = anidb_id
     return metadata_uuid

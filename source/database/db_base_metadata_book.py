@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import uuid
@@ -28,7 +28,8 @@ def db_meta_book_list_count(self, search_value=None):
     """
     if search_value is not None:
         self.db_cursor.execute('select count(*) '
-                               'from mm_metadata_book where mm_metadata_book_name %% %s',
+                               'from mm_metadata_book'
+                               ' where mm_metadata_book_name %% %s',
                                (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_book')
@@ -56,7 +57,8 @@ def db_meta_book_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
     """
     # metadata guid by isbm id
     """
-    self.db_cursor.execute('select mm_metadata_book_guid from mm_metadata_book'
+    self.db_cursor.execute('select mm_metadata_book_guid'
+                           ' from mm_metadata_book'
                            ' where mm_metadata_book_isbn = %s or mm_metadata_book_isbn13 = %s',
                            (isbn_uuid, isbn13_uuid))
     try:
@@ -71,8 +73,9 @@ def db_meta_book_guid_by_name(self, book_name):
     """
     # TODO can be more than one by name
     # TODO sort by release date
-    self.db_cursor.execute('select mm_metadata_book_guid from mm_metadata_book'
-                           ' where mm_metadata_book_name =  %s', (book_name,))
+    self.db_cursor.execute('select mm_metadata_book_guid'
+                           ' from mm_metadata_book'
+                           ' where mm_metadata_book_name = %s', (book_name,))
     try:
         return self.db_cursor.fetchone()['mm_metadata_book_guid']
     except:
@@ -88,8 +91,10 @@ def db_meta_book_insert(self, json_data):
     common_global.es_inst.com_elastic_index('info', {'book insert data': json_data['data']})
     insert_uuid = str(uuid.uuid4())
     self.db_cursor.execute('insert into mm_metadata_book (mm_metadata_book_guid,'
-                           ' mm_metadata_book_isbn, mm_metadata_book_isbn13,'
-                           ' mm_metadata_book_name, mm_metadata_book_json)'
+                           ' mm_metadata_book_isbn,'
+                           ' mm_metadata_book_isbn13,'
+                           ' mm_metadata_book_name,'
+                           ' mm_metadata_book_json)'
                            ' values (%s,%s,%s,%s,%s)',
                            (insert_uuid, json_data['data'][0]['isbn10'],
                             json_data['data'][0]['isbn13'], json_data['data'][0]['title'],
@@ -102,7 +107,8 @@ def db_meta_book_by_uuid(self, book_uuid):
     """
     grab book by uuid
     """
-    self.db_cursor.execute('select mm_metadata_book_json from mm_metadata_book '
+    self.db_cursor.execute('select mm_metadata_book_json'
+                           ' from mm_metadata_book '
                            'where mm_metadata_book_guid = %s', (book_uuid,))
     try:
         return self.db_cursor.fetchone()
@@ -115,11 +121,11 @@ def db_meta_book_image_random(self, return_image_type='Cover'):
     Find random book image
     """
     # TODO little bobby tables
-    self.db_cursor.execute('select mm_metadata_book_image_json->\'Images\'->\'themoviedb\'->>\''
+    self.db_cursor.execute('select mm_metadata_book_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\' as image_json,mm_metadata_book_guid'
                                                  ' from mm_media,mm_metadata_book'
                                                  ' where mm_media_metadata_guid = mm_metadata_book_guid'
-                                                 ' and (mm_metadata_book_image_json->\'Images\'->\'themoviedb\'->>\''
+                                                 ' and (mm_metadata_book_localimage_json->\'Images\'->\'themoviedb\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')
     try:

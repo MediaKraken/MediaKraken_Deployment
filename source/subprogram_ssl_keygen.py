@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import os
 import subprocess
@@ -22,7 +22,7 @@ import subprocess
 # generate key
 PROC = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',
                          '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000',
-                         '-subj', '/C=US/ST=ND/L=./CN=www.mediakraken.org'], stdout=subprocess.PIPE,
-                        shell=False)
+                         '-subj', '/C=US/ST=ND/L=./CN=www.mediakraken.org'],
+                        stdout=subprocess.PIPE, shell=False)
 PROC.wait()  # have to do here so the move has sumthing to move
 os.system('mv %s %s' % ('*.pem', './key/.'))

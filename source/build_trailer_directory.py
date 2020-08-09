@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import os
 from string import ascii_lowercase
@@ -30,9 +30,8 @@ trailer_dir = [
 
 def build_trailer_dirs():
     for trailer_info in trailer_dir:
-        os.mkdir(
-            os.path.join('/mediakraken/web_app/MediaKraken/static/meta/trailers', trailer_info))
         for ndx in ascii_lowercase:
-            os.mkdir(
-                os.path.join('/mediakraken/web_app/MediaKraken/static/meta/trailers', trailer_info,
-                             ndx))
+            os.makedirs(
+                os.path.join('/mediakraken/web_app_sanic/static/meta/trailers',
+                             trailer_info,
+                             ndx), exist_ok=True)

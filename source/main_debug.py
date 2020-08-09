@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 # will most likely need to run following on HOST
 # sysctl -w vm.max_map_count=262144
@@ -23,7 +23,7 @@ import sys
 try:
     from common import common_docker
 except ModuleNotFoundError:
-    print('Must install docker via "pip3 install docker".  Exiting...')
+    print('Must install docker via "pip3 install docker".  Exiting...', flush=True)
     sys.exit()
 # map count limit, vm.max_map_count
 with open('/proc/sys/vm/max_map_count') as f:
@@ -31,7 +31,7 @@ with open('/proc/sys/vm/max_map_count') as f:
 if max_map_count < 262144:
     print(
         'Map count too small.  Run "sysctl -w vm.max_map_count=262144" as root and rerun.'
-        '  Exiting...')
+        '  Exiting...', flush=True)
     sys.exit()
 
 docker_inst = common_docker.CommonDocker()
@@ -43,7 +43,7 @@ current_host_working_directory = docker_inst.com_docker_container_bind(container
                                                                        bind_match='/data/certs')
 if current_host_working_directory is None:
     print('Please start the containers so path can be found.'
-          '  Exiting...')
+          '  Exiting...', flush=True)
     sys.exit()
 
 docker_inst.com_docker_network_prune()

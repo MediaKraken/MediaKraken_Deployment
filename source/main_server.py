@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import os
@@ -91,16 +91,6 @@ if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0
 # mount all the shares first so paths exist for validation
 common_network_share.com_net_share_mount(db_connection.db_audit_shares())
 
-common_global.es_inst.com_elastic_index('info', {'stuff': 'Validate Paths'})
-# validate path in configuration json/database
-if not os.path.isdir(option_config_json['MediaKrakenServer']['BackupLocal']):
-    common_global.es_inst.com_elastic_index('critical',
-                                            {'Backup Dir': 'MediaKrakenServer/BackupLocal is '
-                                                           'not a valid directory!  Exiting...'})
-    common_global.es_inst.com_elastic_index('critical', {
-        'Invalid Path': option_config_json['MediaKrakenServer']['BackupLocal']})
-    sys.exit()
-
 # fire up link servers
 link_pid = {}
 for link_data in db_connection.db_link_list():
@@ -128,9 +118,6 @@ if option_config_json['Docker Instances']['musicbrainz'] \
 
 if option_config_json['Docker Instances']['pgadmin']:
     docker_inst.com_docker_run_pgadmin(current_host_working_directory)
-
-if option_config_json['Docker Instances']['portainer']:
-    docker_inst.com_docker_run_portainer(current_host_working_directory)
 
 # if option_config_json['Docker Instances']['smtp']:
 #     docker_inst.com_docker_run_container()

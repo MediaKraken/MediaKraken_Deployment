@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -287,7 +287,7 @@ class CommonNetworkProxMox:
                      # 'rootfs': '32',
                      # 'rootfs': 'vm-118-disk-1a, size=32G',
                      }
-        print(('post %s' % post_data))
+        print(('post %s' % post_data), flush=True)
         return self.com_net_prox_api_call('post', 'nodes/%s/lxc' % node_name, post_data)
 
     def com_net_prox_node_lxc_status(self, node_name, vm_id):
@@ -698,22 +698,22 @@ def com_net_prox_create_start_container(PROX_CONNECTION, JENKINS_BUILD_VIM, imag
     lxc_dict = {}
     for lxc_server in PROX_CONNECTION.com_net_prox_node_lxc_list('pve')['data']:
         lxc_dict[lxc_server['name']] = (lxc_server['vmid'], lxc_server['status'])
-    print(('lxc: %s' % lxc_dict))
+    print(('lxc: %s' % lxc_dict), flush=True)
     if JENKINS_BUILD_VIM in lxc_dict:
         # container exists, make sure it's running
-        print(('status: %s' % str(lxc_dict[JENKINS_BUILD_VIM][1])))
+        print(('status: %s' % str(lxc_dict[JENKINS_BUILD_VIM][1])), flush=True)
         # make sure it's started
         if lxc_dict[JENKINS_BUILD_VIM] != 'running':
             # start up the vm
-            print(('start vim: %s' % lxc_dict[JENKINS_BUILD_VIM][0]))
+            print(('start vim: %s' % lxc_dict[JENKINS_BUILD_VIM][0]), flush=True)
             print((PROX_CONNECTION.com_net_prox_node_lxc_start(
-                'pve', lxc_dict[JENKINS_BUILD_VIM][0])))
+                'pve', lxc_dict[JENKINS_BUILD_VIM][0])), flush=True)
     else:
         # create the container
-        print('create JENKINS_BUILD_VIM')
+        print('create JENKINS_BUILD_VIM', flush=True)
         print((PROX_CONNECTION.com_net_prox_node_lxc_create('pve', JENKINS_BUILD_VIM, 4096,
                                                             image_path,
-                                                            'ZFS_VM', 'alpine', 8, 'metaman')))
+                                                            'ZFS_VM', 'alpine', 8, 'metaman')), flush=True)
         # keep an eye on task and see when its completed
         # while node.tasks(taskid).status()['status'] == 'running':
         #        time.sleep(1)

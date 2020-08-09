@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import requests
 
@@ -37,7 +37,7 @@ class CommonMetadataTheTVDBv2:
         self.base_api_url = 'https://api.thetvdb.com/'
 
     def com_meta_thetvdbv2_login(self):
-        print(('header %s', self.headers))
+        print(('header %s', self.headers), flush=True)
         resp = requests.post(self.base_api_url + "login", headers=self.headers)
         common_global.es_inst.com_elastic_index('info', {"thetvdbv2_login Info Status":
                                                              resp.status_code, 'json': resp.json()})

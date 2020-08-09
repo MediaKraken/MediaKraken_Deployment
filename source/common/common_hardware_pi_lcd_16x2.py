@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import time
 
@@ -33,7 +33,7 @@ class CommonHardwarePILCD16x2:
 
     def com_hard_pi_lcd_text(self):
         # Remember that your sentences can only be 16 characters long!
-        print("Writing to display")
+        print("Writing to display", flush=True)
         self.display.lcd_display_string("Greetings Human!",
                                         1)  # Write line of text to first line of display
         self.display.lcd_display_string("Demo Pi Guy code",

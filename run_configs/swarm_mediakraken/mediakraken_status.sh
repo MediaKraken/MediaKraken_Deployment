@@ -1,0 +1,1 @@
+docker stack services mkstack

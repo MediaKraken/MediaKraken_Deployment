@@ -1,6 +1,0 @@
-// Just a single MODE1 track.
-
-CD_ROM
-
-TRACK MODE1
-ZERO 1:0:0

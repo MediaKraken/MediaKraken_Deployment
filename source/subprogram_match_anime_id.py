@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,13 +14,21 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
+
+import sys
 
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_scudlee
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_match_anime_id.py'):
+    sys.exit(0)
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anime_scudlee')

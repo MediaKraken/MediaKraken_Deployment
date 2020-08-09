@@ -6,6 +6,7 @@ import subprocess
 import time
 
 import pika
+import validators
 import xmltodict
 from common import common_config_ini
 from common import common_global
@@ -15,9 +16,6 @@ from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_download')
-
-# set signal exit breaks
-common_signal.com_signal_set_break()
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -176,40 +174,47 @@ class MKConsumer:
             common_global.es_inst.com_elastic_index('info', {'msg body': body})
             json_message = json.loads(body)
             # no reason to check for type download.....it has to be to get into this program
-            if json_message['Subtype'] == 'File':
+            if json_message['Type'] == 'File':
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local Save Path'])
-            elif json_message['Subtype'] == 'Youtube':
-                # TODO little bobby tables
-                dl_pid = subprocess.Popen(shlex.split(
-                    'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
-                    + json_message['URL']), stdout=subprocess.PIPE, shell=False)
-                dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
-            elif json_message['Subtype'] == 'HDTrailers':
+            elif json_message['Type'] == 'Youtube':
+                if validators.url.url(json_message['URL']):
+                    dl_pid = subprocess.Popen(shlex.split(
+                        'youtube-dl -i --download-archive /mediakraken/downloads/yt_dl_archive.txt '
+                        + json_message['URL']), stdout=subprocess.PIPE, shell=False)
+                    dl_pid.wait()  # wait for finish so doesn't startup a bunch of dl's
+                else:
+                    # TODO log error by user requested
+                    pass
+            elif json_message['Type'] == 'HDTrailers':
                 # try to grab the RSS feed itself
                 data = xmltodict.parse(common_network.mk_network_fetch_from_url(
                     "http://feeds.hd-trailers.net/hd-trailers", directory=None))
+                common_global.es_inst.com_elastic_index('info', {
+                    'download': ('hdtrailer_json', data)})
                 if data is not None:
-                    for item in data['item']:
+                    for item in data['rss']['channel']['item']:
                         common_global.es_inst.com_elastic_index('info', {'item': item})
                         download_link = None
-                        if ('(Trailer' in data['item']['title']
-                            and option_config_json['Trailer']['Trailer'] is True) \
-                                or ('(Behind' in data['item']['title']
-                                    and option_config_json['Trailer']['Behind'] is True) \
-                                or ('(Clip' in data['item']['title']
-                                    and option_config_json['Trailer']['Clip'] is True) \
-                                or ('(Featurette' in data['item']['title']
-                                    and option_config_json['Trailer']['Featurette'] is True) \
-                                or ('(Carpool' in data['item']['title']
-                                    and option_config_json['Trailer']['Carpool'] is True):
-                            for trailer_url in data['item']['enclosure url']:
-                                if '1080p' in trailer_url:
-                                    download_link = data['item']['enclosure url']
-                                    break
+                        if ('(Trailer' in item['title']
+                            and option_config_json['Metadata']['Trailer']['Trailer'] is True) \
+                                or ('(Behind' in item['title']
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Behind'] is True) \
+                                or ('(Clip' in item['title']
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Clip'] is True) \
+                                or ('(Featurette' in item['title']
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Featurette'] is True) \
+                                or ('(Carpool' in item['title']
+                                    and option_config_json['Metadata']['Trailer'][
+                                        'Carpool'] is True):
+                            download_link = item['enclosure']['@url']
                         if download_link is not None:
                             file_save_name = os.path.join('/static/meta/trailer/',
                                                           download_link.rsplit('/', 1))
+                            #  verify it doesn't exist in meta folder
                             if not os.path.exists(file_save_name):
                                 common_network.mk_network_fetch_from_url(download_link,
                                                                          directory=file_save_name)
@@ -295,10 +300,11 @@ class MKConsumer:
 
 
 def main():
+    # set signal exit breaks
+    common_signal.com_signal_set_break()
     # fire off wait for it script to allow connection
-    common_network.mk_network_service_available('mkrabbitmq', '5672')
-
-    mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
+    mk_rabbit = MKConsumer('amqp://guest:guest@mkstack_rabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:

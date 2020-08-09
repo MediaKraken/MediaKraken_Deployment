@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,13 +14,14 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import functools
 import json
-import time
+import subprocess
 
 import pika
+import time
 from common import common_global
 from common import common_hardware_hue
 from common import common_logging_elasticsearch
@@ -194,6 +195,11 @@ class MKConsumer:
                             hardware_hue.com_hardware_hue_light_set(json_message['LightList'],
                                                                     'bri',
                                                                     json_message['Setting'])
+            elif json_message['Type'] == 'Hardware Scan':
+                hardware_proc = subprocess.Popen('/mediakraken/main_hardware_discover.py',
+                                               stdout=subprocess.PIPE,
+                                               shell=False)
+                #hardware_proc.wait()  # do NOT wait, as it's blocking
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
@@ -279,8 +285,8 @@ def main():
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # fire off wait for it script to allow connection
-    common_network.mk_network_service_available('mkrabbitmq', '5672')
-    mk_rabbit = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
+    mk_rabbit = MKConsumer('amqp://guest:guest@mkstack_rabbitmq:5672/%2F')
     try:
         mk_rabbit.run()
     except KeyboardInterrupt:

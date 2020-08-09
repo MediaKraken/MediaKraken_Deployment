@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import time
@@ -23,12 +23,12 @@ import xmltodict
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
-from common import common_metadata_thetvdb
+from common import common_metadata_provider_thetvdb
 from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_thetvdb_updates')
+    'subprogram_metadata_thetvdb_updates')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -38,7 +38,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # TODO this should go through the limiter
 # grab the data
-thetvdb_API_Connection = common_metadata_thetvdb.CommonMetadataTheTVDB(
+thetvdb_API_Connection = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(
     option_config_json)
 option_json, status_json = db_connection.db_opt_status_read()
 # for update_item in xmltodict.parse(thetvdb_API_Connection.com_meta_TheTVDB_Updates_by_Epoc\

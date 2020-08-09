@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,11 +14,19 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
+
+import sys
 
 from common import common_config_ini
 from common import common_internationalization
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_metadata_giantbomb.py'):
+    sys.exit(0)
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -38,7 +46,7 @@ def main(argv):
 
 # TODO this should go through the limiter
 if __name__ == "__main__":
-    print(('bomb game info download attempts: %s' % total_download_attempts))
+    print(('bomb game info download attempts: %s' % total_download_attempts), flush=True)
     # send notifications
     if total_download_attempts > 0:
         db_connection.db_notification_insert(

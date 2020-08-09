@@ -1,5 +1,5 @@
 arduino-python3==0.6
-pika==1.0.1
+pika==1.1.0
 pingo==0.2.0
 rxv==0.6.0
 python-nest==4.1.0

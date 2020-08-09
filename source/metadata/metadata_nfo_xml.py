@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import os
 import pathlib
@@ -33,11 +33,8 @@ def nfo_xml_file(media_file_path):
     nfo_data = None
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
-    try:  # pull the "real" extension
-        # ext_check = media_file_path[-4:].lower().split(".")[-1]
-        ext_check = pathlib.Path(media_file_path).suffix.lower()
-    except:
-        ext_check = None
+    # pull the "real" extension
+    ext_check = pathlib.Path(media_file_path).suffix.lower()
     if ext_check in common_file_extentions.SUBTITLE_EXTENSION:
         # need to chop off the lang too, the split works even with no .lang in name
         nfo_file_check = media_file_path.rsplit('.', 2)[0] + '.nfo'
@@ -76,12 +73,11 @@ def nfo_xml_file(media_file_path):
     return nfo_data, xml_data
 
 
-def nfo_xml_file_tv(media_file_path):
+def nfo_file_tv(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
     nfo_data = None
-    xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
     # TODO should check for one dir back too I suppose
     nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
@@ -103,7 +99,7 @@ def nfo_xml_file_tv(media_file_path):
                 pass
             except UnicodeDecodeError:
                 pass
-    return nfo_data, xml_data
+    return nfo_data
 
 
 def nfo_xml_id_lookup(nfo_data, xml_data):
@@ -112,7 +108,6 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
     """
     imdb_id = None
     tmdb_id = None
-    rt_id = None
     # load both fields for more data in media_id_json on db
     if nfo_data is not None:
         try:  # not all will have imdb
@@ -125,13 +120,6 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
             tmdb_id = nfo_data['movie']['tmdbid']
             if len(tmdb_id) == 0:
                 tmdb_id = None
-        except KeyError:
-            pass
-        # TODO RT
-        try:  # not all nfo's have the rt
-            rt_id = nfo_data['movie']['fakert']
-            if len(rt_id) == 0:
-                rt_id = None
         except KeyError:
             pass
     if xml_data is not None:
@@ -150,14 +138,6 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                         tmdb_id = None
                 except KeyError:
                     pass
-            # TODO RT
-            if rt_id is None:
-                try:  # not all xml's have the rt
-                    rt_id = xml_data['movie']['fakert']
-                    if len(rt_id) == 0:
-                        rt_id = None
-                except KeyError:
-                    pass
         else:  # movie.xml
             if imdb_id is None:
                 try:  # not all xmls's will have the imdb
@@ -173,28 +153,18 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
                         tmdb_id = None
                 except:
                     pass
-            # TODO RT
-            if rt_id is None:
-                try:  # not all xml's have the rt
-                    rt_id = xml_data['Title']['RottenTomatoesId']
-                    if len(rt_id) == 0:
-                        rt_id = None
-                except KeyError:
-                    pass
     common_global.es_inst.com_elastic_index('info', {'nfo/xml imdb': imdb_id,
-                                                     'tmdb': tmdb_id,
-                                                     'rt': rt_id})
-    return (imdb_id, tmdb_id, rt_id)
+                                                     'tmdb': tmdb_id})
+    return imdb_id, tmdb_id
 
 
-def nfo_xml_id_lookup_tv(nfo_data, xml_data):
+def nfo_id_lookup_tv(nfo_data):
     """
     Look up id's in nfo/xml lookup for tv
     """
     imdb_id = None
     tvdb_id = None
     tmdb_id = None
-    rt_id = None
     # load both fields for more data in media_id_json on db
     if nfo_data is not None:
         try:
@@ -215,41 +185,7 @@ def nfo_xml_id_lookup_tv(nfo_data, xml_data):
                 imdb_id = None
         except KeyError:
             pass
-        # TODO RT
-        try:
-            rt_id = nfo_data['episodedetails']['fakert']
-            if len(rt_id) == 0:
-                rt_id = None
-        except KeyError:
-            pass
-    if xml_data is not None:
-        try:
-            tvdb_id = xml_data['episodedetails']['tvdbid']
-            if len(tvdb_id) == 0:
-                tvdb_id = None
-        except KeyError:
-            pass
-        try:
-            tmdb_id = xml_data['episodedetails']['tmdbid']
-            if len(tmdb_id) == 0:
-                tmdb_id = None
-        except KeyError:
-            pass
-        try:
-            imdb_id = xml_data['episodedetails']['imdbid']
-            if len(imdb_id) == 0:
-                imdb_id = None
-        except KeyError:
-            pass
-        # TODO RT
-        try:
-            rt_id = xml_data['episodedetails']['fakert']
-            if len(rt_id) == 0:
-                rt_id = None
-        except KeyError:
-            pass
-    common_global.es_inst.com_elastic_index('info', {'nfo/xml tv imdb': imdb_id,
+    common_global.es_inst.com_elastic_index('info', {'nfo tv imdb': imdb_id,
                                                      'tvdb': tvdb_id,
-                                                     'tmdb': tmdb_id,
-                                                     'rt': rt_id})
-    return (imdb_id, tvdb_id, tmdb_id, rt_id)
+                                                     'tmdb': tmdb_id})
+    return imdb_id, tvdb_id, tmdb_id

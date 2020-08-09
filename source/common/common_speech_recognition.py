@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 # https://github.com/MediaKraken-Dependancies/speech_recognition
 # pip install SpeechRecognition
@@ -45,11 +45,11 @@ class CommonSpeechRec:
 
     def com_decode_audio(self):
         try:
-            print("Sphinx thinks you said " + self.recognizer.recognize_sphinx(self.audio))
+            print("Sphinx thinks you said " + self.recognizer.recognize_sphinx(self.audio), flush=True)
             return self.recognizer.recognize_sphinx(self.audio)
         except sr.UnknownValueError:
-            print("Sphinx could not understand audio")
+            print("Sphinx could not understand audio", flush=True)
             return None
         except sr.RequestError as e:
-            print("Sphinx error; {0}".format(e))
+            print("Sphinx error; {0}".format(e), flush=True)
             return None

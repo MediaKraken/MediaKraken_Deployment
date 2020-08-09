@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,10 +14,10 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
-APP_VERSION = 'dev'
+APP_VERSION = 'dev2020_04'
 
-DB_VERSION = 24
+DB_VERSION = 27
 
-MAME_VERSION = '211'
+MAME_VERSION = '220'

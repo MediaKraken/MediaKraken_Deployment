@@ -1,2 +1,2 @@
-pika==1.0.1
-elasticsearch==7.0.2
+pika==1.1.0
+elasticsearch==7.5.1

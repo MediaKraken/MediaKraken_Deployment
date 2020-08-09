@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import os
@@ -57,7 +57,9 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 else:
     if os.uname()[4][:3] == 'arm':
-        # TODO find real resolution
+        # find real resolution
+        window_sizes = Window.size
+        print('window', window_sizes, flush=True)
         # TODO this is currently set to the "official" raspberry pi touchscreen
         Config.set('graphics', 'width', 800)
         Config.set('graphics', 'height', 480)

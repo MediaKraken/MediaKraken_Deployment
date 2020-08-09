@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 from common import common_network_telnet
 
@@ -27,12 +27,11 @@ class CommonHardwareControllerTelnet:
     # db_hardware_json_read will populate the json
     def __init__(self, device_json):
         self.device_json = device_json
-        self.device_inst = common_network_telnet.CommonNetworkTelnet()
-        self.device_inst.com_net_telnet_open_device(
-            self.device_json["Protocol"]["Host IP"],
-            self.device_json["Protocol"]["Host Port"],
-            self.device_json["Protocol"]["User"],
-            self.device_json["Protocol"]["Password"])
+        self.device_inst = common_network_telnet.CommonNetworkTelnet(
+            telnet_host=self.device_json["Protocol"]["Host IP"],
+            telnet_port=self.device_json["Protocol"]["Host Port"],
+            telnet_user=self.device_json["Protocol"]["User"],
+            telnet_password=self.device_json["Protocol"]["Password"])
 
     def com_hardware_command(self, command_value):
         """

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,14 +14,15 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 
 def db_version_check(self):
     """
     query db version
     """
-    self.db_cursor.execute('select mm_version_no from mm_version')
+    self.db_cursor.execute('select mm_version_no'
+                           ' from mm_version')
     return self.db_cursor.fetchone()[0]
 
 

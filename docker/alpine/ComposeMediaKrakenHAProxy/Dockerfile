@@ -1,18 +1,13 @@
 # https://github.com/docker-library/haproxy
-# vim:set ft=dockerfile:
-FROM alpine:3.10
+FROM alpine:3.11
 
-ARG ALPMIRROR
-ARG PIPMIRROR
-
-ENV HAPROXY_VERSION 2.0.3
-ENV HAPROXY_URL https://www.haproxy.org/download/2.0/src/haproxy-2.0.3.tar.gz
-ENV HAPROXY_SHA256 aac1ff3e5079997985b6560f46bf265447d0cd841f11c4d77f15942c9fe4b770
+ENV HAPROXY_VERSION 2.1.4
+ENV HAPROXY_URL https://www.haproxy.org/download/2.1/src/haproxy-2.1.4.tar.gz
+ENV HAPROXY_SHA256 51030ff696d7067162b4d24d354044293aecfbb36d7acc2f840c8d928bfe91cd
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	\
-	&& sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 	&& apk add --no-cache --virtual .build-deps \
 		ca-certificates \
 		gcc \
@@ -40,6 +35,8 @@ RUN set -x \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
+# USE_BACKTRACE is enabled by default on the linux-glibc target, but does not work with musl
+		USE_BACKTRACE= \
 		\
 		EXTRA_OBJS=" \
 # see https://github.com/docker-library/haproxy/issues/94#issuecomment-505673353 for more details about prometheus support
@@ -60,15 +57,15 @@ RUN set -x \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)" \
-	&& apk add --virtual .haproxy-rundeps $runDeps \
-	&& apk del .build-deps
+	&& apk add --no-network --virtual .haproxy-rundeps $runDeps \
+	&& apk del --no-network .build-deps
 
 # https://www.haproxy.org/download/1.8/doc/management.txt
 # "4. Stopping and restarting HAProxy"
 # "when the SIGTERM signal is sent to the haproxy process, it immediately quits and all established connections are closed"
 # "graceful stop is triggered when the SIGUSR1 signal is sent to the haproxy process"
 STOPSIGNAL SIGUSR1
-COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]

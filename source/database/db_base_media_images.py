@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,26 +14,28 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 
-def db_media_images_list_count(self, search_value=None):
+def db_media_images_list_count(self, class_guid, search_value=None):
     """
     Images list count
     """
-    self.db_cursor.execute('select count(*) from mm_media,mm_media_class'
+    self.db_cursor.execute('select count(*) from mm_media,'
+                           'mm_media_class'
                            ' where mm_media.mm_media_class_guid'
                            ' = mm_media_class.mm_media_class_guid'
-                           ' and mm_media_class_type = \'Picture\'')
+                           ' and mm_media_class_guid = %s', (class_guid,))
 
 
-def db_media_images_list(self, offset=0, records=None, search_value=None):
+def db_media_images_list(self, class_guid, offset=0, records=None, search_value=None):
     """
     Images list
     """
-    self.db_cursor.execute('select mm_media_path from mm_media,mm_media_class'
+    self.db_cursor.execute('select mm_media_path from mm_media,'
+                           'mm_media_class'
                            ' where mm_media.mm_media_class_guid'
                            ' = mm_media_class.mm_media_class_guid'
-                           ' and mm_media_class_type = \'Picture\' offset %s limit %s',
-                           (offset, records))
+                           ' and mm_media_class_guid = %s offset %s limit %s',
+                           (class_guid, offset, records))
     return self.db_cursor.fetchall()

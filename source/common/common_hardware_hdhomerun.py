@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 # from pprint import pprint
 from hdhomerun import Device
@@ -44,13 +44,13 @@ class CommonHardwareHDHomeRun:
         """
         Detail on specified device
         """
-        print(('Model: %s', self.devices[ndx].get_var(item='/sys/model')))
-        print(('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel')))
-        print(('Name: %s', self.devices[ndx].get_name()))
-        print(('Device ID: %08X' % self.devices[ndx].get_device_id()))
-        print(('Device IP: %08X' % self.devices[ndx].get_device_ip()))
-        print(('Stream info: %s' % self.devices[ndx].get_tuner_streaminfo()))
-        print(('Versions: %s %d' % self.devices[ndx].get_version()))
+        print(('Model: %s', self.devices[ndx].get_var(item='/sys/model')), flush=True)
+        print(('HWModel: %s ', self.devices[ndx].get_var(item='/sys/hwmodel')), flush=True)
+        print(('Name: %s', self.devices[ndx].get_name()), flush=True)
+        print(('Device ID: %08X' % self.devices[ndx].get_device_id()), flush=True)
+        print(('Device IP: %08X' % self.devices[ndx].get_device_ip()), flush=True)
+        print(('Stream info: %s' % self.devices[ndx].get_tuner_streaminfo()), flush=True)
+        print(('Versions: %s %d' % self.devices[ndx].get_version()), flush=True)
 
     def com_hdhomerun_upgrade(self, ndx, firmware_file):
         """
@@ -91,13 +91,13 @@ class CommonHardwareHDHomeRun:
 
     def stuff_to_code(self):
         # self.devices[0].set_var(item='/tuner1/vchannel', value='702')
-        # pprint(self.devices[0].get_tuner_vstatus())
+        # print(self.devices[0].get_tuner_vstatus(), flush=True)
         # print 'Tuner 2 vchannel: ' + self.devices[0].get_var(item='/tuner2/vchannel')
         # print 'Tuner 2 channel: ' + self.devices[0].get_var(item='/tuner2/channel')
         # print 'Tuner 2 channelmap: ' + self.devices[0].get_var(item='/tuner2/channelmap')
-        print((self.devices[0].get_tuner_filter()))
-        print((self.devices[0].get_tuner_program()))
-        print((self.devices[0].get_tuner_target()))
+        print((self.devices[0].get_tuner_filter()), flush=True)
+        print((self.devices[0].get_tuner_program()), flush=True)
+        print((self.devices[0].get_tuner_target()), flush=True)
         # print 'OOB status: ' + str(self.devices[0].get_oob_status())
         # print 'Supported: %s' % self.devices[0].get_supported(prefix='tuner')
         # print self.devices[0].get_tuner_plotsample()

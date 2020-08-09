@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import time
 
@@ -40,8 +40,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
         common_global.es_inst.com_elastic_index('info', {'stuff': 'Ready for twisted connections!'})
         for cast_devices in self.db_connection.db_device_list(device_type='cast'):
             common_global.client_devices.append(('cast', cast_devices))
-        for cast_devices in self.db_connection.db_device_list(device_type='roku'):
-            common_global.client_devices.append(('roku', cast_devices))
+        for roku_devices in self.db_connection.db_device_list(device_type='roku'):
+            common_global.client_devices.append(('roku', roku_devices))
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

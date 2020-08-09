@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -300,9 +300,57 @@ if db_connection.db_version_check() < 23:
 
 if db_connection.db_version_check() < 24:
     options_json, status_json = db_connection.db_opt_status_read()
-    options_json.update({'API': {'Docker Instances': {'elk': False}}})
-    db_connection.db_opt_update(options_json)
+    options_json['Docker Instances']['elk'] = False
+    db_connection.db_opt_update(json.dumps(options_json))
     db_connection.db_version_update(24)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 25:
+    options_json, status_json = db_connection.db_opt_status_read()
+    db_connection.db_drop_table('mm_media_class')
+    db_connection.db_query('ALTER TABLE mm_media DROP COLUMN mm_media_class_guid;')
+    db_connection.db_query('ALTER TABLE mm_media ADD COLUMN mm_media_class_guid smallint;')
+    db_connection.db_query('ALTER TABLE mm_media DROP COLUMN mm_media_class_guid;')
+    db_connection.db_query('ALTER TABLE mm_media ADD COLUMN mm_media_class_guid smallint;')
+    db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_class_type;')
+    db_connection.db_query(
+        'ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_class_type smallint;')
+    db_connection.db_query('ALTER TABLE mm_media_remote DROP COLUMN mmr_media_class_guid;')
+    db_connection.db_query(
+        'ALTER TABLE mm_media_remote ADD COLUMN mmr_media_class_guid smallint;')
+    db_connection.db_version_update(25)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 26:
+    # game servers
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_game_dedicated_servers (mm_game_server_id uuid'
+        ' CONSTRAINT mm_game_server_id primary key,'
+        ' mm_game_server_name text,'
+        ' mm_game_server_json jsonb)')
+    if db_connection.db_table_index_check('mm_game_server_name_idx') is None:
+        db_connection.db_query(
+            'CREATE INDEX mm_game_server_name_idx'
+            ' ON mm_game_dedicated_servers(mm_game_server_name)')
+    db_connection.db_version_update(26)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 27:
+    # user queue
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_user_queue (mm_user_queue_id uuid'
+        ' CONSTRAINT mm_user_queue_id primary key,'
+        ' mm_user_queue_name_idx text,'
+        ' mm_user_queue_user_id uuid,'
+        ' mm_user_queue_media_type smallint,'
+        ' mm_user_queue_media_guid uuid)')
+    if db_connection.db_table_index_check('mm_user_queue_name_idx') is None:
+        db_connection.db_query(
+            'CREATE INDEX mm_user_queue_name_idx'
+            ' ON mm_user_queue(mm_user_queue_name)')
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_crc32 text;')
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_sha1 text;')
+    db_connection.db_version_update(27)
     db_connection.db_commit()
 
 # close the database

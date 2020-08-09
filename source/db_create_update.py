@@ -1,7 +1,7 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
-  This program is free software; you can redistribute it and/or
+  This program is free software; you can redistributeF it and/or
   modify it under the terms of the GNU General Public License
   version 2, as published by the Free Software Foundation.
 
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -24,53 +24,11 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_version
 
-# media classes
-base_media_classes = (
-    ("Adult", "Video", True),
-    ("Anime", "Video", True),
-    ("Book", "Publication", True),
-    ("Boxset", None, False),
-    ("Comic", "Publication", True),
-    ("Comic Strip", "Publication", True),
-    ("Game CHD", None, False),
-    ("Game ISO", None, False),
-    ("Game ROM", None, False),
-    ("Home Movie", "Video", True),
-    ("Magazine", "Publication", True),
-    ("Movie", "Video", True),
-    ("Movie Extras", "Video", False),
-    ("Movie Collection", None, False),
-    ("Movie Theme", "Audio", False),
-    ("Movie Subtitle", None, False),
-    ("Movie Trailer", "Video", False),
-    ("Music", "Audio", True),
-    ("Music Album", None, False),
-    ("Music Collection", None, False),
-    ("Music Lyric", None, False),
-    ("Music Video", "Video", True),
-    ("Person", None, False),
-    ("Picture", "Image", True),
-    ("Soundtrack", "Audio", False),
-    ("Sports", "Video", True),
-    ("Subtitle", None, False),
-    ("TV Episode", "Video", False),
-    ("TV Extras", "Video", False),
-    ("TV Season", None, False),
-    ("TV Show", "Video", True),
-    ("TV Subtitle", None, False),
-    ("TV Theme", "Audio", False),
-    ("TV Trailer", "Video", False),
-    ("Video Game", "Game", True),
-    ("Video Game Intro", "Video", True),
-    ("Video Game Speedrun", "Video", True),
-    ("Video Game Superplay", "Video", True)
-)
-
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_create_update')
 
 # open the database
-db_connection = common_config_ini.com_config_read(db_prod=False, db_built=False)
+db_connection = common_config_ini.com_config_read()
 
 # create table for version
 db_connection.db_query(
@@ -93,7 +51,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_shar
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_guid uuid'
                        ' CONSTRAINT mm_media_dir_pk PRIMARY KEY,'
                        ' mm_media_dir_path text,'
-                       ' mm_media_dir_class_type uuid,'
+                       ' mm_media_dir_class_type smallint,'
                        ' mm_media_dir_last_scanned timestamp,'
                        ' mm_media_dir_share_guid uuid,'
                        ' mm_media_dir_status jsonb)')
@@ -110,7 +68,7 @@ FOREIGN KEY (book_id) REFERENCES books (id);
 # create table for media
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media (mm_media_guid uuid'
                        ' CONSTRAINT mm_media_pk PRIMARY KEY,'
-                       ' mm_media_class_guid uuid,'
+                       ' mm_media_class_guid smallint,'
                        ' mm_media_metadata_guid uuid,'
                        ' mm_media_path text,'
                        ' mm_media_ffprobe_json jsonb,'
@@ -129,7 +87,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_remote (mmr_media_gu
                        ' CONSTRAINT mmr_media_remote_pk PRIMARY KEY,'
                        ' mmr_media_link_id uuid,'
                        ' mmr_media_uuid uuid,'
-                       ' mmr_media_class_guid uuid,'
+                       ' mmr_media_class_guid smallint,'
                        ' mmr_media_metadata_guid uuid,'
                        ' mmr_media_ffprobe_json jsonb,'
                        ' mmr_media_json jsonb)')
@@ -321,22 +279,6 @@ if db_connection.db_table_index_check('mm_metadata_music_idxgin_user_json') is N
     db_connection.db_query('CREATE INDEX mm_metadata_music_idxgin_user_json'
                            ' ON mm_metadata_music USING gin (mm_metadata_music_user_json)')
 
-# create the base media class
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_class (mm_media_class_guid uuid'
-                       ' CONSTRAINT mm_media_class_pk PRIMARY KEY,'
-                       ' mm_media_class_type text,'
-                       ' mm_media_class_parent_type text,'
-                       ' mm_media_class_display boolean)')
-if db_connection.db_table_index_check('mm_media_class_idx_type') is None:
-    db_connection.db_query('CREATE INDEX mm_media_class_idx_type'
-                           ' ON mm_media_class(mm_media_class_type)')
-
-# add media classes
-if db_connection.db_table_count('mm_media_class') == 0:
-    for media_class in base_media_classes:
-        db_connection.db_media_class_insert(
-            media_class[0], media_class[1], media_class[2])
-
 # create table for anime metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_anime (mm_metadata_anime_guid uuid'
                        ' CONSTRAINT mm_metadata_anime_pk PRIMARY KEY,'
@@ -383,7 +325,7 @@ if db_connection.db_table_index_check('mm_metadata_anime_idxgin_user_json') is N
 # create table for metadata
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_movie (mm_metadata_guid uuid'
                        ' CONSTRAINT mm_metadata_pk PRIMARY KEY,'
-                       ' mm_metadata_media_id jsonb,'
+                       ' mm_metadata_media_id integer,'
                        ' mm_media_name text,'
                        ' mm_metadata_json jsonb,'
                        ' mm_metadata_localimage_json jsonb,'
@@ -568,75 +510,102 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_cron (mm_cron_guid uuid'
 
 base_cron = [
     # metadata
-    # TODO CODE
     ('Anime', 'Match anime via Scudlee and Manami data',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'anime',
+     {'exchange_key': 'mkque_metadata_ex',
+      'route_key': 'Z',
+      'type': 'Anime Xref',
       'program': '/mediakraken/subprogram_match_anime_id.py'}),
 
     # will run within the metadata_api_worker by provider
     ('Collections', 'Create and update collection(s)',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Collection',
+     {'exchange_key': 'mkque_metadata_ex',
+      'route_key': 'themoviedb',
+      'type': 'Update Collection',
       'program': '/mediakraken/subprogram_metadata_update_create_collections.py'}),
 
-    # TODO CODE
     ('Schedules Direct', 'Fetch TV schedules from Schedules Direct',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'schedulesdirect', 'task': 'update',
+     {'exchange_key': 'mkque_metadata_ex',
+      'route_key': 'schedulesdirect',
+      'type': 'Update',
       'program': '/mediakraken/subprogram_schedules_direct_updates.py'}),
 
     # since file scan could do this
     # ('Subtitle', 'Download missing subtitles for media',
-    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle',
+    #  {'exchange_key': 'mkque_metadata_ex',
+    #  'route_key': 'Z',
+    #  'type': 'Subtitle',
     #  'program': '/mediakraken/subprogram_subtitle_downloader.py'}),
 
     # will run within the metadata_api_worker by provider
     ('The Movie Database', 'Grab updated metadata for movie(s) and TV show(s)',
-     {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'type': 'Update Metadata',
+     {'exchange_key': 'mkque_metadata_ex',
+      'route_key': 'themoviedb',
+      'type': 'Update Metadata',
       'program': '/mediakraken/subprogram_metadata_tmdb_updates.py'}),
 
     # will run within the pike container via "cron"
-    ('Retro game data', 'Grab updated metadata for retro game(s)',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+    ('Retro Game Data', 'Grab updated metadata for retro game(s)',
+     {'exchange_key': 'mkque_ex',
+      'route_key': 'mkque',
+      'type': 'Cron Run',
       'program': '/mediakraken/subprogram_metadata_games.py'}),
 
     # ('Giantbomb Game Update', 'Grab updated Giantbomb game metadata',
-    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'giantbomb', 'task': 'update',
+    #  {'exchange_key': 'mkque_metadata_ex',
+    #  'route_key': 'giantbomb',
+    #  'type': 'Update',
     #  'program': '/mediakraken/subprogram_metadata_giantbomb.py'}),
 
     # ('TheTVDB Update', 'Grab updated TheTVDB metadata',
-    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'thetvdb', 'task': 'update',
+    #  {'exchange_key': 'mkque_metadata_ex',
+    #  'route_key': 'thetvdb',
+    #  'type': 'Update',
     #  'program': '/mediakraken/subprogram_metadata_thetvdb_updates.py'}),
 
     # ('TVmaze Update', 'Grab updated TVmaze metadata',
-    #  {'exchange_key': 'mkque_metadata_ex', 'route_key': 'tvmaze', 'task': 'update',
+    #  {'exchange_key': 'mkque_metadata_ex',
+    #  'route_key': 'tvmaze',
+    #  'type': 'Update',
     #  'program': '/mediakraken/subprogram_metadata_tvmaze_updates.py'}),
 
     # All code to run this is in the download docker image
     ('Trailer', 'Download new trailer(s)',
-     {'exchange_key': 'mkque_download_ex', 'route_key': 'mkdownload', 'type': None,
-      'task': 'HDTrailers'}),
+     {'exchange_key': 'mkque_download_ex',
+      'route_key': 'mkdownload',
+      'type': 'HDTrailers'}),
 
     # normal subprograms
     # Will simply run in reactor with cron run
     ('Backup', 'Backup PostgreSQL DB',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+     {'exchange_key': 'mkque_ex',
+      'route_key': 'mkque',
+      'type': 'Cron Run',
       'program': '/mediakraken/subprogram_postgresql_backup.py'}),
 
     # Will simply run in reactor
     ('DB Vacuum', 'PostgreSQL Vacuum Analyze all tables',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+     {'exchange_key': 'mkque_ex',
+      'route_key': 'mkque',
+      'type': 'Cron Run',
       'program': '/mediakraken/subprogram_postgresql_vacuum.py'}),
 
     # ('iRadio Scan', 'Scan for iRadio stations',
-    #  {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'task': 'iradio',
+    #  {'exchange_key': 'mkque_ex',
+    #  'route_key': 'mkque',
+    #  'type': 'iRadio',
     #  'program': '/mediakraken/subprogram_iradio_channels.py'}),
 
     # Will simply run in reactor
     ('Media Scan', 'Scan for new media',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Library Scan'}),
+     {'exchange_key': 'mkque_ex',
+      'route_key': 'mkque',
+      'type': 'Library Scan'}),
 
     # will simply run in reactor
     ('Sync', 'Sync and transcode media',
-     {'exchange_key': 'mkque_ex', 'route_key': 'mkque', 'type': 'Cron Run',
+     {'exchange_key': 'mkque_ex',
+      'route_key': 'mkque',
+      'type': 'Cron Run',
       'program': '/mediakraken/subprogram_sync.py'}),
 ]
 # create base cron entries
@@ -785,13 +754,11 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
                 'google': 'AIzaSyCwMkNYp8E4H19BDzlM7-IDkNCQtw0R9lY',
                 'imvdb': None,
                 'isbndb': '25C8IT4I',
-                'musicbrainz': None,
                 'opensubtitles': None,
                 'openweathermap': '575b4ae4615e4e2a4c34fb9defa17ceb',
                 'rottentomatoes': 'f4tnu5dn9r7f28gjth3ftqaj',
                 'shoutcast': None,
                 'soundcloud': None,
-                'thelogodb': None,
                 'themoviedb': 'f72118d1e84b8a1438935972a9c37cac',
                 'thesportsdb': '4352761817344',
                 'thetvdb': '147CB43DCA8B61B7',
@@ -806,7 +773,6 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
                              'mumble': False,
                              'musicbrainz': False,
                              'pgadmin': False,
-                             'portainer': False,
                              'smtp': False,
                              'teamspeak': False,
                              'transmission': False,
@@ -834,11 +800,6 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
         'Trakt': {'ApiKey': None,
                   'ClientID': None,
                   'SecretKey': None},
-        'Transmission': {'Host': None,
-                         'Port': 9091,
-                         'Username': 'spootdev',
-                         'Password': 'metaman'
-                         },
         'Twitch': {'ClientID': None,
                    'OAuth': None},
         'User': {'Activity Purge': None,
@@ -846,11 +807,14 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
     }), json.dumps({'thetvdb_Updated_Epoc': 0}))
 
 # create table game_info
+# TODO do I wish to just use jin index for json which will have that cec32/sha1 data?
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_info (gi_id uuid'
                        ' CONSTRAINT gi_id_mpk PRIMARY KEY,'
                        ' gi_system_id uuid,'
                        ' gi_game_info_short_name text,'
                        ' gi_game_info_name text,'
+                       ' gi_game_info_crc32 text,'
+                       ' gi_game_info_sha1 text,'
                        ' gi_game_info_json jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
@@ -892,7 +856,7 @@ db_connection.db_query('create table IF NOT EXISTS mm_metadata_person (mmp_id uu
                        ' CONSTRAINT mmp_id_pk primary key,'
                        ' mmp_person_media_id jsonb,'
                        ' mmp_person_meta_json jsonb,'
-                       ' mmp_person_image jsonb,'
+                       ' mmp_person_image text,'
                        ' mmp_person_name text)')
 if db_connection.db_table_index_check('mm_metadata_person_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_person_idx_name'
@@ -984,6 +948,29 @@ if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
         'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
 if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
     db_connection.db_query('CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
+
+# game servers
+db_connection.db_query('create table IF NOT EXISTS mm_game_dedicated_servers'
+                       ' (mm_game_server_id uuid'
+                       ' CONSTRAINT mm_game_server_id primary key,'
+                       ' mm_game_server_name text,'
+                       ' mm_game_server_json jsonb)')
+if db_connection.db_table_index_check('mm_game_server_name_idx') is None:
+    db_connection.db_query(
+        'CREATE INDEX mm_game_server_name_idx ON mm_game_dedicated_servers(mm_game_server_name)')
+
+# user queue
+db_connection.db_query(
+    'create table IF NOT EXISTS mm_user_queue (mm_user_queue_id uuid'
+    ' CONSTRAINT mm_user_queue_id primary key,'
+    ' mm_user_queue_name_idx text,'
+    ' mm_user_queue_user_id uuid,'
+    ' mm_user_queue_media_type smallint,'
+    ' mm_user_queue_media_guid uuid)')
+if db_connection.db_table_index_check('mm_user_queue_name_idx') is None:
+    db_connection.db_query(
+        'CREATE INDEX mm_user_queue_name_idx'
+        ' ON mm_user_queue(mm_user_queue_name)')
 
 # create indexes for pg_trgm
 if db_connection.db_table_index_check('mm_metadata_tvshow_name_trigram_idx') is None:

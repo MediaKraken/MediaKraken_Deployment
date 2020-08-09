@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 from ldap3 import Connection
 
@@ -51,11 +51,11 @@ below is all python-ldap, moving to ldap3
 #         try:
 #             self.con = ldap.initialize('ldap://%s', ldap_server)
 #         except ldap.LDAPError as err_code:
-#             print((err_code.message['info']))
+#             print((err_code.message['info']), flush=True)
 #             if isinstance(err_code.message, dict) and 'desc' in err_code.message:
-#                 print((err_code.message['desc']))
+#                 print((err_code.message['desc']), flush=True)
 #             else:
-#                 print(err_code)
+#                 print(err_code, flush=True)
 #         # Bind to the server (ie. actually connect) - not needed as simple_bind for check
 #         # self.con.simple_bind("ou=People,dc=hotbot,dc=com")
 #         self.ou_name = ou_name
@@ -74,9 +74,9 @@ below is all python-ldap, moving to ldap3
 #         except ldap.LDAPError as err_code:
 #             print((err_code.message['info']))
 #             if isinstance(err_code.message, dict) and 'desc' in err_code.message:
-#                 print((err_code.message['desc']))
+#                 print((err_code.message['desc']), flush=True)
 #             else:
-#                 print(err_code)
+#                 print(err_code, flush=True)
 #
 #     def com_ldap_close(self):
 #         """

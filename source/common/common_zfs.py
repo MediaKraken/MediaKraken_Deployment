@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import platform
 import subprocess
@@ -123,6 +123,7 @@ def com_zfs_zpool_compression(zpool, zpool_compression, zpool_rate):
     """
     proc = subprocess.Popen(
         ['zfs', 'set', 'compression=on', zpool], stdout=subprocess.PIPE, shell=False)
+    proc.wait()
     proc = subprocess.Popen(['zfs', 'set', 'compression=gzip-' + zpool_compression, zpool],
                             stdout=subprocess.PIPE, shell=False)
     return proc.stdout.read()

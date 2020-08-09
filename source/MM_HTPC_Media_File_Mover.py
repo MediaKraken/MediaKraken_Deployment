@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import glob
 import os
@@ -25,6 +25,9 @@ dir_to_parse = []
 
 # extensions to parse
 types = ('*.mkv', '*.avi', '*.mp4', '*.mov', '*.wmv', '*.webm', '*.m4v')
+
+# subdirectories to create
+media_subdirectory = ("trailers", "chapters", "extras", "theme-music", "backdrops")
 
 dir_to_parse.append('Beta')
 dir_to_parse.append('Beta_Super')
@@ -61,7 +64,7 @@ for directory_local in dir_to_parse:
         files_grabbed.extend(glob.glob(files))
     # parse the results
     for file in files_grabbed:
-        print('File: ', file)
+        print('File: ', file, flush=True)
         new_dir_name = file.rsplit('.', 1)[0]
         file_extension = extension = os.path.splitext(file)[1]
         if new_dir_name.find('_') == -1:
@@ -73,56 +76,50 @@ for directory_local in dir_to_parse:
                              + old_dir_name + '.' + file_extension + '\" ' \
                              + os.path.join(master_directory, directory_local) + "/\"" \
                              + new_dir_name + "." + file_extension + "\""
-            print(command_to_run)
+            print(command_to_run, flush=True)
             os.system(command_to_run)
-        print(os.path.join(master_directory, directory_local, new_dir_name))
+        print(os.path.join(master_directory, directory_local, new_dir_name), flush=True)
         if not os.path.exists(os.path.join(master_directory, directory_local, new_dir_name)):
             # create the directory for the video files
             os.mkdir(os.path.join(master_directory, directory_local, new_dir_name))
-            # create the directory for the trailer files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "trailers"))
-            # create the directory for the chapter files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "chapters"))
-            # create the directory for the extras files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "extras"))
-            # create the directory for the theme music files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "theme-music"))
-            # create the directory for the theme video/etc files
-            os.mkdir(os.path.join(master_directory, directory_local, new_dir_name, "backdrops"))
+            # create the subdirectories
+            for subdir_create in media_subdirectory:
+                os.mkdir(
+                    os.path.join(master_directory, directory_local, new_dir_name, subdir_create))
         # move the corresponding files and metadata
         command_to_run = 'mv ' + os.path.join(master_directory, directory_local) + "/\"" \
                          + new_dir_name + '\".* ' \
                          + os.path.join(master_directory,
                                         directory_local) + "/\"" + new_dir_name + "\"/."
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
         command_to_run = 'mv ' + os.path.join(master_directory, directory_local) + "/\"" \
                          + new_dir_name + '-\"* ' \
                          + os.path.join(master_directory,
                                         directory_local) + "/\"" + new_dir_name + "\"/."
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
         # change ownership of files
         command_to_run = 'chown -R spoot: \"' + os.path.join(master_directory, directory_local,
                                                              new_dir_name) + '\"'
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
-        # change rights just in case of files
+        # change rights just in case
         command_to_run = 'chmod -R 755 \"' + os.path.join(master_directory, directory_local,
                                                           new_dir_name) + '\"'
-        print(command_to_run)
+        print(command_to_run, flush=True)
         os.system(command_to_run)
 
 '''
 # setup the music video files
-# loop through the dirctories looking for media files
+# loop through the directories looking for media files
 directory_local = "Music_Video"
 os.chdir(master_directory + directory_local)
 # populate from multiple globs
 allFiles = os.listdir(master_directory + directory_local)
 for file in allFiles:
     # parse the results
-    print(file)
+    print(file, flush=True)
     if not os.path.isdir(file):
         new_dir_name = file.rsplit('-',1)[0].strip()
         print "zui:",new_dir_name

@@ -14,8 +14,7 @@ printf "\
 # The characters “;” and “#” are not recognized when they appear later in the line.
 [databases]
 * = host=${DB_HOST:?"Setup pgbouncer config error! You must set DB_HOST env"} \
-port=${DB_PORT:-5432} user=${DB_USER:-postgres} \
-${DB_PASSWORD:+password=${DB_PASSWORD}}
+port=5432 user=postgres password='${DB_PASSWORD:?$(cat /run/secrets/db_password)}'
 
 [pgbouncer]
 # Generic settings

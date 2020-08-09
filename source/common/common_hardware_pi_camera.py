@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,10 +14,11 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
-from time import sleep
+import os
 
+import time
 # https://github.com/MediaKraken-Dependancies/picamera
 from picamera import PiCamera
 
@@ -32,7 +33,7 @@ class CommonHardwarePICamera:
         self.camera.resolution = (rez_width, rez_height)
         self.camera.start_preview()
         # Camera warm-up time
-        sleep(2)
+        time.sleep(2)
 
     def com_hardware_pi_camera_image(self, file_name):
         self.camera.capture(file_name)
@@ -44,9 +45,10 @@ class CommonHardwarePICamera:
     def com_hardware_pi_camera_stream_stop(self):
         self.my_file.close()
 
-    def com_hardware_pi_camera_timelapse(self, seconds):
+    def com_hardware_pi_camera_timelapse(self, seconds, file_save_path):
         for filename in self.camera.capture_continuous('img{counter:03d}.jpg'):
-            sleep(seconds)
+            self.com_hardware_pi_camera_image(os.path.join(file_save_path, filename))
+            time.sleep(seconds)
 
     def com_hardware_pi_camera_led(self, led_status=False):
         self.camera.led = led_status

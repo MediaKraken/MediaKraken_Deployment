@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import bluread
 
@@ -28,8 +28,8 @@ def com_bray_read_titles(drive_name):
     track_data = []
     with bluread.Bluray(drive_name) as b:
         b.Open()
-        # print(("Volume ID: %s" % b.VolumeId))
-        # print(("Org ID: %s" % b.OrgId))
+        # print(("Volume ID: %s" % b.VolumeId), flush=True)
+        # print(("Org ID: %s" % b.OrgId), flush=True)
         for i in range(b.NumberOfTitles):
             t = b.GetTitle(i)
             track_data.append((i, t.NumberOfAngles, t.NumberOfChapters,

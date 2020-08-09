@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import time
@@ -28,7 +28,7 @@ from common import common_metadata_provider_themoviedb
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
+parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue
@@ -39,12 +39,7 @@ queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
-# verify themoviedb key exists
-if option_config_json['API']['themoviedb'] is not None:
-    # setup the thmdb class
-    TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
-else:
-    TMDB_CONNECTION = None
+TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 
 
 def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
@@ -62,13 +57,13 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     elif result_json.status_code == 200:
         series_id_json, result_json, image_json \
             = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
-        # set and insert the record
-        meta_json = ({'Meta': {'themoviedb': {'Meta': result_json}}})
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
         try:
-            db_connection.db_metatv_insert_tmdb(metadata_uuid, series_id_json,
-                                                result_json['name'], json.dumps(meta_json),
+            db_connection.db_metatv_insert_tmdb(metadata_uuid,
+                                                series_id_json,
+                                                result_json['name'],
+                                                json.dumps(result_json),
                                                 json.dumps(image_json))
             # store the cast and crew
             if 'credits' in result_json:  # cast/crew doesn't exist on all media
@@ -80,7 +75,8 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                                                                   result_json['credits']['crew'])
         # this except is to check duplicate keys for mm_metadata_pk
         except psycopg2.IntegrityError:
-            # TODO technically I could be missing cast/crew if the above doesn't finish after the insert
+            # TODO technically I could be missing cast/crew
+            #  if the above doesn't finish after the insert
             pass
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:

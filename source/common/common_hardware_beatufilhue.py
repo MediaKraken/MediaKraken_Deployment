@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import sys
 
@@ -32,14 +32,14 @@ class CommonHardwareBeatifulHue:
 
     def com_hardware_beatifulhue_config(self):
         created = False
-        print('Press the button on the Hue bridge')
+        print('Press the button on the Hue bridge', flush=True)
         while not created:
             resource = {'user': {'devicetype': 'MediaKraken',
                                  'name': '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m'}}
             response = self.beatifulhue_inst.config.create(resource)['resource']
             if 'error' in response[0]:
                 if response[0]['error']['type'] != 101:
-                    print('Unhandled error creating configuration on the Hue')
+                    print('Unhandled error creating configuration on the Hue', flush=True)
                     sys.exit(response)
             else:
                 created = True
@@ -66,5 +66,5 @@ class CommonHardwareBeatifulHue:
 stuff = CommonHardwareBeatifulHue(
     '10.0.0.225', '5kPvIJGlzmWgB2mNDxb-ILEKZGAiBILcpt862U9m')
 # stuff.com_hardware_beatifulhue_config()
-print((stuff.com_hardware_beatifulhue_info()))
-print((stuff.com_hardware_beatifulhue_get_light('all')))
+print((stuff.com_hardware_beatifulhue_info()), flush=True)
+print((stuff.com_hardware_beatifulhue_get_light('all')), flush=True)

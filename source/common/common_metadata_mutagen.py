@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import mutagen
 from mutagen.easyid3 import EasyID3
@@ -39,8 +39,8 @@ def com_meta_mutagen_update(file_name, attr_name, attr_desc):
 
 def com_meta_mutagen_lenbit(file_name):
     audio = MP3(file_name)
-    print((audio.info.length))
-    print((audio.info.bitrate))
+    print((audio.info.length), flush=True)
+    print((audio.info.bitrate), flush=True)
     return audio
 
 
@@ -58,5 +58,5 @@ def com_meta_mutagen_update_easy(file_name, attr_name, attr_desc):
         audio[attr_name] = attr_desc
     audio.save()
 
-# print(EasyID3.valid_keys.keys())
-# print(com_meta_mutagen_file_type('/home/spoot/test.flac'))
+# print(EasyID3.valid_keys.keys(), flush=True)
+# print(com_meta_mutagen_file_type('/home/spoot/test.flac'), flush=True)

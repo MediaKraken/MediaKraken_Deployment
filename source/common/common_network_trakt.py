@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import trakt
 import trakt.core
@@ -92,9 +92,9 @@ class CommonNetworkTrakt:
 
     def com_net_trakt_get_person(self, person_name, search=False):
         if search:
-            return Person(person_name)
-        else:
             return Person.search(person_name)[0]
+        else:
+            return Person(person_name)
 
     def com_net_trakt_get_tv(self, tv_show_name):
         return TVShow(tv_show_name)

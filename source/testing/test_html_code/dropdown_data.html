@@ -1,0 +1,25 @@
+<body id="data_background">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+
+<select id="ddlFruits">
+    <option value="1">Apple</option>
+    <option value="2">Mango</option>
+    <option value="3">Orange</option>
+</select>
+    <input type="button" id = "btnGet" value="Get Selected Text Value" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnGet").click(function () {
+            var selectedText = $("#ddlFruits").find("option:selected").text();
+            var selectedValue = $("#ddlFruits").val();
+            alert("Selected Text: " + selectedText + " Value: " + selectedValue);
+        });
+    });
+</script>
+
+</body>
+
+

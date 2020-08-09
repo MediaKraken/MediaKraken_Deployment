@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import base64
 import json
@@ -48,6 +48,7 @@ import kivy
 from kivy.app import App
 
 from kivy.config import Config
+from kivy.core.window import Window
 
 # moving here before anything is setup for Kivy or it doesn't work
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
@@ -55,7 +56,9 @@ if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG
     os.environ['KIVY_GL_BACKEND'] = 'angle_sdl2'
 else:
     if os.uname()[4][:3] == 'arm':
-        # TODO find real resolution
+        # find real resolution
+        window_sizes = Window.size
+        print('window', window_sizes, flush=True)
         # TODO this is currently set to the "official" raspberry pi touchscreen
         Config.set('graphics', 'width', 800)
         Config.set('graphics', 'height', 480)
@@ -63,7 +66,6 @@ else:
 
 kivy.require('1.11.0')
 from kivy.uix.boxlayout import BoxLayout
-from kivy.core.window import Window
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
 from kivy.clock import Clock
@@ -162,9 +164,6 @@ class MediaKrakenApp(App):
         self.settings_cls = SettingsWithSidebar
         # turn off the kivy panel settings
         self.use_kivy_settings = False
-        self._keyboard = Window.request_keyboard(
-            self._keyboard_closed, self.root)
-        self._keyboard.bind(on_key_down=self._on_keyboard_down)
         self.connect_to_server()
         self.first_image_demo = True
         self.mpv_process = None
@@ -356,11 +355,12 @@ class MediaKrakenApp(App):
                                               'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
+    # in order from the KV file
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
         common_global.es_inst.com_elastic_index('info', {"home press": args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
-                or args[0] == 'Movie' or args[0] == 'video':
+                or args[0] == 'movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
         elif args[0] == 'demo':
             # add movie id to stream

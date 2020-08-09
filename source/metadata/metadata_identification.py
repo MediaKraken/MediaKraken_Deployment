@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import os
 import uuid
@@ -34,7 +34,7 @@ from . import metadata_tv
 
 
 def metadata_identification(db_connection, class_text, download_que_json,
-                            download_que_id, guessit_file_name):
+                            download_que_id, download_que_type, guessit_file_name):
     """
     Determine which provider to start lookup via class text
     """
@@ -43,27 +43,34 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                      'json': download_que_json,
                                                      'quiid': download_que_id})
     metadata_uuid = None
+
+    if download_que_type == common_global.DLMediaType.Movie.value:
+        metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
+                                                             download_que_json,
+                                                             download_que_id,
+                                                             guessit_file_name)
+
+    if download_que_type == common_global.DLMediaType.Movie_Home.value:
+        metadata_uuid = str(uuid.uuid4())
+
+    if download_que_type == common_global.DLMediaType.Picture.value:
+        metadata_uuid = str(uuid.uuid4())
+
     # find data by class type
     if class_text == "Adult":
         metadata_uuid = metadata_adult.metadata_adult_lookup(db_connection,
                                                              download_que_json,
                                                              download_que_id,
                                                              guessit_file_name)
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
     elif class_text == "Anime":
         metadata_uuid = metadata_anime.metadata_anime_lookup(db_connection,
                                                              download_que_json,
                                                              download_que_id,
                                                              guessit_file_name)
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
     elif class_text == "Book":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
                                                                          download_que_json,
                                                                          download_que_id)
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
     elif class_text == "Game CHD":
         metadata_uuid = db_connection.db_meta_game_by_name_and_system(os.path.basename(
             os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
@@ -83,31 +90,24 @@ def metadata_identification(db_connection, class_text, download_que_json,
             sha1_hash = common_hash.com_hash_sha1_by_filename(
                 download_que_json['Path'])
             if sha1_hash is not None:
-                # TODO lookup the sha1
-                pass
-    elif class_text == "Home Movie":
-        metadata_uuid = str(uuid.uuid4())
+                metadata_uuid = db_connection.db_meta_game_by_sha1(sha1_hash)
     elif class_text == "Magazine":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
                                                                          download_que_json,
                                                                          download_que_id)
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
-    elif class_text == "Movie" \
-            or class_text == "Movie Extras" \
-            or class_text == "Movie Subtitle" \
-            or class_text == "Movie Theme" \
-            or class_text == "Movie Trailer":
-        metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
-                                                             download_que_json,
-                                                             download_que_id,
-                                                             guessit_file_name)
+    # elif class_text == "Movie" \
+    #         or class_text == "Movie Extras" \
+    #         or class_text == "Movie Subtitle" \
+    #         or class_text == "Movie Theme" \
+    #         or class_text == "Movie Trailer":
+    #     metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
+    #                                                          download_que_json,
+    #                                                          download_que_id,
+    #                                                          guessit_file_name)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,
                                                              download_que_json,
                                                              download_que_id)
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
     elif class_text == "Music Lyric":
         # search musicbrainz as the lyrics should already be in the file/record
         pass
@@ -115,10 +115,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
         metadata_uuid = metadata_music_video.metadata_music_video_lookup(db_connection,
                                                                          download_que_json['Path'],
                                                                          download_que_id)
-        if metadata_uuid is not None:
-            db_connection.db_download_delete(download_que_id)
-    elif class_text == "Picture":
-        metadata_uuid = str(uuid.uuid4())
     elif class_text == "Sports":
         metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection,
                                                                download_que_json,

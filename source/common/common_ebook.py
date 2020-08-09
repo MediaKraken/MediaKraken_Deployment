@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import ebooklib
 # https://github.com/aerkalov/ebooklib/wiki
@@ -29,7 +29,7 @@ class CommonEbookRead:
     def __init__(self, filename):
         book = epub.read_epub(filename)
         for image in book.get_items_of_type(ebooklib.ITEM_IMAGE):
-            print(image)
+            print(image, flush=True)
 
 
 class CommonEbookWrite:

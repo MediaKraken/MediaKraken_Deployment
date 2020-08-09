@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 from common import common_file
 from common import common_global
@@ -37,12 +37,12 @@ media_devices = []
 common_global.es_inst.com_elastic_index('info', {'before chromecast'})
 
 # chromecast discover
-for chromecast_ip, model_name, friendly_name in common_hardware_chromecast.com_hard_chrome_discover():
+for chromecast_ip, model_name, friendly_name \
+        in common_hardware_chromecast.com_hard_chrome_discover():
     common_global.es_inst.com_elastic_index('info', {'chromecast out': chromecast_ip})
     media_devices.append({'IP': chromecast_ip,
                           'Model': model_name,
                           'Name': friendly_name})
-
 common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 
 # dlna devices
@@ -51,14 +51,13 @@ common_global.es_inst.com_elastic_index('info', {'after chromecast'})
 #     if dlna_devices.find('No compatible devices found.') != -1:
 #         break
 #     media_devices.append({'DLNA': dlna_devices})
-#
 # common_global.es_inst.com_elastic_index('info', {'after dlna'})
 
 # hdhomerun tuner discovery
 tuner_api = common_hardware_hdhomerun_py.CommonHardwareHDHomeRunPY()
 tuner_api.com_hdhomerun_discover()
 for row_tuner in tuner_api.com_hdhomerun_list():
-    print(row_tuner)
+    print(row_tuner, flush=True)
 # tuner_api = common_hardware_hdhomerun.CommonHardwareHDHomeRun()
 # tuner_api.com_hdhomerun_discover()
 # for row_tuner in tuner_api.com_hdhomerun_list():
@@ -73,21 +72,18 @@ for row_tuner in tuner_api.com_hdhomerun_list():
 #                                         'Firmware': row_tuner.get_version(),
 #                                         'Active': True,
 #                                         'Channels': {}}})
-
 common_global.es_inst.com_elastic_index('info', {'after hdhomerun'})
 
 # phillips hue discover
 # TODO this does NOT do discovery
 # hue_inst = common_hardware_hue.CommonHardwareHue()
 # media_devices.append({'Phue': hue_inst.com_hardware_hue_get_api()})
-
 common_global.es_inst.com_elastic_index('info', {'after phue'})
 
 # roku discover
 for roku in common_hardware_roku_network.com_roku_network_discovery():
     common_global.es_inst.com_elastic_index('info', {'roku out': roku})
     media_devices.append({'Roku': roku})
-
 common_global.es_inst.com_elastic_index('info', {'after roku'})
 
 # soco discover
@@ -96,7 +92,6 @@ if soco_devices is not None:
     for soco in soco_devices:
         common_global.es_inst.com_elastic_index('info', {'soco out': soco})
         media_devices.append({'Soco': soco})
-
 common_global.es_inst.com_elastic_index('info', {'after soco'})
 
 # crestron device discover
@@ -106,7 +101,6 @@ common_global.es_inst.com_elastic_index('info', {'after soco'})
 #     for crestron in crestron_devices:
 #         common_global.es_inst.com_elastic_index('info', {'crestron out': crestron})
 #         media_devices.append({'Crestron': crestron})
-
 common_global.es_inst.com_elastic_index('info', {'after crestron'})
 
 common_global.es_inst.com_elastic_index('info', {'devices': media_devices})

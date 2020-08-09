@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 
 def db_media_book_list_count(self, search_value=None):
@@ -22,11 +22,13 @@ def db_media_book_list_count(self, search_value=None):
     book list count
     """
     if search_value is not None:
-        self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
+        self.db_cursor.execute('select count(*) from mm_metadata_book,'
+                               ' mm_media'
                                ' where mm_media_metadata_guid = mm_metadata_book_guid '
                                'and mm_metadata_book_name %% %s', (search_value,))
     else:
-        self.db_cursor.execute('select count(*) from mm_metadata_book, mm_media'
+        self.db_cursor.execute('select count(*) from mm_metadata_book,'
+                               ' mm_media'
                                ' where mm_media_metadata_guid = mm_metadata_book_guid')
     return self.db_cursor.fetchone()[0]
 
@@ -36,16 +38,18 @@ def db_media_book_list(self, offset=0, records=None, search_value=None):
     book list
     """
     if search_value is not None:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+        self.db_cursor.execute('select mm_metadata_book_guid,'
+                               'mm_metadata_book_name '
                                'from mm_metadata_book, mm_media'
                                ' where mm_media_metadata_guid = mm_metadata_book_guid '
                                ' and mm_metadata_book_name %% %s'
-                               'order by mm_metadata_book_name '
-                               'offset %s limit %s', (search_value, offset, records))
+                               ' order by LOWER(mm_metadata_book_name)'
+                               ' offset %s limit %s', (search_value, offset, records))
     else:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
+        self.db_cursor.execute('select mm_metadata_book_guid,'
+                               'mm_metadata_book_name '
                                'from mm_metadata_book, mm_media'
                                ' where mm_media_metadata_guid = mm_metadata_book_guid'
-                               ' order by mm_metadata_book_name '
-                               'offset %s limit %s', (offset, records))
+                               ' order by LOWER(mm_metadata_book_name)'
+                               ' offset %s limit %s', (offset, records))
     return self.db_cursor.fetchall()

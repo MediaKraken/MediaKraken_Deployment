@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -29,7 +29,7 @@ from guessit import guessit
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkrabbitmq', socket_timeout=30,
+parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
                                        credentials=pika.PlainCredentials('guest', 'guest'))
 connection = pika.BlockingConnection(parameters)
 # setup channels and queue
@@ -40,13 +40,9 @@ queue = channel.queue_declare(queue='mkdownload', durable=True)
 channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
 channel.basic_qos(prefetch_count=1)
 
-# verify thetvdb key exists for search
-if option_config_json['API']['thetvdb'] is not None:
-    THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
-    # tvshow xml downloader and general api interface
-    THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
-else:
-    THETVDB_CONNECTION = None
+THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
+# tvshow xml downloader and general api interface
+THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
 
 
 def tv_search_tvdb(db_connection, file_name, lang_code='en'):
@@ -118,7 +114,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
         if 'Episode' in xml_show_data['Data']:
             # checking id instead of filename as id should always exist
             try:
-                print(('len %s', len(xml_show_data['Data']['Episode'][0]['id'])))
+                print(('len %s', len(xml_show_data['Data']['Episode'][0]['id'])), flush=True)
                 if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
                     # thetvdb is Episode
                     for episode_info in xml_show_data['Data']['Episode']:
@@ -131,7 +127,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                       {'Type': 'download', 'Subtype': 'image',
                                                        'url': 'https://thetvdb.com/banners/'
                                                               + episode_info['filename'],
-                                                       'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                       'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
                                                                 + episode_info['filename']}),
                                                   properties=pika.BasicProperties(
                                                       content_type='text/plain',
@@ -146,7 +142,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                    'url': 'https://thetvdb.com/banners/'
                                                           + xml_show_data['Data']['Episode'][
                                                               'filename'],
-                                                   'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                                   'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
                                                             + xml_show_data['Data']
                                                             ['Episode']['filename']}),
                                               properties=pika.BasicProperties(
@@ -162,7 +158,7 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                'url': 'https://thetvdb.com/banners/'
                                                       + xml_show_data['Data'][
                                                           'Episode']['filename'],
-                                               'local': '/mediakraken/web_app/MediaKraken/static/meta/images/'
+                                               'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
                                                         + xml_show_data['Data']
                                                         ['Episode']['filename']}),
                                           properties=pika.BasicProperties(content_type='text/plain',

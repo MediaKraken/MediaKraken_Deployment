@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,14 +14,14 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import os
 from datetime import date
 
-from gevent import monkey  # pylint: disable=import-error
-
-monkey.patch_all()
+# from gevent import monkey  # pylint: disable=import-error
+#
+# monkey.patch_all()
 import libcloud
 
 from . import common_global

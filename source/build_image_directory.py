@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import os
 from string import ascii_lowercase
@@ -52,10 +52,8 @@ image_dir = [
 
 def build_image_dirs():
     for image_info in image_dir:
-        os.mkdir(os.path.join(
-            '/mediakraken/web_app/MediaKraken/static/meta/images', image_info))
         for i in ascii_lowercase:
-            os.mkdir(os.path.join('/mediakraken/web_app/MediaKraken/static/meta/images',
-                                  image_info, i))
-    os.mkdir(
-        '/mediakraken/web_app/MediaKraken/static/meta/images/episodes')  # since a-z won't be used
+            os.makedirs(os.path.join('/mediakraken/web_app_sanic/static/meta/images',
+                                     image_info, i))
+    # since a-z won't be used
+    os.makedirs('/mediakraken/web_app_sanic/static/meta/images/episodes', exist_ok=True)

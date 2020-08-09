@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,9 +14,10 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
+import sys
 
 from common import common_config_ini
 from common import common_global
@@ -25,9 +26,15 @@ from common import common_logging_elasticsearch
 from common import common_metadata_provider_anidb
 from common import common_metadata_scudlee
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_metadata_anidb_updates.py'):
+    sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anidb_updates')
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_metadata_anidb_updates')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -65,7 +72,7 @@ for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
 for scud_collection in common_metadata_scudlee.mk_scudlee_anime_set_parse():
     pass
 
-# send notications
+# send notifications
 if anime_added > 0:
     db_connection.db_notification_insert(
         common_internationalization.com_inter_number_format(anime_added)

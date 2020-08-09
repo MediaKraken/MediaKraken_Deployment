@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -25,7 +25,8 @@ def db_meta_movie_by_media_uuid(self, media_guid):
     """
     # read in metadata via media id
     """
-    self.db_cursor.execute('select mm_metadata_json,mm_metadata_localimage_json '
+    self.db_cursor.execute('select mm_metadata_json,'
+                           'mm_metadata_localimage_json '
                            'from mm_media, mm_metadata_movie'
                            ' where mm_media_metadata_guid = mm_metadata_guid'
                            ' and mm_media_guid = %s', (media_guid,))
@@ -61,13 +62,16 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     Update the cast/crew for selected media
     """
     common_global.es_inst.com_elastic_index('info', {'upt castcrew': metadata_id})
-    self.db_cursor.execute('select mm_metadata_json from mm_metadata_movie'
+    self.db_cursor.execute('select mm_metadata_json'
+                           ' from mm_metadata_movie'
                            ' where mm_metadata_guid = %s', (metadata_id,))
     cast_crew_json_row = self.db_cursor.fetchone()[0]
     common_global.es_inst.com_elastic_index('info', {'castrow': cast_crew_json_row})
+    # TODO for dumping 'meta'
     if 'cast' in cast_crew_json:
         cast_crew_json_row['Meta']['themoviedb'].update(
             {'Cast': cast_crew_json['cast']})
+    # TODO for dumping 'meta'
     if 'crew' in cast_crew_json:
         cast_crew_json_row['Meta']['themoviedb'].update(
             {'Crew': cast_crew_json['crew']})
@@ -82,7 +86,8 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text):
     """
     # set status's for metadata
     """
-    self.db_cursor.execute('SELECT mm_metadata_user_json from mm_metadata_movie'
+    self.db_cursor.execute('SELECT mm_metadata_user_json'
+                           ' from mm_metadata_movie'
                            ' where mm_metadata_guid = %s FOR UPDATE', (metadata_guid,))
     if status_text == 'watched' or status_text == 'requested':
         status_setting = True
@@ -92,8 +97,7 @@ def db_meta_movie_status_update(self, metadata_guid, user_id, status_text):
     try:
         json_data = self.db_cursor.fetchone()['mm_metadata_user_json']
         if json_data is None or 'UserStats' not in json_data:
-            json_data = {}
-            json_data['UserStats'] = {}
+            json_data = {'UserStats': {}}
         if user_id in json_data['UserStats']:
             json_data['UserStats'][user_id][status_text] = status_setting
         else:

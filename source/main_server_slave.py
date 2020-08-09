@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import functools
 import json
@@ -356,9 +356,9 @@ def main():
     common_signal.com_signal_set_break()
 
     # fire off wait for it script to allow connection
-    common_network.mk_network_service_available('mkrabbitmq', '5672')
+    common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
-    mkconsume = MKConsumer('amqp://guest:guest@mkrabbitmq:5672/%2F')
+    mkconsume = MKConsumer('amqp://guest:guest@mkstack_rabbitmq:5672/%2F')
     try:
         mkconsume.run()
     except KeyboardInterrupt:

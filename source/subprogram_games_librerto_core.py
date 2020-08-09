@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,9 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
+
+import sys
 
 from common import common_config_ini
 from common import common_file
@@ -22,6 +24,12 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
 from common import common_signal
+from common import common_system
+
+# verify this program isn't already running!
+if common_system.com_process_list(
+        process_name='/usr/bin/python3 /mediakraken/subprogram_games_libretro_core.py'):
+    sys.exit(0)
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
@@ -34,11 +42,11 @@ common_signal.com_signal_set_break()
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # populate current cores
-libretro_current_core = common_file.com_file_dir_list_dict('/mediakraken/emulation/cores',
-                                                           filter_text=None, walk_dir=None,
-                                                           skip_junk=False, file_size=False,
-                                                           directory_only=False,
-                                                           file_modified=True)
+libretro_current_core = common_file.com_file_dir_list('/mediakraken/emulation/cores',
+                                                      filter_text=None, walk_dir=None,
+                                                      skip_junk=False, file_size=False,
+                                                      directory_only=False,
+                                                      file_modified=True)
 
 libtro_url = 'http://buildbot.libretro.com/nightly/linux/x86_64/latest/'
 # date md5 core_filename.zip

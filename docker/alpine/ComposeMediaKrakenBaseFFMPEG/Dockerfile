@@ -1,4 +1,4 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.11.6 as builder
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -7,9 +7,9 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     SRC=/usr/local
 
 ARG FDKAAC_VERSION=0.1.5
-ARG X264_VERSION=20190312-2245-stable
-ARG X265_VERSION=3.0
-ARG FFMPEG_VERSION="4.1.4"
+ARG X264_VERSION=20191217-2245-stable
+ARG X265_VERSION=3.2.1
+ARG FFMPEG_VERSION="4.2.3"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 COPY scripts /mediakraken
@@ -97,7 +97,7 @@ RUN buildDeps="autoconf \
     curl -LO --insecure http://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     tar -zx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
    ./configure \
-	--target-os=linux \
+    --target-os=linux \
         --bindir="${SRC}/bin" \
         --extra-libs=-ldl \
         --extra-cflags="-I${SRC}/include" \
@@ -149,7 +149,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.10
+FROM alpine:3.11.6
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe

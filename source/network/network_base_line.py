@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import base64
 import json
@@ -189,15 +189,13 @@ class NetworkEvents(basic.LineReceiver):
                     if 'Offset' in json_message:
                         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data':
                             self.db_connection.db_web_media_list(
-                                self.db_connection.db_media_uuid_by_class(
-                                    json_message['Data']),
+                                json_message['Data'],
                                 json_message['Type'], offset=json_message['Offset'],
                                 list_limit=json_message['Limit'])})
                     else:
                         msg = json.dumps({'Type': 'Media', 'Subtype': 'List',
                                           'Data': self.db_connection.db_web_media_list(
-                                              self.db_connection.db_media_uuid_by_class(
-                                                  json_message['Data']),
+                                              json_message['Data'],
                                               json_message['Type'])})
             elif json_message['Subtype'] == 'In Progress':
                 # (Offset, Limit)

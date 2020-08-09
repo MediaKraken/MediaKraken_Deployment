@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2016 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,29 +14,28 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import os
 
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_thesportsdb
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# verify thesportsdb key exists
-if option_config_json['API']['thesportsdb'] is not None:
-    THESPORTSDB_CONNECTION \
-        = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(option_config_json)
-else:
-    THESPORTSDB_CONNECTION = None
 
 
 def metadata_sports_lookup(db_connection, download_data, download_que_id):
     """
     Lookup sporting event by name
     """
+    # don't bother checking title/year as the main_server_metadata_api_worker does it already
+    if not hasattr(metadata_sports_lookup, "metadata_last_id"):
+        # it doesn't exist yet, so initialize it
+        metadata_sports_lookup.metadata_last_id = None
+        metadata_sports_lookup.metadata_last_imdb = None
+        metadata_sports_lookup.metadata_last_tmdb = None
+        metadata_sports_lookup.metadata_last_thesportsdb = None
+    metadata_uuid = None  # so not found checks verify later
+
+
     stripped_name = os.path.basename(
         download_data['mdq_download_json']['Path'].replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(stripped_name)
@@ -64,5 +63,12 @@ def metadata_sports_lookup(db_connection, download_data, download_que_id):
                                                             json.dumps(
                                                                 thesportsdb_data),
                                                             json.dumps(image_json))
-                    db_connection.db_download_delete(download_que_id)
+
+
+    common_global.es_inst.com_elastic_index('info', {"metadata_sports return uuid": metadata_uuid})
+    # set last values to negate lookups for same title/show
+    metadata_sports_lookup.metadata_last_id = metadata_uuid
+    metadata_sports_lookup.metadata_last_imdb = imdb_id
+    metadata_sports_lookup.metadata_last_tmdb = tmdb_id
+    metadata_sports_lookup.metadata_last_thesportsdb = thesportsdb_id
     return metadata_uuid

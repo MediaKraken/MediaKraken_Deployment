@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 import os
@@ -182,8 +182,17 @@ def mk_network_country_code():
         return {'country_code': 'Error', 'country_name': 'Unknown'}
 
 
-def mk_network_service_available(host_dns, host_ip, wait_seconds='30'):
-    wait_pid = subprocess.Popen(
-        ['/mediakraken/wait-for-it-ash.sh', '-h', host_dns, '-p', host_ip, '-t', wait_seconds],
-        stdout=subprocess.PIPE, shell=False)
+def mk_network_service_available(host_dns, host_port, wait_seconds='120'):
+    if os.path.exists('/mediakraken/wait-for-it-ash-busybox130.sh'):
+        wait_pid = subprocess.Popen(
+            ['/mediakraken/wait-for-it-ash-busybox130.sh', '-h', host_dns, '-p', host_port,
+             '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
+    elif os.path.exists('/mediakraken/wait-for-it-ash.sh'):
+        wait_pid = subprocess.Popen(
+            ['/mediakraken/wait-for-it-ash.sh', '-h', host_dns, '-p', host_port,
+             '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
+    else:
+        wait_pid = subprocess.Popen(
+            ['/mediakraken/wait-for-it-bash.sh', '-h', host_dns, '-p', host_port,
+             '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
     wait_pid.wait()

@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2017 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -14,7 +14,7 @@
   version 2 along with this program; if not, write to the Free
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import base64
 import socket
@@ -25,8 +25,8 @@ class CommonHardwareSamsung:
     Class for interfacing with samsung TV equipment over network connection
     """
 
-    def __init__(self, source_ip, device_ip):
-        self.src = source_ip  # ip of remote
+    def __init__(self, source_remote_ip, device_ip):
+        self.src = source_remote_ip  # ip of remote
         self.mac = '00-AB-11-11-11-11'  # mac of remote
         self.remote = 'python remote'  # remote name
         self.dst = device_ip  # ip of tv

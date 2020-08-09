@@ -29,7 +29,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   net-snmp \
   net-snmp-dev \
   python3-dev \
-  py3-libcloud \
+  py3-apache-libcloud \
   py3-psycopg2 \
   py3-psutil \
   openrc \
@@ -49,7 +49,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && rc-update add netmount \
   && rc-update add rpcbind
 
-COPY wait-for-it-ash.sh /mediakraken
+COPY wait-for-it-ash-busybox130.sh /mediakraken
 # Copy the source files for the app
 COPY src /mediakraken
 

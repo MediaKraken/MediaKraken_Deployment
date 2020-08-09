@@ -1,4 +1,4 @@
-'''
+"""
   Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
@@ -15,7 +15,7 @@
   Software Foundation, Inc., 51 Franklin Street,
   Fifth Floor, Boston,
   MA 02110-1301, USA.
-'''
+"""
 
 import json
 
@@ -27,7 +27,7 @@ from common import common_signal
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_update_create_collections')
+    'subprogram_metadata_update_create_collections')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -46,7 +46,7 @@ total_collections_downloaded = 0
 for row_data in db_connection.db_media_collection_scan():
     # mm_metadata_collection_name jsonb, mm_metadata_collection_media_ids
     if old_collection_name != \
-            row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
+            row_data['mm_metadata_json']['belongs_to_collection'][
                 'name']:
         if not first_record:
             db_connection.db_download_insert('themoviedb',
@@ -58,15 +58,14 @@ for row_data in db_connection.db_media_collection_scan():
                                                          'ProviderMetaID': str(old_id)}))
             total_collections_downloaded += 1
         old_collection_name = \
-            row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
+            row_data['mm_metadata_json']['belongs_to_collection'][
                 'name']
         old_poster_path = \
-            row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
+            row_data['mm_metadata_json']['belongs_to_collection'][
                 'poster_path']
-        old_backdrop_path = row_data['mm_metadata_json']['Meta'][
-            'themoviedb']['Meta']['belongs_to_collection']['backdrop_path']
+        old_backdrop_path = row_data['mm_metadata_json']['belongs_to_collection']['backdrop_path']
         old_id = \
-            row_data['mm_metadata_json']['Meta']['themoviedb']['Meta']['belongs_to_collection'][
+            row_data['mm_metadata_json']['belongs_to_collection'][
                 'id']
         guid_list = []
         first_record = False
