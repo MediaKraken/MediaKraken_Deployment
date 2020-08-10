@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import os
 import time
 
 from common import common_config_ini
@@ -55,6 +56,8 @@ if __name__ == '__main__':
     common_signal.com_signal_set_break()
 
     # setup for the ssl keys
+    while not os.path.isfile('./key/cacert.pem'):  # server might not have created yet
+        pass
     reactor.listenSSL(8903, MediaKrakenServerApp(),
                       ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
     reactor.run()
