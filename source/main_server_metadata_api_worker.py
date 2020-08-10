@@ -240,30 +240,6 @@ def thesportsdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
 
 
-# @ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0]
-#              / common_metadata_limiter.API_LIMIT['thetvdb'][1])
-# def thetvdb(thread_db, download_data):
-#     """
-#     Rate limiter for theTVdb
-#     """
-#     common_global.es_inst.com_elastic_index('info', {"here i am in thetvdb rate":
-#         datetime.datetime.now().strftime(
-#             "%H:%M:%S.%f")})
-#     metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
-
-
-# @ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]
-#              / common_metadata_limiter.API_LIMIT['tvmaze'][1])
-# def tvmaze(thread_db, download_data):
-#     """
-#     Rate limiter for TVMaze
-#     """
-#     common_global.es_inst.com_elastic_index('info', {"here i am in tvmaze rate":
-#         datetime.datetime.now().strftime(
-#             "%H:%M:%S.%f")})
-#     metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
-
-
 @ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
              / common_metadata_limiter.API_LIMIT['tv_intros'][1])
 def tv_intros(thread_db, download_data):
@@ -288,14 +264,6 @@ def on_message(channel, method_frame, header_frame, body):
             if json_message['Subtype'] == 'themoviedb':
                 subprocess.Popen(['python3', json_message['JSON']['program']],
                                  stdout=subprocess.PIPE, shell=False)
-            # elif content_providers == 'thetvdb':
-            #     subprocess.Popen(['python3',
-            #                       '/mediakraken/subprogram_metadata_thetvdb_updates.py'],
-            #                      stdout=subprocess.PIPE, shell=False)
-            # elif content_providers == 'tvmaze':
-            #     subprocess.Popen(['python3',
-            #                       '/mediakraken/subprogram_metadata_tvmaze_updates.py'],
-            #                      stdout=subprocess.PIPE, shell=False)
         elif json_message['Type'] == 'Update Collection':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
