@@ -51,6 +51,7 @@ def db_open(self):
             time.sleep(10)
         else:
             break
+    common_global.es_inst.com_elastic_index('info', {'stuff': 'db open'})
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
