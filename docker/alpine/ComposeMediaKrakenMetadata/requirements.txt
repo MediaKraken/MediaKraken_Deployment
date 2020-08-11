@@ -15,4 +15,4 @@ np_inline==0.3
 libarchive-c==2.8
 pycountry==19.8.18
 babel==2.8.0
-psutil=5.7.2
+psutil==5.7.2
