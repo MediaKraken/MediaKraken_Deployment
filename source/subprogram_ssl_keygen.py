@@ -24,5 +24,5 @@ PROC = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:20
                          '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000',
                          '-subj', '/C=US/ST=ND/L=./CN=www.mediakraken.org'],
                         stdout=subprocess.PIPE, shell=False)
-PROC.wait()  # have to do here so the move has sumthing to move
+PROC.wait()  # have to do here so the move has something to move
 os.system('mv %s %s' % ('*.pem', './key/.'))
