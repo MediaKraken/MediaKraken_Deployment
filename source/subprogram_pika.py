@@ -24,7 +24,6 @@ import time
 import uuid
 
 import pika
-from common import common_config_ini
 from common import common_device_capability
 from common import common_docker
 from common import common_global
@@ -39,9 +38,6 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subpro
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 mk_containers = {}
 docker_inst = common_docker.CommonDocker()
