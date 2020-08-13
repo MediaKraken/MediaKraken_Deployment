@@ -416,7 +416,7 @@ while True:
                 thread_db.db_commit()
     time.sleep(1)
     # # grab message from rabbitmq if available
-    method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
+    method_frame, header_frame, body = channel.basic_get(queue=content_providers)
     if method_frame:
         common_global.es_inst.com_elastic_index('info', {"Message body", body})
         json_message = json.loads(body)
