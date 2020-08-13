@@ -69,12 +69,10 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     common_global.es_inst.com_elastic_index('info', {'castrow': cast_crew_json_row})
     # TODO for dumping 'meta'
     if 'cast' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update(
-            {'Cast': cast_crew_json['cast']})
+        cast_crew_json_row.update({'Cast': cast_crew_json['cast']})
     # TODO for dumping 'meta'
     if 'crew' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update(
-            {'Crew': cast_crew_json['crew']})
+        cast_crew_json_row.update({'Crew': cast_crew_json['crew']})
     common_global.es_inst.com_elastic_index('info', {'upt': cast_crew_json_row})
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
                            ' where mm_metadata_guid = %s',

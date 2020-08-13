@@ -282,8 +282,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
                                                          ' and mm_media_json->>\'DateAdded\' >= $2'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3) as temp'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $3) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
                                                          class_guid, (datetime.datetime.now()
@@ -303,8 +302,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
                                                          ' and mm_media_json->>\'DateAdded\' >= $2'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3) as temp'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $3) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $4 limit $5',
@@ -326,8 +324,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
                                                          ' and mm_media_json->>\'DateAdded\' >= $2'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3)'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $3)'
                                                          ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                          ' mmr_media_guid,'
                                                          ' mmr_media_json, '
@@ -337,8 +334,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' where mmr_media_class_guid = $4'
                                                          ' and mmr_media_metadata_guid = mm_metadata_guid'
                                                          ' and mmr_media_json->>\'DateAdded\' >= $5'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? %6)) as temp'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? %6)) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
                                                          class_guid, (datetime.datetime.now()
@@ -362,8 +358,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
                                                          ' and mm_media_json->>\'DateAdded\' >= $2'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3)'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $3)'
                                                          ' union (select distinct on (mmr_media_metadata_guid) mm_media_name,'
                                                          ' mmr_media_guid,'
                                                          ' mmr_media_json, '
@@ -374,8 +369,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' where mmr_media_class_guid = $4'
                                                          ' and mmr_media_metadata_guid = mm_metadata_guid'
                                                          ' and mmr_media_json->>\'DateAdded\' >= $5'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $6)) as temp'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $6)) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $7 limit $8',
@@ -405,8 +399,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' from mm_media, mm_metadata_movie'
                                                          ' where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2) as temp'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $2) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
                                                          class_guid, list_genre)
@@ -419,8 +412,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' from mm_media, mm_metadata_movie'
                                                          ' where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2) as temp'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $2) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $3 limit $4',
@@ -438,8 +430,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' from mm_media, mm_metadata_movie'
                                                          ' where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2)'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $2)'
                                                          ' union (select distinct on (mmr_media_metadata_guid)'
                                                          ' mm_media_name,'
                                                          ' mmr_media_guid,'
@@ -449,8 +440,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' mm_metadata_json'
                                                          '  from mm_media_remote, mm_metadata_movie'
                                                          ' where mmr_media_class_guid = $3 and mmr_media_metadata_guid'
-                                                         ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $4)) as temp'
+                                                         ' = mm_metadata_guid and mm_metadata_json->\'genres\'->0->\'name\' ? $4)) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc',
                                                          class_guid, list_genre, class_guid,
@@ -465,8 +455,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' from mm_media,'
                                                          ' mm_metadata_movie where mm_media_class_guid = $1'
                                                          ' and mm_media_metadata_guid = mm_metadata_guid'
-                                                         ' and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2)'
+                                                         ' and mm_metadata_json->\'genres\'->0->\'name\' ? $2)'
                                                          ' union (select distinct on (mmr_media_metadata_guid)'
                                                          ' mm_media_name,'
                                                          ' mmr_media_guid,'
@@ -477,8 +466,7 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
                                                          ' mm_metadata_json'
                                                          '  from mm_media_remote, mm_metadata_movie'
                                                          ' where mmr_media_class_guid = $3 and mmr_media_metadata_guid'
-                                                         ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
-                                                         '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $4)) as temp'
+                                                         ' = mm_metadata_guid and mm_metadata_json->\'genres\'->0->\'name\' ? $4)) as temp'
                                                          ' order by LOWER(mm_media_name),'
                                                          ' mm_metadata_json->>\'release_date\' asc'
                                                          ' offset $5 limit $6',
@@ -578,8 +566,7 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' mm_metadata_guid from mm_media, mm_metadata_movie'
                                                         ' where mm_media_class_guid = $1 and mm_media_metadata_guid'
                                                         ' = mm_metadata_guid and mm_media_json->>\'DateAdded\' >= $2'
-                                                        ' and mm_metadata_json->\'Meta\''
-                                                        '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3) as temp',
+                                                        ' and mm_metadata_json->\'genres\'->0->\'name\' ? $3) as temp',
                                                         class_guid, (datetime.datetime.now()
                                                                      - datetime.timedelta(
                                     days=7)).strftime(
@@ -589,8 +576,7 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                                                         ' mm_metadata_guid from mm_media, mm_metadata_movie'
                                                         ' where mm_media_class_guid = $1 and mm_media_metadata_guid'
                                                         ' = mm_metadata_guid and mm_media_json->>\'DateAdded\' >= $2'
-                                                        ' and mm_metadata_json->\'Meta\''
-                                                        '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $3)'
+                                                        ' and mm_metadata_json->\'genres\'->0->\'name\' ? $3)'
                                                         ' union (select distinct mmr_metadata_guid from mm_media_remote,'
                                                         ' mm_metadata_movie where mmr_media_class_guid = $4'
                                                         ' and mmr_media_metadata_guid = mm_metadata_guid'
@@ -612,16 +598,14 @@ async def db_media_movie_list_count(self, db_connection, class_guid, list_type=N
                     return await db_connection.fetchval('select count(*) from (select distinct'
                                                         ' mm_metadata_guid from mm_media, mm_metadata_movie'
                                                         ' where mm_media_class_guid = $1 and mm_media_metadata_guid'
-                                                        ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
-                                                        '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2)'
+                                                        ' = mm_metadata_guid and mm_metadata_json->\'genres\'->0->\'name\' ? $2)'
                                                         ' as temp', class_guid, list_genre)
                 else:
                     return await db_connection.fetchval('select count(*) from ((select distinct'
                                                         ' mm_metadata_guid'
                                                         ' from mm_media, mm_metadata_movie'
                                                         ' where mm_media_class_guid = $1 and mm_media_metadata_guid'
-                                                        ' = mm_metadata_guid and mm_metadata_json->\'Meta\''
-                                                        '->\'themoviedb\'->\'Meta\'->\'genres\'->0->\'name\' ? $2)'
+                                                        ' = mm_metadata_guid and mm_metadata_json->\'genres\'->0->\'name\' ? $2)'
                                                         ' union (select distinct mmr_media_metadata_guid from mm_media_remote,'
                                                         ' mm_metadata_movie where mmr_media_class_guid = $3'
                                                         ' and mmr_media_metadata_guid = mm_metadata_guid'

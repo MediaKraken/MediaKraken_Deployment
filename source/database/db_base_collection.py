@@ -83,9 +83,9 @@ def db_media_collection_scan(self):
     Returns a list of movies that belong in a collection specifified by tmdb
     """
     self.db_cursor.execute('select mm_metadata_guid, mm_metadata_json from mm_metadata_movie'
-                           ' where mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'belongs_to_collection\'::text'
+                           ' where mm_metadata_json->\'belongs_to_collection\'::text'
                            ' <> \'{}\'::text'
-                           ' order by mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->>\'belongs_to_collection\'')
+                           ' order by mm_metadata_json->\'belongs_to_collection\'')
     return self.db_cursor.fetchall()
 
 

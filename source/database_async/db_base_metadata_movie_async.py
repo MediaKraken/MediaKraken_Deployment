@@ -31,21 +31,23 @@ async def db_meta_movie_list(self, db_connection, offset=0, records=None, search
     # return list of movies
     """
     if search_value is not None:
-        return await db_connection.fetch('select mm_metadata_guid,mm_media_name,'
-                                         'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                         'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+        return await db_connection.fetch('select mm_metadata_guid, mm_media_name,'
+                                         'mm_metadata_json->\'release_date\' as mm_date,'
+                                         'mm_metadata_localimage_json->\'Poster\' as mm_poster,'
                                          'mm_metadata_user_json'
-                                         ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                                         ' from mm_metadata_movie where mm_metadata_guid'
+                                         ' in (select mm_metadata_guid'
                                          ' from mm_metadata_movie where mm_media_name % $1'
                                          ' order by mm_media_name offset $2 limit $3)'
                                          ' order by mm_media_name, mm_date',
                                          search_value, offset, records)
     else:
-        return await db_connection.fetch('select mm_metadata_guid,mm_media_name,'
-                                         'mm_metadata_json->\'Meta\'->\'themoviedb\'->\'Meta\'->\'release_date\' as mm_date,'
-                                         'mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->\'Poster\' as mm_poster,'
+        return await db_connection.fetch('select mm_metadata_guid, mm_media_name,'
+                                         'mm_metadata_json->\'release_date\' as mm_date,'
+                                         'mm_metadata_localimage_json->\'Poster\' as mm_poster,'
                                          'mm_metadata_user_json'
-                                         ' from mm_metadata_movie where mm_metadata_guid in (select mm_metadata_guid'
+                                         ' from mm_metadata_movie where mm_metadata_guid'
+                                         ' in (select mm_metadata_guid'
                                          ' from mm_metadata_movie order by mm_media_name offset '
                                          '$1 limit $2)'
                                          ' order by mm_media_name, mm_date', offset, records)

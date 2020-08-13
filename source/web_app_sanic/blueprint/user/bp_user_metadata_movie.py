@@ -88,8 +88,7 @@ async def url_bp_user_metadata_movie_list(request, user):
         if row_data['mm_metadata_user_json'] is not None \
                 and 'UserStats' in row_data['mm_metadata_user_json'] \
                 and user.id in row_data['mm_metadata_user_json']['UserStats'] \
-                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][
-            user.id]:
+                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][user.id]:
             rating_status \
                 = row_data['mm_metadata_user_json']['UserStats'][user.id]['Rating']
             if rating_status == 'favorite':
