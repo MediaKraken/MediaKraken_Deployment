@@ -422,7 +422,7 @@ while True:
         json_message = json.loads(body)
         if json_message['Type'] == 'Update Metadata':
             # this check is just in case there is a tv/etc collection later
-            if json_message['Subtype'] == 'themoviedb':
+            if content_providers == 'themoviedb':
                 subprocess.Popen(['python3', json_message['JSON']['program']],
                                  stdout=subprocess.PIPE, shell=False)
         elif json_message['Type'] == 'Update Collection':
