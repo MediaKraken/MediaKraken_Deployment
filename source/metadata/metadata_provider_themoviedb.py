@@ -20,17 +20,10 @@ import json
 import time
 
 import psycopg2
-from common import common_config_ini
 from common import common_global
 from common import common_metadata
-from common import common_metadata_provider_themoviedb
 from common import common_string
 from guessit import guessit
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# setup the tmdb class
-TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 
 
 def movie_search_tmdb(db_connection, file_name):
@@ -48,10 +41,10 @@ def movie_search_tmdb(db_connection, file_name):
     metadata_uuid = None
     # try to match ID ONLY
     if 'year' in file_name:
-        match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
+        match_response, match_result = common_global.api_instance.com_tmdb_search(
             file_name['title'], file_name['year'], True, media_type='movie')
     else:
-        match_response, match_result = TMDB_CONNECTION.com_tmdb_search(
+        match_response, match_result = common_global.api_instance.com_tmdb_search(
             file_name['title'], None, True, media_type='movie')
     common_global.es_inst.com_elastic_index('info', {"meta movie response":
                                                          match_response, 'res': match_result})
@@ -78,7 +71,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     common_global.es_inst.com_elastic_index('info', {"meta movie tmdb save fetch": tmdb_id})
     # fetch and save json data via tmdb id
-    result_json = TMDB_CONNECTION.com_tmdb_metadata_by_id(tmdb_id)
+    result_json = common_global.api_instance.com_tmdb_metadata_by_id(tmdb_id)
     if result_json is not None:
         common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code,
                                                          "header": result_json.headers})
@@ -91,7 +84,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
                                                              result_json.json()})
         series_id_json, result_json, image_json \
-            = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
+            = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
         try:
@@ -130,7 +123,7 @@ def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id, metadata_id):
     """
     Save cast/crew
     """
-    cast_json = TMDB_CONNECTION.com_tmdb_meta_cast_by_id(tmdb_id)
+    cast_json = common_global.api_instance.com_tmdb_meta_cast_by_id(tmdb_id)
     if cast_json is not None:  # cast/crew doesn't exist on all media
         if 'cast' in cast_json:
             db_connection.db_meta_person_insert_cast_crew(
@@ -146,7 +139,7 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     """
     # grab reviews
     """
-    review_json = TMDB_CONNECTION.com_tmdb_meta_review_by_id(tmdb_id)
+    review_json = common_global.api_instance.com_tmdb_meta_review_by_id(tmdb_id)
     # review record doesn't exist on all media
     if review_json is not None and review_json['total_results'] > 0:
         review_json_id = ({'themoviedb': str(review_json['id'])})
@@ -166,7 +159,7 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
                                                      'guid': collection_guid})
     if collection_guid is None:
         # insert
-        collection_meta = TMDB_CONNECTION.com_tmdb_meta_collection_by_id(
+        collection_meta = common_global.api_instance.com_tmdb_meta_collection_by_id(
             tmdb_collection_id)
         common_global.es_inst.com_elastic_index('info', {"col": collection_meta})
         # poster path
@@ -200,7 +193,7 @@ def movie_fetch_tmdb_imdb(imdb_id):
     """
     # fetch from tmdb via imdb
     """
-    result_json = TMDB_CONNECTION.com_tmdb_meta_by_imdb_id(imdb_id)
+    result_json = common_global.api_instance.com_tmdb_meta_by_imdb_id(imdb_id)
     common_global.es_inst.com_elastic_index('info', {"uhimdb": result_json})
     if result_json is not None:
         try:
@@ -215,11 +208,11 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     """
     fetch person bio
     """
-    if TMDB_CONNECTION is not None:
+    if common_global.api_instance is not None:
         # common_global.es_inst.com_elastic_index('info', {"meta person tmdb save fetch":
         #                                                      download_data})
         # fetch and save json data via tmdb id
-        result_json = TMDB_CONNECTION.com_tmdb_metadata_bio_by_id(
+        result_json = common_global.api_instance.com_tmdb_metadata_bio_by_id(
             download_data['mdq_download_json']['ProviderMetaID'])
         # common_global.es_inst.com_elastic_index('info', {"meta person code":
         #                                                      result_json.status_code})
@@ -232,7 +225,7 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
             thread_db.db_meta_person_update(provider_name,
                                             download_data['mdq_download_json']['ProviderMetaID'],
                                             result_json.json(),
-                                            TMDB_CONNECTION.com_tmdb_meta_bio_image_build(
+                                            common_global.api_instance.com_tmdb_meta_bio_image_build(
                                                 result_json.json()))
             # commit happens in download delete
             thread_db.db_download_delete(download_data['mdq_id'])

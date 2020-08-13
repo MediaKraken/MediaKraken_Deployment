@@ -20,13 +20,7 @@ import json
 import time
 
 import psycopg2
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_musicbrainz
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-MBRAINZ_CONNECTION = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
-    option_config_json)
 
 
 def music_search_musicbrainz(db_connection, download_que_json, ffmpeg_data_json):
@@ -37,7 +31,7 @@ def music_search_musicbrainz(db_connection, download_que_json, ffmpeg_data_json)
         pass
     metadata_uuid = None
     # look at musicbrainz server
-    music_data = MBRAINZ_CONNECTION.com_mediabrainz_get_recordings(
+    music_data = common_global.api_instance.com_mediabrainz_get_recordings(
         ffmpeg_data_json['format']['tags']['ARTIST'],
         ffmpeg_data_json['format']['tags']['ALBUM'],
         ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)

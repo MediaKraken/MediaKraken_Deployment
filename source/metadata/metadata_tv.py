@@ -18,12 +18,9 @@
 
 import json
 
-from common import common_config_ini
 from common import common_global
 
 from . import metadata_nfo_xml
-
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 def metadata_tv_lookup(db_connection, download_que_json, download_que_id, file_name):

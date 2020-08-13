@@ -27,6 +27,12 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
+from common import common_metadata_provider_anidb
+from common import common_metadata_provider_imvdb
+from common import common_metadata_provider_isbndb
+from common import common_metadata_provider_musicbrainz
+from common import common_metadata_provider_themoviedb
+from common import common_metadata_provider_thesportsdb
 from common import common_signal
 from common import common_string
 from common.common_metadata_limiter import *
@@ -280,6 +286,26 @@ queue = channel.queue_declare(queue=content_providers,
 channel.queue_bind(exchange="mkque_metadata_ex",
                    queue=content_providers)
 channel.basic_qos(prefetch_count=1)
+
+# setup the api key instances, if needed
+if content_providers == 'anidb':
+    common_global.api_instance = common_metadata_provider_anidb.CommonMetadataANIdb(
+        option_config_json)
+elif content_providers == 'imvdb':
+    common_global.api_instance = common_metadata_provider_imvdb.CommonMetadataIMVdb(
+        option_config_json['API']['imvdb'])
+elif content_providers == 'isbndb':
+    common_global.api_instance = common_metadata_provider_isbndb.CommonMetadataISBNdb(
+        option_config_json)
+elif content_providers == 'musicbrainz':
+    common_global.api_instance = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
+        option_config_json)
+elif content_providers == 'themoviedb':
+    common_global.api_instance = common_metadata_provider_themoviedb.CommonMetadataTMDB(
+        option_config_json)
+elif content_providers == 'thesportsdb':
+    common_global.api_instance = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
+        option_config_json)
 
 # setup last used id's per thread
 metadata_last_id = None

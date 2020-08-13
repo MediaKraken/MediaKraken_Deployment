@@ -19,30 +19,27 @@
 import json
 
 import pika
-from common import common_config_ini
 from common import common_global
 from common import common_metadata_provider_thetvdb
 from common import common_string
 from common import common_thetvdb
 from guessit import guessit
 
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
-                                       credentials=pika.PlainCredentials('guest', 'guest'))
-connection = pika.BlockingConnection(parameters)
-# setup channels and queue
-channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
-                                    durable=True)
-queue = channel.queue_declare(queue='mkdownload', durable=True)
-channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
-channel.basic_qos(prefetch_count=1)
-
-THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
-# tvshow xml downloader and general api interface
-THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
+# # pika rabbitmq connection
+# parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
+#                                        credentials=pika.PlainCredentials('guest', 'guest'))
+# connection = pika.BlockingConnection(parameters)
+# # setup channels and queue
+# channel = connection.channel()
+# exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
+#                                     durable=True)
+# queue = channel.queue_declare(queue='mkdownload', durable=True)
+# channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
+# channel.basic_qos(prefetch_count=1)
+#
+# THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
+# # tvshow xml downloader and general api interface
+# THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
 
 
 def tv_search_tvdb(db_connection, file_name, lang_code='en'):

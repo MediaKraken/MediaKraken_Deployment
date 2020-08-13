@@ -16,14 +16,7 @@
   MA 02110-1301, USA.
 """
 
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_isbndb
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# setup the isbndb class
-ISBNDB_CONNECTION = common_metadata_provider_isbndb.CommonMetadataISBNdb(option_config_json)
 
 
 def metadata_periodicals_search_isbndb(db_connection, lookup_name):
@@ -32,9 +25,9 @@ def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     """
     common_global.es_inst.com_elastic_index('info', {"meta book search isbndb": lookup_name})
     metadata_uuid = None
-    common_global.es_inst.com_elastic_index('info', {'wh': ISBNDB_CONNECTION})
-    if ISBNDB_CONNECTION is not None:
-        api_response = ISBNDB_CONNECTION.com_isbndb_books(lookup_name)
+    common_global.es_inst.com_elastic_index('info', {'wh': common_global.api_instance})
+    if common_global.api_instance is not None:
+        api_response = common_global.api_instance.com_isbndb_books(lookup_name)
         common_global.es_inst.com_elastic_index('info', {'response': api_response})
         if api_response.status_code == 200:
             # TODO verify decent results before insert
