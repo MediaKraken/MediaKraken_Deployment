@@ -28,9 +28,7 @@ async def url_bp_user_metadata_music_album_list(request):
         if album_data['mmp_person_image'] is not None:
             if 'musicbrainz' in album_data['mm_metadata_album_image']['Images']:
                 try:
-                    album_image = album_data['mm_metadata_album_image']['Images'][
-                        'musicbrainz'].replace(
-                        '/mediakraken/web_app_sanic/MediaKraken', '')
+                    album_image = album_data['mm_metadata_album_image']['Images']['musicbrainz']
                 except:
                     album_image = "/static/images/music_album_missing.png"
             else:

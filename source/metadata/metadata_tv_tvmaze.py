@@ -112,6 +112,8 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         for episode_info in show_detail['_embedded']['episodes']:
             if episode_info['image'] is not None:
                 # tvmaze image
+                # This is the SAVE path.  Do NOT shorten the path to static.
+                # This is the SAVE path.  Do NOT shorten the path to static.
                 channel.basic_publish(exchange='mkque_download_ex',
                                       routing_key='mkdownload',
                                       body=json.dumps(

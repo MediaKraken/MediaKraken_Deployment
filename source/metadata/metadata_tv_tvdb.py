@@ -118,6 +118,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                         common_global.es_inst.com_elastic_index('info', {'eps info': episode_info})
                         if episode_info['filename'] is not None:
                             # thetvdb
+                            # This is the SAVE path.  Do NOT shorten the path to static.
+                            # This is the SAVE path.  Do NOT shorten the path to static.
                             channel.basic_publish(exchange='mkque_download_ex',
                                                   routing_key='mkdownload',
                                                   body=json.dumps(
@@ -132,6 +134,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
                         # thetvdb
+                        # This is the SAVE path.  Do NOT shorten the path to static.
+                        # This is the SAVE path.  Do NOT shorten the path to static.
                         channel.basic_publish(exchange='mkque_download_ex',
                                               routing_key='mkdownload',
                                               body=json.dumps(
@@ -148,6 +152,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
                     # thetvdb
+                    # This is the SAVE path.  Do NOT shorten the path to static.
+                    # This is the SAVE path.  Do NOT shorten the path to static.
                     channel.basic_publish(exchange='mkque_download_ex',
                                           routing_key='mkdownload',
                                           body=json.dumps(
