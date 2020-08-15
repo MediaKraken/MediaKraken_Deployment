@@ -175,6 +175,10 @@ class MKConsumer:
             json_message = json.loads(body)
             # no reason to check for type download.....it has to be to get into this program
             if json_message['Type'] == 'File':
+                # do NOT remove the header.....this is the SAVE location
+                # do NOT remove the header.....this is the SAVE location
+                # do NOT remove the header.....this is the SAVE location
+                # do NOT remove the header.....this is the SAVE location
                 common_network.mk_network_fetch_from_url(json_message['URL'],
                                                          json_message['Local Save Path'])
             elif json_message['Type'] == 'Youtube':
@@ -212,7 +216,11 @@ class MKConsumer:
                                         'Carpool'] is True):
                             download_link = item['enclosure']['@url']
                         if download_link is not None:
-                            file_save_name = os.path.join('/static/meta/trailer/',
+                            # do NOT remove the header.....this is the SAVE location
+                            # do NOT remove the header.....this is the SAVE location
+                            # do NOT remove the header.....this is the SAVE location
+                            # do NOT remove the header.....this is the SAVE location
+                            file_save_name = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/trailer/',
                                                           download_link.rsplit('/', 1))
                             #  verify it doesn't exist in meta folder
                             if not os.path.exists(file_save_name):
