@@ -340,7 +340,7 @@ if db_connection.db_version_check() < 27:
     db_connection.db_query(
         'create table IF NOT EXISTS mm_user_queue (mm_user_queue_id uuid'
         ' CONSTRAINT mm_user_queue_id primary key,'
-        ' mm_user_queue_name_idx text,'
+        ' mm_user_queue_name text,'
         ' mm_user_queue_user_id uuid,'
         ' mm_user_queue_media_type smallint,'
         ' mm_user_queue_media_guid uuid)')
