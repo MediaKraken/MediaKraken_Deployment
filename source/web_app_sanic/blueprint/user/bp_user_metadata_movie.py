@@ -92,13 +92,13 @@ async def url_bp_user_metadata_movie_list(request, user):
             rating_status \
                 = row_data['mm_metadata_user_json']['UserStats'][user.id]['Rating']
             if rating_status == 'favorite':
-                rating_status = '/static/images/favorite-mark.png'
+                rating_status = 'favorite-mark.png'
             elif rating_status == 'like':
-                rating_status = '/static/images/thumbs-up.png'
+                rating_status = 'thumbs-up.png'
             elif rating_status == 'dislike':
-                rating_status = '/static/images/dislike-thumb.png'
+                rating_status = 'dislike-thumb.png'
             elif rating_status == 'poo':
-                rating_status = '/static/images/pile-of-dung.png'
+                rating_status = 'pile-of-dung.png'
         else:
             rating_status = None
         # set requested
