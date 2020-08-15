@@ -104,7 +104,7 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
-      - ./data/download:/mediakraken/download
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static
     networks:
       - mediakraken_network
     restart: unless-stopped
