@@ -14,7 +14,8 @@ async def db_meta_person_as_seen_in(self, db_connection, person_guid):
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         return await db_connection.fetch('select mm_metadata_guid,mm_media_name,'
                                          'mm_metadata_localimage_json->\'Poster\''
-                                         ' from mm_metadata_movie where mm_metadata_json->\'credits\'->\'cast\''
+                                         ' from mm_metadata_movie'
+                                         ' where mm_metadata_json->\'credits\'->\'cast\''
                                          ' @> \'[{"id": $1}]\' order by LOWER(mm_media_name)',
                                          sql_params)
 
