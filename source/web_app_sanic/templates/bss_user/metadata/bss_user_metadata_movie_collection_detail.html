@@ -45,7 +45,7 @@
     <div id="movie_detail">
         <img alt="fs_bg_image" src= "{{ url_for('static', filename='meta/images/' + data_background_image }}" loading="lazy" id="fs_bg_image" />
         <div id="movie_image_div" class="table-responsive">
-            <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image }}" >
+            <img class="center" src= "{{ url_for('static', filename='meta/images/' + data_poster_image }}" loading="lazy">
             <table class="table table-hover">
                 <tbody>
                     <tr>
@@ -85,7 +85,7 @@
     </footer>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
 </body>
 {% endblock %}
