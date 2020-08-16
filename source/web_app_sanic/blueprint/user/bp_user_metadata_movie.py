@@ -19,8 +19,11 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     json_metadata = data['mm_metadata_json']
     json_imagedata = data['mm_metadata_localimage_json']
     # vote count format
-    data_vote_count = common_internationalization.com_inter_number_format(
-        json_metadata['vote_count'])
+    try:
+        data_vote_count = common_internationalization.com_inter_number_format(
+            json_metadata['vote_count'])
+    except:
+        data_vote_count = 'NA'
     # build gen list
     genres_list = ''
     for ndx in range(0, len(json_metadata['genres'])):

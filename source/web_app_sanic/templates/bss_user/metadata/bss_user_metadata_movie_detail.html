@@ -85,7 +85,7 @@
                         <p>Genres: {{data_genres}}</p>
                         {% endif %}
                         <div id="textbox">
-                            <p class="alignleft">User Rating Avg: {{json_metadata['vote_average']}} with {{json_metadata['vote_count']}} vote(s)</p>
+                            <p class="alignleft">User Rating Avg: {{json_metadata['vote_average']}} with {{data_vote_count}} vote(s)</p>
                             <p class="alignright"><input id="movie_rating_stars" value={{json_metadata['vote_average']}} type="number" class="rating" min=0 max=10 step=0.1 data-size="xx" data-stars="10"></p>
                         </div>
                         <div style="clear: both;"></div>
