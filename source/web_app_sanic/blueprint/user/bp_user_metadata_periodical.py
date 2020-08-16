@@ -20,7 +20,7 @@ async def url_bp_user_metadata_periodical(request):
     for item_data in await request.app.db_functions.db_meta_periodical_list(db_connection, offset, per_page,
                                                        request['session']['search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': item_data})
-        item_image = "/static/images/missing_icon.jpg"
+        item_image = "/static/img/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))
     request['session']['search_page'] = 'meta_periodical'
@@ -81,5 +81,5 @@ async def url_bp_user_metadata_periodical_detail(request, guid):
         'data_author': data_author,
         'data_publisher': data_publisher,
         'data_pages': data_pages,
-        'data_item_image': "/static/images/missing_icon.jpg",
+        'data_item_image': "/static/img/missing_icon.jpg",
     }

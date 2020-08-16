@@ -19,9 +19,9 @@ async def url_bp_user_metadata_person_detail(request, guid):
         try:
             person_image = person_data['mmp_person_image'] + person_data['mmp_meta']
         except:
-            person_image = "/static/images/person_missing.png"
+            person_image = "/static/img/person_missing.png"
     else:
-        person_image = "/static/images/person_missing.png"
+        person_image = "/static/img/person_missing.png"
     media_data = await request.app.db_functions.db_meta_person_as_seen_in(db_connection,
                                                                           person_data['mmp_id'])
     await request.app.db_pool.release(db_connection)
@@ -52,9 +52,9 @@ async def url_bp_user_metadata_person_list(request):
             try:
                 person_image = person_data['mmp_person_image'] + person_data['mmp_meta']
             except:
-                person_image = "/static/images/person_missing.png"
+                person_image = "/static/img/person_missing.png"
         else:
-            person_image = "/static/images/person_missing.png"
+            person_image = "/static/img/person_missing.png"
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     request['session']['search_page'] = 'meta_people'

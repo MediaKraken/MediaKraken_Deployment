@@ -30,11 +30,11 @@ async def url_bp_user_metadata_music_album_list(request):
                 try:
                     album_image = album_data['mm_metadata_album_image']['Images']['musicbrainz']
                 except:
-                    album_image = "/static/images/music_album_missing.png"
+                    album_image = "/static/img/music_album_missing.png"
             else:
-                album_image = "/static/images/music_album_missing.png"
+                album_image = "/static/img/music_album_missing.png"
         else:
-            album_image = "/static/images/music_album_missing.png"
+            album_image = "/static/img/music_album_missing.png"
             media.append(
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
