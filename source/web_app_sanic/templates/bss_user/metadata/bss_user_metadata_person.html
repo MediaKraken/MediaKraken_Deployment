@@ -49,7 +49,7 @@
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href = "{{ url_for('name_blueprint_user_metadata_people.url_bp_user_metadata_person_detail', guid=row_data[0]) }}">
-                    <img src="{{ url_for('static', filename={{ row_data[2] }}" loading="lazy" height="300" width="200"></a>
+                    <img src="{{ url_for('static', filename='{{ row_data[2] }}'" loading="lazy" height="300" width="200"></a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[1]}}</p>
                 </div>
