@@ -23,11 +23,11 @@ async def db_meta_person_by_guid(self, db_connection, guid):
     """
     # return person data
     """
-    return await db_connection.fetch('select mmp_id, mmp_person_media_id,'
-                                     ' mmp_person_meta_json,'
-                                     ' mmp_person_image, mmp_person_name,'
-                                     ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                                     ' from mm_metadata_person where mmp_id = $1', guid)
+    return await db_connection.fetchrow('select mmp_id, mmp_person_media_id,'
+                                        ' mmp_person_meta_json,'
+                                        ' mmp_person_image, mmp_person_name,'
+                                        ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                        ' from mm_metadata_person where mmp_id = $1', guid)
 
 
 async def db_meta_person_list(self, db_connection, offset=0, records=None, search_value=None):
