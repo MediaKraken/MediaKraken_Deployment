@@ -342,14 +342,13 @@ if db_connection.db_version_check() < 27:
         ' CONSTRAINT mm_user_queue_id primary key,'
         ' mm_user_queue_name text,'
         ' mm_user_queue_user_id uuid,'
-        ' mm_user_queue_media_type smallint,'
-        ' mm_user_queue_media_guid uuid)')
-    if db_connection.db_table_index_check('mm_user_queue_name_idx') is None:
-        db_connection.db_query(
-            'CREATE INDEX mm_user_queue_name_idx'
-            ' ON mm_user_queue(mm_user_queue_name)')
-    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_crc32 text;')
-    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_sha1 text;')
+        ' mm_user_queue_media_type smallint,')
+    db_connection.db_query('CREATE INDEX mm_user_queue_name_idx'
+                           ' ON mm_user_queue(mm_user_queue_name)')
+    db_connection.db_query('CREATE INDEX mm_user_queue_user_id _idx'
+                           ' ON mm_user_queue(mm_user_queue_user_id )')
+    db_connection.db_query('CREATE INDEX mm_user_queue_media_type_idx'
+                           ' ON mm_user_queue(mm_user_queue_media_type)')
     db_connection.db_version_update(27)
     db_connection.db_commit()
 
