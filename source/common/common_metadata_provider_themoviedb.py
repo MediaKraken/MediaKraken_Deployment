@@ -148,7 +148,7 @@ class CommonMetadataTMDB:
                             'https://image.tmdb.org/t/p/original' + result_json['profile_path'],
                             image_file_path + result_json['profile_path'])
         # set local image json
-        return image_file_path
+        return image_file_path.replace(common_global.static_data_directory, '')
 
     def com_tmdb_metadata_id_max(self):
         """
@@ -320,6 +320,7 @@ class CommonMetadataTMDB:
                                                          image_file_path)
             backdrop_file_path = image_file_path
         # set local image json
-        image_json = ({'Backdrop': backdrop_file_path,
-                       'Poster': poster_file_path})
+        image_json = (
+            {'Backdrop': backdrop_file_path.replace(common_global.static_data_directory, ''),
+             'Poster': poster_file_path.replace(common_global.static_data_directory, '')})
         return result_json['id'], result_json, image_json
