@@ -52,7 +52,7 @@
                 {% if row_data[3] == None %}
                 <img src= "{{ url_for('static', filename='img/missing_icon.jpg') }}" loading="lazy" height="300" width="200">
                 {% else %}
-                <img src= "{{ url_for('static', filename='meta/images/' + row_data[3]) }}" loading="lazy" height="300" width="200">
+                <img src= "{{ url_for('static', filename=row_data[3]) }}" loading="lazy" height="300" width="200">
                 {% endif %}
                 </a>
                 {% if row_data[2] != None %}

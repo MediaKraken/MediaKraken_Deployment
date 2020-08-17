@@ -57,7 +57,7 @@
                 </div>
                 {% else %}
                 <a href= "{{ url_for('user_movie_collection.metadata_movie_collection_detail', guid=row_data[0]) }}">
-                <img src= "{{ url_for('static', filename='meta/images/' + (row_data[2])) }}" loading="lazy" height="300" width="200">
+                <img src= "{{ url_for('static', filename=row_data[2]) }}" loading="lazy" height="300" width="200">
                 </a>
                 {% endif %}
             </div>
