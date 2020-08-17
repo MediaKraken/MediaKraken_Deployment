@@ -1,15 +1,15 @@
 # https://github.com/docker-library/haproxy
-FROM alpine:3.11
+# vim:set ft=dockerfile:
+FROM alpine:3.12
 
-ENV HAPROXY_VERSION 2.1.4
-ENV HAPROXY_URL https://www.haproxy.org/download/2.1/src/haproxy-2.1.4.tar.gz
-ENV HAPROXY_SHA256 51030ff696d7067162b4d24d354044293aecfbb36d7acc2f840c8d928bfe91cd
+ENV HAPROXY_VERSION 2.2.2
+ENV HAPROXY_URL https://www.haproxy.org/download/2.2/src/haproxy-2.2.2.tar.gz
+ENV HAPROXY_SHA256 391c705a46c6208a63a67ea842c6600146ca24618531570c89c7915b0c6a54d6
 
 # see https://sources.debian.net/src/haproxy/jessie/debian/rules/ for some helpful navigation of the possible "make" arguments
 RUN set -x \
 	\
 	&& apk add --no-cache --virtual .build-deps \
-		ca-certificates \
 		gcc \
 		libc-dev \
 		linux-headers \
@@ -29,14 +29,12 @@ RUN set -x \
 	&& rm haproxy.tar.gz \
 	\
 	&& makeOpts=' \
-		TARGET=linux-glibc \
+		TARGET=linux-musl \
 		USE_GETADDRINFO=1 \
 		USE_LUA=1 LUA_INC=/usr/include/lua5.3 LUA_LIB=/usr/lib/lua5.3 \
 		USE_OPENSSL=1 \
 		USE_PCRE2=1 USE_PCRE2_JIT=1 \
 		USE_ZLIB=1 \
-# USE_BACKTRACE is enabled by default on the linux-glibc target, but does not work with musl
-		USE_BACKTRACE= \
 		\
 		EXTRA_OBJS=" \
 # see https://github.com/docker-library/haproxy/issues/94#issuecomment-505673353 for more details about prometheus support
