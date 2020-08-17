@@ -28,11 +28,11 @@ from common import common_network
 from common import common_signal
 
 # build image directories if needed
-if not os.path.isdir('/mediakraken/web_app_sanic/static/meta/images/backdrop/a'):
+if not os.path.isdir(common_global.static_data_directory + '/meta/images/backdrop/a'):
     build_image_dirs()
 
 # build trailer directories if needed
-if not os.path.isdir('/mediakraken/web_app_sanic/static/meta/trailers/trailer/a'):
+if not os.path.isdir(common_global.static_data_directory + '/meta/trailers/trailer/a'):
     build_trailer_dirs()
 
 # start logging

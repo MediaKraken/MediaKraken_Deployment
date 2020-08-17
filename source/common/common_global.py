@@ -18,7 +18,10 @@
 
 from enum import unique, IntFlag
 
-# instance for elastisearch
+# static data BASE directory
+static_data_directory = '/mediakraken/web_app_sanic/static'  # do NOT put / at end!
+
+# instance for elasticsearch
 es_inst = None
 
 # clients connected to server available for playback

@@ -19,6 +19,8 @@
 import os
 from string import ascii_lowercase
 
+from common import common_global
+
 trailer_dir = [
     'trailer',
     'behind',
@@ -32,6 +34,6 @@ def build_trailer_dirs():
     for trailer_info in trailer_dir:
         for ndx in ascii_lowercase:
             os.makedirs(
-                os.path.join('/mediakraken/web_app_sanic/static/meta/trailers',
+                os.path.join(common_global.static_data_directory + '/meta/trailers',
                              trailer_info,
                              ndx), exist_ok=True)

@@ -220,7 +220,8 @@ class MKConsumer:
                             # do NOT remove the header.....this is the SAVE location
                             # do NOT remove the header.....this is the SAVE location
                             # do NOT remove the header.....this is the SAVE location
-                            file_save_name = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/trailer/',
+                            file_save_name = os.path.join(common_global.static_data_directory,
+                                                          '/meta/trailer/',
                                                           download_link.rsplit('/', 1))
                             #  verify it doesn't exist in meta folder
                             if not os.path.exists(file_save_name):

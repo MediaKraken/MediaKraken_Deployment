@@ -119,7 +119,8 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
                                       body=json.dumps(
                                           {'Type': 'download', 'Subtype': 'image',
                                            'url': episode_info['image']['original'],
-                                           'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/episodes/'
+                                           'local': common_global.static_data_directory
+                                                    + '/meta/images/episodes/'
                                                     + str(episode_info['id']) + '.jpg'}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=2))
