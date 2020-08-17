@@ -5,7 +5,7 @@ async def db_meta_person_as_seen_in(self, db_connection, person_guid):
     """
     # find other media for person
     """
-    row_data = self.db_meta_person_by_guid(person_guid)
+    row_data = self.db_meta_person_by_guid(db_connection=db_connection, guid=person_guid)
     if row_data is None:  # exit on not found person
         return None
     # TODO jin index the credits
