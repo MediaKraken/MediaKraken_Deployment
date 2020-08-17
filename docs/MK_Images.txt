@@ -1,0 +1,38 @@
+Volume to use for images:
+	mediakraken_vol_static:/mediakraken/web_app_sanic/static
+
+Needed by following containers:
+	download - so trailers, etc can be put in right location
+	metadata - so I can grab poster, background, etc
+	nginx - for static hosting
+	webapp - for serving data
+
+common_global.static_data_directory = '/mediakraken/web_app_sanic/static'  # do NOT put / at end!
+	Store the actual metadata in above path
+	DB record will NOT have the /mediakraken/web_app_sanic/static to save space.  Also, this will help the url_static
+
+Metadata Movie
+	com_tmdb_meta_info_build - replace path for poster and background via .replace(common_global.static_data_directory, '') as this builds the json for the INSERT into metadata movie
+		{
+			"Poster": "/meta/images/poster/l/nLus3Lg9j43zIFzv0QjUyrSloE5.jpg",
+			"Backdrop": "/meta/images/backdrop/l/gjkhVFRX9yJbQVZvPcDfjbegCBC.jpg"
+		}
+
+
+Metadata Movie Collection
+
+
+Metadata Person - tv/movie
+	metadata_fetch_tmdb_person, com_tmdb_meta_bio_image_build replace via .replace(common_global.static_data_directory, '') as this builds the json for the UPDATE into metadata person
+
+
+Metadata Sports
+
+
+Metadata Audio Album
+
+
+Metadata Book Cover
+
+
+Metadata Music Video
