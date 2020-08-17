@@ -1,13 +1,13 @@
 [![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)](https://linuxserver.io)
 
-[![Blog](https://img.shields.io/static/v1.svg?style=flat-square&color=E68523&label=linuxserver.io&message=Blog)](https://blog.linuxserver.io "all the things you can do with our containers including How-To guides, opinions and much more!")
-[![Discord](https://img.shields.io/discord/354974912613449730.svg?style=flat-square&color=E68523&label=Discord&logo=discord&logoColor=FFFFFF)](https://discord.gg/YWrKVTn "realtime support / chat with the community and the team.")
-[![Discourse](https://img.shields.io/discourse/https/discourse.linuxserver.io/topics.svg?style=flat-square&color=E68523&logo=discourse&logoColor=FFFFFF)](https://discourse.linuxserver.io "post on our community forum.")
-[![Fleet](https://img.shields.io/static/v1.svg?style=flat-square&color=E68523&label=linuxserver.io&message=Fleet)](https://fleet.linuxserver.io "an online web interface which displays all of our maintained images.")
-[![Podcast](https://img.shields.io/static/v1.svg?style=flat-square&color=E68523&label=linuxserver.io&message=Podcast)](https://anchor.fm/linuxserverio "on hiatus. Coming back soon (late 2018).")
-[![Open Collective](https://img.shields.io/opencollective/all/linuxserver.svg?style=flat-square&color=E68523&label=Open%20Collective%20Supporters)](https://opencollective.com/linuxserver "please consider helping us by either donating or contributing to our budget")
+[![Blog](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=Blog)](https://blog.linuxserver.io "all the things you can do with our containers including How-To guides, opinions and much more!")
+[![Discord](https://img.shields.io/discord/354974912613449730.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=Discord&logo=discord)](https://discord.gg/YWrKVTn "realtime support / chat with the community and the team.")
+[![Discourse](https://img.shields.io/discourse/https/discourse.linuxserver.io/topics.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=discourse)](https://discourse.linuxserver.io "post on our community forum.")
+[![Fleet](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=Fleet)](https://fleet.linuxserver.io "an online web interface which displays all of our maintained images.")
+[![GitHub](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitHub&logo=github)](https://github.com/linuxserver "view the source for all of our repositories.")
+[![Open Collective](https://img.shields.io/opencollective/all/linuxserver.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=Supporters&logo=open%20collective)](https://opencollective.com/linuxserver "please consider helping us by either donating or contributing to our budget")
 
-The [LinuxServer.io](https://linuxserver.io) team brings you another container release featuring :-
+The [LinuxServer.io](https://linuxserver.io) team brings you another container release featuring:
 
  * regular and timely application updates
  * easy user mappings (PGID, PUID)
@@ -20,17 +20,20 @@ Find us at:
 * [Discord](https://discord.gg/YWrKVTn) - realtime support / chat with the community and the team.
 * [Discourse](https://discourse.linuxserver.io) - post on our community forum.
 * [Fleet](https://fleet.linuxserver.io) - an online web interface which displays all of our maintained images.
-* [Podcast](https://anchor.fm/linuxserverio) - on hiatus. Coming back soon (late 2018).
+* [GitHub](https://github.com/linuxserver) - view the source for all of our repositories.
 * [Open Collective](https://opencollective.com/linuxserver) - please consider helping us by either donating or contributing to our budget
 
 # [linuxserver/tvheadend](https://github.com/linuxserver/docker-tvheadend)
-[![GitHub Release](https://img.shields.io/github/release/linuxserver/docker-tvheadend.svg?style=flat-square&color=E68523)](https://github.com/linuxserver/docker-tvheadend/releases)
-[![MicroBadger Layers](https://img.shields.io/microbadger/layers/linuxserver/tvheadend.svg?style=flat-square&color=E68523)](https://microbadger.com/images/linuxserver/tvheadend "Get your own version badge on microbadger.com")
-[![MicroBadger Size](https://img.shields.io/microbadger/image-size/linuxserver/tvheadend.svg?style=flat-square&color=E68523)](https://microbadger.com/images/linuxserver/tvheadend "Get your own version badge on microbadger.com")
-[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/tvheadend.svg?style=flat-square&color=E68523)](https://hub.docker.com/r/linuxserver/tvheadend)
-[![Docker Stars](https://img.shields.io/docker/stars/linuxserver/tvheadend.svg?style=flat-square&color=E68523)](https://hub.docker.com/r/linuxserver/tvheadend)
-[![Build Status](https://ci.linuxserver.io/view/all/job/Docker-Pipeline-Builders/job/docker-tvheadend/job/master/badge/icon?style=flat-square)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-tvheadend/job/master/)
-[![](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/tvheadend/latest/badge.svg)](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/tvheadend/latest/index.html)
+
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-tvheadend.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-tvheadend)
+[![GitHub Release](https://img.shields.io/github/release/linuxserver/docker-tvheadend.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-tvheadend/releases)
+[![GitHub Package Repository](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitHub%20Package&logo=github)](https://github.com/linuxserver/docker-tvheadend/packages)
+[![GitLab Container Registry](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitLab%20Registry&logo=gitlab)](https://gitlab.com/Linuxserver.io/docker-tvheadend/container_registry)
+[![MicroBadger Layers](https://img.shields.io/microbadger/layers/linuxserver/tvheadend.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge)](https://microbadger.com/images/linuxserver/tvheadend "Get your own version badge on microbadger.com")
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/tvheadend.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/tvheadend)
+[![Docker Stars](https://img.shields.io/docker/stars/linuxserver/tvheadend.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/linuxserver/tvheadend)
+[![Jenkins Build](https://img.shields.io/jenkins/build?labelColor=555555&logoColor=ffffff&style=for-the-badge&jobUrl=https%3A%2F%2Fci.linuxserver.io%2Fjob%2FDocker-Pipeline-Builders%2Fjob%2Fdocker-tvheadend%2Fjob%2Fmaster%2F&logo=jenkins)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-tvheadend/job/master/)
+[![LSIO CI](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=CI&query=CI&url=https%3A%2F%2Flsio-ci.ams3.digitaloceanspaces.com%2Flinuxserver%2Ftvheadend%2Flatest%2Fci-status.yml)](https://lsio-ci.ams3.digitaloceanspaces.com/linuxserver/tvheadend/latest/index.html)
 
 [Tvheadend](https://www.tvheadend.org/) works as a proxy server: is a TV streaming server and recorder for Linux, FreeBSD and Android supporting DVB-S, DVB-S2, DVB-C, DVB-T, ATSC, ISDB-T, IPTV, SAT>IP and HDHomeRun as input sources.
 Tvheadend offers the HTTP (VLC, MPlayer), HTSP (Kodi, Movian) and SAT>IP streaming.
@@ -99,7 +102,7 @@ Compatible with docker-compose v2 schemas.
 
 ```
 ---
-version: "2"
+version: "2.1"
 services:
   tvheadend:
     image: linuxserver/tvheadend
@@ -137,6 +140,23 @@ Container images are configured using parameters passed at runtime (such as thos
 | `-v /recordings` | Where you want the PVR to store recordings. |
 | `--device /dev/dri` | Only needed if you want to use your AMD/Intel GPU for hardware accelerated video encoding (vaapi). |
 | `--device /dev/dvb` | Only needed if you want to pass through a DVB card to the container. If you use IPTV or HDHomeRun you can leave it out. |
+
+## Environment variables from files (Docker secrets)
+
+You can set any environment variable from a file by using a special prepend `FILE__`.
+
+As an example:
+
+```
+-e FILE__PASSWORD=/run/secrets/mysecretpassword
+```
+
+Will set the environment variable `PASSWORD` based on the contents of the `/run/secrets/mysecretpassword` file.
+
+## Umask for running applications
+
+For all of our images we provide the ability to override the default umask settings for services started within the containers using the optional `-e UMASK=022` setting.
+Keep in mind umask is not chmod it subtracts from permissions based on it's value it does not add. Please read up [here](https://en.wikipedia.org/wiki/Umask) before asking for support.
 
 ## User / Group Identifiers
 
@@ -206,13 +226,18 @@ For advanced setup of tvheadend, go to [Tvheadend][appurl]
 
 **Picons**
 
-We have added all the picons from [picons.xyz](https://picons.xyz/) in the folder /picons. To enable the use of these picons, add the path to the Channel icon path in Configuration --> General --> Base.
+We have added all the picons from [picons.eu](https://picons.eu/) in the folder /picons. To enable the use of these picons, add the path to the Channel icon path in Configuration --> General --> Base.
 You need to enable minimum advanced view level to see the picons options.
 
 ## Additional runtime parameters
 
 In some cases it might be necessary to start tvheadend with additional parameters, for example to enable debugging or specify webroot for reverse proxy. Be sure to have the right parameters set, as adding the wrong once might lead to the container not starting correctly.
 
+
+## Docker Mods
+[![Docker Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=mods&query=%24.mods%5B%27tvheadend%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=tvheadend "view available mods for this container.")
+
+We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to enable additional functionality within the containers. The list of Mods available for this image (if any) can be accessed via the dynamic badge above.
 
 
 ## Support Info
@@ -279,6 +304,9 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **02.06.20:** - Update to Alpine 3.12.
+* **27.12.19:** - Add requests and perl-json-xs package.
+* **27.12.19:** - Update to Alpine 3.11.
 * **02.10.19:** - Improve permission fixing on render & dvb devices.
 * **18.08.19:** - Add AMD drivers.
 * **02.08.19:** - Attempt to automatically fix permissions on /dev/dri and /dev/dvb.
