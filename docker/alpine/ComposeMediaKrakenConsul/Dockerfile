@@ -1,8 +1,8 @@
-FROM alpine:3.9
-MAINTAINER Consul Team <consul@hashicorp.com>
+FROM alpine:3.12
+LABEL org.opencontainers.image.authors="Consul Team <consul@hashicorp.com>"
 
 # This is the release of Consul to pull in.
-ENV CONSUL_VERSION=1.7.0
+ENV CONSUL_VERSION=1.8.3
 
 # This is the location of the releases.
 ENV HASHICORP_RELEASES=https://releases.hashicorp.com
@@ -35,6 +35,7 @@ RUN set -eux && \
     unzip -d /bin consul_${CONSUL_VERSION}_linux_${consulArch}.zip && \
     cd /tmp && \
     rm -rf /tmp/build && \
+    gpgconf --kill all && \
     apk del gnupg openssl && \
     rm -rf /root/.gnupg && \
 # tiny smoke test to ensure the binary we downloaded runs
