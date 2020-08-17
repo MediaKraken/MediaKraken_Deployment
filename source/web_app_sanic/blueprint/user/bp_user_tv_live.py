@@ -43,25 +43,25 @@ async def url_bp_user_tv_live(request, schedule_date, schedule_time):
             if 'audioProperties' in row_data[2]:
                 for audio_features in row_data[2]['audioProperties']:
                     if audio_features == "cc":
-                        audio_html += '<img src="/static/img/media_flags/' \
+                        audio_html += '<img src="img/media_flags/' \
                                       'caption-icon.png" alt="Closed Caption"' \
                                       ' style="width:15px;height:15px;">'
                     elif audio_features == "stereo":
-                        audio_html += '<img src="/static/img/media_flags/' \
+                        audio_html += '<img src="img/media_flags/' \
                                       'audio_channels/2.png" alt="Stereo Sound"' \
                                       ' style="width:15px;height:15px;">'
                     elif audio_features == "DD 5.1":
-                        audio_html += '<img src="/static/img/media_flags/' \
+                        audio_html += '<img src="img/media_flags/' \
                                       'audio_channels/6.png" alt="DD 5.1" style="width:15px;height:15px;">'
                     elif audio_features == "SAP":
-                        audio_html += '<img src="/static/img/media_flags/' \
+                        audio_html += '<img src="img/media_flags/' \
                                       'sap-icon.png" alt="SAP" style="width:15px;height:15px;">'
                     elif audio_features == "dvs":
-                        audio_html += '<img src="/static/img/media_flags/' \
+                        audio_html += '<img src="img/media_flags/' \
                                       'dvs-icon.png" alt="Descriptive Video Service"' \
                                       ' style="width:15px;height:15px;">'
                     elif audio_features == "DD":
-                        audio_html += '<img src="/static/img/media_flags/' \
+                        audio_html += '<img src="img/media_flags/' \
                                       'audio_codec/dolby_digital.png" alt="Dolby Digital"' \
                                       ' style="width:15px;height:15px;">'
             # TODO
@@ -75,10 +75,10 @@ async def url_bp_user_tv_live(request, schedule_date, schedule_time):
             if 'videoProperties' in row_data[2]:
                 for video_features in row_data[2]['videoProperties']:
                     if video_features == "3d":
-                        video_html += '<img src="/static/img/3D.png" alt="3D"' \
+                        video_html += '<img src="img/3D.png" alt="3D"' \
                                       ' style="width:15px;height:15px;">'
                     elif video_features == "hdtv":
-                        video_html += '<img src="/static/img/media_flags/' \
+                        video_html += '<img src="img/media_flags/' \
                                       'video_resolution.png" alt="HDTV" style="width:15px;height:15px;">'
             # TODO
             #    enhanced - Enhanced is better video quality than Standard Definition,
@@ -92,22 +92,22 @@ async def url_bp_user_tv_live(request, schedule_date, schedule_time):
             if 'ratings' in row_data[2]:
                 for rating_features in row_data[2]['ratings']:
                     if rating_features['code'] == "TVG":
-                        rating_html += '<img src="/static/img/media_flags/' \
+                        rating_html += '<img src="img/media_flags/' \
                                        'content_rating/TV-G.png" alt="TV-G" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVY7":
-                        rating_html += '<img src="/static/img/media_flags/' \
+                        rating_html += '<img src="img/media_flags/' \
                                        'content_rating/TV-Y7.png" alt="TV-Y7" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVY":
-                        rating_html += '<img src="/static/img/media_flags/' \
+                        rating_html += '<img src="img/media_flags/' \
                                        'content_rating/TV-Y.png" alt="TV-Y" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVPG":
-                        rating_html += '<img src="/static/img/media_flags/' \
+                        rating_html += '<img src="img/media_flags/' \
                                        'content_rating/TV-PG.png" alt="TV-PG" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TV14":
-                        rating_html += '<img src="/static/img/media_flags/' \
+                        rating_html += '<img src="img/media_flags/' \
                                        'content_rating/TV-14.png" alt="TV-14" style="width:15px;height:15px;">'
                     elif rating_features['code'] == "TVMA":
-                        rating_html += '<img src="/static/img/media_flags/' \
+                        rating_html += '<img src="img/media_flags/' \
                                        'content_rating/TV-MA.png" alt="TV-MA" style="width:15px;height:15px;">'
             channel_data += '<td colspan="' + str(next_md) + '\">' + row_data[2]['programID'] \
                             + audio_html + rating_html + '</td>'
