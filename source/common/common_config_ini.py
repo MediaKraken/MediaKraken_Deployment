@@ -19,7 +19,7 @@
 import database as database_base
 
 
-def com_config_read(close_db=False):
+def com_config_read():
     """
     Read in the database connection and open unless specified not too
     """
