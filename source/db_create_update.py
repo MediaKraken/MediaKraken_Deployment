@@ -854,16 +854,16 @@ if db_connection.db_table_index_check('gc_category_idx_name') is None:
 # person for bio and image info
 db_connection.db_query('create table IF NOT EXISTS mm_metadata_person (mmp_id uuid'
                        ' CONSTRAINT mmp_id_pk primary key,'
-                       ' mmp_person_media_id jsonb,'
+                       ' mmp_person_media_id integer,'
                        ' mmp_person_meta_json jsonb,'
                        ' mmp_person_image text,'
                        ' mmp_person_name text)')
 if db_connection.db_table_index_check('mm_metadata_person_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_person_idx_name'
                            ' ON mm_metadata_person(mmp_person_name)')
-if db_connection.db_table_index_check('mm_metadata_person_idxgin_id_json') is None:
-    db_connection.db_query('CREATE INDEX mm_metadata_person_idxgin_id_json'
-                           ' ON mm_metadata_person USING gin (mmp_person_media_id)')
+if db_connection.db_table_index_check('mm_metadata_person_idx_id') is None:
+    db_connection.db_query('CREATE INDEX mm_metadata_person_idx_id'
+                           ' ON mm_metadata_person(mmp_person_media_id)')
 if db_connection.db_table_index_check('mm_metadata_person_idxgin_meta_json') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_person_idxgin_meta_json'
                            ' ON mm_metadata_person USING gin (mmp_person_meta_json)')

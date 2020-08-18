@@ -98,13 +98,13 @@ def db_meta_person_id_count(self, host_type, guid):
 # and mmp_person_meta_json @> '{"id":169}'
 
 
-def db_meta_person_insert(self, person_name, media_id_json, person_json,
+def db_meta_person_insert(self, person_name, media_id, person_json,
                           image_path=None):
     """
     # insert person
     """
     common_global.es_inst.com_elastic_index('info', {'db pers insert': {'name': person_name,
-                                                                        'id': media_id_json,
+                                                                        'id': media_id,
                                                                         'person': person_json,
                                                                         'image': image_path}})
     new_guid = str(uuid.uuid4())
@@ -112,7 +112,7 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
                            ' mmp_person_media_id,'
                            ' mmp_person_meta_json,'
                            ' mmp_person_image)'
-                           ' values (%s,%s,%s,%s,%s)', (new_guid, person_name, media_id_json,
+                           ' values (%s,%s,%s,%s,%s)', (new_guid, person_name, media_id,
                                                         person_json, image_path))
     self.db_commit()
     return new_guid
@@ -168,8 +168,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                             person_id)}))
                     # insert person record
                     self.db_meta_person_insert(person_name,
-                                               json.dumps(
-                                                   {meta_type: str(person_id)}),
+                                               person_id,
                                                None, None)
     else:
         if meta_type == "themoviedb":
@@ -196,8 +195,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                         person_id)}))
                 # insert person record
                 self.db_meta_person_insert(person_name,
-                                           json.dumps(
-                                               {meta_type: str(person_id)}),
+                                           person_id,
                                            None, None)
 
 
