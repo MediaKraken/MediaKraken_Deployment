@@ -18,16 +18,21 @@
 
 import json
 
-import psycopg2
+import psycopg2.extras
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 
-# start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_update_version')
+dont_force_localhost = False
 
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
+if dont_force_localhost:
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_update_version')
+    # open the database
+    option_config_json, db_connection = common_config_ini.com_config_read()
+else:
+    # open the database
+    option_config_json, db_connection = common_config_ini.com_config_read(force_local=True)
 
 # not really needed if common_version.DB_VERSION == 4:
 
@@ -324,10 +329,9 @@ if db_connection.db_version_check() < 26:
         ' CONSTRAINT mm_game_server_id primary key,'
         ' mm_game_server_name text,'
         ' mm_game_server_json jsonb)')
-    if db_connection.db_table_index_check('mm_game_server_name_idx') is None:
-        db_connection.db_query(
-            'CREATE INDEX mm_game_server_name_idx'
-            ' ON mm_game_dedicated_servers(mm_game_server_name)')
+    db_connection.db_query(
+        'CREATE INDEX mm_game_server_name_idx'
+        ' ON mm_game_dedicated_servers(mm_game_server_name)')
     db_connection.db_version_update(26)
     db_connection.db_commit()
 

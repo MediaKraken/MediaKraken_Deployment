@@ -2,8 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.3
--- Dumped by pg_dump version 11.3
+-- Dumped from database version 12.4
+-- Dumped by pg_dump version 12.3
+
+-- Started on 2020-08-18 19:58:05
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -17,24 +19,62 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: 
+-- TOC entry 1 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 3352 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner:
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+--
+-- TOC entry 4 (class 3079 OID 16393)
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
 
 --
--- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: 
+-- TOC entry 3353 (class 0 OID 0)
+-- Dependencies: 4
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
-SET default_tablespace = '';
+--
+-- TOC entry 3 (class 3079 OID 16470)
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
 
-SET default_with_oids = false;
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
 
 --
+-- TOC entry 3354 (class 0 OID 0)
+-- Dependencies: 3
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner:
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 205 (class 1259 OID 16967)
 -- Name: mm_channel; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -50,6 +90,7 @@ CREATE TABLE public.mm_channel (
 ALTER TABLE public.mm_channel OWNER TO postgres;
 
 --
+-- TOC entry 206 (class 1259 OID 16973)
 -- Name: mm_cron; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -67,6 +108,7 @@ CREATE TABLE public.mm_cron (
 ALTER TABLE public.mm_cron OWNER TO postgres;
 
 --
+-- TOC entry 207 (class 1259 OID 16979)
 -- Name: mm_device; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -80,6 +122,7 @@ CREATE TABLE public.mm_device (
 ALTER TABLE public.mm_device OWNER TO postgres;
 
 --
+-- TOC entry 208 (class 1259 OID 16985)
 -- Name: mm_download_que; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -94,6 +137,7 @@ CREATE TABLE public.mm_download_que (
 ALTER TABLE public.mm_download_que OWNER TO postgres;
 
 --
+-- TOC entry 209 (class 1259 OID 16991)
 -- Name: mm_game_category; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -106,6 +150,21 @@ CREATE TABLE public.mm_game_category (
 ALTER TABLE public.mm_game_category OWNER TO postgres;
 
 --
+-- TOC entry 245 (class 1259 OID 17406)
+-- Name: mm_game_dedicated_servers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.mm_game_dedicated_servers (
+    mm_game_server_id uuid NOT NULL,
+    mm_game_server_name text,
+    mm_game_server_json jsonb
+);
+
+
+ALTER TABLE public.mm_game_dedicated_servers OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 16997)
 -- Name: mm_hardware; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -120,6 +179,7 @@ CREATE TABLE public.mm_hardware (
 ALTER TABLE public.mm_hardware OWNER TO postgres;
 
 --
+-- TOC entry 211 (class 1259 OID 17003)
 -- Name: mm_link; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -133,6 +193,7 @@ CREATE TABLE public.mm_link (
 ALTER TABLE public.mm_link OWNER TO postgres;
 
 --
+-- TOC entry 212 (class 1259 OID 17009)
 -- Name: mm_loan; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -149,52 +210,41 @@ CREATE TABLE public.mm_loan (
 ALTER TABLE public.mm_loan OWNER TO postgres;
 
 --
+-- TOC entry 213 (class 1259 OID 17012)
 -- Name: mm_media; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_media (
     mm_media_guid uuid NOT NULL,
-    mm_media_class_guid uuid,
     mm_media_metadata_guid uuid,
     mm_media_path text,
     mm_media_ffprobe_json jsonb,
-    mm_media_json jsonb
+    mm_media_json jsonb,
+    mm_media_class_guid smallint
 );
 
 
 ALTER TABLE public.mm_media OWNER TO postgres;
 
 --
--- Name: mm_media_class; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.mm_media_class (
-    mm_media_class_guid uuid NOT NULL,
-    mm_media_class_type text,
-    mm_media_class_parent_type text,
-    mm_media_class_display boolean
-);
-
-
-ALTER TABLE public.mm_media_class OWNER TO postgres;
-
---
+-- TOC entry 214 (class 1259 OID 17024)
 -- Name: mm_media_dir; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.mm_media_dir (
     mm_media_dir_guid uuid NOT NULL,
     mm_media_dir_path text,
-    mm_media_dir_class_type uuid,
     mm_media_dir_last_scanned timestamp without time zone,
     mm_media_dir_share_guid uuid,
-    mm_media_dir_status jsonb
+    mm_media_dir_status jsonb,
+    mm_media_dir_class_type smallint
 );
 
 
 ALTER TABLE public.mm_media_dir OWNER TO postgres;
 
 --
+-- TOC entry 215 (class 1259 OID 17030)
 -- Name: mm_media_remote; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -202,16 +252,17 @@ CREATE TABLE public.mm_media_remote (
     mmr_media_guid uuid NOT NULL,
     mmr_media_link_id uuid,
     mmr_media_uuid uuid,
-    mmr_media_class_guid uuid,
     mmr_media_metadata_guid uuid,
     mmr_media_ffprobe_json jsonb,
-    mmr_media_json jsonb
+    mmr_media_json jsonb,
+    mmr_media_class_guid smallint
 );
 
 
 ALTER TABLE public.mm_media_remote OWNER TO postgres;
 
 --
+-- TOC entry 216 (class 1259 OID 17036)
 -- Name: mm_media_share; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -228,6 +279,7 @@ CREATE TABLE public.mm_media_share (
 ALTER TABLE public.mm_media_share OWNER TO postgres;
 
 --
+-- TOC entry 217 (class 1259 OID 17042)
 -- Name: mm_metadata_album; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -245,6 +297,7 @@ CREATE TABLE public.mm_metadata_album (
 ALTER TABLE public.mm_metadata_album OWNER TO postgres;
 
 --
+-- TOC entry 218 (class 1259 OID 17048)
 -- Name: mm_metadata_anime; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -263,6 +316,7 @@ CREATE TABLE public.mm_metadata_anime (
 ALTER TABLE public.mm_metadata_anime OWNER TO postgres;
 
 --
+-- TOC entry 219 (class 1259 OID 17054)
 -- Name: mm_metadata_book; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -280,6 +334,7 @@ CREATE TABLE public.mm_metadata_book (
 ALTER TABLE public.mm_metadata_book OWNER TO postgres;
 
 --
+-- TOC entry 220 (class 1259 OID 17060)
 -- Name: mm_metadata_collection; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -295,6 +350,7 @@ CREATE TABLE public.mm_metadata_collection (
 ALTER TABLE public.mm_metadata_collection OWNER TO postgres;
 
 --
+-- TOC entry 221 (class 1259 OID 17066)
 -- Name: mm_metadata_game_software_info; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -311,6 +367,7 @@ CREATE TABLE public.mm_metadata_game_software_info (
 ALTER TABLE public.mm_metadata_game_software_info OWNER TO postgres;
 
 --
+-- TOC entry 222 (class 1259 OID 17072)
 -- Name: mm_metadata_game_systems_info; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -326,6 +383,7 @@ CREATE TABLE public.mm_metadata_game_systems_info (
 ALTER TABLE public.mm_metadata_game_systems_info OWNER TO postgres;
 
 --
+-- TOC entry 223 (class 1259 OID 17078)
 -- Name: mm_metadata_logo; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -339,6 +397,7 @@ CREATE TABLE public.mm_metadata_logo (
 ALTER TABLE public.mm_metadata_logo OWNER TO postgres;
 
 --
+-- TOC entry 224 (class 1259 OID 17084)
 -- Name: mm_metadata_movie; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -355,6 +414,7 @@ CREATE TABLE public.mm_metadata_movie (
 ALTER TABLE public.mm_metadata_movie OWNER TO postgres;
 
 --
+-- TOC entry 225 (class 1259 OID 17090)
 -- Name: mm_metadata_music; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -371,6 +431,7 @@ CREATE TABLE public.mm_metadata_music (
 ALTER TABLE public.mm_metadata_music OWNER TO postgres;
 
 --
+-- TOC entry 226 (class 1259 OID 17096)
 -- Name: mm_metadata_music_video; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -388,6 +449,7 @@ CREATE TABLE public.mm_metadata_music_video (
 ALTER TABLE public.mm_metadata_music_video OWNER TO postgres;
 
 --
+-- TOC entry 227 (class 1259 OID 17102)
 -- Name: mm_metadata_musician; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -403,6 +465,7 @@ CREATE TABLE public.mm_metadata_musician (
 ALTER TABLE public.mm_metadata_musician OWNER TO postgres;
 
 --
+-- TOC entry 228 (class 1259 OID 17108)
 -- Name: mm_metadata_person; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -418,6 +481,7 @@ CREATE TABLE public.mm_metadata_person (
 ALTER TABLE public.mm_metadata_person OWNER TO postgres;
 
 --
+-- TOC entry 229 (class 1259 OID 17114)
 -- Name: mm_metadata_sports; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -434,6 +498,7 @@ CREATE TABLE public.mm_metadata_sports (
 ALTER TABLE public.mm_metadata_sports OWNER TO postgres;
 
 --
+-- TOC entry 230 (class 1259 OID 17120)
 -- Name: mm_metadata_tvshow; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -450,6 +515,7 @@ CREATE TABLE public.mm_metadata_tvshow (
 ALTER TABLE public.mm_metadata_tvshow OWNER TO postgres;
 
 --
+-- TOC entry 231 (class 1259 OID 17126)
 -- Name: mm_notification; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -464,6 +530,7 @@ CREATE TABLE public.mm_notification (
 ALTER TABLE public.mm_notification OWNER TO postgres;
 
 --
+-- TOC entry 232 (class 1259 OID 17132)
 -- Name: mm_options_and_status; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -477,6 +544,7 @@ CREATE TABLE public.mm_options_and_status (
 ALTER TABLE public.mm_options_and_status OWNER TO postgres;
 
 --
+-- TOC entry 233 (class 1259 OID 17138)
 -- Name: mm_radio; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -492,6 +560,7 @@ CREATE TABLE public.mm_radio (
 ALTER TABLE public.mm_radio OWNER TO postgres;
 
 --
+-- TOC entry 234 (class 1259 OID 17144)
 -- Name: mm_review; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -506,6 +575,7 @@ CREATE TABLE public.mm_review (
 ALTER TABLE public.mm_review OWNER TO postgres;
 
 --
+-- TOC entry 235 (class 1259 OID 17150)
 -- Name: mm_sync; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -520,6 +590,7 @@ CREATE TABLE public.mm_sync (
 ALTER TABLE public.mm_sync OWNER TO postgres;
 
 --
+-- TOC entry 236 (class 1259 OID 17156)
 -- Name: mm_tv_schedule; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -534,6 +605,7 @@ CREATE TABLE public.mm_tv_schedule (
 ALTER TABLE public.mm_tv_schedule OWNER TO postgres;
 
 --
+-- TOC entry 237 (class 1259 OID 17162)
 -- Name: mm_tv_schedule_program; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -547,6 +619,7 @@ CREATE TABLE public.mm_tv_schedule_program (
 ALTER TABLE public.mm_tv_schedule_program OWNER TO postgres;
 
 --
+-- TOC entry 238 (class 1259 OID 17168)
 -- Name: mm_tv_stations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -563,6 +636,7 @@ CREATE TABLE public.mm_tv_stations (
 ALTER TABLE public.mm_tv_stations OWNER TO postgres;
 
 --
+-- TOC entry 239 (class 1259 OID 17174)
 -- Name: mm_user; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -582,6 +656,7 @@ CREATE TABLE public.mm_user (
 ALTER TABLE public.mm_user OWNER TO postgres;
 
 --
+-- TOC entry 240 (class 1259 OID 17180)
 -- Name: mm_user_activity; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -601,6 +676,7 @@ CREATE TABLE public.mm_user_activity (
 ALTER TABLE public.mm_user_activity OWNER TO postgres;
 
 --
+-- TOC entry 241 (class 1259 OID 17186)
 -- Name: mm_user_group; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -615,6 +691,7 @@ CREATE TABLE public.mm_user_group (
 ALTER TABLE public.mm_user_group OWNER TO postgres;
 
 --
+-- TOC entry 242 (class 1259 OID 17192)
 -- Name: mm_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -630,6 +707,8 @@ CREATE SEQUENCE public.mm_user_id_seq
 ALTER TABLE public.mm_user_id_seq OWNER TO postgres;
 
 --
+-- TOC entry 3355 (class 0 OID 0)
+-- Dependencies: 242
 -- Name: mm_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -637,6 +716,7 @@ ALTER SEQUENCE public.mm_user_id_seq OWNED BY public.mm_user.id;
 
 
 --
+-- TOC entry 243 (class 1259 OID 17194)
 -- Name: mm_user_profile; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -650,6 +730,22 @@ CREATE TABLE public.mm_user_profile (
 ALTER TABLE public.mm_user_profile OWNER TO postgres;
 
 --
+-- TOC entry 246 (class 1259 OID 17415)
+-- Name: mm_user_queue; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.mm_user_queue (
+    mm_user_queue_id uuid NOT NULL,
+    mm_user_queue_name text,
+    mm_user_queue_user_id uuid,
+    mm_user_queue_media_type smallint
+);
+
+
+ALTER TABLE public.mm_user_queue OWNER TO postgres;
+
+--
+-- TOC entry 244 (class 1259 OID 17200)
 -- Name: mm_version; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -661,6 +757,7 @@ CREATE TABLE public.mm_version (
 ALTER TABLE public.mm_version OWNER TO postgres;
 
 --
+-- TOC entry 2972 (class 2604 OID 17203)
 -- Name: mm_user id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -668,6 +765,8 @@ ALTER TABLE ONLY public.mm_user ALTER COLUMN id SET DEFAULT nextval('public.mm_u
 
 
 --
+-- TOC entry 3305 (class 0 OID 16967)
+-- Dependencies: 205
 -- Data for Name: mm_channel; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -676,6 +775,8 @@ COPY public.mm_channel (mm_channel_guid, mm_channel_name, mm_channel_media_id, m
 
 
 --
+-- TOC entry 3306 (class 0 OID 16973)
+-- Dependencies: 206
 -- Data for Name: mm_cron; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -689,10 +790,13 @@ f039f4d3-ec26-491a-a498-60ea2b1f314b	Backup	Backup PostgreSQL DB	f	Days 1	1970-0
 128d11cd-c0c2-44d7-ae16-cf5de96207d7	DB Vacuum	PostgreSQL Vacuum Analyze all tables	f	Days 1	1970-01-01 00:00:01	{"Type": "Cron Run", "program": "/mediakraken/subprogram_postgresql_vacuum.py", "route_key": "mkque", "exchange_key": "mkque_ex"}
 de374320-56f7-45cd-b42c-9c8147feb81f	Media Scan	Scan for new media	f	Days 1	1970-01-01 00:00:01	{"Type": "Library Scan", "route_key": "mkque", "exchange_key": "mkque_ex"}
 c1f8e43d-c657-435c-a6e1-ac296b3bfba9	Sync	Sync and transcode media	f	Days 1	1970-01-01 00:00:01	{"Type": "Cron Run", "program": "/mediakraken/subprogram_sync.py", "route_key": "mkque", "exchange_key": "mkque_ex"}
+3da17df9-fae9-4a3a-a70b-5f429d5c1821	Retro game data	Grab updated metadata for retro game(s)	f	Days 1	1970-01-01 00:00:01	{"Type": "Cron Run", "program": "/mediakraken/subprogram_metadata_games.py", "route_key": "mkque", "exchange_key": "mkque_ex"}
 \.
 
 
 --
+-- TOC entry 3307 (class 0 OID 16979)
+-- Dependencies: 207
 -- Data for Name: mm_device; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -701,6 +805,8 @@ COPY public.mm_device (mm_device_id, mm_device_type, mm_device_json) FROM stdin;
 
 
 --
+-- TOC entry 3308 (class 0 OID 16985)
+-- Dependencies: 208
 -- Data for Name: mm_download_que; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -709,6 +815,8 @@ COPY public.mm_download_que (mdq_id, mdq_provider, mdq_que_type, mdq_download_js
 
 
 --
+-- TOC entry 3309 (class 0 OID 16991)
+-- Dependencies: 209
 -- Data for Name: mm_game_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -717,6 +825,18 @@ COPY public.mm_game_category (gc_id, gc_category) FROM stdin;
 
 
 --
+-- TOC entry 3345 (class 0 OID 17406)
+-- Dependencies: 245
+-- Data for Name: mm_game_dedicated_servers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.mm_game_dedicated_servers (mm_game_server_id, mm_game_server_name, mm_game_server_json) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3310 (class 0 OID 16997)
+-- Dependencies: 210
 -- Data for Name: mm_hardware; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -725,6 +845,8 @@ COPY public.mm_hardware (mm_hardware_id, mm_hardware_manufacturer, mm_hardware_m
 
 
 --
+-- TOC entry 3311 (class 0 OID 17003)
+-- Dependencies: 211
 -- Data for Name: mm_link; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -733,6 +855,8 @@ COPY public.mm_link (mm_link_guid, mm_link_name, mm_link_json) FROM stdin;
 
 
 --
+-- TOC entry 3312 (class 0 OID 17009)
+-- Dependencies: 212
 -- Data for Name: mm_loan; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -741,76 +865,38 @@ COPY public.mm_loan (mm_loan_guid, mm_loan_media_id, mm_loan_user_id, mm_load_us
 
 
 --
+-- TOC entry 3313 (class 0 OID 17012)
+-- Dependencies: 213
 -- Data for Name: mm_media; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_media (mm_media_guid, mm_media_class_guid, mm_media_metadata_guid, mm_media_path, mm_media_ffprobe_json, mm_media_json) FROM stdin;
+COPY public.mm_media (mm_media_guid, mm_media_metadata_guid, mm_media_path, mm_media_ffprobe_json, mm_media_json, mm_media_class_guid) FROM stdin;
 \.
 
 
 --
--- Data for Name: mm_media_class; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.mm_media_class (mm_media_class_guid, mm_media_class_type, mm_media_class_parent_type, mm_media_class_display) FROM stdin;
-bfd269c6-3105-4694-b02d-da76e1431165	Adult	Video	t
-323af63c-0641-4c87-9aa9-f6b6d09fc33b	Anime	Video	t
-ff7bb1dd-d54d-4935-9dca-9e3ff737ab19	Book	Publication	t
-64e41d00-dac3-4de9-87ef-0905eb1ac56b	Boxset	\N	f
-abd9e32e-da96-482e-9e77-b5efde45a931	Comic	Publication	t
-568fb520-ecbb-4ca0-b7d4-a057f3162881	Comic Strip	Publication	t
-52c4032d-bbf0-43aa-b893-f9a336046fe4	Game CHD	\N	f
-c01818e8-4592-409a-bbc1-528eedce0502	Game ISO	\N	f
-cf7c80c3-0a7c-4136-97ab-ef0eb4b5264a	Game ROM	\N	f
-a050c950-2eff-4c69-9b38-37349b3260ca	Home Movie	Video	t
-323568eb-5984-4685-b436-66909fa2bb78	Magazine	Publication	t
-e636fdde-8de1-43b3-9c36-66c76b88e693	Movie	Video	t
-872059dc-00bb-44f9-b422-3a1218740962	Movie Extras	Video	f
-02bfd775-aa0e-4d6a-9d52-5eee9398efbf	Movie Collection	\N	f
-e6e96f4f-cc6b-462a-9f33-e396b775d47e	Movie Theme	Audio	f
-d2513915-3d94-442f-93cb-78e72396b3d2	Movie Subtitle	\N	f
-5bf4e542-e234-4e61-a80b-93dc24b793a8	Movie Trailer	Video	f
-179586d2-8352-4195-868d-5c834034231b	Music	Audio	t
-3d4f9436-ebd5-4816-b962-58123a93ba34	Music Album	\N	f
-c09e2f26-553a-4c36-8915-51776ac1e9a1	Music Collection	\N	f
-2e8f085c-2ba2-4088-9a31-923b35c962e3	Music Lyric	\N	f
-98f64f59-eea9-4397-945b-4758e512f15a	Music Video	Video	t
-56fd8dce-8fea-4671-a776-f2e6bf1ec307	Person	\N	f
-db400fa4-b0ad-45b3-b679-a998fcfe0e6d	Picture	Image	t
-80629edf-3157-4c90-9b37-06c70afd5d61	Soundtrack	Audio	f
-251b593d-e89a-4aa0-8347-08ac832711b3	Sports	Video	t
-ad0fed4c-cf23-4482-85cb-3b5a89509848	Subtitle	\N	f
-2e12c3d0-6bff-48a2-8af6-f903e2d18caa	TV Episode	Video	f
-29b747c2-1256-4f8b-b939-82d99ab211fc	TV Extras	Video	f
-2188520b-acbc-47e0-85c7-ef457e0e1415	TV Season	\N	f
-e58e2a2e-3bc0-464f-9b07-2651336615e3	TV Show	Video	t
-5380c3bf-22c6-49ac-a375-170c01078987	TV Subtitle	\N	f
-b0718413-5e07-453d-afc0-9e1aa477dad7	TV Theme	Audio	f
-680e9904-8b03-4ee0-a037-3bf94e6dc57b	TV Trailer	Video	f
-28c0573c-acc9-4d34-8e72-604474814acb	Video Game	Game	t
-f1371e1b-b79b-4d76-9e47-95ba727840d1	Video Game Intro	Video	t
-2829ab8f-5839-458d-9f5a-2e06488ee52b	Video Game Speedrun	Video	t
-5136162e-846b-4027-981a-163d61d2d86a	Video Game Superplay	Video	t
-\.
-
-
---
+-- TOC entry 3314 (class 0 OID 17024)
+-- Dependencies: 214
 -- Data for Name: mm_media_dir; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_media_dir (mm_media_dir_guid, mm_media_dir_path, mm_media_dir_class_type, mm_media_dir_last_scanned, mm_media_dir_share_guid, mm_media_dir_status) FROM stdin;
+COPY public.mm_media_dir (mm_media_dir_guid, mm_media_dir_path, mm_media_dir_last_scanned, mm_media_dir_share_guid, mm_media_dir_status, mm_media_dir_class_type) FROM stdin;
 \.
 
 
 --
+-- TOC entry 3315 (class 0 OID 17030)
+-- Dependencies: 215
 -- Data for Name: mm_media_remote; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, mmr_media_class_guid, mmr_media_metadata_guid, mmr_media_ffprobe_json, mmr_media_json) FROM stdin;
+COPY public.mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, mmr_media_metadata_guid, mmr_media_ffprobe_json, mmr_media_json, mmr_media_class_guid) FROM stdin;
 \.
 
 
 --
+-- TOC entry 3316 (class 0 OID 17036)
+-- Dependencies: 216
 -- Data for Name: mm_media_share; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -819,6 +905,8 @@ COPY public.mm_media_share (mm_media_share_guid, mm_media_share_type, mm_media_s
 
 
 --
+-- TOC entry 3317 (class 0 OID 17042)
+-- Dependencies: 217
 -- Data for Name: mm_metadata_album; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -827,6 +915,8 @@ COPY public.mm_metadata_album (mm_metadata_album_guid, mm_metadata_album_name, m
 
 
 --
+-- TOC entry 3318 (class 0 OID 17048)
+-- Dependencies: 218
 -- Data for Name: mm_metadata_anime; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -835,6 +925,8 @@ COPY public.mm_metadata_anime (mm_metadata_anime_guid, mm_metadata_anime_media_i
 
 
 --
+-- TOC entry 3319 (class 0 OID 17054)
+-- Dependencies: 219
 -- Data for Name: mm_metadata_book; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -843,6 +935,8 @@ COPY public.mm_metadata_book (mm_metadata_book_guid, mm_metadata_book_isbn, mm_m
 
 
 --
+-- TOC entry 3320 (class 0 OID 17060)
+-- Dependencies: 220
 -- Data for Name: mm_metadata_collection; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -851,22 +945,28 @@ COPY public.mm_metadata_collection (mm_metadata_collection_guid, mm_metadata_col
 
 
 --
+-- TOC entry 3321 (class 0 OID 17066)
+-- Dependencies: 221
 -- Data for Name: mm_metadata_game_software_info; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_short_name, gi_game_info_name, gi_game_info_json) FROM stdin;
+COPY public.mm_metadata_game_software_info (gi_id, gi_system_id, gi_game_info_short_name, gi_game_info_name, gi_game_info_json, gi_game_info_localimage_json) FROM stdin;
 \.
 
 
 --
+-- TOC entry 3322 (class 0 OID 17072)
+-- Dependencies: 222
 -- Data for Name: mm_metadata_game_systems_info; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_metadata_game_systems_info (gs_id, gs_game_system_name, gs_game_system_alias, gs_game_system_json, mm_metadata_localimage_json) FROM stdin;
+COPY public.mm_metadata_game_systems_info (gs_id, gs_game_system_name, gs_game_system_alias, gs_game_system_json, gs_game_system_localimage_json) FROM stdin;
 \.
 
 
 --
+-- TOC entry 3323 (class 0 OID 17078)
+-- Dependencies: 223
 -- Data for Name: mm_metadata_logo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -875,6 +975,8 @@ COPY public.mm_metadata_logo (mm_metadata_logo_guid, mm_metadata_logo_media_guid
 
 
 --
+-- TOC entry 3324 (class 0 OID 17084)
+-- Dependencies: 224
 -- Data for Name: mm_metadata_movie; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -883,6 +985,8 @@ COPY public.mm_metadata_movie (mm_metadata_guid, mm_metadata_media_id, mm_media_
 
 
 --
+-- TOC entry 3325 (class 0 OID 17090)
+-- Dependencies: 225
 -- Data for Name: mm_metadata_music; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -891,6 +995,8 @@ COPY public.mm_metadata_music (mm_metadata_music_guid, mm_metadata_media_music_i
 
 
 --
+-- TOC entry 3326 (class 0 OID 17096)
+-- Dependencies: 226
 -- Data for Name: mm_metadata_music_video; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -899,6 +1005,8 @@ COPY public.mm_metadata_music_video (mm_metadata_music_video_guid, mm_metadata_m
 
 
 --
+-- TOC entry 3327 (class 0 OID 17102)
+-- Dependencies: 227
 -- Data for Name: mm_metadata_musician; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -907,6 +1015,8 @@ COPY public.mm_metadata_musician (mm_metadata_musician_guid, mm_metadata_musicia
 
 
 --
+-- TOC entry 3328 (class 0 OID 17108)
+-- Dependencies: 228
 -- Data for Name: mm_metadata_person; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -915,6 +1025,8 @@ COPY public.mm_metadata_person (mmp_id, mmp_person_media_id, mmp_person_meta_jso
 
 
 --
+-- TOC entry 3329 (class 0 OID 17114)
+-- Dependencies: 229
 -- Data for Name: mm_metadata_sports; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -923,6 +1035,8 @@ COPY public.mm_metadata_sports (mm_metadata_sports_guid, mm_metadata_media_sport
 
 
 --
+-- TOC entry 3330 (class 0 OID 17120)
+-- Dependencies: 230
 -- Data for Name: mm_metadata_tvshow; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -931,6 +1045,8 @@ COPY public.mm_metadata_tvshow (mm_metadata_tvshow_guid, mm_metadata_media_tvsho
 
 
 --
+-- TOC entry 3331 (class 0 OID 17126)
+-- Dependencies: 231
 -- Data for Name: mm_notification; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -939,6 +1055,8 @@ COPY public.mm_notification (mm_notification_guid, mm_notification_text, mm_noti
 
 
 --
+-- TOC entry 3332 (class 0 OID 17132)
+-- Dependencies: 232
 -- Data for Name: mm_options_and_status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -948,6 +1066,8 @@ df641592-2c6a-4ffa-816d-5f24dcea1ddd	{"API": {"anidb": null, "imvdb": null, "goo
 
 
 --
+-- TOC entry 3333 (class 0 OID 17138)
+-- Dependencies: 233
 -- Data for Name: mm_radio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -956,6 +1076,8 @@ COPY public.mm_radio (mm_radio_guid, mm_radio_name, mm_radio_description, mm_rad
 
 
 --
+-- TOC entry 3334 (class 0 OID 17144)
+-- Dependencies: 234
 -- Data for Name: mm_review; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -964,6 +1086,8 @@ COPY public.mm_review (mm_review_guid, mm_review_metadata_id, mm_review_metadata
 
 
 --
+-- TOC entry 3335 (class 0 OID 17150)
+-- Dependencies: 235
 -- Data for Name: mm_sync; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -972,6 +1096,8 @@ COPY public.mm_sync (mm_sync_guid, mm_sync_path, mm_sync_path_to, mm_sync_option
 
 
 --
+-- TOC entry 3336 (class 0 OID 17156)
+-- Dependencies: 236
 -- Data for Name: mm_tv_schedule; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -980,6 +1106,8 @@ COPY public.mm_tv_schedule (mm_tv_schedule_id, mm_tv_schedule_station_id, mm_tv_
 
 
 --
+-- TOC entry 3337 (class 0 OID 17162)
+-- Dependencies: 237
 -- Data for Name: mm_tv_schedule_program; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -988,6 +1116,8 @@ COPY public.mm_tv_schedule_program (mm_tv_schedule_program_guid, mm_tv_schedule_
 
 
 --
+-- TOC entry 3338 (class 0 OID 17168)
+-- Dependencies: 238
 -- Data for Name: mm_tv_stations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -996,6 +1126,8 @@ COPY public.mm_tv_stations (mm_tv_stations_id, mm_tv_station_name, mm_tv_station
 
 
 --
+-- TOC entry 3339 (class 0 OID 17174)
+-- Dependencies: 239
 -- Data for Name: mm_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1004,6 +1136,8 @@ COPY public.mm_user (id, username, email, password, created_at, active, is_admin
 
 
 --
+-- TOC entry 3340 (class 0 OID 17180)
+-- Dependencies: 240
 -- Data for Name: mm_user_activity; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1012,6 +1146,8 @@ COPY public.mm_user_activity (mm_activity_guid, mm_activity_name, mm_activity_ov
 
 
 --
+-- TOC entry 3341 (class 0 OID 17186)
+-- Dependencies: 241
 -- Data for Name: mm_user_group; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1023,6 +1159,8 @@ bea39ac2-505e-4cdd-9a3b-9c7da2cb28b2	Guest	Guest (Preview only)	{"Admin": false,
 
 
 --
+-- TOC entry 3343 (class 0 OID 17194)
+-- Dependencies: 243
 -- Data for Name: mm_user_profile; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1034,15 +1172,29 @@ COPY public.mm_user_profile (mm_user_profile_guid, mm_user_profile_name, mm_user
 
 
 --
--- Data for Name: mm_version; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 3346 (class 0 OID 17415)
+-- Dependencies: 246
+-- Data for Name: mm_user_queue; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_version (mm_version_no) FROM stdin;
-22
+COPY public.mm_user_queue (mm_user_queue_id, mm_user_queue_name, mm_user_queue_user_id, mm_user_queue_media_type) FROM stdin;
 \.
 
 
 --
+-- TOC entry 3344 (class 0 OID 17200)
+-- Dependencies: 244
+-- Data for Name: mm_version; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.mm_version (mm_version_no) FROM stdin;
+27
+\.
+
+
+--
+-- TOC entry 3356 (class 0 OID 0)
+-- Dependencies: 242
 -- Name: mm_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -1050,6 +1202,7 @@ SELECT pg_catalog.setval('public.mm_user_id_seq', 1, false);
 
 
 --
+-- TOC entry 2992 (class 2606 OID 17205)
 -- Name: mm_game_category gc_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1058,6 +1211,7 @@ ALTER TABLE ONLY public.mm_game_category
 
 
 --
+-- TOC entry 3054 (class 2606 OID 17207)
 -- Name: mm_metadata_game_software_info gi_id_mpk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1066,6 +1220,7 @@ ALTER TABLE ONLY public.mm_metadata_game_software_info
 
 
 --
+-- TOC entry 3059 (class 2606 OID 17209)
 -- Name: mm_metadata_game_systems_info gs_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1074,6 +1229,7 @@ ALTER TABLE ONLY public.mm_metadata_game_systems_info
 
 
 --
+-- TOC entry 2986 (class 2606 OID 17211)
 -- Name: mm_download_que mdq_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1082,6 +1238,7 @@ ALTER TABLE ONLY public.mm_download_que
 
 
 --
+-- TOC entry 3162 (class 2606 OID 17213)
 -- Name: mm_user_activity mm_activity_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1090,6 +1247,7 @@ ALTER TABLE ONLY public.mm_user_activity
 
 
 --
+-- TOC entry 2974 (class 2606 OID 17215)
 -- Name: mm_channel mm_channel_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1098,6 +1256,7 @@ ALTER TABLE ONLY public.mm_channel
 
 
 --
+-- TOC entry 2980 (class 2606 OID 17217)
 -- Name: mm_cron mm_cron_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1106,6 +1265,7 @@ ALTER TABLE ONLY public.mm_cron
 
 
 --
+-- TOC entry 2982 (class 2606 OID 17219)
 -- Name: mm_device mm_device_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1114,6 +1274,16 @@ ALTER TABLE ONLY public.mm_device
 
 
 --
+-- TOC entry 3172 (class 2606 OID 17413)
+-- Name: mm_game_dedicated_servers mm_game_server_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mm_game_dedicated_servers
+    ADD CONSTRAINT mm_game_server_id PRIMARY KEY (mm_game_server_id);
+
+
+--
+-- TOC entry 2994 (class 2606 OID 17221)
 -- Name: mm_hardware mm_hardware_id; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1122,6 +1292,7 @@ ALTER TABLE ONLY public.mm_hardware
 
 
 --
+-- TOC entry 2998 (class 2606 OID 17223)
 -- Name: mm_link mm_link_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1130,6 +1301,7 @@ ALTER TABLE ONLY public.mm_link
 
 
 --
+-- TOC entry 3002 (class 2606 OID 17225)
 -- Name: mm_loan mm_loan_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1138,14 +1310,7 @@ ALTER TABLE ONLY public.mm_loan
 
 
 --
--- Name: mm_media_class mm_media_class_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.mm_media_class
-    ADD CONSTRAINT mm_media_class_pk PRIMARY KEY (mm_media_class_guid);
-
-
---
+-- TOC entry 3010 (class 2606 OID 17229)
 -- Name: mm_media_dir mm_media_dir_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1154,6 +1319,7 @@ ALTER TABLE ONLY public.mm_media_dir
 
 
 --
+-- TOC entry 3007 (class 2606 OID 17231)
 -- Name: mm_media mm_media_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1162,6 +1328,7 @@ ALTER TABLE ONLY public.mm_media
 
 
 --
+-- TOC entry 3017 (class 2606 OID 17233)
 -- Name: mm_media_share mm_media_share_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1170,6 +1337,7 @@ ALTER TABLE ONLY public.mm_media_share
 
 
 --
+-- TOC entry 3025 (class 2606 OID 17235)
 -- Name: mm_metadata_album mm_metadata_album_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1178,6 +1346,7 @@ ALTER TABLE ONLY public.mm_metadata_album
 
 
 --
+-- TOC entry 3037 (class 2606 OID 17237)
 -- Name: mm_metadata_anime mm_metadata_anime_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1186,6 +1355,7 @@ ALTER TABLE ONLY public.mm_metadata_anime
 
 
 --
+-- TOC entry 3040 (class 2606 OID 17239)
 -- Name: mm_metadata_book mm_metadata_book_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1194,6 +1364,7 @@ ALTER TABLE ONLY public.mm_metadata_book
 
 
 --
+-- TOC entry 3046 (class 2606 OID 17241)
 -- Name: mm_metadata_collection mm_metadata_collection_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1202,6 +1373,7 @@ ALTER TABLE ONLY public.mm_metadata_collection
 
 
 --
+-- TOC entry 3062 (class 2606 OID 17243)
 -- Name: mm_metadata_logo mm_metadata_logo_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1210,6 +1382,7 @@ ALTER TABLE ONLY public.mm_metadata_logo
 
 
 --
+-- TOC entry 3079 (class 2606 OID 17245)
 -- Name: mm_metadata_music mm_metadata_music_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1218,6 +1391,7 @@ ALTER TABLE ONLY public.mm_metadata_music
 
 
 --
+-- TOC entry 3091 (class 2606 OID 17247)
 -- Name: mm_metadata_music_video mm_metadata_music_video_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1226,6 +1400,7 @@ ALTER TABLE ONLY public.mm_metadata_music_video
 
 
 --
+-- TOC entry 3098 (class 2606 OID 17249)
 -- Name: mm_metadata_musician mm_metadata_musician_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1234,6 +1409,7 @@ ALTER TABLE ONLY public.mm_metadata_musician
 
 
 --
+-- TOC entry 3070 (class 2606 OID 17251)
 -- Name: mm_metadata_movie mm_metadata_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1242,6 +1418,7 @@ ALTER TABLE ONLY public.mm_metadata_movie
 
 
 --
+-- TOC entry 3117 (class 2606 OID 17253)
 -- Name: mm_metadata_sports mm_metadata_sports_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1250,6 +1427,7 @@ ALTER TABLE ONLY public.mm_metadata_sports
 
 
 --
+-- TOC entry 3131 (class 2606 OID 17255)
 -- Name: mm_metadata_tvshow mm_metadata_tvshow_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1258,6 +1436,7 @@ ALTER TABLE ONLY public.mm_metadata_tvshow
 
 
 --
+-- TOC entry 3135 (class 2606 OID 17257)
 -- Name: mm_notification mm_notification_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1266,6 +1445,7 @@ ALTER TABLE ONLY public.mm_notification
 
 
 --
+-- TOC entry 3137 (class 2606 OID 17259)
 -- Name: mm_options_and_status mm_options_and_status_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1274,6 +1454,7 @@ ALTER TABLE ONLY public.mm_options_and_status
 
 
 --
+-- TOC entry 3139 (class 2606 OID 17261)
 -- Name: mm_radio mm_radio_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1282,6 +1463,7 @@ ALTER TABLE ONLY public.mm_radio
 
 
 --
+-- TOC entry 3143 (class 2606 OID 17263)
 -- Name: mm_review mm_review_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1290,6 +1472,7 @@ ALTER TABLE ONLY public.mm_review
 
 
 --
+-- TOC entry 3145 (class 2606 OID 17265)
 -- Name: mm_sync mm_sync_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1298,6 +1481,7 @@ ALTER TABLE ONLY public.mm_sync
 
 
 --
+-- TOC entry 3148 (class 2606 OID 17267)
 -- Name: mm_tv_schedule mm_tv_schedule_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1306,6 +1490,7 @@ ALTER TABLE ONLY public.mm_tv_schedule
 
 
 --
+-- TOC entry 3153 (class 2606 OID 17269)
 -- Name: mm_tv_schedule_program mm_tv_schedule_program_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1314,6 +1499,7 @@ ALTER TABLE ONLY public.mm_tv_schedule_program
 
 
 --
+-- TOC entry 3155 (class 2606 OID 17271)
 -- Name: mm_tv_stations mm_tv_stations_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1322,6 +1508,7 @@ ALTER TABLE ONLY public.mm_tv_stations
 
 
 --
+-- TOC entry 3166 (class 2606 OID 17273)
 -- Name: mm_user_group mm_user_group_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1330,6 +1517,7 @@ ALTER TABLE ONLY public.mm_user_group
 
 
 --
+-- TOC entry 3160 (class 2606 OID 17275)
 -- Name: mm_user mm_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1338,6 +1526,7 @@ ALTER TABLE ONLY public.mm_user
 
 
 --
+-- TOC entry 3169 (class 2606 OID 17277)
 -- Name: mm_user_profile mm_user_profile_guid_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1346,6 +1535,16 @@ ALTER TABLE ONLY public.mm_user_profile
 
 
 --
+-- TOC entry 3175 (class 2606 OID 17422)
+-- Name: mm_user_queue mm_user_queue_id; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mm_user_queue
+    ADD CONSTRAINT mm_user_queue_id PRIMARY KEY (mm_user_queue_id);
+
+
+--
+-- TOC entry 3103 (class 2606 OID 17279)
 -- Name: mm_metadata_person mmp_id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1354,6 +1553,7 @@ ALTER TABLE ONLY public.mm_metadata_person
 
 
 --
+-- TOC entry 3015 (class 2606 OID 17281)
 -- Name: mm_media_remote mmr_media_remote_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1362,6 +1562,7 @@ ALTER TABLE ONLY public.mm_media_remote
 
 
 --
+-- TOC entry 2990 (class 1259 OID 17282)
 -- Name: gc_category_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1369,6 +1570,7 @@ CREATE INDEX gc_category_idx_name ON public.mm_game_category USING btree (gc_cat
 
 
 --
+-- TOC entry 3050 (class 1259 OID 17283)
 -- Name: gi_game_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1376,6 +1578,7 @@ CREATE INDEX gi_game_idx_name ON public.mm_metadata_game_software_info USING btr
 
 
 --
+-- TOC entry 3051 (class 1259 OID 17284)
 -- Name: gi_game_idx_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1383,6 +1586,7 @@ CREATE INDEX gi_game_idx_name_trigram_idx ON public.mm_metadata_game_software_in
 
 
 --
+-- TOC entry 3052 (class 1259 OID 17285)
 -- Name: gi_game_idx_short_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1390,6 +1594,7 @@ CREATE INDEX gi_game_idx_short_name ON public.mm_metadata_game_software_info USI
 
 
 --
+-- TOC entry 3055 (class 1259 OID 17286)
 -- Name: gi_system_id_ndx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1397,6 +1602,7 @@ CREATE INDEX gi_system_id_ndx ON public.mm_metadata_game_software_info USING btr
 
 
 --
+-- TOC entry 2987 (class 1259 OID 17287)
 -- Name: mdq_que_type_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1404,6 +1610,7 @@ CREATE INDEX mdq_que_type_idx_name ON public.mm_download_que USING btree (mdq_qu
 
 
 --
+-- TOC entry 2975 (class 1259 OID 17288)
 -- Name: mm_channel_idx_country; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1411,6 +1618,7 @@ CREATE INDEX mm_channel_idx_country ON public.mm_channel USING btree (mm_channel
 
 
 --
+-- TOC entry 2976 (class 1259 OID 17289)
 -- Name: mm_channel_idx_logo; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1418,6 +1626,7 @@ CREATE INDEX mm_channel_idx_logo ON public.mm_channel USING btree (mm_channel_lo
 
 
 --
+-- TOC entry 2977 (class 1259 OID 17290)
 -- Name: mm_channel_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1425,6 +1634,7 @@ CREATE INDEX mm_channel_idx_name ON public.mm_channel USING btree (mm_channel_na
 
 
 --
+-- TOC entry 2978 (class 1259 OID 17291)
 -- Name: mm_channel_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1432,6 +1642,7 @@ CREATE INDEX mm_channel_idxgin_json ON public.mm_channel USING gin (mm_channel_m
 
 
 --
+-- TOC entry 2983 (class 1259 OID 17292)
 -- Name: mm_device_idx_type; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1439,6 +1650,7 @@ CREATE INDEX mm_device_idx_type ON public.mm_device USING btree (mm_device_type)
 
 
 --
+-- TOC entry 2984 (class 1259 OID 17293)
 -- Name: mm_device_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1446,6 +1658,7 @@ CREATE INDEX mm_device_idxgin_json ON public.mm_device USING gin (mm_device_json
 
 
 --
+-- TOC entry 2988 (class 1259 OID 17294)
 -- Name: mm_download_idx_provider; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1453,6 +1666,7 @@ CREATE INDEX mm_download_idx_provider ON public.mm_download_que USING btree (mdq
 
 
 --
+-- TOC entry 2989 (class 1259 OID 17295)
 -- Name: mm_download_que_idxgin_meta_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1460,6 +1674,7 @@ CREATE INDEX mm_download_que_idxgin_meta_json ON public.mm_download_que USING gi
 
 
 --
+-- TOC entry 3056 (class 1259 OID 17296)
 -- Name: mm_game_info_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1467,6 +1682,7 @@ CREATE INDEX mm_game_info_idxgin_json ON public.mm_metadata_game_software_info U
 
 
 --
+-- TOC entry 3057 (class 1259 OID 17297)
 -- Name: mm_game_info_idxgin_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1474,6 +1690,15 @@ CREATE INDEX mm_game_info_idxgin_name ON public.mm_metadata_game_software_info U
 
 
 --
+-- TOC entry 3173 (class 1259 OID 17414)
+-- Name: mm_game_server_name_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX mm_game_server_name_idx ON public.mm_game_dedicated_servers USING btree (mm_game_server_name);
+
+
+--
+-- TOC entry 3060 (class 1259 OID 17298)
 -- Name: mm_game_systems_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1481,6 +1706,7 @@ CREATE INDEX mm_game_systems_idxgin_json ON public.mm_metadata_game_systems_info
 
 
 --
+-- TOC entry 2995 (class 1259 OID 17299)
 -- Name: mm_hardware_idx_manufacturer; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1488,6 +1714,7 @@ CREATE INDEX mm_hardware_idx_manufacturer ON public.mm_hardware USING btree (mm_
 
 
 --
+-- TOC entry 2996 (class 1259 OID 17300)
 -- Name: mm_hardware_idx_model; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1495,6 +1722,7 @@ CREATE INDEX mm_hardware_idx_model ON public.mm_hardware USING btree (mm_hardwar
 
 
 --
+-- TOC entry 2999 (class 1259 OID 17301)
 -- Name: mm_link_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1502,6 +1730,7 @@ CREATE INDEX mm_link_idx_name ON public.mm_link USING btree (mm_link_name);
 
 
 --
+-- TOC entry 3000 (class 1259 OID 17302)
 -- Name: mm_link_json_idxgin; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1509,6 +1738,7 @@ CREATE INDEX mm_link_json_idxgin ON public.mm_link USING gin (mm_link_json);
 
 
 --
+-- TOC entry 3026 (class 1259 OID 17303)
 -- Name: mm_media_anime_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1516,13 +1746,7 @@ CREATE INDEX mm_media_anime_name_trigram_idx ON public.mm_metadata_anime USING g
 
 
 --
--- Name: mm_media_class_idx_type; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_media_class_idx_type ON public.mm_media_class USING btree (mm_media_class_type);
-
-
---
+-- TOC entry 3008 (class 1259 OID 17305)
 -- Name: mm_media_dir_idx_share; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1530,6 +1754,7 @@ CREATE INDEX mm_media_dir_idx_share ON public.mm_media_dir USING btree (mm_media
 
 
 --
+-- TOC entry 3003 (class 1259 OID 17306)
 -- Name: mm_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1537,6 +1762,7 @@ CREATE INDEX mm_media_idx_metadata_uuid ON public.mm_media USING btree (mm_media
 
 
 --
+-- TOC entry 3004 (class 1259 OID 17307)
 -- Name: mm_media_idx_path; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1544,6 +1770,7 @@ CREATE INDEX mm_media_idx_path ON public.mm_media USING btree (mm_media_path);
 
 
 --
+-- TOC entry 3005 (class 1259 OID 17308)
 -- Name: mm_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1551,6 +1778,7 @@ CREATE INDEX mm_media_idxgin_ffprobe ON public.mm_media USING gin (mm_media_ffpr
 
 
 --
+-- TOC entry 3080 (class 1259 OID 17309)
 -- Name: mm_media_music_video_band_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1558,6 +1786,7 @@ CREATE INDEX mm_media_music_video_band_trigram_idx ON public.mm_metadata_music_v
 
 
 --
+-- TOC entry 3081 (class 1259 OID 17310)
 -- Name: mm_media_music_video_song_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1565,6 +1794,7 @@ CREATE INDEX mm_media_music_video_song_trigram_idx ON public.mm_metadata_music_v
 
 
 --
+-- TOC entry 3064 (class 1259 OID 17311)
 -- Name: mm_media_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1572,6 +1802,7 @@ CREATE INDEX mm_media_name_trigram_idx ON public.mm_metadata_movie USING gist (m
 
 
 --
+-- TOC entry 3018 (class 1259 OID 17312)
 -- Name: mm_metadata_album_idx_musician; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1579,6 +1810,7 @@ CREATE INDEX mm_metadata_album_idx_musician ON public.mm_metadata_album USING bt
 
 
 --
+-- TOC entry 3019 (class 1259 OID 17313)
 -- Name: mm_metadata_album_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1586,6 +1818,7 @@ CREATE INDEX mm_metadata_album_idx_name ON public.mm_metadata_album USING btree 
 
 
 --
+-- TOC entry 3020 (class 1259 OID 17314)
 -- Name: mm_metadata_album_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1593,6 +1826,7 @@ CREATE INDEX mm_metadata_album_idx_name_lower ON public.mm_metadata_album USING 
 
 
 --
+-- TOC entry 3021 (class 1259 OID 17315)
 -- Name: mm_metadata_album_idxgin_id_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1600,6 +1834,7 @@ CREATE INDEX mm_metadata_album_idxgin_id_json ON public.mm_metadata_album USING 
 
 
 --
+-- TOC entry 3022 (class 1259 OID 17316)
 -- Name: mm_metadata_album_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1607,6 +1842,7 @@ CREATE INDEX mm_metadata_album_idxgin_json ON public.mm_metadata_album USING gin
 
 
 --
+-- TOC entry 3023 (class 1259 OID 17317)
 -- Name: mm_metadata_album_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1614,6 +1850,7 @@ CREATE INDEX mm_metadata_album_name_trigram_idx ON public.mm_metadata_album USIN
 
 
 --
+-- TOC entry 3027 (class 1259 OID 17318)
 -- Name: mm_metadata_aniem_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1621,6 +1858,7 @@ CREATE INDEX mm_metadata_aniem_idxgin_media_id ON public.mm_metadata_anime USING
 
 
 --
+-- TOC entry 3028 (class 1259 OID 17319)
 -- Name: mm_metadata_anime_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1628,6 +1866,7 @@ CREATE INDEX mm_metadata_anime_idx_name ON public.mm_metadata_anime USING btree 
 
 
 --
+-- TOC entry 3029 (class 1259 OID 17320)
 -- Name: mm_metadata_anime_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1635,6 +1874,7 @@ CREATE INDEX mm_metadata_anime_idx_name_lower ON public.mm_metadata_anime USING 
 
 
 --
+-- TOC entry 3030 (class 1259 OID 17321)
 -- Name: mm_metadata_anime_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1642,6 +1882,7 @@ CREATE INDEX mm_metadata_anime_idxgin_json ON public.mm_metadata_anime USING gin
 
 
 --
+-- TOC entry 3031 (class 1259 OID 17322)
 -- Name: mm_metadata_anime_idxgin_media_id_anidb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1649,6 +1890,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_anidb ON public.mm_metadata_anime
 
 
 --
+-- TOC entry 3032 (class 1259 OID 17323)
 -- Name: mm_metadata_anime_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1656,6 +1898,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_imdb ON public.mm_metadata_anime 
 
 
 --
+-- TOC entry 3033 (class 1259 OID 17324)
 -- Name: mm_metadata_anime_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1663,6 +1906,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_thetvdb ON public.mm_metadata_ani
 
 
 --
+-- TOC entry 3034 (class 1259 OID 17325)
 -- Name: mm_metadata_anime_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1670,6 +1914,7 @@ CREATE INDEX mm_metadata_anime_idxgin_media_id_tmdb ON public.mm_metadata_anime 
 
 
 --
+-- TOC entry 3035 (class 1259 OID 17326)
 -- Name: mm_metadata_anime_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1677,6 +1922,7 @@ CREATE INDEX mm_metadata_anime_idxgin_user_json ON public.mm_metadata_anime USIN
 
 
 --
+-- TOC entry 3038 (class 1259 OID 17327)
 -- Name: mm_metadata_book_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1684,6 +1930,7 @@ CREATE INDEX mm_metadata_book_name_trigram_idx ON public.mm_metadata_book USING 
 
 
 --
+-- TOC entry 3047 (class 1259 OID 17328)
 -- Name: mm_metadata_collection_idxgin_media_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1691,6 +1938,7 @@ CREATE INDEX mm_metadata_collection_idxgin_media_json ON public.mm_metadata_coll
 
 
 --
+-- TOC entry 3048 (class 1259 OID 17329)
 -- Name: mm_metadata_collection_idxgin_meta_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1698,6 +1946,7 @@ CREATE INDEX mm_metadata_collection_idxgin_meta_json ON public.mm_metadata_colle
 
 
 --
+-- TOC entry 3049 (class 1259 OID 17330)
 -- Name: mm_metadata_collection_idxgin_name_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1705,6 +1954,7 @@ CREATE INDEX mm_metadata_collection_idxgin_name_json ON public.mm_metadata_colle
 
 
 --
+-- TOC entry 3082 (class 1259 OID 17331)
 -- Name: mm_metadata_idx_band_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1712,6 +1962,7 @@ CREATE INDEX mm_metadata_idx_band_name ON public.mm_metadata_music_video USING b
 
 
 --
+-- TOC entry 3083 (class 1259 OID 17332)
 -- Name: mm_metadata_idx_band_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1719,6 +1970,7 @@ CREATE INDEX mm_metadata_idx_band_name_lower ON public.mm_metadata_music_video U
 
 
 --
+-- TOC entry 3041 (class 1259 OID 17333)
 -- Name: mm_metadata_idx_book_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1726,6 +1978,7 @@ CREATE INDEX mm_metadata_idx_book_name ON public.mm_metadata_book USING btree (m
 
 
 --
+-- TOC entry 3042 (class 1259 OID 17334)
 -- Name: mm_metadata_idx_book_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1733,6 +1986,7 @@ CREATE INDEX mm_metadata_idx_book_name_lower ON public.mm_metadata_book USING bt
 
 
 --
+-- TOC entry 3065 (class 1259 OID 17335)
 -- Name: mm_metadata_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1740,6 +1994,7 @@ CREATE INDEX mm_metadata_idx_name ON public.mm_metadata_movie USING btree (mm_me
 
 
 --
+-- TOC entry 3066 (class 1259 OID 17336)
 -- Name: mm_metadata_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1747,6 +2002,7 @@ CREATE INDEX mm_metadata_idx_name_lower ON public.mm_metadata_movie USING btree 
 
 
 --
+-- TOC entry 3084 (class 1259 OID 17337)
 -- Name: mm_metadata_idx_song_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1754,6 +2010,7 @@ CREATE INDEX mm_metadata_idx_song_name ON public.mm_metadata_music_video USING b
 
 
 --
+-- TOC entry 3085 (class 1259 OID 17338)
 -- Name: mm_metadata_idx_song_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1761,6 +2018,7 @@ CREATE INDEX mm_metadata_idx_song_name_lower ON public.mm_metadata_music_video U
 
 
 --
+-- TOC entry 3043 (class 1259 OID 17339)
 -- Name: mm_metadata_idxgin_isbn; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1768,6 +2026,7 @@ CREATE INDEX mm_metadata_idxgin_isbn ON public.mm_metadata_book USING btree (mm_
 
 
 --
+-- TOC entry 3044 (class 1259 OID 17340)
 -- Name: mm_metadata_idxgin_isbn13; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1775,6 +2034,7 @@ CREATE INDEX mm_metadata_idxgin_isbn13 ON public.mm_metadata_book USING btree (m
 
 
 --
+-- TOC entry 3067 (class 1259 OID 17341)
 -- Name: mm_metadata_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1782,34 +2042,7 @@ CREATE INDEX mm_metadata_idxgin_json ON public.mm_metadata_movie USING gin (mm_m
 
 
 --
--- Name: mm_metadata_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_metadata_idxgin_media_id ON public.mm_metadata_movie USING gin (mm_metadata_media_id);
-
-
---
--- Name: mm_metadata_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_metadata_idxgin_media_id_imdb ON public.mm_metadata_movie USING gin (((mm_metadata_media_id -> 'imdb'::text)));
-
-
---
--- Name: mm_metadata_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_metadata_idxgin_media_id_thetvdb ON public.mm_metadata_movie USING gin (((mm_metadata_media_id -> 'thetvdb'::text)));
-
-
---
--- Name: mm_metadata_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_metadata_idxgin_media_id_tmdb ON public.mm_metadata_movie USING gin (((mm_metadata_media_id -> 'tmdb'::text)));
-
-
---
+-- TOC entry 3086 (class 1259 OID 17342)
 -- Name: mm_metadata_idxgin_music_video_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1817,6 +2050,7 @@ CREATE INDEX mm_metadata_idxgin_music_video_json ON public.mm_metadata_music_vid
 
 
 --
+-- TOC entry 3087 (class 1259 OID 17343)
 -- Name: mm_metadata_idxgin_music_video_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1824,6 +2058,7 @@ CREATE INDEX mm_metadata_idxgin_music_video_media_id ON public.mm_metadata_music
 
 
 --
+-- TOC entry 3088 (class 1259 OID 17344)
 -- Name: mm_metadata_idxgin_music_video_media_id_imvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1831,6 +2066,7 @@ CREATE INDEX mm_metadata_idxgin_music_video_media_id_imvdb ON public.mm_metadata
 
 
 --
+-- TOC entry 3068 (class 1259 OID 17345)
 -- Name: mm_metadata_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1838,6 +2074,7 @@ CREATE INDEX mm_metadata_idxgin_user_json ON public.mm_metadata_movie USING gin 
 
 
 --
+-- TOC entry 3063 (class 1259 OID 17346)
 -- Name: mm_metadata_logo_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1845,6 +2082,7 @@ CREATE INDEX mm_metadata_logo_idxgin_json ON public.mm_metadata_logo USING gin (
 
 
 --
+-- TOC entry 3071 (class 1259 OID 17347)
 -- Name: mm_metadata_music_idx_album; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1852,6 +2090,7 @@ CREATE INDEX mm_metadata_music_idx_album ON public.mm_metadata_music USING btree
 
 
 --
+-- TOC entry 3072 (class 1259 OID 17348)
 -- Name: mm_metadata_music_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1859,6 +2098,7 @@ CREATE INDEX mm_metadata_music_idx_name ON public.mm_metadata_music USING btree 
 
 
 --
+-- TOC entry 3073 (class 1259 OID 17349)
 -- Name: mm_metadata_music_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1866,6 +2106,7 @@ CREATE INDEX mm_metadata_music_idx_name_lower ON public.mm_metadata_music USING 
 
 
 --
+-- TOC entry 3074 (class 1259 OID 17350)
 -- Name: mm_metadata_music_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1873,6 +2114,7 @@ CREATE INDEX mm_metadata_music_idxgin_json ON public.mm_metadata_music USING gin
 
 
 --
+-- TOC entry 3075 (class 1259 OID 17351)
 -- Name: mm_metadata_music_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1880,6 +2122,7 @@ CREATE INDEX mm_metadata_music_idxgin_media_id ON public.mm_metadata_music USING
 
 
 --
+-- TOC entry 3076 (class 1259 OID 17352)
 -- Name: mm_metadata_music_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1887,6 +2130,7 @@ CREATE INDEX mm_metadata_music_idxgin_user_json ON public.mm_metadata_music USIN
 
 
 --
+-- TOC entry 3077 (class 1259 OID 17353)
 -- Name: mm_metadata_music_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1894,6 +2138,7 @@ CREATE INDEX mm_metadata_music_name_trigram_idx ON public.mm_metadata_music USIN
 
 
 --
+-- TOC entry 3089 (class 1259 OID 17354)
 -- Name: mm_metadata_music_video_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1901,6 +2146,7 @@ CREATE INDEX mm_metadata_music_video_idxgin_user_json ON public.mm_metadata_musi
 
 
 --
+-- TOC entry 3092 (class 1259 OID 17355)
 -- Name: mm_metadata_musician_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1908,6 +2154,7 @@ CREATE INDEX mm_metadata_musician_idx_name ON public.mm_metadata_musician USING 
 
 
 --
+-- TOC entry 3093 (class 1259 OID 17356)
 -- Name: mm_metadata_musician_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1915,6 +2162,7 @@ CREATE INDEX mm_metadata_musician_idx_name_lower ON public.mm_metadata_musician 
 
 
 --
+-- TOC entry 3094 (class 1259 OID 17357)
 -- Name: mm_metadata_musician_idxgin_id_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1922,6 +2170,7 @@ CREATE INDEX mm_metadata_musician_idxgin_id_json ON public.mm_metadata_musician 
 
 
 --
+-- TOC entry 3095 (class 1259 OID 17358)
 -- Name: mm_metadata_musician_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1929,6 +2178,7 @@ CREATE INDEX mm_metadata_musician_idxgin_json ON public.mm_metadata_musician USI
 
 
 --
+-- TOC entry 3096 (class 1259 OID 17359)
 -- Name: mm_metadata_musician_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1936,6 +2186,15 @@ CREATE INDEX mm_metadata_musician_name_trigram_idx ON public.mm_metadata_musicia
 
 
 --
+-- TOC entry 3099 (class 1259 OID 17361)
+-- Name: mm_metadata_person_idx_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX mm_metadata_person_idx_id ON public.mm_metadata_person USING btree (mmp_person_media_id);
+
+
+--
+-- TOC entry 3100 (class 1259 OID 17360)
 -- Name: mm_metadata_person_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1943,13 +2202,7 @@ CREATE INDEX mm_metadata_person_idx_name ON public.mm_metadata_person USING btre
 
 
 --
--- Name: mm_metadata_person_idxgin_id_json; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_metadata_person_idx_id ON public.mm_metadata_person USING btree (mmp_person_media_id);
-
-
---
+-- TOC entry 3101 (class 1259 OID 17362)
 -- Name: mm_metadata_person_idxgin_meta_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1957,6 +2210,7 @@ CREATE INDEX mm_metadata_person_idxgin_meta_json ON public.mm_metadata_person US
 
 
 --
+-- TOC entry 3140 (class 1259 OID 17363)
 -- Name: mm_metadata_review_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1964,6 +2218,7 @@ CREATE INDEX mm_metadata_review_idx_metadata_uuid ON public.mm_review USING btre
 
 
 --
+-- TOC entry 3141 (class 1259 OID 17364)
 -- Name: mm_metadata_review_idxgin_media_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1971,6 +2226,7 @@ CREATE INDEX mm_metadata_review_idxgin_media_json ON public.mm_review USING gin 
 
 
 --
+-- TOC entry 3105 (class 1259 OID 17365)
 -- Name: mm_metadata_sports_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1978,6 +2234,7 @@ CREATE INDEX mm_metadata_sports_idx_name ON public.mm_metadata_sports USING btre
 
 
 --
+-- TOC entry 3106 (class 1259 OID 17366)
 -- Name: mm_metadata_sports_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1985,6 +2242,7 @@ CREATE INDEX mm_metadata_sports_idx_name_lower ON public.mm_metadata_sports USIN
 
 
 --
+-- TOC entry 3107 (class 1259 OID 17367)
 -- Name: mm_metadata_sports_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1992,6 +2250,7 @@ CREATE INDEX mm_metadata_sports_idxgin_json ON public.mm_metadata_sports USING g
 
 
 --
+-- TOC entry 3108 (class 1259 OID 17368)
 -- Name: mm_metadata_sports_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1999,6 +2258,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id ON public.mm_metadata_sports USI
 
 
 --
+-- TOC entry 3109 (class 1259 OID 17369)
 -- Name: mm_metadata_sports_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2006,6 +2266,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_imdb ON public.mm_metadata_sport
 
 
 --
+-- TOC entry 3110 (class 1259 OID 17370)
 -- Name: mm_metadata_sports_idxgin_media_id_thesportsdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2013,6 +2274,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_thesportsdb ON public.mm_metadat
 
 
 --
+-- TOC entry 3111 (class 1259 OID 17371)
 -- Name: mm_metadata_sports_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2020,6 +2282,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdb ON public.mm_metadata_sp
 
 
 --
+-- TOC entry 3112 (class 1259 OID 17372)
 -- Name: mm_metadata_sports_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2027,6 +2290,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_thetvdbseries ON public.mm_metad
 
 
 --
+-- TOC entry 3113 (class 1259 OID 17373)
 -- Name: mm_metadata_sports_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2034,6 +2298,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_tmdb ON public.mm_metadata_sport
 
 
 --
+-- TOC entry 3114 (class 1259 OID 17374)
 -- Name: mm_metadata_sports_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2041,6 +2306,7 @@ CREATE INDEX mm_metadata_sports_idxgin_media_id_tvmaze ON public.mm_metadata_spo
 
 
 --
+-- TOC entry 3115 (class 1259 OID 17375)
 -- Name: mm_metadata_sports_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2048,6 +2314,7 @@ CREATE INDEX mm_metadata_sports_name_trigram_idx ON public.mm_metadata_sports US
 
 
 --
+-- TOC entry 3118 (class 1259 OID 17376)
 -- Name: mm_metadata_tvshow_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2055,6 +2322,7 @@ CREATE INDEX mm_metadata_tvshow_idx_name ON public.mm_metadata_tvshow USING btre
 
 
 --
+-- TOC entry 3119 (class 1259 OID 17377)
 -- Name: mm_metadata_tvshow_idx_name_lower; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2062,6 +2330,7 @@ CREATE INDEX mm_metadata_tvshow_idx_name_lower ON public.mm_metadata_tvshow USIN
 
 
 --
+-- TOC entry 3120 (class 1259 OID 17378)
 -- Name: mm_metadata_tvshow_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2069,6 +2338,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_json ON public.mm_metadata_tvshow USING g
 
 
 --
+-- TOC entry 3121 (class 1259 OID 17379)
 -- Name: mm_metadata_tvshow_idxgin_localimage_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2076,6 +2346,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_localimage_json ON public.mm_metadata_tvs
 
 
 --
+-- TOC entry 3122 (class 1259 OID 17380)
 -- Name: mm_metadata_tvshow_idxgin_media_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2083,6 +2354,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id ON public.mm_metadata_tvshow USI
 
 
 --
+-- TOC entry 3123 (class 1259 OID 17381)
 -- Name: mm_metadata_tvshow_idxgin_media_id_imdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2090,6 +2362,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_imdb ON public.mm_metadata_tvsho
 
 
 --
+-- TOC entry 3124 (class 1259 OID 17382)
 -- Name: mm_metadata_tvshow_idxgin_media_id_thetvdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2097,6 +2370,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdb ON public.mm_metadata_tv
 
 
 --
+-- TOC entry 3125 (class 1259 OID 17383)
 -- Name: mm_metadata_tvshow_idxgin_media_id_thetvdbseries; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2104,6 +2378,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_thetvdbseries ON public.mm_metad
 
 
 --
+-- TOC entry 3126 (class 1259 OID 17384)
 -- Name: mm_metadata_tvshow_idxgin_media_id_tmdb; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2111,6 +2386,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tmdb ON public.mm_metadata_tvsho
 
 
 --
+-- TOC entry 3127 (class 1259 OID 17385)
 -- Name: mm_metadata_tvshow_idxgin_media_id_tvmaze; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2118,6 +2394,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_media_id_tvmaze ON public.mm_metadata_tvs
 
 
 --
+-- TOC entry 3128 (class 1259 OID 17386)
 -- Name: mm_metadata_tvshow_idxgin_user_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2125,6 +2402,7 @@ CREATE INDEX mm_metadata_tvshow_idxgin_user_json ON public.mm_metadata_tvshow US
 
 
 --
+-- TOC entry 3129 (class 1259 OID 17387)
 -- Name: mm_metadata_tvshow_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2132,6 +2410,7 @@ CREATE INDEX mm_metadata_tvshow_name_trigram_idx ON public.mm_metadata_tvshow US
 
 
 --
+-- TOC entry 3132 (class 1259 OID 17388)
 -- Name: mm_notification_idx_dismissable; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2139,6 +2418,7 @@ CREATE INDEX mm_notification_idx_dismissable ON public.mm_notification USING btr
 
 
 --
+-- TOC entry 3133 (class 1259 OID 17389)
 -- Name: mm_notification_idx_time; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2146,6 +2426,7 @@ CREATE INDEX mm_notification_idx_time ON public.mm_notification USING btree (mm_
 
 
 --
+-- TOC entry 3146 (class 1259 OID 17390)
 -- Name: mm_sync_idxgin_json; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2153,6 +2434,7 @@ CREATE INDEX mm_sync_idxgin_json ON public.mm_sync USING gin (mm_sync_options_js
 
 
 --
+-- TOC entry 3149 (class 1259 OID 17391)
 -- Name: mm_tv_schedule_idx_date; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2160,6 +2442,7 @@ CREATE INDEX mm_tv_schedule_idx_date ON public.mm_tv_schedule USING btree (mm_tv
 
 
 --
+-- TOC entry 3151 (class 1259 OID 17392)
 -- Name: mm_tv_schedule_idx_program; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2167,6 +2450,7 @@ CREATE INDEX mm_tv_schedule_idx_program ON public.mm_tv_schedule_program USING b
 
 
 --
+-- TOC entry 3150 (class 1259 OID 17393)
 -- Name: mm_tv_schedule_idx_station; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2174,6 +2458,7 @@ CREATE INDEX mm_tv_schedule_idx_station ON public.mm_tv_schedule USING btree (mm
 
 
 --
+-- TOC entry 3156 (class 1259 OID 17394)
 -- Name: mm_tv_stations_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2181,6 +2466,7 @@ CREATE INDEX mm_tv_stations_idx_name ON public.mm_tv_stations USING btree (mm_tv
 
 
 --
+-- TOC entry 3157 (class 1259 OID 17395)
 -- Name: mm_tv_stations_idx_station; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2188,6 +2474,7 @@ CREATE INDEX mm_tv_stations_idx_station ON public.mm_tv_stations USING btree (mm
 
 
 --
+-- TOC entry 3163 (class 1259 OID 17396)
 -- Name: mm_user_activity_idx_date; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2195,6 +2482,7 @@ CREATE INDEX mm_user_activity_idx_date ON public.mm_user_activity USING btree (m
 
 
 --
+-- TOC entry 3164 (class 1259 OID 17397)
 -- Name: mm_user_activity_idx_user_guid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2202,6 +2490,7 @@ CREATE INDEX mm_user_activity_idx_user_guid ON public.mm_user_activity USING btr
 
 
 --
+-- TOC entry 3167 (class 1259 OID 17398)
 -- Name: mm_user_group_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2209,6 +2498,7 @@ CREATE INDEX mm_user_group_idx_name ON public.mm_user_group USING btree (mm_user
 
 
 --
+-- TOC entry 3158 (class 1259 OID 17399)
 -- Name: mm_user_idx_username; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2216,6 +2506,7 @@ CREATE INDEX mm_user_idx_username ON public.mm_user USING btree (username);
 
 
 --
+-- TOC entry 3170 (class 1259 OID 17400)
 -- Name: mm_user_profile_idx_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2223,6 +2514,31 @@ CREATE INDEX mm_user_profile_idx_name ON public.mm_user_profile USING btree (mm_
 
 
 --
+-- TOC entry 3176 (class 1259 OID 17425)
+-- Name: mm_user_queue_media_type_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX mm_user_queue_media_type_idx ON public.mm_user_queue USING btree (mm_user_queue_media_type);
+
+
+--
+-- TOC entry 3177 (class 1259 OID 17423)
+-- Name: mm_user_queue_name_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX mm_user_queue_name_idx ON public.mm_user_queue USING btree (mm_user_queue_name);
+
+
+--
+-- TOC entry 3178 (class 1259 OID 17424)
+-- Name: mm_user_queue_user_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX mm_user_queue_user_id_idx ON public.mm_user_queue USING btree (mm_user_queue_user_id);
+
+
+--
+-- TOC entry 3104 (class 1259 OID 17401)
 -- Name: mmp_person_name_trigram_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2230,6 +2546,7 @@ CREATE INDEX mmp_person_name_trigram_idx ON public.mm_metadata_person USING gist
 
 
 --
+-- TOC entry 3011 (class 1259 OID 17402)
 -- Name: mmr_media_idx_link_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2237,6 +2554,7 @@ CREATE INDEX mmr_media_idx_link_uuid ON public.mm_media_remote USING btree (mmr_
 
 
 --
+-- TOC entry 3012 (class 1259 OID 17403)
 -- Name: mmr_media_idx_metadata_uuid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2244,14 +2562,16 @@ CREATE INDEX mmr_media_idx_metadata_uuid ON public.mm_media_remote USING btree (
 
 
 --
+-- TOC entry 3013 (class 1259 OID 17404)
 -- Name: mmr_media_idxgin_ffprobe; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX mmr_media_idxgin_ffprobe ON public.mm_media_remote USING gin (mmr_media_ffprobe_json);
 
 
+-- Completed on 2020-08-18 19:58:06
+
 --
 -- PostgreSQL database dump complete
 --
-
 

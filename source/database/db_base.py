@@ -26,7 +26,7 @@ from common import common_global
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
 
-def db_open(self):
+def db_open(self, force_local=False):
     """
     # open database
     """
@@ -35,23 +35,28 @@ def db_open(self):
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
     # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
-    # this is here to handle going back to docker-compose with else for docker swarm
-    if 'POSTGRES_PASSWORD' in os.environ:
-        database_password = os.environ['POSTGRES_PASSWORD']
+    if force_local:
+        self.sql3_conn = psycopg2.connect(
+            "dbname='postgres' user='postgres' host='localhost'"
+            " port=5432 password='metaman' connect_timeout=5")
     else:
-        database_password = common_file.com_file_load_data('/run/secrets/db_password')
-    # keep trying to connect every 10 seconds, hence sleep later in while
-    while True:
-        try:
-            self.sql3_conn = psycopg2.connect(
-                "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
-                " port=6432 password='%s' connect_timeout=5"  # , async=1 - invalid option
-                % database_password.strip())
-        except (psycopg2.OperationalError, psycopg2.DatabaseError):
-            time.sleep(10)
+        # this is here to handle going back to docker-compose with else for docker swarm
+        if 'POSTGRES_PASSWORD' in os.environ:
+            database_password = os.environ['POSTGRES_PASSWORD']
         else:
-            break
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db open'})
+            database_password = common_file.com_file_load_data('/run/secrets/db_password')
+        # keep trying to connect every 10 seconds, hence sleep later in while
+        while True:
+            try:
+                self.sql3_conn = psycopg2.connect(
+                    "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
+                    " port=6432 password='%s' connect_timeout=5"  # , async=1 - invalid option
+                    % database_password.strip())
+            except (psycopg2.OperationalError, psycopg2.DatabaseError):
+                time.sleep(10)
+            else:
+                break
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'db open'})
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
@@ -59,7 +64,10 @@ def db_close(self):
     """
     # close main db file
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
+    try:
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
+    except:
+        pass
     self.sql3_conn.close()
 
 
@@ -75,7 +83,10 @@ def db_commit(self):
     """
     # commit changes to media database
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
+    try:
+        common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
+    except:
+        pass
     self.sql3_conn.commit()
 
 
@@ -119,7 +130,10 @@ def db_query(self, query_string, fetch_all=True):
     # general run anything
     """
     # TODO little bobby tables
-    common_global.es_inst.com_elastic_index('info', {"query": query_string})
+    try:
+        common_global.es_inst.com_elastic_index('info', {"query": query_string})
+    except:
+        pass
     self.db_cursor.execute(query_string)
     try:
         if fetch_all:
