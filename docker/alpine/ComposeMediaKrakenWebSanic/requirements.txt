@@ -35,7 +35,6 @@ Babel==2.8.0
 docker==4.3.0
 isbntools==4.3.23
 beautifulsoup4==4.9.1
-appdirs==1.4.3
 appnope==0.1.0
 backports.shutil-get-terminal-size==1.0.0
 decorator==4.4.2
