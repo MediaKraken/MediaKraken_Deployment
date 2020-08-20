@@ -39,7 +39,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && pip3 install git+https://github.com/MediaKraken/sanic_session \
   && pip3 install git+https://github.com/MediaKraken/sanic-auth \
   && pip3 install git+https://github.com/MediaKraken/python-paginate \
   && apk del \
