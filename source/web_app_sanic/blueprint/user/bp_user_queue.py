@@ -14,13 +14,13 @@ async def url_bp_user_queue(request):
     """
     page, per_page, offset = Pagination.get_page_args(request)
     # TODO union read all four.....then if first "group"....add header in the html
-    request['session']['search_page'] = 'user_media_queue'
+    request.ctx.session['search_page'] = 'user_media_queue'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_queue_list_count(
                                 db_connection,
                                 common_global.auth.current_user(request)[0],
-                                request['session']['search_text']),
+                                request.ctx.session['search_text']),
                             record_name='queue',
                             format_total=True,
                             format_number=True,
@@ -29,7 +29,7 @@ async def url_bp_user_queue(request):
                                                                    common_global.auth.current_user(request)[0],
                                                                    offset,
                                                                    per_page,
-                                                                   request['session'][
+                                                                   request.ctx.session[
                                                                        'search_text'])
     await request.app.db_pool.release(db_connection)
     return {

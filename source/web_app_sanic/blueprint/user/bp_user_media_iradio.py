@@ -15,9 +15,9 @@ async def url_bp_user_iradio_list(request):
     page, per_page, offset = Pagination.get_page_args(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    if request['session']['search_text'] is not None:
+    if request.ctx.session['search_text'] is not None:
         mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset, per_page,
-                                                                  search_value=request['session'][
+                                                                  search_value=request.ctx.session[
                                                                       'search_text'])
     else:
         mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset, per_page)

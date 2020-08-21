@@ -80,7 +80,7 @@ async def url_bp_user_metadata_movie_list(request, user):
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
                                                                       per_page,
-                                                       request['session']['search_text']):
+                                                       request.ctx.session['search_text']):
         # set watched
         try:
             watched_status \
@@ -133,10 +133,10 @@ async def url_bp_user_metadata_movie_list(request, user):
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
-    request['session']['search_page'] = 'meta_movie'
+    request.ctx.session['search_page'] = 'meta_movie'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_movie_count(db_connection,
-                                request['session']['search_text']),
+                                request.ctx.session['search_text']),
                             record_name='movie(s)',
                             format_total=True,
                             format_number=True,

@@ -120,7 +120,7 @@ async def login(request):
         elif user_id == 'invalid_password':  # invalid_password
             errors['password_errors'] = "Password invalid"
         else:  # should be valid
-            request.ctx['session']['search_text'] = None
+            request.ctx.session['search_text'] = None
             common_global.auth.login_user(request,
                                           User(id=user_id, name=username, admin=user_admin))
             print('current user', common_global.auth.current_user(request), flush=True)
@@ -148,7 +148,7 @@ async def register(request):
                 user_password=form.password.data)
             await app.db_pool.release(db_connection)
             if user_id.isnumeric():  # valid user
-                request['session']['search_text'] = None
+                request.ctx.session['search_text'] = None
                 common_global.auth.login_user(request,
                                               User(id=user_id, name=username, admin=user_admin))
                 return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))

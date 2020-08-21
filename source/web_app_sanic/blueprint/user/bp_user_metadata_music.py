@@ -17,7 +17,7 @@ async def url_bp_user_metadata_music_album_list(request):
     db_connection = await request.app.db_pool.acquire()
     for album_data in await request.app.db_functions.db_meta_music_album_list(db_connection, offset,
                                                                               per_page,
-                                                                              request['session'][
+                                                                              request.ctx.session[
                                                                                   'search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
                                                          'id': album_data['mm_metadata_album_guid'],
@@ -38,7 +38,7 @@ async def url_bp_user_metadata_music_album_list(request):
             media.append(
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
-    request['session']['search_page'] = 'meta_album'
+    request.ctx.session['search_page'] = 'meta_album'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_table_count(db_connection,
                                                                                 'mm_metadata_album'),
@@ -64,7 +64,7 @@ async def metadata_music_album_song_list(request):
     Display metadata music song list
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    request['session']['search_page'] = 'meta_music_song'
+    request.ctx.session['search_page'] = 'meta_music_song'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_table_count(db_connection,
@@ -75,7 +75,7 @@ async def metadata_music_album_song_list(request):
                             )
     media_data = await request.app.db_functions.db_meta_music_song_list(db_connection, offset,
                                                                         per_page,
-                                                                        request['session'][
+                                                                        request.ctx.session[
                                                                             'search_text'])
     await request.app.db_pool.release(db_connection)
     return {

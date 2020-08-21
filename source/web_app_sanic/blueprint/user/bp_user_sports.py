@@ -19,15 +19,15 @@ async def url_bp_user_sports(request):
     for row_data in await request.app.db_functions.db_media_sports_list(db_connection,
                                                                         common_global.DLMediaType.Sports.value,
                                                                         offset, per_page,
-                                                                        request['session'][
+                                                                        request.ctx.session[
                                                                             'search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
-    request['session']['search_page'] = 'media_sports'
+    request.ctx.session['search_page'] = 'media_sports'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_sports_list_count(
                                 db_connection,
-                                request['session']['search_text']),
+                                request.ctx.session['search_text']),
                             record_name='sporting event(s)',
                             format_total=True,
                             format_number=True,

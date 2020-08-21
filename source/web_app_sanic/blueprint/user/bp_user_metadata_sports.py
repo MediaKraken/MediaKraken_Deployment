@@ -35,21 +35,21 @@ async def url_bp_user_metadata_sports_list(request):
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_sports_list(db_connection,
                                                                        offset, per_page,
-                                                                       request['session'][
+                                                                       request.ctx.session[
                                                                            'search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
-    request['session']['search_page'] = 'meta_sports'
+    request.ctx.session['search_page'] = 'meta_sports'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_sports_list_count(
                                 db_connection,
-                                request['session']['search_text']),
+                                request.ctx.session['search_text']),
                             record_name='sporting event(s)',
                             format_total=True,
                             format_number=True,
                             )
     media_data = await request.app.db_functions.db_meta_sports_list(db_connection, offset, per_page,
-                                                                    request['session'][
+                                                                    request.ctx.session[
                                                                         'search_text'])
     await request.app.db_pool.release(db_connection)
     return {

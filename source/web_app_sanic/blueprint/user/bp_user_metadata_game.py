@@ -13,7 +13,7 @@ async def url_bp_user_metadata_game(request):
     Display game list metadata
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    request['session']['search_page'] = 'meta_game'
+    request.ctx.session['search_page'] = 'meta_game'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_table_count(db_connection,
@@ -23,7 +23,7 @@ async def url_bp_user_metadata_game(request):
                             format_number=True,
                             )
     media_data = await request.app.db_functions.db_meta_game_list(db_connection, offset, per_page,
-                                                                  request['session']['search_text'])
+                                                                  request.ctx.session['search_text'])
     await request.app.db_pool.release(db_connection)
     return {
         'media_game': media_data,

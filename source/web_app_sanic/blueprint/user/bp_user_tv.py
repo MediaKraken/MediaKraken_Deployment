@@ -20,7 +20,7 @@ async def url_bp_user_tv(request):
     media = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_tv_list(db_connection, offset, per_page,
-                                                        request['session']['search_text']):
+                                                        request.ctx.session['search_text']):
         # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
         # 3 - mm_metadata_tvshow_localimage_json
         try:
@@ -34,10 +34,10 @@ async def url_bp_user_tv(request):
                           row_data['mm_metadata_tvshow_guid'],
                           None, common_internationalization.com_inter_number_format(
                 row_data['mm_count'])))
-    request['session']['search_page'] = 'media_tv'
+    request.ctx.session['search_page'] = 'media_tv'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_tv_list_count(db_connection,
-                                None, None, request['session']['search_text']),
+                                None, None, request.ctx.session['search_text']),
                             record_name='TV show(s)',
                             format_total=True,
                             format_number=True,

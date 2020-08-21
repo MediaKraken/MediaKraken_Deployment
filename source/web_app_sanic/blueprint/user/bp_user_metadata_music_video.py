@@ -14,19 +14,19 @@ async def url_bp_user_metadata_music_video(request):
     Display metadata music video
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    request['session']['search_page'] = 'meta_music_video'
+    request.ctx.session['search_page'] = 'meta_music_video'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_music_video_count(
                                 db_connection,
-                                None, request['session']['search_text']),
+                                None, request.ctx.session['search_text']),
                             record_name='music video(s)',
                             format_total=True,
                             format_number=True,
                             )
     media_data = await request.app.db_functions.db_meta_music_video_list(db_connection, offset,
                                                                          per_page,
-                                                                         request['session'][
+                                                                         request.ctx.session[
                                                                              'search_text'])
     await request.app.db_pool.release(db_connection)
     return {

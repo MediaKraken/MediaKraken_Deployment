@@ -13,7 +13,7 @@ async def url_bp_user_game(request):
     Display game page
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    request['session']['search_page'] = 'media_games'
+    request.ctx.session['search_page'] = 'media_games'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_game_system_list_count(
@@ -24,7 +24,7 @@ async def url_bp_user_game(request):
                             )
     media_data = await request.app.db_functions.db_meta_game_system_list(db_connection, offset,
                                                                          per_page,
-                                                                         request['session'][
+                                                                         request.ctx.session[
                                                                              'search_text'])
     await request.app.db_pool.release(db_connection)
     return {

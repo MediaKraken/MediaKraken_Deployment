@@ -23,7 +23,7 @@ async def url_bp_user_home_media_list(request):
                                                                     group_collection=False,
                                                                     offset=offset,
                                                                     include_remote=False,
-                                                                    search_text=request['session'][
+                                                                    search_text=request.ctx.session[
                                                                         'search_text'])
     await request.app.db_pool.release(db_connection)
     return {

@@ -13,18 +13,18 @@ async def url_bp_user_periodical_list(request):
     Display periodical page
     """
     page, per_page, offset = Pagination.get_page_args(request)
-    request['session']['search_page'] = 'media_periodicals'
+    request.ctx.session['search_page'] = 'media_periodicals'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_book_list_count(
                                 db_connection,
-                                request['session']['search_text']),
+                                request.ctx.session['search_text']),
                             record_name='periodical(s)',
                             format_total=True,
                             format_number=True,
                             )
     media_data = await request.app.db_functions.db_media_book_list(db_connection, offset, per_page,
-                                                                   request['session'][
+                                                                   request.ctx.session[
                                                                        'search_text'])
     await request.app.db_pool.release(db_connection)
     return {

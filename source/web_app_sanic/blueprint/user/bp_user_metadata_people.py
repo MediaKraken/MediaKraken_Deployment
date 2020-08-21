@@ -44,7 +44,7 @@ async def url_bp_user_metadata_person_list(request):
     db_connection = await request.app.db_pool.acquire()
     for person_data in await request.app.db_functions.db_meta_person_list(db_connection, offset,
                                                                           per_page,
-                                                                          request['session'][
+                                                                          request.ctx.session[
                                                                               'search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
@@ -57,11 +57,11 @@ async def url_bp_user_metadata_person_list(request):
             person_image = "img/person_missing.png"
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
-    request['session']['search_page'] = 'meta_people'
+    request.ctx.session['search_page'] = 'meta_people'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_person_list_count(
                                 db_connection,
-                                request['session']['search_text']),
+                                request.ctx.session['search_text']),
                             record_name='person',
                             format_total=True,
                             format_number=True,

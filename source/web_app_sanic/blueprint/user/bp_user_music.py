@@ -27,7 +27,7 @@ async def url_bp_user_album_list(request):
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_album_list(db_connection, offset,
                                                                        per_page,
-                                                                       request['session'][
+                                                                       request.ctx.session[
                                                                            'search_text']):
         if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
@@ -35,11 +35,10 @@ async def url_bp_user_album_list(request):
         else:
             media.append((row_data['mm_metadata_album_guid'],
                           row_data['mm_metadata_album_name'], None))
-    request['session']['search_page'] = 'music_album'
+    request.ctx.session['search_page'] = 'music_album'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_album_count(db_connection,
-                                                                                      request[
-                                                                                          'session'][
+                                                                                      request.ctx.session[
                                                                                           'search_page']),
                             record_name='music album(s)',
                             format_total=True,
