@@ -79,13 +79,14 @@ services:
       - MAX_PARALLEL_WORKERS_PER_GATHER=2
       - MAX_PARALLEL_WORKERS=4
       - POSTGRES_PASSWORD=${DBPASS}
-    command: postgres -c logging_collector=on -c log_destination=stderr -c log_min_duration_statement=0 -c log_connections=off -c log_disconnections=off
+    command: postgres -c logging_collector=on -c log_directory='/var/log/postgresql' -c log_filename='postgresql-%Y-%m-%d_%H%M%S.log' -c log_statement='all' -c log_duration=on -c log_connections=off -c log_disconnections=off
     container_name: mkstack_database
     stop_grace_period: 30s
     stop_signal: SIGTERM
     volumes:
       - mediakraken_vol_postgresql:/var/lib/postgresql/data
       - mediakraken_vol_postgresql_backup:/mediakraken/backup
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -117,6 +118,7 @@ services:
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql:ro
     networks:
       - mediakraken_network
     restart: unless-stopped
@@ -448,6 +450,7 @@ volumes:
   mediakraken_vol_phue:
   mediakraken_vol_postgresql:
   mediakraken_vol_postgresql_backup:
+  mediakraken_vol_postgresql_logging:
   mediakraken_vol_rabbit:
   mediakraken_vol_static:
   mediakraken_vol_teamspeak:
