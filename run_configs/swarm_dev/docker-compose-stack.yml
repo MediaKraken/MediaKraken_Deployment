@@ -167,6 +167,7 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - mediakraken_vol_postgresql_logging:/var/log/postgresql:ro
+      - mediakraken_vol_nginx:/var/log/mediakraken/nginx:ro
     deploy:
       mode: global
 
