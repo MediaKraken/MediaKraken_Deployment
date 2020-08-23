@@ -115,6 +115,7 @@ services:
     container_name: mkstack_filebeat
     environment:
       - ELASTICSEARCH_HOSTS=th-elk-1:9200
+      - KIBANA_HOSTS=th-elk-1:5601
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
