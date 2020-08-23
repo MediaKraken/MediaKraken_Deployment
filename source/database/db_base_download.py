@@ -45,7 +45,7 @@ def db_download_read_provider(self, provider_name):
                            'mdq_download_json'
                            ' from mm_download_que'
                            ' where mdq_provider = %s'
-                           ' order by mdq_que_type limit 250',
+                           ' order by mdq_que_type limit 25',
                            (provider_name,))
     return self.db_cursor.fetchall()
 
