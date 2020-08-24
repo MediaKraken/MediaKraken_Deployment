@@ -188,7 +188,8 @@ class MKServerDatabase:
         db_meta_movie_status_update, \
         db_meta_movie_json_update, \
         db_meta_movie_image_random, \
-        db_meta_movie_by_media_uuid
+        db_meta_movie_by_media_uuid, \
+        db_meta_movie_guid_count
     from database.db_base_metadata_music import db_meta_song_list, \
         db_music_lookup, \
         db_meta_musician_by_guid, \

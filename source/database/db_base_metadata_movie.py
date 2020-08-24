@@ -21,6 +21,15 @@ import json
 from common import common_global
 
 
+def db_meta_movie_guid_count(self, guid):
+    """
+    # does movie exist already by metadata id
+    """
+    self.db_cursor.execute('select count(*) from mm_metadata_movie'
+                           ' where mm_metadata_guid = %s' % guid)
+    return self.db_cursor.fetchone()[0]
+
+
 def db_meta_movie_by_media_uuid(self, media_guid):
     """
     # read in metadata via media id

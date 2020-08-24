@@ -86,12 +86,13 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         series_id_json, result_json, image_json \
             = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
-        # set and insert the record
-        db_connection.db_meta_insert_tmdb(metadata_uuid,
-                                          series_id_json,
-                                          result_json['title'],
-                                          json.dumps(result_json),
-                                          json.dumps(image_json))
+        # set and insert the record if doesn't exist
+        if db_connection.db_meta_movie_guid_count(metadata_uuid) == 0:
+            db_connection.db_meta_insert_tmdb(metadata_uuid,
+                                              series_id_json,
+                                              result_json['title'],
+                                              json.dumps(result_json),
+                                              json.dumps(image_json))
         if 'credits' in result_json:  # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
                 db_connection.db_meta_person_insert_cast_crew('themoviedb',
