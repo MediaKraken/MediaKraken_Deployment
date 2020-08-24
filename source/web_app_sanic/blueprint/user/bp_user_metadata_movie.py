@@ -1,3 +1,5 @@
+import json
+
 from common import common_global
 from common import common_internationalization
 from python_paginate.web.sanic_paginate import Pagination
@@ -16,8 +18,8 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     """
     db_connection = await request.app.db_pool.acquire()
     data = await request.app.db_functions.db_meta_movie_detail(db_connection, guid)
-    json_metadata = data['mm_metadata_json']
-    json_imagedata = data['mm_metadata_localimage_json']
+    json_metadata = json.loads(data['mm_metadata_json'])
+    json_imagedata = json.loads(data['mm_metadata_localimage_json'])
     # vote count format
     try:
         data_vote_count = common_internationalization.com_inter_number_format(
@@ -80,7 +82,8 @@ async def url_bp_user_metadata_movie_list(request, user):
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
                                                                       per_page,
-                                                       request.ctx.session['search_text']):
+                                                                      request.ctx.session[
+                                                                          'search_text']):
         # set watched
         try:
             watched_status \
@@ -136,7 +139,8 @@ async def url_bp_user_metadata_movie_list(request, user):
     request.ctx.session['search_page'] = 'meta_movie'
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_meta_movie_count(db_connection,
-                                request.ctx.session['search_text']),
+                                                                                     request.ctx.session[
+                                                                                         'search_text']),
                             record_name='movie(s)',
                             format_total=True,
                             format_number=True,
