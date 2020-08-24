@@ -79,15 +79,13 @@ def db_meta_person_by_name(self, person_name):
     return self.db_cursor.fetchone()
 
 
-def db_meta_person_id_count(self, host_type, guid):
+def db_meta_person_id_count(self, guid):
     """
     # does person exist already by host/id
     """
     # TODO little bobby tables
     self.db_cursor.execute('select count(*) from mm_metadata_person'
-                           ' where mmp_person_media_id @> \'{"' +
-                           host_type + '":"'
-                           + str(guid) + '"}\'')
+                           ' where mmp_person_media_id = %s' % guid)
     return self.db_cursor.fetchone()[0]
 
 
@@ -154,7 +152,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 # TODO do an upsert instead
-                if self.db_meta_person_id_count(meta_type, person_id) > 0:
+                if self.db_meta_person_id_count(person_id) > 0:
                     common_global.es_inst.com_elastic_index('info', {
                         'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
