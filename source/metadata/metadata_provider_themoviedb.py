@@ -19,7 +19,6 @@
 import json
 import time
 
-import psycopg2
 from common import common_global
 from common import common_metadata
 from common import common_string
@@ -77,6 +76,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                                                          "header": result_json.headers})
     # 504	Your request to the backend server timed out. Try again.
     if result_json is None or result_json.status_code == 504:
+        common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 504": tmdb_id})
         time.sleep(60)
         # redo fetch due to 504
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
@@ -87,34 +87,32 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
-        try:
-            db_connection.db_meta_insert_tmdb(metadata_uuid,
-                                              series_id_json,
-                                              result_json['title'],
-                                              json.dumps(result_json),
-                                              json.dumps(image_json))
-            if 'credits' in result_json:  # cast/crew doesn't exist on all media
-                if 'cast' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                  result_json['credits']['cast'])
-                if 'crew' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                  result_json['credits']['crew'])
-        # this except is to check duplicate keys for mm_metadata_pk
-        except psycopg2.IntegrityError:
-            # TODO technically I could be missing cast/crew if the above doesn't finish after the insert
-            pass
+        db_connection.db_meta_insert_tmdb(metadata_uuid,
+                                          series_id_json,
+                                          result_json['title'],
+                                          json.dumps(result_json),
+                                          json.dumps(image_json))
+        if 'credits' in result_json:  # cast/crew doesn't exist on all media
+            if 'cast' in result_json['credits']:
+                db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                              result_json['credits']['cast'])
+            if 'crew' in result_json['credits']:
+                db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                              result_json['credits']['crew'])
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
+        common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 429": tmdb_id})
         time.sleep(10)
         # redo fetch due to 504
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
+        common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 404": tmdb_id})
         # TODO handle 404's better
         metadata_uuid = None
     else:  # is this is None....
+        common_global.es_inst.com_elastic_index('info', {"meta movie tmdb misc": tmdb_id})
         metadata_uuid = None
-    common_global.es_inst.com_elastic_index('info', {'meta movie save fetch uuid':
+    common_global.es_inst.com_elastic_index('info', {'meta movie save fetch return uuid':
                                                          metadata_uuid})
     return metadata_uuid
 
