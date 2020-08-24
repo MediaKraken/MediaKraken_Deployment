@@ -133,8 +133,12 @@ async def url_bp_user_metadata_movie_list(request, user):
             media_count = 0
         else:
             deck_break = False
+        if row_data['mm_poster'] is None:
+            poster_info = None
+        else:
+            poster_info = '/static' + row_data['mm_poster']
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
-                      row_data['mm_date'], row_data['mm_poster'], watched_status,
+                      row_data['mm_date'], poster_info, watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
     request.ctx.session['search_page'] = 'meta_movie'
     pagination = Pagination(request,
