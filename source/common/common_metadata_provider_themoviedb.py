@@ -320,7 +320,11 @@ class CommonMetadataTMDB:
                                                          image_file_path)
             backdrop_file_path = image_file_path
         # set local image json
+        if poster_file_path is not None:
+            poster_file_path = poster_file_path.replace(common_global.static_data_directory, '')
+        if backdrop_file_path is not None:
+            backdrop_file_path = backdrop_file_path.replace(common_global.static_data_directory, '')
         image_json = (
-            {'Backdrop': backdrop_file_path.replace(common_global.static_data_directory, ''),
-             'Poster': poster_file_path.replace(common_global.static_data_directory, '')})
+            {'Backdrop': backdrop_file_path,
+             'Poster': poster_file_path})
         return result_json['id'], result_json, image_json
