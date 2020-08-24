@@ -29,7 +29,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     # build gen list
     genres_list = ''
     for ndx in range(0, len(json_metadata['genres'])):
-        genres_list += (json_metadata[ndx]['name'] + ', ')
+        genres_list += (json_metadata['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
     for ndx in range(0, len(json_metadata['production_companies'])):
