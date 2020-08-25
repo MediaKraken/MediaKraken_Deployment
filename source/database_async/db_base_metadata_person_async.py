@@ -15,7 +15,7 @@ async def db_meta_person_as_seen_in(self, db_connection, person_guid):
                                      ' from mm_metadata_movie'
                                      ' where mm_metadata_json->\'credits\'->\'cast\''
                                      ' @> \'[{"id": $1}]\' order by LOWER(mm_media_name)',
-                                     row_data['mmp_person_media_id'])
+                                     str(row_data['mmp_person_media_id']))
 
 
 async def db_meta_person_by_guid(self, db_connection, guid):

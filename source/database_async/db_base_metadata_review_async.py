@@ -8,4 +8,4 @@ async def db_review_list_by_tmdb_guid(self, db_connection, metadata_id):
                                      'mm_review_json'
                                      ' from mm_review'
                                      ' where mm_review_metadata_id = $1',
-                                     metadata_id)
+                                     str(metadata_id))
