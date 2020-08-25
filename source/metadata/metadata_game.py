@@ -19,20 +19,17 @@
 import json
 
 from common import common_global
-from common import common_metadata_provider_thegamesdb
-
-THEGAMESDB_CONNECTION = common_metadata_provider_thegamesdb.CommonMetadataGamesDB()
 
 
 def game_system_update():
-    data = THEGAMESDB_CONNECTION.com_meta_gamesdb_platform_list()[
+    data = common_global.api_instance.com_meta_gamesdb_platform_list()[
         'Data']['Platforms']['Platform']
     print((type(data)), flush=True)
     print(data, flush=True)
     for game_system in data:
         print(game_system, flush=True)
         game_sys_detail = \
-            THEGAMESDB_CONNECTION.com_meta_gamesdb_platform_by_id(game_system['id'])['Data'][
+            common_global.api_instance.com_meta_gamesdb_platform_by_id(game_system['id'])['Data'][
                 'Platform']
         print((type(game_sys_detail)), flush=True)
         print(game_sys_detail, flush=True)

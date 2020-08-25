@@ -31,6 +31,7 @@ from common import common_metadata_provider_anidb
 from common import common_metadata_provider_imvdb
 from common import common_metadata_provider_isbndb
 from common import common_metadata_provider_musicbrainz
+from common import common_metadata_provider_thegamesdb
 from common import common_metadata_provider_themoviedb
 from common import common_metadata_provider_thesportsdb
 from common import common_signal
@@ -299,6 +300,9 @@ elif content_providers == 'isbndb':
         option_config_json)
 elif content_providers == 'musicbrainz':
     common_global.api_instance = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
+        option_config_json)
+elif content_providers == 'thegamesdb':
+    common_global.api_instance = common_metadata_provider_thegamesdb.CommonMetadataGamesDB(
         option_config_json)
 elif content_providers == 'themoviedb':
     common_global.api_instance = common_metadata_provider_themoviedb.CommonMetadataTMDB(
