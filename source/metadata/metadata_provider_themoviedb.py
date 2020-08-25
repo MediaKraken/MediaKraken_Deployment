@@ -175,10 +175,9 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
                                                                       download_data['Backdrop'])
         else:
             image_backdrop_path = None
-        localimage_json = {'Poster': image_poster_path,
-                           'Backdrop': image_backdrop_path}
         db_connection.db_collection_insert(download_data['Name'], download_data['GUID'],
-                                           collection_meta, localimage_json)
+                                           collection_meta, {'Poster': image_poster_path,
+                                                             'Backdrop': image_backdrop_path})
         # commit all changes to db
         db_connection.db_commit()
         return 1  # to add totals later
@@ -208,15 +207,15 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     fetch person bio
     """
     if common_global.api_instance is not None:
-        # common_global.es_inst.com_elastic_index('info', {"meta person tmdb save fetch":
-        #                                                      download_data})
+        common_global.es_inst.com_elastic_index('info', {"meta person tmdb save fetch":
+                                                             download_data})
         # fetch and save json data via tmdb id
         result_json = common_global.api_instance.com_tmdb_metadata_bio_by_id(
             download_data['mdq_download_json']['ProviderMetaID'])
-        # common_global.es_inst.com_elastic_index('info', {"meta person code":
-        #                                                      result_json.status_code})
-        # common_global.es_inst.com_elastic_index('info', {"meta person save fetch result":
-        #                                                      result_json.json()})
+        common_global.es_inst.com_elastic_index('info', {"meta person code":
+                                                             result_json.status_code})
+        common_global.es_inst.com_elastic_index('info', {"meta person save fetch result":
+                                                             result_json.json()})
         if result_json is None or result_json.status_code == 502:
             time.sleep(60)
             metadata_fetch_tmdb_person(thread_db, provider_name, download_data)

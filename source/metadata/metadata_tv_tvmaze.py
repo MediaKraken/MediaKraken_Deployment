@@ -20,9 +20,9 @@ import json
 
 import pika
 from common import common_global
-from common import common_metadata_provider_tvmaze
 from common import common_string
 from guessit import guessit
+
 
 # # setup the tvmaze class
 # TVMAZE_CONNECTION = common_metadata_provider_tvmaze.CommonMetadatatvmaze()
@@ -91,12 +91,12 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         series_id_json = json.dumps({'tvmaze': str(tvmaze_id),
                                      'imdb': imdb_id,
                                      'thetvdb': thetvdb_id})
-        image_json = {'Images': {'tvmaze': {
-            'Characters': {}, 'Episodes': {}, "Redo": True}}}
         metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
                                                             json.dumps(
                                                                 show_full_json),
-                                                            json.dumps(image_json))
+                                                            json.dumps({'Images': {'tvmaze': {
+                                                                'Characters': {}, 'Episodes': {},
+                                                                "Redo": True}}}))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded'] \
                 and len(show_full_json['Meta']['tvmaze']['_embedded']['cast']) > 0:
