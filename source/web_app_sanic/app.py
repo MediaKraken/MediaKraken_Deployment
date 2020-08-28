@@ -23,12 +23,6 @@ app = Sanic(__name__)
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webappsanic')
 # setup the crypto
 # app_crypto = common_hash.CommonHashCrypto()
-# update pagination settings
-settings = dict(PREV_LABEL='<i class="left chevron icon"></i>',
-                NEXT_LABEL='<i class="right chevron icon"></i>',
-                PER_PAGE=30,  # default is 10
-                )
-app.config.update(settings)
 # set login endpoint
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
 if 'CSRF_SECRET_KEY' in os.environ:
