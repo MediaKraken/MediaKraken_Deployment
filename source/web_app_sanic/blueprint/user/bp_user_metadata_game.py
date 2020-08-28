@@ -12,7 +12,7 @@ async def url_bp_user_metadata_game(request):
     """
     Display game list metadata
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'meta_game'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

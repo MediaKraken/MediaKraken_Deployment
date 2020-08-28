@@ -52,7 +52,7 @@ async def url_bp_admin_backup(request):
     #             g.option_config_json['MediaKrakenServer']['BackupContainerName']):
     #         backup_files.append((backup_cloud.name, backup_cloud.type,
     #                              common_string.com_string_bytes2human(backup_cloud.size)))
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     pagination = Pagination(request,
                             total=len(backup_files),
                             record_name='backups',

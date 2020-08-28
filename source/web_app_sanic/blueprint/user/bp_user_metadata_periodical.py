@@ -14,7 +14,7 @@ async def url_bp_user_metadata_periodical(request):
     """
     Display periodical list page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     item_list = []
     db_connection = await request.app.db_pool.acquire()
     for item_data in await request.app.db_functions.db_meta_periodical_list(db_connection, offset, per_page,

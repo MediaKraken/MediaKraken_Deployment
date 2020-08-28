@@ -12,7 +12,7 @@ async def url_bp_user_game(request):
     """
     Display game page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'media_games'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

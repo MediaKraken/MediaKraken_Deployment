@@ -12,7 +12,7 @@ async def url_bp_user_periodical_list(request):
     """
     Display periodical page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'media_periodicals'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

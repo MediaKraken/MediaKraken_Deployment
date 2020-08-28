@@ -12,7 +12,7 @@ async def url_bp_user_metadata_music_album_list(request):
     """
     Display metadata of album list
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for album_data in await request.app.db_functions.db_meta_music_album_list(db_connection, offset,
@@ -63,7 +63,7 @@ async def metadata_music_album_song_list(request):
     """
     Display metadata music song list
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'meta_music_song'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

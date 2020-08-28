@@ -15,7 +15,7 @@ async def url_bp_user_tv(request):
     """
     Display tv shows page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     db_connection = await request.app.db_pool.acquire()

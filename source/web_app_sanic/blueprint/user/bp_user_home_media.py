@@ -13,7 +13,7 @@ async def url_bp_user_home_media_list(request):
     """
     Display home page for home media
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
     media_data = await request.app.db_functions.db_media_movie_list(db_connection,
                                                                     class_guid=common_global.DLMediaType.Movie_Home.value,

@@ -12,7 +12,7 @@ async def url_bp_user_media_new(request):
     """
     Display new media
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'new_media'
     media_data = []
     db_connection = await request.app.db_pool.acquire()

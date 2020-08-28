@@ -12,7 +12,7 @@ async def url_bp_user_queue(request):
     """
     Display queue page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     # TODO union read all four.....then if first "group"....add header in the html
     request.ctx.session['search_page'] = 'user_media_queue'
     db_connection = await request.app.db_pool.acquire()

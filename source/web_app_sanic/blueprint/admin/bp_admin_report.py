@@ -22,7 +22,7 @@ async def url_bp_admin_report_all_media(request):
     """
     Display all media list
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media_data = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_known(db_connection, offset, per_page):
@@ -52,7 +52,7 @@ async def url_bp_admin_report_all_duplicate_media(request):
     """
     Display media duplication report page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_duplicate_count(
@@ -79,7 +79,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
     """
     Display detail of duplicate list
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for media_data in await request.app.db_functions.db_media_duplicate_detail(db_connection, guid,
@@ -142,7 +142,7 @@ async def url_bp_admin_report_display_all_unmatched_media(request):
     """
     Display list of all unmatched media
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_unmatched_list_count(

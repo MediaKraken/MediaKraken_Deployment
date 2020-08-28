@@ -12,7 +12,7 @@ async def url_bp_user_music_video_list(request):
     """
     Display music video page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'media_music_video'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

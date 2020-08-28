@@ -20,9 +20,9 @@ import math
 from common import common_internationalization
 
 
-def com_pagination_page_calc(request, user_per_page):
+def com_pagination_page_calc(request):
     page = int(request.args.get('page', 1))
-    offset = (page * user_per_page) - user_per_page
+    offset = (page * request.ctx.session['per_page']) - request.ctx.session['per_page']
     return page, offset
 
 

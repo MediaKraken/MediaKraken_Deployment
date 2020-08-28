@@ -13,7 +13,7 @@ async def url_bp_user_metadata_music_video(request):
     """
     Display metadata music video
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'meta_music_video'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

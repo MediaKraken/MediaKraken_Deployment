@@ -101,11 +101,11 @@ async def login(request):
             errors['password_errors'] = "Password invalid"
         else:  # should be valid
             request.ctx.session['search_text'] = None
+            request.ctx.session['per_page'] = user_per_page
             common_global.auth.login_user(request,
                                           User(id=user_id,
                                                name=username,
-                                               admin=user_admin,
-                                               per_page=user_per_page))
+                                               admin=user_admin))
             print('current user', common_global.auth.current_user(request), flush=True)
             return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)

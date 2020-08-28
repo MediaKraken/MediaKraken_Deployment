@@ -122,7 +122,7 @@ async def url_bp_user_metadata_tvshow_list(request):
     """
     Display tvshow metadata list
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media_tvshow = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_tv_list(db_connection, offset,

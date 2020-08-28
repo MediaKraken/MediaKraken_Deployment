@@ -35,7 +35,7 @@ async def url_bp_user_movie_page(request, user, genre):
     """
     print('current user - url_bp_user_movie_page', common_global.auth.current_user(request),
           flush=True)
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_movie_list(db_connection,

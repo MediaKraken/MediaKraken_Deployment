@@ -39,7 +39,7 @@ async def url_bp_user_metadata_person_list(request):
     """
     Display person list page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     person_list = []
     db_connection = await request.app.db_pool.acquire()
     for person_data in await request.app.db_functions.db_meta_person_list(db_connection, offset,

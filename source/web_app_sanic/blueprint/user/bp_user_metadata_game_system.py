@@ -13,7 +13,7 @@ async def url_bp_user_metadata_game_system(request):
     """
     Display list of game system metadata
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'meta_game_system'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

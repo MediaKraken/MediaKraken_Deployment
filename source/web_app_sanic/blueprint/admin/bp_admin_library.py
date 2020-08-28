@@ -32,7 +32,7 @@ async def url_bp_admin_library(request):
             request['flash']('Scheduled media scan.', 'success')
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     db_connection = await request.app.db_pool.acquire()
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_table_count(db_connection,
                                                                                 'mm_media_dir'),

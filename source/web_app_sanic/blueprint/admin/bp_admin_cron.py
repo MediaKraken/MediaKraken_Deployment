@@ -19,7 +19,7 @@ async def url_bp_admin_cron(request):
     """
     db_connection = await request.app.db_pool.acquire()
     cron_count = await request.app.db_functions.db_cron_list_count(db_connection, False)
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     pagination = Pagination(request,
                             total=cron_count,
                             record_name='Cron Jobs',

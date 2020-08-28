@@ -12,7 +12,7 @@ async def url_bp_user_iradio_list(request):
     """
     Display main page for internet radio
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
     if request.ctx.session['search_text'] is not None:

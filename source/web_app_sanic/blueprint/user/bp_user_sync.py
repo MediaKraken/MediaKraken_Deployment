@@ -15,7 +15,7 @@ async def url_bp_user_sync_display_all(request):
     """
     Display sync page
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
     pagination = Pagination(request,

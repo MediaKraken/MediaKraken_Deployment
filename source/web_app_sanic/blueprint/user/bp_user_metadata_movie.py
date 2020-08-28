@@ -76,12 +76,13 @@ async def url_bp_user_metadata_movie_list(request, user):
     """
     Display list of movie metadata
     """
-    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     media_count = 0
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
-                                                                      user.per_page,
+                                                                      request.ctx.session[
+                                                                          'per_page'],
                                                                       request.ctx.session[
                                                                           'search_text']):
         # set watched
@@ -142,7 +143,9 @@ async def url_bp_user_metadata_movie_list(request, user):
                                                                           db_connection,
                                                                           request.ctx.session[
                                                                               'search_text']),
-                                                                      client_items_per_page=user.per_page,
+                                                                      client_items_per_page=
+                                                                      request.ctx.session[
+                                                                          'per_page'],
                                                                       format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
