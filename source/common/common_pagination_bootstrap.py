@@ -26,7 +26,8 @@ def com_pagination_page_calc(request):
     return page, offset
 
 
-def com_pagination_boot_html(page, item_count=0, client_items_per_page=30, format_number=True):
+def com_pagination_boot_html(page, url, item_count=0,
+                             client_items_per_page=30, format_number=True):
     """
     Set items and count per page
     """
@@ -57,10 +58,8 @@ def com_pagination_boot_html(page, item_count=0, client_items_per_page=30, forma
         else:
             page_number = str(ndx)
         pagination_links += '<li class="page-item"><a class="page-link"' \
-                            ' href="{{ url_for(\'name_blueprint_user_metadata_movie.' \
-                            'url_bp_user_metadata_movie_list\'?page=' + page_number + ' }}">' \
+                            ' href="' + url + '?page=' + page_number + '">' \
                             + page_number + '</a></li>'
-
     # only do next if not on last page
     if page < pages:
         pagination_links += '<li class="page-item">' \
