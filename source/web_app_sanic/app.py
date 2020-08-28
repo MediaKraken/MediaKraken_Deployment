@@ -8,8 +8,6 @@ from common import common_global
 # from common import common_hash
 from common import common_logging_elasticsearch
 from common import common_network
-from python_paginate.css.semantic import Semantic
-from common import common_pagination_bootstrap
 from sanic import Sanic
 from sanic import response
 from sanic.exceptions import NotFound
@@ -31,18 +29,6 @@ settings = dict(PREV_LABEL='<i class="left chevron icon"></i>',
                 PER_PAGE=30,  # default is 10
                 )
 app.config.update(settings)
-# customize default pagination
-if 'PREV_LABEL' in app.config:
-    Semantic._prev_label = app.config.PREV_LABEL
-if 'NEXT_LABEL' in app.config:
-    Semantic._next_label = app.config.NEXT_LABEL
-Pagination._css = Semantic()  # for cache
-# or
-# Pagination._css_framework = 'semantic'
-# like above line, but little different
-# if you want to get same result, need do below:
-# pass css_prev_label, css_next_label to Pagination for initialize
-Pagination._per_page = app.config.PER_PAGE
 # set login endpoint
 app.config.AUTH_LOGIN_ENDPOINT = 'login'
 if 'CSRF_SECRET_KEY' in os.environ:
