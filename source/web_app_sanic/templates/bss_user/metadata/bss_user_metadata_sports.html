@@ -42,8 +42,7 @@
     </nav>
     <!-- End: Navigation with Button -->
     {% if media_sports_list %}
-    {{ pagination.info }}
-    {{ pagination.links }}
+    {{ pagination_links }}
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
@@ -68,7 +67,7 @@
             </tbody>
         </table>
     </div>
-    {{ pagination.links }}
+    {{ pagination_links }}
     {% else %}
     <p id="general_text">No sporting event metadata found.</p>
     {% endif %}

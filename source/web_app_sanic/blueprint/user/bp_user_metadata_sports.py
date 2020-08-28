@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_metadata_sports = Blueprint('name_blueprint_user_metadata_sports',
@@ -30,7 +30,7 @@ async def url_bp_user_metadata_sports_list(request):
     """
     Display sports metadata list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_sports_list(db_connection,

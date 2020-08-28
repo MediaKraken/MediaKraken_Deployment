@@ -6,7 +6,7 @@ from common import common_file
 from common import common_global
 from common import common_network_cloud
 from common import common_string
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from web_app_sanic.blueprint.admin.bss_form_backup import BSSBackupEditForm
 
@@ -52,7 +52,7 @@ async def url_bp_admin_backup(request):
     #             g.option_config_json['MediaKrakenServer']['BackupContainerName']):
     #         backup_files.append((backup_cloud.name, backup_cloud.type,
     #                              common_string.com_string_bytes2human(backup_cloud.size)))
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     pagination = Pagination(request,
                             total=len(backup_files),
                             record_name='backups',

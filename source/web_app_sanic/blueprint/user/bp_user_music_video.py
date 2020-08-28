@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_music_video = Blueprint('name_blueprint_user_music_video', url_prefix='/user')
@@ -12,7 +12,7 @@ async def url_bp_user_music_video_list(request):
     """
     Display music video page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     request.ctx.session['search_page'] = 'media_music_video'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,

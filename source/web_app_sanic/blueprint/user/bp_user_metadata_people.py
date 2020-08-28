@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_metadata_people = Blueprint('name_blueprint_user_metadata_people',
@@ -39,7 +39,7 @@ async def url_bp_user_metadata_person_list(request):
     """
     Display person list page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     person_list = []
     db_connection = await request.app.db_pool.acquire()
     for person_data in await request.app.db_functions.db_meta_person_list(db_connection, offset,

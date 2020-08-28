@@ -9,7 +9,7 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
 from python_paginate.css.semantic import Semantic
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Sanic
 from sanic import response
 from sanic.exceptions import NotFound
@@ -109,7 +109,7 @@ async def login(request):
         username = form.username.data
         db_connection = await request.app.db_pool.acquire()
         print('after db connection', flush=True)
-        user_id, user_admin = await request.app.db_functions.db_user_login_validation(
+        user_id, user_admin, user_per_page = await request.app.db_functions.db_user_login_validation(
             db_connection, username, form.password.data)
         await app.db_pool.release(db_connection)
         print(user_id, user_admin, flush=True)
@@ -122,7 +122,10 @@ async def login(request):
         else:  # should be valid
             request.ctx.session['search_text'] = None
             common_global.auth.login_user(request,
-                                          User(id=user_id, name=username, admin=user_admin))
+                                          User(id=user_id,
+                                               name=username,
+                                               admin=user_admin,
+                                               per_page=user_per_page))
             print('current user', common_global.auth.current_user(request), flush=True)
             return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
@@ -143,14 +146,17 @@ async def register(request):
         db_connection = await request.app.db_pool.acquire()
         # verify user doesn't already exist on database
         if await request.app.db_functions.db_user_count(db_connection, username) == 0:
-            user_id, user_admin = await request.app.db_functions.db_user_insert(
+            user_id, user_admin, user_per_page = await request.app.db_functions.db_user_insert(
                 db_connection, user_name=username, user_email=form.email.data,
                 user_password=form.password.data)
             await app.db_pool.release(db_connection)
             if user_id.isnumeric():  # valid user
                 request.ctx.session['search_text'] = None
                 common_global.auth.login_user(request,
-                                              User(id=user_id, name=username, admin=user_admin))
+                                              User(id=user_id,
+                                                   name=username,
+                                                   admin=user_admin,
+                                                   per_page=user_per_page))
                 return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
             # failed to insert into database
             errors['validate_errors'] = "Failed to create user"

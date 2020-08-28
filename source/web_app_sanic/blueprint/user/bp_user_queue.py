@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_queue = Blueprint('name_blueprint_user_queue', url_prefix='/user')
@@ -12,7 +12,7 @@ async def url_bp_user_queue(request):
     """
     Display queue page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     # TODO union read all four.....then if first "group"....add header in the html
     request.ctx.session['search_page'] = 'user_media_queue'
     db_connection = await request.app.db_pool.acquire()

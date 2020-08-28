@@ -1,6 +1,6 @@
 from common import common_global
 from common import common_internationalization
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_media_genre = Blueprint('name_blueprint_user_media_genre', url_prefix='/user')
@@ -35,7 +35,7 @@ async def url_bp_user_movie_page(request, user, genre):
     """
     print('current user - url_bp_user_movie_page', common_global.auth.current_user(request),
           flush=True)
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_movie_list(db_connection,

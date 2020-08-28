@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_media_new = Blueprint('name_blueprint_user_media_new', url_prefix='/user')
@@ -12,7 +12,7 @@ async def url_bp_user_media_new(request):
     """
     Display new media
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     request.ctx.session['search_page'] = 'new_media'
     media_data = []
     db_connection = await request.app.db_pool.acquire()

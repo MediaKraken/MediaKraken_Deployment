@@ -41,9 +41,9 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div>    {% if media_tvshow %}
-    {{ pagination.info }}
-    {{ pagination.links }}
+    <div><div>
+    {% if media_tvshow %}
+    {{ pagination_links }}
     <div id="the-tv-node">
         {% for row_data in media_tvshow %}
         <div class="main_photo">
@@ -64,7 +64,7 @@
         </div>
         {% endfor %}
     </div>
-    {{ pagination.links }}
+    {{ pagination_links }}
     {% else %}
     <p id="general_text">No TV show metadata found.</p>
     {% endif %}</div></div>

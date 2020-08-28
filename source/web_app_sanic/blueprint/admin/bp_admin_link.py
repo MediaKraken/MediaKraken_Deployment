@@ -1,7 +1,7 @@
 import json
 
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from web_app_sanic.blueprint.admin.forms import LinkAddEditForm
 
@@ -15,7 +15,7 @@ async def url_bp_admin_server_link(request):
     """
     Display page for linking server
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_link_list_count(db_connection),

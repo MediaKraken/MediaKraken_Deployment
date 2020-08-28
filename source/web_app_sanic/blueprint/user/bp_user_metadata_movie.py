@@ -2,7 +2,7 @@ import json
 
 from common import common_global
 from common import common_internationalization
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_metadata_movie = Blueprint('name_blueprint_user_metadata_movie',
@@ -76,12 +76,12 @@ async def url_bp_user_metadata_movie_list(request, user):
     """
     Display list of movie metadata
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     media = []
     media_count = 0
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
-                                                                      per_page,
+                                                                      user.per_page,
                                                                       request.ctx.session[
                                                                           'search_text']):
         # set watched
@@ -137,18 +137,15 @@ async def url_bp_user_metadata_movie_list(request, user):
                       row_data['mm_date'], row_data['mm_poster'].replace('"', ''), watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
     request.ctx.session['search_page'] = 'meta_movie'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_movie_count(db_connection,
-                                                                                     request.ctx.session[
-                                                                                         'search_text']),
-                            record_name='movie(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      item_count=await request.app.db_functions.db_meta_movie_count(
+                                                                          db_connection,
+                                                                          request.ctx.session[
+                                                                              'search_text']),
+                                                                      client_items_per_page=user.per_page,
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media_movie': media,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }

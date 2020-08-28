@@ -1,6 +1,6 @@
 from common import common_global
 from common import common_isbn
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_metadata_periodical = Blueprint('name_blueprint_user_metadata_periodical',
@@ -14,7 +14,7 @@ async def url_bp_user_metadata_periodical(request):
     """
     Display periodical list page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     item_list = []
     db_connection = await request.app.db_pool.acquire()
     for item_data in await request.app.db_functions.db_meta_periodical_list(db_connection, offset, per_page,

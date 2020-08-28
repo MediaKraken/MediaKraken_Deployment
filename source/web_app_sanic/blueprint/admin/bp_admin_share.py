@@ -3,7 +3,7 @@ import os
 
 from common import common_global
 from common import common_network_cifs
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
 from web_app_sanic.blueprint.admin.forms import ShareAddEditForm
@@ -18,7 +18,7 @@ async def url_bp_admin_share(request):
     """
     List all share/mounts
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_table_count(db_connection,

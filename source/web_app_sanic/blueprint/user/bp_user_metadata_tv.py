@@ -1,6 +1,6 @@
 import natsort
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_metadata_tv = Blueprint('name_blueprint_user_metadata_tv',
@@ -122,7 +122,7 @@ async def url_bp_user_metadata_tvshow_list(request):
     """
     Display tvshow metadata list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     media_tvshow = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_tv_list(db_connection, offset,

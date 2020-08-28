@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_home_media = Blueprint('name_blueprint_user_home_media',
@@ -13,7 +13,7 @@ async def url_bp_user_home_media_list(request):
     """
     Display home page for home media
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     db_connection = await request.app.db_pool.acquire()
     media_data = await request.app.db_functions.db_media_movie_list(db_connection,
                                                                     class_guid=common_global.DLMediaType.Movie_Home.value,

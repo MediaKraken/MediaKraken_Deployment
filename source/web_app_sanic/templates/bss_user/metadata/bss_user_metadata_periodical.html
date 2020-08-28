@@ -42,8 +42,7 @@
     </nav>
     <!-- End: Navigation with Button -->
     <div><div>    {% if media_periodical %}
-    {{ pagination.info }}
-    {{ pagination.links }}
+    {{ pagination_links }}
     <div id="the-node">
         {% for row_data in media_periodical %}
         <div class="main_photo">
@@ -57,7 +56,7 @@
         </div>
         {% endfor %}
     </div>
-    {{ pagination.links }}
+    {{ pagination_links }}
     {% else %}
     <p id="general_text">No periodical metadata found.</p>
     {% endif %}

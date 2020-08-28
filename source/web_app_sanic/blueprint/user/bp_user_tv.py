@@ -1,7 +1,7 @@
 import natsort
 from common import common_global
 from common import common_internationalization
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
 
@@ -15,7 +15,7 @@ async def url_bp_user_tv(request):
     """
     Display tv shows page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     db_connection = await request.app.db_pool.acquire()

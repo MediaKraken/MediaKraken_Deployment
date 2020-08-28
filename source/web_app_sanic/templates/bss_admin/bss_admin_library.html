@@ -55,8 +55,7 @@
                         <div class="col">
                             <fieldset><div>
                                 {% if media_dir %}
-                                {{ pagination.info }}
-                                {{ pagination.links }}
+                                {{ pagination_links }}
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead>
@@ -137,7 +136,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{ pagination.links }}
+                                {{ pagination_links }}
                                 {% else %}
                                 <p>No library data found.</p>
                                 {% endif %}</div>

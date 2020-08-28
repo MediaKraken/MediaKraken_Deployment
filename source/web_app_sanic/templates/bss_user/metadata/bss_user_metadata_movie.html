@@ -44,8 +44,7 @@
     <!-- End: Navigation with Button -->
     <div><div>
     {% if media_movie %}
-    {{ pagination.info }}
-    {{ pagination.links }}
+    {{ pagination_links }}
     <div id="the-movie-metadata-node">
         {% for row_data in media_movie %}
             <div class="main_photo">
@@ -89,7 +88,7 @@
             </div>
         {% endfor %}
     </div>
-    {{ pagination.links }}
+    {{ pagination_links }}
     {% else %}
     <p id="general_text">No movie metadata found.</p>
     {% endif %}</div></div>

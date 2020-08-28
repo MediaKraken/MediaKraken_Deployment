@@ -2,7 +2,7 @@ import os
 
 from common import common_global
 from common import common_string
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_admin_report = Blueprint('name_blueprint_admin_report', url_prefix='/admin')
@@ -22,7 +22,7 @@ async def url_bp_admin_report_all_media(request):
     """
     Display all media list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     media_data = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_known(db_connection, offset, per_page):
@@ -52,7 +52,7 @@ async def url_bp_admin_report_all_duplicate_media(request):
     """
     Display media duplication report page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_duplicate_count(
@@ -79,7 +79,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
     """
     Display detail of duplicate list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for media_data in await request.app.db_functions.db_media_duplicate_detail(db_connection, guid,
@@ -142,7 +142,7 @@ async def url_bp_admin_report_display_all_unmatched_media(request):
     """
     Display list of all unmatched media
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_media_unmatched_list_count(

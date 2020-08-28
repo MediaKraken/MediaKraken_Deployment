@@ -1,7 +1,7 @@
 import json
 
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_admin_users = Blueprint('name_blueprint_admin_users', url_prefix='/admin')
@@ -39,7 +39,7 @@ async def url_bp_admin_user(request):
     """
     Display user list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
                             total=await request.app.db_functions.db_user_count(db_connection),

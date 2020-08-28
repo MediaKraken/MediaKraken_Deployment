@@ -2,7 +2,7 @@ import json
 
 from common import common_global
 from common import common_network_pika
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
 from web_app_sanic.blueprint.admin.forms import CronEditForm
@@ -19,7 +19,7 @@ async def url_bp_admin_cron(request):
     """
     db_connection = await request.app.db_pool.acquire()
     cron_count = await request.app.db_functions.db_cron_list_count(db_connection, False)
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     pagination = Pagination(request,
                             total=cron_count,
                             record_name='Cron Jobs',

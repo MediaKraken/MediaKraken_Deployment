@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_game = Blueprint('name_blueprint_user_game', url_prefix='/user')
@@ -12,7 +12,7 @@ async def url_bp_user_game(request):
     """
     Display game page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request, user.per_page)
     request.ctx.session['search_page'] = 'media_games'
     db_connection = await request.app.db_pool.acquire()
     pagination = Pagination(request,
