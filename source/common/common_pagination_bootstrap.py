@@ -56,7 +56,9 @@ def com_pagination_boot_html(page, item_count=0, client_items_per_page=30, forma
             page_number = common_internationalization.com_inter_number_format(ndx)
         else:
             page_number = str(ndx)
-        pagination_links += '<li class="page-item"><a class="page-link" href="#">' \
+        pagination_links += '<li class="page-item"><a class="page-link"' \
+                            ' href="{{ url_for(\'name_blueprint_user_metadata_movie.' \
+                            'url_bp_user_metadata_movie_list\'?page=' + page_number + ' }}">' \
                             + page_number + '</a></li>'
 
     # only do next if not on last page
