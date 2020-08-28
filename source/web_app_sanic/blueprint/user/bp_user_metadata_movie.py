@@ -81,8 +81,8 @@ async def url_bp_user_metadata_movie_list(request, user):
     media_count = 0
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
-                                                                      request.ctx.session[
-                                                                          'per_page'],
+                                                                      int(request.ctx.session[
+                                                                          'per_page']),
                                                                       request.ctx.session[
                                                                           'search_text']):
         # set watched
@@ -144,8 +144,8 @@ async def url_bp_user_metadata_movie_list(request, user):
                                                                           request.ctx.session[
                                                                               'search_text']),
                                                                       client_items_per_page=
-                                                                      request.ctx.session[
-                                                                          'per_page'],
+                                                                      int(request.ctx.session[
+                                                                          'per_page']),
                                                                       format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
