@@ -75,15 +75,23 @@ async def db_meta_movie_status_update(self, db_connection, metadata_guid, user_i
     else:
         status_setting = status_text
         status_text = 'Rating'
-    try:
-        if json_data is None or 'UserStats' not in json_data:
-            json_data = {'UserStats': {}}
-        if user_id in json_data['UserStats']:
-            json_data['UserStats'][user_id][status_text] = status_setting
-        else:
-            json_data['UserStats'][user_id] = {status_text: status_setting}
-        self.db_meta_movie_json_update(db_connection, metadata_guid, json.dumps(json_data))
-    except:
-        # TODO
-        self.db_rollback()
-        return None
+    if json_data is None or 'UserStats' not in json_data:
+        json_data = {'UserStats': {}}
+    if user_id in json_data['UserStats']:
+        json_data['UserStats'][user_id][status_text] = status_setting
+    else:
+        json_data['UserStats'][user_id] = {status_text: status_setting}
+    await db_connection.db_meta_movie_json_update(db_connection,
+                                                  metadata_guid,
+                                                  json.dumps(json_data))
+
+
+async def db_meta_movie_json_update(self, db_connection, media_guid, metadata_json):
+    """
+    # update the metadata json
+    """
+    await db_connection.db_cursor.execute('update mm_metadata_movie'
+                                          ' set mm_metadata_user_json = %s'
+                                          ' where mm_metadata_guid = %s',
+                                          (metadata_json, media_guid))
+    await db_connection.db_commit()
