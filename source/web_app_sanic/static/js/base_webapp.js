@@ -4,12 +4,11 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/users/movie_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/movie_status/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
                     if (result.status == 'OK') {
-//                        window.location = '/users/movie/All';
                                 window.location = window.location.href
                     } else {
                         alert(result.status);
@@ -42,12 +41,11 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/users/movie_metadata_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/user_meta_movie_status/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
                     if (result.status == 'OK') {
-//                      window.location = '/users/meta_movie_list';
                                 window.location = window.location.href
                     } else {
                         alert(result.status);
@@ -79,13 +77,12 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/users/tv_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/tv_status/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
                     if (result.status == 'OK') {
                                 window.location = window.location.href
-//                      window.location = '/users/tv_status/' + $(this).attr('data-id') + '/' + key;
                     } else {
                         alert(result.status);
                     }

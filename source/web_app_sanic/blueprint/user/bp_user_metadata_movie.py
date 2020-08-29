@@ -82,7 +82,7 @@ async def url_bp_user_metadata_movie_list(request, user):
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
                                                                       int(request.ctx.session[
-                                                                          'per_page']),
+                                                                              'per_page']),
                                                                       request.ctx.session[
                                                                           'search_text']):
         # set watched
@@ -146,10 +146,23 @@ async def url_bp_user_metadata_movie_list(request, user):
                                                                               'search_text']),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
-                                                                          'per_page']),
+                                                                              'per_page']),
                                                                       format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media_movie': media,
         'pagination_links': pagination,
     }
+
+
+@blueprint_user_metadata_movie.route('/user_meta_movie_status/<guid>/<event_type>',
+                                     methods=['GET', 'POST'])
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
+    """
+    Set media status for specified media, user
+    """
+    common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
+                                                     'event': event_type})
+    await request.app.db_pool.db_connection.db_meta_movie_status_update(guid, user.id, event_type)
+    return json.dumps({'status': 'OK'})
