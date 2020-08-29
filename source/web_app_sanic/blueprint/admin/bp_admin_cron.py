@@ -5,7 +5,7 @@ from common import common_network_pika
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
-from web_app_sanic.blueprint.admin.forms import CronEditForm
+from web_app_sanic.blueprint.admin.bss_form_cron import BSSCronEditForm
 
 blueprint_admin_cron = Blueprint('name_blueprint_admin_cron', url_prefix='/admin')
 
@@ -55,7 +55,7 @@ async def url_bp_admin_cron_edit(request, guid):
     """
     Edit cron job page
     """
-    form = CronEditForm(request, csrf_enabled=False)
+    form = BSSCronEditForm(request, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate_on_submit():
             request.form['name']

@@ -6,7 +6,7 @@ from common import common_network_cifs
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
-from web_app_sanic.blueprint.admin.forms import ShareAddEditForm
+from web_app_sanic.blueprint.admin.bss_form_share import BSSShareAddEditForm
 
 blueprint_admin_share = Blueprint('name_blueprint_admin_share', url_prefix='/admin')
 
@@ -68,7 +68,7 @@ async def url_bp_admin_share_edit(request):
     """
     allow user to edit share
     """
-    form = ShareAddEditForm(request)
+    form = BSSShareAddEditForm(request)
     common_global.es_inst.com_elastic_index('info', {'stuff': 'hereeditshare'})
     if request.method == 'POST':
         common_global.es_inst.com_elastic_index('info', {'stuff': 'herepost'})

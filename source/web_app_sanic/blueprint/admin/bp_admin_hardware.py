@@ -4,7 +4,9 @@ from common import common_global
 from common import common_network_pika
 from sanic import Blueprint
 from sanic.response import redirect
-from web_app_sanic.blueprint.admin.forms import ChromecastEditForm, TVTunerEditForm
+from web_app_sanic.blueprint.admin.bss_form_chromecast import BSSChromecastEditForm
+from web_app_sanic.blueprint.admin.bss_form_tvtuner import BSSTVTunerEditForm
+
 
 blueprint_admin_hardware = Blueprint('name_blueprint_admin_hardware', url_prefix='/admin')
 
@@ -66,7 +68,7 @@ async def url_bp_admin_hardware_chromecast_edit(request):
     """
     allow user to edit chromecast
     """
-    form = ChromecastEditForm(request)
+    form = BSSChromecastEditForm(request)
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':
@@ -100,7 +102,7 @@ async def url_bp_admin_hardware_tvtuner_edit(request):
     """
     allow user to edit tuner
     """
-    form = TVTunerEditForm(request)
+    form = BSSTVTunerEditForm(request)
     if request.method == 'POST':
         if form.validate_on_submit():
             if request.form['action_type'] == 'Add':

@@ -8,7 +8,7 @@ from common import common_string
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
-from web_app_sanic.blueprint.admin.forms import LibraryAddEditForm
+from web_app_sanic.blueprint.admin.bss_form_library import BSSLibraryAddEditForm
 
 blueprint_admin_library = Blueprint('name_blueprint_admin_library', url_prefix='/admin')
 
@@ -88,7 +88,7 @@ async def url_bp_admin_library_edit(request):
     """
     allow user to edit lib
     """
-    form = LibraryAddEditForm(request)
+    form = BSSLibraryAddEditForm(request)
     db_connection = await request.app.db_pool.acquire()
     if request.method == 'POST':
         if form.validate_on_submit():

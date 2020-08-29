@@ -3,7 +3,7 @@ import json
 from common import common_global
 from common import common_pagination_bootstrap
 from sanic import Blueprint
-from web_app_sanic.blueprint.admin.forms import LinkAddEditForm
+from web_app_sanic.blueprint.admin.bss_form_link import BSSLinkAddEditForm
 
 blueprint_admin_link = Blueprint('name_blueprint_admin_link', url_prefix='/admin')
 
@@ -40,7 +40,7 @@ async def url_bp_admin_link_edit(request):
     """
     allow user to edit link
     """
-    form = LinkAddEditForm(request)
+    form = BSSLinkAddEditForm(request)
     return {
         'form': form,
         'data_class': None,
