@@ -17,6 +17,7 @@
 """
 
 import math
+
 from common import common_internationalization
 
 
@@ -52,6 +53,8 @@ def com_pagination_boot_html(page, url, item_count=0,
     else:
         build_start = page
         build_stop = page + 10
+        if build_stop > pages:
+            build_stop = pages
     for ndx in range(build_start, build_stop):
         if format_number:
             page_number = common_internationalization.com_inter_number_format(ndx)
@@ -67,6 +70,6 @@ def com_pagination_boot_html(page, url, item_count=0,
                             '<span aria-hidden="true">&raquo;</span>' \
                             '<span class="sr-only">Next</span>' \
                             '</a>' \
-                            '</li>' \
-                            '</ul>'
+                            '</li>'
+    pagination_links += '</ul>'
     return pagination_links
