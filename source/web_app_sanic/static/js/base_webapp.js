@@ -4,7 +4,7 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/user/movie_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/user_movie_status/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
@@ -77,7 +77,7 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/user/tv_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/user_tv_status/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
