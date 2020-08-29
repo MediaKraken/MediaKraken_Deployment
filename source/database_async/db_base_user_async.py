@@ -67,6 +67,6 @@ async def db_user_login_validation(self, db_connection, user_name, user_password
     if result is not None:
         print(result, flush=True)
         if result['active'] is False:
-            return 'inactive_account', None
+            return 'inactive_account', None, None
         return result['id'], result['is_admin'], result['per_page']
-    return 'invalid_password', None
+    return 'invalid_password', None, None
