@@ -100,7 +100,7 @@ $(function(){
             "watched": {name: "Set Episode Watched", icon: "/static/img/eye.png"},
             "watched_season": {name: "Set Season Watched", icon: "/static/img/eye.png"},
             "watched_show": {name: "Set Show Watched", icon: "/static/img/eye.png"},
-            "sync": {name: "Sync Episdoe Media", icon: "/static/img/synced.jpg"},
+            "sync": {name: "Sync Episode Media", icon: "/static/img/synced.jpg"},
             "sync_season": {name: "Sync Season Media", icon: "/static/img/synced.jpg"},
             "sync_show": {name: "Sync Show Media", icon: "/static/img/synced.jpg"},
             "towatch": {name: "Add to Watch Queue", icon: "/static/img/rectangles.png"},
