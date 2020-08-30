@@ -85,7 +85,10 @@ async def url_bp_user_metadata_movie_list(request, user):
                                                                               'per_page']),
                                                                       request.ctx.session[
                                                                           'search_text']):
-        user_json = dict(row_data['mm_metadata_user_json'])
+        try:
+            user_json = dict(row_data['mm_metadata_user_json'])
+        except:
+            user_json = None
         # set watched
         try:
             watched_status \
