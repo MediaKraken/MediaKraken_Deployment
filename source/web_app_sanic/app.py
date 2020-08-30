@@ -1,4 +1,5 @@
 import os
+import shutil
 
 import database_async as database_base_async
 import pika
@@ -9,7 +10,6 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
 from sanic import Sanic
-import shutil
 from sanic import response
 from sanic.exceptions import NotFound
 from sanic.exceptions import ServerError
@@ -48,7 +48,8 @@ app.static('/static', common_global.static_data_directory)
 # copy over modified static files so volumes will pick them up
 # as on FIRST run, it will create volume and copy files from container to HOST
 # on more runs, will copy files from HOST to container
-shutil.copytree('./static_copy/*', './static/*')
+shutil.copytree('/mediakraken/web_app_sanic/static_copy/*',
+                '/mediakraken/web_app_sanic/static/*')
 
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
