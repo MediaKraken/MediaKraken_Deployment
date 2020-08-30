@@ -164,5 +164,8 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
     """
     common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
                                                      'event': event_type})
-    await request.app.db_pool.db_connection.db_meta_movie_status_update(guid, user.id, event_type)
+    db_connection = await request.app.db_pool.acquire()
+    await request.app.db_pool.db_connection.db_meta_movie_status_update(db_connection, guid,
+                                                                        user.id, event_type)
+    await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
