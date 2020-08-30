@@ -71,14 +71,17 @@ async def db_meta_movie_status_update(self, db_connection, metadata_guid, user_i
                                              ' where mm_metadata_guid = $1 FOR UPDATE',
                                              metadata_guid)
     # split this off so coroutine doesnt' get mad
-    json_data = json_data['mm_metadata_user_json']
+    try:
+        json_data = dict(json_data['mm_metadata_user_json'])
+    except:
+        json_data = {'UserStats': {}}
     if status_text == 'watched' or status_text == 'requested':
         status_setting = True
     else:
         status_setting = status_text
         status_text = 'Rating'
-    if json_data is None or 'UserStats' not in json_data:
-        json_data = {'UserStats': {}}
+    # if json_data is None or 'UserStats' not in json_data:
+    #     json_data = {'UserStats': {}}
     if user_id in json_data['UserStats']:
         json_data['UserStats'][user_id][status_text] = status_setting
     else:
