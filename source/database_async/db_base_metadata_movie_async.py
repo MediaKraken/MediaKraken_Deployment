@@ -82,10 +82,10 @@ async def db_meta_movie_status_update(self, db_connection, metadata_guid, user_i
         json_data = dict(json_data['mm_metadata_user_json'])
     except:
         json_data = {'UserStats': {}}
-    if user_id in json_data['UserStats']:
-        json_data['UserStats'][user_id][status_text] = status_setting
+    if str(user_id) in json_data['UserStats']:
+        json_data['UserStats'][str(user_id)][status_text] = status_setting
     else:
-        json_data['UserStats'][user_id] = {status_text: status_setting}
+        json_data['UserStats'][str(user_id)] = {status_text: status_setting}
     await self.db_meta_movie_json_update(db_connection,
                                          metadata_guid,
                                          json.dumps(json_data))
