@@ -167,5 +167,6 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
     db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(db_connection, guid,
                                                                user.id, event_type)
+    await request.app.db_pool.commit(db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
