@@ -3,7 +3,7 @@ import json
 from common import common_global
 from common import common_internationalization
 from common import common_pagination_bootstrap
-from sanic import Blueprint
+from sanic import Blueprint, response
 
 blueprint_user_metadata_movie = Blueprint('name_blueprint_user_metadata_movie',
                                           url_prefix='/user')
@@ -170,4 +170,5 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
     await request.app.db_functions.db_meta_movie_status_update(db_connection, guid,
                                                                user.id, event_type)
     await request.app.db_pool.release(db_connection)
-    return json.dumps({'status': 'OK'})
+    return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})
+    # return json.dumps({'status': 'OK'})
