@@ -66,35 +66,26 @@ async def db_meta_movie_status_update(self, db_connection, metadata_guid, user_i
     """
     # set status's for metadata
     """
-    json_data = await db_connection.fetchrow('SELECT mm_metadata_user_json'
-                                             ' from mm_metadata_movie'
-                                             ' where mm_metadata_guid = $1 FOR UPDATE',
-                                             metadata_guid)
-    # split this off so coroutine doesnt' get mad
-    try:
-        json_data = dict(json_data['mm_metadata_user_json'])
-    except:
-        json_data = {'UserStats': {}}
-
-    print("user", user_id, "data", json_data, "id", type(user_id), flush=True)
-
+    # do before the select to save db lock time
     if status_text == 'watched' or status_text == 'requested':
         status_setting = True
     else:
         status_setting = status_text
         status_text = 'Rating'
-
-    print("user2", user_id, "data", json_data, "id", type(user_id), flush=True)
-
-    # if json_data is None or 'UserStats' not in json_data:
-    #     json_data = {'UserStats': {}}
+    # grab the user json for the metadata
+    json_data = await db_connection.fetchrow('SELECT mm_metadata_user_json'
+                                             ' from mm_metadata_movie'
+                                             ' where mm_metadata_guid = $1 FOR UPDATE',
+                                             metadata_guid)
+    # split this off so coroutine doesn't get mad
+    try:
+        json_data = dict(json_data['mm_metadata_user_json'])
+    except:
+        json_data = {'UserStats': {}}
     if user_id in json_data['UserStats']:
         json_data['UserStats'][user_id][status_text] = status_setting
     else:
         json_data['UserStats'][user_id] = {status_text: status_setting}
-
-    print("user3", user_id, "data", json_data, "id", type(user_id), flush=True)
-
     await self.db_meta_movie_json_update(db_connection,
                                          metadata_guid,
                                          json.dumps(json_data))
