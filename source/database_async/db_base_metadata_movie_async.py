@@ -83,9 +83,9 @@ async def db_meta_movie_status_update(self, db_connection, metadata_guid, user_i
         json_data['UserStats'][user_id][status_text] = status_setting
     else:
         json_data['UserStats'][user_id] = {status_text: status_setting}
-    await db_connection.db_meta_movie_json_update(db_connection,
-                                                  metadata_guid,
-                                                  json.dumps(json_data))
+    await self.db_meta_movie_json_update(db_connection,
+                                         metadata_guid,
+                                         json.dumps(json_data))
 
 
 async def db_meta_movie_json_update(self, db_connection, media_guid, metadata_json):
