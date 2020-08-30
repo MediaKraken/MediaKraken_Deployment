@@ -92,16 +92,16 @@ async def url_bp_user_metadata_movie_list(request, user):
         # set watched
         try:
             watched_status \
-                = user_json['UserStats'][user.id]['watched']
+                = user_json['UserStats'][str(user.id)]['watched']
         except (KeyError, TypeError):
             watched_status = False
         # set rating
         if user_json is not None \
                 and 'UserStats' in user_json \
-                and user.id in user_json['UserStats'] \
-                and 'Rating' in user_json['UserStats'][user.id]:
+                and str(user.id) in user_json['UserStats'] \
+                and 'Rating' in user_json['UserStats'][str(user.id)]:
             rating_status \
-                = user_json['UserStats'][user.id]['Rating']
+                = user_json['UserStats'][str(user.id)]['Rating']
             if rating_status == 'favorite':
                 rating_status = 'favorite-mark.png'
             elif rating_status == 'like':
@@ -114,12 +114,12 @@ async def url_bp_user_metadata_movie_list(request, user):
             rating_status = None
         # set requested
         try:
-            request_status = user_json['UserStats'][user.id]['requested']
+            request_status = user_json['UserStats'][str(user.id)]['requested']
         except (KeyError, TypeError):
             request_status = None
         # set queue
         try:
-            queue_status = user_json['UserStats'][user.id]['queue']
+            queue_status = user_json['UserStats'][str(user.id)]['queue']
         except (KeyError, TypeError):
             queue_status = None
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
