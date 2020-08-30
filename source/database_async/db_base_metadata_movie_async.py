@@ -92,8 +92,8 @@ async def db_meta_movie_json_update(self, db_connection, media_guid, metadata_js
     """
     # update the metadata json
     """
-    await db_connection.db_cursor.execute('update mm_metadata_movie'
-                                          ' set mm_metadata_user_json = %s'
-                                          ' where mm_metadata_guid = %s',
-                                          (metadata_json, media_guid))
+    await db_connection.execute('update mm_metadata_movie'
+                                ' set mm_metadata_user_json = %s'
+                                ' where mm_metadata_guid = %s',
+                                (metadata_json, media_guid))
     await db_connection.db_commit()
