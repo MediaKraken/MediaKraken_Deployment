@@ -69,7 +69,9 @@ async def db_meta_movie_status_update(self, db_connection, metadata_guid, user_i
     json_data = await db_connection.fetchrow('SELECT mm_metadata_user_json'
                                              ' from mm_metadata_movie'
                                              ' where mm_metadata_guid = $1 FOR UPDATE',
-                                             metadata_guid)['mm_metadata_user_json']
+                                             metadata_guid)
+    # split this off so coroutine doesnt' get mad
+    json_data = json_data['mm_metadata_user_json']
     if status_text == 'watched' or status_text == 'requested':
         status_setting = True
     else:
