@@ -9,6 +9,7 @@ from common import common_global
 from common import common_logging_elasticsearch
 from common import common_network
 from sanic import Sanic
+import shutil
 from sanic import response
 from sanic.exceptions import NotFound
 from sanic.exceptions import ServerError
@@ -44,6 +45,10 @@ app.static('/favicon.ico', common_global.static_data_directory + '/img/favicon.i
 app.static('/static', common_global.static_data_directory)
 # app.static('/assets', '/mediakraken/web_app_sanic/assets', name='assets')
 
+# copy over modified static files so volumes will pick them up
+# as on FIRST run, it will create volume and copy files from container to HOST
+# on more runs, will copy files from HOST to container
+shutil.copytree('./static_copy/*', './static/*')
 
 # setup the blueprints
 app.blueprint(blueprint_content_mediakraken)
