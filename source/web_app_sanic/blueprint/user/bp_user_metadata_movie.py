@@ -85,19 +85,20 @@ async def url_bp_user_metadata_movie_list(request, user):
                                                                               'per_page']),
                                                                       request.ctx.session[
                                                                           'search_text']):
+        user_json = dict(row_data['mm_metadata_user_json'])
         # set watched
         try:
             watched_status \
-                = row_data['mm_metadata_user_json']['UserStats'][user.id]['watched']
+                = user_json['UserStats'][user.id]['watched']
         except (KeyError, TypeError):
             watched_status = False
         # set rating
-        if row_data['mm_metadata_user_json'] is not None \
-                and 'UserStats' in row_data['mm_metadata_user_json'] \
-                and user.id in row_data['mm_metadata_user_json']['UserStats'] \
-                and 'Rating' in row_data['mm_metadata_user_json']['UserStats'][user.id]:
+        if user_json is not None \
+                and 'UserStats' in user_json \
+                and user.id in user_json['UserStats'] \
+                and 'Rating' in user_json['UserStats'][user.id]:
             rating_status \
-                = row_data['mm_metadata_user_json']['UserStats'][user.id]['Rating']
+                = user_json['UserStats'][user.id]['Rating']
             if rating_status == 'favorite':
                 rating_status = 'favorite-mark.png'
             elif rating_status == 'like':
@@ -110,14 +111,12 @@ async def url_bp_user_metadata_movie_list(request, user):
             rating_status = None
         # set requested
         try:
-            request_status \
-                = row_data['mm_metadata_user_json']['UserStats'][user.id]['requested']
+            request_status = user_json['UserStats'][user.id]['requested']
         except (KeyError, TypeError):
             request_status = None
         # set queue
         try:
-            queue_status \
-                = row_data['mm_metadata_user_json']['UserStats'][user.id]['queue']
+            queue_status = user_json['UserStats'][user.id]['queue']
         except (KeyError, TypeError):
             queue_status = None
         common_global.es_inst.com_elastic_index('info', {"status": watched_status,
