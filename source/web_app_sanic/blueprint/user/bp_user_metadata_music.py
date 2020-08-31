@@ -16,7 +16,9 @@ async def url_bp_user_metadata_music_album_list(request):
     media = []
     db_connection = await request.app.db_pool.acquire()
     for album_data in await request.app.db_functions.db_meta_music_album_list(db_connection, offset,
-                                                                              per_page,
+                                                                              int(
+                                                                                  request.ctx.session[
+                                                                                      'per_page']),
                                                                               request.ctx.session[
                                                                                   'search_text']):
         common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
@@ -39,18 +41,18 @@ async def url_bp_user_metadata_music_album_list(request):
                 (album_data['mm_metadata_album_guid'], album_data['mm_metadata_album_name'],
                  album_image))
     request.ctx.session['search_page'] = 'meta_album'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_table_count(db_connection,
-                                                                                'mm_metadata_album'),
-                            record_name='album(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_meta_music_album_list',
+                                                                      item_count=await request.app.db_functions.db_table_count(
+                                                                          db_connection,
+                                                                          'mm_metadata_album'),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 
@@ -66,21 +68,22 @@ async def metadata_music_album_song_list(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     request.ctx.session['search_page'] = 'meta_music_song'
     db_connection = await request.app.db_pool.acquire()
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_table_count(db_connection,
-                                                                                'mm_metadata_music'),
-                            record_name='song(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_meta_music_album_song_list',
+                                                                      item_count=await request.app.db_functions.db_table_count(
+                                                                          db_connection,
+                                                                          'mm_metadata_music'),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     media_data = await request.app.db_functions.db_meta_music_song_list(db_connection, offset,
-                                                                        per_page,
+                                                                        int(request.ctx.session[
+                                                                                'per_page']),
                                                                         request.ctx.session[
                                                                             'search_text'])
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }

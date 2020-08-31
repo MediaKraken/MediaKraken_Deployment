@@ -4,8 +4,8 @@ import os
 from common import common_global
 from common import common_network_cifs
 from common import common_network_pika
-from common import common_string
 from common import common_pagination_bootstrap
+from common import common_string
 from sanic import Blueprint
 from sanic.response import redirect
 from web_app_sanic.blueprint.admin.bss_form_library import BSSLibraryAddEditForm
@@ -33,16 +33,19 @@ async def url_bp_admin_library(request):
             common_global.es_inst.com_elastic_index('info', {'stuff': 'scheduled media scan'})
     db_connection = await request.app.db_pool.acquire()
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_table_count(db_connection,
-                                                                                'mm_media_dir'),
-                            record_name='library dir(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_library',
+                                                                      item_count=await request.app.db_functions.db_table_count(
+                                                                          db_connection,
+                                                                          'mm_media_dir'),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     return_media = []
     for row_data in await request.app.db_functions.db_library_paths(db_connection, offset,
-                                                                    per_page):
+                                                                    int(request.ctx.session[
+                                                                            'per_page'])):
         return_media.append((row_data['mm_media_dir_path'],
                              row_data['mm_media_class_guid'],
                              row_data['mm_media_dir_last_scanned'],
@@ -51,8 +54,6 @@ async def url_bp_admin_library(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_dir': return_media,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 

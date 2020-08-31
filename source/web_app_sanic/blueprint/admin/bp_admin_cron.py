@@ -20,18 +20,19 @@ async def url_bp_admin_cron(request):
     db_connection = await request.app.db_pool.acquire()
     cron_count = await request.app.db_functions.db_cron_list_count(db_connection, False)
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
-    pagination = Pagination(request,
-                            total=cron_count,
-                            record_name='Cron Jobs',
-                            format_total=True,
-                            format_number=True,
-                            )
-    cron_data = await request.app.db_functions.db_cron_list(db_connection, False, offset, per_page)
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_cron',
+                                                                      item_count=cron_count,
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
+    cron_data = await request.app.db_functions.db_cron_list(db_connection, False,
+                                                            offset,
+                                                            int(request.ctx.session['per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'media_cron': cron_data,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 

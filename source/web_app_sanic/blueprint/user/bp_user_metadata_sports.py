@@ -54,7 +54,5 @@ async def url_bp_user_metadata_sports_list(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_sports_list': media_data,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }

@@ -126,25 +126,27 @@ async def url_bp_user_metadata_tvshow_list(request):
     media_tvshow = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_tv_list(db_connection, offset,
-                                                                   per_page, request.ctx.session[
+                                                                   int(request.ctx.session[
+                                                                           'per_page']),
+                                                                   request.ctx.session[
                                                                        'search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'], row_data['air_date'],
                              row_data['image_json']))
     request.ctx.session['search_page'] = 'meta_tv'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_tv_list_count(
-                                db_connection,
-                                request.ctx.session['search_text']),
-                            record_name='TV show(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_meta_tvshow_list',
+                                                                      item_count=await request.app.db_functions.db_meta_tv_list_count(
+                                                                          db_connection,
+                                                                          request.ctx.session[
+                                                                              'search_text']),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media_tvshow': media_tvshow,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 

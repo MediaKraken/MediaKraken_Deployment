@@ -118,7 +118,5 @@ async def url_bp_user_movie_page(request, user, genre):
                             )
     return {
         'media': media,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }

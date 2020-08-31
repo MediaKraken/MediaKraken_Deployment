@@ -171,4 +171,3 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
                                                                user.id, event_type)
     await request.app.db_pool.release(db_connection)
     return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})
-    # return json.dumps({'status': 'OK'})

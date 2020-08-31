@@ -18,19 +18,21 @@ async def url_bp_user_sync_display_all(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_table_count(db_connection,
-                                                                                'mm_sync'),
-                            record_name='sync job(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
-    media_data = await request.app.db_functions.db_sync_list(db_connection, offset, per_page)
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_sync',
+                                                                      item_count=await request.app.db_functions.db_table_count(
+                                                                          db_connection,
+                                                                          'mm_sync'),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
+    media_data = await request.app.db_functions.db_sync_list(db_connection, offset,
+                                                             int(request.ctx.session[
+                                                                     'per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'media_sync': media_data,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 

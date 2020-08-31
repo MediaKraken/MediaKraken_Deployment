@@ -1,8 +1,8 @@
 import os
 
 from common import common_global
-from common import common_string
 from common import common_pagination_bootstrap
+from common import common_string
 from sanic import Blueprint
 
 blueprint_admin_report = Blueprint('name_blueprint_admin_report', url_prefix='/admin')
@@ -25,22 +25,23 @@ async def url_bp_admin_report_all_media(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media_data = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_media_known(db_connection, offset, per_page):
+    for row_data in await request.app.db_functions.db_media_known(db_connection, offset,
+                                                                  int(request.ctx.session[
+                                                                          'per_page'])):
         media_data.append((row_data['mm_media_path'],
                            common_string.com_string_bytes2human(
                                os.path.getsize(row_data['mm_media_path']))))
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_media_known_count(
-                                db_connection),
-                            record_name='all media',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_report_all_media',
+                                                                      item_count=await request.app.db_functions.db_media_known_count(
+                                                                          db_connection),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 
@@ -54,20 +55,21 @@ async def url_bp_admin_report_all_duplicate_media(request):
     """
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_media_duplicate_count(
-                                db_connection),
-                            record_name='duplicate media',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_report_duplicate',
+                                                                      item_count=await request.app.db_functions.db_media_duplicate_count(
+                                                                          db_connection),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     report_media = await request.app.db_functions.db_media_duplicate(db_connection,
-                                                                     offset, per_page)
+                                                                     offset,
+                                                                     int(request.ctx.session[
+                                                                             'per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'media': report_media,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 
@@ -83,7 +85,9 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
     media = []
     db_connection = await request.app.db_pool.acquire()
     for media_data in await request.app.db_functions.db_media_duplicate_detail(db_connection, guid,
-                                                                               offset, per_page):
+                                                                               offset, int(
+                request.ctx.session[
+                    'per_page'])):
         common_global.es_inst.com_elastic_index('info', {"media": media_data[
             'mm_media_ffprobe_json']})
         if media_data['mm_media_ffprobe_json'] is not None:
@@ -97,19 +101,19 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
         else:
             media.append((media_data['mm_media_guid'], media_data['mm_media_path'],
                           'NA', '999:99:99'))
-    pagination = Pagination(request,
-                            total=await
-                            request.app.db_functions.db_media_duplicate_detail_count(db_connection,
-                                                                                     guid)[0],
-                            record_name='copies',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_report_duplicate_detail',
+                                                                      item_count=await
+                                                                      request.app.db_functions.db_media_duplicate_detail_count(
+                                                                          db_connection,
+                                                                          guid)[0],
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
 
@@ -144,20 +148,21 @@ async def url_bp_admin_report_display_all_unmatched_media(request):
     """
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_media_unmatched_list_count(
-                                db_connection),
-                            record_name='unmatched media',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_report_unmatched_media',
+                                                                      item_count=await request.app.db_functions.db_media_unmatched_list_count(
+                                                                          db_connection),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     unmatched_media = await request.app.db_functions.db_media_unmatched_list(db_connection,
                                                                              offset=offset,
-                                                                             list_limit=per_page)
+                                                                             list_limit=int(
+                                                                                 request.ctx.session[
+                                                                                     'per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'media': unmatched_media,
-        'page': page,
-        'per_page': per_page,
         'pagination': pagination,
     }
