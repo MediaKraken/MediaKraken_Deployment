@@ -24,7 +24,7 @@ from common import common_global
 
 
 # imvdb lookup
-def metadata_music_video_lookup(db_connection, file_name, download_que_id):
+def metadata_music_video_lookup(db_connection, file_name):
     """
     Lookup by name on music video database
     """

@@ -22,33 +22,33 @@ import os
 from common import common_metadata
 
 
-def metadata_periodicals_lookup(db_connection, download_que_json, download_que_id):
+def metadata_periodicals_lookup(db_connection, download_data):
     """
     Lookup via isbn and then name
     """
     metadata_uuid = None  # so not found checks verify later
     # check if isbn in metaid
-    if download_que_json['ProviderMetaID'] is not None:
+    if download_data['ProviderMetaID'] is not None:
         # check local database
         metadata_uuid = db_connection.db_meta_book_guid_by_isbn(
-            download_que_json['ProviderMetaID'], download_que_json['ProviderMetaID'])
+            download_data['ProviderMetaID'], download_data['ProviderMetaID'])
     else:
         # try to pull isbn out..might not be long enough, so try
         try:
-            metadata_uuid = db_connection.db_meta_book_guid_by_isbn(download_que_json['Path'][-10:],
-                                                                    download_que_json['Path'][-13:])
+            metadata_uuid = db_connection.db_meta_book_guid_by_isbn(download_data['Path'][-10:],
+                                                                    download_data['Path'][-13:])
         except:
             pass
     if metadata_uuid is None:
-        if download_que_json['ProviderMetaID'] is None:
+        if download_data['ProviderMetaID'] is None:
             lookup_name = os.path.basename(
-                os.path.splitext(download_que_json['Path'])[0]).replace('_', ' ')
+                os.path.splitext(download_data['Path'])[0]).replace('_', ' ')
             metadata_uuid = db_connection.db_meta_book_guid_by_name(lookup_name)
         if metadata_uuid is None:
-            download_que_json.update({'Status': 'Search'})
+            download_data.update({'Status': 'Search'})
             # save the updated status
             db_connection.db_begin()
-            db_connection.db_download_update(json.dumps(download_que_json),
+            db_connection.db_download_update(json.dumps(download_data),
                                              download_que_id)
             # set provider last so it's not picked up by the wrong thread
             db_connection.db_download_update_provider(

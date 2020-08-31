@@ -29,10 +29,7 @@ def movie_search_tmdb(db_connection, file_name):
     """
     # search tmdb
     """
-    try:
-        common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": str(file_name)})
-    except:
-        pass
+    common_global.es_inst.com_elastic_index('info', {"meta movie search tmdb": str(file_name)})
     # TODO aren't I doing two guessits per file name then?
     file_name = guessit(file_name)
     if type(file_name['title']) == list:
@@ -75,7 +72,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code,
                                                          "header": result_json.headers})
     # 504	Your request to the backend server timed out. Try again.
-    if result_json is None or result_json.status_code == 504:
+    if result_json.status_code == 504:
         common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 504": tmdb_id})
         time.sleep(60)
         # redo fetch due to 504
@@ -103,8 +100,8 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
         common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 429": tmdb_id})
-        time.sleep(10)
-        # redo fetch due to 504
+        time.sleep(30)
+        # redo fetch due to 429
         movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 404": tmdb_id})

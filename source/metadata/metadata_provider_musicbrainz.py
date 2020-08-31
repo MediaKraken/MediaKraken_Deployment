@@ -23,12 +23,7 @@ import psycopg2
 from common import common_global
 
 
-def music_search_musicbrainz(db_connection, download_que_json, ffmpeg_data_json):
-    try:
-        common_global.es_inst.com_elastic_index('info',
-                                                {"meta music search brainz": download_que_json})
-    except:
-        pass
+def music_search_musicbrainz(db_connection, ffmpeg_data_json):
     metadata_uuid = None
     # look at musicbrainz server
     music_data = common_global.api_instance.com_mediabrainz_get_recordings(

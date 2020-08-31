@@ -225,14 +225,14 @@ def thegamesdb(thread_db, download_data):
 
 @ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
              / common_metadata_limiter.API_LIMIT['themoviedb'][1])
-def themoviedb(thread_db, download_data, download_que_type):
+def themoviedb(thread_db, download_data):
     """
     Rate limiter for theMovieDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in moviedb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'themoviedb', download_data, download_que_type)
+    metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
@@ -349,7 +349,7 @@ while True:
         elif content_providers == 'thegamesdb':
             thegamesdb(thread_db, row_data)
         elif content_providers == 'themoviedb':
-            themoviedb(thread_db, row_data, row_data['mdq_que_type'])
+            themoviedb(thread_db, row_data)
         elif content_providers == 'thesportsdb':
             thesportsdb(thread_db, row_data)
         elif content_providers == 'tv_intros':
@@ -418,7 +418,6 @@ while True:
                                              metadata_uuid)
                 thread_db.db_download_delete(row_data['mdq_id'])
                 thread_db.db_commit()
-    time.sleep(1)
     # # grab message from rabbitmq if available
     method_frame, header_frame, body = channel.basic_get(queue=content_providers)
     if method_frame:
@@ -436,6 +435,7 @@ while True:
                                  stdout=subprocess.PIPE, shell=False)
         # TODO add record for activity/etc for the user who ran this
         channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+    time.sleep(1)
 
 # Cancel the consumer and return any pending messages
 channel.cancel()
