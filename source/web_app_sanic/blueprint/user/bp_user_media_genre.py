@@ -42,7 +42,9 @@ async def url_bp_user_movie_page(request, user, genre):
                                                                        common_global.DLMediaType.Movie.value,
                                                                        list_type='movie',
                                                                        list_genre=genre,
-                                                                       list_limit=per_page,
+                                                                       list_limit=int(
+                                                                           request.ctx.session[
+                                                                               'per_page']),
                                                                        group_collection=False,
                                                                        offset=offset,
                                                                        include_remote=True,
@@ -106,16 +108,18 @@ async def url_bp_user_movie_page(request, user, genre):
                                                                      list_genre=genre,
                                                                      group_collection=False,
                                                                      include_remote=True,
-                                                                     search_text=request.ctx.session[
+                                                                     search_text=
+                                                                     request.ctx.session[
                                                                          'search_text'])
     await request.app.db_pool.release(db_connection)
     request.ctx.session['search_page'] = 'media_movie'
-    pagination = Pagination(request,
-                            total=total,
-                            record_name='movie(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_movie',
+                                                                      item_count=total,
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     return {
         'media': media,
         'pagination': pagination,
