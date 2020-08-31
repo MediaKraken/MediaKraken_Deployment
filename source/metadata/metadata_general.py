@@ -239,18 +239,19 @@ def metadata_fetch(thread_db, provider_name, download_data):
                                                                       'mdq_download_json'][
                                                                       'MetaNewID'])
     elif provider_name == 'themoviedb':
-        if download_data['mdq_que_type'] == 3:  # person info
+        if download_data['mdq_que_type'] == common_global.DLMediaType.Person.value:
             common_global.es_inst.com_elastic_index('info', {'fetch person bio': provider_name})
             metadata_provider_themoviedb.metadata_fetch_tmdb_person(
                 thread_db, provider_name, download_data)
-        elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1:  # movie
+        elif download_data['mdq_que_type'] == 0 \
+                or download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
             # removing the imdb check.....as com_tmdb_metadata_by_id converts it
             metadata_provider_themoviedb.movie_fetch_save_tmdb(thread_db,
                                                                download_data['mdq_download_json'][
                                                                    'ProviderMetaID'],
                                                                download_data['mdq_download_json'][
                                                                    'MetaNewID'])
-        elif download_data['mdq_que_type'] == 2:  # tv
+        elif download_data['mdq_que_type'] == common_global.DLMediaType.TV.value:
             metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
                                                 download_data['mdq_download_json'][
                                                     'ProviderMetaID'],
