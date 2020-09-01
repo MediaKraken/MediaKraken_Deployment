@@ -273,8 +273,11 @@ common_global.es_inst.com_elastic_index('info', {"worker meta api name":
 option_config_json, thread_db = common_config_ini.com_config_read()
 
 # pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
-                                       credentials=pika.PlainCredentials('guest', 'guest'))
+parameters = pika.ConnectionParameters('mkstack_rabbitmq',
+                                       socket_timeout=60,
+                                       credentials=pika.PlainCredentials('guest', 'guest'),
+                                       heartbeat=600,
+                                       blocked_connection_timeout=300)
 connection = pika.BlockingConnection(parameters)
 
 # setup channels and queue
@@ -419,11 +422,8 @@ while True:
                 thread_db.db_download_delete(row_data['mdq_id'])
                 thread_db.db_commit()
     # # grab message from rabbitmq if available
-    #method_frame, header_frame, body = channel.basic_get(queue=content_providers)
-    # method_frame, header_frame, body = channel.consume(queue=content_providers)
-    # if method_frame:
-    # as consume could have several messages pushed from rabbitmq
-    for method_frame, header_frame, body in channel.consume(queue=content_providers):
+    method_frame, header_frame, body = channel.basic_get(queue=content_providers)
+    if method_frame:
         common_global.es_inst.com_elastic_index('info', {"Message body", body})
         json_message = json.loads(body)
         if json_message['Type'] == 'Update Metadata':
