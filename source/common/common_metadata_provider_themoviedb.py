@@ -101,10 +101,11 @@ class CommonMetadataTMDB:
             # tmdb_id = metadata_movie_imdb.com_imdb_id_search(tmdb_id[0:2])
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'
-                                '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
+                                '?api_key=%s&append_to_response=credits,'
+                                'reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(20)
+            time.sleep(30)
             self.com_tmdb_metadata_by_id(tmdb_id)
 
     def com_tmdb_metadata_tv_by_id(self, tmdb_id):
@@ -116,7 +117,7 @@ class CommonMetadataTMDB:
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(20)
+            time.sleep(30)
             self.com_tmdb_metadata_tv_by_id(tmdb_id)
 
     def com_tmdb_metadata_bio_by_id(self, tmdb_id):
@@ -128,7 +129,7 @@ class CommonMetadataTMDB:
                                 '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(20)
+            time.sleep(30)
             self.com_tmdb_metadata_bio_by_id(tmdb_id)
 
     def com_tmdb_meta_bio_image_build(self, result_json):
@@ -287,7 +288,7 @@ class CommonMetadataTMDB:
         """
         # download info and set data to be ready for insert into database
         """
-        # common_global.es_inst.com_elastic_index('info', {'tmdb info build': result_json})
+        common_global.es_inst.com_elastic_index('info', {'tmdb info build': result_json})
         # create file path for poster
         if 'title' in result_json:  # movie
             image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
@@ -295,14 +296,17 @@ class CommonMetadataTMDB:
         else:  # tv
             image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
                                                                        'poster')
-        # common_global.es_inst.com_elastic_index('info', {'tmdb image path': image_file_path})
+        common_global.es_inst.com_elastic_index('info', {'tmdb image path': image_file_path})
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']
             if not os.path.isfile(image_file_path):
-                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
-                                                         + result_json['poster_path'],
-                                                         image_file_path)
+                if common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
+                                                            + result_json['poster_path'],
+                                                            image_file_path):
+                    pass  # download is successful
+                else:
+                    image_file_path = None
             poster_file_path = image_file_path
         # create file path for backdrop
         if 'title' in result_json:  # movie
@@ -315,9 +319,12 @@ class CommonMetadataTMDB:
         if result_json['backdrop_path'] is not None:
             image_file_path += result_json['backdrop_path']
             if not os.path.isfile(image_file_path):
-                common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
-                                                         + result_json['backdrop_path'],
-                                                         image_file_path)
+                if common_network.mk_network_fetch_from_url('https://image.tmdb.org/t/p/original'
+                                                            + result_json['backdrop_path'],
+                                                            image_file_path):
+                    pass  # download is successful
+                else:
+                    image_file_path = None
             backdrop_file_path = image_file_path
         # set local image json
         if poster_file_path is not None:
