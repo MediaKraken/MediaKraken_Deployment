@@ -43,7 +43,8 @@ async def url_bp_user_metadata_person_list(request):
     person_list = []
     db_connection = await request.app.db_pool.acquire()
     for person_data in await request.app.db_functions.db_meta_person_list(db_connection, offset,
-                                                                          per_page,
+                                                                          int(request.ctx.session[
+                                                                                  'per_page']),
                                                                           request.ctx.session[
                                                                               'search_text']):
         common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
@@ -58,14 +59,16 @@ async def url_bp_user_metadata_person_list(request):
         person_list.append(
             (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
     request.ctx.session['search_page'] = 'meta_people'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_person_list_count(
-                                db_connection,
-                                request.ctx.session['search_text']),
-                            record_name='person',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_meta_person_list',
+                                                                      item_count=await request.app.db_functions.db_meta_person_list_count(
+                                                                          db_connection,
+                                                                          request.ctx.session[
+                                                                              'search_text']),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media_person': person_list,
