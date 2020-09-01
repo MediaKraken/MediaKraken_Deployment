@@ -22,7 +22,6 @@ import re
 import socket
 import ssl
 import subprocess
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -40,7 +39,7 @@ def mk_network_fetch_from_url(url, directory=None):
     """
     common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
     datafile = urllib.request.urlopen(url, context=ssl._create_unverified_context())
-    if directory is not None and datafile.status_code == 200:
+    if directory is not None and datafile.getcode() == 200:
         try:
             localfile = open(directory, 'wb')
         except:
