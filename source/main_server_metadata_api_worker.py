@@ -419,8 +419,11 @@ while True:
                 thread_db.db_download_delete(row_data['mdq_id'])
                 thread_db.db_commit()
     # # grab message from rabbitmq if available
-    method_frame, header_frame, body = channel.basic_get(queue=content_providers)
-    if method_frame:
+    #method_frame, header_frame, body = channel.basic_get(queue=content_providers)
+    # method_frame, header_frame, body = channel.consume(queue=content_providers)
+    # if method_frame:
+    # as consume could have several messages pushed from rabbitmq
+    for method_frame, header_frame, body in channel.consume(queue=content_providers):
         common_global.es_inst.com_elastic_index('info', {"Message body", body})
         json_message = json.loads(body)
         if json_message['Type'] == 'Update Metadata':
