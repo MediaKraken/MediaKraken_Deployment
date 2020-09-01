@@ -38,7 +38,10 @@ def mk_network_fetch_from_url(url, directory=None):
     Download data from specified url to save in specific directory
     """
     common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
-    datafile = urllib.request.urlopen(url, context=ssl._create_unverified_context())
+    try:
+        datafile = urllib.request.urlopen(url, context=ssl._create_unverified_context())
+    except urllib.error.URLError:  #<urlopen error [Errno 99] Address not available>:
+        return False
     if directory is not None and datafile.getcode() == 200:
         try:
             localfile = open(directory, 'wb')
