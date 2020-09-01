@@ -504,7 +504,7 @@ ALTER TABLE public.mm_metadata_sports OWNER TO postgres;
 
 CREATE TABLE public.mm_metadata_tvshow (
     mm_metadata_tvshow_guid uuid NOT NULL,
-    mm_metadata_media_tvshow_id jsonb,
+    mm_metadata_media_tvshow_id integer,
     mm_metadata_tvshow_name text,
     mm_metadata_tvshow_json jsonb,
     mm_metadata_tvshow_localimage_json jsonb,

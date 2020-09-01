@@ -352,9 +352,16 @@ if db_connection.db_version_check() < 27:
     db_connection.db_version_update(27)
     db_connection.db_commit()
 
-# if db_connection.db_version_check() < 28:
-#     db_connection.db_version_update(28)
-#     db_connection.db_commit()
+if db_connection.db_version_check() < 28:
+    options_json, status_json = db_connection.db_opt_status_read()
+    db_connection.db_query(
+        'ALTER TABLE mm_metadata_tvshow DROP COLUMN mm_metadata_media_tvshow_id;')
+    db_connection.db_query(
+        'ALTER TABLE mm_metadata_tvshow ADD COLUMN mm_metadata_media_tvshow_id integer;')
+    db_connection.db_query('CREATE INDEX mm_metadata_media_tvshow_id_idx'
+                           ' ON mm_metadata_tvshow(mm_metadata_media_tvshow_id)')
+    db_connection.db_version_update(28)
+    db_connection.db_commit()
 
 # close the database
 db_connection.db_close()

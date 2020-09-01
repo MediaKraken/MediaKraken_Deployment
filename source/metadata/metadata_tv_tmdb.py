@@ -36,13 +36,13 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         # redo fetch due to 504
         tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 200:
-        series_id_json, result_json, image_json \
+        series_id, result_json, image_json \
             = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
-        common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
+        common_global.es_inst.com_elastic_index('info', {"series": series_id})
         # set and insert the record
         try:
             db_connection.db_metatv_insert_tmdb(metadata_uuid,
-                                                series_id_json,
+                                                series_id,
                                                 result_json['name'],
                                                 json.dumps(result_json),
                                                 json.dumps(image_json))
@@ -61,7 +61,7 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             pass
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
-        time.sleep(10)
+        time.sleep(20)
         # redo fetch due to 504
         tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:

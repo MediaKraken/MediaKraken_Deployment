@@ -114,7 +114,7 @@ if db_connection.db_table_index_check('mm_link_idx_name') is None:
 # create table for metadata of tvshows (full json w/crew, w/episodes)
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_tvshow ('
                        'mm_metadata_tvshow_guid uuid CONSTRAINT mm_metadata_tvshow_pk PRIMARY KEY,'
-                       ' mm_metadata_media_tvshow_id jsonb,'
+                       ' mm_metadata_media_tvshow_id integer,'
                        ' mm_metadata_tvshow_name text,'
                        ' mm_metadata_tvshow_json jsonb,'
                        ' mm_metadata_tvshow_localimage_json jsonb,'
