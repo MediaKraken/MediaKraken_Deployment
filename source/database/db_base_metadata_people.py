@@ -120,10 +120,9 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     """
     update the person bio/etc
     """
-    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, '
-                           'mmp_person_image = %s'
-                           ' where mmp_person_media_id->\''
-                           + provider_name + '\' ? %s',
+    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s,'
+                           ' mmp_person_image = %s'
+                           ' where mmp_person_media_id = %s',
                            (json.dumps(person_bio), person_image, str(provider_uuid)))
     self.db_commit()
 
