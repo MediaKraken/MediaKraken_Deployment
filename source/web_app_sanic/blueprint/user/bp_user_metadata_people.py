@@ -57,7 +57,7 @@ async def url_bp_user_metadata_person_list(request):
         else:
             person_image = "img/person_missing.png"
         person_list.append(
-            (person_data['mmp_id'], person_data['mmp_person_name'], person_image))
+            (person_data['mmp_id'], person_data['mmp_person_name'], person_image.replace('"', '')))
     request.ctx.session['search_page'] = 'meta_people'
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_person_list',
