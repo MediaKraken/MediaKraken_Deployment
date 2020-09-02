@@ -48,7 +48,7 @@
         {% for row_data in media_tvshow %}
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[1]}}>
-                <a href = "{{ url_for('user_metadata_tv.metadata_tvshow_detail', guid=row_data[0]) }}" >
+                <a href = "{{ url_for('name_blueprint_user_metadata_tv.url_bp_user_metadata_tvshow_detail', guid=row_data[0]) }}" >
                 {% if row_data[3] == None %}
                 <img src= "{{ url_for('static', filename='img/missing_icon.jpg') }}" loading="lazy" height="300" width="200">
                 {% else %}

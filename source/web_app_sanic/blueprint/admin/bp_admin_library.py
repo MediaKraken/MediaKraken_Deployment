@@ -106,14 +106,16 @@ async def url_bp_admin_library_edit(request):
                     if addr is None:  # total junk path for UNC
                         request['flash']('Invalid UNC path.', 'error')
                         return redirect(
-                            request.app.url_for('admins_library.admin_library_edit_page'))
+                            request.app.url_for(
+                                'name_blueprint_admin_library.url_bp_admin_library_edit'))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(addr)
                     if not smb_stuff.com_cifs_share_directory_check(share, path):
                         smb_stuff.com_cifs_close()
                         request['flash']("Invalid UNC path.", 'error')
                         return redirect(
-                            request.app.url_for('admins_library.admin_library_edit_page'))
+                            request.app.url_for(
+                                'name_blueprint_admin_library.url_bp_admin_library_edit'))
                     smb_stuff.com_cifs_close()
                 # TODO these should be mounted under mkmount on docker host
                 # which will break docker swarm....when master moves
@@ -132,10 +134,13 @@ async def url_bp_admin_library_edit(request):
                 elif not os.path.isdir(os.path.join('/mediakraken/mnt',
                                                     request.form['library_path'])):
                     request['flash']("Invalid library path.", 'error')
-                    return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
+                    return redirect(
+                        request.app.url_for(
+                            'name_blueprint_admin_library.url_bp_admin_library_edit'))
                 # verify it doesn't exist and add
-                if await request.app.db_functions.db_library_path_check(db_connection, request.form[
-                    'library_path']) == 0:
+                if await request.app.db_functions.db_library_path_check(db_connection,
+                                                                        request.form[
+                                                                            'library_path']) == 0:
                     try:
                         lib_share = request.form['Lib_Share']
                     except:
@@ -146,10 +151,13 @@ async def url_bp_admin_library_edit(request):
                                                                        request.form[
                                                                            'Lib_Class'],
                                                                        lib_share)
-                    return redirect(request.app.url_for('admins_library.admin_library'))
+                    return redirect(
+                        request.app.url_for('name_blueprint_admin_library.url_bp_admin_library'))
                 else:
                     request['flash']("Path already in library.", 'error')
-                    return redirect(request.app.url_for('admins_library.admin_library_edit_page'))
+                    return redirect(
+                        request.app.url_for(
+                            'name_blueprint_admin_library.url_bp_admin_library_edit'))
             elif request.form['action_type'] == 'Browse...':  # popup browse form
                 pass
             # popup browse form for synology
