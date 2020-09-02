@@ -429,11 +429,13 @@ while True:
         if json_message['Type'] == 'Update Metadata':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
+                # TODO verify it isn't already running!
                 subprocess.Popen(['python3', json_message['JSON']['program']],
                                  stdout=subprocess.PIPE, shell=False)
         elif json_message['Type'] == 'Update Collection':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
+                # TODO verify it isn't already running!
                 subprocess.Popen(['python3', json_message['JSON']['program']],
                                  stdout=subprocess.PIPE, shell=False)
         # TODO add record for activity/etc for the user who ran this
