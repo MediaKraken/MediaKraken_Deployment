@@ -70,11 +70,13 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         if request.form['status'] == 'Watched':
             await request.app.db_functions.db_meta_tv_status_update(db_connection,
                                                                     guid, user.id, False)
-            return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
+            return redirect(
+                request.app.url_for('name_blueprint_user_tv.url_bp_user_tv_show_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
             await request.app.db_functions.db_meta_tv_status_update(db_connection,
                                                                     guid, user.id, True)
-            return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
+            return redirect(
+                request.app.url_for('name_blueprint_user_tv.url_bp_user_tv_show_detail', guid=guid))
     else:
         # guid, name, id, metajson
         data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)

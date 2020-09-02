@@ -15,7 +15,6 @@ async def db_media_movie_list(self, db_connection, class_guid, list_type=None, l
     common_global.es_inst.com_elastic_index('info', {"group and remote": group_collection,
                                                      'remote': include_remote})
     common_global.es_inst.com_elastic_index('info', {"list, offset": list_limit, 'offset': offset})
-    # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
             if not group_collection:

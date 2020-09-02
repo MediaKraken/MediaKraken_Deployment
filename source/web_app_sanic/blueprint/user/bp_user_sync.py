@@ -9,7 +9,7 @@ blueprint_user_sync = Blueprint('name_blueprint_user_sync', url_prefix='/user')
 
 
 @blueprint_user_sync.route('/user_sync')
-@common_global.jinja_template.template('bss_user/user_sync.html')
+@common_global.jinja_template.template('bss_user/bss_user_media_sync.html')
 @common_global.auth.login_required
 async def url_bp_user_sync_display_all(request):
     """
@@ -73,7 +73,8 @@ async def url_bp_user_sync_edit(request, guid):
                                                       request.form['target_output_path'],
                                                       json.dumps(sync_json))
         await request.app.db_pool.release(db_connection)
-        return redirect(request.app.url_for('user.movie_detail', guid=guid))
+        return redirect(
+            request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail', guid=guid))
     form = SyncEditForm(request, csrf_enabled=False)
     if form.validate_on_submit():
         pass

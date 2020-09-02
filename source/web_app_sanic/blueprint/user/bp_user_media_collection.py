@@ -2,7 +2,7 @@ from common import common_global
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 
-blueprint_user_media_collection = Blueprint('name_blueprint_user_media_colletion',
+blueprint_user_media_collection = Blueprint('name_blueprint_user_media_collection',
                                             url_prefix='/user')
 
 

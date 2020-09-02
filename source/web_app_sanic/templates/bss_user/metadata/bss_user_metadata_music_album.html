@@ -47,8 +47,8 @@
         {% for row_data in media %}
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[0]}}>
+                <a href= "{{ url_for('name_blueprint_user_metadata_music.metadata_music_album_song_list', guid=row_data[0]) }}" >
                 {% if row_data[3] == None %}
-                <a href= "{{ url_for('user_metadata_album.metadata_album_detail', guid=row_data[0]) }}" >
                 <img src= "{{ url_for('static', filename='img/headphone.png') }}" loading="lazy" height="300" width="200">
                 </a>
                 {% if row_data[2] == "" %}
@@ -61,7 +61,6 @@
                     </div>
                 {% endif %}
                 {% else %}
-                <a href= "{{ url_for('user_metadata_album.metadata_album_detail', guid=row_data[0]) }}" >
                 <img src= "{{ url_for('static', filename=row_data[3]) }}" loading="lazy" height="300" width="200">
                 </a>
                 <div class="description">

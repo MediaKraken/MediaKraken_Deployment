@@ -48,14 +48,13 @@
         {% for row_data in media %}
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[0]}}>
+                <a href= "{{ url_for('name_blueprint_user_media_collection.url_bp_user_metadata_movie_collection_detail', guid=row_data[0]) }}">
                 {% if row_data[2] == "" or row_data[2] == None %}
-                <a href= "{{ url_for('user_movie_collection.metadata_movie_collection_detail', guid=row_data[0]) }}">
                 <img src= "{{ url_for('static', filename='img/Movie-icon.png') }}" loading="lazy" height="300" width="200"></a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[1]}}</p>
                 </div>
                 {% else %}
-                <a href= "{{ url_for('user_movie_collection.metadata_movie_collection_detail', guid=row_data[0]) }}">
                 <img src= "{{ url_for('static', filename=row_data[2]) }}" loading="lazy" height="300" width="200">
                 </a>
                 {% endif %}

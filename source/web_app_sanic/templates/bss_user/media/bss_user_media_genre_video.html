@@ -46,7 +46,7 @@
         <div>
             {% for row_data in media %}
             <div class="main_photo">
-                <a href= "{{ url_for('user_movie_genre.user_movie_page', genre=row_data[0].replace(' ', '%20')) }}" >
+                <a href= "{{ url_for('name_blueprint_user_media_genre.url_bp_user_movie_page', genre=row_data[0].replace(' ', '%20')) }}" >
                 <img src="{{ url_for('static', filename='img/genre/' + row_data[2].replace(' ', '%20')) }}" loading="lazy" height="300" width="200">
                 </a>
                 <div class="description">

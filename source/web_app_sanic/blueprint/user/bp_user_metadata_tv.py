@@ -1,3 +1,5 @@
+import json
+
 import natsort
 from common import common_global
 from common import common_pagination_bootstrap
@@ -16,7 +18,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     """
     db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
-    json_metadata = data_metadata['mm_metadata_tvshow_json']
+    json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
     common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
     if 'episode_run_time' in json_metadata:
         try:
@@ -133,7 +135,7 @@ async def url_bp_user_metadata_tvshow_list(request):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'],
                              row_data['air_date'],
-                             row_data['image_json']))
+                             json.loads(row_data['image_json'])))
     request.ctx.session['search_page'] = 'meta_tv'
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_tvshow_list',
@@ -163,7 +165,7 @@ async def url_bp_user_metadata_tvshow_season_detail(request, guid, season):
     """
     db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
-    json_metadata = data_metadata['mm_metadata_tvshow_json']
+    json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']

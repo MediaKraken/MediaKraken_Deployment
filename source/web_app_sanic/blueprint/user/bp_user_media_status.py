@@ -15,7 +15,7 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
     """
     common_global.es_inst.com_elastic_index('info', {'movie status': guid, 'event': event_type})
     if event_type == "sync":
-        return redirect(request.app.url_for('user.sync_edit', guid=guid))
+        return redirect(request.app.url_for('name_blueprint_user_sync.url_bp_user_sync_edit', guid=guid))
     else:
         db_connection = await request.app.db_pool.acquire()
         if event_type == "mismatch":
@@ -69,4 +69,4 @@ async def url_bp_user_status_tv(request, guid, event_type):
         pass
     elif event_type == "mismatch":
         pass
-    return redirect(request.app.url_for('user_tv.user_tv'))
+    return redirect(request.app.url_for('name_blueprint_user_tv.url_bp_user_tv'))
