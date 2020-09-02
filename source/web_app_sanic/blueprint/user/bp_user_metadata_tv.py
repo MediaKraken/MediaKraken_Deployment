@@ -82,7 +82,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
                                   methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/metadata/bss_metadata_tv_episode_detail.html')
 @common_global.auth.login_required
-async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id):
+async def url_bp_user_metadata_tvshow_episode_detail(request, guid, eps_id):
     """
     Display tvshow episode metadata detail
     """
@@ -157,7 +157,7 @@ async def url_bp_user_metadata_tvshow_list(request):
                                   methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_tv_season_detail.html')
 @common_global.auth.login_required
-async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
+async def url_bp_user_metadata_tvshow_season_detail(request, guid, season):
     """
     Display metadata of tvshow season detail
     """
@@ -219,7 +219,6 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
     common_global.es_inst.com_elastic_index('info', {'dataepskeys': data_episode_keys})
-
     # poster image
     try:
         data_poster_image = data_metadata[3]
