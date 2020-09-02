@@ -68,6 +68,8 @@ async def url_bp_admin_backup(request):
         'data_class': common_network_cloud.supported_providers,
         'data_enabled': backup_enabled,
         'pagination': pagination,
+        'page': page,
+        'per_page': int(request.ctx.session['per_page'])
     }
 
 

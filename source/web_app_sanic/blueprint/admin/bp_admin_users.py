@@ -57,4 +57,6 @@ async def url_bp_admin_user(request):
     return {
         'users': data_users,
         'pagination': pagination,
+        'page': page,
+        'per_page': int(request.ctx.session['per_page'])
     }
