@@ -68,8 +68,7 @@ app.amqp_channel = connection.channel()
 @app.exception(NotFound)
 async def page_not_found(request, exception):
     print('This route does not exist {}'.format(request.url), flush=True)
-    return text("MOO, page not found: {}".format(request.url))
-    return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
+    return redirect(app.url_for('name_blueprint_error.url_bp_public_error_404'))
 
 
 # @app.exception(Exception)
