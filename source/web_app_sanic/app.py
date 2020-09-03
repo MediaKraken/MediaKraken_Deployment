@@ -190,7 +190,7 @@ def handle_no_auth(request):
 @app.route("/")
 @common_global.auth.login_required(user_keyword='user', handle_no_auth=handle_no_auth)
 async def hello(request, user):
-    return redirect(app.url_for('name_blueprint_public_homepage.url_bp_homepage'))
+    return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
 
 
 # print out all routes for debugging purposes
