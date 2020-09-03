@@ -1,5 +1,5 @@
-
 import os
+import traceback
 
 import database_async as database_base_async
 import pika
@@ -13,7 +13,7 @@ from sanic import Sanic
 from sanic import response
 from sanic.exceptions import NotFound
 from sanic.exceptions import ServerError
-from sanic.response import redirect, text
+from sanic.response import redirect
 from sanic_auth import Auth, User
 from sanic_jinja2 import SanicJinja2
 from sanic_session import Session
@@ -71,16 +71,11 @@ async def page_not_found(request, exception):
     return redirect(app.url_for('name_blueprint_error.url_bp_public_error_404'))
 
 
-# @app.exception(Exception)
-# async def no_details_to_user(request: Request, exception: Exception):
-#     if isinstance(exception, SanicException):
-#         str_code = str(exception.status_code)
-#         logger.info(f'[{str_code}]')
-#         traceback.print_exc()
-#         return text(str_code, exception.status_code)
-#     logger.exception(exception)
-#     traceback.print_exc()
-#     return text('Server error', 500)
+@app.exception(Exception)
+async def no_details_to_user(request, exception):
+    print('This route goes BOOM {}'.format(request.url), flush=True)
+    print(traceback.print_exc(), flush=True)
+    return redirect(app.url_for('name_blueprint_error.url_bp_public_error_500'))
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -94,8 +89,10 @@ async def login(request):
         username = form.username.data
         db_connection = await request.app.db_pool.acquire()
         print('after db connection', flush=True)
-        user_id, user_admin, user_per_page = await request.app.db_functions.db_user_login_validation(
-            db_connection, username, form.password.data)
+        user_id, user_admin, user_per_page \
+            = await request.app.db_functions.db_user_login_validation(db_connection,
+                                                                      username,
+                                                                      form.password.data)
         await app.db_pool.release(db_connection)
         print(user_id, user_admin, flush=True)
         if user_id is None:  # invalid user name
