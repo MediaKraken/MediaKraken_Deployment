@@ -83,7 +83,7 @@ async def db_meta_tv_list(self, db_connection, offset=0, records=None, search_va
                                      ' as image_json from mm_metadata_tvshow'
                                      ' order by LOWER(mm_metadata_tvshow_name),'
                                      ' mm_metadata_tvshow_json->\'first_air_date\''
-                                     ' offset $1 limit $2)',
+                                     ' offset $1 limit $2',
                                      offset, records)
 
 
