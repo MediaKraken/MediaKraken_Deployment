@@ -81,12 +81,9 @@ async def db_meta_tv_list(self, db_connection, offset=0, records=None, search_va
                                      ' mm_metadata_tvshow_json->\'first_air_date\' as air_date,'
                                      ' mm_metadata_tvshow_localimage_json->\'Poster\''
                                      ' as image_json from mm_metadata_tvshow'
-                                     ' where mm_metadata_tvshow_guid'
-                                     ' in (select mm_metadata_tvshow_guid'
-                                     ' from mm_metadata_tvshow'
-                                     ' offset $1 limit $2)'
                                      ' order by LOWER(mm_metadata_tvshow_name),'
                                      ' mm_metadata_tvshow_json->\'first_air_date\'',
+                                     ' offset $1 limit $2)',
                                      offset, records)
 
 
@@ -112,7 +109,7 @@ async def db_meta_tv_season_eps_list(self, db_connection, show_guid, season_numb
         ' eps_data->\'EpisodeName\' as eps_name,'
         ' eps_data->\'filename\' as eps_filename'
         ' from (select jsonb_array_elements_text('
-        'mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\'->\'Meta\'->\'Episode\')::jsonb as eps_data'
+        'mm_metadata_tvshow_json->\'Episode\')::jsonb as eps_data'
         ' from mm_metadata_tvshow where mm_metadata_tvshow_guid = $1)'
         ' as select_eps_data where eps_data @> \'{ "SeasonNumber": "'
         + str(season_number) + '" }\'', show_guid)
