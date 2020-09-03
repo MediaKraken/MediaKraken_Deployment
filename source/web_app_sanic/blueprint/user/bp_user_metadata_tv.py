@@ -134,7 +134,7 @@ async def url_bp_user_metadata_tvshow_list(request):
                                                                        'search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'],
-                             row_data['air_date'],
+                             row_data['air_date'].replace('"', ''),
                              json.loads(row_data['image_json'])))
     request.ctx.session['search_page'] = 'meta_tv'
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
@@ -150,7 +150,7 @@ async def url_bp_user_metadata_tvshow_list(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_tvshow': media_tvshow,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
