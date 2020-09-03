@@ -33,5 +33,5 @@ async def url_bp_user_media_new(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }

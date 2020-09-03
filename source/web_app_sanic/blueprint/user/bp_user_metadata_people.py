@@ -72,5 +72,5 @@ async def url_bp_user_metadata_person_list(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_person': person_list,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }

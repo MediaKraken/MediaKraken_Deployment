@@ -34,7 +34,7 @@ async def url_bp_user_metadata_music_video(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 

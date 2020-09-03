@@ -31,7 +31,7 @@ async def url_bp_admin_server_link(request):
     await request.app.db_pool.release(db_connection)
     return {
         'data': link_data,
-        'pagination': pagination
+        'pagination_links': pagination
     }
 
 

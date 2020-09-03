@@ -67,7 +67,7 @@ async def url_bp_admin_backup(request):
         'data_interval': ('Hours', 'Days', 'Weekly'),
         'data_class': common_network_cloud.supported_providers,
         'data_enabled': backup_enabled,
-        'pagination': pagination,
+        'pagination_links': pagination,
         'page': page,
         'per_page': int(request.ctx.session['per_page'])
     }

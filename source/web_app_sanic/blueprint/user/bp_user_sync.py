@@ -33,7 +33,7 @@ async def url_bp_user_sync_display_all(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_sync': media_data,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 

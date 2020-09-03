@@ -35,7 +35,7 @@ async def url_bp_admin_share(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_dir': media_share,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 

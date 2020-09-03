@@ -54,7 +54,7 @@ async def url_bp_admin_library(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_dir': return_media,
-        'pagination': pagination,
+        'pagination_links': pagination,
         'page': page,
         'per_page': int(request.ctx.session['per_page'])
     }

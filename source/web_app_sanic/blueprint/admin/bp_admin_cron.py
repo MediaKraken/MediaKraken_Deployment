@@ -33,7 +33,7 @@ async def url_bp_admin_cron(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_cron': cron_data,
-        'pagination': pagination,
+        'pagination_links': pagination,
         'page': page,
         'per_page': int(request.ctx.session['per_page'])
     }

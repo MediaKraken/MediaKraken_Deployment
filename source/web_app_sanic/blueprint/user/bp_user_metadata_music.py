@@ -53,7 +53,7 @@ async def url_bp_user_metadata_music_album_list(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': media,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -85,5 +85,5 @@ async def metadata_music_album_song_list(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }

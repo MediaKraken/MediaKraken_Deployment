@@ -42,7 +42,7 @@ async def url_bp_user_metadata_movie_collection(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': media,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 

@@ -32,7 +32,7 @@ async def url_bp_user_metadata_game(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media_game': media_data,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 

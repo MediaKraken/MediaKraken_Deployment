@@ -42,7 +42,7 @@ async def url_bp_admin_report_all_media(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -70,7 +70,7 @@ async def url_bp_admin_report_all_duplicate_media(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': report_media,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -114,7 +114,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
     await request.app.db_pool.release(db_connection)
     return {
         'media': media,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -164,5 +164,5 @@ async def url_bp_admin_report_display_all_unmatched_media(request):
     await request.app.db_pool.release(db_connection)
     return {
         'media': unmatched_media,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
