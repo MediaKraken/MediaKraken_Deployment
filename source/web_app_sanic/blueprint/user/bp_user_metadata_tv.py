@@ -43,7 +43,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     # build gen list
     data_genres_list = ''
     if 'genres' in json_metadata:
-        for ndx in json_metadata['genres']:
+        for ndx in json_metadata['genres']['name']:
             data_genres_list += (ndx + ', ')
     # poster image
     try:
