@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import json
 import os
 
 from common import common_config_ini
@@ -42,14 +43,27 @@ for metadata_record in db_connection.db_query('select mm_metadata_media_id,'
                                               ' from mm_metadata_movie'
                                               ' where mm_metadata_localimage_json'
                                               ' is not null'):
+    new_json = metadata_record['mm_metadata_localimage_json']
     if metadata_record['mm_metadata_localimage_json']['Poster'] is not None:
         if not os.path.exists('/mediakraken/web_app_sanic/static' +
                               metadata_record['mm_metadata_localimage_json']['Poster']):
+            new_json['Poster'] = None
+            db_connection.db_query('update mm_metadata_movie'
+                                   ' set mm_metadata_localimage_json=\''
+                                   + json.dumps(new_json)
+                                   + '\' where mm_metadata_media_id = \''
+                                   + str(metadata_record['mm_metadata_media_id']) + '\'')
             print('Movie Poster BAD: ', metadata_record['mm_metadata_media_id'], flush=True)
             total_movie += 1
     if metadata_record['mm_metadata_localimage_json']['Backdrop'] is not None:
         if not os.path.exists('/mediakraken/web_app_sanic/static' +
                               metadata_record['mm_metadata_localimage_json']['Backdrop']):
+            new_json['Backdrop'] = None
+            db_connection.db_query('update mm_metadata_movie'
+                                   ' set mm_metadata_localimage_json=\''
+                                   + json.dumps(new_json)
+                                   + '\' where mm_metadata_media_id = \''
+                                   + str(metadata_record['mm_metadata_media_id']) + '\'')
             print('Movie Backdrop BAD: ', metadata_record['mm_metadata_media_id'], flush=True)
             total_movie += 1
 
@@ -58,14 +72,29 @@ for metadata_record in db_connection.db_query('select mm_metadata_media_tvshow_i
                                               ' from mm_metadata_tvshow'
                                               ' where mm_metadata_tvshow_localimage_json'
                                               ' is not null'):
+    new_json = metadata_record['mm_metadata_tvshow_localimage_json']
     if metadata_record['mm_metadata_tvshow_localimage_json']['Poster'] is not None:
         if not os.path.exists('/mediakraken/web_app_sanic/static' +
                               metadata_record['mm_metadata_tvshow_localimage_json']['Poster']):
+            new_json['Poster'] = None
+            db_connection.db_query('update mm_metadata_tvshow'
+                                   ' set mm_metadata_tvshow_localimage_json=\''
+                                   + json.dumps(new_json)
+                                   + '\' where mm_metadata_media_tvshow_id = \''
+                                   + str(metadata_record['mm_metadata_media_tvshow_id']) + '\'')
+
             print('TV Poster BAD: ', metadata_record['mm_metadata_media_tvshow_id'], flush=True)
             total_tv += 1
     if metadata_record['mm_metadata_tvshow_localimage_json']['Backdrop'] is not None:
         if not os.path.exists('/mediakraken/web_app_sanic/static' +
                               metadata_record['mm_metadata_tvshow_localimage_json']['Backdrop']):
+            new_json['Backdrop'] = None
+            db_connection.db_query('update mm_metadata_tvshow'
+                                   ' set mm_metadata_tvshow_localimage_json=\''
+                                   + json.dumps(new_json)
+                                   + '\' where mm_metadata_media_tvshow_id = \''
+                                   + str(metadata_record['mm_metadata_media_tvshow_id']) + '\'')
+
             print('TV Backdrop BAD: ', metadata_record['mm_metadata_media_tvshow_id'], flush=True)
             total_tv += 1
 
