@@ -363,5 +363,12 @@ if db_connection.db_version_check() < 28:
     db_connection.db_version_update(28)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 29:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'MAME': {'Version': 224}})
+    db_connection.db_opt_update(json.dumps(options_json))
+    db_connection.db_version_update(29)
+    db_connection.db_commit()
+
 # close the database
 db_connection.db_close()

@@ -781,6 +781,7 @@ if db_connection.db_query('select count(*) from mm_options_and_status', fetch_al
                               'MOTD': None,
                               'MaxResumePct': 5,
                               'Maintenance': None},
+        'MAME': {'Version': 224},
         'Metadata': {'MetadataImageLocal': False,
                      'DL Subtitle': False,
                      'MusicBrainz': {'Host': None,

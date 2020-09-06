@@ -29,7 +29,6 @@ from common import common_logging_elasticsearch
 from common import common_network
 from common import common_signal
 from common import common_system
-from common import common_version
 
 # verify this program isn't already running!
 if common_system.com_process_list(
@@ -54,12 +53,12 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # create mame game list
 file_name = ('/mediakraken/emulation/mame0%slx.zip' %
-             common_version.MAME_VERSION)
+             option_config_json['MAME']['Version'])
 # only do the parse/import if not processed before
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
         ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%slx.zip'
-         % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
+         % (option_config_json['MAME']['Version'], option_config_json['MAME']['Version'])),
         file_name)
     zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
     update_game = 0
@@ -85,28 +84,32 @@ if not os.path.exists(file_name):
     if update_game > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(update_game)
-            + " games(s) metadata updated from MAME XML", True)
+            + " games(s) metadata updated from MAME %s XML" % option_config_json['MAME']['Version'],
+            True)
     if insert_game > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(insert_game)
-            + " games(s) metadata added from MAME XML", True)
+            + " games(s) metadata added from MAME %s XML" % option_config_json['MAME']['Version'],
+            True)
 
 # load games from hash files
 file_name = ('/mediakraken/emulation/mame0%s.zip' %
-             common_version.MAME_VERSION)
+             option_config_json['MAME']['Version'])
 # only do the parse/import if not processed before
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
         ('https://github.com/mamedev/mame/archive/mame0%s.zip'
-         % (common_version.MAME_VERSION,)),
+         % (option_config_json['MAME']['Version'],)),
         file_name)
     total_software = 0
     total_software_update = 0
     # do this all the time, since could be a new one
     with zipfile.ZipFile(file_name, 'r') as zf:
-        zf.extract('mame.zip', '/mediakraken/emulation/')
+        zf.extract('mame-mame0%s.zip' % option_config_json['MAME']['Version'],
+                   '/mediakraken/emulation/')
     zip_handle = zipfile.ZipFile(
-        '/mediakraken/emulation/mame.zip', 'r')  # issues if u do RB
+        '/mediakraken/emulation/mame-mame0%s.zip' % option_config_json['MAME']['Version'],
+        'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
         print('zip: %s' % zippedfile, flush=True)
         if zippedfile[0:5] == 'hash/' and zippedfile != 'hash/':
@@ -172,21 +175,21 @@ if not os.path.exists(file_name):
     if total_software > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_software)
-            + " games(s) metadata added from MAME hash", True)
+            + " games(s) metadata added from MAME %s hash" % option_config_json['MAME']['Version'], True)
     if total_software_update > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(
                 total_software_update)
-            + " games(s) metadata updated from MAME hash", True)
+            + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME']['Version'], True)
 
 # update mame game descriptions from history dat
 file_name = ('/mediakraken/emulation/history%s.zip' %
-             common_version.MAME_VERSION)
+             option_config_json['MAME']['Version'])
 # only do the parse/import if not processed before
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
         ('https://www.arcade-history.com/dats/history%s.zip' %
-         common_version.MAME_VERSION),
+         option_config_json['MAME']['Version']),
         file_name)
     game_titles = []
     game_desc = ""
@@ -246,12 +249,12 @@ if not os.path.exists(file_name):
     if total_software > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_software)
-            + " games(s) metadata added from MAME hash", True)
+            + " games(s) metadata added from MAME %s hash" % option_config_json['MAME']['Version'], True)
     if total_software_update > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(
                 total_software_update)
-            + " games(s) metadata updated from MAME hash", True)
+            + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME']['Version'], True)
 
 # read the category file and create dict/list for it
 cat_file = open("Category.ini", "r")
