@@ -32,23 +32,25 @@ class CommonNetworkDirble:
         """
         Fetch station list
         """
-        return requests.get(self.BASE_URL + 'stations&token=%s' % (self.API_KEY,))
+        return requests.get(self.BASE_URL + 'stations&token=%s' % (self.API_KEY,), timeout=5)
 
     def com_dirble_recent_station_list(self):
         """
         Fetch recent station list
         """
-        return requests.get(self.BASE_URL + 'stations/recent&token=%s' % (self.API_KEY,))
+        return requests.get(self.BASE_URL + 'stations/recent&token=%s' % (self.API_KEY,), timeout=5)
 
     def com_dirble_category_list(self):
         """
         Fetch category list
         """
-        return requests.get(self.BASE_URL + 'stations/categories&token=%s' % (self.API_KEY,))
+        return requests.get(self.BASE_URL + 'stations/categories&token=%s' % (self.API_KEY,),
+                            timeout=5)
 
     def com_dirble_category_station_list(self, category_id):
         """
         Fetch category station list
         """
         return requests.get(
-            self.BASE_URL + 'category/%s/stations&token=%s' % (category_id, self.API_KEY))
+            self.BASE_URL + 'category/%s/stations&token=%s' % (category_id, self.API_KEY),
+            timeout=5)

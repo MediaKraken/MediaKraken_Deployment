@@ -26,4 +26,5 @@ class CommonBackupCrashplan:
 
     def __init__(self, user_name, user_password):
         crash_resp = requests.get('https://master-server.example.com:4285/api/Computer',
+                                  timeout=5,
                                   auth=(user_name, user_password))

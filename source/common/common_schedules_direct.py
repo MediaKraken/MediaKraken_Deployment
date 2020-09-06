@@ -55,7 +55,7 @@ class CommonSchedulesDirect:
         Get status of SD server
         """
         resp = requests.get(self.BASE_API_URL + "/status",
-                            headers=self.headers)
+                            headers=self.headers, timeout=5)
         common_global.es_inst.com_elastic_index('info', {"SD Status": resp.status_code,
                                                          'json': resp.json()})
         return resp.json()
@@ -64,7 +64,7 @@ class CommonSchedulesDirect:
         """
         Get client version
         """
-        resp = requests.get(self.BASE_API_URL + "/version/MediaKraken")
+        resp = requests.get(self.BASE_API_URL + "/version/MediaKraken", timeout=5)
         common_global.es_inst.com_elastic_index('info', {"SD Version": resp.status_code, 'json':
             resp.json()})
         return resp.json()
@@ -74,9 +74,9 @@ class CommonSchedulesDirect:
         Get available list by country
         """
         if countries is None:
-            resp = requests.get(self.BASE_API_URL + "/available")
+            resp = requests.get(self.BASE_API_URL + "/available", timeout=5)
         else:
-            resp = requests.get(self.BASE_API_URL + "/available/countries")
+            resp = requests.get(self.BASE_API_URL + "/available/countries", timeout=5)
         common_global.es_inst.com_elastic_index('info', {"SD Available": resp.status_code,
                                                          'json': resp.json()})
         return resp.json()
@@ -86,7 +86,7 @@ class CommonSchedulesDirect:
         Get headends list
         """
         resp = requests.get(self.BASE_API_URL + "/headends?country=" + country_code
-                            + "&postalcode=" + postal_code, headers=self.headers)
+                            + "&postalcode=" + postal_code, headers=self.headers, timeout=5)
         common_global.es_inst.com_elastic_index('info', {"SD Headends": resp.status_code,
                                                          'json': resp.json()})
         return resp.json()
@@ -112,7 +112,7 @@ class CommonSchedulesDirect:
         Get user lineup list
         """
         resp = requests.get(self.BASE_API_URL + "/lineups",
-                            headers=self.headers)
+                            headers=self.headers, timeout=5)
         common_global.es_inst.com_elastic_index('info', {"SD Lineup": resp.status_code,
                                                          'json': resp.json()})
         return resp.json()
@@ -140,7 +140,7 @@ class CommonSchedulesDirect:
         Return channel map for lineup
         """
         resp = requests.get(self.BASE_API_URL + "/lineups/" +
-                            lineup_id, headers=self.headers)
+                            lineup_id, headers=self.headers, timeout=5)
         common_global.es_inst.com_elastic_index('info', {"SD Channel Map": resp.status_code,
                                                          'json': resp.json()})
         return resp.json()

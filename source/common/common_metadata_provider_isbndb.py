@@ -78,4 +78,4 @@ class CommonMetadataISBNdb:
         Search
         """
         return requests.get('http://isbndb.com/api/v2/json/'
-                            + self.api_key + '/book/' + book_info)
+                            + self.api_key + '/book/' + book_info, timeout=5)

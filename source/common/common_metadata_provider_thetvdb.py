@@ -65,7 +65,7 @@ class CommonMetadataTheTVDB:
                                                          'showid': tv_show_id, 'lang': lang_code})
 
         show_data = requests.get('http://thetvdb.com/api/' + self.thetvdb_connection
-                                 + '/zip/' + lang_code + '/' + tv_show_id + '.zip')
+                                 + '/zip/' + lang_code + '/' + tv_show_id + '.zip', timeout=5)
         if show_data.status_code == 200:
             show_zip = zipfile.ZipFile(io.StringIO(show_data.content))
         else:

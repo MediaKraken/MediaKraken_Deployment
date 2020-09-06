@@ -98,7 +98,7 @@ class CommonMetadataTMDB:
             return requests.get('https://api.themoviedb.org/3/movie/%s'
                                 '?api_key=%s&append_to_response=credits,'
                                 'reviews,release_dates,videos' %
-                                (tmdb_id, self.API_KEY))
+                                (tmdb_id, self.API_KEY), timeout=5)
         except requests.exceptions.ConnectionError as err_code:
             common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_by_id":
                                                                   str(err_code)})
@@ -112,7 +112,7 @@ class CommonMetadataTMDB:
             return requests.get('https://api.themoviedb.org/3/tv/%s'
                                 '?api_key=%s&append_to_response=credits,'
                                 'reviews,release_dates,videos' %
-                                (tmdb_id, self.API_KEY))
+                                (tmdb_id, self.API_KEY), timeout=5)
         except requests.exceptions.ConnectionError as err_code:
             common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_tv_by_id":
                                                                   str(err_code)})
@@ -126,7 +126,7 @@ class CommonMetadataTMDB:
             return requests.get('https://api.themoviedb.org/3/person/%s'
                                 '?api_key=%s&append_to_response=combined_credits,'
                                 'external_ids,images' %
-                                (tmdb_id, self.API_KEY))
+                                (tmdb_id, self.API_KEY), timeout=5)
         except requests.exceptions.ConnectionError as err_code:
             common_global.es_inst.com_elastic_index('error',
                                                     {"TMDB com_tmdb_metadata_bio_by_id":

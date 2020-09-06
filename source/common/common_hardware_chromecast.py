@@ -59,7 +59,7 @@ def com_hard_chrome_info(ssdp_device_location):
     """
     get info of chromecast
     """
-    chrome_data = requests.get(ssdp_device_location)
+    chrome_data = requests.get(ssdp_device_location, timeout=5)
     return xmltodict.parse(chrome_data.text)
 
 
