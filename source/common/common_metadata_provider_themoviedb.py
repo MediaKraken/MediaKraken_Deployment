@@ -95,18 +95,13 @@ class CommonMetadataTMDB:
         """
         Fetch all metadata by id to reduce calls
         """
-        if tmdb_id[0:2].lower() == 'tt':
-            # imdb_id......so, run find and then do the requests
-            pass
-            # tmdb_id = metadata_movie_imdb.com_imdb_id_search(tmdb_id[0:2])
         try:
             return requests.get('https://api.themoviedb.org/3/movie/%s'
                                 '?api_key=%s&append_to_response=credits,'
                                 'reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(30)
-            self.com_tmdb_metadata_by_id(tmdb_id)
+            return None
 
     def com_tmdb_metadata_tv_by_id(self, tmdb_id):
         """
@@ -117,8 +112,7 @@ class CommonMetadataTMDB:
                                 '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(30)
-            self.com_tmdb_metadata_tv_by_id(tmdb_id)
+            return None
 
     def com_tmdb_metadata_bio_by_id(self, tmdb_id):
         """
@@ -129,8 +123,7 @@ class CommonMetadataTMDB:
                                 '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
                                 (tmdb_id, self.API_KEY))
         except requests.exceptions.ConnectionError:
-            time.sleep(30)
-            self.com_tmdb_metadata_bio_by_id(tmdb_id)
+            return None
 
     def com_tmdb_meta_bio_image_build(self, result_json):
         """
