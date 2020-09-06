@@ -97,8 +97,8 @@ file_name = ('/mediakraken/emulation/mame0%s.zip' %
 # only do the parse/import if not processed before
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
-        ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%s.zip'
-         % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
+        ('https://github.com/mamedev/mame/archive/mame0%s.zip'
+         % (common_version.MAME_VERSION,)),
         file_name)
     total_software = 0
     total_software_update = 0
