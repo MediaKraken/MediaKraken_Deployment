@@ -28,7 +28,7 @@ from common import common_network
 
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('bulk_themoviedb_netfetch')
 
-fetch_date = '07_28_2019'
+fetch_date = '09_01_2020'
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
