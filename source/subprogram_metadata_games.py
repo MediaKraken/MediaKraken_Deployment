@@ -92,12 +92,12 @@ if not os.path.exists(file_name):
             + " games(s) metadata added from MAME XML", True)
 
 # load games from hash files
-file_name = ('/mediakraken/emulation/mame0%ss.zip' %
+file_name = ('/mediakraken/emulation/mame0%s.zip' %
              common_version.MAME_VERSION)
 # only do the parse/import if not processed before
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
-        ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%ss.zip'
+        ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%s.zip'
          % (common_version.MAME_VERSION, common_version.MAME_VERSION)),
         file_name)
     total_software = 0
