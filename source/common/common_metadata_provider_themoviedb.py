@@ -103,6 +103,10 @@ class CommonMetadataTMDB:
             common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_by_id":
                                                                   str(err_code)})
             return None
+        except requests.exceptions.Timeout as err_code:
+            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_by_id TO":
+                                                                  str(err_code)})
+            return None
 
     def com_tmdb_metadata_tv_by_id(self, tmdb_id):
         """
@@ -115,6 +119,10 @@ class CommonMetadataTMDB:
                                 (tmdb_id, self.API_KEY), timeout=5)
         except requests.exceptions.ConnectionError as err_code:
             common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_tv_by_id":
+                                                                  str(err_code)})
+            return None
+        except requests.exceptions.Timeout as err_code:
+            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_tv_by_id TO":
                                                                   str(err_code)})
             return None
 
@@ -131,6 +139,10 @@ class CommonMetadataTMDB:
             common_global.es_inst.com_elastic_index('error',
                                                     {"TMDB com_tmdb_metadata_bio_by_id":
                                                          str(err_code)})
+            return None
+        except requests.exceptions.Timeout as err_code:
+            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_bio_by_id TO":
+                                                                  str(err_code)})
             return None
 
     def com_tmdb_meta_bio_image_build(self, result_json):
