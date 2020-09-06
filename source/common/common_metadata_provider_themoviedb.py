@@ -18,7 +18,6 @@
 
 import json
 import os
-import time
 
 import requests
 import tmdbsimple as tmdb
@@ -100,7 +99,9 @@ class CommonMetadataTMDB:
                                 '?api_key=%s&append_to_response=credits,'
                                 'reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as err_code:
+            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_by_id":
+                                                                  str(err_code)})
             return None
 
     def com_tmdb_metadata_tv_by_id(self, tmdb_id):
@@ -109,9 +110,12 @@ class CommonMetadataTMDB:
         """
         try:
             return requests.get('https://api.themoviedb.org/3/tv/%s'
-                                '?api_key=%s&append_to_response=credits,reviews,release_dates,videos' %
+                                '?api_key=%s&append_to_response=credits,'
+                                'reviews,release_dates,videos' %
                                 (tmdb_id, self.API_KEY))
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as err_code:
+            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_tv_by_id":
+                                                                  str(err_code)})
             return None
 
     def com_tmdb_metadata_bio_by_id(self, tmdb_id):
@@ -120,9 +124,13 @@ class CommonMetadataTMDB:
         """
         try:
             return requests.get('https://api.themoviedb.org/3/person/%s'
-                                '?api_key=%s&append_to_response=combined_credits,external_ids,images' %
+                                '?api_key=%s&append_to_response=combined_credits,'
+                                'external_ids,images' %
                                 (tmdb_id, self.API_KEY))
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as err_code:
+            common_global.es_inst.com_elastic_index('error',
+                                                    {"TMDB com_tmdb_metadata_bio_by_id":
+                                                         str(err_code)})
             return None
 
     def com_tmdb_meta_bio_image_build(self, result_json):
@@ -176,7 +184,8 @@ class CommonMetadataTMDB:
         try:
             metadata = movie.info()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Error": str(err_code)})
+            common_global.es_inst.com_elastic_index('error',
+                                                    {"TMDB com_tmdb_meta_by_id": str(err_code)})
             metadata = None
         return metadata
 
@@ -188,7 +197,7 @@ class CommonMetadataTMDB:
         try:
             metadata = movie.credits()
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Credits Error":
+            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_meta_cast_by_id":
                                                                   str(err_code)})
             metadata = None
         return metadata
