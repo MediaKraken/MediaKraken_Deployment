@@ -440,7 +440,7 @@ while True:
                 subprocess.Popen(['python3', json_message['JSON']['program']],
                                  stdout=subprocess.PIPE, shell=False)
         # TODO add record for activity/etc for the user who ran this
-        channel.basic_ack(delivery_tag=method_frame.delivery_tag)
+        channel.basic_ack(delivery_tag=method_frame.delivery_tag, multiple=False)
     time.sleep(1)
 
 # Cancel the consumer and return any pending messages
