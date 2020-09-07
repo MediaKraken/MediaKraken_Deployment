@@ -70,7 +70,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     common_global.es_inst.com_elastic_index('info', {"meta movie tmdb save fetch": tmdb_id})
     # fetch and save json data via tmdb id
     result_json = common_global.api_instance.com_tmdb_metadata_by_id(tmdb_id)
-    print('return movie_fetch_save_tmdb:', result_json, flush=True)
+    common_global.es_inst.com_elastic_index('info', {"meta fetch result": result_json})
     if result_json is not None:
         common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code,
                                                          "header": result_json.headers})
