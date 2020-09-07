@@ -19,30 +19,27 @@
 import json
 
 import pika
-from common import common_config_ini
 from common import common_global
 from common import common_metadata_provider_thetvdb
 from common import common_string
 from common import common_thetvdb
 from guessit import guessit
 
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
-                                       credentials=pika.PlainCredentials('guest', 'guest'))
-connection = pika.BlockingConnection(parameters)
-# setup channels and queue
-channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
-                                    durable=True)
-queue = channel.queue_declare(queue='mkdownload', durable=True)
-channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
-channel.basic_qos(prefetch_count=1)
-
-THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
-# tvshow xml downloader and general api interface
-THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
+# # pika rabbitmq connection
+# parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
+#                                        credentials=pika.PlainCredentials('guest', 'guest'))
+# connection = pika.BlockingConnection(parameters)
+# # setup channels and queue
+# channel = connection.channel()
+# exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
+#                                     durable=True)
+# queue = channel.queue_declare(queue='mkdownload', durable=True)
+# channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
+# channel.basic_qos(prefetch_count=1)
+#
+# THETVDB_CONNECTION = common_thetvdb.CommonTheTVDB(option_config_json)
+# # tvshow xml downloader and general api interface
+# THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
 
 
 def tv_search_tvdb(db_connection, file_name, lang_code='en'):
@@ -121,13 +118,16 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                         common_global.es_inst.com_elastic_index('info', {'eps info': episode_info})
                         if episode_info['filename'] is not None:
                             # thetvdb
+                            # This is the SAVE path.  Do NOT shorten the path to static.
+                            # This is the SAVE path.  Do NOT shorten the path to static.
                             channel.basic_publish(exchange='mkque_download_ex',
                                                   routing_key='mkdownload',
                                                   body=json.dumps(
                                                       {'Type': 'download', 'Subtype': 'image',
                                                        'url': 'https://thetvdb.com/banners/'
                                                               + episode_info['filename'],
-                                                       'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
+                                                       'local': common_global.static_data_directory
+                                                                + '/meta/images/'
                                                                 + episode_info['filename']}),
                                                   properties=pika.BasicProperties(
                                                       content_type='text/plain',
@@ -135,6 +135,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                 else:
                     if xml_show_data['Data']['Episode']['filename'] is not None:
                         # thetvdb
+                        # This is the SAVE path.  Do NOT shorten the path to static.
+                        # This is the SAVE path.  Do NOT shorten the path to static.
                         channel.basic_publish(exchange='mkque_download_ex',
                                               routing_key='mkdownload',
                                               body=json.dumps(
@@ -142,7 +144,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                    'url': 'https://thetvdb.com/banners/'
                                                           + xml_show_data['Data']['Episode'][
                                                               'filename'],
-                                                   'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
+                                                   'local': common_global.static_data_directory
+                                                            + '/meta/images/'
                                                             + xml_show_data['Data']
                                                             ['Episode']['filename']}),
                                               properties=pika.BasicProperties(
@@ -151,6 +154,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
             except:
                 if xml_show_data['Data']['Episode']['filename'] is not None:
                     # thetvdb
+                    # This is the SAVE path.  Do NOT shorten the path to static.
+                    # This is the SAVE path.  Do NOT shorten the path to static.
                     channel.basic_publish(exchange='mkque_download_ex',
                                           routing_key='mkdownload',
                                           body=json.dumps(
@@ -158,7 +163,8 @@ def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                'url': 'https://thetvdb.com/banners/'
                                                       + xml_show_data['Data'][
                                                           'Episode']['filename'],
-                                               'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/'
+                                               'local': common_global.static_data_directory
+                                                        + '/meta/images/'
                                                         + xml_show_data['Data']
                                                         ['Episode']['filename']}),
                                           properties=pika.BasicProperties(content_type='text/plain',

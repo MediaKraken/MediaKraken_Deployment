@@ -58,17 +58,25 @@ def com_meta_image_file_path(media_name, media_type):
     """
     common_global.es_inst.com_elastic_index('info', {"filename": media_name})
     pattern = r'[^\.a-zA-Z]'
+    # This is the SAVE path.  Do NOT shorten the path to static.
+    # This is the SAVE path.  Do NOT shorten the path to static.
+    # This is the SAVE path.  Do NOT shorten the path to static.
+    # This is the SAVE path.  Do NOT shorten the path to static.
+    # This is the SAVE path.  Do NOT shorten the path to static.
     try:
         # first char of filename
         if re.search(pattern, os.path.basename(media_name)[0]):
-            file_path = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/images',
+            file_path = os.path.join(common_global.static_data_directory, '/meta/images',
                                      media_type, random.choice(string.ascii_lowercase))
         else:
-            file_path = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/images',
+            file_path = os.path.join(common_global.static_data_directory + '/meta/images',
                                      media_type, os.path.basename(media_name)[0].lower())
     except:
-        file_path = os.path.join('/mediakraken/web_app_sanic/MediaKraken/static/meta/images',
+        file_path = os.path.join(common_global.static_data_directory + '/meta/images',
                                  media_type, random.choice(string.ascii_lowercase))
+    # This is the SAVE path.  Do NOT shorten the path to static.
+    # This is the SAVE path.  Do NOT shorten the path to static.
+    # This is the SAVE path.  Do NOT shorten the path to static.
     # os.path.join should be adding the terminating slash
     common_global.es_inst.com_elastic_index('info', {'file image path': file_path})
     return file_path

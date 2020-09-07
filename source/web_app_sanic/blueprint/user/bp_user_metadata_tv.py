@@ -1,6 +1,8 @@
+import json
+
 import natsort
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_metadata_tv = Blueprint('name_blueprint_user_metadata_tv',
@@ -16,7 +18,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     """
     db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
-    json_metadata = data_metadata['mm_metadata_tvshow_json']
+    json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
     common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
     if 'episode_run_time' in json_metadata:
         try:
@@ -41,7 +43,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     # build gen list
     data_genres_list = ''
     if 'genres' in json_metadata:
-        for ndx in json_metadata['genres']:
+        for ndx in json_metadata['genres']['name']:
             data_genres_list += (ndx + ', ')
     # poster image
     try:
@@ -82,7 +84,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
                                   methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/metadata/bss_metadata_tv_episode_detail.html')
 @common_global.auth.login_required
-async def url_bp_user_metadata_tvshow_episode_detail_page(request, guid, eps_id):
+async def url_bp_user_metadata_tvshow_episode_detail(request, guid, eps_id):
     """
     Display tvshow episode metadata detail
     """
@@ -122,30 +124,33 @@ async def url_bp_user_metadata_tvshow_list(request):
     """
     Display tvshow metadata list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media_tvshow = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_tv_list(db_connection, offset,
-                                                                   per_page, request['session'][
+                                                                   int(request.ctx.session[
+                                                                           'per_page']),
+                                                                   request.ctx.session[
                                                                        'search_text']):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
-                             row_data['mm_metadata_tvshow_name'], row_data['air_date'],
-                             row_data['image_json']))
-    request['session']['search_page'] = 'meta_tv'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_tv_list_count(
-                                db_connection,
-                                request['session']['search_text']),
-                            record_name='TV show(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+                             row_data['mm_metadata_tvshow_name'],
+                             row_data['air_date'].replace('"', ''),
+                             json.loads(row_data['image_json'])))
+    request.ctx.session['search_page'] = 'meta_tv'
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_meta_tvshow_list',
+                                                                      item_count=await request.app.db_functions.db_meta_tv_list_count(
+                                                                          db_connection,
+                                                                          request.ctx.session[
+                                                                              'search_text']),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media_tvshow': media_tvshow,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -154,13 +159,13 @@ async def url_bp_user_metadata_tvshow_list(request):
                                   methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_tv_season_detail.html')
 @common_global.auth.login_required
-async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
+async def url_bp_user_metadata_tvshow_season_detail(request, guid, season):
     """
     Display metadata of tvshow season detail
     """
     db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
-    json_metadata = data_metadata['mm_metadata_tvshow_json']
+    json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
             data_runtime = json_metadata['Meta']['tvmaze']['runtime']
@@ -216,7 +221,6 @@ async def url_bp_user_metadata_tvshow_season_detail_page(request, guid, season):
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
     common_global.es_inst.com_elastic_index('info', {'dataepskeys': data_episode_keys})
-
     # poster image
     try:
         data_poster_image = data_metadata[3]

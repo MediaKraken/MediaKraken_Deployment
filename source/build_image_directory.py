@@ -19,6 +19,8 @@
 import os
 from string import ascii_lowercase
 
+from common import common_global
+
 image_dir = [
     'backdrop',
     'banner',
@@ -53,7 +55,7 @@ image_dir = [
 def build_image_dirs():
     for image_info in image_dir:
         for i in ascii_lowercase:
-            os.makedirs(os.path.join('/mediakraken/web_app_sanic/static/meta/images',
+            os.makedirs(os.path.join(common_global.static_data_directory + '/meta/images',
                                      image_info, i))
     # since a-z won't be used
-    os.makedirs('/mediakraken/web_app_sanic/static/meta/images/episodes', exist_ok=True)
+    os.makedirs(common_global.static_data_directory + '/meta/images/episodes', exist_ok=True)

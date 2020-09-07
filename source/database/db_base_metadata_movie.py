@@ -21,6 +21,15 @@ import json
 from common import common_global
 
 
+def db_meta_movie_guid_count(self, guid):
+    """
+    # does movie exist already by metadata id
+    """
+    self.db_cursor.execute('select count(*) from mm_metadata_movie'
+                           ' where mm_metadata_guid = %s', (guid,))
+    return self.db_cursor.fetchone()[0]
+
+
 def db_meta_movie_by_media_uuid(self, media_guid):
     """
     # read in metadata via media id
@@ -46,7 +55,7 @@ def db_meta_movie_image_random(self, return_image_type='Poster'):
                            + return_image_type + '\' as image_json,mm_metadata_guid'
                                                  ' from mm_media,mm_metadata_movie'
                                                  ' where mm_media_metadata_guid = mm_metadata_guid'
-                                                 ' and (mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                                                 ' and (mm_metadata_localimage_json->\'Images\'->>\''
                            + return_image_type + '\'' + ')::text != \'null\''
                                                         ' order by random() limit 1')
     try:
@@ -69,12 +78,10 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     common_global.es_inst.com_elastic_index('info', {'castrow': cast_crew_json_row})
     # TODO for dumping 'meta'
     if 'cast' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update(
-            {'Cast': cast_crew_json['cast']})
+        cast_crew_json_row.update({'Cast': cast_crew_json['cast']})
     # TODO for dumping 'meta'
     if 'crew' in cast_crew_json:
-        cast_crew_json_row['Meta']['themoviedb'].update(
-            {'Crew': cast_crew_json['crew']})
+        cast_crew_json_row.update({'Crew': cast_crew_json['crew']})
     common_global.es_inst.com_elastic_index('info', {'upt': cast_crew_json_row})
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
                            ' where mm_metadata_guid = %s',

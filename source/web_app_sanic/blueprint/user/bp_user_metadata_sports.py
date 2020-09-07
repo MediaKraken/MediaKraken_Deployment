@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_metadata_sports = Blueprint('name_blueprint_user_metadata_sports',
@@ -30,31 +30,35 @@ async def url_bp_user_metadata_sports_list(request):
     """
     Display sports metadata list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_meta_sports_list(db_connection,
-                                                                       offset, per_page,
-                                                                       request['session'][
+                                                                       offset,
+                                                                       int(request.ctx.session[
+                                                                               'per_page']),
+                                                                       request.ctx.session[
                                                                            'search_text']):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
-    request['session']['search_page'] = 'meta_sports'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_sports_list_count(
-                                db_connection,
-                                request['session']['search_text']),
-                            record_name='sporting event(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
-    media_data = await request.app.db_functions.db_meta_sports_list(db_connection, offset, per_page,
-                                                                    request['session'][
+    request.ctx.session['search_page'] = 'meta_sports'
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_meta_sports_list',
+                                                                      item_count=await request.app.db_functions.db_meta_sports_list_count(
+                                                                          db_connection,
+                                                                          request.ctx.session[
+                                                                              'search_text']),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
+    media_data = await request.app.db_functions.db_meta_sports_list(db_connection, offset,
+                                                                    int(request.ctx.session[
+                                                                            'per_page']),
+                                                                    request.ctx.session[
                                                                         'search_text'])
     await request.app.db_pool.release(db_connection)
     return {
         'media_sports_list': media_data,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }

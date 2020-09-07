@@ -1,13 +1,13 @@
-import json
-
 from common import common_global
 from sanic import Blueprint
+from sanic import response
 from sanic.response import redirect
 
 blueprint_user_media_status = Blueprint('name_blueprint_user_media_status', url_prefix='/user')
 
 
-@blueprint_user_media_status.route('/user_status_movie/<guid>/<event_type>', methods=['GET', 'POST'])
+@blueprint_user_media_status.route('/user_status_movie/<guid>/<event_type>',
+                                   methods=['GET', 'POST'])
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_status_movie(request, user, guid, event_type):
     """
@@ -15,7 +15,7 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
     """
     common_global.es_inst.com_elastic_index('info', {'movie status': guid, 'event': event_type})
     if event_type == "sync":
-        return redirect(request.app.url_for('user.sync_edit', guid=guid))
+        return redirect(request.app.url_for('name_blueprint_user_sync.url_bp_user_sync_edit', guid=guid))
     else:
         db_connection = await request.app.db_pool.acquire()
         if event_type == "mismatch":
@@ -33,7 +33,7 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
                                                                            db_connection, guid),
                                                                        user.id, event_type)
         await request.app.db_pool.release(db_connection)
-        return json.dumps({'status': 'OK'})
+        return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})
 
 
 @blueprint_user_media_status.route('/user_status_movie_metadata/<guid>/<event_type>',
@@ -49,7 +49,7 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     await request.app.db_functions.db_meta_movie_status_update(db_connection,
                                                                guid, user.id, event_type)
     await request.app.db_pool.release(db_connection)
-    return json.dumps({'status': 'OK'})
+    return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})
 
 
 @blueprint_user_media_status.route('/user_status_tv/<guid>/<event_type>', methods=['GET', 'POST'])
@@ -69,4 +69,4 @@ async def url_bp_user_status_tv(request, guid, event_type):
         pass
     elif event_type == "mismatch":
         pass
-    return redirect(request.app.url_for('user_tv.user_tv'))
+    return redirect(request.app.url_for('name_blueprint_user_tv.url_bp_user_tv'))

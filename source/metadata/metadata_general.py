@@ -38,12 +38,12 @@ from . import metadata_tv_tmdb
 # from . import metadata_tv_tvmaze
 
 
-def metadata_process(thread_db, provider_name, download_data, download_que_type=0):
+def metadata_process(thread_db, provider_name, download_data):
     common_global.es_inst.com_elastic_index('info', {'metadata_process': {'provider': provider_name,
                                                                           'dl json': download_data}})
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
-        metadata_search(thread_db, provider_name, download_data, download_que_type)
+        metadata_search(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Update":
         metadata_update(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
@@ -67,7 +67,7 @@ def metadata_update(thread_db, provider_name, download_data):
     # TODO horribly broken.  Need to add the dlid, that to update, etc
 
 
-def metadata_search(thread_db, provider_name, download_data, download_que_type=0):
+def metadata_search(thread_db, provider_name, download_data):
     """
     Search for metadata via specified provider
     """
@@ -146,7 +146,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
     elif provider_name == 'thegamesdb':
         lookup_halt = True
     elif provider_name == 'themoviedb':
-        if download_que_type == common_global.DLMediaType.Movie.value:
+        if download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
             metadata_uuid, match_result = metadata_provider_themoviedb.movie_search_tmdb(thread_db,
                                                                                          download_data[
                                                                                              'mdq_download_json'][
@@ -159,7 +159,7 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
             else:
                 if metadata_uuid is not None:
                     set_fetch = True
-        elif download_que_type == common_global.DLMediaType.TV.value:
+        elif download_data['mdq_que_type'] == common_global.DLMediaType.TV.value:
             metadata_uuid, match_result = metadata_tv.metadata_tv_lookup(thread_db,
                                                                          download_data[
                                                                              'mdq_download_json'][
@@ -187,28 +187,8 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
                 update_provider = 'themoviedb'
             else:
                 set_fetch = True
-    # elif provider_name == 'thetvdb':
-    #     metadata_uuid, match_result = metadata_tv_tvdb.tv_search_tvdb(thread_db,
-    #                                                                   download_data[
-    #                                                                       'mdq_download_json'][
-    #                                                                       'Path'])
-    #     if metadata_uuid is None:
-    #         if match_result is None:
-    #             lookup_halt = True
-    #         else:
-    #             set_fetch = True
     elif provider_name == 'tv_intros':
         lookup_halt = True
-    # elif provider_name == 'tvmaze':
-    #     metadata_uuid, match_result = metadata_tv_tvmaze.tv_search_tvmaze(thread_db,
-    #                                                                       download_data[
-    #                                                                           'mdq_download_json'][
-    #                                                                           'Path'])
-    #     if metadata_uuid is None:
-    #         if match_result is None:
-    #             update_provider = 'thetvdb'
-    #         else:
-    #             set_fetch = True
     elif provider_name == 'twitch':
         lookup_halt = True
 
@@ -216,17 +196,17 @@ def metadata_search(thread_db, provider_name, download_data, download_que_type=0
     if update_provider is not None:
         thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
         thread_db.db_commit()
-        return metadata_uuid # no need to continue with checks
+        return metadata_uuid  # no need to continue with checks
     # if lookup halt set to ZZ so it doesn't get picked up by metadata dl queue
     if lookup_halt:
         thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
         thread_db.db_commit()
-        return metadata_uuid # no need to continue with checks
+        return metadata_uuid  # no need to continue with checks
     # if set fetch, set provider id and status on dl record
     if set_fetch:
         # first verify a download queue record doesn't exist for this id
         metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],
-                                                         download_que_type,
+                                                         download_data['mdq_id'],
                                                          provider_name, str(match_result))
         common_global.es_inst.com_elastic_index('info', {'metaquelook': metadata_uuid})
         if metadata_uuid is None:
@@ -259,29 +239,23 @@ def metadata_fetch(thread_db, provider_name, download_data):
                                                                       'mdq_download_json'][
                                                                       'MetaNewID'])
     elif provider_name == 'themoviedb':
-        if download_data['mdq_que_type'] == 3:  # person info
+        if download_data['mdq_que_type'] == common_global.DLMediaType.Person.value:
             common_global.es_inst.com_elastic_index('info', {'fetch person bio': provider_name})
             metadata_provider_themoviedb.metadata_fetch_tmdb_person(
                 thread_db, provider_name, download_data)
-        elif download_data['mdq_que_type'] == 0 or download_data['mdq_que_type'] == 1:  # movie
+        elif download_data['mdq_que_type'] == 0 \
+                or download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
             # removing the imdb check.....as com_tmdb_metadata_by_id converts it
             metadata_provider_themoviedb.movie_fetch_save_tmdb(thread_db,
                                                                download_data['mdq_download_json'][
                                                                    'ProviderMetaID'],
                                                                download_data['mdq_download_json'][
                                                                    'MetaNewID'])
-        elif download_data['mdq_que_type'] == 2:  # tv
+        elif download_data['mdq_que_type'] == common_global.DLMediaType.TV.value:
             metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
                                                 download_data['mdq_download_json'][
                                                     'ProviderMetaID'],
                                                 download_data['mdq_download_json']['MetaNewID'])
-    # elif provider_name == 'thetvdb':
-    #     metadata_tv_tvdb.tv_fetch_save_tvdb(thread_db,
-    #                                         download_data['mdq_download_json']['ProviderMetaID'])
-    # elif provider_name == 'tvmaze':
-    #     metadata_tv_tvmaze.tv_fetch_save_tvmaze(thread_db,
-    #                                             download_data['mdq_download_json'][
-    #                                                 'ProviderMetaID'])
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
@@ -289,14 +263,7 @@ def metadata_castcrew(thread_db, provider_name, download_data):
     """
     Fetch cast/crew from specified provider
     """
-    if provider_name == 'themoviedb':
-        metadata_provider_themoviedb.movie_fetch_save_tmdb_cast_crew(thread_db,
-                                                                     download_data[
-                                                                         'mdq_download_json'][
-                                                                         'ProviderMetaID'],
-                                                                     download_data[
-                                                                         'mdq_download_json'][
-                                                                         'MetaNewID'])
+    # removed themoviedb call as it should be done during the initial fetch
     # setup for FetchReview
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),

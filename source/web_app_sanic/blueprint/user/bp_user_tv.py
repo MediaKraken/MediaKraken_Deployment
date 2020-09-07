@@ -1,7 +1,7 @@
 import natsort
 from common import common_global
 from common import common_internationalization
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
 
@@ -15,12 +15,15 @@ async def url_bp_user_tv(request):
     """
     Display tv shows page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     # list_type, list_genre = None, list_limit = 500000, group_collection = False, offset = 0
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_media_tv_list(db_connection, offset, per_page,
-                                                        request['session']['search_text']):
+    for row_data in await request.app.db_functions.db_media_tv_list(db_connection, offset,
+                                                                    int(request.ctx.session[
+                                                                            'per_page']),
+                                                                    request.ctx.session[
+                                                                        'search_text']):
         # 0 - mm_metadata_tvshow_name, 1 - mm_metadata_tvshow_guid, 2 - count(*) mm_count,
         # 3 - mm_metadata_tvshow_localimage_json
         try:
@@ -34,20 +37,22 @@ async def url_bp_user_tv(request):
                           row_data['mm_metadata_tvshow_guid'],
                           None, common_internationalization.com_inter_number_format(
                 row_data['mm_count'])))
-    request['session']['search_page'] = 'media_tv'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_media_tv_list_count(db_connection,
-                                None, None, request['session']['search_text']),
-                            record_name='TV show(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    request.ctx.session['search_page'] = 'media_tv'
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_tv',
+                                                                      item_count=await request.app.db_functions.db_media_tv_list_count(
+                                                                          db_connection,
+                                                                          None, None,
+                                                                          request.ctx.session[
+                                                                              'search_text']),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -64,12 +69,14 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         # it's routed by the event itself in the html via the 'action' clause
         if request.form['status'] == 'Watched':
             await request.app.db_functions.db_meta_tv_status_update(db_connection,
-                guid, user.id, False)
-            return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
+                                                                    guid, user.id, False)
+            return redirect(
+                request.app.url_for('name_blueprint_user_tv.url_bp_user_tv_show_detail', guid=guid))
         elif request.form['status'] == 'Unwatched':
             await request.app.db_functions.db_meta_tv_status_update(db_connection,
-                guid, user.id, True)
-            return redirect(request.app.url_for('user.user_tv_show_detail_page', guid=guid))
+                                                                    guid, user.id, True)
+            return redirect(
+                request.app.url_for('name_blueprint_user_tv.url_bp_user_tv_show_detail', guid=guid))
     else:
         # guid, name, id, metajson
         data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
@@ -180,6 +187,7 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         }
     await request.app.db_pool.release(db_connection)
 
+
 @blueprint_user_tv.route("/user_tv_show_season_detail/<guid>/<season>", methods=['GET', 'POST'])
 @common_global.jinja_template.template('bss_user/media/bss_user_media_tv_show_season_detail.html')
 @common_global.auth.login_required
@@ -238,7 +246,8 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = await request.app.db_functions.db_meta_tv_season_eps_list(db_connection,
-        guid, int(season))
+                                                                                   guid,
+                                                                                   int(season))
     await request.app.db_pool.release(db_connection)
     common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
@@ -281,7 +290,7 @@ async def url_bp_user_tv_show_episode_detail_page(request, guid, season, episode
     """
     db_connection = await request.app.db_pool.acquire()
     data_episode_detail = await request.app.db_functions.db_meta_tv_episode(db_connection,
-        guid, season, episode)
+                                                                            guid, season, episode)
     await request.app.db_pool.release(db_connection)
     # poster image
     try:

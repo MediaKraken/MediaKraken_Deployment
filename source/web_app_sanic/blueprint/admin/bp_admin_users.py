@@ -1,7 +1,7 @@
 import json
 
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_admin_users = Blueprint('name_blueprint_admin_users', url_prefix='/admin')
@@ -39,19 +39,24 @@ async def url_bp_admin_user(request):
     """
     Display user list
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_user_count(db_connection),
-                            record_name='users',
-                            format_total=True,
-                            format_number=True,
-                            )
-    data_users = await request.app.db_functions.db_user_list_name(db_connection, offset, per_page)
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_users',
+                                                                      item_count=await request.app.db_functions.db_user_count(
+                                                                          db_connection),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
+    data_users = await request.app.db_functions.db_user_list_name(db_connection,
+                                                                  offset,
+                                                                  int(request.ctx.session[
+                                                                          'per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'users': data_users,
+        'pagination_links': pagination,
         'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'per_page': int(request.ctx.session['per_page'])
     }

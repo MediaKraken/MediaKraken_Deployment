@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_queue = Blueprint('name_blueprint_user_queue', url_prefix='/user')
@@ -12,29 +12,32 @@ async def url_bp_user_queue(request):
     """
     Display queue page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     # TODO union read all four.....then if first "group"....add header in the html
-    request['session']['search_page'] = 'user_media_queue'
+    request.ctx.session['search_page'] = 'user_media_queue'
     db_connection = await request.app.db_pool.acquire()
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_meta_queue_list_count(
-                                db_connection,
-                                common_global.auth.current_user(request)[0],
-                                request['session']['search_text']),
-                            record_name='queue',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_queue',
+                                                                      item_count=await request.app.db_functions.db_meta_queue_list_count(
+                                                                          db_connection,
+                                                                          common_global.auth.current_user(
+                                                                              request)[0],
+                                                                          request.ctx.session[
+                                                                              'search_text']),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     media_data = await request.app.db_functions.db_meta_queue_list(db_connection,
-                                                                   common_global.auth.current_user(request)[0],
+                                                                   common_global.auth.current_user(
+                                                                       request)[0],
                                                                    offset,
-                                                                   per_page,
-                                                                   request['session'][
+                                                                   int(request.ctx.session[
+                                                                           'per_page']),
+                                                                   request.ctx.session[
                                                                        'search_text'])
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }

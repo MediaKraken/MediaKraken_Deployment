@@ -19,27 +19,8 @@
 import json
 import time
 
-import pika
 import psycopg2
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_themoviedb
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-# pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
-                                       credentials=pika.PlainCredentials('guest', 'guest'))
-connection = pika.BlockingConnection(parameters)
-# setup channels and queue
-channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_download_ex", exchange_type="direct",
-                                    durable=True)
-queue = channel.queue_declare(queue='mkdownload', durable=True)
-channel.queue_bind(exchange="mkque_download_ex", queue='mkdownload')
-channel.basic_qos(prefetch_count=1)
-
-TMDB_CONNECTION = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json)
 
 
 def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
@@ -47,7 +28,7 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     # tmdb data fetch for tv
     """
     common_global.es_inst.com_elastic_index('info', {"meta tv themoviedb save fetch": tmdb_id})
-    result_json = TMDB_CONNECTION.com_tmdb_metadata_tv_by_id(tmdb_id)
+    result_json = common_global.api_instance.com_tmdb_metadata_tv_by_id(tmdb_id)
     common_global.es_inst.com_elastic_index('info', {'tv fetch save themoviedb show': result_json})
     # 504	Your request to the backend server timed out. Try again.
     if result_json is None or result_json.status_code == 504:
@@ -55,13 +36,13 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         # redo fetch due to 504
         tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 200:
-        series_id_json, result_json, image_json \
-            = TMDB_CONNECTION.com_tmdb_meta_info_build(result_json.json())
-        common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
+        series_id, result_json, image_json \
+            = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
+        common_global.es_inst.com_elastic_index('info', {"series": series_id})
         # set and insert the record
         try:
             db_connection.db_metatv_insert_tmdb(metadata_uuid,
-                                                series_id_json,
+                                                series_id,
                                                 result_json['name'],
                                                 json.dumps(result_json),
                                                 json.dumps(image_json))
@@ -80,7 +61,7 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             pass
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
-        time.sleep(10)
+        time.sleep(20)
         # redo fetch due to 504
         tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:

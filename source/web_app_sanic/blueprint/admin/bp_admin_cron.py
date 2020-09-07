@@ -2,10 +2,10 @@ import json
 
 from common import common_global
 from common import common_network_pika
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
-from web_app_sanic.blueprint.admin.forms import CronEditForm
+from web_app_sanic.blueprint.admin.bss_form_cron import BSSCronEditForm
 
 blueprint_admin_cron = Blueprint('name_blueprint_admin_cron', url_prefix='/admin')
 
@@ -19,20 +19,23 @@ async def url_bp_admin_cron(request):
     """
     db_connection = await request.app.db_pool.acquire()
     cron_count = await request.app.db_functions.db_cron_list_count(db_connection, False)
-    page, per_page, offset = Pagination.get_page_args(request)
-    pagination = Pagination(request,
-                            total=cron_count,
-                            record_name='Cron Jobs',
-                            format_total=True,
-                            format_number=True,
-                            )
-    cron_data = await request.app.db_functions.db_cron_list(db_connection, False, offset, per_page)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_cron',
+                                                                      item_count=cron_count,
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
+    cron_data = await request.app.db_functions.db_cron_list(db_connection, False,
+                                                            offset,
+                                                            int(request.ctx.session['per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'media_cron': cron_data,
+        'pagination_links': pagination,
         'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'per_page': int(request.ctx.session['per_page'])
     }
 
 
@@ -55,7 +58,7 @@ async def url_bp_admin_cron_edit(request, guid):
     """
     Edit cron job page
     """
-    form = CronEditForm(request, csrf_enabled=False)
+    form = BSSCronEditForm(request, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate_on_submit():
             request.form['name']
@@ -80,7 +83,7 @@ async def url_bp_admin_cron_run(request, user, guid):
     cron_job_data = await request.app.db_functions.db_cron_info(db_connection, guid)
     cron_json_data = json.loads(cron_job_data['mm_cron_json'])
     # submit the message
-    common_network_pika.com_net_pika_send({'Type': cron_json_data['type'],
+    common_network_pika.com_net_pika_send({'Type': cron_json_data['Type'],
                                            'User': user.id,
                                            'JSON': cron_json_data},
                                           exchange_name=cron_json_data[

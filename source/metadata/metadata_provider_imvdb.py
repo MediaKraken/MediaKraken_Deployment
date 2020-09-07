@@ -19,14 +19,7 @@
 import json
 import time
 
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_imvdb
-
-option_config_json, db_connection = common_config_ini.com_config_read()
-
-IMVDB_CONNECTION = common_metadata_provider_imvdb.CommonMetadataIMVdb(
-    option_config_json['API']['imvdb'])
 
 
 def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
@@ -35,7 +28,7 @@ def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
     """
     common_global.es_inst.com_elastic_index('info', {"meta imvdb save fetch": imvdb_id})
     # fetch and save json data via tmdb id
-    result_json = IMVDB_CONNECTION.com_imvdb_video_info(imvdb_id)
+    result_json = common_global.api_instance.com_imvdb_video_info(imvdb_id)
     common_global.es_inst.com_elastic_index('info', {"meta imvdb code": result_json.status_code})
     if result_json.status_code == 200:
         common_global.es_inst.com_elastic_index('info', {"meta imvdb save fetch result":

@@ -77,7 +77,7 @@ services:
       - MAX_PARALLEL_WORKERS_PER_GATHER=2
       - MAX_PARALLEL_WORKERS=4
       - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
-    command: postgres -c logging_collector=on -c log_destination=stderr -c log_min_duration_statement=0 -c log_connections=off -c log_disconnections=off
+    command: postgres -c logging_collector=on -c log_directory='/var/log/postgresql' -c log_filename='postgresql-%Y-%m-%d_%H%M%S.log' -c log_statement='all' -c log_duration=on -c log_connections=off -c log_disconnections=off
     secrets:
       - db_password
     stop_grace_period: 30s
@@ -88,6 +88,7 @@ services:
     volumes:
       - mediakraken_vol_postgresql:/var/lib/postgresql/data
       - mediakraken_vol_postgresql_backup:/mediakraken/backup
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql
     networks:
       - mediakraken_network_backend
 
@@ -151,7 +152,7 @@ services:
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
-      - ./data/download:/mediakraken/download
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static
     networks:
       - mediakraken_network_backend
     deploy:
@@ -162,9 +163,12 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkfilebeat:dev
     environment:
       - ELASTICSEARCH_HOSTS=th-elk-1:9200
+      - KIBANA_HOSTS=th-elk-1:5601
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql:ro
+      - mediakraken_vol_nginx:/var/log/mediakraken/nginx:ro
     deploy:
       mode: global
 
@@ -540,6 +544,7 @@ volumes:
   mediakraken_vol_phue:
   mediakraken_vol_postgresql:
   mediakraken_vol_postgresql_backup:
+  mediakraken_vol_postgresql_logging:
   mediakraken_vol_rabbit:
   mediakraken_vol_static:
   mediakraken_vol_teamspeak:

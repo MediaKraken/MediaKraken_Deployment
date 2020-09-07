@@ -5,6 +5,6 @@ blueprint_public_about = Blueprint('name_blueprint_public_about', url_prefix='/p
 
 
 @blueprint_public_about.route('/about', methods=["GET"])
-@common_global.jinja_template.template('public/about.html')
+@common_global.jinja_template.template('bss_public/bss_public_about.html')
 async def url_bp_public_about(request):
     return {}

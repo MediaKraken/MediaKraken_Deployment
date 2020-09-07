@@ -24,13 +24,13 @@ from common import common_global
 
 
 # imvdb lookup
-def metadata_music_video_lookup(db_connection, file_name, download_que_id):
+def metadata_music_video_lookup(db_connection, file_name):
     """
     Lookup by name on music video database
     """
     # check for same variables
     if not hasattr(metadata_music_video_lookup, "metadata_last_id"):
-        metadata_music_video_lookup.metadata_last_id = None  # it doesn't exist yet, so initialize it
+        metadata_music_video_lookup.metadata_last_id = None  # it doesn't exist, so initialize it
         metadata_music_video_lookup.metadata_last_band = None
         metadata_music_video_lookup.metadata_last_song = None
     common_global.es_inst.com_elastic_index('info', {'mv file': file_name})

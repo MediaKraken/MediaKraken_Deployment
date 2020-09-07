@@ -25,7 +25,7 @@ class CommonNetworkSSH:
     """
 
     def __init__(self, host, user_name, user_password):
-        # Create an SNMP session to be used for all our requests
+        # Create an SSH session to be used for all our requests
         self.ssh_connection = paramiko.SSHClient()
         self.ssh_connection.set_missing_host_key_policy(
             paramiko.AutoAddPolicy())

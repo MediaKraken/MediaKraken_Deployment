@@ -36,7 +36,7 @@ class CommonMetadataTheSubDB:
     def com_meta_thesubdb_search(self, filename, langs):
         filehash = common_hash.com_hash_thesubdb(filename)
         response = requests.get(self.url, params={'action': 'search', 'hash': filehash},
-                                headers=self.headers)
+                                headers=self.headers, timeout=5)
         if response.status_code == 404:
             # no subtitle found
             return []
@@ -51,5 +51,5 @@ class CommonMetadataTheSubDB:
         return subtitles
 
     def com_meta_thesubdb_download(self, subtitle, stream):
-        response = requests.get(subtitle["link"], headers=self.headers)
+        response = requests.get(subtitle["link"], headers=self.headers, timeout=5)
         stream.write(response.content)

@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_music = Blueprint('name_blueprint_user_music', url_prefix='/user')
@@ -22,12 +22,13 @@ async def url_bp_user_album_list(request):
     """
     Display album page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_album_list(db_connection, offset,
-                                                                       per_page,
-                                                                       request['session'][
+                                                                       int(request.ctx.session[
+                                                                               'per_page']),
+                                                                       request.ctx.session[
                                                                            'search_text']):
         if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
@@ -35,20 +36,18 @@ async def url_bp_user_album_list(request):
         else:
             media.append((row_data['mm_metadata_album_guid'],
                           row_data['mm_metadata_album_name'], None))
-    request['session']['search_page'] = 'music_album'
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_media_album_count(db_connection,
-                                                                                      request[
-                                                                                          'session'][
-                                                                                          'search_page']),
-                            record_name='music album(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
-
+    request.ctx.session['search_page'] = 'music_album'
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_album_list',
+                                                                      item_count=await request.app.db_functions.db_media_album_count(
+                                                                          db_connection,
+                                                                          request.ctx.session[
+                                                                              'search_page']),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {'media': media,
-            'page': page,
-            'per_page': per_page,
-            'pagination': pagination,
+            'pagination_links': pagination,
             }

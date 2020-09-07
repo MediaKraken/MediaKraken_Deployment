@@ -3,10 +3,10 @@ import os
 
 from common import common_global
 from common import common_network_cifs
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
-from web_app_sanic.blueprint.admin.forms import ShareAddEditForm
+from web_app_sanic.blueprint.admin.bss_form_share import BSSShareAddEditForm
 
 blueprint_admin_share = Blueprint('name_blueprint_admin_share', url_prefix='/admin')
 
@@ -18,23 +18,24 @@ async def url_bp_admin_share(request):
     """
     List all share/mounts
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_table_count(db_connection,
-                                                                                'mm_media_share'),
-                            record_name='share(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_share',
+                                                                      item_count=await request.app.db_functions.db_table_count(
+                                                                          db_connection,
+                                                                          'mm_media_share'),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     media_share = await request.app.db_functions.db_share_list(db_connection,
-                                                               offset, per_page)
+                                                               offset, int(request.ctx.session[
+                                                                               'per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'media_dir': media_share,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -68,7 +69,7 @@ async def url_bp_admin_share_edit(request):
     """
     allow user to edit share
     """
-    form = ShareAddEditForm(request)
+    form = BSSShareAddEditForm(request)
     common_global.es_inst.com_elastic_index('info', {'stuff': 'hereeditshare'})
     if request.method == 'POST':
         common_global.es_inst.com_elastic_index('info', {'stuff': 'herepost'})

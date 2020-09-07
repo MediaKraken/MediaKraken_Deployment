@@ -23,7 +23,7 @@
                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Metadata</a>
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_movie.url_bp_user_metadata_movie_list') }}">Movie</a>
-                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_media_colletion.url_bp_user_metadata_movie_collection') }}">Movie Collection</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_media_collection.url_bp_user_metadata_movie_collection') }}">Movie Collection</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_tv.url_bp_user_metadata_tvshow_list') }}">TV Show</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_music.url_bp_user_metadata_music_album_list') }}">Music Album</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_sports.url_bp_user_metadata_sports_list') }}">Sports</a>
@@ -42,8 +42,7 @@
     </nav>
     <!-- End: Navigation with Button -->
     {% if media_game %}
-    {{ pagination.info }}
-    {{ pagination.links }}
+    {{ pagination_links }}
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
@@ -66,7 +65,7 @@
             </tbody>
         </table>
     </div>
-    {{ pagination.links }}
+    {{ pagination_links }}
     {% else %}
     <p id="general_text">No game metadata found.</p>
     {% endif %}
@@ -77,7 +76,7 @@
     </footer>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
 </body>
 {% endblock %}

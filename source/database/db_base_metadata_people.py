@@ -79,15 +79,13 @@ def db_meta_person_by_name(self, person_name):
     return self.db_cursor.fetchone()
 
 
-def db_meta_person_id_count(self, host_type, guid):
+def db_meta_person_id_count(self, guid):
     """
     # does person exist already by host/id
     """
     # TODO little bobby tables
     self.db_cursor.execute('select count(*) from mm_metadata_person'
-                           ' where mmp_person_media_id @> \'{"' +
-                           host_type + '":"'
-                           + str(guid) + '"}\'')
+                           ' where mmp_person_media_id = %s' % guid)
     return self.db_cursor.fetchone()[0]
 
 
@@ -98,13 +96,13 @@ def db_meta_person_id_count(self, host_type, guid):
 # and mmp_person_meta_json @> '{"id":169}'
 
 
-def db_meta_person_insert(self, person_name, media_id_json, person_json,
+def db_meta_person_insert(self, person_name, media_id, person_json,
                           image_path=None):
     """
     # insert person
     """
     common_global.es_inst.com_elastic_index('info', {'db pers insert': {'name': person_name,
-                                                                        'id': media_id_json,
+                                                                        'id': media_id,
                                                                         'person': person_json,
                                                                         'image': image_path}})
     new_guid = str(uuid.uuid4())
@@ -112,7 +110,7 @@ def db_meta_person_insert(self, person_name, media_id_json, person_json,
                            ' mmp_person_media_id,'
                            ' mmp_person_meta_json,'
                            ' mmp_person_image)'
-                           ' values (%s,%s,%s,%s,%s)', (new_guid, person_name, media_id_json,
+                           ' values (%s,%s,%s,%s,%s)', (new_guid, person_name, media_id,
                                                         person_json, image_path))
     self.db_commit()
     return new_guid
@@ -122,10 +120,9 @@ def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person
     """
     update the person bio/etc
     """
-    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s, '
-                           'mmp_person_image = %s'
-                           ' where mmp_person_media_id->\''
-                           + provider_name + '\' ? %s',
+    self.db_cursor.execute('update mm_metadata_person set mmp_person_meta_json = %s,'
+                           ' mmp_person_image = %s'
+                           ' where mmp_person_media_id = %s',
                            (json.dumps(person_bio), person_image, str(provider_uuid)))
     self.db_commit()
 
@@ -154,7 +151,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 # TODO do an upsert instead
-                if self.db_meta_person_id_count(meta_type, person_id) > 0:
+                if self.db_meta_person_id_count(person_id) > 0:
                     common_global.es_inst.com_elastic_index('info', {
                         'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
@@ -168,8 +165,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                             person_id)}))
                     # insert person record
                     self.db_meta_person_insert(person_name,
-                                               json.dumps(
-                                                   {meta_type: str(person_id)}),
+                                               person_id,
                                                None, None)
     else:
         if meta_type == "themoviedb":
@@ -196,8 +192,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                                                         person_id)}))
                 # insert person record
                 self.db_meta_person_insert(person_name,
-                                           json.dumps(
-                                               {meta_type: str(person_id)}),
+                                           person_id,
                                            None, None)
 
 

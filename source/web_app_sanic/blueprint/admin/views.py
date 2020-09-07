@@ -1,3 +1,5 @@
+import os
+
 ALLOWED_EXTENSIONS = {'py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 outside_ip = None

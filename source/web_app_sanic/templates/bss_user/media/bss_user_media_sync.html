@@ -1,0 +1,161 @@
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>MKSanic</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
+</head>
+
+<body>
+    <!-- Start: Navigation with Button -->
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
+        <div class="container"><a class="navbar-brand" href="/bss_user/bss_user_home.html">MediaKraken</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div
+                class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="#">Sync</a></li>
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Metadata</a>
+                        <div class="dropdown-menu" role="menu">
+                            <!-- Start: metadata_movie --><a class="dropdown-item" role="presentation" href="bss_user_metadata_movie.html">Movie</a>
+                            <!-- End: metadata_movie --><a class="dropdown-item" role="presentation" href="bss_user_metadata_movie_collection.html">Movie Collection</a><a class="dropdown-item" role="presentation" href="bss_user_metadata_tv.html">TV Show</a><a class="dropdown-item"
+                                role="presentation" href="bss_user_metadata_music_album.html">Music Album</a><a class="dropdown-item" role="presentation" href="bss_user_metadata_sports.html">Sports</a><a class="dropdown-item" role="presentation" href="bss_user_metadata_game.html">Games</a>
+                            <a
+                                class="dropdown-item" role="presentation" href="bss_user_metadata_game_systems.html">Game Systems</a><a class="dropdown-item" role="presentation" href="bss_user_metadata_person.html">Person</a><a class="dropdown-item" role="presentation" href="bss_user_metadata_book.html">Book/Periodical</a><a class="dropdown-item"
+                                    role="presentation" href="bss_user_metadata_music_video.html">Music Video</a></div>
+                    </li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/bss_user/bss_user_profile.html">Profile</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/bss_admin/bss_admin_home.html">Admin</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="#">About</a></li>
+                </ul><span class="navbar-text actions"> <a class="login" href="#">Log Out</a></span></div>
+        </div>
+    </nav>
+    <!-- End: Navigation with Button -->
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <div class="container-fluid">
+                <fieldset>
+                    <legend><strong>Media Sync Jobs</strong><br></legend><div>
+    {% if media %}
+    {{ pagination_links }}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Schedule</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                    <th>Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row_data in media %}
+                <tr>
+                    <td>{{ loop.index + (page - 1) * per_page }}</td>
+                    <td>{{ row_data[1] }}</td>
+                    <td>{{ row_data[2] }}</td>
+                    <td>{{ row_data[3] }}</td>
+                    <td>
+                        <a href= "{{ url_for('admins_cron.admin_cron_run', guid=row_data[0]) }}" id="play_button">
+                            <img class="b-lazy" src="{{ url_for('static', filename='img/navigation/play.png') }}" height="20" width="20">
+                        </a>
+                    </td>
+                    <div class="pull-right action-buttons">
+                        <td>
+                            <p><button> <a data-id={{ row_data[0] }} data-toggle="modal" data-target="#editCronModal" onclick="EditCron(this)" ><span class="fas pencil-alt"></span></button></a>
+                        </td>
+                        <td>
+                            <p><button> <a data-id={{ row_data[0] }} onclick="ConfirmCronDelete(this)" ><img class="b-lazy" src="{{ url_for('static', filename='img/16/rubbish-bin.png') }}" height="20" width="20"></button></a>
+                        </td>
+                    </div>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="confirm_cron" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src="{{ url_for('static', filename='img/16/rubbish-bin.png') }}" height="20" width="20"></button>
+                    <h4 class="modal-title custom_align" id="Heading">Run this sync</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to run this sync?</div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" onclick="Cron_Run()" ><span class="fas check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src="{{ url_for('static', filename='img/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editCronModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="editModalLabel">Update Sync</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">Path:</label>
+                            <input type="text" class="form-control" id="editPath">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Media Class:</label>
+                            <textarea class="form-control" id="editClass"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnCronUpdate">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete_cron" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><img class="b-lazy" src="{{ url_for('static', filename='images/16/rubbish-bin.png') }}" height="20" width="20"></button>
+                    <h4 class="modal-title custom_align" id="Heading">Cancel this Sync</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="fas exclamation-triangle"></span> Are you sure you want to cancel this sync?</div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success" onclick="Cron_Delete()" ><span class="fas check-circle"></span> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><img class="b-lazy" src="{{ url_for('static', filename='img/16/rubbish-bin.png') }}" height="20" width="20"> No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ pagination_links }}
+    {% else %}
+    <p id="general_text">No sync jobs found.</p>
+    {% endif %}
+                </div></fieldset>
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
+            </div>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
+</body>
+{% endblock %}

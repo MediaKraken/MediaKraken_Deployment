@@ -1,5 +1,5 @@
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 
 blueprint_user_media_iradio = Blueprint('name_blueprint_user_media_iradio', url_prefix='/user')
@@ -12,15 +12,19 @@ async def url_bp_user_iradio_list(request):
     """
     Display main page for internet radio
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    if request['session']['search_text'] is not None:
-        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset, per_page,
-                                                                  search_value=request['session'][
+    if request.ctx.session['search_text'] is not None:
+        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset,
+                                                                  int(request.ctx.session[
+                                                                          'per_page']),
+                                                                  search_value=request.ctx.session[
                                                                       'search_text'])
     else:
-        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset, per_page)
+        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset,
+                                                                  int(request.ctx.session[
+                                                                          'per_page']))
     await request.app.db_pool.release(db_connection)
     return {}
 

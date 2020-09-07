@@ -68,7 +68,7 @@ def com_net_yt_top_tracks(playlist_type):
     elif playlist_type == 'alt rock':
         yt_link = 'https://www.youtube.com/playlist?list=PL47oRh0-pTouthHPv6AbALWPvPJHlKiF7'
     if yt_link is not None:
-        req_results = requests.get(yt_link)
+        req_results = requests.get(yt_link, timeout=5)
         data = req_results.text
         soup = BeautifulSoup(data)
         images = soup.select(".yt-thumb-clip")

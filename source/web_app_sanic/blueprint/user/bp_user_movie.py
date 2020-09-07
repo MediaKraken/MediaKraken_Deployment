@@ -28,21 +28,27 @@ async def url_bp_user_movie_detail(request, user, guid):
                 rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
                 route_key='mkque')
-            return redirect(request.app.url_for('user_playback.user_video_player_videojs',
-                                                mtype='hls',
-                                                guid=request.form['Video_Track'], chapter=1,
-                                                audio=request.form['Video_Play_Audio_Track'],
-                                                sub=request.form['Video_Play_Subtitles']))
+            return redirect(
+                request.app.url_for('name_blueprint_user_playback_video.user_video_player_videojs',
+                                    mtype='hls',
+                                    guid=request.form['Video_Track'], chapter=1,
+                                    audio=request.form['Video_Play_Audio_Track'],
+                                    sub=request.form['Video_Play_Subtitles']))
         if request.form['status'] == 'Watched':
             await request.app.db_functions.db_meta_movie_status_update(db_connection,
                                                                        guid, user.id, False)
-            return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
+            return redirect(
+                request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
+                                    guid=guid))
         elif request.form['status'] == 'Unwatched':
             await request.app.db_functions.db_meta_movie_status_update(db_connection,
                                                                        guid, user.id, True)
-            return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
+            return redirect(
+                request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
+                                    guid=guid))
         elif request.form['status'] == 'Sync':
-            return redirect(request.app.url_for('user_sync.sync_edit', guid=guid))
+            return redirect(
+                request.app.url_for('name_blueprint_user_sync.url_bp_user_sync_edit', guid=guid))
         elif request.form['status'] == 'Cast':
             # TODO submit cast comment via rabbitmq
             # grab the guid from the comboindex
@@ -60,7 +66,9 @@ async def url_bp_user_movie_detail(request, user, guid):
                                                        0] + '\" http://localhost/stream.ffm'),
                                              stdout=subprocess.PIPE, shell=False)
             common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
-            return redirect(request.app.url_for('user_movie.movie_detail', guid=guid))
+            return redirect(
+                request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
+                                    guid=guid))
     else:
         metadata_data = await request.app.db_functions.db_meta_movie_by_media_uuid(db_connection,
                                                                                    guid)
@@ -72,14 +80,14 @@ async def url_bp_user_movie_detail(request, user, guid):
         try:
             # don't bother checking for NONE as that's valid
             data_poster_image = \
-                metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Poster']
+                metadata_data['mm_metadata_localimage_json']['Poster']
         except:
             data_poster_image = None
         # background image
         try:
             # don't bother checking for NONE as that's valid
             data_background_image = \
-                metadata_data['mm_metadata_localimage_json']['Images']['themoviedb']['Backdrop']
+                metadata_data['mm_metadata_localimage_json']['Backdrop']
         except:
             data_background_image = None
 

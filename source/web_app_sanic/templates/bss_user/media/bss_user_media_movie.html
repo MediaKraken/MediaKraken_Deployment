@@ -3,12 +3,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>MKSanic</title>
-    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link href="{{ url_for('static', filename='fonts/fontawesome-all.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/styles.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/styles.min.css">
 </head>
-
 <body>
     <!-- Start: Navigation with Button -->
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-button">
@@ -22,7 +21,7 @@
                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Metadata</a>
                         <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_movie.url_bp_user_metadata_movie_list') }}">Movie</a>
-                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_media_colletion.url_bp_user_metadata_movie_collection') }}">Movie Collection</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_media_collection.url_bp_user_metadata_movie_collection') }}">Movie Collection</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_tv.url_bp_user_metadata_tvshow_list') }}">TV Show</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_music.url_bp_user_metadata_music_album_list') }}">Music Album</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for('name_blueprint_user_metadata_sports.url_bp_user_metadata_sports_list') }}">Sports</a>
@@ -48,7 +47,7 @@
     </footer>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
 </body>
 {% endblock %}

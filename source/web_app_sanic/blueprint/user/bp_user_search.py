@@ -105,42 +105,56 @@ async def url_bp_user_search_nav_media(request):
     """
     # TODO!
     common_global.es_inst.com_elastic_index('info', {
-        "search session": request['session']['search_page']})
-    request['session']['search_text'] = request.form.get('nav_search').strip()
-    if request['session']['search_page'] == 'media_3d':
-        return redirect(request.app.url_for('user_3d.user_3d_list'))
-    elif request['session']['search_page'] == 'media_album':
-        return redirect(request.app.url_for('user_music.user_album_list_page'))
-    elif request['session']['search_page'] == 'media_games':
-        return redirect(request.app.url_for('user_games.user_games_list'))
-    elif request['session']['search_page'] == 'media_movie':
-        return redirect(request.app.url_for('user_movie_genre.user_movie_page', genre='All'))
-    elif request['session']['search_page'] == 'media_music_video':
-        return redirect(request.app.url_for('user_music_video.user_music_video_list'))
-    elif request['session']['search_page'] == 'media_periodicals':
-        return redirect(request.app.url_for('user_periodicals.user_books_list'))
-    elif request['session']['search_page'] == 'media_sports':
-        return redirect(request.app.url_for('user_sports.user_sports_page'))
-    elif request['session']['search_page'] == 'media_tv':
-        return redirect(request.app.url_for('user_tv.user_tv_page'))
+        "search session": request.ctx.session['search_page']})
+    request.ctx.session['search_text'] = request.form.get('nav_search').strip()
+    if request.ctx.session['search_page'] == 'media_3d':
+        return redirect(request.app.url_for('name_blueprint_user_media_3d.url_bp_user_media_3d'))
+    elif request.ctx.session['search_page'] == 'media_album':
+        return redirect(request.app.url_for('name_blueprint_user_music.url_bp_user_album_list'))
+    elif request.ctx.session['search_page'] == 'media_games':
+        return redirect(request.app.url_for('name_blueprint_user_game.url_bp_user_game'))
+    elif request.ctx.session['search_page'] == 'media_movie':
+        return redirect(
+            request.app.url_for('name_blueprint_user_media_genre.url_bp_user_media_genre',
+                                genre='All'))
+    elif request.ctx.session['search_page'] == 'media_music_video':
+        return redirect(
+            request.app.url_for('name_blueprint_user_music_video.url_bp_user_music_video_list'))
+    elif request.ctx.session['search_page'] == 'media_periodicals':
+        return redirect(
+            request.app.url_for('name_blueprint_user_periodical.url_bp_user_periodical_list'))
+    elif request.ctx.session['search_page'] == 'media_sports':
+        return redirect(request.app.url_for('name_blueprint_user_sports.url_bp_user_sports'))
+    elif request.ctx.session['search_page'] == 'media_tv':
+        return redirect(request.app.url_for('name_blueprint_user_tv.url_bp_user_tv'))
     # begin metadata section
-    elif request['session']['search_page'] == 'meta_album':
-        return redirect(request.app.url_for('user_metadata_album.metadata_music_album_list'))
-    elif request['session']['search_page'] == 'meta_game':
-        return redirect(request.app.url_for('user_metadata_game.metadata_game_list'))
-    elif request['session']['search_page'] == 'meta_game_system':
-        return redirect(request.app.url_for('user_metadata_game_system.metadata_game_system_list'))
-    elif request['session']['search_page'] == 'meta_movie':
-        return redirect(request.app.url_for('user_metadata_movie.metadata_movie_list'))
-    elif request['session']['search_page'] == 'meta_movie_collection':
-        return redirect(request.app.url_for('user_movie_collection.metadata_movie_collection_list'))
-    elif request['session']['search_page'] == 'meta_music_video':
-        return redirect(request.app.url_for('user_metadata_music_video.metadata_music_video_list'))
-    elif request['session']['search_page'] == 'meta_people':
-        return redirect(request.app.url_for('user_metadata_people.metadata_person_list'))
-    elif request['session']['search_page'] == 'meta_periodical':
-        return redirect(request.app.url_for('user_metadata_periodical.metadata_periodical_list'))
-    elif request['session']['search_page'] == 'meta_sports':
-        return redirect(request.app.url_for('user_metadata_sports.metadata_sports_list'))
-    elif request['session']['search_page'] == 'meta_tv':
-        return redirect(request.app.url_for('user_metadata_tv.metadata_tvshow_list'))
+    elif request.ctx.session['search_page'] == 'meta_album':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_metadata_music.url_bp_user_metadata_music_album_list'))
+    elif request.ctx.session['search_page'] == 'meta_game':
+        return redirect(
+            request.app.url_for('name_blueprint_user_metadata_game.url_bp_user_metadata_game'))
+    elif request.ctx.session['search_page'] == 'meta_game_system':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_metadata_game_system.url_bp_user_metadata_game_system'))
+    elif request.ctx.session['search_page'] == 'meta_movie':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_metadata_movie.url_bp_user_metadata_movie_list'))
+    elif request.ctx.session['search_page'] == 'meta_movie_collection':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_media_collection.url_bp_user_metadata_movie_collection'))
+    elif request.ctx.session['search_page'] == 'meta_music_video':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_metadata_music_video.url_bp_user_metadata_music_video'))
+    elif request.ctx.session['search_page'] == 'meta_people':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_metadata_people.url_bp_user_metadata_person_list'))
+    elif request.ctx.session['search_page'] == 'meta_periodical':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_metadata_periodical.url_bp_user_metadata_periodical'))
+    elif request.ctx.session['search_page'] == 'meta_sports':
+        return redirect(request.app.url_for(
+            'name_blueprint_user_metadata_sports.url_bp_user_metadata_sports_list'))
+    elif request.ctx.session['search_page'] == 'meta_tv':
+        return redirect(
+            request.app.url_for('name_blueprint_user_metadata_tv.url_bp_user_metadata_tvshow_list'))

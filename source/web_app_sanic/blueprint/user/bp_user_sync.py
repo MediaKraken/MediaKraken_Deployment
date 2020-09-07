@@ -1,7 +1,7 @@
 import json
 
 from common import common_global
-from python_paginate.web.sanic_paginate import Pagination
+from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
 
@@ -9,29 +9,31 @@ blueprint_user_sync = Blueprint('name_blueprint_user_sync', url_prefix='/user')
 
 
 @blueprint_user_sync.route('/user_sync')
-@common_global.jinja_template.template('bss_user/user_sync.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_sync.html')
 @common_global.auth.login_required
 async def url_bp_user_sync_display_all(request):
     """
     Display sync page
     """
-    page, per_page, offset = Pagination.get_page_args(request)
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     db_connection = await request.app.db_pool.acquire()
     # 0 - mm_sync_guid uuid, 1 - mm_sync_path, 2 - mm_sync_path_to, 3 - mm_sync_options_json
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_table_count(db_connection,
-                                                                                'mm_sync'),
-                            record_name='sync job(s)',
-                            format_total=True,
-                            format_number=True,
-                            )
-    media_data = await request.app.db_functions.db_sync_list(db_connection, offset, per_page)
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/user/user_sync',
+                                                                      item_count=await request.app.db_functions.db_table_count(
+                                                                          db_connection,
+                                                                          'mm_sync'),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
+    media_data = await request.app.db_functions.db_sync_list(db_connection, offset,
+                                                             int(request.ctx.session[
+                                                                     'per_page']))
     await request.app.db_pool.release(db_connection)
     return {
         'media_sync': media_data,
-        'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'pagination_links': pagination,
     }
 
 
@@ -71,7 +73,8 @@ async def url_bp_user_sync_edit(request, guid):
                                                       request.form['target_output_path'],
                                                       json.dumps(sync_json))
         await request.app.db_pool.release(db_connection)
-        return redirect(request.app.url_for('user.movie_detail', guid=guid))
+        return redirect(
+            request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail', guid=guid))
     form = SyncEditForm(request, csrf_enabled=False)
     if form.validate_on_submit():
         pass

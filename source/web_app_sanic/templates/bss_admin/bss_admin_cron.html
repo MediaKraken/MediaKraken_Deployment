@@ -42,8 +42,7 @@
                     <fieldset>
                         <legend><strong>Cron/Housekeeping Jobs</strong><br></legend><div>
                         {% if media_cron %}
-                        {{ pagination.info }}
-                        {{ pagination.links }}
+                        {{ pagination_links }}
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -126,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{ pagination.links }}
+                        {{ pagination_links }}
                         {% else %}
                         <p id="general_text">No cron jobs found.</p>
                         {% endif %}

@@ -52,7 +52,7 @@ class CommonNetworkProxMox:
         """
         if request_type == "get":
             return requests.get(self.full_url + api_call_type, verify=False,
-                                cookies=self.prox_ticket).json()
+                                cookies=self.prox_ticket, timeout=5).json()
         else:
             return requests.post(self.full_url + api_call_type, verify=False,
                                  data=post_data,
@@ -713,7 +713,8 @@ def com_net_prox_create_start_container(PROX_CONNECTION, JENKINS_BUILD_VIM, imag
         print('create JENKINS_BUILD_VIM', flush=True)
         print((PROX_CONNECTION.com_net_prox_node_lxc_create('pve', JENKINS_BUILD_VIM, 4096,
                                                             image_path,
-                                                            'ZFS_VM', 'alpine', 8, 'metaman')), flush=True)
+                                                            'ZFS_VM', 'alpine', 8, 'metaman')),
+              flush=True)
         # keep an eye on task and see when its completed
         # while node.tasks(taskid).status()['status'] == 'running':
         #        time.sleep(1)

@@ -18,16 +18,21 @@
 
 import json
 
-import psycopg2
+import psycopg2.extras
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 
-# start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_update_version')
+dont_force_localhost = True
 
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
+if dont_force_localhost:
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_update_version')
+    # open the database
+    option_config_json, db_connection = common_config_ini.com_config_read()
+else:
+    # open the database
+    option_config_json, db_connection = common_config_ini.com_config_read(force_local=True)
 
 # not really needed if common_version.DB_VERSION == 4:
 
@@ -234,19 +239,19 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 ########### all before this are historical at this point
 
-if db_connection.db_version_check() == 19:
-    # hardware device (receivers, etc, for remote control)
-    db_connection.db_query('create table IF NOT EXISTS mm_hardware (mm_hardware_id uuid'
-                           ' CONSTRAINT mm_hardware_id primary key, mm_hardware_manufacturer text,'
-                           ' mm_hardware_model text, mm_hardware_json jsonb)')
-    if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
-        db_connection.db_query(
-            'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
-    if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
-        db_connection.db_query(
-            'CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
-    db_connection.db_version_update(20)
-    db_connection.db_commit()
+# if db_connection.db_version_check() == 19:
+#     # hardware device (receivers, etc, for remote control)
+#     db_connection.db_query('create table IF NOT EXISTS mm_hardware (mm_hardware_id uuid'
+#                            ' CONSTRAINT mm_hardware_id primary key, mm_hardware_manufacturer text,'
+#                            ' mm_hardware_model text, mm_hardware_json jsonb)')
+#     if db_connection.db_table_index_check('mm_hardware_idx_manufacturer') is None:
+#         db_connection.db_query(
+#             'CREATE INDEX mm_hardware_idx_manufacturer ON mm_hardware(mm_hardware_manufacturer)')
+#     if db_connection.db_table_index_check('mm_hardware_idx_model') is None:
+#         db_connection.db_query(
+#             'CREATE INDEX mm_hardware_idx_model ON mm_hardware(mm_hardware_model)')
+#     db_connection.db_version_update(20)
+#     db_connection.db_commit()
 
 # TODO add mm_metadata_album_image to mm_metadata_album
 
@@ -269,41 +274,37 @@ if db_connection.db_version_check() == 19:
            'password': None},
 '''
 
-if db_connection.db_version_check() < 22:
-    # game category
-    db_connection.db_query('create table IF NOT EXISTS mm_game_category (gc_id uuid'
-                           ' CONSTRAINT gc_id_pk primary key, gc_category text)')
-    if db_connection.db_table_index_check('gc_category_idx_name') is None:
-        db_connection.db_query('CREATE INDEX gc_category_idx_name'
-                               ' ON mm_game_category(gc_category)')
-    db_connection.db_version_update(22)
-    db_connection.db_commit()
-
-# add mm_metadata_localimage_json to mm_metadata_game_software_info
-# add mm_metadata_localimage_json to mm_metadata_game_systems_info
+# if db_connection.db_version_check() < 22:
+#     # game category
+#     db_connection.db_query('create table IF NOT EXISTS mm_game_category (gc_id uuid'
+#                            ' CONSTRAINT gc_id_pk primary key, gc_category text)')
+#     if db_connection.db_table_index_check('gc_category_idx_name') is None:
+#         db_connection.db_query('CREATE INDEX gc_category_idx_name'
+#                                ' ON mm_game_category(gc_category)')
+#     db_connection.db_version_update(22)
+#     db_connection.db_commit()
 
 #         "MetadataImageLocal": false to metadata json options
 
-# add api for [api][dirble]
 
 if db_connection.db_version_check() < 23:
     # retro update
     db_connection.db_cron_insert('Retro game data', 'Grab updated metadata for retro game(s)',
                                  False, 'Days 1', psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
                                  json.dumps({'exchange_key': 'mkque_ex', 'route_key': 'mkque',
-                                             'type': 'Cron Run',
+                                             'Type': 'Cron Run',
                                              'program': '/mediakraken/subprogram_metadata_games.py'}),
 
                                  )
     db_connection.db_version_update(23)
     db_connection.db_commit()
 
-if db_connection.db_version_check() < 24:
-    options_json, status_json = db_connection.db_opt_status_read()
-    options_json['Docker Instances']['elk'] = False
-    db_connection.db_opt_update(json.dumps(options_json))
-    db_connection.db_version_update(24)
-    db_connection.db_commit()
+# if db_connection.db_version_check() < 24:
+#     options_json, status_json = db_connection.db_opt_status_read()
+#     options_json['Docker Instances']['elk'] = False
+#     db_connection.db_opt_update(json.dumps(options_json))
+#     db_connection.db_version_update(24)
+#     db_connection.db_commit()
 
 if db_connection.db_version_check() < 25:
     options_json, status_json = db_connection.db_opt_status_read()
@@ -328,10 +329,9 @@ if db_connection.db_version_check() < 26:
         ' CONSTRAINT mm_game_server_id primary key,'
         ' mm_game_server_name text,'
         ' mm_game_server_json jsonb)')
-    if db_connection.db_table_index_check('mm_game_server_name_idx') is None:
-        db_connection.db_query(
-            'CREATE INDEX mm_game_server_name_idx'
-            ' ON mm_game_dedicated_servers(mm_game_server_name)')
+    db_connection.db_query(
+        'CREATE INDEX mm_game_server_name_idx'
+        ' ON mm_game_dedicated_servers(mm_game_server_name)')
     db_connection.db_version_update(26)
     db_connection.db_commit()
 
@@ -340,17 +340,34 @@ if db_connection.db_version_check() < 27:
     db_connection.db_query(
         'create table IF NOT EXISTS mm_user_queue (mm_user_queue_id uuid'
         ' CONSTRAINT mm_user_queue_id primary key,'
-        ' mm_user_queue_name_idx text,'
+        ' mm_user_queue_name text,'
         ' mm_user_queue_user_id uuid,'
-        ' mm_user_queue_media_type smallint,'
-        ' mm_user_queue_media_guid uuid)')
-    if db_connection.db_table_index_check('mm_user_queue_name_idx') is None:
-        db_connection.db_query(
-            'CREATE INDEX mm_user_queue_name_idx'
-            ' ON mm_user_queue(mm_user_queue_name)')
-    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_crc32 text;')
-    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info ADD COLUMN gi_game_info_sha1 text;')
+        ' mm_user_queue_media_type smallint)')
+    db_connection.db_query('CREATE INDEX mm_user_queue_name_idx'
+                           ' ON mm_user_queue(mm_user_queue_name)')
+    db_connection.db_query('CREATE INDEX mm_user_queue_user_id_idx'
+                           ' ON mm_user_queue(mm_user_queue_user_id)')
+    db_connection.db_query('CREATE INDEX mm_user_queue_media_type_idx'
+                           ' ON mm_user_queue(mm_user_queue_media_type)')
     db_connection.db_version_update(27)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 28:
+    options_json, status_json = db_connection.db_opt_status_read()
+    db_connection.db_query(
+        'ALTER TABLE mm_metadata_tvshow DROP COLUMN mm_metadata_media_tvshow_id;')
+    db_connection.db_query(
+        'ALTER TABLE mm_metadata_tvshow ADD COLUMN mm_metadata_media_tvshow_id integer;')
+    db_connection.db_query('CREATE INDEX mm_metadata_media_tvshow_id_idx'
+                           ' ON mm_metadata_tvshow(mm_metadata_media_tvshow_id)')
+    db_connection.db_version_update(28)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 29:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'MAME': {'Version': 224}})
+    db_connection.db_opt_update(json.dumps(options_json))
+    db_connection.db_version_update(29)
     db_connection.db_commit()
 
 # close the database

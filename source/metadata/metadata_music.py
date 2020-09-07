@@ -34,7 +34,7 @@ from common import common_global
 #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
 #  "bits_per_raw_sample": "16"}], "chapters": []}
 
-def metadata_music_lookup(db_connection, download_que_json, download_que_id):
+def metadata_music_lookup(db_connection, download_json):
     """
     Music lookup
     """
@@ -42,10 +42,10 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
     if not hasattr(metadata_music_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
         metadata_music_lookup.metadata_last_id = None
-    common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_que_json})
+    common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_json})
     metadata_uuid = None
     # get ffmpeg data from database
-    ffmpeg_data_json = db_connection.db_ffprobe_data(download_que_json['MediaID'])
+    ffmpeg_data_json = db_connection.db_ffprobe_data(download_json['MediaID'])
     common_global.es_inst.com_elastic_index('info', {"meta music ffmpeg": ffmpeg_data_json})
     # see if record is stored locally as long as there is valid tagging
     if 'format' in ffmpeg_data_json \
@@ -59,16 +59,16 @@ def metadata_music_lookup(db_connection, download_que_json, download_que_id):
         if db_result is not None:
             metadata_uuid = db_result['mm_metadata_music_guid']
     if metadata_uuid is None:
-        metadata_uuid = download_que_json['MetaNewID']
+        metadata_uuid = download_json['MetaNewID']
         # no matches on local database
         # search musicbrainz since not matched above via DB
-        download_que_json.update({'Status': 'Search'})
+        download_json.update({'Status': 'Search'})
         # save the updated status
         db_connection.db_begin()
-        db_connection.db_download_update(json.dumps(download_que_json),
-                                         download_que_id)
+        db_connection.db_download_update(json.dumps(download_json),
+                                         download_json['mdq_id'])
         # set provider last so it's not picked up by the wrong thread
-        db_connection.db_download_update_provider('musicbrainz', download_que_id)
+        db_connection.db_download_update_provider('musicbrainz', download_json['mdq_id'])
         db_connection.db_commit()
     common_global.es_inst.com_elastic_index('info',
                                             {"metadata_music_lookup return uuid": metadata_uuid})

@@ -19,16 +19,13 @@
 import json
 
 import pika
-from common import common_config_ini
 from common import common_global
-from common import common_metadata_provider_tvmaze
 from common import common_string
 from guessit import guessit
 
-option_config_json, db_connection = common_config_ini.com_config_read()
 
-# setup the tvmaze class
-TVMAZE_CONNECTION = common_metadata_provider_tvmaze.CommonMetadatatvmaze()
+# # setup the tvmaze class
+# TVMAZE_CONNECTION = common_metadata_provider_tvmaze.CommonMetadatatvmaze()
 
 
 def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
@@ -94,12 +91,12 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         series_id_json = json.dumps({'tvmaze': str(tvmaze_id),
                                      'imdb': imdb_id,
                                      'thetvdb': thetvdb_id})
-        image_json = {'Images': {'tvmaze': {
-            'Characters': {}, 'Episodes': {}, "Redo": True}}}
         metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
                                                             json.dumps(
                                                                 show_full_json),
-                                                            json.dumps(image_json))
+                                                            json.dumps({'Images': {'tvmaze': {
+                                                                'Characters': {}, 'Episodes': {},
+                                                                "Redo": True}}}))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded'] \
                 and len(show_full_json['Meta']['tvmaze']['_embedded']['cast']) > 0:
@@ -115,12 +112,15 @@ def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         for episode_info in show_detail['_embedded']['episodes']:
             if episode_info['image'] is not None:
                 # tvmaze image
+                # This is the SAVE path.  Do NOT shorten the path to static.
+                # This is the SAVE path.  Do NOT shorten the path to static.
                 channel.basic_publish(exchange='mkque_download_ex',
                                       routing_key='mkdownload',
                                       body=json.dumps(
                                           {'Type': 'download', 'Subtype': 'image',
                                            'url': episode_info['image']['original'],
-                                           'local': '/mediakraken/web_app_sanic/MediaKraken/static/meta/images/episodes/'
+                                           'local': common_global.static_data_directory
+                                                    + '/meta/images/episodes/'
                                                     + str(episode_info['id']) + '.jpg'}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=2))

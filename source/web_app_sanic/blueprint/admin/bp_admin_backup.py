@@ -5,8 +5,8 @@ from common import common_database
 from common import common_file
 from common import common_global
 from common import common_network_cloud
+from common import common_pagination_bootstrap
 from common import common_string
-from python_paginate.web.sanic_paginate import Pagination
 from sanic import Blueprint
 from web_app_sanic.blueprint.admin.bss_form_backup import BSSBackupEditForm
 
@@ -52,13 +52,14 @@ async def url_bp_admin_backup(request):
     #             g.option_config_json['MediaKrakenServer']['BackupContainerName']):
     #         backup_files.append((backup_cloud.name, backup_cloud.type,
     #                              common_string.com_string_bytes2human(backup_cloud.size)))
-    page, per_page, offset = Pagination.get_page_args(request)
-    pagination = Pagination(request,
-                            total=len(backup_files),
-                            record_name='backups',
-                            format_total=True,
-                            format_number=True,
-                            )
+    page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+                                                                      url='/admin/admin_backup',
+                                                                      item_count=len(backup_files),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     return {
         'form': form,
         'errors': errors,
@@ -66,9 +67,9 @@ async def url_bp_admin_backup(request):
         'data_interval': ('Hours', 'Days', 'Weekly'),
         'data_class': common_network_cloud.supported_providers,
         'data_enabled': backup_enabled,
+        'pagination_links': pagination,
         'page': page,
-        'per_page': per_page,
-        'pagination': pagination,
+        'per_page': int(request.ctx.session['per_page'])
     }
 
 

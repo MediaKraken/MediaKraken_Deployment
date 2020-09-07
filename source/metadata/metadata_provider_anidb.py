@@ -16,10 +16,7 @@
   MA 02110-1301, USA.
 """
 
-from common import common_config_ini
+from common import common_global
 from common import common_metadata_provider_anidb
 
-option_config_json, db_connection = common_config_ini.com_config_read()
 
-# setup the connection class
-ANIDB_CONNECTION = common_metadata_provider_anidb.CommonMetadataANIdb(option_config_json)

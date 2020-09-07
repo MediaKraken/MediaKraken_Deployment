@@ -27,6 +27,13 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
 from common import common_metadata_limiter
+from common import common_metadata_provider_anidb
+from common import common_metadata_provider_imvdb
+from common import common_metadata_provider_isbndb
+from common import common_metadata_provider_musicbrainz
+from common import common_metadata_provider_thegamesdb
+from common import common_metadata_provider_themoviedb
+from common import common_metadata_provider_thesportsdb
 from common import common_signal
 from common import common_string
 from common.common_metadata_limiter import *
@@ -218,14 +225,14 @@ def thegamesdb(thread_db, download_data):
 
 @ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
              / common_metadata_limiter.API_LIMIT['themoviedb'][1])
-def themoviedb(thread_db, download_data, download_que_type):
+def themoviedb(thread_db, download_data):
     """
     Rate limiter for theMovieDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in moviedb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'themoviedb', download_data, download_que_type)
+    metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
@@ -240,30 +247,6 @@ def thesportsdb(thread_db, download_data):
     metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
 
 
-# @ratelimited(common_metadata_limiter.API_LIMIT['thetvdb'][0]
-#              / common_metadata_limiter.API_LIMIT['thetvdb'][1])
-# def thetvdb(thread_db, download_data):
-#     """
-#     Rate limiter for theTVdb
-#     """
-#     common_global.es_inst.com_elastic_index('info', {"here i am in thetvdb rate":
-#         datetime.datetime.now().strftime(
-#             "%H:%M:%S.%f")})
-#     metadata_general.metadata_process(thread_db, 'thetvdb', download_data)
-
-
-# @ratelimited(common_metadata_limiter.API_LIMIT['tvmaze'][0]
-#              / common_metadata_limiter.API_LIMIT['tvmaze'][1])
-# def tvmaze(thread_db, download_data):
-#     """
-#     Rate limiter for TVMaze
-#     """
-#     common_global.es_inst.com_elastic_index('info', {"here i am in tvmaze rate":
-#         datetime.datetime.now().strftime(
-#             "%H:%M:%S.%f")})
-#     metadata_general.metadata_process(thread_db, 'tvmaze', download_data)
-
-
 @ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
              / common_metadata_limiter.API_LIMIT['tv_intros'][1])
 def tv_intros(thread_db, download_data):
@@ -274,35 +257,6 @@ def tv_intros(thread_db, download_data):
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
     metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
-
-
-def on_message(channel, method_frame, header_frame, body):
-    """
-    Process pika message
-    """
-    if body is not None:
-        common_global.es_inst.com_elastic_index('info', {"Message body", body})
-        json_message = json.loads(body)
-        if json_message['Type'] == 'Update Metadata':
-            # this check is just in case there is a tv/etc collection later
-            if json_message['Subtype'] == 'themoviedb':
-                subprocess.Popen(['python3', json_message['JSON']['program']],
-                                 stdout=subprocess.PIPE, shell=False)
-            # elif content_providers == 'thetvdb':
-            #     subprocess.Popen(['python3',
-            #                       '/mediakraken/subprogram_metadata_thetvdb_updates.py'],
-            #                      stdout=subprocess.PIPE, shell=False)
-            # elif content_providers == 'tvmaze':
-            #     subprocess.Popen(['python3',
-            #                       '/mediakraken/subprogram_metadata_tvmaze_updates.py'],
-            #                      stdout=subprocess.PIPE, shell=False)
-        elif json_message['Type'] == 'Update Collection':
-            # this check is just in case there is a tv/etc collection later
-            if content_providers == 'themoviedb':
-                subprocess.Popen(['python3', json_message['JSON']['program']],
-                                 stdout=subprocess.PIPE, shell=False)
-        # TODO add record for activity/etc for the user who ran this
-        channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
 
 # start logging
@@ -319,8 +273,11 @@ common_global.es_inst.com_elastic_index('info', {"worker meta api name":
 option_config_json, thread_db = common_config_ini.com_config_read()
 
 # pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkstack_rabbitmq', socket_timeout=30,
-                                       credentials=pika.PlainCredentials('guest', 'guest'))
+parameters = pika.ConnectionParameters('mkstack_rabbitmq',
+                                       socket_timeout=60,
+                                       credentials=pika.PlainCredentials('guest', 'guest'),
+                                       heartbeat=600,
+                                       blocked_connection_timeout=300)
 connection = pika.BlockingConnection(parameters)
 
 # setup channels and queue
@@ -333,6 +290,29 @@ queue = channel.queue_declare(queue=content_providers,
 channel.queue_bind(exchange="mkque_metadata_ex",
                    queue=content_providers)
 channel.basic_qos(prefetch_count=1)
+
+# setup the api key instances, if needed
+if content_providers == 'anidb':
+    common_global.api_instance = common_metadata_provider_anidb.CommonMetadataANIdb(
+        option_config_json)
+elif content_providers == 'imvdb':
+    common_global.api_instance = common_metadata_provider_imvdb.CommonMetadataIMVdb(
+        option_config_json['API']['imvdb'])
+elif content_providers == 'isbndb':
+    common_global.api_instance = common_metadata_provider_isbndb.CommonMetadataISBNdb(
+        option_config_json)
+elif content_providers == 'musicbrainz':
+    common_global.api_instance = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
+        option_config_json)
+elif content_providers == 'thegamesdb':
+    common_global.api_instance = common_metadata_provider_thegamesdb.CommonMetadataGamesDB(
+        option_config_json)
+elif content_providers == 'themoviedb':
+    common_global.api_instance = common_metadata_provider_themoviedb.CommonMetadataTMDB(
+        option_config_json)
+elif content_providers == 'thesportsdb':
+    common_global.api_instance = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
+        option_config_json)
 
 # setup last used id's per thread
 metadata_last_id = None
@@ -371,18 +351,12 @@ while True:
             theaudiodb(thread_db, row_data)
         elif content_providers == 'thegamesdb':
             thegamesdb(thread_db, row_data)
-        # elif content_providers == 'thelogodb':
-        #     thelogodb(thread_db, row_data)
         elif content_providers == 'themoviedb':
-            themoviedb(thread_db, row_data, row_data['mdq_que_type'])
+            themoviedb(thread_db, row_data)
         elif content_providers == 'thesportsdb':
             thesportsdb(thread_db, row_data)
-        # elif content_providers == 'thetvdb':
-        #     thetvdb(thread_db, row_data)
         elif content_providers == 'tv_intros':
             tv_intros(thread_db, row_data)
-        # elif content_providers == 'tvmaze':
-        #     tvmaze(thread_db, row_data)
         # Z records are the start of all lookups
         elif content_providers == 'Z':
             common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
@@ -433,7 +407,6 @@ while True:
                 except KeyError:
                     metadata_last_year = None
             else:  # invalid guessit guess so set to ZZ to skip for now
-                # commit in function
                 thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
                 thread_db.db_commit()
             # update the media row with the json media id AND THE proper NAME!!!
@@ -448,13 +421,28 @@ while True:
                                              metadata_uuid)
                 thread_db.db_download_delete(row_data['mdq_id'])
                 thread_db.db_commit()
-    time.sleep(1)
     # grab message from rabbitmq if available
-    try:  # since can get connection drops
-        method_frame, header_frame, body = channel.basic_get(queue=content_providers, no_ack=False)
-        on_message(channel, method_frame, header_frame, body)
-    except:
-        pass
+    method_frame, header_frame, body = channel.basic_get(queue=content_providers,
+                                                         auto_ack=False)
+    if method_frame:
+        common_global.es_inst.com_elastic_index('info', {"Message body", body})
+        json_message = json.loads(body)
+        if json_message['Type'] == 'Update Metadata':
+            # this check is just in case there is a tv/etc collection later
+            if content_providers == 'themoviedb':
+                # TODO verify it isn't already running!
+                subprocess.Popen(['python3', json_message['JSON']['program']],
+                                 stdout=subprocess.PIPE, shell=False)
+        elif json_message['Type'] == 'Update Collection':
+            # this check is just in case there is a tv/etc collection later
+            if content_providers == 'themoviedb':
+                # TODO verify it isn't already running!
+                subprocess.Popen(['python3', json_message['JSON']['program']],
+                                 stdout=subprocess.PIPE, shell=False)
+        # TODO add record for activity/etc for the user who ran this
+        channel.basic_ack(delivery_tag=method_frame.delivery_tag, multiple=False)
+    time.sleep(1)
+
 # Cancel the consumer and return any pending messages
 channel.cancel()
 connection.close()

@@ -22,7 +22,6 @@ import re
 import socket
 import ssl
 import subprocess
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -41,23 +40,23 @@ def mk_network_fetch_from_url(url, directory=None):
     common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
     try:
         datafile = urllib.request.urlopen(url, context=ssl._create_unverified_context())
-        if directory is not None:
-            try:
-                localfile = open(directory, 'wb')
-            except:
-                # create missing directory structure
-                common_file.com_mkdir_p(directory)
-                localfile = open(directory, 'wb')
-            try:
-                localfile.write(datafile.read())
-            except urllib.error.HTTPError:
-                time.sleep(30)
-                mk_network_fetch_from_url(url, directory)
+    except urllib.error.URLError:  #<urlopen error [Errno 99] Address not available>:
+        return False
+    if directory is not None and datafile.getcode() == 200:
+        try:
+            localfile = open(directory, 'wb')
+        except:
+            # create missing directory structure
+            common_file.com_mkdir_p(directory)
+            localfile = open(directory, 'wb')
+        try:
+            localfile.write(datafile.read())
+        except urllib.error.HTTPError:
             datafile.close()
             localfile.close()
-    except urllib.error.URLError:
-        common_global.es_inst.com_elastic_index('error', {'mk_network_fetch_from_url'})
-        return None
+            return False  # don't retry as could be 404....which would cause loop
+        datafile.close()
+        localfile.close()
     if directory is None:
         return datafile.read()
     return True

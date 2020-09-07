@@ -44,8 +44,7 @@
                             <fieldset>
                                 <legend>User information</legend><div>
                                 {% if users %}
-                                {{ pagination.info }}
-                                {{ pagination.links }}
+                                {{ pagination_links }}
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
@@ -101,7 +100,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{ pagination.links }}
+                                {{ pagination_links }}
                                 {% else %}
                                 <p>No users found. Contact administrator.</p>
                                 {% endif %}</div>

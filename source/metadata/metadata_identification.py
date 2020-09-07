@@ -45,15 +45,16 @@ def metadata_identification(db_connection, class_text, download_que_json,
     metadata_uuid = None
 
     if download_que_type == common_global.DLMediaType.Movie.value:
+        #         or class_text == "Movie Extras" \
+        #         or class_text == "Movie Subtitle" \
+        #         or class_text == "Movie Theme" \
+        #         or class_text == "Movie Trailer":
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
                                                              download_que_json,
                                                              download_que_id,
                                                              guessit_file_name)
-
-    if download_que_type == common_global.DLMediaType.Movie_Home.value:
-        metadata_uuid = str(uuid.uuid4())
-
-    if download_que_type == common_global.DLMediaType.Picture.value:
+    elif download_que_type == common_global.DLMediaType.Movie_Home.value \
+            or download_que_type == common_global.DLMediaType.Picture.value:
         metadata_uuid = str(uuid.uuid4())
 
     # find data by class type
@@ -95,15 +96,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
                                                                          download_que_json,
                                                                          download_que_id)
-    # elif class_text == "Movie" \
-    #         or class_text == "Movie Extras" \
-    #         or class_text == "Movie Subtitle" \
-    #         or class_text == "Movie Theme" \
-    #         or class_text == "Movie Trailer":
-    #     metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
-    #                                                          download_que_json,
-    #                                                          download_que_id,
-    #                                                          guessit_file_name)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,
                                                              download_que_json,

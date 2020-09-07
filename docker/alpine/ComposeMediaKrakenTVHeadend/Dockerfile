@@ -1,4 +1,4 @@
-FROM lsiobase/alpine:3.10 as buildstage
+FROM lsiobase/alpine:3.12 as buildstage
 ############## build stage ##############
 
 # package versions
@@ -29,6 +29,7 @@ RUN \
 	gcc \
 	gettext-dev \
 	git \
+	gnu-libiconv-dev \
 	gzip \
 	jq \
 	libcurl \
@@ -74,6 +75,7 @@ RUN \
 	perl-io-socket-ssl \
 	perl-io-stringy \
 	perl-json \
+	perl-json-xs \
 	perl-libwww \
 	perl-lingua-en-numbers-ordinate \
 	perl-lingua-preferred \
@@ -101,17 +103,14 @@ RUN \
 	perl-xml-writer \
 	pkgconf \
 	pngquant \
-	python \
+	python2 \
 	sdl-dev \
 	tar \
 	uriparser-dev \
 	wget \
 	x264-dev \
 	x265-dev \
-	zlib-dev && \
- apk add --no-cache \
-	--repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-	gnu-libiconv-dev
+	zlib-dev
 
 RUN \
  echo "**** remove musl iconv.h and replace with gnu-iconv.h ****" && \
@@ -128,6 +127,8 @@ RUN \
  git clone https://github.com/XMLTV/xmltv.git /tmp/xmltv && \
  cd /tmp/xmltv && \
  git checkout ${XMLTV_VER} && \
+ echo "**** Fix test for xmltv alpine 3.11 ****" && \
+ patch -p1 -i /tmp/patches/test_tv_imdb.t.patch && \
  echo "**** Perl 5.26 fixes for XMTLV ****" && \
  sed "s/use POSIX 'tmpnam';//" -i filter/tv_to_latex && \
  sed "s/use POSIX 'tmpnam';//" -i filter/tv_to_text && \
@@ -220,7 +221,7 @@ RUN \
  make DESTDIR=/tmp/comskip-build install
 
 ############## runtime stage ##############
-FROM lsiobase/alpine:3.10
+FROM lsiobase/alpine:3.12
 
 # set version label
 ARG BUILD_DATE
@@ -239,6 +240,7 @@ RUN \
 	curl \
 	ffmpeg \
 	ffmpeg-libs \
+	gnu-libiconv \
 	gzip \
 	libcrypto1.1 \
 	libcurl \
@@ -283,6 +285,7 @@ RUN \
 	perl-io-socket-ssl \
 	perl-io-stringy \
 	perl-json \
+	perl-json-xs \
 	perl-libwww \
 	perl-lingua-en-numbers-ordinate \
 	perl-lingua-preferred \
@@ -308,16 +311,14 @@ RUN \
 	perl-xml-treepp \
 	perl-xml-twig \
 	perl-xml-writer \
-	python \
+	py3-requests \
+	python2 \
 	tar \
 	uriparser \
 	wget \
 	x264 \
 	x265 \
 	zlib && \
- apk add --no-cache \
-	--repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-	gnu-libiconv && \
  echo "**** Add Picons ****" && \
  mkdir -p /picons && \
  curl -o \
@@ -335,4 +336,4 @@ COPY root/ /
 
 # ports and volumes
 EXPOSE 9981 9982
-VOLUME /config /recordings
+VOLUME /config
