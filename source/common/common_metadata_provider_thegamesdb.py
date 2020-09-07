@@ -25,7 +25,7 @@ class CommonMetadataGamesDB:
     Class for interfacing with theGamesDB
     """
 
-    def __init__(self):
+    def __init__(self, option_config_json):
         self.BASE_URL = 'http://thegamesdb.net/api/'
         self.httpheaders = {'Accept': 'application/json',
                             'Content-Type': 'application/x-www-form-urlencoded'}
