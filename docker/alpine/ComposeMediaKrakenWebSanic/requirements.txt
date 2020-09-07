@@ -16,7 +16,7 @@ apache-libcloud==3.1.0
 pycountry==20.7.3
 simplekv==0.14.1
 pgen==0.2.1
-cython==0.29.15
+cython==0.29.21
 cryptography==3.0
 pygal==2.4.0
 pdfkit==0.6.1
@@ -32,7 +32,7 @@ incremental==17.5.0
 pysmb==1.1.27
 python-stdnum==1.11
 Babel==2.8.0
-docker==4.3.0
+docker==4.3.1
 isbntools==4.3.23
 beautifulsoup4==4.9.1
 appnope==0.1.0
