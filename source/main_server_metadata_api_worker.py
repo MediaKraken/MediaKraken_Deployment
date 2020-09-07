@@ -421,8 +421,9 @@ while True:
                                              metadata_uuid)
                 thread_db.db_download_delete(row_data['mdq_id'])
                 thread_db.db_commit()
-    # # grab message from rabbitmq if available
-    method_frame, header_frame, body = channel.basic_get(queue=content_providers)
+    # grab message from rabbitmq if available
+    method_frame, header_frame, body = channel.basic_get(queue=content_providers,
+                                                         auto_ack=False)
     if method_frame:
         common_global.es_inst.com_elastic_index('info', {"Message body", body})
         json_message = json.loads(body)
