@@ -20,8 +20,6 @@ import json
 import os
 
 import requests
-from tmdbv3api import Movie
-from tmdbv3api import TMDb, TV
 
 from . import common_global
 from . import common_metadata
@@ -35,27 +33,32 @@ class CommonMetadataTMDB:
 
     def __init__(self, option_config_json):
         self.API_KEY = option_config_json['API']['themoviedb']
-        self.tmdbv3 = TMDb()
-        self.tmdbv3.api_key = self.API_KEY
-        self.movie = Movie()  # used in search
-        self.tv = TV()  # used in search
 
-    def com_tmdb_search(self, media_title, media_year=None, id_only=False, media_type='movie'):
+    def com_tmdb_search(self, media_title, media_year=None, id_only=False,
+                        media_type=common_global.DLMediaType.Movie.value):
         """
         # search for media title and year
         """
         common_global.es_inst.com_elastic_index('info', {"tmdb search": media_title,
                                                          'year': media_year})
-        if media_type == 'movie':
+        if media_type == common_global.DLMediaType.Movie.value:
             try:
                 search = self.movie.search(media_title.replace('\\u25ba', ''))
             except:
                 search = self.movie.search(media_title.encode('utf-8'))
-        else:  # defaulting to TV search then
+        elif media_type == common_global.DLMediaType.TV.value:
             try:
                 search = self.tv.search(media_title.replace('\\u25ba', ''))
             except:
                 search = self.tv.search(media_title.encode('utf-8'))
+        elif media_type == common_global.DLMediaType.Person.value:
+            try:
+                search = self.person.search(media_title.replace('\\u25ba', ''))
+            except:
+                search = self.person.search(media_title.encode('utf-8'))
+        else:
+            return None, None
+        # TODO add person search here as well
         common_global.es_inst.com_elastic_index('info', {'search': str(search)})
         if len(search) > 0:
             for res in search:
