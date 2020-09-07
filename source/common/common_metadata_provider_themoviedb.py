@@ -34,7 +34,7 @@ class CommonMetadataTMDB:
     def __init__(self, option_config_json):
         self.API_KEY = option_config_json['API']['themoviedb']
 
-    def com_tmdb_search(self, media_title, media_year=None, id_only=False,
+    def com_tmdb_search(self, media_title, media_year=None, id_only=True,
                         media_type=common_global.DLMediaType.Movie.value):
         """
         # search for media title and year
@@ -42,51 +42,44 @@ class CommonMetadataTMDB:
         common_global.es_inst.com_elastic_index('info', {"tmdb search": media_title,
                                                          'year': media_year})
         if media_type == common_global.DLMediaType.Movie.value:
-            try:
-                search = self.movie.search(media_title.replace('\\u25ba', ''))
-            except:
-                search = self.movie.search(media_title.encode('utf-8'))
+            search_json = requests.get('https://api.themoviedb.org/3/search/movie'
+                                       '?api_key=%s&include_adult=1&query=%s'
+                                       % (self.API_KEY, media_title.encode('utf-8')),
+                                       timeout=(3.05, 10)).json()
         elif media_type == common_global.DLMediaType.TV.value:
-            try:
-                search = self.tv.search(media_title.replace('\\u25ba', ''))
-            except:
-                search = self.tv.search(media_title.encode('utf-8'))
+            search_json = requests.get('https://api.themoviedb.org/3/search/tv'
+                                       '?api_key=%s&include_adult=1&query=%s'
+                                       % (self.API_KEY, media_title.encode('utf-8')),
+                                       timeout=(3.05, 10)).json()
         elif media_type == common_global.DLMediaType.Person.value:
-            try:
-                search = self.person.search(media_title.replace('\\u25ba', ''))
-            except:
-                search = self.person.search(media_title.encode('utf-8'))
-        else:
+            search_json = requests.get('https://api.themoviedb.org/3/search/person'
+                                       '?api_key=%s&include_adult=1&query=%s'
+                                       % (self.API_KEY, media_title.encode('utf-8')),
+                                       timeout=(3.05, 10)).json()
+        else:  # invalid search type
             return None, None
-        # TODO add person search here as well
-        common_global.es_inst.com_elastic_index('info', {'search': str(search)})
-        if len(search) > 0:
-            for res in search:
-                # print(res.id, flush=True)
-                # print(res.title, flush=True)
-                # print(res.overview, flush=True)
-                # print(res.poster_path, flush=True)
-                # print(res.vote_average, flush=True)
-                common_global.es_inst.com_elastic_index('info', {"result": res.title, 'id': res.id,
+        common_global.es_inst.com_elastic_index('info', {'search': str(search_json)})
+        if search_json is not None and search_json['total_results'] > 0:
+            for res in search_json['results']:
+                common_global.es_inst.com_elastic_index('info', {"result": res['title'],
+                                                                 'id': res['id'],
                                                                  'date':
-                                                                     res.release_date.split('-', 1)[
+                                                                     res['release_date'].split('-',
+                                                                                               1)[
                                                                          0]})
                 if media_year is not None and type(media_year) is not list \
-                        and (str(media_year) == res.release_date.split('-', 1)[0]
-                             or str(int(media_year) - 1) == res.release_date.split('-', 1)[0]
-                             or str(int(media_year) - 2) == res.release_date.split('-', 1)[0]
-                             or str(int(media_year) - 3) == res.release_date.split('-', 1)[0]
-                             or str(int(media_year) + 1) == res.release_date.split('-', 1)[0]
-                             or str(int(media_year) + 2) == res.release_date.split('-', 1)[0]
-                             or str(int(media_year) + 3) == res.release_date.split('-', 1)[0]):
+                        and (str(media_year) == res['release_date'].split('-', 1)[0]
+                             or str(int(media_year) - 1) == res['release_date'].split('-', 1)[0]
+                             or str(int(media_year) - 2) == res['release_date'].split('-', 1)[0]
+                             or str(int(media_year) - 3) == res['release_date'].split('-', 1)[0]
+                             or str(int(media_year) + 1) == res['release_date'].split('-', 1)[0]
+                             or str(int(media_year) + 2) == res['release_date'].split('-', 1)[0]
+                             or str(int(media_year) + 3) == res['release_date'].split('-', 1)[0]):
                     if not id_only:
-                        return 'info', self.com_tmdb_metadata_by_id(res.id)
+                        return 'info', self.com_tmdb_metadata_by_id(res['id'])
                     else:
-                        return 'idonly', res.id  # , s['title']
+                        return 'idonly', res['id']
             return None, None
-            # TODO multimatch......handle better!
-            # TODO so, returning None, None for now
-            # return 're', search.results
         else:
             return None, None
 
