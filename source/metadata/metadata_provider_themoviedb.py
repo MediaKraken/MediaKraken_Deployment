@@ -116,22 +116,6 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     return metadata_uuid
 
 
-def movie_fetch_save_tmdb_cast_crew(db_connection, tmdb_id, metadata_id):
-    """
-    Save cast/crew
-    """
-    cast_json = common_global.api_instance.com_tmdb_meta_cast_by_id(tmdb_id)
-    if cast_json is not None:  # cast/crew doesn't exist on all media
-        if 'cast' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew(
-                'themoviedb', cast_json['cast'])
-        if 'crew' in cast_json:
-            db_connection.db_meta_person_insert_cast_crew(
-                'themoviedb', cast_json['crew'])
-        # update the metadata record with the cast info
-        db_connection.db_meta_movie_update_castcrew(cast_json, metadata_id)
-
-
 def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     """
     # grab reviews
@@ -183,21 +167,6 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
         # update
         # db_connection.db_collection_update(collection_guid, guid_list)
         return 0  # to add totals later
-
-
-def movie_fetch_tmdb_imdb(imdb_id):
-    """
-    # fetch from tmdb via imdb
-    """
-    result_json = common_global.api_instance.com_tmdb_meta_by_imdb_id(imdb_id)
-    common_global.es_inst.com_elastic_index('info', {"uhimdb": result_json})
-    if result_json is not None:
-        try:
-            return result_json['movie_results'][0]['id']
-        except KeyError:
-            return None
-    else:
-        return None
 
 
 def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):

@@ -20,8 +20,6 @@ import json
 import os
 
 import requests
-import tmdbsimple as tmdb
-# TODO creates loop?  from metadata import metadata_movie
 from tmdbv3api import Movie
 from tmdbv3api import TMDb, TV
 
@@ -39,9 +37,8 @@ class CommonMetadataTMDB:
         self.API_KEY = option_config_json['API']['themoviedb']
         self.tmdbv3 = TMDb()
         self.tmdbv3.api_key = self.API_KEY
-        tmdb.API_KEY = self.API_KEY
-        self.movie = Movie()
-        self.tv = TV()
+        self.movie = Movie()  # used in search
+        self.tv = TV()  # used in search
 
     def com_tmdb_search(self, media_title, media_year=None, id_only=False, media_type='movie'):
         """
@@ -188,115 +185,45 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/tv/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
-    def com_tmdb_meta_by_id(self, tmdb_id):
-        """
-        # movie info by tmdb
-        """
-        movie = tmdb.Movies(tmdb_id)
-        try:
-            metadata = movie.info()
-        except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error',
-                                                    {"TMDB com_tmdb_meta_by_id": str(err_code)})
-            metadata = None
-        return metadata
-
-    def com_tmdb_meta_cast_by_id(self, tmdb_id):
-        """
-        # cast by tmdb
-        """
-        movie = tmdb.Movies(tmdb_id)
-        try:
-            metadata = movie.credits()
-        except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_meta_cast_by_id":
-                                                                  str(err_code)})
-            metadata = None
-        return metadata
-
     def com_tmdb_meta_review_by_id(self, tmdb_id):
         """
         # review by tmdb
         """
-        movie = tmdb.Movies(tmdb_id)
-        try:
-            metadata = movie.reviews()
-        except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB Fetch Review Error": str(
-                err_code)})
-            metadata = None
-        return metadata
-
-    def com_tmdb_meta_release_by_id(self, tmdb_id):
-        """
-        # release by tmdb
-        """
-        movie = tmdb.Movies(tmdb_id)
-        try:
-            metadata = movie.releases()
-        except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error',
-                                                    {"TMDB Fetch Releases Error": str(err_code)})
-            metadata = None
-        return metadata
-
-    # TODO
-    # The supported external sources for each object are as follows:
-    #    Movies: imdb_id
-    #    People: imdb_id, freebase_mid, freebase_id
-    #    TV Series: imdb_id, freebase_mid, freebase_id, tvdb_id
-    #    TV Seasons: freebase_mid, freebase_id, tvdb_id
-    #    TV Episodes: imdb_id, freebase_mid, freebase_id, tvdb_id
-
-    def com_tmdb_meta_by_imdb_id(self, imdb_id):
-        """
-        # search by imdb
-        """
-        movie = tmdb.Find(imdb_id)
-        try:
-            metadata = movie.info(external_source='imdb_id')
-        except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error',
-                                                    {"TMDB Fetch imdb Error": str(err_code)})
-            metadata = None
-        return metadata
+        return json.loads(common_network.mk_network_fetch_from_url(
+            'https://api.themoviedb.org/3/review/%s'
+            '?api_key=%s', (self.API_KEY, tmdb_id)))
 
     def com_tmdb_meta_changes_movie(self):
         """
         # movie changes since date within 24 hours
         """
-        changes = tmdb.Changes()
-        movie_changes = changes.movie()
-        return movie_changes
+        return json.loads(common_network.mk_network_fetch_from_url(
+            'https://api.themoviedb.org/3/movie/changes'
+            '?api_key=%s' % self.API_KEY))['id']
 
     def com_tmdb_meta_changes_tv(self):
         """
         # tv changes since date within 24 hours
         """
-        changes = tmdb.Changes()
-        tv_changes = changes.tv()
-        return tv_changes
+        return json.loads(common_network.mk_network_fetch_from_url(
+            'https://api.themoviedb.org/3/tv/changes'
+            '?api_key=%s' % self.API_KEY))['id']
 
     def com_tmdb_meta_changes_person(self):
         """
         # person changes since date within 24 hours
         """
-        changes = tmdb.Changes()
-        person_changes = changes.person()
-        return person_changes
+        return json.loads(common_network.mk_network_fetch_from_url(
+            'https://api.themoviedb.org/3/person/changes'
+            '?api_key=%s' % self.API_KEY))['id']
 
     def com_tmdb_meta_collection_by_id(self, tmdb_id):
         """
         # collection info
         """
-        movie_collection = tmdb.Collections(tmdb_id)
-        try:
-            metadata = movie_collection.info()
-        except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error',
-                                                    {"TMDB Fetch Collection Error": str(err_code)})
-            metadata = None
-        return metadata
+        return json.loads(common_network.mk_network_fetch_from_url(
+            'https://api.themoviedb.org/3/collection/%s'
+            '?api_key=%s', (self.API_KEY, tmdb_id)))
 
     def com_tmdb_meta_info_build(self, result_json):
         """

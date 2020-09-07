@@ -263,14 +263,7 @@ def metadata_castcrew(thread_db, provider_name, download_data):
     """
     Fetch cast/crew from specified provider
     """
-    if provider_name == 'themoviedb':
-        metadata_provider_themoviedb.movie_fetch_save_tmdb_cast_crew(thread_db,
-                                                                     download_data[
-                                                                         'mdq_download_json'][
-                                                                         'ProviderMetaID'],
-                                                                     download_data[
-                                                                         'mdq_download_json'][
-                                                                         'MetaNewID'])
+    # removed themoviedb call as it should be done during the initial fetch
     # setup for FetchReview
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
