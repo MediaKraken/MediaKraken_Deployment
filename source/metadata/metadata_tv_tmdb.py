@@ -23,7 +23,7 @@ import psycopg2
 from common import common_global
 
 
-def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
+async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     # tmdb data fetch for tv
     """
@@ -34,7 +34,7 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     if result_json is None or result_json.status_code == 504:
         time.sleep(60)
         # redo fetch due to 504
-        tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        await tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 200:
         series_id, result_json, image_json \
             = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
@@ -63,7 +63,7 @@ def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     elif result_json.status_code == 429:
         time.sleep(20)
         # redo fetch due to 504
-        tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        await tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         # TODO handle 404's better
         metadata_uuid = None

@@ -38,27 +38,27 @@ from . import metadata_tv_tmdb
 # from . import metadata_tv_tvmaze
 
 
-def metadata_process(thread_db, provider_name, download_data):
+async def metadata_process(thread_db, provider_name, download_data):
     common_global.es_inst.com_elastic_index('info', {'metadata_process': {'provider': provider_name,
                                                                           'dl json': download_data}})
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
-        metadata_search(thread_db, provider_name, download_data)
+        await metadata_search(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Update":
-        metadata_update(thread_db, provider_name, download_data)
+        await metadata_update(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "Fetch":
-        metadata_fetch(thread_db, provider_name, download_data)
+        await metadata_fetch(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
-        metadata_castcrew(thread_db, provider_name, download_data)
+        await metadata_castcrew(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchReview":
-        metadata_review(thread_db, provider_name, download_data)
+        await metadata_review(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchImage":
-        metadata_image(thread_db, provider_name, download_data)
+        await metadata_image(thread_db, provider_name, download_data)
     elif download_data['mdq_download_json']['Status'] == "FetchCollection":
-        metadata_collection(thread_db, provider_name, download_data)
+        await metadata_collection(thread_db, provider_name, download_data)
 
 
-def metadata_update(thread_db, provider_name, download_data):
+async def metadata_update(thread_db, provider_name, download_data):
     """
     Update main metadata for specified provider
     """
@@ -67,7 +67,7 @@ def metadata_update(thread_db, provider_name, download_data):
     # TODO horribly broken.  Need to add the dlid, that to update, etc
 
 
-def metadata_search(thread_db, provider_name, download_data):
+async def metadata_search(thread_db, provider_name, download_data):
     """
     Search for metadata via specified provider
     """
@@ -223,7 +223,7 @@ def metadata_search(thread_db, provider_name, download_data):
     return metadata_uuid
 
 
-def metadata_fetch(thread_db, provider_name, download_data):
+async def metadata_fetch(thread_db, provider_name, download_data):
     """
     Fetch main metadata for specified provider
     """
@@ -241,25 +241,28 @@ def metadata_fetch(thread_db, provider_name, download_data):
     elif provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == common_global.DLMediaType.Person.value:
             common_global.es_inst.com_elastic_index('info', {'fetch person bio': provider_name})
-            metadata_provider_themoviedb.metadata_fetch_tmdb_person(
+            await metadata_provider_themoviedb.metadata_fetch_tmdb_person(
                 thread_db, provider_name, download_data)
         elif download_data['mdq_que_type'] == 0 \
                 or download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
             # removing the imdb check.....as com_tmdb_metadata_by_id converts it
-            metadata_provider_themoviedb.movie_fetch_save_tmdb(thread_db,
-                                                               download_data['mdq_download_json'][
-                                                                   'ProviderMetaID'],
-                                                               download_data['mdq_download_json'][
-                                                                   'MetaNewID'])
+            await metadata_provider_themoviedb.movie_fetch_save_tmdb(thread_db,
+                                                                     download_data[
+                                                                         'mdq_download_json'][
+                                                                         'ProviderMetaID'],
+                                                                     download_data[
+                                                                         'mdq_download_json'][
+                                                                         'MetaNewID'])
         elif download_data['mdq_que_type'] == common_global.DLMediaType.TV.value:
-            metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
-                                                download_data['mdq_download_json'][
-                                                    'ProviderMetaID'],
-                                                download_data['mdq_download_json']['MetaNewID'])
+            await metadata_tv_tmdb.tv_fetch_save_tmdb(thread_db,
+                                                      download_data['mdq_download_json'][
+                                                          'ProviderMetaID'],
+                                                      download_data['mdq_download_json'][
+                                                          'MetaNewID'])
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
-def metadata_castcrew(thread_db, provider_name, download_data):
+async def metadata_castcrew(thread_db, provider_name, download_data):
     """
     Fetch cast/crew from specified provider
     """
@@ -271,35 +274,35 @@ def metadata_castcrew(thread_db, provider_name, download_data):
     thread_db.db_commit()
 
 
-def metadata_image(thread_db, provider_name, download_data):
+async def metadata_image(thread_db, provider_name, download_data):
     """
     Fetch image from specified provider
     """
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
-def metadata_review(thread_db, provider_name, download_data):
+async def metadata_review(thread_db, provider_name, download_data):
     """
     Fetch reviews from specified provider
     """
     if provider_name == 'themoviedb':
-        metadata_provider_themoviedb.movie_fetch_save_tmdb_review(thread_db,
-                                                                  download_data[
-                                                                      'mdq_download_json'][
-                                                                      'ProviderMetaID'])
+        await metadata_provider_themoviedb.movie_fetch_save_tmdb_review(thread_db,
+                                                                        download_data[
+                                                                            'mdq_download_json'][
+                                                                            'ProviderMetaID'])
     # review is last.....so can delete download que
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
-def metadata_collection(thread_db, provider_name, download_data):
+async def metadata_collection(thread_db, provider_name, download_data):
     """
     Fetch collection from specified provider
     """
     if provider_name == 'themoviedb':
-        metadata_provider_themoviedb.movie_fetch_save_tmdb_collection(thread_db,
-                                                                      download_data[
-                                                                          'mdq_download_json'][
-                                                                          'ProviderMetaID'],
-                                                                      download_data)
+        await metadata_provider_themoviedb.movie_fetch_save_tmdb_collection(thread_db,
+                                                                            download_data[
+                                                                                'mdq_download_json'][
+                                                                                'ProviderMetaID'],
+                                                                            download_data)
     # only one record for this so nuke it
     thread_db.db_download_delete(download_data['mdq_id'])

@@ -23,7 +23,7 @@ from common import common_global
 from . import metadata_nfo_xml
 
 
-def metadata_movie_lookup(db_connection, download_data, file_name):
+async def metadata_movie_lookup(db_connection, download_data, file_name):
     """
     Movie lookup
     This is the main function called from metadata_identification

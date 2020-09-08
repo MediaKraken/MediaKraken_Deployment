@@ -33,15 +33,14 @@ from . import metadata_sports
 from . import metadata_tv
 
 
-def metadata_identification(db_connection, class_text, download_que_json,
-                            download_que_id, download_que_type, guessit_file_name):
+async def metadata_identification(db_connection, class_text, download_que_json,
+                                  download_que_type, guessit_file_name):
     """
     Determine which provider to start lookup via class text
     """
     common_global.es_inst.com_elastic_index('info', {"metadata_identification": class_text,
                                                      'path': download_que_json['Path'],
-                                                     'json': download_que_json,
-                                                     'quiid': download_que_id})
+                                                     'json': download_que_json})
     metadata_uuid = None
 
     if download_que_type == common_global.DLMediaType.Movie.value:
@@ -51,7 +50,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
         #         or class_text == "Movie Trailer":
         metadata_uuid = metadata_movie.metadata_movie_lookup(db_connection,
                                                              download_que_json,
-                                                             download_que_id,
                                                              guessit_file_name)
     elif download_que_type == common_global.DLMediaType.Movie_Home.value \
             or download_que_type == common_global.DLMediaType.Picture.value:
@@ -61,17 +59,14 @@ def metadata_identification(db_connection, class_text, download_que_json,
     if class_text == "Adult":
         metadata_uuid = metadata_adult.metadata_adult_lookup(db_connection,
                                                              download_que_json,
-                                                             download_que_id,
                                                              guessit_file_name)
     elif class_text == "Anime":
         metadata_uuid = metadata_anime.metadata_anime_lookup(db_connection,
                                                              download_que_json,
-                                                             download_que_id,
                                                              guessit_file_name)
     elif class_text == "Book":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                         download_que_json,
-                                                                         download_que_id)
+                                                                         download_que_json)
     elif class_text == "Game CHD":
         metadata_uuid = db_connection.db_meta_game_by_name_and_system(os.path.basename(
             os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
@@ -94,12 +89,10 @@ def metadata_identification(db_connection, class_text, download_que_json,
                 metadata_uuid = db_connection.db_meta_game_by_sha1(sha1_hash)
     elif class_text == "Magazine":
         metadata_uuid = metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                         download_que_json,
-                                                                         download_que_id)
+                                                                         download_que_json)
     elif class_text == "Music":
         metadata_uuid = metadata_music.metadata_music_lookup(db_connection,
-                                                             download_que_json,
-                                                             download_que_id)
+                                                             download_que_json)
     elif class_text == "Music Lyric":
         # search musicbrainz as the lyrics should already be in the file/record
         pass
@@ -109,8 +102,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
                                                                          download_que_id)
     elif class_text == "Sports":
         metadata_uuid = metadata_sports.metadata_sports_lookup(db_connection,
-                                                               download_que_json,
-                                                               download_que_id)
+                                                               download_que_json)
     # elif class_text == "TV Extras":
     #     # include end slash so media doesn't get chopped up
     #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
@@ -125,7 +117,6 @@ def metadata_identification(db_connection, class_text, download_que_json,
     elif class_text == "TV Show":
         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
                                                        download_que_json,
-                                                       download_que_id,
                                                        guessit_file_name)
     # elif class_text == "TV Theme":
     #     common_global.es_inst.com_elastic_index('info', {'stuff': 'tv theme ident'})
@@ -164,8 +155,7 @@ def metadata_identification(db_connection, class_text, download_que_json,
     #                                                        guessit_file_name)
     elif class_text == "Video Game":
         metadata_uuid = metadata_game.metadata_game_lookup(db_connection,
-                                                           download_que_json,
-                                                           download_que_id)
+                                                           download_que_json)
     elif class_text == "Video Game Intro":
         pass
     elif class_text == "Video Game Speedrun":

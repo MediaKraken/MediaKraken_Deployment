@@ -19,7 +19,7 @@
 from common import common_global
 
 
-def search_thesportsdb(db_connection, file_name):
+async def search_thesportsdb(db_connection, file_name):
     """
     # search thesportsdb
     """

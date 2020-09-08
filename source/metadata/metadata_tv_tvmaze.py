@@ -28,7 +28,7 @@ from guessit import guessit
 # TVMAZE_CONNECTION = common_metadata_provider_tvmaze.CommonMetadatatvmaze()
 
 
-def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
+async def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     """
     # tvmaze search
     """
@@ -58,7 +58,7 @@ def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     return metadata_uuid, tvmaze_id
 
 
-def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
+async def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     """
     Fetch show data from tvmaze
     """

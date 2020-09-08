@@ -26,7 +26,7 @@ from common import common_file_extentions
 from common import common_global
 
 
-def nfo_xml_file(media_file_path):
+async def nfo_xml_file(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
@@ -73,7 +73,7 @@ def nfo_xml_file(media_file_path):
     return nfo_data, xml_data
 
 
-def nfo_file_tv(media_file_path):
+async def nfo_file_tv(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
@@ -102,7 +102,7 @@ def nfo_file_tv(media_file_path):
     return nfo_data
 
 
-def nfo_xml_id_lookup(nfo_data, xml_data):
+async def nfo_xml_id_lookup(nfo_data, xml_data):
     """
     Lookup by id's in nfo/xml files
     """
@@ -158,7 +158,7 @@ def nfo_xml_id_lookup(nfo_data, xml_data):
     return imdb_id, tmdb_id
 
 
-def nfo_id_lookup_tv(nfo_data):
+async def nfo_id_lookup_tv(nfo_data):
     """
     Look up id's in nfo/xml lookup for tv
     """

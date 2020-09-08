@@ -22,7 +22,7 @@ import os
 from common import common_metadata
 
 
-def metadata_periodicals_lookup(db_connection, download_data):
+async def metadata_periodicals_lookup(db_connection, download_data):
     """
     Lookup via isbn and then name
     """
@@ -60,7 +60,7 @@ def metadata_periodicals_lookup(db_connection, download_data):
     return metadata_uuid
 
 
-def metadata_periodicals_cover(db_connection, isbn):
+async def metadata_periodicals_cover(db_connection, isbn):
     """
     pull and save the cover image for periodical
     """

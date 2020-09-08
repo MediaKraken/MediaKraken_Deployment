@@ -42,7 +42,7 @@ from guessit import guessit
 # THETVDB_API = common_metadata_provider_thetvdb.CommonMetadataTheTVDB(option_config_json)
 
 
-def tv_search_tvdb(db_connection, file_name, lang_code='en'):
+async def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     """
     # tvdb search
     """
@@ -72,7 +72,7 @@ def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     return metadata_uuid, tvdb_id
 
 
-def tv_fetch_save_tvdb(db_connection, tvdb_id):
+async def tv_fetch_save_tvdb(db_connection, tvdb_id):
     """
     # tvdb data fetch
     """

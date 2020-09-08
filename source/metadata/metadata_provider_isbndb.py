@@ -19,7 +19,7 @@
 from common import common_global
 
 
-def metadata_periodicals_search_isbndb(db_connection, lookup_name):
+async def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     """
     search isbndb
     """

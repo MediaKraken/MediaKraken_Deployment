@@ -23,7 +23,7 @@ import psycopg2
 from common import common_global
 
 
-def music_search_musicbrainz(db_connection, ffmpeg_data_json):
+async def music_search_musicbrainz(db_connection, ffmpeg_data_json):
     metadata_uuid = None
     # look at musicbrainz server
     music_data = common_global.api_instance.com_mediabrainz_get_recordings(
@@ -38,7 +38,7 @@ def music_search_musicbrainz(db_connection, ffmpeg_data_json):
     return metadata_uuid, music_data
 
 
-def music_fetch_save_musicbrainz(db_connection, tmdb_id, metadata_uuid):
+async def music_fetch_save_musicbrainz(db_connection, tmdb_id, metadata_uuid):
     """
     # fetch from musicbrainz
     """

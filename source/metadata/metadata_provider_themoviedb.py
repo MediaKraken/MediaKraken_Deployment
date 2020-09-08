@@ -25,7 +25,7 @@ from common import common_string
 from guessit import guessit
 
 
-def movie_search_tmdb(db_connection, file_name):
+async def movie_search_tmdb(db_connection, file_name):
     """
     # search tmdb
     """
@@ -63,7 +63,7 @@ def movie_search_tmdb(db_connection, file_name):
     return metadata_uuid, match_result
 
 
-def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
+async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     # fetch from tmdb
     """
@@ -79,7 +79,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 504": tmdb_id})
         time.sleep(60)
         # redo fetch due to 504
-        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 200:
         common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
                                                              result_json.json()})
@@ -105,7 +105,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 429": tmdb_id})
         time.sleep(30)
         # redo fetch due to 429
-        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 404": tmdb_id})
         # TODO handle 404's better
@@ -118,7 +118,7 @@ def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     return metadata_uuid
 
 
-def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
+async def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     """
     # grab reviews
     """
@@ -131,7 +131,7 @@ def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
                                        json.dumps({'themoviedb': review_json}))
 
 
-def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):
+async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):
     """
     # grab collection
     """
@@ -171,7 +171,7 @@ def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download
         return 0  # to add totals later
 
 
-def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
+async def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     """
     fetch person bio
     """
@@ -187,7 +187,7 @@ def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
                                                              result_json.json()})
         if result_json is None or result_json.status_code == 502:
             time.sleep(60)
-            metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
+            await metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
         elif result_json.status_code == 200:
             thread_db.db_meta_person_update(provider_name,
                                             download_data['mdq_download_json']['ProviderMetaID'],

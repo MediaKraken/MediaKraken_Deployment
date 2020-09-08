@@ -23,7 +23,7 @@ from common import common_global
 from . import metadata_nfo_xml
 
 
-def metadata_tv_lookup(db_connection, download_data, file_name):
+async def metadata_tv_lookup(db_connection, download_data, file_name):
     """
     Lookup tv metadata
     """

@@ -22,7 +22,7 @@ import time
 from common import common_global
 
 
-def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
+async def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
     """
     # fetch from imvdb
     """
@@ -43,7 +43,7 @@ def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
     elif result_json.status_code == 502:
         time.sleep(300)
         # redo fetch due to 502
-        movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid)
+        await movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         # TODO handle 404's better
         metadata_uuid = None

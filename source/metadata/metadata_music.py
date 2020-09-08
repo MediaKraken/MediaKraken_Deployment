@@ -34,7 +34,7 @@ from common import common_global
 #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
 #  "bits_per_raw_sample": "16"}], "chapters": []}
 
-def metadata_music_lookup(db_connection, download_json):
+async def metadata_music_lookup(db_connection, download_json):
     """
     Music lookup
     """

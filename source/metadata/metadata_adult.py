@@ -23,7 +23,7 @@ from common import common_global
 from . import metadata_nfo_xml
 
 
-def metadata_adult_lookup(db_connection, download_data, file_name):
+async def metadata_adult_lookup(db_connection, download_data, file_name):
     """
     Adult lookup
     This is the main function called from metadata_identification
