@@ -16,8 +16,11 @@
   MA 02110-1301, USA.
 """
 
-import database as database_base
-import database_async as database_base_async
+# do this to handle psycopg2 and asyncpg at the same time
+try:
+    import database as database_base
+except ModuleNotFoundError:
+    import database_async as database_base_async
 
 
 def com_config_read(close_db=False, force_local=False, loop=loop, async_mode=False):
