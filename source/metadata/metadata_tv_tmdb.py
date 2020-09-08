@@ -19,7 +19,6 @@
 import json
 import time
 
-import psycopg2
 from common import common_global
 
 
@@ -39,26 +38,21 @@ async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         series_id, result_json, image_json \
             = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
         common_global.es_inst.com_elastic_index('info', {"series": series_id})
-        # set and insert the record
-        try:
-            await db_connection.db_metatv_insert_tmdb(metadata_uuid,
-                                                series_id,
-                                                result_json['name'],
-                                                json.dumps(result_json),
-                                                json.dumps(image_json))
-            # store the cast and crew
-            if 'credits' in result_json:  # cast/crew doesn't exist on all media
-                if 'cast' in result_json['credits']:
-                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                  result_json['credits']['cast'])
-                if 'crew' in result_json['credits']:
-                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                  result_json['credits']['crew'])
-        # this except is to check duplicate keys for mm_metadata_pk
-        except psycopg2.IntegrityError:
-            # TODO technically I could be missing cast/crew
-            #  if the above doesn't finish after the insert
-            pass
+        await db_connection.db_metatv_insert_tmdb(metadata_uuid,
+                                                  series_id,
+                                                  result_json['name'],
+                                                  json.dumps(result_json),
+                                                  json.dumps(image_json))
+        # store the cast and crew
+        if 'credits' in result_json:  # cast/crew doesn't exist on all media
+            if 'cast' in result_json['credits']:
+                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                    result_json['credits'][
+                                                                        'cast'])
+            if 'crew' in result_json['credits']:
+                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                    result_json['credits'][
+                                                                        'crew'])
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
         time.sleep(20)
