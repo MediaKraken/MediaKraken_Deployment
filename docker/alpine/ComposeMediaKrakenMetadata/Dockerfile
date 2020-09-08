@@ -21,7 +21,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   linux-headers \
   musl-dev \
   python3-dev \
-  py3-psycopg2 \
   libffi-dev \
   libxslt-dev \
   libxml2-dev \

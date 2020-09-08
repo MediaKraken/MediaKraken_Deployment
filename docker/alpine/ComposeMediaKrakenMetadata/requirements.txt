@@ -1,5 +1,6 @@
 httpx[http2]==0.14.3
 aio-pika==6.7.0
+asyncpg==0.21.0
 beautifulsoup4==4.9.1
 guessit==3.1.1
 musicbrainzngs==0.7.1
