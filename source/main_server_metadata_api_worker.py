@@ -275,7 +275,6 @@ option_config_json, thread_db = common_config_ini.com_config_read()
 
 async def on_message(message: aio_pika.IncomingMessage):
     async with message.process():
-        print(message.body)
         common_global.es_inst.com_elastic_index('info', {"Message body", message.body})
         json_message = json.loads(message.body)
         if json_message['Type'] == 'Update Metadata':
@@ -291,7 +290,6 @@ async def on_message(message: aio_pika.IncomingMessage):
                 subprocess.Popen(['python3', json_message['JSON']['program']],
                                  stdout=subprocess.PIPE, shell=False)
         # TODO add record for activity/etc for the user who ran this
-        #channel.basic_ack(delivery_tag=method_frame.delivery_tag, multiple=False)
         await aio_pika.IncomingMessage.ack()
         await asyncio.sleep(1)
 
@@ -342,7 +340,7 @@ async def main(loop):
             option_config_json)
     elif content_providers == 'imvdb':
         common_global.api_instance = common_metadata_provider_imvdb.CommonMetadataIMVdb(
-            option_config_json['API']['imvdb'])
+            option_config_json)
     elif content_providers == 'isbndb':
         common_global.api_instance = common_metadata_provider_isbndb.CommonMetadataISBNdb(
             option_config_json)
