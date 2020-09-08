@@ -19,7 +19,7 @@
 import json
 import os
 
-import requests
+import httpx
 
 from . import common_global
 from . import common_metadata
@@ -42,20 +42,23 @@ class CommonMetadataTMDB:
         common_global.es_inst.com_elastic_index('info', {"tmdb search": media_title,
                                                          'year': media_year})
         if media_type == common_global.DLMediaType.Movie.value:
-            search_json = requests.get('https://api.themoviedb.org/3/search/movie'
-                                       '?api_key=%s&include_adult=1&query=%s'
-                                       % (self.API_KEY, media_title.encode('utf-8')),
-                                       timeout=(3.05, 10)).json()
+            async with httpx.AsyncClient() as client:
+                search_json = await client.get('https://api.themoviedb.org/3/search/movie'
+                                               '?api_key=%s&include_adult=1&query=%s'
+                                               % (self.API_KEY, media_title.encode('utf-8')),
+                                               timeout=(3.05, 10)).json()
         elif media_type == common_global.DLMediaType.TV.value:
-            search_json = requests.get('https://api.themoviedb.org/3/search/tv'
-                                       '?api_key=%s&include_adult=1&query=%s'
-                                       % (self.API_KEY, media_title.encode('utf-8')),
-                                       timeout=(3.05, 10)).json()
+            async with httpx.AsyncClient() as client:
+                search_json = await client.get('https://api.themoviedb.org/3/search/tv'
+                                               '?api_key=%s&include_adult=1&query=%s'
+                                               % (self.API_KEY, media_title.encode('utf-8')),
+                                               timeout=(3.05, 10)).json()
         elif media_type == common_global.DLMediaType.Person.value:
-            search_json = requests.get('https://api.themoviedb.org/3/search/person'
-                                       '?api_key=%s&include_adult=1&query=%s'
-                                       % (self.API_KEY, media_title.encode('utf-8')),
-                                       timeout=(3.05, 10)).json()
+            async with httpx.AsyncClient() as client:
+                search_json = await client.get('https://api.themoviedb.org/3/search/person'
+                                               '?api_key=%s&include_adult=1&query=%s'
+                                               % (self.API_KEY, media_title.encode('utf-8')),
+                                               timeout=(3.05, 10)).json()
         else:  # invalid search type
             return None, None
         common_global.es_inst.com_elastic_index('info', {'search': str(search_json)})
@@ -87,56 +90,58 @@ class CommonMetadataTMDB:
         """
         Fetch all metadata by id to reduce calls
         """
-        try:
-            return requests.get('https://api.themoviedb.org/3/movie/%s'
-                                '?api_key=%s&append_to_response=credits,'
-                                'reviews,release_dates,videos' %
-                                (tmdb_id, self.API_KEY), timeout=(3.05, 10))
-        except requests.exceptions.ConnectionError as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_by_id":
-                                                                  str(err_code)})
-            return None
-        except requests.exceptions.Timeout as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_by_id TO":
-                                                                  str(err_code)})
-            return None
+        async with httpx.AsyncClient() as client:
+            try:
+                return await client.get('https://api.themoviedb.org/3/movie/%s'
+                                        '?api_key=%s&append_to_response=credits,'
+                                        'reviews,release_dates,videos' %
+                                        (tmdb_id, self.API_KEY), timeout=(3.05, 10))
+            except httpx.RequestError as exc:
+                common_global.es_inst.com_elastic_index('error',
+                                                        {"TMDB Req com_tmdb_metadata_by_id":
+                                                             str(exc)})
+            except httpx.HTTPStatusError as exc:
+                common_global.es_inst.com_elastic_index('error',
+                                                        {"TMDB Stat com_tmdb_metadata_by_id":
+                                                             str(exc)})
 
     def com_tmdb_metadata_tv_by_id(self, tmdb_id):
         """
         Fetch all metadata by id to reduce calls
         """
-        try:
-            return requests.get('https://api.themoviedb.org/3/tv/%s'
-                                '?api_key=%s&append_to_response=credits,'
-                                'reviews,release_dates,videos' %
-                                (tmdb_id, self.API_KEY), timeout=(3.05, 10))
-        except requests.exceptions.ConnectionError as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_tv_by_id":
-                                                                  str(err_code)})
-            return None
-        except requests.exceptions.Timeout as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_tv_by_id TO":
-                                                                  str(err_code)})
-            return None
+        async with httpx.AsyncClient() as client:
+            try:
+                return await client.get('https://api.themoviedb.org/3/tv/%s'
+                                        '?api_key=%s&append_to_response=credits,'
+                                        'reviews,release_dates,videos' %
+                                        (tmdb_id, self.API_KEY), timeout=(3.05, 10))
+            except httpx.RequestError as exc:
+                common_global.es_inst.com_elastic_index('error',
+                                                        {"TMDB Req com_tmdb_metadata_tv_by_id":
+                                                             str(exc)})
+            except httpx.HTTPStatusError as exc:
+                common_global.es_inst.com_elastic_index('error',
+                                                        {"TMDB Stat com_tmdb_metadata_tv_by_id":
+                                                             str(exc)})
 
     def com_tmdb_metadata_bio_by_id(self, tmdb_id):
         """
         Fetch all metadata bio by id to reduce calls
         """
-        try:
-            return requests.get('https://api.themoviedb.org/3/person/%s'
-                                '?api_key=%s&append_to_response=combined_credits,'
-                                'external_ids,images' %
-                                (tmdb_id, self.API_KEY), timeout=(3.05, 10))
-        except requests.exceptions.ConnectionError as err_code:
-            common_global.es_inst.com_elastic_index('error',
-                                                    {"TMDB com_tmdb_metadata_bio_by_id":
-                                                         str(err_code)})
-            return None
-        except requests.exceptions.Timeout as err_code:
-            common_global.es_inst.com_elastic_index('error', {"TMDB com_tmdb_metadata_bio_by_id TO":
-                                                                  str(err_code)})
-            return None
+        async with httpx.AsyncClient() as client:
+            try:
+                return await client.get('https://api.themoviedb.org/3/person/%s'
+                                        '?api_key=%s&append_to_response=combined_credits,'
+                                        'external_ids,images' %
+                                        (tmdb_id, self.API_KEY), timeout=(3.05, 10))
+            except httpx.RequestError as exc:
+                common_global.es_inst.com_elastic_index('error',
+                                                        {"TMDB Req com_tmdb_metadata_bio_by_id":
+                                                             str(exc)})
+            except httpx.HTTPStatusError as exc:
+                common_global.es_inst.com_elastic_index('error',
+                                                        {"TMDB Stat com_tmdb_metadata_bio_by_id":
+                                                             str(exc)})
 
     def com_tmdb_meta_bio_image_build(self, result_json):
         """
