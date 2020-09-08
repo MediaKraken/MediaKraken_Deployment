@@ -95,10 +95,10 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                                                     json.dumps(image_json))
         if 'credits' in result_json:  # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['cast'])
             if 'crew' in result_json['credits']:
-                db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                               result_json['credits']['crew'])
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
