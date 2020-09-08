@@ -14,7 +14,7 @@ async def db_table_count(self, table_name):
     return await self.db_connection.fetchval('select count(*) from ' + table_name)
 
 
-async def db_open(self, force_local=False, loop=loop, as_pool=False):
+async def db_open(self, force_local=False, loop=None, as_pool=False):
     """
     # open database
     """
