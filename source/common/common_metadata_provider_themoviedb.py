@@ -34,7 +34,7 @@ class CommonMetadataTMDB:
     def __init__(self, option_config_json):
         self.API_KEY = option_config_json['API']['themoviedb']
 
-    def com_tmdb_search(self, media_title, media_year=None, id_only=True,
+    async def com_tmdb_search(self, media_title, media_year=None, id_only=True,
                         media_type=common_global.DLMediaType.Movie.value):
         """
         # search for media title and year
@@ -86,7 +86,7 @@ class CommonMetadataTMDB:
         else:
             return None, None
 
-    def com_tmdb_metadata_by_id(self, tmdb_id):
+    async def com_tmdb_metadata_by_id(self, tmdb_id):
         """
         Fetch all metadata by id to reduce calls
         """
@@ -105,7 +105,7 @@ class CommonMetadataTMDB:
                                                         {"TMDB Stat com_tmdb_metadata_by_id":
                                                              str(exc)})
 
-    def com_tmdb_metadata_tv_by_id(self, tmdb_id):
+    async def com_tmdb_metadata_tv_by_id(self, tmdb_id):
         """
         Fetch all metadata by id to reduce calls
         """
@@ -124,7 +124,7 @@ class CommonMetadataTMDB:
                                                         {"TMDB Stat com_tmdb_metadata_tv_by_id":
                                                              str(exc)})
 
-    def com_tmdb_metadata_bio_by_id(self, tmdb_id):
+    async def com_tmdb_metadata_bio_by_id(self, tmdb_id):
         """
         Fetch all metadata bio by id to reduce calls
         """
