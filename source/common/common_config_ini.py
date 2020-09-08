@@ -23,8 +23,8 @@ except ModuleNotFoundError:
     import database_async as database_base_async
 
 
-def com_config_read(close_db=False, force_local=False,
-                    loop=None, async_mode=False, as_pool=False):
+async def com_config_read(close_db=False, force_local=False,
+                          loop=None, async_mode=False, as_pool=False):
     """
     Read in the database connection and open unless specified not too
     """
