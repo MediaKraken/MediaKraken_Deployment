@@ -16,13 +16,13 @@
   MA 02110-1301, USA.
 """
 
+import asyncio
 import datetime
 import json
 import subprocess
 import sys
-import time
 
-import pika
+import aio_pika
 from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch
@@ -272,161 +272,12 @@ common_global.es_inst.com_elastic_index('info', {"worker meta api name":
 # open the database
 option_config_json, thread_db = common_config_ini.com_config_read()
 
-# pika rabbitmq connection
-parameters = pika.ConnectionParameters('mkstack_rabbitmq',
-                                       socket_timeout=60,
-                                       credentials=pika.PlainCredentials('guest', 'guest'),
-                                       heartbeat=600,
-                                       blocked_connection_timeout=300)
-connection = pika.BlockingConnection(parameters)
 
-# setup channels and queue
-channel = connection.channel()
-exchange = channel.exchange_declare(exchange="mkque_metadata_ex",
-                                    exchange_type="direct",
-                                    durable=True)
-queue = channel.queue_declare(queue=content_providers,
-                              durable=True)
-channel.queue_bind(exchange="mkque_metadata_ex",
-                   queue=content_providers)
-channel.basic_qos(prefetch_count=1)
-
-# setup the api key instances, if needed
-if content_providers == 'anidb':
-    common_global.api_instance = common_metadata_provider_anidb.CommonMetadataANIdb(
-        option_config_json)
-elif content_providers == 'imvdb':
-    common_global.api_instance = common_metadata_provider_imvdb.CommonMetadataIMVdb(
-        option_config_json['API']['imvdb'])
-elif content_providers == 'isbndb':
-    common_global.api_instance = common_metadata_provider_isbndb.CommonMetadataISBNdb(
-        option_config_json)
-elif content_providers == 'musicbrainz':
-    common_global.api_instance = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
-        option_config_json)
-elif content_providers == 'thegamesdb':
-    common_global.api_instance = common_metadata_provider_thegamesdb.CommonMetadataGamesDB(
-        option_config_json)
-elif content_providers == 'themoviedb':
-    common_global.api_instance = common_metadata_provider_themoviedb.CommonMetadataTMDB(
-        option_config_json)
-elif content_providers == 'thesportsdb':
-    common_global.api_instance = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
-        option_config_json)
-
-# setup last used id's per thread
-metadata_last_id = None
-metadata_last_title = None
-metadata_last_year = None
-while True:
-    # grab new batch of records to process by content provider
-    for row_data in thread_db.db_download_read_provider(content_providers):
-        common_global.es_inst.com_elastic_index('info', {"worker meta api row": row_data})
-        # checking each provider like this to send through the limiter decorator
-        if content_providers == 'anidb':
-            anidb(thread_db, row_data)
-        elif content_providers == 'chart_lyrics':
-            chart_lyrics(thread_db, row_data)
-        elif content_providers == 'comicvine':
-            comicvine(thread_db, row_data)
-        elif content_providers == 'giantbomb':
-            giantbomb(thread_db, row_data)
-        elif content_providers == 'imdb':
-            imdb(thread_db, row_data)
-        elif content_providers == 'imvdb':
-            imvdb(thread_db, row_data)
-        elif content_providers == 'isbndb':
-            isbndb(thread_db, row_data)
-        elif content_providers == 'musicbrainz':
-            musicbrainz(thread_db, row_data)
-        elif content_providers == 'omdb':
-            omdb(thread_db, row_data)
-        elif content_providers == 'pitchfork':
-            pitchfork(thread_db, row_data)
-        elif content_providers == 'pornhub':
-            pornhub(thread_db, row_data)
-        elif content_providers == 'televisiontunes':
-            televisiontunes(thread_db, row_data)
-        elif content_providers == 'theaudiodb':
-            theaudiodb(thread_db, row_data)
-        elif content_providers == 'thegamesdb':
-            thegamesdb(thread_db, row_data)
-        elif content_providers == 'themoviedb':
-            themoviedb(thread_db, row_data)
-        elif content_providers == 'thesportsdb':
-            thesportsdb(thread_db, row_data)
-        elif content_providers == 'tv_intros':
-            tv_intros(thread_db, row_data)
-        # Z records are the start of all lookups
-        elif content_providers == 'Z':
-            common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
-                                                                 row_data['mdq_download_json'][
-                                                                     'ClassID'],
-                                                             'row': row_data['mdq_id'],
-                                                             'dl json': row_data[
-                                                                 'mdq_download_json']})
-            metadata_uuid = None
-            # check for dupes by name/year
-            file_name = guessit(row_data['mdq_download_json']['Path'])
-            if type(file_name['title']) == list:
-                file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-            common_global.es_inst.com_elastic_index('info', {'worker Z filename': str(file_name)})
-            if 'title' in file_name:
-                if 'year' in file_name:
-                    if type(file_name['year']) == list:
-                        file_name['year'] = file_name['year'][0]
-                    if file_name['title'].lower() == metadata_last_title \
-                            and file_name['year'] == metadata_last_year:
-                        # matches last media scanned, so set with that metadata id
-                        metadata_uuid = metadata_last_id
-                elif file_name['title'].lower() == metadata_last_title:
-                    # matches last media scanned, so set with that metadata id
-                    metadata_uuid = metadata_last_id
-                common_global.es_inst.com_elastic_index('info',
-                                                        {"worker Z meta api uuid": metadata_uuid,
-                                                         'filename': str(file_name)})
-                # doesn't match the last file, so set the file to be id'd
-                if metadata_uuid is None:
-                    # begin id process
-                    metadata_uuid = metadata_identification.metadata_identification(thread_db,
-                                                                                    row_data[
-                                                                                        'mdq_download_json'][
-                                                                                        'ClassID'],
-                                                                                    row_data[
-                                                                                        'mdq_download_json'],
-                                                                                    row_data[
-                                                                                        'mdq_id'],
-                                                                                    row_data[
-                                                                                        'mdq_que_type'],
-                                                                                    file_name)
-                # allow NONE to be set so, unmatched stuff can work for skipping
-                metadata_last_id = metadata_uuid
-                metadata_last_title = file_name['title'].lower()
-                try:
-                    metadata_last_year = file_name['year']
-                except KeyError:
-                    metadata_last_year = None
-            else:  # invalid guessit guess so set to ZZ to skip for now
-                thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
-                thread_db.db_commit()
-            # update the media row with the json media id AND THE proper NAME!!!
-            if metadata_uuid is not None:
-                common_global.es_inst.com_elastic_index('info', {"worker Z meta api update":
-                                                                     metadata_uuid, 'row':
-                                                                     row_data[
-                                                                         'mdq_download_json'][
-                                                                         'MediaID']})
-                thread_db.db_begin()
-                thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
-                                             metadata_uuid)
-                thread_db.db_download_delete(row_data['mdq_id'])
-                thread_db.db_commit()
-    # grab message from rabbitmq if available
-    method_frame, header_frame, body = channel.basic_get(queue=content_providers,
-                                                         auto_ack=False)
-    if method_frame:
-        common_global.es_inst.com_elastic_index('info', {"Message body", body})
-        json_message = json.loads(body)
+async def on_message(message: aio_pika.IncomingMessage):
+    async with message.process():
+        print(message.body)
+        common_global.es_inst.com_elastic_index('info', {"Message body", message.body})
+        json_message = json.loads(message.body)
         if json_message['Type'] == 'Update Metadata':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
@@ -440,10 +291,186 @@ while True:
                 subprocess.Popen(['python3', json_message['JSON']['program']],
                                  stdout=subprocess.PIPE, shell=False)
         # TODO add record for activity/etc for the user who ran this
-        channel.basic_ack(delivery_tag=method_frame.delivery_tag, multiple=False)
-    time.sleep(1)
+        #channel.basic_ack(delivery_tag=method_frame.delivery_tag, multiple=False)
+        await aio_pika.IncomingMessage.ack()
+        await asyncio.sleep(1)
 
-# Cancel the consumer and return any pending messages
-channel.cancel()
-connection.close()
-thread_db.db_close()
+
+async def main(loop):
+    # rabbitmq connection
+
+    # parameters = pika.ConnectionParameters('mkstack_rabbitmq',
+    #                                        socket_timeout=60,
+    #                                        heartbeat=600,
+    #                                        blocked_connection_timeout=300)
+    # connection = pika.BlockingConnection(parameters)
+    # # setup channels and queue
+    # channel = connection.channel()
+    # exchange = channel.exchange_declare(exchange="mkque_metadata_ex",
+    #                                     exchange_type="direct",
+    #                                     durable=True)
+    # queue = channel.queue_declare(queue=content_providers,
+    #                               durable=True)
+    # channel.queue_bind(exchange="mkque_metadata_ex",
+    #                    queue=content_providers)
+    # channel.basic_qos(prefetch_count=1)
+
+    # Perform connection
+    connection = await aio_pika.connect("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
+    # Creating a channel
+    channel = await connection.channel()
+    await channel.set_qos(prefetch_count=1)
+    # Declaring queue
+    queue = await channel.declare_queue(queue=content_providers,
+                                        durable=True)
+    # Start listening
+    await queue.consume(on_message)
+
+    # connection = await aio_pika.connect_robust("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
+    # # Creating channel
+    # channel = await connection.channel()
+    # # Declaring exchange
+    # exchange = await channel.declare_exchange("direct", durable=True)
+    # # Declaring queue
+    # queue = await channel.declare_queue(queue_name, durable=True)
+    # # Binding queue
+    # await queue.bind(exchange, routing_key)
+
+    # setup the api key instances, if needed
+    if content_providers == 'anidb':
+        common_global.api_instance = common_metadata_provider_anidb.CommonMetadataANIdb(
+            option_config_json)
+    elif content_providers == 'imvdb':
+        common_global.api_instance = common_metadata_provider_imvdb.CommonMetadataIMVdb(
+            option_config_json['API']['imvdb'])
+    elif content_providers == 'isbndb':
+        common_global.api_instance = common_metadata_provider_isbndb.CommonMetadataISBNdb(
+            option_config_json)
+    elif content_providers == 'musicbrainz':
+        common_global.api_instance = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
+            option_config_json)
+    elif content_providers == 'thegamesdb':
+        common_global.api_instance = common_metadata_provider_thegamesdb.CommonMetadataGamesDB(
+            option_config_json)
+    elif content_providers == 'themoviedb':
+        common_global.api_instance = common_metadata_provider_themoviedb.CommonMetadataTMDB(
+            option_config_json)
+    elif content_providers == 'thesportsdb':
+        common_global.api_instance = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
+            option_config_json)
+    # setup last used id's per thread
+    metadata_last_id = None
+    metadata_last_title = None
+    metadata_last_year = None
+    while True:
+        # grab new batch of records to process by content provider
+        for row_data in thread_db.db_download_read_provider(content_providers):
+            common_global.es_inst.com_elastic_index('info', {"worker meta api row": row_data})
+            # checking each provider like this to send through the limiter decorator
+            if content_providers == 'anidb':
+                anidb(thread_db, row_data)
+            elif content_providers == 'chart_lyrics':
+                chart_lyrics(thread_db, row_data)
+            elif content_providers == 'comicvine':
+                comicvine(thread_db, row_data)
+            elif content_providers == 'giantbomb':
+                giantbomb(thread_db, row_data)
+            elif content_providers == 'imdb':
+                imdb(thread_db, row_data)
+            elif content_providers == 'imvdb':
+                imvdb(thread_db, row_data)
+            elif content_providers == 'isbndb':
+                isbndb(thread_db, row_data)
+            elif content_providers == 'musicbrainz':
+                musicbrainz(thread_db, row_data)
+            elif content_providers == 'omdb':
+                omdb(thread_db, row_data)
+            elif content_providers == 'pitchfork':
+                pitchfork(thread_db, row_data)
+            elif content_providers == 'pornhub':
+                pornhub(thread_db, row_data)
+            elif content_providers == 'televisiontunes':
+                televisiontunes(thread_db, row_data)
+            elif content_providers == 'theaudiodb':
+                theaudiodb(thread_db, row_data)
+            elif content_providers == 'thegamesdb':
+                thegamesdb(thread_db, row_data)
+            elif content_providers == 'themoviedb':
+                themoviedb(thread_db, row_data)
+            elif content_providers == 'thesportsdb':
+                thesportsdb(thread_db, row_data)
+            elif content_providers == 'tv_intros':
+                tv_intros(thread_db, row_data)
+            # Z records are the start of all lookups
+            elif content_providers == 'Z':
+                common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
+                                                                     row_data['mdq_download_json'][
+                                                                         'ClassID'],
+                                                                 'row': row_data['mdq_id'],
+                                                                 'dl json': row_data[
+                                                                     'mdq_download_json']})
+                metadata_uuid = None
+                # check for dupes by name/year
+                file_name = guessit(row_data['mdq_download_json']['Path'])
+                if type(file_name['title']) == list:
+                    file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
+                common_global.es_inst.com_elastic_index('info',
+                                                        {'worker Z filename': str(file_name)})
+                if 'title' in file_name:
+                    if 'year' in file_name:
+                        if type(file_name['year']) == list:
+                            file_name['year'] = file_name['year'][0]
+                        if file_name['title'].lower() == metadata_last_title \
+                                and file_name['year'] == metadata_last_year:
+                            # matches last media scanned, so set with that metadata id
+                            metadata_uuid = metadata_last_id
+                    elif file_name['title'].lower() == metadata_last_title:
+                        # matches last media scanned, so set with that metadata id
+                        metadata_uuid = metadata_last_id
+                    common_global.es_inst.com_elastic_index('info',
+                                                            {
+                                                                "worker Z meta api uuid": metadata_uuid,
+                                                                'filename': str(file_name)})
+                    # doesn't match the last file, so set the file to be id'd
+                    if metadata_uuid is None:
+                        # begin id process
+                        metadata_uuid = metadata_identification.metadata_identification(thread_db,
+                                                                                        row_data[
+                                                                                            'mdq_download_json'][
+                                                                                            'ClassID'],
+                                                                                        row_data[
+                                                                                            'mdq_download_json'],
+                                                                                        row_data[
+                                                                                            'mdq_id'],
+                                                                                        row_data[
+                                                                                            'mdq_que_type'],
+                                                                                        file_name)
+                    # allow NONE to be set so, unmatched stuff can work for skipping
+                    metadata_last_id = metadata_uuid
+                    metadata_last_title = file_name['title'].lower()
+                    try:
+                        metadata_last_year = file_name['year']
+                    except KeyError:
+                        metadata_last_year = None
+                else:  # invalid guessit guess so set to ZZ to skip for now
+                    thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
+                    thread_db.db_commit()
+                # update the media row with the json media id AND THE proper NAME!!!
+                if metadata_uuid is not None:
+                    common_global.es_inst.com_elastic_index('info', {"worker Z meta api update":
+                                                                         metadata_uuid, 'row':
+                                                                         row_data[
+                                                                             'mdq_download_json'][
+                                                                             'MediaID']})
+                    thread_db.db_begin()
+                    thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
+                                                 metadata_uuid)
+                    thread_db.db_download_delete(row_data['mdq_id'])
+                    thread_db.db_commit()
+        await asyncio.sleep(1)
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.create_task(main(loop))
+    loop.run_forever()
