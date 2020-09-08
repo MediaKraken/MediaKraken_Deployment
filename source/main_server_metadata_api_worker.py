@@ -321,7 +321,7 @@ async def main(loop):
     channel = await connection.channel()
     await channel.set_qos(prefetch_count=1)
     # Declaring queue
-    queue = await channel.declare_queue(queue=content_providers,
+    queue = await channel.declare_queue(content_providers,
                                         durable=True)
     # Start listening
     await queue.consume(on_message)
