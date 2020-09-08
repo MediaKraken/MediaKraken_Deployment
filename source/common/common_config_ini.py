@@ -23,7 +23,8 @@ except ModuleNotFoundError:
     import database_async as database_base_async
 
 
-def com_config_read(close_db=False, force_local=False, loop=None, async_mode=False):
+def com_config_read(close_db=False, force_local=False,
+                    loop=None, async_mode=False, as_pool=False):
     """
     Read in the database connection and open unless specified not too
     """
@@ -32,7 +33,7 @@ def com_config_read(close_db=False, force_local=False, loop=None, async_mode=Fal
         db_connection = database_base_async.MKServerDatabaseAsync()
     else:
         db_connection = database_base.MKServerDatabase()
-    db_connection.db_open(force_local=force_local, loop=loop, async_mode=False)
+    db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
     db_options_json = db_connection.db_opt_status_read()['mm_options_json']
     if close_db:
         db_connection.db_close()
