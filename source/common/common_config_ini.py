@@ -33,9 +33,9 @@ def com_config_read(close_db=False, force_local=False,
         db_connection = database_base_async.MKServerDatabaseAsync()
     else:
         db_connection = database_base.MKServerDatabase()
-    db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
-    db_options_json = db_connection.db_opt_status_read()['mm_options_json']
+    await db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
+    db_options_json = await db_connection.db_opt_status_read()['mm_options_json']
     if close_db:
-        db_connection.db_close()
+        await db_connection.db_close()
         return db_options_json
     return db_options_json, db_connection
