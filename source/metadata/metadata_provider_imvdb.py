@@ -28,18 +28,18 @@ async def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
     """
     common_global.es_inst.com_elastic_index('info', {"meta imvdb save fetch": imvdb_id})
     # fetch and save json data via tmdb id
-    result_json = common_global.api_instance.com_imvdb_video_info(imvdb_id)
+    result_json = await common_global.api_instance.com_imvdb_video_info(imvdb_id)
     common_global.es_inst.com_elastic_index('info', {"meta imvdb code": result_json.status_code})
     if result_json.status_code == 200:
         common_global.es_inst.com_elastic_index('info', {"meta imvdb save fetch result":
                                                              result_json.json()})
         # set and insert the record
-        db_connection.db_meta_music_video_add(metadata_uuid, json.dumps({'imvdb': str(result_json[
-                                                                                          'id'])}),
-                                              result_json['artists'][0]['slug'],
-                                              result_json['song_slug'],
-                                              json.dumps(result_json),
-                                              None)
+        await db_connection.db_meta_music_video_add(metadata_uuid,
+                                                    json.dumps({'imvdb': str(result_json['id'])}),
+                                                    result_json['artists'][0]['slug'],
+                                                    result_json['song_slug'],
+                                                    json.dumps(result_json),
+                                                    None)
     elif result_json.status_code == 502:
         time.sleep(300)
         # redo fetch due to 502

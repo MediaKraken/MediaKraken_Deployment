@@ -55,11 +55,11 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
         return metadata_tv_lookup.metadata_last_id
     # if ids from nfo/xml, query local db to see if exist
     if tmdb_id is not None:
-        metadata_uuid = db_connection.db_metatv_guid_by_tmdb(tmdb_id)
+        metadata_uuid = await db_connection.db_metatv_guid_by_tmdb(tmdb_id)
     if tvdb_id is not None and metadata_uuid is None:
-        metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
+        metadata_uuid = await db_connection.db_metatv_guid_by_tvdb(tvdb_id)
     if imdb_id is not None and metadata_uuid is None:
-        metadata_uuid = db_connection.db_metatv_guid_by_imdb(imdb_id)
+        metadata_uuid = await db_connection.db_metatv_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
     common_global.es_inst.com_elastic_index('info', {"meta tv metadata_uuid A": metadata_uuid})
     if metadata_uuid is None:
@@ -69,35 +69,36 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                 provider_id = str(tmdb_id)
             else:
                 provider_id = imdb_id
-            dl_meta = db_connection.db_download_que_exists(download_data['mdq_id'],
-                                                           common_global.DLMediaType.TV.value,
-                                                           'themoviedb', provider_id)
+            dl_meta = await db_connection.db_download_que_exists(download_data['mdq_id'],
+                                                                 common_global.DLMediaType.TV.value,
+                                                                 'themoviedb', provider_id)
             if dl_meta is None:
                 metadata_uuid = download_data['MetaNewID']
                 download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': provider_id})
-                db_connection.db_begin()
-                db_connection.db_download_update(json.dumps(download_data),
-                                                 download_data['mdq_id'])
+                await db_connection.db_begin()
+                await db_connection.db_download_update(json.dumps(download_data),
+                                                       download_data['mdq_id'])
                 # set provider last so it's not picked up by the wrong thread too early
-                db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
-                db_connection.db_commit()
+                await db_connection.db_download_update_provider('themoviedb',
+                                                                download_data['mdq_id'])
+                await db_connection.db_commit()
             else:
                 metadata_uuid = dl_meta
         elif tvdb_id is not None:
-            dl_meta = db_connection.db_download_que_exists(download_data['mdq_id'],
-                                                           common_global.DLMediaType.TV.value,
-                                                           'thetvdb', str(tvdb_id))
+            dl_meta = await db_connection.db_download_que_exists(download_data['mdq_id'],
+                                                                 common_global.DLMediaType.TV.value,
+                                                                 'thetvdb', str(tvdb_id))
             if dl_meta is None:
                 metadata_uuid = download_data['MetaNewID']
                 download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
-                db_connection.db_begin()
-                db_connection.db_download_update(json.dumps(download_data),
-                                                 download_data['mdq_id'])
+                await db_connection.db_begin()
+                await db_connection.db_download_update(json.dumps(download_data),
+                                                       download_data['mdq_id'])
                 # set provider last so it's not picked up by the wrong thread too early
-                db_connection.db_download_update_provider('thetvdb', download_data['mdq_id'])
-                db_connection.db_commit()
+                await db_connection.db_download_update_provider('thetvdb', download_data['mdq_id'])
+                await db_connection.db_commit()
             else:
                 metadata_uuid = dl_meta
     common_global.es_inst.com_elastic_index('info', {"meta tv metadata_uuid B": metadata_uuid})
@@ -107,22 +108,23 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                                                 {'stuff': "tv db lookup", 'file': str(file_name)})
         # db lookup by name and year (if available)
         if 'year' in file_name:
-            metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
-                                                                        file_name['year'])
+            metadata_uuid = await db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
+                                                                              file_name['year'])
         else:
-            metadata_uuid = db_connection.db_metatv_guid_by_tvshow_name(file_name['title'], None)
+            metadata_uuid = await db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
+                                                                              None)
         common_global.es_inst.com_elastic_index('info', {"tv db meta": metadata_uuid})
         if metadata_uuid is None:
             # no matches by name/year
             # search themoviedb since not matched above via DB or nfo/xml
             download_data.update({'Status': 'Search'})
             # save the updated status
-            db_connection.db_begin()
-            db_connection.db_download_update(json.dumps(download_data),
-                                             download_data['mdq_id'])
+            await db_connection.db_begin()
+            await db_connection.db_download_update(json.dumps(download_data),
+                                                   download_data['mdq_id'])
             # set provider last so it's not picked up by the wrong thread
-            db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
-            db_connection.db_commit()
+            await db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
+            await db_connection.db_commit()
     # set last values to negate lookups for same show
     metadata_tv_lookup.metadata_last_id = metadata_uuid
     metadata_tv_lookup.metadata_last_imdb = imdb_id

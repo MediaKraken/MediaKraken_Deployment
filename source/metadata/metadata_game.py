@@ -43,7 +43,7 @@ async def metadata_game_lookup(db_connection, download_data):
     metadata_uuid = None  # so not found checks verify later
     common_global.es_inst.com_elastic_index('info', {'game filename': download_data['Path']})
     # TODO determine short name/etc
-    for row_data in db_connection.db_meta_game_by_name(download_data['Path']):
+    for row_data in await db_connection.db_meta_game_by_name(download_data['Path']):
         # TODO handle more than one match
         metadata_uuid = row_data['gi_id']
         break
@@ -51,12 +51,12 @@ async def metadata_game_lookup(db_connection, download_data):
     if metadata_uuid is None:
         # no matches by name
         # search giantbomb since not matched above via DB or nfo/xml
-        download_data.update({'Status': 'Search'})
+        await download_data.update({'Status': 'Search'})
         # save the updated status
-        db_connection.db_begin()
-        db_connection.db_download_update(json.dumps(download_data),
-                                         download_data['mdq_id'])
+        await db_connection.db_begin()
+        await db_connection.db_download_update(json.dumps(download_data),
+                                               download_data['mdq_id'])
         # set provider last so it's not picked up by the wrong thread
-        db_connection.db_download_update_provider('giantbomb', download_data['mdq_id'])
-        db_connection.db_commit()
+        await db_connection.db_download_update_provider('giantbomb', download_data['mdq_id'])
+        await db_connection.db_commit()
     return metadata_uuid

@@ -48,7 +48,7 @@ async def movie_search_tmdb(db_connection, file_name):
                                                          match_response, 'res': match_result})
     if match_response == 'idonly':
         # check to see if metadata exists for TMDB id
-        metadata_uuid = db_connection.db_meta_guid_by_tmdb(match_result)
+        metadata_uuid = await db_connection.db_meta_guid_by_tmdb(match_result)
         common_global.es_inst.com_elastic_index('info', {"meta movie db result": metadata_uuid})
     elif match_response == 'info':
         # store new metadata record and set uuid
@@ -87,12 +87,12 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record if doesn't exist
-        if db_connection.db_meta_movie_guid_count(metadata_uuid) == 0:
-            db_connection.db_meta_insert_tmdb(metadata_uuid,
-                                              series_id_json,
-                                              result_json['title'],
-                                              json.dumps(result_json),
-                                              json.dumps(image_json))
+        if await db_connection.db_meta_movie_guid_count(metadata_uuid) == 0:
+            await db_connection.db_meta_insert_tmdb(metadata_uuid,
+                                                    series_id_json,
+                                                    result_json['title'],
+                                                    json.dumps(result_json),
+                                                    json.dumps(image_json))
         if 'credits' in result_json:  # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:
                 db_connection.db_meta_person_insert_cast_crew('themoviedb',
@@ -127,8 +127,8 @@ async def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     if review_json is not None and review_json['total_results'] > 0:
         review_json_id = ({'themoviedb': str(review_json['id'])})
         common_global.es_inst.com_elastic_index('info', {"review": review_json_id})
-        db_connection.db_review_insert(json.dumps(review_json_id),
-                                       json.dumps({'themoviedb': review_json}))
+        await db_connection.db_review_insert(json.dumps(review_json_id),
+                                             json.dumps({'themoviedb': review_json}))
 
 
 async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):
@@ -159,11 +159,11 @@ async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, do
                                                                       download_data['Backdrop'])
         else:
             image_backdrop_path = None
-        db_connection.db_collection_insert(download_data['Name'], download_data['GUID'],
-                                           collection_meta, {'Poster': image_poster_path,
-                                                             'Backdrop': image_backdrop_path})
+        await db_connection.db_collection_insert(download_data['Name'], download_data['GUID'],
+                                                 collection_meta, {'Poster': image_poster_path,
+                                                                   'Backdrop': image_backdrop_path})
         # commit all changes to db
-        db_connection.db_commit()
+        await db_connection.db_commit()
         return 1  # to add totals later
     else:
         # update
@@ -189,10 +189,11 @@ async def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
             time.sleep(60)
             await metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
         elif result_json.status_code == 200:
-            thread_db.db_meta_person_update(provider_name,
-                                            download_data['mdq_download_json']['ProviderMetaID'],
-                                            result_json.json(),
-                                            common_global.api_instance.com_tmdb_meta_bio_image_build(
-                                                result_json.json()))
+            await thread_db.db_meta_person_update(provider_name,
+                                                  download_data['mdq_download_json'][
+                                                      'ProviderMetaID'],
+                                                  result_json.json(),
+                                                  common_global.api_instance.com_tmdb_meta_bio_image_build(
+                                                      result_json.json()))
             # commit happens in download delete
-            thread_db.db_download_delete(download_data['mdq_id'])
+            await thread_db.db_download_delete(download_data['mdq_id'])

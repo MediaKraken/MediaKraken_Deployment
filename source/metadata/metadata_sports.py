@@ -38,7 +38,7 @@ async def metadata_sports_lookup(db_connection, download_data):
 
     stripped_name = os.path.basename(
         download_data['mdq_download_json']['Path'].replace('_', ' ').rsplit('(', 1)[0].strip())
-    metadata_uuid = db_connection.db_meta_sports_guid_by_event_name(stripped_name)
+    metadata_uuid = await db_connection.db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
         common_global.es_inst.com_elastic_index('info', {"searching": stripped_name})
         thesportsdb_data = \
@@ -49,7 +49,7 @@ async def metadata_sports_lookup(db_connection, download_data):
             thesportsdb_data = json.loads(thesportsdb_data)
             if thesportsdb_data['event'] is not None:
                 # TODO "find" the right event by name?  if multiples?
-                metadata_uuid = db_connection.db_meta_sports_guid_by_thesportsdb(
+                metadata_uuid = await db_connection.db_meta_sports_guid_by_thesportsdb(
                     thesportsdb_data['event'][0]['idEvent'])
                 if metadata_uuid is None:
                     image_json = {'Images': {'thesportsdb': {'Characters': {}, 'Banner': None,
@@ -57,7 +57,7 @@ async def metadata_sports_lookup(db_connection, download_data):
                                                              "Redo": True}}}
                     media_id_json = json.dumps({'thesportsdb':
                                                     str(thesportsdb_data['event'][0]['idEvent'])})
-                    db_connection.db_metathesportsdb_insert(media_id_json,
+                    await db_connection.db_metathesportsdb_insert(media_id_json,
                                                             thesportsdb_data['event'][0][
                                                                 'strFilename'],
                                                             json.dumps(

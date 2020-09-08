@@ -65,7 +65,7 @@ async def tv_search_tvdb(db_connection, file_name, lang_code='en'):
             #            media_id_json = json.dumps({'thetvdb': tvdb_id})
             #            common_global.es_inst.com_elastic_index('info', {'stuff':"dbjson: %s", media_id_json)
             # check to see if metadata exists for TVDB id
-            metadata_uuid = db_connection.db_metatv_guid_by_tvdb(tvdb_id)
+            metadata_uuid = await db_connection.db_metatv_guid_by_tvdb(tvdb_id)
             common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
     common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
                                                      'tvdb': tvdb_id})
@@ -91,7 +91,7 @@ async def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                      'thetvdb': str(tvdb_id),
                                      'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 2'})
-        metadata_uuid = db_connection.db_metatvdb_insert(series_id_json,
+        metadata_uuid = await db_connection.db_metatvdb_insert(series_id_json,
                                                          xml_show_data['Data']['Series'][
                                                              'SeriesName'],
                                                          json.dumps({'Meta': {'thetvdb':
@@ -104,7 +104,7 @@ async def tv_fetch_save_tvdb(db_connection, tvdb_id):
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 3'})
         # insert cast info
         if xml_actor_data is not None:
-            db_connection.db_meta_person_insert_cast_crew('thetvdb',
+            await db_connection.db_meta_person_insert_cast_crew('thetvdb',
                                                           xml_actor_data['Actor'])
         common_global.es_inst.com_elastic_index('info', {'stuff': 'insert 4'})
         # save rows for episode image fetch
@@ -169,5 +169,5 @@ async def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                         ['Episode']['filename']}),
                                           properties=pika.BasicProperties(content_type='text/plain',
                                                                           delivery_mode=2))
-        db_connection.db_commit()
+        await db_connection.db_commit()
     return metadata_uuid

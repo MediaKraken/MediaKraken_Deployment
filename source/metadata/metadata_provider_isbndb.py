@@ -24,10 +24,10 @@ async def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     search isbndb
     """
     common_global.es_inst.com_elastic_index('info', {"meta book search isbndb": lookup_name})
-    metadata_uuid = None
     common_global.es_inst.com_elastic_index('info', {'wh': common_global.api_instance})
+    metadata_uuid = None
     if common_global.api_instance is not None:
-        api_response = common_global.api_instance.com_isbndb_books(lookup_name)
+        api_response = await common_global.api_instance.com_isbndb_books(lookup_name)
         common_global.es_inst.com_elastic_index('info', {'response': api_response})
         if api_response.status_code == 200:
             # TODO verify decent results before insert
@@ -35,6 +35,6 @@ async def metadata_periodicals_search_isbndb(db_connection, lookup_name):
             if 'error' in api_response.json():
                 common_global.es_inst.com_elastic_index('info', {'stuff': 'error skipp'})
             else:
-                metadata_uuid = db_connection.db_meta_book_insert(api_response.json())
+                metadata_uuid = await db_connection.db_meta_book_insert(api_response.json())
     common_global.es_inst.com_elastic_index('info', {'meta book uuid': metadata_uuid})
     return metadata_uuid

@@ -41,7 +41,7 @@ async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         common_global.es_inst.com_elastic_index('info', {"series": series_id})
         # set and insert the record
         try:
-            db_connection.db_metatv_insert_tmdb(metadata_uuid,
+            await db_connection.db_metatv_insert_tmdb(metadata_uuid,
                                                 series_id,
                                                 result_json['name'],
                                                 json.dumps(result_json),
@@ -49,10 +49,10 @@ async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             # store the cast and crew
             if 'credits' in result_json:  # cast/crew doesn't exist on all media
                 if 'cast' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                                   result_json['credits']['cast'])
                 if 'crew' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                                   result_json['credits']['crew'])
         # this except is to check duplicate keys for mm_metadata_pk
         except psycopg2.IntegrityError:

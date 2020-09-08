@@ -212,9 +212,9 @@ services:
       - DEBUG=${DEBUG}
     container_name: mkstack_metadata
     depends_on:
-      - pgbouncer
+      - database
       - rabbit
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h database -p 5432 -t 60 -- python3 main_server_metadata_api.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:

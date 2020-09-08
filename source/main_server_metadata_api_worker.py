@@ -44,151 +44,151 @@ from metadata import metadata_identification
 
 @ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]
              / common_metadata_limiter.API_LIMIT['anidb'][1])
-def anidb(thread_db, download_data):
+def anidb(db_connection, download_data):
     """
     Rate limiter for AniDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in anidb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'anidb', download_data)
+    metadata_general.metadata_process(db_connection, 'anidb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0]
              / common_metadata_limiter.API_LIMIT['chart_lyrics'][1])
-def chart_lyrics(thread_db, download_data):
+def chart_lyrics(db_connection, download_data):
     """
     Rate limiter for Chart Lyrics
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in chart_lyrics rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'chart_lyrics', download_data)
+    metadata_general.metadata_process(db_connection, 'chart_lyrics', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0]
              / common_metadata_limiter.API_LIMIT['comicvine'][1])
-def comicvine(thread_db, download_data):
+def comicvine(db_connection, download_data):
     """
     Rate limiter for ComicVine
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in comicvine rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'comicvine', download_data)
+    metadata_general.metadata_process(db_connection, 'comicvine', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0]
              / common_metadata_limiter.API_LIMIT['giantbomb'][1])
-def giantbomb(thread_db, download_data):
+def giantbomb(db_connection, download_data):
     """
     Rate limiter for GiantBomb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in giantbomb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'giantbomb', download_data)
+    metadata_general.metadata_process(db_connection, 'giantbomb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0]
              / common_metadata_limiter.API_LIMIT['imdb'][1])
-def imdb(thread_db, download_data):
+def imdb(db_connection, download_data):
     """
     Rate limiter for IMDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in imdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'imdb', download_data)
+    metadata_general.metadata_process(db_connection, 'imdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0]
              / common_metadata_limiter.API_LIMIT['imvdb'][1])
-def imvdb(thread_db, download_data):
+def imvdb(db_connection, download_data):
     """
     Rate limiter for IMVdb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in imvdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'imvdb', download_data)
+    metadata_general.metadata_process(db_connection, 'imvdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['isbndb'][0]
              / common_metadata_limiter.API_LIMIT['isbndb'][1])
-def isbndb(thread_db, download_data):
+def isbndb(db_connection, download_data):
     """
     Rate limiter for isbndb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in isbndb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'isbndb', download_data)
+    metadata_general.metadata_process(db_connection, 'isbndb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]
              / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
-def musicbrainz(thread_db, download_data):
+def musicbrainz(db_connection, download_data):
     """
     Rate limiter for MusicBrainz
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in musicbrainz rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'musicbrainz', download_data)
+    metadata_general.metadata_process(db_connection, 'musicbrainz', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
              / common_metadata_limiter.API_LIMIT['omdb'][1])
-def omdb(thread_db, download_data):
+def omdb(db_connection, download_data):
     """
     Rate limiter for OMDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in omdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'omdb', download_data)
+    metadata_general.metadata_process(db_connection, 'omdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['openlibrary'][0]
              / common_metadata_limiter.API_LIMIT['openlibrary'][1])
-def openlibrary(thread_db, download_data):
+def openlibrary(db_connection, download_data):
     """
     Rate limiter for openlibrary
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in openlib rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'openlibrary', download_data)
+    metadata_general.metadata_process(db_connection, 'openlibrary', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]
              / common_metadata_limiter.API_LIMIT['pitchfork'][1])
-def pitchfork(thread_db, download_data):
+def pitchfork(db_connection, download_data):
     """
     Rate limiter for Pitchfork
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in pitchfork rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'pitchfork', download_data)
+    metadata_general.metadata_process(db_connection, 'pitchfork', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['pornhub'][0]
              / common_metadata_limiter.API_LIMIT['pornhub'][1])
-def pornhub(thread_db, download_data):
+def pornhub(db_connection, download_data):
     """
     Rate limiter for pornhub
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in pornhub rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'pornhub', download_data)
+    metadata_general.metadata_process(db_connection, 'pornhub', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]
              / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
-def televisiontunes(thread_db, download_data):
+def televisiontunes(db_connection, download_data):
     """
     Rate limiter for Television Tunes
     """
@@ -196,67 +196,67 @@ def televisiontunes(thread_db, download_data):
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
     metadata_general.metadata_process(
-        thread_db, 'televisiontunes', download_data)
+        db_connection, 'televisiontunes', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]
              / common_metadata_limiter.API_LIMIT['theaudiodb'][1])
-def theaudiodb(thread_db, download_data):
+def theaudiodb(db_connection, download_data):
     """
     Rate limiter for TheAudioDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in theaudiodb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'theaudiodb', download_data)
+    metadata_general.metadata_process(db_connection, 'theaudiodb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0]
              / common_metadata_limiter.API_LIMIT['thegamesdb'][1])
-def thegamesdb(thread_db, download_data):
+def thegamesdb(db_connection, download_data):
     """
     Rate limiter for thegamesdb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in thegamesdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'thegamesdb', download_data)
+    metadata_general.metadata_process(db_connection, 'thegamesdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
              / common_metadata_limiter.API_LIMIT['themoviedb'][1])
-def themoviedb(thread_db, download_data):
+def themoviedb(db_connection, download_data):
     """
     Rate limiter for theMovieDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in moviedb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'themoviedb', download_data)
+    metadata_general.metadata_process(db_connection, 'themoviedb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
              / common_metadata_limiter.API_LIMIT['thesportsdb'][1])
-def thesportsdb(thread_db, download_data):
+def thesportsdb(db_connection, download_data):
     """
     Rate limiter for TheSportsDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in thesportsdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'thesportsdb', download_data)
+    metadata_general.metadata_process(db_connection, 'thesportsdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
              / common_metadata_limiter.API_LIMIT['tv_intros'][1])
-def tv_intros(thread_db, download_data):
+def tv_intros(db_connection, download_data):
     """
     Rate limiter for TV Intros
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in tv_intros rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(thread_db, 'tv_intros', download_data)
+    metadata_general.metadata_process(db_connection, 'tv_intros', download_data)
 
 
 # start logging
@@ -269,8 +269,6 @@ common_signal.com_signal_set_break()
 content_providers = str(sys.argv[1])
 common_global.es_inst.com_elastic_index('info', {"worker meta api name":
                                                      content_providers})
-# open the database
-option_config_json, thread_db = common_config_ini.com_config_read()
 
 
 async def on_message(message: aio_pika.IncomingMessage):
@@ -295,6 +293,9 @@ async def on_message(message: aio_pika.IncomingMessage):
 
 
 async def main(loop):
+    # open the database
+    option_config_json, db_connection = common_config_ini.com_config_read(loop=loop,
+                                                                          async_mode=True)
     # rabbitmq connection
 
     # parameters = pika.ConnectionParameters('mkstack_rabbitmq',
@@ -362,43 +363,43 @@ async def main(loop):
     metadata_last_year = None
     while True:
         # grab new batch of records to process by content provider
-        for row_data in thread_db.db_download_read_provider(content_providers):
+        for row_data in db_connection.db_download_read_provider(content_providers):
             common_global.es_inst.com_elastic_index('info', {"worker meta api row": row_data})
             # checking each provider like this to send through the limiter decorator
             if content_providers == 'anidb':
-                anidb(thread_db, row_data)
+                anidb(db_connection, row_data)
             elif content_providers == 'chart_lyrics':
-                chart_lyrics(thread_db, row_data)
+                chart_lyrics(db_connection, row_data)
             elif content_providers == 'comicvine':
-                comicvine(thread_db, row_data)
+                comicvine(db_connection, row_data)
             elif content_providers == 'giantbomb':
-                giantbomb(thread_db, row_data)
+                giantbomb(db_connection, row_data)
             elif content_providers == 'imdb':
-                imdb(thread_db, row_data)
+                imdb(db_connection, row_data)
             elif content_providers == 'imvdb':
-                imvdb(thread_db, row_data)
+                imvdb(db_connection, row_data)
             elif content_providers == 'isbndb':
-                isbndb(thread_db, row_data)
+                isbndb(db_connection, row_data)
             elif content_providers == 'musicbrainz':
-                musicbrainz(thread_db, row_data)
+                musicbrainz(db_connection, row_data)
             elif content_providers == 'omdb':
-                omdb(thread_db, row_data)
+                omdb(db_connection, row_data)
             elif content_providers == 'pitchfork':
-                pitchfork(thread_db, row_data)
+                pitchfork(db_connection, row_data)
             elif content_providers == 'pornhub':
-                pornhub(thread_db, row_data)
+                pornhub(db_connection, row_data)
             elif content_providers == 'televisiontunes':
-                televisiontunes(thread_db, row_data)
+                televisiontunes(db_connection, row_data)
             elif content_providers == 'theaudiodb':
-                theaudiodb(thread_db, row_data)
+                theaudiodb(db_connection, row_data)
             elif content_providers == 'thegamesdb':
-                thegamesdb(thread_db, row_data)
+                thegamesdb(db_connection, row_data)
             elif content_providers == 'themoviedb':
-                themoviedb(thread_db, row_data)
+                themoviedb(db_connection, row_data)
             elif content_providers == 'thesportsdb':
-                thesportsdb(thread_db, row_data)
+                thesportsdb(db_connection, row_data)
             elif content_providers == 'tv_intros':
-                tv_intros(thread_db, row_data)
+                tv_intros(db_connection, row_data)
             # Z records are the start of all lookups
             elif content_providers == 'Z':
                 common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
@@ -432,17 +433,13 @@ async def main(loop):
                     # doesn't match the last file, so set the file to be id'd
                     if metadata_uuid is None:
                         # begin id process
-                        metadata_uuid = metadata_identification.metadata_identification(thread_db,
-                                                                                        row_data[
-                                                                                            'mdq_download_json'][
-                                                                                            'ClassID'],
-                                                                                        row_data[
-                                                                                            'mdq_download_json'],
-                                                                                        row_data[
-                                                                                            'mdq_id'],
-                                                                                        row_data[
-                                                                                            'mdq_que_type'],
-                                                                                        file_name)
+                        metadata_uuid = await metadata_identification.metadata_identification(
+                            db_connection,
+                            row_data['mdq_download_json']['ClassID'],
+                            row_data['mdq_download_json'],
+                            row_data['mdq_id'],
+                            row_data['mdq_que_type'],
+                            file_name)
                     # allow NONE to be set so, unmatched stuff can work for skipping
                     metadata_last_id = metadata_uuid
                     metadata_last_title = file_name['title'].lower()
@@ -451,8 +448,8 @@ async def main(loop):
                     except KeyError:
                         metadata_last_year = None
                 else:  # invalid guessit guess so set to ZZ to skip for now
-                    thread_db.db_download_update_provider('ZZ', row_data['mdq_id'])
-                    thread_db.db_commit()
+                    await db_connection.db_download_update_provider('ZZ', row_data['mdq_id'])
+                    await db_connection.db_commit()
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
                     common_global.es_inst.com_elastic_index('info', {"worker Z meta api update":
@@ -460,11 +457,11 @@ async def main(loop):
                                                                          row_data[
                                                                              'mdq_download_json'][
                                                                              'MediaID']})
-                    thread_db.db_begin()
-                    thread_db.db_update_media_id(row_data['mdq_download_json']['MediaID'],
-                                                 metadata_uuid)
-                    thread_db.db_download_delete(row_data['mdq_id'])
-                    thread_db.db_commit()
+                    await db_connection.db_begin()
+                    await db_connection.db_update_media_id(row_data['mdq_download_json']['MediaID'],
+                                                           metadata_uuid)
+                    await db_connection.db_download_delete(row_data['mdq_id'])
+                    await db_connection.db_commit()
         await asyncio.sleep(1)
 
 

@@ -51,7 +51,7 @@ async def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
             #            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
             #            common_global.es_inst.com_elastic_index('info', {'stuff':"dbjson: %s", media_id_json)
             # check to see if metadata exists for tvmaze id
-            metadata_uuid = db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
+            metadata_uuid = await db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
             common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
     common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
                                                      'tvmaze': tvmaze_id})
@@ -91,23 +91,24 @@ async def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         series_id_json = json.dumps({'tvmaze': str(tvmaze_id),
                                      'imdb': imdb_id,
                                      'thetvdb': thetvdb_id})
-        metadata_uuid = db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
-                                                            json.dumps(
-                                                                show_full_json),
-                                                            json.dumps({'Images': {'tvmaze': {
-                                                                'Characters': {}, 'Episodes': {},
-                                                                "Redo": True}}}))
+        metadata_uuid = await db_connection.db_meta_tvmaze_insert(series_id_json, tvmaze_name,
+                                                                  json.dumps(
+                                                                      show_full_json),
+                                                                  json.dumps({'Images': {'tvmaze': {
+                                                                      'Characters': {},
+                                                                      'Episodes': {},
+                                                                      "Redo": True}}}))
         # store person info
         if 'cast' in show_full_json['Meta']['tvmaze']['_embedded'] \
                 and len(show_full_json['Meta']['tvmaze']['_embedded']['cast']) > 0:
-            db_connection.db_meta_person_insert_cast_crew('tvmaze',
-                                                          show_full_json['Meta']['tvmaze'][
-                                                              '_embedded']['cast'])
+            await db_connection.db_meta_person_insert_cast_crew('tvmaze',
+                                                                show_full_json['Meta']['tvmaze'][
+                                                                    '_embedded']['cast'])
         if 'crew' in show_full_json['Meta']['tvmaze']['_embedded'] \
                 and len(show_full_json['Meta']['tvmaze']['_embedded']['crew']) > 0:
-            db_connection.db_meta_person_insert_cast_crew('tvmaze',
-                                                          show_full_json['Meta']['tvmaze'][
-                                                              '_embedded']['crew'])
+            await db_connection.db_meta_person_insert_cast_crew('tvmaze',
+                                                                show_full_json['Meta']['tvmaze'][
+                                                                    '_embedded']['crew'])
         # save rows for episode image fetch
         for episode_info in show_detail['_embedded']['episodes']:
             if episode_info['image'] is not None:
@@ -124,5 +125,5 @@ async def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
                                                     + str(episode_info['id']) + '.jpg'}),
                                       properties=pika.BasicProperties(content_type='text/plain',
                                                                       delivery_mode=2))
-        db_connection.db_commit()
+        await db_connection.db_commit()
     return metadata_uuid

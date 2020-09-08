@@ -63,15 +63,15 @@ async def music_fetch_save_musicbrainz(db_connection, tmdb_id, metadata_uuid):
         common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
         # set and insert the record
         try:
-            db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
+            await db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
                                               result_json['title'], json.dumps(meta_json),
                                               json.dumps(image_json))
             if 'credits' in result_json:  # cast/crew doesn't exist on all media
                 if 'cast' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                                   result_json['credits']['cast'])
                 if 'crew' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
                                                                   result_json['credits']['crew'])
         # this except is to check duplicate keys for mm_metadata_pk
         except psycopg2.IntegrityError:
@@ -81,7 +81,7 @@ async def music_fetch_save_musicbrainz(db_connection, tmdb_id, metadata_uuid):
     elif result_json.status_code == 429:
         time.sleep(10)
         # redo fetch due to 504
-        movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         # TODO handle 404's better
         metadata_uuid = None
