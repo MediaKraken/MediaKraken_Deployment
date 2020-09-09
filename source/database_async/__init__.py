@@ -31,7 +31,12 @@ class MKServerDatabaseAsync:
         db_device_update_by_uuid, \
         db_device_upsert
     from database_async.db_base_download_async \
-        import db_download_insert
+        import db_download_insert, \
+        db_download_read_provider, \
+        db_download_delete, \
+        db_download_update_provider, \
+        db_download_update, \
+        db_download_que_exists
     from database_async.db_base_game_server_async \
         import db_game_server_list, \
         db_game_server_upsert
