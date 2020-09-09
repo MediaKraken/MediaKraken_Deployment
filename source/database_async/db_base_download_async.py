@@ -26,8 +26,8 @@ async def db_download_read_provider(self, provider_name):
                                           'mdq_download_json'
                                           ' from mm_download_que'
                                           ' where mdq_provider = $1'
-                                          ' order by mdq_que_type limit 25'
-                                          % provider_name)
+                                          ' order by mdq_que_type limit 25',
+                                          provider_name)
 
 
 async def db_download_delete(self, guid):
@@ -35,7 +35,7 @@ async def db_download_delete(self, guid):
     Remove download
     """
     self.db_connection.execute('delete from mm_download_que'
-                               ' where mdq_id = $1' % guid)
+                               ' where mdq_id = $1', guid)
     self.db_connection.db_commit()
 
 
@@ -46,7 +46,7 @@ async def db_download_update_provider(self, provider_name, guid):
     common_global.es_inst.com_elastic_index('info', {'download update provider': provider_name,
                                                      'guid': guid})
     self.db_connection.execute('update mm_download_que set mdq_provider = $1 where mdq_id = $2',
-                               (provider_name, guid))
+                               provider_name, guid)
 
 
 async def db_download_update(self, update_json, guid, update_que_id=None):
@@ -59,7 +59,7 @@ async def db_download_update(self, update_json, guid, update_que_id=None):
         self.db_connection.execute('update mm_download_que set mdq_download_json = $1,'
                                    ' mdq_que_type = $2'
                                    ' where mdq_id = $3',
-                                   (update_json, update_que_id, guid))
+                                   update_json, update_que_id, guid)
     else:
         self.db_connection.execute('update mm_download_que set mdq_download_json = $1'
                                    ' where mdq_id = $2', (update_json, guid))
@@ -84,4 +84,4 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
                                 ' from mm_download_que'
                                 ' where mdq_provider = $1 and mdq_que_type = $2'
                                 ' and mdq_download_json->\'ProviderMetaID\' ? $3 limit 1',
-                                (provider_name, download_que_type, provider_id))
+                                provider_name, download_que_type, provider_id)
