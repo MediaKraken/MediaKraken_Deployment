@@ -34,8 +34,8 @@ async def com_config_read(close_db=False, force_local=False,
     else:
         db_connection = database_base.MKServerDatabase()
     await db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
-    db_options_json = await db_connection.db_opt_status_read()['mm_options_json']
+    db_options_json = await db_connection.db_opt_status_read()
     if close_db:
         await db_connection.db_close()
-        return db_options_json
-    return db_options_json, db_connection
+        return db_options_json['mm_options_json']  # since read if from coroutine
+    return db_options_json['mm_options_json'], db_connection  # since read if from coroutine
