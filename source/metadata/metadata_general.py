@@ -34,10 +34,6 @@ from . import metadata_tv
 from . import metadata_tv_tmdb
 
 
-# from . import metadata_tv_tvdb
-# from . import metadata_tv_tvmaze
-
-
 async def metadata_process(thread_db, provider_name, download_data):
     common_global.es_inst.com_elastic_index('info', {'metadata_process': {'provider': provider_name,
                                                                           'dl json': download_data}})
