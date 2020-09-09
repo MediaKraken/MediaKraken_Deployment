@@ -297,6 +297,7 @@ async def main(loop):
     option_config_json, db_connection = await common_config_ini.com_config_read(loop=loop,
                                                                                 async_mode=True,
                                                                                 as_pool=False)
+    common_global.es_inst.com_elastic_index('info', {"status": 'after db open'})
     # rabbitmq connection
 
     # parameters = pika.ConnectionParameters('mkstack_rabbitmq',
@@ -323,9 +324,10 @@ async def main(loop):
     # Declaring queue
     queue = await channel.declare_queue(content_providers,
                                         durable=True)
+    common_global.es_inst.com_elastic_index('info', {"status": 'after pika connection'})
     # Start listening
     await queue.consume(on_message)
-
+    common_global.es_inst.com_elastic_index('info', {"status": 'after pika listen'})
     # connection = await aio_pika.connect_robust("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # # Creating channel
     # channel = await connection.channel()
@@ -368,39 +370,39 @@ async def main(loop):
             common_global.es_inst.com_elastic_index('info', {"worker meta api row": row_data})
             # checking each provider like this to send through the limiter decorator
             if content_providers == 'anidb':
-                anidb(db_connection, row_data)
+                await anidb(db_connection, row_data)
             elif content_providers == 'chart_lyrics':
-                chart_lyrics(db_connection, row_data)
+                await chart_lyrics(db_connection, row_data)
             elif content_providers == 'comicvine':
-                comicvine(db_connection, row_data)
+                await comicvine(db_connection, row_data)
             elif content_providers == 'giantbomb':
-                giantbomb(db_connection, row_data)
+                await giantbomb(db_connection, row_data)
             elif content_providers == 'imdb':
-                imdb(db_connection, row_data)
+                await imdb(db_connection, row_data)
             elif content_providers == 'imvdb':
-                imvdb(db_connection, row_data)
+                await imvdb(db_connection, row_data)
             elif content_providers == 'isbndb':
-                isbndb(db_connection, row_data)
+                await isbndb(db_connection, row_data)
             elif content_providers == 'musicbrainz':
-                musicbrainz(db_connection, row_data)
+                await musicbrainz(db_connection, row_data)
             elif content_providers == 'omdb':
-                omdb(db_connection, row_data)
+                await omdb(db_connection, row_data)
             elif content_providers == 'pitchfork':
-                pitchfork(db_connection, row_data)
+                await pitchfork(db_connection, row_data)
             elif content_providers == 'pornhub':
-                pornhub(db_connection, row_data)
+                await pornhub(db_connection, row_data)
             elif content_providers == 'televisiontunes':
-                televisiontunes(db_connection, row_data)
+                await televisiontunes(db_connection, row_data)
             elif content_providers == 'theaudiodb':
-                theaudiodb(db_connection, row_data)
+                await theaudiodb(db_connection, row_data)
             elif content_providers == 'thegamesdb':
-                thegamesdb(db_connection, row_data)
+                await thegamesdb(db_connection, row_data)
             elif content_providers == 'themoviedb':
-                themoviedb(db_connection, row_data)
+                await themoviedb(db_connection, row_data)
             elif content_providers == 'thesportsdb':
-                thesportsdb(db_connection, row_data)
+                await thesportsdb(db_connection, row_data)
             elif content_providers == 'tv_intros':
-                tv_intros(db_connection, row_data)
+                await tv_intros(db_connection, row_data)
             # Z records are the start of all lookups
             elif content_providers == 'Z':
                 common_global.es_inst.com_elastic_index('info', {'worker Z meta api':
