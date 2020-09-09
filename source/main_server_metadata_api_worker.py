@@ -294,9 +294,9 @@ async def on_message(message: aio_pika.IncomingMessage):
 
 async def main(loop):
     # open the database
-    option_config_json, db_connection = common_config_ini.com_config_read(loop=loop,
-                                                                          async_mode=True,
-                                                                          as_pool=False)
+    option_config_json, db_connection = await common_config_ini.com_config_read(loop=loop,
+                                                                                async_mode=True,
+                                                                                as_pool=False)
     # rabbitmq connection
 
     # parameters = pika.ConnectionParameters('mkstack_rabbitmq',
