@@ -44,219 +44,219 @@ from metadata import metadata_identification
 
 @ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]
              / common_metadata_limiter.API_LIMIT['anidb'][1])
-def anidb(db_connection, download_data):
+async def anidb(db_connection, download_data):
     """
     Rate limiter for AniDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in anidb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'anidb', download_data)
+    await metadata_general.metadata_process(db_connection, 'anidb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0]
              / common_metadata_limiter.API_LIMIT['chart_lyrics'][1])
-def chart_lyrics(db_connection, download_data):
+async def chart_lyrics(db_connection, download_data):
     """
     Rate limiter for Chart Lyrics
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in chart_lyrics rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'chart_lyrics', download_data)
+    await metadata_general.metadata_process(db_connection, 'chart_lyrics', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0]
              / common_metadata_limiter.API_LIMIT['comicvine'][1])
-def comicvine(db_connection, download_data):
+async def comicvine(db_connection, download_data):
     """
     Rate limiter for ComicVine
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in comicvine rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'comicvine', download_data)
+    await metadata_general.metadata_process(db_connection, 'comicvine', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0]
              / common_metadata_limiter.API_LIMIT['giantbomb'][1])
-def giantbomb(db_connection, download_data):
+async def giantbomb(db_connection, download_data):
     """
     Rate limiter for GiantBomb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in giantbomb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'giantbomb', download_data)
+    await metadata_general.metadata_process(db_connection, 'giantbomb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0]
              / common_metadata_limiter.API_LIMIT['imdb'][1])
-def imdb(db_connection, download_data):
+async def imdb(db_connection, download_data):
     """
     Rate limiter for IMDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in imdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'imdb', download_data)
+    await metadata_general.metadata_process(db_connection, 'imdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0]
              / common_metadata_limiter.API_LIMIT['imvdb'][1])
-def imvdb(db_connection, download_data):
+async def imvdb(db_connection, download_data):
     """
     Rate limiter for IMVdb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in imvdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'imvdb', download_data)
+    await metadata_general.metadata_process(db_connection, 'imvdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['isbndb'][0]
              / common_metadata_limiter.API_LIMIT['isbndb'][1])
-def isbndb(db_connection, download_data):
+async def isbndb(db_connection, download_data):
     """
     Rate limiter for isbndb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in isbndb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'isbndb', download_data)
+    await metadata_general.metadata_process(db_connection, 'isbndb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]
              / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
-def musicbrainz(db_connection, download_data):
+async def musicbrainz(db_connection, download_data):
     """
     Rate limiter for MusicBrainz
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in musicbrainz rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'musicbrainz', download_data)
+    await metadata_general.metadata_process(db_connection, 'musicbrainz', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
              / common_metadata_limiter.API_LIMIT['omdb'][1])
-def omdb(db_connection, download_data):
+async def omdb(db_connection, download_data):
     """
     Rate limiter for OMDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in omdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'omdb', download_data)
+    await metadata_general.metadata_process(db_connection, 'omdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['openlibrary'][0]
              / common_metadata_limiter.API_LIMIT['openlibrary'][1])
-def openlibrary(db_connection, download_data):
+async def openlibrary(db_connection, download_data):
     """
     Rate limiter for openlibrary
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in openlib rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'openlibrary', download_data)
+    await metadata_general.metadata_process(db_connection, 'openlibrary', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]
              / common_metadata_limiter.API_LIMIT['pitchfork'][1])
-def pitchfork(db_connection, download_data):
+async def pitchfork(db_connection, download_data):
     """
     Rate limiter for Pitchfork
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in pitchfork rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'pitchfork', download_data)
+    await metadata_general.metadata_process(db_connection, 'pitchfork', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['pornhub'][0]
              / common_metadata_limiter.API_LIMIT['pornhub'][1])
-def pornhub(db_connection, download_data):
+async def pornhub(db_connection, download_data):
     """
     Rate limiter for pornhub
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in pornhub rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'pornhub', download_data)
+    await metadata_general.metadata_process(db_connection, 'pornhub', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]
              / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
-def televisiontunes(db_connection, download_data):
+async def televisiontunes(db_connection, download_data):
     """
     Rate limiter for Television Tunes
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in televisiontunes rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(
+    await metadata_general.metadata_process(
         db_connection, 'televisiontunes', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]
              / common_metadata_limiter.API_LIMIT['theaudiodb'][1])
-def theaudiodb(db_connection, download_data):
+async def theaudiodb(db_connection, download_data):
     """
     Rate limiter for TheAudioDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in theaudiodb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'theaudiodb', download_data)
+    await metadata_general.metadata_process(db_connection, 'theaudiodb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0]
              / common_metadata_limiter.API_LIMIT['thegamesdb'][1])
-def thegamesdb(db_connection, download_data):
+async def thegamesdb(db_connection, download_data):
     """
     Rate limiter for thegamesdb
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in thegamesdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'thegamesdb', download_data)
+    await metadata_general.metadata_process(db_connection, 'thegamesdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
              / common_metadata_limiter.API_LIMIT['themoviedb'][1])
-def themoviedb(db_connection, download_data):
+async def themoviedb(db_connection, download_data):
     """
     Rate limiter for theMovieDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in moviedb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'themoviedb', download_data)
+    await metadata_general.metadata_process(db_connection, 'themoviedb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
              / common_metadata_limiter.API_LIMIT['thesportsdb'][1])
-def thesportsdb(db_connection, download_data):
+async def thesportsdb(db_connection, download_data):
     """
     Rate limiter for TheSportsDB
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in thesportsdb rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'thesportsdb', download_data)
+    await metadata_general.metadata_process(db_connection, 'thesportsdb', download_data)
 
 
 @ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
              / common_metadata_limiter.API_LIMIT['tv_intros'][1])
-def tv_intros(db_connection, download_data):
+async def tv_intros(db_connection, download_data):
     """
     Rate limiter for TV Intros
     """
     common_global.es_inst.com_elastic_index('info', {"here i am in tv_intros rate":
         datetime.datetime.now().strftime(
             "%H:%M:%S.%f")})
-    metadata_general.metadata_process(db_connection, 'tv_intros', download_data)
+    await metadata_general.metadata_process(db_connection, 'tv_intros', download_data)
 
 
 # start logging
