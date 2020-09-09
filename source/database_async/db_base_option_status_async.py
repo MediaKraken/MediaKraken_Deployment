@@ -22,7 +22,7 @@ async def db_opt_status_read(self):
     """
     Read options, status
     """
-    return await self.db_connection.fetchone(
+    return await self.db_connection.fetchrow(
         'select mm_options_json, mm_status_json'
         ' from mm_options_and_status')
 
