@@ -86,7 +86,7 @@ async def db_table_index_check(self, resource_name):
     # check for table or index
     """
     # TODO little bobby tables
-    self.db_cursor.execute('SELECT to_regclass(\'public.$1\')' % (resource_name,))
+    self.db_cursor.execute('SELECT to_regclass(\'public.$1\')', resource_name)
     return self.db_cursor.fetchval()
 
 
