@@ -39,8 +39,7 @@ async def db_open(self, force_local=False, loop=None, as_pool=False):
                                                    password='%s' % database_password,
                                                    database='postgres',
                                                    host=database_host,
-                                                   loop=loop,
-                                                   max_size=10)
+                                                   loop=loop)
     common_global.es_inst.com_elastic_index('info', {'stuff': 'db open async'})
 
 
