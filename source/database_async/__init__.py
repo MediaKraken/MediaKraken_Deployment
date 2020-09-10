@@ -113,7 +113,8 @@ class MKServerDatabaseAsync:
         db_meta_movie_list, \
         db_meta_movie_count, \
         db_meta_movie_status_update, \
-        db_meta_movie_json_update
+        db_meta_movie_json_update, \
+        db_meta_movie_guid_count
     from database_async.db_base_metadata_music_async \
         import db_meta_music_album_by_guid, \
         db_meta_music_album_list, \

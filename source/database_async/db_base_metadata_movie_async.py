@@ -110,3 +110,11 @@ async def db_meta_movie_json_update(self, media_guid, metadata_json):
                                      ' where mm_metadata_guid = $2',
                                      metadata_json, media_guid)
     await self.db_connection.execute('commit')
+
+
+async def db_meta_movie_guid_count(self, guid):
+    """
+    # does movie exist already by metadata id
+    """
+    return await self.db_connection.fetchval('select count(*) from mm_metadata_movie'
+                                             ' where mm_metadata_guid = $1', guid)
