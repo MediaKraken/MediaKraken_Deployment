@@ -15,6 +15,7 @@
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
 """
+
 import json
 
 # do this to handle psycopg2 and asyncpg at the same time
@@ -32,13 +33,21 @@ async def com_config_read(close_db=False, force_local=False,
     # open the database
     if async_mode:
         db_connection = database_base_async.MKServerDatabaseAsync()
+        await db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
+        db_options_json = await db_connection.db_opt_status_read()
+        if close_db:
+            await db_connection.db_close()
+            # since read is from coroutine
+            return json.loads(db_options_json['row_to_json'])['mm_options_json']
+        # since read is from coroutine
+        return json.loads(db_options_json['row_to_json'])['mm_options_json'], db_connection
     else:
         db_connection = database_base.MKServerDatabase()
-    await db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
-    db_options_json = await db_connection.db_opt_status_read()
-    if close_db:
-        await db_connection.db_close()
+        db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
+        db_options_json = db_connection.db_opt_status_read()
+        if close_db:
+            db_connection.db_close()
+            # since read is from coroutine
+            return db_options_json['mm_options_json']
         # since read is from coroutine
-        return json.loads(db_options_json['row_to_json'])['mm_options_json']
-    # since read is from coroutine
-    return json.loads(db_options_json['row_to_json'])['mm_options_json'], db_connection
+        return db_options_json['mm_options_json'], db_connection
