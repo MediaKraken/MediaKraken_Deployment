@@ -366,9 +366,9 @@ async def main(loop):
     metadata_last_year = None
     while True:
         # grab new batch of records to process by content provider
-        provider_data = await db_connection.db_download_read_provider(content_providers)
-        for row_data in json.loads(provider_data['row_to_json']):
+        for row_data in await db_connection.db_download_read_provider(content_providers):
             common_global.es_inst.com_elastic_index('info', {"worker meta api row": row_data})
+            row_data = json.loads(row_data['row_to_json'])
             # checking each provider like this to send through the limiter decorator
             if content_providers == 'anidb':
                 await anidb(db_connection, row_data)
