@@ -15,6 +15,7 @@
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
 """
+import json
 
 # do this to handle psycopg2 and asyncpg at the same time
 try:
@@ -38,6 +39,6 @@ async def com_config_read(close_db=False, force_local=False,
     if close_db:
         await db_connection.db_close()
         # since read is from coroutine
-        return db_options_json['row_to_json']['mm_options_json']
+        return json.loads(db_options_json['row_to_json'])['mm_options_json']
     # since read is from coroutine
-    return db_options_json['row_to_json']['mm_options_json'], db_connection
+    return json.loads(db_options_json['row_to_json'])['mm_options_json'], db_connection
