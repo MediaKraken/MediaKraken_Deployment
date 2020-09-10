@@ -1,11 +1,12 @@
-async def db_review_list_by_tmdb_guid(self, db_connection, metadata_id):
+async def db_review_list_by_tmdb_guid(self, metadata_id):
     """
     # grab reviews for metadata
     """
     # TODO order by release date
     # TODO order by rating? (optional?)
-    return await db_connection.fetch('select mm_review_guid,'
-                                     'mm_review_json'
-                                     ' from mm_review'
-                                     ' where mm_review_metadata_id = $1',
-                                     str(metadata_id))
+    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
+                                          ' FROM (select mm_review_guid,'
+                                          ' mm_review_json'
+                                          ' from mm_review'
+                                          ' where mm_review_metadata_id = $1) as json_data',
+                                          str(metadata_id))
