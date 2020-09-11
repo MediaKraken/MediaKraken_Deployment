@@ -13,6 +13,14 @@ sanic_db_files = common_file.com_file_dir_list('./web_app_sanic', '.py',
                                                file_size=False,
                                                directory_only=False, file_modified=False)
 
+# find all py files
+normal_db_files = common_file.com_file_dir_list('./database', '.py',
+                                                walk_dir=True,
+                                                skip_junk=True,
+                                                file_size=False,
+                                                directory_only=False,
+                                                file_modified=False)
+
 # find all async py files
 async_db_files = common_file.com_file_dir_list('./database_async', '.py',
                                                walk_dir=True,
@@ -35,14 +43,39 @@ for sanic_file in sanic_db_files:
             else:
                 sanic_db_call_table.append(db_call)
     file_handle.close()
-print('Unique Calls ', len(sanic_db_call_table), sanic_db_call_table, flush=True)
+print('Unique Sanic Calls ', len(sanic_db_call_table), sanic_db_call_table, flush=True)
 
 # read in all the db files
+normal_db_call_table = []
+normal_init_dict = {}
+for db_file in normal_db_files:
+    print('DB Normal File:', db_file, flush=True)
+    if os.path.basename(db_file) != '__init__.py':
+        file_handle = open(db_file, 'r')
+        db_file_call = []
+        for file_line in file_handle.readlines():
+            # print(file_line, flush=True)
+            if file_line.find('def ') != -1:
+                db_call = file_line.split('def ')[1].split('(')[0]
+                if db_call in db_file_call:
+                    pass
+                else:
+                    db_file_call.append(db_call)
+                if db_call in normal_db_call_table:
+                    pass
+                else:
+                    normal_db_call_table.append(db_call)
+        file_handle.close()
+        normal_init_dict[db_file] = db_file_call
+print('Unique Normal Calls DB', len(normal_db_call_table), normal_db_call_table, flush=True)
+
+# read in all the async db files
 async_db_call_table = []
 need_to_code = sanic_db_call_table
+need_to_port = normal_db_call_table
 init_dict = {}
 for db_file in async_db_files:
-    print('DB File:', db_file, flush=True)
+    print('DB Async File:', db_file, flush=True)
     if os.path.basename(db_file) != '__init__.py':
         file_handle = open(db_file, 'r')
         db_file_call = []
@@ -62,11 +95,17 @@ for db_file in async_db_files:
                     need_to_code.remove(db_call)
                 except ValueError:  # not in list
                     pass
+                try:
+                    need_to_port.remove(db_call)
+                except ValueError:  # not in list
+                    pass
         file_handle.close()
         init_dict[db_file] = db_file_call
-print('Unique Calls DB', len(async_db_call_table), async_db_call_table, flush=True)
+print('Unique Async Calls DB', len(async_db_call_table), async_db_call_table, flush=True)
 
 print('Need to Code', len(need_to_code), sorted(need_to_code), flush=True)
+
+print("Need to Port", len(need_to_port), sorted(need_to_port), flush=True)
 
 # generate the init file
 file_handle = open('./database_async/__init__.py', 'w')

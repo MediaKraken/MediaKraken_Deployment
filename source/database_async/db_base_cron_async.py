@@ -1,4 +1,5 @@
 import datetime
+import uuid
 
 
 async def db_cron_delete(self, cron_uuid):
@@ -25,6 +26,25 @@ async def db_cron_info(self, cron_uuid):
                                              ' from mm_cron'
                                              ' where mm_cron_guid = $1)'
                                              ' as json_data', cron_uuid)
+
+
+async def db_cron_insert(self, cron_name, cron_desc, cron_enabled,
+                         cron_schedule, cron_last_run, cron_json):
+    """
+    insert cron job
+    """
+    new_cron_id = str(uuid.uuid4())
+    await self.db_connection.execute('insert into mm_cron (mm_cron_guid,'
+                                     ' mm_cron_name,'
+                                     ' mm_cron_description,'
+                                     ' mm_cron_enabled,'
+                                     ' mm_cron_schedule,'
+                                     ' mm_cron_last_run, mm_cron_json)'
+                                     ' values ($1,$2,$3,$4,$5,$6,$7)',
+                                     new_cron_id, cron_name, cron_desc,
+                                     cron_enabled, cron_schedule,
+                                     cron_last_run, cron_json)
+    return new_cron_id
 
 
 async def db_cron_list(self, enabled_only=False, offset=0, records=None):

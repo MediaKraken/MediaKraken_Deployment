@@ -58,7 +58,7 @@ async def db_user_list_name(self, offset=0, records=None):
                                           offset, records)
 
 
-async def db_user_login_validation(self, user_name, user_password):
+async def db_user_login(self, user_name, user_password):
     """
     # verify user logon
     """

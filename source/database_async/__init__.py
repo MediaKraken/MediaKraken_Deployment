@@ -2,6 +2,12 @@ class MKServerDatabaseAsync:
     """
     Main database class for async database access
     """
+    from database_async.db_base_3d_async \
+        import db_3d_list_count, \
+        db_3d_list
+    from database_async.db_base_activity_async \
+        import db_activity_insert, \
+        db_activity_purge
     from database_async.db_base_async \
         import db_table_count, \
         db_open, \
@@ -20,6 +26,7 @@ class MKServerDatabaseAsync:
     from database_async.db_base_cron_async \
         import db_cron_delete, \
         db_cron_info, \
+        db_cron_insert, \
         db_cron_list, \
         db_cron_list_count, \
         db_cron_time_update
@@ -73,6 +80,17 @@ class MKServerDatabaseAsync:
         db_media_rating_update, \
         db_media_unmatched_list, \
         db_media_unmatched_list_count
+    from database_async.db_base_media_game_async \
+        import db_media_game_system_list_count, \
+        db_media_game_system_list, \
+        db_media_game_list_by_system_count, \
+        db_media_game_list_by_system, \
+        db_media_game_list_count, \
+        db_media_game_list, \
+        db_media_mame_game_list, \
+        db_media_game_category_update, \
+        db_media_game_clone_list, \
+        db_media_game_category_by_name
     from database_async.db_base_media_iradio_async \
         import db_iradio_insert, \
         db_iradio_list, \
@@ -185,4 +203,7 @@ class MKServerDatabaseAsync:
         db_user_detail, \
         db_user_insert, \
         db_user_list_name, \
-        db_user_login_validation
+        db_user_login
+    from database_async.db_base_version_async \
+        import db_version_check, \
+        db_version_update
