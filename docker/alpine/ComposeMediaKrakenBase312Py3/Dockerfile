@@ -21,8 +21,13 @@ RUN sed -i "2 s/^#//" /etc/apk/repositories \
   && apk add --no-cache \
   python3 \
   py3-pip \
+  gcc \
+  python3-dev \
   && pip3 install --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && apk del \
+    gcc \
+    python3-dev \
   && rm requirements.txt \
   && adduser -DHs /sbin/nologin metaman
 
