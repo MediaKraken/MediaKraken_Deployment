@@ -19,6 +19,22 @@ class MKServerDatabaseAsync:
         db_drop_table, \
         db_query, \
         db_parallel_workers
+    from database_async.db_base_audit_async \
+        import db_audit_path_status, \
+        db_audit_path_update_status, \
+        db_audit_path_update_by_uuid, \
+        db_audit_path_delete, \
+        db_audit_path_add, \
+        db_audit_path_check, \
+        db_audit_dir_timestamp_update, \
+        db_audit_paths, \
+        db_audit_path_by_uuid, \
+        db_audit_shares, \
+        db_audit_share_delete, \
+        db_audit_share_by_uuid, \
+        db_audit_share_update_by_uuid, \
+        db_audit_share_check, \
+        db_audit_share_add
     from database_async.db_base_collection_async \
         import db_collection_list, \
         db_collection_list_count, \
@@ -119,7 +135,8 @@ class MKServerDatabaseAsync:
     from database_async.db_base_media_tv_live_async \
         import db_tv_schedule_by_date
     from database_async.db_base_metadata_async \
-        import db_metadata_guid_from_media_guid
+        import db_metadata_guid_from_media_guid, \
+        db_meta_insert_tmdb
     from database_async.db_base_metadata_game_async \
         import db_meta_game_by_guid, \
         db_meta_game_by_sha1, \
@@ -185,6 +202,10 @@ class MKServerDatabaseAsync:
         db_pgsql_table_sizes
     from database_async.db_base_queue_async \
         import db_meta_queue_list_count
+    from database_async.db_base_review_async \
+        import db_review_count, \
+        db_review_list_by_tmdb_guid, \
+        db_review_insert
     from database_async.db_base_share_async \
         import db_share_add, \
         db_share_check, \
