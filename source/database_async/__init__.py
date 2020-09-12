@@ -35,10 +35,25 @@ class MKServerDatabaseAsync:
         db_audit_share_update_by_uuid, \
         db_audit_share_check, \
         db_audit_share_add
+    from database_async.db_base_brainz_async \
+        import __init__, \
+        db_brainz_open, \
+        db_brainz_close, \
+        db_brainz_all_artists, \
+        db_brainz_all_albums, \
+        db_brainz_all_albums_by_artist, \
+        db_brainz_all_songs, \
+        db_brainz_all_songs_by_rec_uuid, \
+        db_brainz_all
     from database_async.db_base_collection_async \
         import db_collection_list, \
         db_collection_list_count, \
-        db_collection_read_by_guid
+        db_collection_read_by_guid, \
+        db_media_collection_scan, \
+        db_collection_guid_by_name, \
+        db_collection_by_tmdb, \
+        db_collection_insert, \
+        db_collection_update
     from database_async.db_base_cron_async \
         import db_cron_delete, \
         db_cron_info, \
@@ -136,7 +151,9 @@ class MKServerDatabaseAsync:
         import db_tv_schedule_by_date
     from database_async.db_base_metadata_async \
         import db_metadata_guid_from_media_guid, \
-        db_meta_insert_tmdb
+        db_meta_insert_tmdb, \
+        db_meta_guid_by_imdb, \
+        db_meta_guid_by_tmdb
     from database_async.db_base_metadata_game_async \
         import db_meta_game_by_guid, \
         db_meta_game_by_sha1, \
@@ -170,7 +187,10 @@ class MKServerDatabaseAsync:
         import db_meta_person_as_seen_in, \
         db_meta_person_by_guid, \
         db_meta_person_list, \
-        db_meta_person_list_count
+        db_meta_person_list_count, \
+        db_meta_person_id_count, \
+        db_meta_person_insert, \
+        db_meta_person_insert_cast_crew
     from database_async.db_base_metadata_review_async \
         import db_review_list_by_tmdb_guid
     from database_async.db_base_metadata_search_async \
@@ -195,7 +215,9 @@ class MKServerDatabaseAsync:
         import db_opt_update, \
         db_opt_json_read, \
         db_opt_status_read, \
-        db_status_json_read
+        db_status_json_read, \
+        db_opt_status_insert, \
+        db_opt_status_update
     from database_async.db_base_postgresql_async \
         import db_pgsql_parallel_workers, \
         db_pgsql_row_count, \
@@ -213,7 +235,9 @@ class MKServerDatabaseAsync:
         db_share_list, \
         db_share_update_by_uuid
     from database_async.db_base_sync_async \
-        import db_sync_delete, \
+        import db_sync_progress_update, \
+        db_sync_list_count, \
+        db_sync_delete, \
         db_sync_insert, \
         db_sync_list
     from database_async.db_base_usage_async \
@@ -227,7 +251,8 @@ class MKServerDatabaseAsync:
         db_user_detail, \
         db_user_insert, \
         db_user_list_name, \
-        db_user_login
+        db_user_login, \
+        db_user_group_insert
     from database_async.db_base_version_async \
         import db_version_check, \
         db_version_update

@@ -1,3 +1,6 @@
+import uuid
+
+
 async def db_user_count(self, user_name=None):
     if user_name is None:
         return await self.db_connection.fetchval('select count(*) from mm_user')
@@ -75,3 +78,19 @@ async def db_user_login(self, user_name, user_password):
             return 'inactive_account', None, None
         return result['id'], result['is_admin'], result['per_page']
     return 'invalid_password', None, None
+
+
+async def db_user_group_insert(self, group_name, group_desc, group_rights_json):
+    """
+    insert user group
+    """
+    new_user_group_id = str(uuid.uuid4())
+    await self.db_connection.execute('insert into mm_user_group (mm_user_group_guid,'
+                                     ' mm_user_group_name,'
+                                     ' mm_user_group_description,'
+                                     ' mm_user_group_rights_json)'
+                                     ' values ($1,$2,$3,$4)',
+                                     new_user_group_id, group_name,
+                                     group_desc, group_rights_json)
+    await self.db_connection.db_commit()
+    return new_user_group_id

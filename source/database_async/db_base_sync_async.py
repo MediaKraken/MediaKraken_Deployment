@@ -1,6 +1,22 @@
 import uuid
 
 
+async def db_sync_progress_update(self, sync_guid, sync_percent):
+    """
+    # update progress
+    """
+    await self.db_connection.execute('update mm_sync set mm_sync_options_json->\'Progress\' = $1'
+                                     ' where mm_sync_guid = $2', sync_percent, sync_guid)
+    await self.db_connection.db_commit()
+
+
+async def db_sync_list_count(self):
+    """
+    # return count of sync jobs
+    """
+    return await self.db_connection.fetchval('select count(*) from mm_sync')
+
+
 async def db_sync_delete(self, sync_guid):
     """
     # delete sync job

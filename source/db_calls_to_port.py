@@ -105,7 +105,9 @@ print('Unique Async Calls DB', len(async_db_call_table), async_db_call_table, fl
 
 print('Need to Code', len(need_to_code), sorted(need_to_code), flush=True)
 
-print("Need to Port", len(need_to_port), sorted(need_to_port), flush=True)
+print("Need to Port", len(need_to_port), flush=True)
+for db_call in sorted(need_to_port):
+    print("DB call:", db_call, flush=True)
 
 # generate the init file
 file_handle = open('./database_async/__init__.py', 'w')
