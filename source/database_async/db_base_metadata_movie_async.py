@@ -109,7 +109,7 @@ async def db_meta_movie_json_update(self, media_guid, metadata_json):
                                      ' set mm_metadata_user_json = $1'
                                      ' where mm_metadata_guid = $2',
                                      metadata_json, media_guid)
-    await self.db_connection.commit()
+    await self.db_connection.execute('commit')
 
 
 async def db_meta_movie_guid_count(self, guid):

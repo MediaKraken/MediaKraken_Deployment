@@ -51,7 +51,7 @@ async def db_opt_status_insert(self, option_json, status_json):
                                      ' mm_status_json)'
                                      ' values ($1,$2,$3)',
                                      str(uuid.uuid4()), option_json, status_json)
-    await self.db_connection.commit()
+    await self.db_connection.execute('commit')
 
 
 async def db_opt_status_update(self, option_json, status_json):
@@ -63,4 +63,4 @@ async def db_opt_status_update(self, option_json, status_json):
                                      ' set mm_options_json = $1,'
                                      ' mm_status_json = $2',
                                      option_json, status_json)
-    await self.db_connection.commit()
+    await self.db_connection.execute('commit')

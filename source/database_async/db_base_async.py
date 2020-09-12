@@ -70,7 +70,7 @@ async def db_commit(self):
         common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
     except:
         pass
-    await self.db_connection.commit()
+    await self.db_connection.execute('commit')
 
 
 async def db_rollback(self):

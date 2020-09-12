@@ -7,7 +7,7 @@ async def db_sync_progress_update(self, sync_guid, sync_percent):
     """
     await self.db_connection.execute('update mm_sync set mm_sync_options_json->\'Progress\' = $1'
                                      ' where mm_sync_guid = $2', sync_percent, sync_guid)
-    await self.db_connection.commit()
+    await self.db_connection.execute('commit')
 
 
 async def db_sync_list_count(self):

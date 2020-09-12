@@ -98,7 +98,7 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
                                      ' values ($1,$2,$3,$4,$5)',
                                      new_guid, person_name, media_id,
                                      person_json, image_path)
-    await self.db_connection.commit()
+    await self.db_connection.execute('commit')
     return new_guid
 
 
