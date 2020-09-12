@@ -11,16 +11,17 @@ class ServerDatabaseBrainz:
         """
         # open database and pull in config from sqlite and create db if not exist
         """
+        pass
         # setup for unicode
-        psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
-        psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
-        # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
-        # psycopg2.extras.register_default_json(loads=lambda x: x)
-        self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'",
-                                          (postdbname, postdbuser, postdbhost, int(postdbport),
-                                           postdbpass))
-        self.db_cursor = self.sql3_conn.cursor()
-        self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
+        # psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
+        # psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
+        # # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
+        # # psycopg2.extras.register_default_json(loads=lambda x: x)
+        # self.sql3_conn = psycopg2.connect("dbname='%s' user='%s' host='%s' port=%s password='%s'",
+        #                                   (postdbname, postdbuser, postdbhost, int(postdbport),
+        #                                    postdbpass))
+        # self.db_cursor = self.sql3_conn.cursor()
+        # self.db_cursor.execute('SET TIMEZONE = \'America/Chicago\'')
 
     #        self.db_cursor.execute('SELECT COUNT (relname) as a FROM pg_class\
     # WHERE relname = \'mm_media\'')
