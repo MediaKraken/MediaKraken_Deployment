@@ -74,42 +74,44 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     if result_json is not None:
         common_global.es_inst.com_elastic_index('info', {"meta movie code": result_json.status_code,
                                                          "header": result_json.headers})
-    # 504	Your request to the backend server timed out. Try again.
-    if result_json.status_code == 504:
-        common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 504": tmdb_id})
-        time.sleep(60)
-        # redo fetch due to 504
-        await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
-    elif result_json.status_code == 200:
-        common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
-                                                             result_json.json()})
-        series_id_json, result_json, image_json \
-            = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
-        common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
-        # set and insert the record if doesn't exist
-        if await db_connection.db_meta_movie_guid_count(metadata_uuid) == 0:
-            await db_connection.db_meta_insert_tmdb(metadata_uuid,
-                                                    series_id_json,
-                                                    result_json['title'],
-                                                    json.dumps(result_json),
-                                                    json.dumps(image_json))
-        if 'credits' in result_json:  # cast/crew doesn't exist on all media
-            if 'cast' in result_json['credits']:
-                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                              result_json['credits']['cast'])
-            if 'crew' in result_json['credits']:
-                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                              result_json['credits']['crew'])
-    # 429	Your request count (#) is over the allowed limit of (40).
-    elif result_json.status_code == 429:
-        common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 429": tmdb_id})
-        time.sleep(30)
-        # redo fetch due to 429
-        await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
-    elif result_json.status_code == 404:
-        common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 404": tmdb_id})
-        # TODO handle 404's better
-        metadata_uuid = None
+        # 504	Your request to the backend server timed out. Try again.
+        if result_json.status_code == 504:
+            common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 504": tmdb_id})
+            time.sleep(60)
+            # redo fetch due to 504
+            await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        elif result_json.status_code == 200:
+            common_global.es_inst.com_elastic_index('info', {"meta movie save fetch result":
+                                                                 result_json.json()})
+            series_id_json, result_json, image_json \
+                = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
+            common_global.es_inst.com_elastic_index('info', {"series": series_id_json})
+            # set and insert the record if doesn't exist
+            if await db_connection.db_meta_movie_guid_count(metadata_uuid) == 0:
+                await db_connection.db_meta_insert_tmdb(metadata_uuid,
+                                                        series_id_json,
+                                                        result_json['title'],
+                                                        json.dumps(result_json),
+                                                        json.dumps(image_json))
+            if 'credits' in result_json:  # cast/crew doesn't exist on all media
+                if 'cast' in result_json['credits']:
+                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                        result_json['credits'][
+                                                                            'cast'])
+                if 'crew' in result_json['credits']:
+                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                        result_json['credits'][
+                                                                            'crew'])
+        # 429	Your request count (#) is over the allowed limit of (40).
+        elif result_json.status_code == 429:
+            common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 429": tmdb_id})
+            time.sleep(30)
+            # redo fetch due to 429
+            await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        elif result_json.status_code == 404:
+            common_global.es_inst.com_elastic_index('info', {"meta movie tmdb 404": tmdb_id})
+            # TODO handle 404's better
+            metadata_uuid = None
     else:  # is this is None....
         common_global.es_inst.com_elastic_index('info', {"meta movie tmdb misc": tmdb_id})
         metadata_uuid = None
