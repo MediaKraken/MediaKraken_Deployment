@@ -23,8 +23,17 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   net-snmp \
   python3 \
   openrc \
+  gcc \
+  python3-dev \
+  linux-headers \
+  musl-dev \
+  && pip3 install --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && rm requirements.txt \
+  && apk del \
+    gcc \
+    python3-dev \
+    linux-headers \
+    musl-dev \  && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
 

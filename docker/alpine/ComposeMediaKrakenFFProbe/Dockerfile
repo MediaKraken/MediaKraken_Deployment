@@ -33,6 +33,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-psycopg2 \
   py3-psutil \
   openrc \
+  && pip3 install --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del \
   alpine-sdk \
