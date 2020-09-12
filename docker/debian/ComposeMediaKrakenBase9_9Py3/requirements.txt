@@ -1,1 +1,1 @@
-elasticsearch==7.5.1
+elasticsearch[async]==7.9.1
