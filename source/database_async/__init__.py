@@ -48,7 +48,10 @@ class MKServerDatabaseAsync:
         import db_game_server_list, \
         db_game_server_upsert
     from database_async.db_base_hardware_async \
-        import db_hardware_device_count
+        import db_hardware_device_count, \
+        db_hardware_json_read, \
+        db_hardware_insert, \
+        db_hardware_delete
     from database_async.db_base_image_async \
         import db_image_count, \
         db_image_list
