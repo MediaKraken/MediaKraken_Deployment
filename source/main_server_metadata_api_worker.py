@@ -261,7 +261,7 @@ async def tv_intros(db_connection, download_data):
 
 # start logging
 common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'meta_api_worker_%s' % str(sys.argv[1]).lower())
+    'meta_api_worker_%s' % str(sys.argv[1]).lower(), async_mode=True)
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
