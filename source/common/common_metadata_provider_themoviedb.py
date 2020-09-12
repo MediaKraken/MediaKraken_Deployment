@@ -35,7 +35,7 @@ class CommonMetadataTMDB:
         self.API_KEY = option_config_json['API']['themoviedb']
 
     async def com_tmdb_search(self, media_title, media_year=None, id_only=True,
-                        media_type=common_global.DLMediaType.Movie.value):
+                              media_type=common_global.DLMediaType.Movie.value):
         """
         # search for media title and year
         """
@@ -46,21 +46,23 @@ class CommonMetadataTMDB:
                 search_json = await client.get('https://api.themoviedb.org/3/search/movie'
                                                '?api_key=%s&include_adult=1&query=%s'
                                                % (self.API_KEY, media_title.encode('utf-8')),
-                                               timeout=(3.05, 10)).json()
+                                               timeout=3.05)
         elif media_type == common_global.DLMediaType.TV.value:
             async with httpx.AsyncClient() as client:
                 search_json = await client.get('https://api.themoviedb.org/3/search/tv'
                                                '?api_key=%s&include_adult=1&query=%s'
                                                % (self.API_KEY, media_title.encode('utf-8')),
-                                               timeout=(3.05, 10)).json()
+                                               timeout=3.05)
         elif media_type == common_global.DLMediaType.Person.value:
             async with httpx.AsyncClient() as client:
                 search_json = await client.get('https://api.themoviedb.org/3/search/person'
                                                '?api_key=%s&include_adult=1&query=%s'
                                                % (self.API_KEY, media_title.encode('utf-8')),
-                                               timeout=(3.05, 10)).json()
+                                               timeout=3.05)
         else:  # invalid search type
             return None, None
+        # pull json since it's a coroutine above
+        search_json = search_json.json()
         common_global.es_inst.com_elastic_index('info', {'search': str(search_json)})
         if search_json is not None and search_json['total_results'] > 0:
             for res in search_json['results']:
@@ -95,7 +97,7 @@ class CommonMetadataTMDB:
                 return await client.get('https://api.themoviedb.org/3/movie/%s'
                                         '?api_key=%s&append_to_response=credits,'
                                         'reviews,release_dates,videos' %
-                                        (tmdb_id, self.API_KEY), timeout=(3.05, 10))
+                                        (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
                 common_global.es_inst.com_elastic_index('error',
                                                         {"TMDB Req com_tmdb_metadata_by_id":
@@ -114,7 +116,7 @@ class CommonMetadataTMDB:
                 return await client.get('https://api.themoviedb.org/3/tv/%s'
                                         '?api_key=%s&append_to_response=credits,'
                                         'reviews,release_dates,videos' %
-                                        (tmdb_id, self.API_KEY), timeout=(3.05, 10))
+                                        (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
                 common_global.es_inst.com_elastic_index('error',
                                                         {"TMDB Req com_tmdb_metadata_tv_by_id":
@@ -133,7 +135,7 @@ class CommonMetadataTMDB:
                 return await client.get('https://api.themoviedb.org/3/person/%s'
                                         '?api_key=%s&append_to_response=combined_credits,'
                                         'external_ids,images' %
-                                        (tmdb_id, self.API_KEY), timeout=(3.05, 10))
+                                        (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
                 common_global.es_inst.com_elastic_index('error',
                                                         {"TMDB Req com_tmdb_metadata_bio_by_id":
