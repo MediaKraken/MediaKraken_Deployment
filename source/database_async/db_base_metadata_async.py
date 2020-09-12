@@ -15,6 +15,7 @@ async def db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
                                      ' mm_media_name,'
                                      ' mm_metadata_json,'
                                      ' mm_metadata_localimage_json)'
-                                     ' values ($1,$2,$3,$4,$5)', (uuid_id, series_id, data_title,
-                                                                  data_json, data_image_json))
+                                     ' values ($1,$2,$3,$4,$5)',
+                                     uuid_id, series_id, data_title,
+                                     data_json, data_image_json)
     await self.db_connection.db_commit()
