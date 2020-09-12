@@ -92,5 +92,5 @@ async def db_user_group_insert(self, group_name, group_desc, group_rights_json):
                                      ' values ($1,$2,$3,$4)',
                                      new_user_group_id, group_name,
                                      group_desc, group_rights_json)
-    await self.db_connection.db_commit()
+    await self.db_connection.commit()
     return new_user_group_id

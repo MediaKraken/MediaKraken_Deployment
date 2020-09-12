@@ -24,7 +24,7 @@ async def db_activity_insert(self, activity_name, activity_overview,
                                       activity_short_overview,
                                       activity_type, activity_itemid, activity_userid,
                                       datetime.datetime.now(), activity_log_severity))
-    await self.db_connection.db_commit()
+    await self.db_connection.commit()
     return new_guid
 
 
@@ -36,4 +36,4 @@ async def db_activity_purge(self, days_old):
     await self.db_connection.execute('delete from mm_user_activity'
                                      ' where mm_activity_datecreated'
                                      ' < now() - interval $1;', str(days_old) + ' day')
-    await self.db_connection.db_commit()
+    await self.db_connection.commit()

@@ -36,11 +36,11 @@ async def db_hardware_insert(self, manufacturer, model_name, json_data):
                                      ' mm_hardware_json)'
                                      ' values ($1, $2, $3, $4)',
                                      new_guid, manufacturer, model_name, json_data)
-    await self.db_connection.db_commit()
+    await self.db_connection.commit()
     return new_guid
 
 
 async def db_hardware_delete(self, guid):
     await self.db_connection.execute('delete from mm_hardware_json'
                                      ' where mm_hardware_id = $1', guid)
-    await self.db_connection.db_commit()
+    await self.db_connection.commit()

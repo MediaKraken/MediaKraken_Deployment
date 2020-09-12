@@ -55,7 +55,7 @@ async def db_media_game_category_update(self, category, game_id):
     await self.db_connection.execute('update mm_game_info'
                                      ' set gi_gc_category = $1'
                                      ' where gi_id = $2', category, game_id)
-    await self.db_connection.db_commit()
+    await self.db_connection.commit()
 
 
 async def db_media_game_clone_list(self):
