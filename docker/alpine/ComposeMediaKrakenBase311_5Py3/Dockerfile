@@ -17,8 +17,9 @@ WORKDIR /mediakraken
 
 # pip3 is installed with python3
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add  --no-cache \
+  && apk add --no-cache \
   python3 \
+  && pip3 install --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && adduser -DHs /sbin/nologin metaman
