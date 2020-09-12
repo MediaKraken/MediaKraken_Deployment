@@ -23,7 +23,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   libxslt-dev \
   musl-dev \
   openssl-dev \
-  python \
+  python3 \
   python3-dev \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install git+https://github.com/MediaKraken/phue \
