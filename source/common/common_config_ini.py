@@ -18,12 +18,6 @@
 
 import json
 
-# do this to handle psycopg2 and asyncpg at the same time
-try:
-    import database as database_base
-except ModuleNotFoundError:
-    import database_async as database_base_async
-
 
 async def com_config_read(close_db=False, force_local=False,
                           loop=None, async_mode=False, as_pool=False):
@@ -32,6 +26,7 @@ async def com_config_read(close_db=False, force_local=False,
     """
     # open the database
     if async_mode:
+        import database_async as database_base_async
         db_connection = database_base_async.MKServerDatabaseAsync()
         await db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
         db_options_json = await db_connection.db_opt_status_read()
@@ -42,6 +37,7 @@ async def com_config_read(close_db=False, force_local=False,
         # since read is from coroutine
         return json.loads(db_options_json['row_to_json'])['mm_options_json'], db_connection
     else:
+        import database as database_base
         db_connection = database_base.MKServerDatabase()
         db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
         db_options_json = db_connection.db_opt_status_read()
