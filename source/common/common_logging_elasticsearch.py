@@ -44,7 +44,7 @@ class CommonElasticsearch:
         else:
             self.debug = debug_override
 
-    def com_elastic_index(self, log_type, body_data):
+    async def com_elastic_index(self, log_type, body_data):
         # do this first for speed
         if self.debug is None:
             pass
@@ -75,7 +75,7 @@ class CommonElasticsearch:
                        "data": str(body_data),
                        "timestamp": time.strftime("%Y%m%d%H%M%S")}), flush=True)
 
-    def com_elastic_get(self, id):
+    async def com_elastic_get(self, id):
         if self.async_mode:
             await self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)
         else:
