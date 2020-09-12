@@ -126,7 +126,7 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 # TODO do an upsert instead
-                if self.db_meta_person_id_count(person_id) > 0:
+                if await self.db_meta_person_id_count(person_id) > 0:
                     common_global.es_inst.com_elastic_index('info', {
                         'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
@@ -134,14 +134,14 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     # is right below.  As then the next person record read will find
                     # the inserted record.
                     # insert download record for bio/info
-                    self.db_download_insert(meta_type, common_global.DLMediaType.Person.value,
-                                            json.dumps({"Status": "Fetch",
-                                                        "ProviderMetaID": str(
-                                                            person_id)}))
+                    await self.db_download_insert(meta_type, common_global.DLMediaType.Person.value,
+                                                  json.dumps({"Status": "Fetch",
+                                                              "ProviderMetaID": str(
+                                                                  person_id)}))
                     # insert person record
-                    self.db_meta_person_insert(person_name,
-                                               person_id,
-                                               None, None)
+                    await self.db_meta_person_insert(person_name,
+                                                     person_id,
+                                                     None, None)
     else:
         if meta_type == "themoviedb":
             # cast/crew can exist but be blank
@@ -154,18 +154,18 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_id = None
             # person_name = None # not used later so don't set
         if person_id is not None:
-            if self.db_meta_person_id_count(meta_type, person_id) > 0:
+            if await self.db_meta_person_id_count(meta_type, person_id) > 0:
                 common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
             else:
                 # Shouldn't need to verify fetch doesn't exist as the person insert
                 # is right below.  As then the next person record read will find
                 # the inserted record.
                 # insert download record for bio/info
-                self.db_download_insert(meta_type, common_global.DLMediaType.Person.value,
-                                        json.dumps({"Status": "Fetch",
-                                                    "ProviderMetaID": str(
-                                                        person_id)}))
+                await self.db_download_insert(meta_type, common_global.DLMediaType.Person.value,
+                                              json.dumps({"Status": "Fetch",
+                                                          "ProviderMetaID": str(
+                                                              person_id)}))
                 # insert person record
-                self.db_meta_person_insert(person_name,
-                                           person_id,
-                                           None, None)
+                await self.db_meta_person_insert(person_name,
+                                                 person_id,
+                                                 None, None)
