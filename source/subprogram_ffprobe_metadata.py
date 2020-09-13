@@ -22,7 +22,7 @@ common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subpro
 common_signal.com_signal_set_break()
 
 # open the database
-option_config_json, db_connection = await common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read()
 
 
 class MKConsumer:
