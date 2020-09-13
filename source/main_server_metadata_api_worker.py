@@ -259,16 +259,14 @@ async def tv_intros(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'tv_intros', download_data)
 
 
-# start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'meta_api_worker_%s' % str(sys.argv[1]).lower(), async_mode=True)
-
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
 content_providers = str(sys.argv[1])
-common_global.es_inst.com_elastic_index('info', {"worker meta api name":
-                                                     content_providers})
+# start logging
+common_global.es_inst = common_logging_elasticsearch.CommonElasticsearchAsync(
+    'meta_api_worker_%s' % content_providers.lower())
+common_global.es_inst.com_elastic_index('info', {"worker meta api name": content_providers})
 
 
 async def on_message(message: aio_pika.IncomingMessage):
