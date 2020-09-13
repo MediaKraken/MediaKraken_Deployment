@@ -1,5 +1,5 @@
 """
-  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
+  Copyright (C) 2020 Quinn D Granfor <spootdev@gmail.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -16,14 +16,9 @@
   MA 02110-1301, USA.
 """
 
-import os
-import sys
-import time
 from datetime import datetime
 
 import httpx
-from elasticsearch import AsyncElasticsearch
-from elasticsearch import Elasticsearch
 
 
 async def com_es_httpx_post(index_name, message_text):
@@ -37,91 +32,3 @@ async def com_es_httpx_post(index_name, message_text):
             headers={"Content-Type": "application/json"},
             timeout=3.05)
         return response
-
-
-class CommonElasticsearch:
-    """
-    Class for interfacing with Elasticsearch or docker logging directly
-    """
-
-    def __init__(self, index_type='mediakraken', es_host='th-elk-1.beaverbay.local',
-                 es_port=9200, debug_override=None):
-        if 'DEBUG' in os.environ and debug_override is None:
-            self.debug = os.environ['DEBUG'].lower()
-            if self.debug == 'es':
-                self.es_inst = Elasticsearch([{'host': es_host, 'port': es_port}])
-                self.es_index = index_type
-        else:
-            self.debug = debug_override
-
-    def com_elastic_index(self, log_type, body_data):
-        # do this first for speed
-        if self.debug is None:
-            pass
-        # write log to elk
-        elif self.debug == 'es':
-            # leave the try....as I don't want the container to fail if mkelk not accepting
-            try:
-                self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
-                                   body={"type": log_type,
-                                         "data": str(body_data),
-                                         "timestamp": datetime.now()})
-            except:
-                print(log_type, body_data, flush=True)
-        # write log to host syslog
-        elif self.debug == 'sys':
-            sys.stdout.write(str({"type": log_type,
-                                  "data": str(body_data),
-                                  "timestamp": time.strftime("%Y%m%d%H%M%S")}))
-        # write log to host syslog
-        elif self.debug == 'print':
-            print(str({"type": log_type,
-                       "data": str(body_data),
-                       "timestamp": time.strftime("%Y%m%d%H%M%S")}), flush=True)
-
-    def com_elastic_get(self, id):
-        self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)
-
-
-class CommonElasticsearchAsync:
-    """
-    Class for interfacing with Elasticsearch or docker logging directly
-    """
-
-    def __init__(self, index_type='mediakraken', es_host='th-elk-1.beaverbay.local',
-                 es_port=9200, debug_override=None):
-        if 'DEBUG' in os.environ and debug_override is None:
-            self.debug = os.environ['DEBUG'].lower()
-            if self.debug == 'es':
-                self.es_inst = AsyncElasticsearch([{'host': es_host, 'port': es_port}])
-                self.es_index = index_type
-        else:
-            self.debug = debug_override
-
-    async def com_elastic_index(self, log_type, body_data):
-        # do this first for speed
-        if self.debug is None:
-            pass
-        # write log to elk
-        elif self.debug == 'es':
-            # leave the try....as I don't want the container to fail if mkelk not accepting
-            try:
-                await self.es_inst.index(index=self.es_index, doc_type='MediaKraken',
-                                         body={"type": log_type,
-                                               "data": str(body_data),
-                                               "timestamp": datetime.now()})
-            except:
-                print(log_type, body_data, flush=True)
-        # write log to host syslog
-        elif self.debug == 'sys':
-            sys.stdout.write(str({"type": log_type,
-                                  "data": str(body_data),
-                                  "timestamp": time.strftime("%Y%m%d%H%M%S")}))
-        # write log to host syslog
-        elif self.debug == 'print':
-            print(str({"type": log_type,
-                       "data": str(body_data),
-                       "timestamp": time.strftime("%Y%m%d%H%M%S")}), flush=True)
-
-    async def com_elastic_get(self, id):
-        await self.es_inst.get(index=self.es_index, doc_type='MediaKraken', id=id)
