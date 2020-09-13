@@ -63,7 +63,7 @@ class CommonElasticsearch:
                                              "data": str(body_data),
                                              "timestamp": datetime.now()})
             except:
-                print((log_type, body_data), flush=True)
+                print(log_type, body_data, flush=True)
         # write log to host syslog
         elif self.debug == 'sys':
             sys.stdout.write(str({"type": log_type,
