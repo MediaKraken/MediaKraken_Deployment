@@ -1,5 +1,5 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbasenodeffmpeg:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbaseffmpeg:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the Roku thumbnail generator app"
@@ -33,7 +33,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
     gcc \
     python3-dev \
     linux-headers \
-    musl-dev \  && rm requirements.txt \
+    musl-dev \
+  && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
 
