@@ -19,31 +19,37 @@
 import json
 
 
-async def com_config_read(close_db=False, force_local=False,
-                          loop=None, async_mode=False, as_pool=False):
+def com_config_read(close_db=False, force_local=False,
+                    loop=None, as_pool=False):
     """
     Read in the database connection and open unless specified not too
     """
     # open the database
-    if async_mode:
-        import database_async as database_base_async
-        db_connection = database_base_async.MKServerDatabaseAsync()
-        await db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
-        db_options_json = await db_connection.db_opt_status_read()
-        if close_db:
-            await db_connection.db_close()
-            # since read is from coroutine
-            return json.loads(db_options_json['row_to_json'])['mm_options_json']
+    import database as database_base
+    db_connection = database_base.MKServerDatabase()
+    db_connection.db_open(force_local=force_local)
+    db_options_json = db_connection.db_opt_status_read()
+    if close_db:
+        db_connection.db_close()
         # since read is from coroutine
-        return json.loads(db_options_json['row_to_json'])['mm_options_json'], db_connection
-    else:
-        import database as database_base
-        db_connection = database_base.MKServerDatabase()
-        db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
-        db_options_json = db_connection.db_opt_status_read()
-        if close_db:
-            db_connection.db_close()
-            # since read is from coroutine
-            return db_options_json['mm_options_json']
+        return db_options_json['mm_options_json']
+    # since read is from coroutine
+    return db_options_json['mm_options_json'], db_connection
+
+
+async def com_config_read_async(close_db=False, force_local=False,
+                                loop=None, as_pool=False):
+    """
+    Read in the database connection and open unless specified not too
+    """
+    # open the database
+    import database_async as database_base_async
+    db_connection = database_base_async.MKServerDatabaseAsync()
+    await db_connection.db_open(force_local=force_local, loop=loop, as_pool=as_pool)
+    db_options_json = await db_connection.db_opt_status_read()
+    if close_db:
+        await db_connection.db_close()
         # since read is from coroutine
-        return db_options_json['mm_options_json'], db_connection
+        return json.loads(db_options_json['row_to_json'])['mm_options_json']
+    # since read is from coroutine
+    return json.loads(db_options_json['row_to_json'])['mm_options_json'], db_connection
