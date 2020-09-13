@@ -21,13 +21,14 @@ from datetime import datetime
 import httpx
 
 
-async def com_es_httpx_post(index_name, message_text):
+async def com_es_httpx_post(index_name, message_type, message_text):
     async with httpx.AsyncClient() as client:
         response = await client.post(
             'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken' % (index_name,),
             data='{"@timestamp": "'
                  + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-                 + '", "message": "%s",' % (message_text,)
+                 + ' ", "message": "%s",' % (message_text,)
+                 + ' "type": "%s",' % (message_type,)
                  + ' "user": {"id": "metaman"}}',
             headers={"Content-Type": "application/json"},
             timeout=3.05)
