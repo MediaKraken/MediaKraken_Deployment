@@ -31,9 +31,7 @@ def com_config_read(close_db=False, force_local=False,
     db_options_json = db_connection.db_opt_status_read()
     if close_db:
         db_connection.db_close()
-        # since read is from coroutine
         return db_options_json['mm_options_json']
-    # since read is from coroutine
     return db_options_json['mm_options_json'], db_connection
 
 
