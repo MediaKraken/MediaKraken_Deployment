@@ -296,7 +296,6 @@ async def main(loop):
     # open the database
     option_config_json, db_connection = \
         await common_config_ini.com_config_read_async(loop=loop,
-                                                      async_mode=True,
                                                       as_pool=False)
     common_global.es_inst.com_elastic_index('info', {"status": 'after db open'})
     # rabbitmq connection
