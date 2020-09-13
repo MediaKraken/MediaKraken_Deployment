@@ -263,10 +263,6 @@ async def tv_intros(db_connection, download_data):
 common_signal.com_signal_set_break()
 
 content_providers = str(sys.argv[1])
-# start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearchAsync(
-    'meta_api_worker_%s' % content_providers.lower())
-common_global.es_inst.com_elastic_index('info', {"worker meta api name": content_providers})
 
 
 async def on_message(message: aio_pika.IncomingMessage):
@@ -291,30 +287,16 @@ async def on_message(message: aio_pika.IncomingMessage):
 
 
 async def main(loop):
+    # start logging
+    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearchAsync(
+        'meta_api_worker_%s' % content_providers.lower())
+    common_global.es_inst.com_elastic_index('info', {"worker meta api name": content_providers})
+
     # open the database
     option_config_json, db_connection = \
         await common_config_ini.com_config_read_async(loop=loop,
                                                       as_pool=False)
     common_global.es_inst.com_elastic_index('info', {"status": 'after db open'})
-    # rabbitmq connection
-
-    # parameters = pika.ConnectionParameters('mkstack_rabbitmq',
-    #                                        socket_timeout=60,
-    #                                        heartbeat=600,
-    #                                        blocked_connection_timeout=300)
-    # connection = pika.BlockingConnection(parameters)
-    # # setup channels and queue
-    # channel = connection.channel()
-    # exchange = channel.exchange_declare(exchange="mkque_metadata_ex",
-    #                                     exchange_type="direct",
-    #                                     durable=True)
-    # queue = channel.queue_declare(queue=content_providers,
-    #                               durable=True)
-    # channel.queue_bind(exchange="mkque_metadata_ex",
-    #                    queue=content_providers)
-    # channel.basic_qos(prefetch_count=1)
-
-    # Perform connection
     connection = await aio_pika.connect("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # Creating a channel
     channel = await connection.channel()
