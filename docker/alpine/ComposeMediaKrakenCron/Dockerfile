@@ -23,6 +23,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del \
   alpine-sdk \
+  python3-dev \
   linux-headers \
   musl-dev \
   net-snmp-dev \
