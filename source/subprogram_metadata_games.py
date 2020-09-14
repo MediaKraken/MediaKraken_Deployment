@@ -23,9 +23,8 @@ import zipfile
 
 import xmltodict
 from common import common_config_ini
-from common import common_global
 from common import common_internationalization
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network
 from common import common_signal
 from common import common_system
@@ -36,8 +35,8 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_metadata_games')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -66,8 +65,9 @@ if not os.path.exists(file_name):
     for zippedfile in zip_handle.namelist():
         json_data = xmltodict.parse(zip_handle.read(zippedfile))
         for child_of_root in json_data['mame']['machine']:
-            common_global.es_inst.com_elastic_index('info', {'child': child_of_root,
-                                                             'childname': child_of_root['@name']})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'child': child_of_root,
+                'childname': child_of_root['@name']})
             # TODO change this to upsert
             # see if exists then need to update
             if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
@@ -175,12 +175,14 @@ if not os.path.exists(file_name):
     if total_software > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_software)
-            + " games(s) metadata added from MAME %s hash" % option_config_json['MAME']['Version'], True)
+            + " games(s) metadata added from MAME %s hash" % option_config_json['MAME']['Version'],
+            True)
     if total_software_update > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(
                 total_software_update)
-            + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME']['Version'], True)
+            + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME'][
+                'Version'], True)
 
 # update mame game descriptions from history dat
 file_name = ('/mediakraken/emulation/history%s.zip' %
@@ -249,12 +251,14 @@ if not os.path.exists(file_name):
     if total_software > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_software)
-            + " games(s) metadata added from MAME %s hash" % option_config_json['MAME']['Version'], True)
+            + " games(s) metadata added from MAME %s hash" % option_config_json['MAME']['Version'],
+            True)
     if total_software_update > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(
                 total_software_update)
-            + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME']['Version'], True)
+            + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME'][
+                'Version'], True)
 
 # read the category file and create dict/list for it
 cat_file = open("Category.ini", "r")

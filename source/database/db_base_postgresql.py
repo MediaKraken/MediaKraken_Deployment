@@ -78,7 +78,7 @@ def db_pgsql_vacuum_table(self, table_name):
         self.db_cursor.execute('VACUUM ANALYZE ' + table_name)
         # self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
     else:
-        common_global.es_inst.com_elastic_index('info', {'Vacuum table missing': table_name})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Vacuum table missing': table_name})
 
 
 def db_pgsql_set_iso_level(self, isolation_level):

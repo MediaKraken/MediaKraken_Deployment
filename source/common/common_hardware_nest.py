@@ -38,12 +38,12 @@ class CommonHardwareNest:
         # grab structures and the devices
         """
         for structure in self.nest_device.structures:
-            common_global.es_inst.com_elastic_index('info', {'Structure':
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Structure':
                                                                  structure.name, 'Away':
                                                                  structure.away})
             for device in structure.devices:
-                common_global.es_inst.com_elastic_index('info', {'Device': device.name})
-                common_global.es_inst.com_elastic_index('info', {'Temp': device.temperature})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Device': device.name})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Temp': device.temperature})
 
 
 def com_nest_c_to_f(temp_data):

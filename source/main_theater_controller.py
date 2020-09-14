@@ -25,7 +25,7 @@ import sys
 import uuid
 
 from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network_mediakraken
 from common import common_signal
 
@@ -66,7 +66,6 @@ else:
 kivy.require('1.11.0')
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.vkeyboard import VKeyboard
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
@@ -111,14 +110,15 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            common_global.es_inst.com_elastic_index('info',
-                                                    {'stuff': "selection changed to {0}".format(
-                                                        rv.data[index])})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
+            {'stuff': "selection changed to {0}".format(
+                rv.data[index])})
             if twisted_connection is not None:
                 MKFactory.protocol.sendline_data(twisted_connection,
                                                  json.dumps({'Type': 'Media', 'Subtype': 'Detail',
                                                              'UUID': rv.data[index]['uuid']}))
-            common_global.es_inst.com_elastic_index('info', {'stuff': rv.data[index]['path']})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'stuff': rv.data[index]['path']})
             MediaKrakenApp.media_path = rv.data[index]['path']
             MediaKrakenApp.media_uuid = rv.data[index]['uuid']
 
@@ -129,13 +129,13 @@ class MKEcho(basic.LineReceiver):
     def connectionMade(self):
         global twisted_connection
         twisted_connection = self
-        common_global.es_inst.com_elastic_index('info', {'stuff': "connected successfully (echo)!"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': "connected successfully (echo)!"})
 
     def lineReceived(self, line):
         global mk_app
-        common_global.es_inst.com_elastic_index('info', {'linereceived len': len(line)})
-        # common_global.es_inst.com_elastic_index('info', {'stuff':'linereceived: %s', line)
-        # common_global.es_inst.com_elastic_index('info', {'stuff':'app: %s', mk_app)
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'linereceived len': len(line)})
         # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
@@ -146,7 +146,8 @@ class MKEcho(basic.LineReceiver):
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
-        common_global.es_inst.com_elastic_index('info', {'sending': line})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'sending': line})
         self.sendLine(line.encode())
 
 
@@ -253,13 +254,17 @@ class MediaKrakenApp(App):
 
     @wait_for(timeout=5.0)
     def connect_to_server(self):
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'conn server'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'conn server'})
         if self.config is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'here in connect to server'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'stuff': 'here in connect to server'})
             if self.config.get('MediaKrakenServer', 'Host').strip() == 'None':
                 # TODO if more than one server, popup list selection
                 server_list = common_network_mediakraken.com_net_mediakraken_find_server()
-                common_global.es_inst.com_elastic_index('info', {'server list': server_list})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'server list': server_list})
                 host_ip = server_list[0].decode()  # as this is returned as bytes
                 # TODO allow pick from list and save it below
                 self.config.set('MediaKrakenServer', 'Host',
@@ -297,14 +302,21 @@ class MediaKrakenApp(App):
         json_message = json.loads(server_msg.decode())
         try:
             if json_message['Type'] != "Image":
-                common_global.es_inst.com_elastic_index('info', {"Got Message": server_msg})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "Got Message": server_msg})
             else:
-                common_global.es_inst.com_elastic_index('info', {"Got Image Message":
-                                                                     json_message['Sub'], 'uuid':
-                                                                     json_message['UUID']})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "Got Image Message":
+                                                                             json_message['Sub'],
+                                                                         'uuid':
+                                                                             json_message['UUID']})
         except:
-            common_global.es_inst.com_elastic_index('info', {"full record": server_msg})
-        common_global.es_inst.com_elastic_index('info', {"len total": len(server_msg)})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "full record": server_msg})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "len total": len(server_msg)})
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
             # Send a uuid for this connection. This way same installs can be copied, etc.
@@ -386,9 +398,12 @@ class MediaKrakenApp(App):
             self.root.ids.theater_media_video_play_local_spinner.values = play_list
 
         elif json_message['Type'] == "Genre List":
-            common_global.es_inst.com_elastic_index('info', {'stuff': "gen"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                 message_text={'stuff': "gen"})
             for genre_list in json_message:
-                common_global.es_inst.com_elastic_index('info', {"genlist": genre_list})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "genlist": genre_list})
                 btn1 = ToggleButton(text=genre_list[0], group='button_group_genre_list',
                                     size_hint_y=None,
                                     width=self.root.ids.theater_media_genre_list_scrollview.width,
@@ -400,18 +415,26 @@ class MediaKrakenApp(App):
                     btn1)
         elif json_message['Type'] == "Image":
             if json_message['Subtype'] == "Movie":
-                common_global.es_inst.com_elastic_index('info', {'stuff': "here for movie refresh"})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'stuff': "here for movie refresh"})
                 if json_message['Image Media Type'] == "Demo":
                     f = open("./image_demo", "w")
                     f.write(base64.b64decode(json_message['Data'].encode()))
                     f.close()
                     self.demo_media_id = json_message['UUID']
                     if self.first_image_demo is False:
-                        common_global.es_inst.com_elastic_index('info', {'stuff': 'boom'})
+                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                             message_text={
+                                                                                 'stuff': 'boom'})
                         # self.root.ids.main_home_demo_image.reload()
-                        common_global.es_inst.com_elastic_index('info', {'stuff': 'boom2'})
+                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                             message_text={
+                                                                                 'stuff': 'boom2'})
                     else:
-                        common_global.es_inst.com_elastic_index('info', {'stuff': 'wha2'})
+                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                             message_text={
+                                                                                 'stuff': 'wha2'})
                         proxy_image_demo = Loader.image("image_demo")
                         proxy_image_demo.bind(
                             on_load=self._image_loaded_home_demo)
@@ -491,16 +514,19 @@ class MediaKrakenApp(App):
                                 data=MediaKrakenSettings.mediakraken_settings_playback_json)
 
     def on_config_change(self, config, section, key, value):
-        common_global.es_inst.com_elastic_index('info', {'config': config, 'section': section,
-                                                         'key':
-                                                             key, 'value': value})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'config': config,
+                                                                           'section': section,
+                                                                           'key':
+                                                                               key, 'value': value})
 
     def _keyboard_closed(self):
         self._keyboard.unbind(on_key_down=self._on_keyboard_down)
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        common_global.es_inst.com_elastic_index('info', {"keycode received": keycode})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "keycode received": keycode})
         if keycode[1] == 'i' or keycode[1] == 'I':
             if self.root.ids._screen_manager.current == 'Main_Theater_Media_Playback':
                 # show media information overlay
@@ -585,7 +611,8 @@ class MediaKrakenApp(App):
 
     # play media from movie section
     def main_mediakraken_event_play_media_mpv(self, *args):
-        common_global.es_inst.com_elastic_index('info', {'stuff': MediaKrakenApp.media_path})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': MediaKrakenApp.media_path})
         self.theater_play_server()
         self.root.ids._screen_manager.current = 'Main_Theater_Remote'
 
@@ -730,22 +757,26 @@ class MediaKrakenApp(App):
 
     # genre select
     def Theater_Event_Button_Genre_Select(self, *args):
-        common_global.es_inst.com_elastic_index('info', {"genre select": args})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"genre select": args})
         self.media_genre = args[0]
         self.send_twisted_message(("VIDEOGENRELIST " + args[0]))
 
     def theater_event_button_user_select_login(self, *args):
         self.dismiss_popup()
-        common_global.es_inst.com_elastic_index('info', {"button server user login":
-                                                             self.global_selected_user_id})
-        common_global.es_inst.com_elastic_index('info', {"login": self.login_password})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "button server user login":
+                self.global_selected_user_id})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "login": self.login_password})
         self.send_twisted_message(json.dumps({'Type': 'Login',
                                               'User': self.global_selected_user_id,
                                               'Password': self.login_password}))
         self.root.ids._screen_manager.current = 'Main_Remote'
 
     def main_mediakraken_event_button_video_play(self, *args):
-        common_global.es_inst.com_elastic_index('info', {"play": args})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"play": args})
         msg = "demo " + self.media_guid
         self.root.ids._screen_manager.current = 'Main_Theater_Media_Playback'
         self.send_twisted_message(msg)
@@ -754,7 +785,8 @@ class MediaKrakenApp(App):
     def main_mediakraken_event_button_home(self, *args):
         msg = json.dumps({'Type': 'Media', 'Subtype': 'List', 'Data': args[0]})
         print(msg, flush=True)
-        common_global.es_inst.com_elastic_index('info', {"home press": args})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"home press": args})
         if args[0] == 'in_progress' or args[0] == 'recent_addition' \
                 or args[0] == 'movie' or args[0] == 'video':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Video_List'
@@ -787,8 +819,9 @@ class MediaKrakenApp(App):
             self.send_twisted_message(msg)
 
     def theater_event_button_option_select(self, option_text, *args):
-        common_global.es_inst.com_elastic_index('info', {"button server options":
-                                                             option_text})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"button server options":
+                                                                               option_text})
         if option_text == 'Audio Settings':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_Settings_Audio'
         elif option_text == 'Playback Settings':
@@ -798,7 +831,8 @@ class MediaKrakenApp(App):
 
     # send refresh for images
     def main_image_refresh(self, *largs):
-        common_global.es_inst.com_elastic_index('info', {'stuff': "image refresh"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': "image refresh"})
         # if main page refresh all images
         if self.root.ids._screen_manager.current == 'Main_Theater_Home':
             # refreshes for movie stuff
@@ -893,8 +927,8 @@ class MediaKrakenApp(App):
 
 if __name__ == '__main__':
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'main_theater_controller', debug_override='print')
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='START')
 
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks

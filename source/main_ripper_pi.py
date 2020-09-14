@@ -25,7 +25,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from common import common_global
 from common import common_hardware_arduino_usb_serial
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 from crochet import wait_for, setup
 
@@ -72,13 +72,13 @@ class MKEcho(basic.LineReceiver):
     def connectionMade(self):
         global twisted_connection
         twisted_connection = self
-        common_global.es_inst.com_elastic_index('info', {'stuff': "connected successfully (echo)!"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': "connected successfully (echo)!"})
 
     def lineReceived(self, line):
         global mk_app
-        common_global.es_inst.com_elastic_index('info', {'linereceived len': len(line)})
-        # common_global.es_inst.com_elastic_index('info', {'stuff':'linereceived: %s', line)
-        # common_global.es_inst.com_elastic_index('info', {'stuff':'app: %s', mk_app)
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'linereceived len': len(line)})
         # TODO get the following line to run from the application thread
         MediaKrakenApp.process_message(mk_app, line)
 
@@ -87,7 +87,8 @@ class MKEcho(basic.LineReceiver):
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
-        common_global.es_inst.com_elastic_index('info', {'sending': line})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'sending': line})
         self.sendLine(line.encode("utf8"))
 
 
@@ -269,9 +270,11 @@ class MediaKrakenApp(App):
 
     @wait_for(timeout=5.0)
     def connect_to_server(self):
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'conn server'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'conn server'})
         if self.config is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'here in connect to server'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'stuff': 'here in connect to server'})
             reactor.connectTCP('10.1.0.1', 7000, MKFactory())
 
     @wait_for(timeout=5.0)
@@ -292,8 +295,10 @@ class MediaKrakenApp(App):
         Process network message from server
         """
         json_message = json.loads(server_msg)
-        common_global.es_inst.com_elastic_index('info', {"Got Message": server_msg})
-        common_global.es_inst.com_elastic_index('info', {"len total": len(server_msg)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "Got Message": server_msg})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "len total": len(server_msg)})
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
@@ -303,18 +308,21 @@ class MediaKrakenApp(App):
 
     def main_mediakraken_event_button_start(self, *args):
         global thread_status
-        common_global.es_inst.com_elastic_index('info', {"start select": args})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"start select": args})
         with ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(self.worker, self.root.ids.spinner_one.text,
                                      self.root.ids.spinner_two.text,
                                      self.root.ids.spinner_three.text,
                                      self.root.ids.spinner_four.text)
-            common_global.es_inst.com_elastic_index('info', {'stuff': future.result()})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'stuff': future.result()})
         thread_status = True
 
     def main_mediakraken_event_button_stop(self, *args):
         global thread_status
-        common_global.es_inst.com_elastic_index('info', {"stop select": args})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"stop select": args})
         thread_status = False
 
     def _keyboard_closed(self):
@@ -322,7 +330,8 @@ class MediaKrakenApp(App):
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        common_global.es_inst.com_elastic_index('info', {"keycode received": keycode})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "keycode received": keycode})
         if keycode[1] == 'backspace':
             if self.root.ids._screen_manager.current == 'Main_Theater_Home':
                 pass
@@ -336,8 +345,8 @@ class MediaKrakenApp(App):
 
 if __name__ == '__main__':
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('ripper_pi',
-                                                                             debug_override='sys')
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='START')
     # set signal exit breaks
     common_signal.com_signal_set_break()
     # load the kivy's here so all the classes have been defined

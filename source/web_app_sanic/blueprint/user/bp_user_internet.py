@@ -51,7 +51,7 @@ async def url_bp_user_internet_twitch(request):
     # twitch_api = common_network_twitch.CommonNetworkTwitch()
     # twitch_media = []
     # for stream_data in twitch_api.com_twitch_get_featured_streams()['featured']:
-    #     common_global.es_inst.com_elastic_index('info', {"stream": stream_data})
+    #     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"stream": stream_data})
     #     try:
     #         if stream_data['stream']['game'] is None:
     #             twitch_media.append((stream_data['stream']['name'],
@@ -84,7 +84,7 @@ async def url_bp_user_internet_twitch_stream_detail(request, stream_name):
     """
     # twitch_api = common_network_Twitch.com_Twitch_API()
     # media = twitch_api.com_Twitch_Channel_by_Name(stream_name)
-    common_global.es_inst.com_elastic_index('info', {'twitch stream_name': stream_name})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'twitch stream_name': stream_name})
     return {
         'media': stream_name
     }
@@ -121,16 +121,16 @@ async def url_bp_user_internet_youtube(request):
         videos, channels, playlists = g.google_instance.com_google_youtube_search(
             request.ctx.session['search_text'])
         for url_link in videos:
-            common_global.es_inst.com_elastic_index('info', {'searchurllink': url_link})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'searchurllink': url_link})
             youtube_videos.append(
                 json.loads(g.google_instance.com_google_youtube_info(url_link, 'snippet')))
     else:
         # get trending for specified country code
         for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
-            common_global.es_inst.com_elastic_index('info', {'urllink': url_link})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'urllink': url_link})
             youtube_videos.append(json.loads(g.google_instance.com_google_youtube_info(url_link,
                                                                                        'snippet')))
-    common_global.es_inst.com_elastic_index('info', {'temphold': youtube_videos})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'temphold': youtube_videos})
     return {
         'media': youtube_videos
     }

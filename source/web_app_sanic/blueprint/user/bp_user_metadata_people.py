@@ -47,7 +47,7 @@ async def url_bp_user_metadata_person_list(request):
                                                                                   'per_page']),
                                                                           request.ctx.session[
                                                                               'search_text']):
-        common_global.es_inst.com_elastic_index('info', {'person data': person_data, 'im':
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'person data': person_data, 'im':
             person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
         if person_data['mmp_person_image'] is not None:
             try:

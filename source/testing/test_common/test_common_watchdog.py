@@ -34,7 +34,7 @@ sys.path.append('.')
 
 
 #    def on_any_event(self, event):
-#        common_global.es_inst.com_elastic_index('info', {'stuff':"Any!", event.src_path)
+#        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff':"Any!", event.src_path)
 #        pass
 
 

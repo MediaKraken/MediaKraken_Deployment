@@ -49,7 +49,7 @@ class CommonHardwareHDHomeRunPY:
         Get tuner status
         """
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        common_global.es_inst.com_elastic_index('info', {'stuff': vstatus})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': vstatus})
 
     def set_tuner_vchannel(self, device_adapter, vchannel):
         """
@@ -57,7 +57,7 @@ class CommonHardwareHDHomeRunPY:
         """
         device_adapter.set_tuner_vchannel(vchannel)
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        common_global.es_inst.com_elastic_index('info', {'stuff': vstatus})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': vstatus})
 
     def set_stream(self, device_adapter, vchannel, target_uri):
         """
@@ -70,7 +70,7 @@ class CommonHardwareHDHomeRunPY:
         """
         Get supported info
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': device_adapter.get_supported()})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': device_adapter.get_supported()})
 
     def scan(self, device_adapter):
         """
@@ -92,7 +92,7 @@ devices = test_class.com_HDHomeRun_List()
 
 i = 0
 for device in devices:
-    common_global.es_inst.com_elastic_index('info', {'stuff':"%d: %s" % (i, device))
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff':"%d: %s" % (i, device))
     i += 1
 
 first_device_str = ("%s-%d" % (devices[0].nice_device_id, 1))

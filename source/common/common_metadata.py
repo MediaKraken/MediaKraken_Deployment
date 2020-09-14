@@ -56,7 +56,7 @@ def com_meta_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
-    common_global.es_inst.com_elastic_index('info', {"filename": media_name})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"filename": media_name})
     pattern = r'[^\.a-zA-Z]'
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
@@ -78,7 +78,7 @@ def com_meta_image_file_path(media_name, media_type):
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
     # os.path.join should be adding the terminating slash
-    common_global.es_inst.com_elastic_index('info', {'file image path': file_path})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'file image path': file_path})
     return file_path
 
 

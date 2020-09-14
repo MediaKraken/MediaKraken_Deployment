@@ -19,10 +19,7 @@
 import sys
 
 from common import common_config_ini
-from common import common_file
-from common import common_global
-from common import common_logging_elasticsearch
-from common import common_network_radio
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 from common import common_system
 
@@ -32,7 +29,8 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_iradio')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -46,7 +44,7 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 # # load the cache files and compare to db
 # radio_cache = common_file.com_file_load_data('./cache.pickle', True)
 # for row_data in radio_cache:
-#     common_global.es_inst.com_elastic_index('info', {'radio cache': row_data})
+#     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'radio cache': row_data})
 #     db_connection.db_iradio_insert(row_data)
 #
 # # radio_xiph = common_file.com_file_load_data('./xiph.pickle', True)

@@ -56,7 +56,7 @@ def db_open(self, force_local=False):
                 time.sleep(10)
             else:
                 break
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db open'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db open'})
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
@@ -65,7 +65,7 @@ def db_close(self):
     # close main db file
     """
     try:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db close'})
     except:
         pass
     self.sql3_conn.close()
@@ -75,7 +75,7 @@ def db_begin(self):
     """
     # start a transaction
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db begin'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db begin'})
     self.sql3_conn.begin()
 
 
@@ -84,7 +84,7 @@ def db_commit(self):
     # commit changes to media database
     """
     try:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db commit'})
     except:
         pass
     self.sql3_conn.commit()
@@ -94,7 +94,7 @@ def db_rollback(self):
     """
     # rollback
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db rollback'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db rollback'})
     self.sql3_conn.rollback()
 
 
@@ -131,7 +131,7 @@ def db_query(self, query_string, fetch_all=True):
     """
     # TODO little bobby tables
     try:
-        common_global.es_inst.com_elastic_index('info', {"query": query_string})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"query": query_string})
     except:
         pass
     self.db_cursor.execute(query_string)

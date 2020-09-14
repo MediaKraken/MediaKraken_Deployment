@@ -42,7 +42,7 @@ class TestSubprogramBroadcast:
         # fire up broadcast server
         self.proc_broadcast = subprocess.Popen(['python3', './subprogram_broadcast.py'],
                                                shell=False)
-        common_global.es_inst.com_elastic_index('info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
                                                 {'stuff': "PID: %s" % self.proc_broadcast.pid})
 
     @classmethod

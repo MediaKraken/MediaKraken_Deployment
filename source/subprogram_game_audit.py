@@ -348,7 +348,7 @@ class GameAuditer(threading.Thread):
     def load_hash_map_from_database(self):
         if '-nolist' in sys.argv:
             return True
-        common_global.es_inst.com_elastic_index('info', {'stuff': "loading roms from db"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': "loading roms from db"})
         # open the database
         option_config_json, db_connection = common_config_ini.com_config_read()
         # read all the audited games

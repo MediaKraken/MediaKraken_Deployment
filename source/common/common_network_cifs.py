@@ -95,7 +95,7 @@ class CommonCIFSShare:
         """
         file_names = []
         for row_data in self.smb_conn.listPath(share_name, path_text):
-            common_global.es_inst.com_elastic_index('info', {'stuff': row_data.filename})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': row_data.filename})
             file_names.append(row_data.filename)
         return file_names
 

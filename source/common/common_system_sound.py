@@ -41,8 +41,8 @@ def com_sound_play_file(file_name):
     except GstPlayerException:  # this exception is from kivy/plyer
         sound_data = False
     if sound_data:
-        common_global.es_inst.com_elastic_index('info', {"Sound found at": sound_data.source})
-        common_global.es_inst.com_elastic_index('info', {"Sound is %.3f seconds" %
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Sound found at": sound_data.source})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Sound is %.3f seconds" %
                                                          sound_data.length})
         sound_data.play()
 
@@ -54,5 +54,5 @@ def com_audio_pyaudio_list_devices():
     import pyaudio
     audio_instance = pyaudio.PyAudio()
     for ndx in range(audio_instance.get_device_count()):
-        common_global.es_inst.com_elastic_index('info', {
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {
             'stuff': audio_instance.get_device_info_by_index(ndx)})

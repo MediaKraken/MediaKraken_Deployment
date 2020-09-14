@@ -18,15 +18,16 @@
 
 import json
 import os
-
 import uuid
+
 from common import common_config_ini
 from common import common_file
 from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network
 
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('bulk_themoviedb_netfetch')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 fetch_date = '09_01_2020'
 
@@ -43,7 +44,6 @@ common_network.mk_network_fetch_from_url(file_name, 'movie.gz')
 json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
 for json_row in json_data.splitlines():
     tmdb_to_fetch = str(json.loads(json_row)['id'])
-    common_global.es_inst.com_elastic_index('info', {"themoviedb check": tmdb_to_fetch})
     # check to see if we already have it
     if force_dl or (db_connection.db_meta_tmdb_count(tmdb_to_fetch) == 0
                     and db_connection.db_download_que_exists(None,
@@ -88,3 +88,6 @@ db_connection.db_pgsql_vacuum_table('mm_download_que')
 
 # close DB
 db_connection.db_close()
+
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='STOP')

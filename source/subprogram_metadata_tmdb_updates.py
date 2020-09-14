@@ -22,7 +22,7 @@ import uuid
 
 from common import common_config_ini
 from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_metadata_provider_themoviedb
 from common import common_signal
 from common import common_system
@@ -33,8 +33,8 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_metadata_tmdb_updates')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -48,15 +48,18 @@ tmdb = common_metadata_provider_themoviedb.CommonMetadataTMDB(option_config_json
 # TODO this should go through the limiter
 # process movie changes
 for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
-    common_global.es_inst.com_elastic_index('info', {'mov': movie_change['id']})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'mov': movie_change['id']})
     # verify it's not already in the database
     if db_connection.db_meta_guid_by_tmdb(str(movie_change['id'])) is None:
-        common_global.es_inst.com_elastic_index('info', {'here': '1'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'here': '1'})
         # verify there is not a dl que for this record
         dl_meta = db_connection.db_download_que_exists(None, common_global.DLMediaType.Movie.value,
                                                        'themoviedb',
                                                        str(movie_change['id']))
-        common_global.es_inst.com_elastic_index('info', {'dl_meta': dl_meta})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'dl_meta': dl_meta})
         if dl_meta is None:
             db_connection.db_download_insert('themoviedb', common_global.DLMediaType.Movie.value,
                                              json.dumps({'MediaID': None,
@@ -81,7 +84,8 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
 # TODO this should go through the limiter
 # process tv changes
 for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
-    common_global.es_inst.com_elastic_index('info', {'stuff': "tv: %s" % tv_change['id']})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'stuff': "tv: %s" % tv_change['id']})
     # verify it's not already in the database
     if db_connection.db_metatv_guid_by_tmdb(str(tv_change['id'])) is None:
         dl_meta = db_connection.db_download_que_exists(None, common_global.DLMediaType.TV.value,

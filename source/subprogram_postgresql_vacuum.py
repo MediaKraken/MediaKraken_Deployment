@@ -7,8 +7,7 @@ Vacuum tables
 import sys
 
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 from common import common_system
 
@@ -18,8 +17,8 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_postgresql_vacuum')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 # set signal exit breaks
 common_signal.com_signal_set_break()
 # open the database
@@ -27,7 +26,8 @@ option_config_json, db_connection = common_config_ini.com_config_read()
 
 # vacuum all the tables
 for row in db_connection.db_pgsql_vacuum_stat_by_day(1):
-    common_global.es_inst.com_elastic_index('info', {'row': row})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'row': row})
     db_connection.db_pgsql_vacuum_table(row['relname'])
 
 # commit records

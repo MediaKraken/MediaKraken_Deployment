@@ -122,7 +122,7 @@ async def url_bp_user_metadata_movie_list(request, user):
             queue_status = user_json['UserStats'][str(user.id)]['queue']
         except (KeyError, TypeError):
             queue_status = None
-        common_global.es_inst.com_elastic_index('info', {"status": watched_status,
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"status": watched_status,
                                                          'rating': rating_status,
                                                          'request': request_status,
                                                          'queue': queue_status})
@@ -164,7 +164,7 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'movie metadata status': guid,
                                                      'event': event_type})
     db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(db_connection, guid,

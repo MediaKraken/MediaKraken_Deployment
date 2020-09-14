@@ -39,7 +39,7 @@ class CommoniOSHardwareInstance:
         br.startAccelerometer()
         accel_data = []
         for ndx in range(time_range):  # pylint: disable=W0612
-            common_global.es_inst.com_elastic_index('info', {'x: {0} y: {1} z: {2}'.format(
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'x: {0} y: {1} z: {2}'.format(
                 br.ac_x, br.ac_y, br.ac_z)})
             accel_data.append((br.ac_x, br.ac_y, br.ac_z))
         return accel_data
@@ -52,7 +52,7 @@ class CommoniOSHardwareInstance:
         br.startGyroscope()
         gyro_data = []
         for ndx in range(time_range):  # pylint: disable=W0612
-            common_global.es_inst.com_elastic_index('info', {'x: {0} y: {1} z: {2}'.format(
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'x: {0} y: {1} z: {2}'.format(
                 br.gy_x, br.gy_y, br.gy_z)})
             gyro_data.append((br.ac_x, br.ac_y, br.ac_z))
         return gyro_data
@@ -65,7 +65,7 @@ class CommoniOSHardwareInstance:
         br.startMagnetometer()
         mag_data = []
         for ndx in range(time_range):  # pylint: disable=W0612
-            common_global.es_inst.com_elastic_index('info', {'x: {0} y: {1} z: {2}'.format(
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'x: {0} y: {1} z: {2}'.format(
                 br.mg_x, br.mg_y, br.mg_z)})
             mag_data.append((br.mg_x, br.mg_y, br.mg_z))
         return mag_data

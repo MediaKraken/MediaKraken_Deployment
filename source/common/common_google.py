@@ -40,7 +40,7 @@ class CommonGoogle:
         channels = []
         playlists = []
         for search_result in search_response.get("items", []):
-            common_global.es_inst.com_elastic_index('info', {'ytsearch': search_result})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'ytsearch': search_result})
             if search_result["id"]["kind"] == "youtube#video":
                 videos.append(search_result["id"]["videoId"])
             elif search_result["id"]["kind"] == "youtube#channel":
@@ -107,7 +107,7 @@ class CommonGoogle:
             comment = item["snippet"]["topLevelComment"]
             author = comment["snippet"]["authorDisplayName"]
             text = comment["snippet"]["textDisplay"]
-            common_global.es_inst.com_elastic_index('info', {"Comment by": (
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Comment by": (
                 author, text)})
         return results["items"]
 

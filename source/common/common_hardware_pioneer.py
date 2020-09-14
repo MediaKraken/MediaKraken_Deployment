@@ -42,9 +42,9 @@ class CommonHardwarePioneer:
             common_global.es_inst.com_elastic_index('error', {'Pioneer socket error': e})
         else:
             if len(msg) == 0:
-                common_global.es_inst.com_elastic_index('info', {'pioneer shutdown on server end'})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'pioneer shutdown on server end'})
             else:
-                common_global.es_inst.com_elastic_index('info', {'pioneer data': msg})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'pioneer data': msg})
                 while 1:
                     rxbuf = self.pioneer_inst.recv(1024)
                     if rxbuf:

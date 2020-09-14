@@ -27,9 +27,8 @@ from common import common_network
 from common import common_signal
 
 # start logging
-common_logging_elasticsearch_httpx.com_es_httpx_post(index_name='httpx_subprogram_cron_checker',
-                                                     message_type='info',
-                                                     message_text='subprogram_cron_checker')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -76,10 +75,8 @@ while 1:
             db_connection.db_cron_time_update(row_data['mm_cron_name'])
             # commit off each match
             db_connection.db_commit()
-            common_logging_elasticsearch_httpx.com_es_httpx_post(
-                index_name='httpx_subprogram_cron_checker',
-                message_type='info',
-                message_text=row_data)
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                 message_text=row_data)
     time.sleep(60)  # sleep for 60 seconds
 
 # close the pika connection

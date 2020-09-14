@@ -65,7 +65,7 @@ class CommonMetadataMusicbrainz:
         # print "{}, by {}".format(rel['title'], rel["artist-credit-phrase"])
         if 'date' in rel:
             pass
-        common_global.es_inst.com_elastic_index('info', {"musicbrainz ID": "{}".format(rel['id'])})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"musicbrainz ID": "{}".format(rel['id'])})
 
     def com_mediabrainz_get_releases(self, disc_id=None, artist_name=None,
                                      artist_recording=None, return_limit=5, strict_flag=False):
@@ -83,7 +83,7 @@ class CommonMetadataMusicbrainz:
             return None
         else:
             for (idx, release) in enumerate(result['release-list']):
-                common_global.es_inst.com_elastic_index('info', {"match #{}:".format(idx + 1)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"match #{}:".format(idx + 1)})
                 self.show_release_details(release)
             return release['id']
 
@@ -100,6 +100,6 @@ class CommonMetadataMusicbrainz:
             return None
         else:
             for (idx, release) in enumerate(result['recording-list']):
-                common_global.es_inst.com_elastic_index('info', {"match #{}:".format(idx + 1)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"match #{}:".format(idx + 1)})
                 self.show_release_details(release)
             return release['id']

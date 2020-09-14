@@ -35,7 +35,7 @@ async def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
     file_name = guessit(file_name)
     if type(file_name['title']) == list:
         file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-    common_global.es_inst.com_elastic_index('info', {"meta tv search tvmaze": str(file_name)})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta tv search tvmaze": str(file_name)})
     metadata_uuid = None
     tvmaze_id = None
     if TVMAZE_CONNECTION is not None:
@@ -45,15 +45,15 @@ async def tv_search_tvmaze(db_connection, file_name, lang_code='en'):
         else:
             tvmaze_id = str(TVMAZE_CONNECTION.com_meta_tvmaze_widesearch(file_name['title'],
                                                                          None))
-        common_global.es_inst.com_elastic_index('info', {'response': tvmaze_id})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'response': tvmaze_id})
         if tvmaze_id is not None:
             #            # since there has been NO match whatsoever.....can "wipe" out everything
             #            media_id_json = json.dumps({'tvmaze_id': tvmaze_id})
-            #            common_global.es_inst.com_elastic_index('info', {'stuff':"dbjson: %s", media_id_json)
+            #            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff':"dbjson: %s", media_id_json)
             # check to see if metadata exists for tvmaze id
             metadata_uuid = await db_connection.db_metatv_guid_by_tvmaze(tvmaze_id)
-            common_global.es_inst.com_elastic_index('info', {"db result": metadata_uuid})
-    common_global.es_inst.com_elastic_index('info', {'meta tv uuid': metadata_uuid,
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"db result": metadata_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'meta tv uuid': metadata_uuid,
                                                      'tvmaze': tvmaze_id})
     return metadata_uuid, tvmaze_id
 
@@ -62,7 +62,7 @@ async def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
     """
     Fetch show data from tvmaze
     """
-    common_global.es_inst.com_elastic_index('info', {"meta tv tvmaze save fetch": tvmaze_id})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta tv tvmaze save fetch": tvmaze_id})
     metadata_uuid = None
     result_data = TVMAZE_CONNECTION.com_meta_tvmaze_show_by_id(
         tvmaze_id,
@@ -73,13 +73,13 @@ async def tv_fetch_save_tvmaze(db_connection, tvmaze_id):
         result_json = json.loads(result_data)
     except:
         result_json = None
-    common_global.es_inst.com_elastic_index('info', {"tvmaze full": result_json})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"tvmaze full": result_json})
     if result_json is not None and result_json['status'] != 404:
         show_full_json = ({'Meta': {'tvmaze': result_json}})
         show_detail = show_full_json['Meta']['tvmaze']
-        common_global.es_inst.com_elastic_index('info', {"detail": show_detail})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"detail": show_detail})
         tvmaze_name = show_detail['name']
-        common_global.es_inst.com_elastic_index('info', {"name": tvmaze_name})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"name": tvmaze_name})
         try:
             thetvdb_id = str(show_detail['externals']['thetvdb'])
         except KeyError:

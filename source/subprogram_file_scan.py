@@ -29,14 +29,15 @@ from common import common_file
 from common import common_file_extentions
 from common import common_global
 from common import common_internationalization
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network_cifs
 from common import common_signal
 from common import common_string
 from common import common_system
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -52,7 +53,8 @@ def worker(audit_directory):
     dir_path, media_class_type_uuid, dir_guid = audit_directory
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
-    common_global.es_inst.com_elastic_index('info', {'worker dir': dir_path})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'worker dir': dir_path})
     original_media_class = media_class_type_uuid
     # update the timestamp now so any other media added DURING this scan don't get skipped
     thread_db.db_audit_dir_timestamp_update(dir_path)
@@ -228,9 +230,9 @@ def worker(audit_directory):
                                                                          total_scanned / total_file_in_dir) * 100}))
         thread_db.db_commit()
     # end of for loop for each file in library
-    common_global.es_inst.com_elastic_index('info',
-                                            {'worker dir done': dir_path,
-                                             'media class': media_class_type_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
+    {'worker dir done': dir_path,
+     'media class': media_class_type_uuid})
     # set to none so it doesn't show up anymore in admin status page
     thread_db.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
@@ -267,7 +269,8 @@ for media_row in db_connection.db_known_media():
 # determine directories to audit
 audit_directories = []  # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
-    common_global.es_inst.com_elastic_index('info', {"Audit Path": str(row_data)})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"Audit Path": str(row_data)})
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         smb_stuff = common_network_cifs.CommonCIFSShare()
@@ -318,11 +321,7 @@ if len(audit_directories) > 0:
     # with ThreadPoolExecutor(len(audit_directories)) as executor:
     #     futures = [executor.submit(worker, n) for n in audit_directories]
     #     for future in futures:
-    #         pass
-    #         # try:
-    #         #     common_global.es_inst.com_elastic_index('info', {'future': str(future.result())})
-    #         # except:
-    #         #     pass
+    #         print(str(future.result())
 
 # commit
 db_connection.db_commit()

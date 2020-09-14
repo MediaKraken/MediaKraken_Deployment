@@ -21,10 +21,12 @@ import uuid
 
 from common import common_config_ini
 from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_metadata_tvmaze
 
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('bulk_tvmaze_netfetch')
+# start logging
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -51,3 +53,6 @@ if option_config_json['API']['tvmaze'] is not None:
                                                                      uuid.uuid4())}))
         # commit all changes
         db_connection.db_commit()
+
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='STOP')

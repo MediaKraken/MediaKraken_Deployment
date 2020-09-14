@@ -20,14 +20,14 @@ import json
 
 import psycopg2.extras
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 
 dont_force_localhost = True
 
 if dont_force_localhost:
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_update_version')
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='START')
     # open the database
     option_config_json, db_connection = common_config_ini.com_config_read()
 else:
@@ -372,3 +372,7 @@ if db_connection.db_version_check() < 29:
 
 # close the database
 db_connection.db_close()
+
+if dont_force_localhost:
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='STOP')

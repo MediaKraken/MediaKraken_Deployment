@@ -22,7 +22,7 @@ async def url_bp_user_metadata_periodical(request):
                                                                                     'per_page']),
                                                                             request.ctx.session[
                                                                                 'search_text']):
-        common_global.es_inst.com_elastic_index('info', {'person data': item_data})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'person data': item_data})
         item_image = "img/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))

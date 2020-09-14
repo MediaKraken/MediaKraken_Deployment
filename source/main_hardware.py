@@ -19,17 +19,18 @@
 import functools
 import json
 import subprocess
+import time
 
 import pika
-import time
 from common import common_global
 from common import common_hardware_hue
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network
 from common import common_signal
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_hardware')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 
 class MKConsumer:
@@ -61,19 +62,25 @@ class MKConsumer:
     def close_connection(self):
         self._consuming = False
         if self._connection.is_closing or self._connection.is_closed:
-            common_global.es_inst.com_elastic_index('info', {
-                'hardware': 'Connection is closing or already closed'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(
+                message_type='info', message_text={
+                    'hardware': 'Connection is closing or already closed'})
         else:
-            common_global.es_inst.com_elastic_index('info', {'hardware': 'Closing connection'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(
+                message_type='info',
+                message_text={'hardware': 'Closing connection'})
             self._connection.close()
 
     def on_connection_open(self, _unused_connection):
-        common_global.es_inst.com_elastic_index('info', {'hardware': 'Closing opened'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info',
+            message_text={'hardware': 'Closing opened'})
         self.open_channel()
 
     def on_connection_open_error(self, _unused_connection, err):
-        common_global.es_inst.com_elastic_index('info',
-                                                {'hardware': ('Connection open failed: %s', err)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text=
+            {'hardware': ('Connection open failed: %s', err)})
         self.reconnect()
 
     def on_connection_closed(self, _unused_connection, reason):
@@ -81,10 +88,11 @@ class MKConsumer:
         if self._closing:
             self._connection.ioloop.stop()
         else:
-            common_global.es_inst.com_elastic_index('info',
-                                                    {'hardware': (
-                                                        'Connection closed, reconnect necessary: %s',
-                                                        reason)})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(
+                message_type='info', message_text=
+                {'hardware': (
+                    'Connection closed, reconnect necessary: %s',
+                    reason)})
             self.reconnect()
 
     def reconnect(self):
@@ -92,28 +100,35 @@ class MKConsumer:
         self.stop()
 
     def open_channel(self):
-        common_global.es_inst.com_elastic_index('info', {'hardware': 'Creating a new channel'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info',
+            message_text={'hardware': 'Creating a new channel'})
         self._connection.channel(on_open_callback=self.on_channel_open)
 
     def on_channel_open(self, channel):
-        common_global.es_inst.com_elastic_index('info', {'hardware': 'Channel opened'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info',
+            message_text={'hardware': 'Channel opened'})
         self._channel = channel
         self.add_on_channel_close_callback()
         self.setup_exchange(self.EXCHANGE)
 
     def add_on_channel_close_callback(self):
-        common_global.es_inst.com_elastic_index('info',
-                                                {'hardware': 'Adding channel close callback'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text=
+            {'hardware': 'Adding channel close callback'})
         self._channel.add_on_close_callback(self.on_channel_closed)
 
     def on_channel_closed(self, channel, reason):
-        common_global.es_inst.com_elastic_index('info', {
-            'hardware': ('Channel %i was closed: %s', channel, reason)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text={
+                'hardware': ('Channel %i was closed: %s', channel, reason)})
         self.close_connection()
 
     def setup_exchange(self, exchange_name):
-        common_global.es_inst.com_elastic_index('info', {
-            'hardware': ('Declaring exchange: %s', exchange_name)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text={
+                'hardware': ('Declaring exchange: %s', exchange_name)})
         # Note: using functools.partial is not required, it is demonstrating
         # how arbitrary data can be passed to the callback when it is called
         cb = functools.partial(
@@ -125,21 +140,25 @@ class MKConsumer:
             durable=True)
 
     def on_exchange_declareok(self, _unused_frame, userdata):
-        common_global.es_inst.com_elastic_index('info',
-                                                {'hardware': ('Exchange declared: %s', userdata)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text=
+            {'hardware': ('Exchange declared: %s', userdata)})
         self.setup_queue(self.QUEUE)
 
     def setup_queue(self, queue_name):
-        common_global.es_inst.com_elastic_index('info',
-                                                {'hardware': ('Declaring queue %s', queue_name)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text=
+            {'hardware': ('Declaring queue %s', queue_name)})
         cb = functools.partial(self.on_queue_declareok, userdata=queue_name)
         self._channel.queue_declare(queue=queue_name, callback=cb, durable=True)
 
     def on_queue_declareok(self, _unused_frame, userdata):
         queue_name = userdata
-        common_global.es_inst.com_elastic_index('info', {'hardware': ('Binding %s to %s with %s',
-                                                                      self.EXCHANGE, queue_name,
-                                                                      self.ROUTING_KEY)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info',
+            message_text={'hardware': ('Binding %s to %s with %s',
+                                       self.EXCHANGE, queue_name,
+                                       self.ROUTING_KEY)})
         cb = functools.partial(self.on_bindok, userdata=queue_name)
         self._channel.queue_bind(
             queue_name,
@@ -148,7 +167,9 @@ class MKConsumer:
             callback=cb)
 
     def on_bindok(self, _unused_frame, userdata):
-        common_global.es_inst.com_elastic_index('info', {'hardware': ('Queue bound: %s', userdata)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info',
+            message_text={'hardware': ('Queue bound: %s', userdata)})
         self.set_qos()
 
     def set_qos(self):
@@ -156,13 +177,15 @@ class MKConsumer:
             prefetch_count=self._prefetch_count, callback=self.on_basic_qos_ok)
 
     def on_basic_qos_ok(self, _unused_frame):
-        common_global.es_inst.com_elastic_index('info', {
-            'hardware': ('QOS set to: %d', self._prefetch_count)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text={
+                'hardware': ('QOS set to: %d', self._prefetch_count)})
         self.start_consuming()
 
     def start_consuming(self):
-        common_global.es_inst.com_elastic_index('info', {
-            'hardware': 'Issuing consumer related RPC commands'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text={
+                'hardware': 'Issuing consumer related RPC commands'})
         self.add_on_cancel_callback()
         self._consumer_tag = self._channel.basic_consume(
             self.QUEUE, self.on_message)
@@ -170,19 +193,23 @@ class MKConsumer:
         self._consuming = True
 
     def add_on_cancel_callback(self):
-        common_global.es_inst.com_elastic_index('info', {
-            'hardware': 'Adding consumer cancellation callback'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text={
+                'hardware': 'Adding consumer cancellation callback'})
         self._channel.add_on_cancel_callback(self.on_consumer_cancelled)
 
     def on_consumer_cancelled(self, method_frame):
-        common_global.es_inst.com_elastic_index('info', {
-            'hardware': ('Consumer was cancelled remotely, shutting down: %r', method_frame)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text={
+                'hardware': ('Consumer was cancelled remotely, shutting down: %r', method_frame)})
         if self._channel:
             self._channel.close()
 
     def on_message(self, _unused_channel, basic_deliver, properties, body):
         if body is not None:
-            common_global.es_inst.com_elastic_index('info', {'msg body': body})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(
+                message_type='info',
+                message_text={'msg body': body})
             json_message = json.loads(body)
             if json_message['Type'] == 'Hardware':
                 if json_message['Subtype'] == 'Lights':
@@ -197,9 +224,9 @@ class MKConsumer:
                                                                     json_message['Setting'])
             elif json_message['Type'] == 'Hardware Scan':
                 hardware_proc = subprocess.Popen('/mediakraken/main_hardware_discover.py',
-                                               stdout=subprocess.PIPE,
-                                               shell=False)
-                #hardware_proc.wait()  # do NOT wait, as it's blocking
+                                                 stdout=subprocess.PIPE,
+                                                 shell=False)
+                # hardware_proc.wait()  # do NOT wait, as it's blocking
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
@@ -218,8 +245,10 @@ class MKConsumer:
 
     def on_cancelok(self, _unused_frame, userdata):
         self._consuming = False
-        common_global.es_inst.com_elastic_index('info', {
-            'hardware': ('RabbitMQ acknowledged the cancellation of the consumer: %s', userdata)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(
+            message_type='info', message_text={
+                'hardware': (
+                'RabbitMQ acknowledged the cancellation of the consumer: %s', userdata)})
         self.close_channel()
 
     def close_channel(self):

@@ -19,7 +19,7 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tv_detail(db_connection, guid)
     json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
-    common_global.es_inst.com_elastic_index('info', {'meta tvshow json': json_metadata})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'meta tvshow json': json_metadata})
     if 'episode_run_time' in json_metadata:
         try:
             data_runtime = json_metadata['episode_run_time'][0]
@@ -218,9 +218,9 @@ async def url_bp_user_metadata_tvshow_season_detail(request, guid, season):
         db_connection,
         guid, int(season))
     await request.app.db_pool.release(db_connection)
-    common_global.es_inst.com_elastic_index('info', {'dataeps': data_episode_count})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
-    common_global.es_inst.com_elastic_index('info', {'dataepskeys': data_episode_keys})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'dataepskeys': data_episode_keys})
     # poster image
     try:
         data_poster_image = data_metadata[3]

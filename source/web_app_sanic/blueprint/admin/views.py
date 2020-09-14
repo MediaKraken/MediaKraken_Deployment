@@ -13,7 +13,7 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_global.es_inst.com_elastic_index('info', {"admin access attempt by":
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"admin access attempt by":
                                                              user.id})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied

@@ -63,7 +63,7 @@ def db_download_update_provider(self, provider_name, guid):
     """
     Update provider
     """
-    common_global.es_inst.com_elastic_index('info', {'download update provider': provider_name,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'download update provider': provider_name,
                                                      'guid': guid})
     self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',
                            (provider_name, guid))
@@ -73,7 +73,7 @@ def db_download_update(self, update_json, guid, update_que_id=None):
     """
     Update download que record
     """
-    common_global.es_inst.com_elastic_index('info', {'download update': update_json,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'download update': update_json,
                                                      'que': update_que_id, 'guid': guid})
     if update_que_id is not None:
         self.db_cursor.execute('update mm_download_que set mdq_download_json = %s,'
@@ -96,7 +96,7 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
-    common_global.es_inst.com_elastic_index('info', {'db_download_que_exists': download_que_uuid,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'db_download_que_exists': download_que_uuid,
                                                      'name': provider_name,
                                                      'id': provider_id})
     # if download_que_uuid is not None:

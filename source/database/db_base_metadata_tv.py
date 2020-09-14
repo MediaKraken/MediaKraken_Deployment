@@ -38,7 +38,7 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
     """
     # metadata guid by name
     """
-    common_global.es_inst.com_elastic_index('info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
                                             {'db_metatv_guid_by_tvshow_name': str(tvshow_name),
                                              'year': tvshow_year})
     metadata_guid = None
@@ -71,7 +71,7 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
                                 str(int(tvshow_year) - 3)))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_tvshow_guid']
-        common_global.es_inst.com_elastic_index('info', {"db find metadata tv guid":
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"db find metadata tv guid":
                                                              metadata_guid})
         break
     return metadata_guid
@@ -296,7 +296,7 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """
-    common_global.es_inst.com_elastic_index('info', {"show guid": show_guid,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"show guid": show_guid,
                                                      'season': season_number,
                                                      'eps': episode_number})
     # self.db_cursor.execute('(select

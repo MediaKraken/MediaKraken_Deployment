@@ -7,7 +7,7 @@ from asyncpg import create_pool
 from common import common_file
 from common import common_global
 # from common import common_hash
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network
 from sanic import Sanic
 from sanic import response

@@ -22,7 +22,7 @@ async def db_meta_tv_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """
-    common_global.es_inst.com_elastic_index('info', {"show guid": show_guid,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"show guid": show_guid,
                                                      'season': season_number,
                                                      'eps': episode_number})
     return await self.db_connection.fetchrow(

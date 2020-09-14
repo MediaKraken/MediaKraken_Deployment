@@ -15,7 +15,7 @@ async def url_bp_admin_docker_stat(request):
     docker_inst = common_docker.CommonDocker()
     # it returns a dict, not a json
     docker_info = docker_inst.com_docker_info()
-    common_global.es_inst.com_elastic_index('info', {'Docker info': docker_info})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Docker info': docker_info})
     if 'Managers' not in docker_info['Swarm'] or docker_info['Swarm']['Managers'] == 0:
         docker_swarm = "Cluster not active"
     else:

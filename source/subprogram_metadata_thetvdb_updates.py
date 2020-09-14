@@ -21,14 +21,13 @@ import time
 
 import xmltodict
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_metadata_provider_thetvdb
 from common import common_signal
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_metadata_thetvdb_updates')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -46,7 +45,8 @@ option_json, status_json = db_connection.db_opt_status_read()
 update_item = thetvdb_API_Connection.com_meta_thetvdb_updates()
 # grab series info
 for row_data in update_item['Data']['Series']:
-    common_global.es_inst.com_elastic_index('info', {'id': row_data['id']})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'id': row_data['id']})
     # look for previous data
     metadata_uuid = db_connection.db_metatv_guid_by_tvdb(row_data['id'])
     if metadata_uuid is None:
@@ -81,7 +81,8 @@ for row_data in update_item['Data']['Series']:
     db_connection.db_commit()
 # grab banner info
 for row_data in xmltodict.parse(zip.read(zippedFile))['Data']['Banner']:
-    common_global.es_inst.com_elastic_index('info', {'banner': row_data})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'banner': row_data})
 
 # set the epoc date
 # TODO update the epoc in status from the udpate xml

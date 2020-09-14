@@ -101,7 +101,7 @@ def db_meta_person_insert(self, person_name, media_id, person_json,
     """
     # insert person
     """
-    common_global.es_inst.com_elastic_index('info', {'db pers insert': {'name': person_name,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'db pers insert': {'name': person_name,
                                                                         'id': media_id,
                                                                         'person': person_json,
                                                                         'image': image_path}})
@@ -131,7 +131,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
     """
     # batch insert from json of crew/cast
     """
-    common_global.es_inst.com_elastic_index('info', {
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {
         'db_meta_person_insert_cast_crew': meta_type, 'person': person_json})
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     multiple_person = False
@@ -142,7 +142,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
         pass
     if multiple_person:
         for person_data in person_json:
-            common_global.es_inst.com_elastic_index('info', {"person data": person_data})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"person data": person_data})
             if meta_type == "themoviedb":
                 person_id = person_data['id']
                 person_name = person_data['name']
@@ -152,7 +152,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if person_id is not None:
                 # TODO do an upsert instead
                 if self.db_meta_person_id_count(person_id) > 0:
-                    common_global.es_inst.com_elastic_index('info', {
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {
                         'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
                     # Shouldn't need to verify fetch doesn't exist as the person insert
@@ -180,7 +180,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             # person_name = None # not used later so don't set
         if person_id is not None:
             if self.db_meta_person_id_count(meta_type, person_id) > 0:
-                common_global.es_inst.com_elastic_index('info', {'stuff': "skippy"})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': "skippy"})
             else:
                 # Shouldn't need to verify fetch doesn't exist as the person insert
                 # is right below.  As then the next person record read will find
@@ -204,7 +204,7 @@ def db_meta_person_as_seen_in(self, person_guid):
     if row_data is None:  # exit on not found person
         return None
     # TODO jin index the credits
-    common_global.es_inst.com_elastic_index('info', {"row_data": row_data})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"row_data": row_data})
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
         self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'

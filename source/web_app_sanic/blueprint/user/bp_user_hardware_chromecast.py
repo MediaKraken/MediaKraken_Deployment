@@ -13,7 +13,7 @@ async def url_bp_user_chromecast(request, user, action, guid):
     """
     Display chromecast actions page
     """
-    common_global.es_inst.com_elastic_index('info', {'cast action': action,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'cast action': action,
                                                      'case user': user.id})
     db_connection = await request.app.db_pool.acquire()
     if action == 'base':

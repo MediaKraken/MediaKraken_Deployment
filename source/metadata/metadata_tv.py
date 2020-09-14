@@ -35,11 +35,11 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
         metadata_tv_lookup.metadata_last_tvdb = None
         metadata_tv_lookup.metadata_last_tmdb = None
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'metadata_tv_lookup': str(file_name)})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'metadata_tv_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data = metadata_nfo_xml.nfo_file_tv(download_data['Path'])
     imdb_id, tvdb_id, tmdb_id = metadata_nfo_xml.nfo_id_lookup_tv(nfo_data)
-    common_global.es_inst.com_elastic_index('info', {"tv look": imdb_id,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"tv look": imdb_id,
                                                      'tbdb': tvdb_id,
                                                      'themoviedb': tmdb_id})
     # if same as last, return last id and save lookup
@@ -61,7 +61,7 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = await db_connection.db_metatv_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
-    common_global.es_inst.com_elastic_index('info', {"meta tv metadata_uuid A": metadata_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta tv metadata_uuid A": metadata_uuid})
     if metadata_uuid is None:
         # id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
@@ -101,10 +101,10 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                 await db_connection.db_commit()
             else:
                 metadata_uuid = dl_meta
-    common_global.es_inst.com_elastic_index('info', {"meta tv metadata_uuid B": metadata_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta tv metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        common_global.es_inst.com_elastic_index('info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
                                                 {'stuff': "tv db lookup", 'file': str(file_name)})
         # db lookup by name and year (if available)
         if 'year' in file_name:
@@ -113,7 +113,7 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
         else:
             metadata_uuid = await db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
                                                                               None)
-        common_global.es_inst.com_elastic_index('info', {"tv db meta": metadata_uuid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"tv db meta": metadata_uuid})
         if metadata_uuid is None:
             # no matches by name/year
             # search themoviedb since not matched above via DB or nfo/xml

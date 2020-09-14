@@ -241,7 +241,7 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     for row_data in self.db_cursor.fetchall():
         # TODO should probably handle multiple results better.   Perhaps a notification?
         metadata_guid = row_data['mm_metadata_guid']
-        common_global.es_inst.com_elastic_index('info', {"db find metadata guid": metadata_guid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"db find metadata guid": metadata_guid})
         break
     return metadata_guid
 
@@ -266,7 +266,7 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_global.es_inst.com_elastic_index('info', {"id": media_tvid,
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"id": media_tvid,
                                                          'imdb': media_imdbid,
                                                          'ani': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_id'])
@@ -284,7 +284,7 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_global.es_inst.com_elastic_index('info', {"id2": media_tvid,
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"id2": media_tvid,
                                                          'imdb': media_imdbid,
                                                          'anidb': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_tvshow_id'])

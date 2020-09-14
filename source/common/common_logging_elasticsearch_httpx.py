@@ -16,14 +16,24 @@
   MA 02110-1301, USA.
 """
 
+import os
 from datetime import datetime
 
 import httpx
 
 
-def com_es_httpx_post(index_name, message_type, message_text):
+def com_es_httpx_post(message_type, message_text, index_ext=None):
+    # this is so only have to pass during START log
+    if not hasattr(com_es_httpx_post, "index_ext"):
+        # it doesn't exist yet, so initialize it
+        if index_ext:
+            com_es_httpx_post.index_ext = '_' + index_ext.replace(' ', '_')
+        else:
+            com_es_httpx_post.index_ext = ''
     response = httpx.post(
-        'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken' % (index_name,),
+        'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
+        % ('httpx_' + os.path.basename(__file__).replace(' ', '_')
+           + com_es_httpx_post.index_ext,),
         data='{"@timestamp": "'
              + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
              + '", "message": "%s",' % (message_text,)
@@ -34,10 +44,19 @@ def com_es_httpx_post(index_name, message_type, message_text):
     return response
 
 
-async def com_es_httpx_post_async(index_name, message_type, message_text):
+async def com_es_httpx_post_async(message_type, message_text, index_ext=None):
+    # this is so only have to pass during START log
+    if not hasattr(com_es_httpx_post_async, "index_ext"):
+        # it doesn't exist yet, so initialize it
+        if index_ext:
+            com_es_httpx_post_async.index_ext = '_' + index_ext.replace(' ', '_')
+        else:
+            com_es_httpx_post_async.index_ext = ''
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken' % (index_name,),
+            'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
+            % ('httpx_' + os.path.basename(__file__).replace(' ', '_')
+               + com_es_httpx_post_async.index_ext,),
             data='{"@timestamp": "'
                  + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
                  + '", "message": "%s",' % (message_text,)

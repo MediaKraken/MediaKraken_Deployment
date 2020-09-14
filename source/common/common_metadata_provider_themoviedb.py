@@ -39,7 +39,7 @@ class CommonMetadataTMDB:
         """
         # search for media title and year
         """
-        common_global.es_inst.com_elastic_index('info', {"tmdb search": media_title,
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"tmdb search": media_title,
                                                          'year': media_year})
         if media_type == common_global.DLMediaType.Movie.value:
             async with httpx.AsyncClient() as client:
@@ -63,10 +63,10 @@ class CommonMetadataTMDB:
             return None, None
         # pull json since it's a coroutine above
         search_json = search_json.json()
-        common_global.es_inst.com_elastic_index('info', {'search': str(search_json)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'search': str(search_json)})
         if search_json is not None and search_json['total_results'] > 0:
             for res in search_json['results']:
-                common_global.es_inst.com_elastic_index('info', {"result": res['title'],
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"result": res['title'],
                                                                  'id': res['id'],
                                                                  'date':
                                                                      res['release_date'].split('-',
@@ -149,11 +149,9 @@ class CommonMetadataTMDB:
         """
         # download info and set data to be ready for insert into database
         """
-        # common_global.es_inst.com_elastic_index('info', {'tmdb bio build': result_json})
         # create file path for poster
         image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
                                                                    'person')
-        # common_global.es_inst.com_elastic_index('info', {'tmdb bio image path': image_file_path})
         if 'profile_path' in result_json and result_json['profile_path'] is not None:
             if not os.path.isfile(image_file_path + result_json['profile_path']):
                 if result_json['profile_path'] is not None:
@@ -232,7 +230,7 @@ class CommonMetadataTMDB:
         """
         # download info and set data to be ready for insert into database
         """
-        common_global.es_inst.com_elastic_index('info', {'tmdb info build': result_json})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'tmdb info build': result_json})
         # create file path for poster
         if 'title' in result_json:  # movie
             image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
@@ -240,7 +238,7 @@ class CommonMetadataTMDB:
         else:  # tv
             image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
                                                                        'poster')
-        common_global.es_inst.com_elastic_index('info', {'tmdb image path': image_file_path})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'tmdb image path': image_file_path})
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']

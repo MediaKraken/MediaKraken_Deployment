@@ -13,7 +13,7 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'movie status': guid, 'event': event_type})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'movie status': guid, 'event': event_type})
     if event_type == "sync":
         return redirect(request.app.url_for('name_blueprint_user_sync.url_bp_user_sync_edit', guid=guid))
     else:
@@ -43,7 +43,7 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'movie metadata status': guid,
                                                      'event': event_type})
     db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(db_connection,
@@ -58,7 +58,7 @@ async def url_bp_user_status_tv(request, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'tv status': guid, 'event': event_type})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'tv status': guid, 'event': event_type})
     if event_type == "watched":
         pass
     elif event_type == "sync":

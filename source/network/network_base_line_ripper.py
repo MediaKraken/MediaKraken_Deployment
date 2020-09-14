@@ -43,14 +43,14 @@ class NetworkEvents(basic.LineReceiver):
         """
         Network connection made from client so ask for ident
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'Got Connection'})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
         """
         Network connection dropped so remove client
         """
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'Lost Connection'})
         if self.user_user_name in self.users:
             del self.users[self.user_user_name]
 
@@ -59,9 +59,9 @@ class NetworkEvents(basic.LineReceiver):
         Message received from client
         """
         msg = None
-        common_global.es_inst.com_elastic_index('info', {'GOT Data': data})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'GOT Data': data})
         json_message = json.loads(data)
-        common_global.es_inst.com_elastic_index('info', {'Message': json_message})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Message': json_message})
 
         if json_message['Type'] == "Rip":
             if json_message['Data'] == "CD":
@@ -100,13 +100,13 @@ class NetworkEvents(basic.LineReceiver):
             self.user_device_uuid = json_message['UUID']
             self.user_ip_addy = str(self.transport.getPeer()).split('\'')[1]
             self.users[self.user_device_uuid] = self
-            common_global.es_inst.com_elastic_index('info', {"user": self.user_device_uuid,
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"user": self.user_device_uuid,
                                                              'ip': self.user_ip_addy})
         else:
             common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            common_global.es_inst.com_elastic_index('info',
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
                                                     {"should be sending data len": len(msg)})
             self.sendLine(msg.encode("utf8"))
 
@@ -115,5 +115,5 @@ class NetworkEvents(basic.LineReceiver):
         Send message to all users
         """
         for user_device_uuid, protocol in self.users.items():
-            common_global.es_inst.com_elastic_index('info', {'send all': message})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'send all': message})
             protocol.transport.write(message.encode("utf8"))

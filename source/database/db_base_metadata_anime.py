@@ -61,7 +61,7 @@ def db_meta_anime_update_meta_id(self, media_id_json, mapping_json, mapping_befo
     """
     Update the media id json from scudlee data
     """
-    common_global.es_inst.com_elastic_index('info', {'ani_id_json': media_id_json})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'ani_id_json': media_id_json})
     self.db_cursor.execute('update mm_metadata_anime set mm_metadata_anime_media_id = %s,'
                            ' mm_metadata_anime_mapping = %s,'
                            ' mm_metadata_anime_mapping_before = %s'
@@ -75,7 +75,7 @@ def db_meta_anime_meta_by_id(self, anidb_id):
     """
     Return count of records with id
     """
-    common_global.es_inst.com_elastic_index('info', {'exist ani': anidb_id})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'exist ani': anidb_id})
     self.db_cursor.execute('select mm_metadata_anime_guid'
                            ' from mm_metadata_anime'
                            ' where mm_metadata_anime_media_id->\'anidb\' ? %s', (anidb_id,))

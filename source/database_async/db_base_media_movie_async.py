@@ -10,11 +10,11 @@ async def db_media_movie_list(self, class_guid, list_type=None, list_genre='All'
     """
     # web media return
     """
-    common_global.es_inst.com_elastic_index('info', {"classuid": class_guid, 'type': list_type,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"classuid": class_guid, 'type': list_type,
                                                      'genre': list_genre})
-    common_global.es_inst.com_elastic_index('info', {"group and remote": group_collection,
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"group and remote": group_collection,
                                                      'remote': include_remote})
-    common_global.es_inst.com_elastic_index('info', {"list, offset": list_limit, 'offset': offset})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"list, offset": list_limit, 'offset': offset})
     if list_genre == 'All':
         if list_type == "recent_addition":
             if not group_collection:
@@ -532,7 +532,7 @@ async def db_media_movie_list_count(self, class_guid, list_type=None,
     """
     # web media count
     """
-    common_global.es_inst.com_elastic_index('info', {"classuid counter":
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"classuid counter":
                                                          class_guid, 'type': list_type,
                                                      'genre': list_genre})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':

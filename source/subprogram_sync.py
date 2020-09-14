@@ -24,8 +24,7 @@ from datetime import timedelta
 
 from common import common_cloud
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 from common import common_system
 from common import common_xfer
@@ -35,7 +34,8 @@ def worker(row_data):
     """
     Worker ffmpeg thread for each sync job
     """
-    common_global.es_inst.com_elastic_index('info', {'row': row_data})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'row': row_data})
     # open the database
     option_config_json, thread_db = common_config_ini.com_config_read()
     # row_data
@@ -60,7 +60,8 @@ def worker(row_data):
             ('-ar', row_data['mm_sync_options_json']['Options']['ASRate']))
     ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                          + row_data['mm_sync_options_json']['Options']['VContainer'])
-    common_global.es_inst.com_elastic_index('info', {'ffmpeg': ffmpeg_params})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'ffmpeg': ffmpeg_params})
     ffmpeg_pid = subprocess.Popen(shlex.split(ffmpeg_params),
                                   stdout=subprocess.PIPE, shell=False)
     # output after it gets started
@@ -71,7 +72,8 @@ def worker(row_data):
     while True:
         line = ffmpeg_pid.stdout.readline()
         if line != '':
-            common_global.es_inst.com_elastic_index('info', {'ffmpeg out': line.rstrip()})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'ffmpeg out': line.rstrip()})
             if line.find("Duration:") != -1:
                 media_duration = timedelta(float(line.split(': ', 1)[1].split(',', 1)[0]))
             elif line[0:5] == "frame":
@@ -114,7 +116,8 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_sync')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -127,7 +130,8 @@ sync_data = db_connection.db_sync_list()
 with ThreadPoolExecutor(len(sync_data)) as executor:
     futures = [executor.submit(worker, n) for n in sync_data]
     for future in futures:
-        common_global.es_inst.com_elastic_index('info', {'future': future.result()})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'future': future.result()})
 
 # commit all changes
 db_connection.db_commit()

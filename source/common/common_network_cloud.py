@@ -89,7 +89,7 @@ class CommonLibCloud:
                                      object_name=obj.name)
         filename = os.path.basename(obj.name)
         path = os.path.join(os.path.expanduser('~/Downloads'), filename)
-        common_global.es_inst.com_elastic_index('info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
                                                 {'Downloading': '%s to %s' % (obj.name, path)})
         obj.download(destination_path=path)
 

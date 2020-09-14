@@ -20,12 +20,12 @@ import json
 
 import psycopg2
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_version
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_create_update')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 
 # open the database
 db_connection = common_config_ini.com_config_read()
@@ -819,7 +819,7 @@ db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_inf
                        ' gi_game_info_json jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
-                           ' on mm_metadata_game_software_info (gi_system_id)')  # so can match systems quickly
+                           ' on mm_metadata_game_software_info (gi_system_id)')
 if db_connection.db_table_index_check('mm_game_info_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_game_info_idxgin_json'
                            ' ON mm_metadata_game_software_info USING gin (gi_game_info_json)')
@@ -1019,7 +1019,8 @@ if db_connection.db_table_index_check('gi_game_idx_name_trigram_idx') is None:
         'CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info'
         ' USING gist(gi_game_info_name gist_trgm_ops);')
 # since it's json, gist trgm_ops won't work
-# db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
+# db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx
+# ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
 if db_connection.db_table_index_check('mmp_person_name_trigram_idx') is None:
     db_connection.db_query(
         'CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person'
@@ -1027,3 +1028,6 @@ if db_connection.db_table_index_check('mmp_person_name_trigram_idx') is None:
 
 db_connection.db_commit()
 db_connection.db_close()
+
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='STOP')

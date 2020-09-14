@@ -37,7 +37,7 @@ def mk_network_fetch_from_url(url, directory=None):
     """
     Download data from specified url to save in specific directory
     """
-    common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'dl': url, 'dir': directory})
     try:
         datafile = urllib.request.urlopen(url, context=ssl._create_unverified_context())
     except urllib.error.URLError:  #<urlopen error [Errno 99] Address not available>:
@@ -136,7 +136,7 @@ def mk_network_ping_list(host_list):
         current.start()
     for pingle in pinglist:
         pingle.join()
-        common_global.es_inst.com_elastic_index('info', {"Status from":
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Status from":
                                                              pingle.ip_addr,
                                                          'report': report[pingle.status]})
 

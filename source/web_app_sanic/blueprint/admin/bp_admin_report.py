@@ -88,7 +88,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
                                                                                offset, int(
                 request.ctx.session[
                     'per_page'])):
-        common_global.es_inst.com_elastic_index('info', {"media": media_data[
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"media": media_data[
             'mm_media_ffprobe_json']})
         if media_data['mm_media_ffprobe_json'] is not None:
             for stream_data in media_data['mm_media_ffprobe_json']['streams']:
