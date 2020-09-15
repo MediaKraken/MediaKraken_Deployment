@@ -1,1 +1,1 @@
-elasticsearch[async]==7.9.1
+httpx==0.14.3
