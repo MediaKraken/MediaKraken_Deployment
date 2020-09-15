@@ -27,16 +27,19 @@ def com_es_httpx_post(message_type, message_text, index_name=None):
         # it doesn't exist yet, so initialize it
         # index_name should be populated on first run
         com_es_httpx_post.index_ext = 'httpx_' + index_name.replace(' ', '_')
-    response = httpx.post(
-        'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
-        % (com_es_httpx_post.index_ext,),
-        data='{"@timestamp": "'
-             + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-             + '", "message": "%s",' % (message_text,)
-             + ' "type": "%s",' % (message_type,)
-             + ' "user": {"id": "metaman"}}',
-        headers={"Content-Type": "application/json"},
-        timeout=3.05)
+    try:
+        response = httpx.post(
+            'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
+            % (com_es_httpx_post.index_ext,),
+            data='{"@timestamp": "'
+                 + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+                 + '", "message": "%s",' % (message_text,)
+                 + ' "type": "%s",' % (message_type,)
+                 + ' "user": {"id": "metaman"}}',
+            headers={"Content-Type": "application/json"},
+            timeout=3.05)
+    except httpx.TimeoutException as exc:
+        return None
     return response
 
 
@@ -47,14 +50,17 @@ async def com_es_httpx_post_async(message_type, message_text, index_name=None):
         # index_name should be populated on first run
         com_es_httpx_post_async.index_ext = 'httpx_' + index_name.replace(' ', '_')
     async with httpx.AsyncClient() as client:
-        response = await client.post(
-            'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
-            % (com_es_httpx_post_async.index_ext,),
-            data='{"@timestamp": "'
-                 + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-                 + '", "message": "%s",' % (message_text,)
-                 + ' "type": "%s",' % (message_type,)
-                 + ' "user": {"id": "metaman"}}',
-            headers={"Content-Type": "application/json"},
-            timeout=3.05)
+        try:
+            response = await client.post(
+                'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
+                % (com_es_httpx_post_async.index_ext,),
+                data='{"@timestamp": "'
+                     + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+                     + '", "message": "%s",' % (message_text,)
+                     + ' "type": "%s",' % (message_type,)
+                     + ' "user": {"id": "metaman"}}',
+                headers={"Content-Type": "application/json"},
+                timeout=3.05)
+        except httpx.TimeoutException as exc:
+            return None
         return response
