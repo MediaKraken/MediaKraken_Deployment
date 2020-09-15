@@ -1,3 +1,4 @@
+import json
 import os
 
 import asyncpg
@@ -40,6 +41,10 @@ async def db_open(self, force_local=False, loop=None, as_pool=False):
                                                    database='postgres',
                                                    host=database_host,
                                                    loop=loop)
+    await self.db_connection.set_type_codec('json',
+                                            encoder=json.dumps,
+                                            decoder=json.loads,
+                                            schema='pg_catalog')
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text={'stuff': 'db open async'})
 
