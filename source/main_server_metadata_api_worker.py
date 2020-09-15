@@ -42,8 +42,8 @@ from metadata import metadata_general
 from metadata import metadata_identification
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]
-             / common_metadata_limiter.API_LIMIT['anidb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]
+                                     / common_metadata_limiter.API_LIMIT['anidb'][1])
 async def anidb(db_connection, download_data):
     """
     Rate limiter for AniDB
@@ -55,8 +55,8 @@ async def anidb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'anidb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0]
-             / common_metadata_limiter.API_LIMIT['chart_lyrics'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['chart_lyrics'][0]
+                                     / common_metadata_limiter.API_LIMIT['chart_lyrics'][1])
 async def chart_lyrics(db_connection, download_data):
     """
     Rate limiter for Chart Lyrics
@@ -68,8 +68,8 @@ async def chart_lyrics(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'chart_lyrics', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0]
-             / common_metadata_limiter.API_LIMIT['comicvine'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['comicvine'][0]
+                                     / common_metadata_limiter.API_LIMIT['comicvine'][1])
 async def comicvine(db_connection, download_data):
     """
     Rate limiter for ComicVine
@@ -80,8 +80,8 @@ async def comicvine(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'comicvine', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0]
-             / common_metadata_limiter.API_LIMIT['giantbomb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['giantbomb'][0]
+                                     / common_metadata_limiter.API_LIMIT['giantbomb'][1])
 async def giantbomb(db_connection, download_data):
     """
     Rate limiter for GiantBomb
@@ -92,8 +92,8 @@ async def giantbomb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'giantbomb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0]
-             / common_metadata_limiter.API_LIMIT['imdb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['imdb'][0]
+                                     / common_metadata_limiter.API_LIMIT['imdb'][1])
 async def imdb(db_connection, download_data):
     """
     Rate limiter for IMDB
@@ -105,8 +105,8 @@ async def imdb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'imdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0]
-             / common_metadata_limiter.API_LIMIT['imvdb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['imvdb'][0]
+                                     / common_metadata_limiter.API_LIMIT['imvdb'][1])
 async def imvdb(db_connection, download_data):
     """
     Rate limiter for IMVdb
@@ -118,8 +118,8 @@ async def imvdb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'imvdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['isbndb'][0]
-             / common_metadata_limiter.API_LIMIT['isbndb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['isbndb'][0]
+                                     / common_metadata_limiter.API_LIMIT['isbndb'][1])
 async def isbndb(db_connection, download_data):
     """
     Rate limiter for isbndb
@@ -131,8 +131,8 @@ async def isbndb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'isbndb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]
-             / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['musicbrainz'][0]
+                                     / common_metadata_limiter.API_LIMIT['musicbrainz'][1])
 async def musicbrainz(db_connection, download_data):
     """
     Rate limiter for MusicBrainz
@@ -143,8 +143,8 @@ async def musicbrainz(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'musicbrainz', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
-             / common_metadata_limiter.API_LIMIT['omdb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['omdb'][0]
+                                     / common_metadata_limiter.API_LIMIT['omdb'][1])
 async def omdb(db_connection, download_data):
     """
     Rate limiter for OMDB
@@ -156,8 +156,8 @@ async def omdb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'omdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['openlibrary'][0]
-             / common_metadata_limiter.API_LIMIT['openlibrary'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['openlibrary'][0]
+                                     / common_metadata_limiter.API_LIMIT['openlibrary'][1])
 async def openlibrary(db_connection, download_data):
     """
     Rate limiter for openlibrary
@@ -169,8 +169,8 @@ async def openlibrary(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'openlibrary', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]
-             / common_metadata_limiter.API_LIMIT['pitchfork'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['pitchfork'][0]
+                                     / common_metadata_limiter.API_LIMIT['pitchfork'][1])
 async def pitchfork(db_connection, download_data):
     """
     Rate limiter for Pitchfork
@@ -181,8 +181,8 @@ async def pitchfork(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'pitchfork', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['pornhub'][0]
-             / common_metadata_limiter.API_LIMIT['pornhub'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['pornhub'][0]
+                                     / common_metadata_limiter.API_LIMIT['pornhub'][1])
 async def pornhub(db_connection, download_data):
     """
     Rate limiter for pornhub
@@ -194,8 +194,8 @@ async def pornhub(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'pornhub', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]
-             / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['televisiontunes'][0]
+                                     / common_metadata_limiter.API_LIMIT['televisiontunes'][1])
 async def televisiontunes(db_connection, download_data):
     """
     Rate limiter for Television Tunes
@@ -207,8 +207,8 @@ async def televisiontunes(db_connection, download_data):
         db_connection, 'televisiontunes', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]
-             / common_metadata_limiter.API_LIMIT['theaudiodb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]
+                                     / common_metadata_limiter.API_LIMIT['theaudiodb'][1])
 async def theaudiodb(db_connection, download_data):
     """
     Rate limiter for TheAudioDB
@@ -219,8 +219,8 @@ async def theaudiodb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'theaudiodb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0]
-             / common_metadata_limiter.API_LIMIT['thegamesdb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['thegamesdb'][0]
+                                     / common_metadata_limiter.API_LIMIT['thegamesdb'][1])
 async def thegamesdb(db_connection, download_data):
     """
     Rate limiter for thegamesdb
@@ -231,8 +231,8 @@ async def thegamesdb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'thegamesdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
-             / common_metadata_limiter.API_LIMIT['themoviedb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['themoviedb'][0]
+                                     / common_metadata_limiter.API_LIMIT['themoviedb'][1])
 async def themoviedb(db_connection, download_data):
     """
     Rate limiter for theMovieDB
@@ -244,8 +244,8 @@ async def themoviedb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'themoviedb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
-             / common_metadata_limiter.API_LIMIT['thesportsdb'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['thesportsdb'][0]
+                                     / common_metadata_limiter.API_LIMIT['thesportsdb'][1])
 async def thesportsdb(db_connection, download_data):
     """
     Rate limiter for TheSportsDB
@@ -256,8 +256,8 @@ async def thesportsdb(db_connection, download_data):
     await metadata_general.metadata_process(db_connection, 'thesportsdb', download_data)
 
 
-@ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
-             / common_metadata_limiter.API_LIMIT['tv_intros'][1])
+@common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['tv_intros'][0]
+                                     / common_metadata_limiter.API_LIMIT['tv_intros'][1])
 async def tv_intros(db_connection, download_data):
     """
     Rate limiter for TV Intros
@@ -301,7 +301,8 @@ async def main(loop):
     # start logging
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text='START',
-                                                         index_name='main_server_metadata_api_worker_' + content_providers.lower())
+                                                         index_name='main_server_meta_api_worker_'
+                                                                    + content_providers.lower())
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "worker meta api name": content_providers})
 
