@@ -1,0 +1,34 @@
+import asyncio
+import json
+
+import asyncpg
+
+
+async def main():
+    conn = await asyncpg.connect(user='postgres',
+                                 password='metaman',
+                                 database='postgres',
+                                 host='localhost')
+
+    await conn.set_type_codec('json',
+                              encoder=json.dumps,
+                              decoder=json.loads,
+                              schema='pg_catalog')
+
+    # await conn.execute('CREATE TABLE users2(id serial PRIMARY KEY,'
+    #                    ' name text, dob date, test_json jsonb)')
+
+    # await conn.execute('INSERT INTO users2(name, dob, test_json) VALUES($1, $2, $3)',
+    #                    'Bob', datetime.date(1984, 3, 1), json.dumps({'test': 'works'}))
+
+    row = await conn.fetchrow('SELECT id, dob, test_json::json'
+                              ' FROM users2 WHERE name = $1', 'Bob')
+    # *row* now contains
+    # asyncpg.Record(id=1, name='Bob', dob=datetime.date(1984, 3, 1))
+    print(row['id'], row['dob'], row['test_json'])
+    print(row['test_json']['test'])
+    # Close the connection.
+    await conn.close()
+
+
+asyncio.get_event_loop().run_until_complete(main())
