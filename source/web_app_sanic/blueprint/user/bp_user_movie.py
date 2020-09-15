@@ -3,6 +3,7 @@ from shlex import split
 
 from common import common_global
 from common import common_internationalization
+from common import common_logging_elasticsearch_httpx
 from common import common_network_pika
 from sanic import Blueprint
 from sanic.response import redirect
@@ -65,7 +66,8 @@ async def url_bp_user_movie_detail(request, user, guid):
                                                        media_guid_index)[
                                                        0] + '\" http://localhost/stream.ffm'),
                                              stdout=subprocess.PIPE, shell=False)
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"FFServer PID": proc_ffserver.pid})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "FFServer PID": proc_ffserver.pid})
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
@@ -139,7 +141,8 @@ async def url_bp_user_movie_detail(request, user, guid):
         for video_version in await request.app.db_functions.db_media_ffprobe_all_guid(db_connection,
                                                                                       guid,
                                                                                       common_global.DLMediaType.Movie.value):
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"vid_version": video_version})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "vid_version": video_version})
             # not all files have ffprobe
             if video_version['mm_media_ffprobe_json'] is None:
                 hours = 0

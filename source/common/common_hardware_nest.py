@@ -17,9 +17,8 @@
 """
 
 import nest
+from common import common_logging_elasticsearch_httpx
 from nest import utils as nest_utils
-
-from . import common_global
 
 
 class CommonHardwareNest:
@@ -38,12 +37,18 @@ class CommonHardwareNest:
         # grab structures and the devices
         """
         for structure in self.nest_device.structures:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Structure':
-                                                                 structure.name, 'Away':
-                                                                 structure.away})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                 message_text={'Structure':
+                                                                                   structure.name,
+                                                                               'Away':
+                                                                                   structure.away})
             for device in structure.devices:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Device': device.name})
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Temp': device.temperature})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'Device': device.name})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'Temp': device.temperature})
 
 
 def com_nest_c_to_f(temp_data):

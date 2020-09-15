@@ -19,7 +19,7 @@
 # https://github.com/MediaKraken-Dependancies/isoparser
 import isoparser
 
-from . import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 class CommonISO:
@@ -34,7 +34,8 @@ class CommonISO:
         """
         Open the iso file for parsing (url or file)
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"iso url/file": url_file})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "iso url/file": url_file})
         self.iso_inst = isoparser.parse(url_file)
 
     def com_iso_find_children(self, file_directory):

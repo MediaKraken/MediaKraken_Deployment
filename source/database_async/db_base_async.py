@@ -2,7 +2,7 @@ import os
 
 import asyncpg
 from common import common_file
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def db_table_count(self, table_name):
@@ -40,7 +40,8 @@ async def db_open(self, force_local=False, loop=None, as_pool=False):
                                                    database='postgres',
                                                    host=database_host,
                                                    loop=loop)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db open async'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'stuff': 'db open async'})
 
 
 async def db_close(self):
@@ -48,7 +49,8 @@ async def db_close(self):
     # close main db file
     """
     try:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db close'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'db close'})
     except:
         pass
     await self.db_connection.close()
@@ -58,7 +60,8 @@ async def db_begin(self):
     """
     # start a transaction
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db begin'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'stuff': 'db begin'})
     await self.db_connection.start()
 
 
@@ -67,7 +70,8 @@ async def db_commit(self):
     # commit changes to media database
     """
     try:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db commit'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'db commit'})
     except:
         pass
     await self.db_connection.execute('commit')
@@ -77,7 +81,8 @@ async def db_rollback(self):
     """
     # rollback
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'db rollback'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'stuff': 'db rollback'})
     await self.db_connection.rollback()
 
 
@@ -105,7 +110,8 @@ async def db_query(self, query_string, fetch_all=True):
     """
     # TODO little bobby tables
     try:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"query": query_string})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"query": query_string})
     except:
         pass
     if fetch_all:

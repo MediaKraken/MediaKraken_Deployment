@@ -21,8 +21,9 @@ import signal
 import subprocess
 import sys
 
+from common import common_logging_elasticsearch_httpx
+
 sys.path.append('.')
-from common import common_global
 from common import common_network_mediakraken
 
 
@@ -43,7 +44,7 @@ class TestSubprogramBroadcast:
         self.proc_broadcast = subprocess.Popen(['python3', './subprogram_broadcast.py'],
                                                shell=False)
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                                {'stuff': "PID: %s" % self.proc_broadcast.pid})
+        {'stuff': "PID: %s" % self.proc_broadcast.pid})
 
     @classmethod
     def teardown_class(self):

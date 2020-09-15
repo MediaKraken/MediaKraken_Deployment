@@ -2,6 +2,7 @@ import json
 import os
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_network_cifs
 from common import common_network_pika
 from common import common_pagination_bootstrap
@@ -20,9 +21,11 @@ async def url_bp_admin_library(request):
     """
     List all media libraries
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'lib': request.method})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'lib': request.method})
     if request.method == 'POST':
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'lib': request.form})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'lib': request.form})
         if "scan" in request.form:
             # submit the message
             common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
@@ -30,7 +33,8 @@ async def url_bp_admin_library(request):
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
             request['flash']('Scheduled media scan.', 'success')
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'scheduled media scan'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'stuff': 'scheduled media scan'})
     db_connection = await request.app.db_pool.acquire()
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
@@ -100,9 +104,11 @@ async def url_bp_admin_library_edit(request):
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
-                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                                            {'smb info': addr, 'share': share,
-                                                             'path': path})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                         message_text=
+                                                                         {'smb info': addr,
+                                                                          'share': share,
+                                                                          'path': path})
                     if addr is None:  # total junk path for UNC
                         request['flash']('Invalid UNC path.', 'error')
                         return redirect(

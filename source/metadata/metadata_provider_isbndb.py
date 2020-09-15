@@ -17,24 +17,32 @@
 """
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     """
     search isbndb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta book search isbndb": lookup_name})
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'wh': common_global.api_instance})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta book search isbndb": lookup_name})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'wh': common_global.api_instance})
     metadata_uuid = None
     if common_global.api_instance is not None:
         api_response = await common_global.api_instance.com_isbndb_books(lookup_name)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'response': api_response})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'response': api_response})
         if api_response.status_code == 200:
             # TODO verify decent results before insert
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'resp json': api_response.json()})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'resp json': api_response.json()})
             if 'error' in api_response.json():
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'error skipp'})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'stuff': 'error skipp'})
             else:
                 metadata_uuid = await db_connection.db_meta_book_insert(api_response.json())
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'meta book uuid': metadata_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'meta book uuid': metadata_uuid})
     return metadata_uuid

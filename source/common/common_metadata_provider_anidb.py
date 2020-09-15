@@ -21,6 +21,8 @@ import json
 import sys
 import time
 
+from common import common_logging_elasticsearch_httpx
+
 from . import common_file
 from . import common_global
 from . import common_network
@@ -54,7 +56,8 @@ class CommonMetadataANIdb:
         """
         Save anidb title data to database
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'start'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'start'})
         file_handle = gzip.open(title_file, 'rb')
         # file_handle = gzip.open(title_file, 'rt', encoding='utf-8') # python 3.3+
         anime_aid = None
@@ -88,7 +91,8 @@ class CommonMetadataANIdb:
                 # reset each time to handle ja when this doesn't exist
                 anime_title = None
         file_handle.close()
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'end'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'end'})
 
     def com_net_anidb_aid_by_title(self, title_to_search):
         """

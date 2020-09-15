@@ -1,5 +1,7 @@
 import os
 
+from common import common_logging_elasticsearch_httpx
+
 ALLOWED_EXTENSIONS = {'py', 'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 outside_ip = None
@@ -13,8 +15,9 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"admin access attempt by":
-                                                             user.id})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "admin access attempt by":
+                user.id})
         if not current_user.is_admin:
             return flask.abort(403)  # access denied
         return fn(*args, **kwargs)

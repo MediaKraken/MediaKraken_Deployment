@@ -2,6 +2,7 @@ import json
 
 from common import common_global
 from common import common_internationalization
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from sanic import Blueprint, response
 
@@ -122,10 +123,11 @@ async def url_bp_user_metadata_movie_list(request, user):
             queue_status = user_json['UserStats'][str(user.id)]['queue']
         except (KeyError, TypeError):
             queue_status = None
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"status": watched_status,
-                                                         'rating': rating_status,
-                                                         'request': request_status,
-                                                         'queue': queue_status})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"status": watched_status,
+                                                                           'rating': rating_status,
+                                                                           'request': request_status,
+                                                                           'queue': queue_status})
         media_count += 1
         if media_count == 1:
             deck_start = True
@@ -164,8 +166,9 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'movie metadata status': guid,
-                                                     'event': event_type})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'movie metadata status': guid,
+        'event': event_type})
     db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(db_connection, guid,
                                                                user.id, event_type)

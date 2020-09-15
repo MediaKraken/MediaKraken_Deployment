@@ -20,16 +20,17 @@ import os
 import shlex
 import subprocess
 
-from . import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def com_net_share_mount(share_list):
     # mount the share/dirs
     for share in share_list:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Attempting mount': share[
-            'mm_media_share_type'], 'server':
-                                                             share['mm_media_share_server'],
-                                                         'path': share['mm_media_share_path']})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'Attempting mount': share[
+                'mm_media_share_type'], 'server':
+                share['mm_media_share_server'],
+            'path': share['mm_media_share_path']})
         # check for and create mount point
         if os.path.isdir('./mnt/' + share['mm_media_share_guid']):
             pass
@@ -60,7 +61,8 @@ def com_net_share_mount(share_list):
                 mount_command.append('-o')
                 mount_command.append('user=' + share['mm_media_share_user']
                                      + ',password=' + share['mm_media_share_password'])
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'mount': mount_command})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'mount': mount_command})
         proc_mnt = subprocess.Popen(shlex.split(mount_command),
                                     stdout=subprocess.PIPE, shell=False)
         proc_mnt.wait()

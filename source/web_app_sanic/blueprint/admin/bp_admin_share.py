@@ -2,6 +2,7 @@ import json
 import os
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_network_cifs
 from common import common_pagination_bootstrap
 from sanic import Blueprint
@@ -70,15 +71,20 @@ async def url_bp_admin_share_edit(request):
     allow user to edit share
     """
     form = BSSShareAddEditForm(request)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'hereeditshare'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'stuff': 'hereeditshare'})
     if request.method == 'POST':
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'herepost'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'herepost'})
         if form.validate_on_submit():
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'action': request.form[
-                'action_type']})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'action': request.form[
+                    'action_type']})
             if request.form['action_type'] == 'Add':
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'type': request.form[
-                    'storage_mount_type']})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'type': request.form[
+                                                                             'storage_mount_type']})
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
                     #                    addr, share, path = common_string.com_string_unc_to_addr_path(\

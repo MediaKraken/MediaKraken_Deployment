@@ -21,6 +21,7 @@ import uuid
 
 from common import common_global
 from common import common_hash
+from common import common_logging_elasticsearch_httpx
 
 from . import metadata_adult
 from . import metadata_anime
@@ -38,9 +39,10 @@ async def metadata_identification(db_connection, class_text, download_que_json,
     """
     Determine which provider to start lookup via class text
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"metadata_identification": class_text,
-                                                     'path': download_que_json['Path'],
-                                                     'json': download_que_json})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "metadata_identification": class_text,
+        'path': download_que_json['Path'],
+        'json': download_que_json})
     metadata_uuid = None
 
     if download_que_type == common_global.DLMediaType.Movie.value:
@@ -164,5 +166,5 @@ async def metadata_identification(db_connection, class_text, download_que_json,
     elif class_text == "Video Game Superplay":
         pass
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                            {"metadata_identification uuid return": metadata_uuid})
+    {"metadata_identification uuid return": metadata_uuid})
     return metadata_uuid

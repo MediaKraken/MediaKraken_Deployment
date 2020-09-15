@@ -1,6 +1,7 @@
 import natsort
 from common import common_global
 from common import common_internationalization
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 from sanic.response import redirect
@@ -249,9 +250,11 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
                                                                                    guid,
                                                                                    int(season))
     await request.app.db_pool.release(db_connection)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'dataeps': data_episode_count})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'dataepskeys': data_episode_keys})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'dataepskeys': data_episode_keys})
     # poster image
     try:
         data_poster_image = data_metadata[3]

@@ -18,7 +18,7 @@
 
 import json
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def db_read_media_metadata(self, media_guid):
@@ -241,7 +241,8 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     for row_data in self.db_cursor.fetchall():
         # TODO should probably handle multiple results better.   Perhaps a notification?
         metadata_guid = row_data['mm_metadata_guid']
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"db find metadata guid": metadata_guid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "db find metadata guid": metadata_guid})
         break
     return metadata_guid
 
@@ -266,9 +267,10 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"id": media_tvid,
-                                                         'imdb': media_imdbid,
-                                                         'ani': media_aniid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"id": media_tvid,
+                                                                           'imdb': media_imdbid,
+                                                                           'ani': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_id'])
         if media_imdbid is not None:
             json_data.update({'imdb': media_imdbid})
@@ -284,9 +286,10 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"id2": media_tvid,
-                                                         'imdb': media_imdbid,
-                                                         'anidb': media_aniid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"id2": media_tvid,
+                                                                           'imdb': media_imdbid,
+                                                                           'anidb': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_tvshow_id'])
         if media_imdbid is not None:
             json_data.update({'imdb': media_imdbid})

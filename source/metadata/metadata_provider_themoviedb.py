@@ -20,6 +20,7 @@ import json
 import time
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_metadata
 from common import common_string
 from guessit import guessit
@@ -29,7 +30,8 @@ async def movie_search_tmdb(db_connection, file_name):
     """
     # search tmdb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie search tmdb": str(file_name)})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta movie search tmdb": str(file_name)})
     # TODO aren't I doing two guessits per file name then?
     file_name = guessit(file_name)
     if type(file_name['title']) == list:
@@ -44,22 +46,28 @@ async def movie_search_tmdb(db_connection, file_name):
         match_response, match_result = common_global.api_instance.com_tmdb_search(
             file_name['title'], None, id_only=True,
             media_type=common_global.DLMediaType.Movie.value)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie response":
-                                                         match_response, 'res': match_result})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"meta movie response":
+                                                                           match_response,
+                                                                       'res': match_result})
     if match_response == 'idonly':
         # check to see if metadata exists for TMDB id
         metadata_uuid = await db_connection.db_meta_guid_by_tmdb(match_result)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie db result": metadata_uuid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "meta movie db result": metadata_uuid})
     elif match_response == 'info':
         # store new metadata record and set uuid
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie movielookup info "
-                                                         "results": match_result})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "meta movie movielookup info "
+            "results": match_result})
     elif match_response == 're':
         # multiple results
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"movielookup multiple results":
-                                                             match_result})
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'meta movie uuid': metadata_uuid,
-                                                     'result': match_result})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "movielookup multiple results":
+                match_result})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'meta movie uuid': metadata_uuid,
+        'result': match_result})
     return metadata_uuid, match_result
 
 
@@ -67,25 +75,31 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     # fetch from tmdb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie tmdb save fetch": tmdb_id})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta movie tmdb save fetch": tmdb_id})
     # fetch and save json data via tmdb id
     result_json = await common_global.api_instance.com_tmdb_metadata_by_id(tmdb_id)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta fetch result": result_json})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta fetch result": result_json})
     if result_json is not None:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie code": result_json.status_code,
-                                                         "header": result_json.headers})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "meta movie code": result_json.status_code,
+            "header": result_json.headers})
         # 504	Your request to the backend server timed out. Try again.
         if result_json.status_code == 504:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie tmdb 504": tmdb_id})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "meta movie tmdb 504": tmdb_id})
             time.sleep(60)
             # redo fetch due to 504
             await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
         elif result_json.status_code == 200:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie save fetch result":
-                                                                 result_json.json()})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "meta movie save fetch result":
+                    result_json.json()})
             series_id_json, result_json, image_json \
                 = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"series": series_id_json})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "series": series_id_json})
             # set and insert the record if doesn't exist
             if await db_connection.db_meta_movie_guid_count(metadata_uuid) == 0:
                 await db_connection.db_meta_insert_tmdb(metadata_uuid,
@@ -104,19 +118,23 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                                                                             'crew'])
         # 429	Your request count (#) is over the allowed limit of (40).
         elif result_json.status_code == 429:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie tmdb 429": tmdb_id})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "meta movie tmdb 429": tmdb_id})
             time.sleep(30)
             # redo fetch due to 429
             await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
         elif result_json.status_code == 404:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie tmdb 404": tmdb_id})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "meta movie tmdb 404": tmdb_id})
             # TODO handle 404's better
             metadata_uuid = None
     else:  # is this is None....
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta movie tmdb misc": tmdb_id})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "meta movie tmdb misc": tmdb_id})
         metadata_uuid = None
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'meta movie save fetch return uuid':
-                                                         metadata_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'meta movie save fetch return uuid':
+            metadata_uuid})
     return metadata_uuid
 
 
@@ -128,7 +146,8 @@ async def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
     # review record doesn't exist on all media
     if review_json is not None and review_json['total_results'] > 0:
         review_json_id = ({'themoviedb': str(review_json['id'])})
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"review": review_json_id})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "review": review_json_id})
         await db_connection.db_review_insert(json.dumps(review_json_id),
                                              json.dumps({'themoviedb': review_json}))
 
@@ -140,13 +159,15 @@ async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, do
     # store/update the record
     # don't string this since it's a pure result store
     collection_guid = db_connection.db_collection_by_tmdb(tmdb_collection_id)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"collection": tmdb_collection_id,
-                                                     'guid': collection_guid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "collection": tmdb_collection_id,
+        'guid': collection_guid})
     if collection_guid is None:
         # insert
         collection_meta = common_global.api_instance.com_tmdb_meta_collection_by_id(
             tmdb_collection_id)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"col": collection_meta})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"col": collection_meta})
         # poster path
         if download_data['Poster'] is not None:
             image_poster_path = common_metadata.com_meta_image_path(download_data['Name'],
@@ -178,15 +199,18 @@ async def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
     fetch person bio
     """
     if common_global.api_instance is not None:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta person tmdb save fetch":
-                                                             download_data})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "meta person tmdb save fetch":
+                download_data})
         # fetch and save json data via tmdb id
         result_json = common_global.api_instance.com_tmdb_metadata_bio_by_id(
             download_data['mdq_download_json']['ProviderMetaID'])
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta person code":
-                                                             result_json.status_code})
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta person save fetch result":
-                                                             result_json.json()})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"meta person code":
+                                                                               result_json.status_code})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "meta person save fetch result":
+                result_json.json()})
         if result_json is None or result_json.status_code == 502:
             time.sleep(60)
             await metadata_fetch_tmdb_person(thread_db, provider_name, download_data)

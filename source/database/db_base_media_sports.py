@@ -18,7 +18,7 @@
 
 import datetime
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def db_media_sports_random(self):
@@ -66,9 +66,11 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
     """
     # web media count
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"classuid counter":
-                                                         class_guid, 'type': list_type,
-                                                     'genre': list_genre})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"classuid counter":
+                                                                           class_guid,
+                                                                       'type': list_type,
+                                                                       'genre': list_genre})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -210,12 +212,17 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
     """
     # web media return
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"classuid": class_guid, 'type': list_type,
-                                                     'genre':
-                                                         list_genre})
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"group and remote": group_collection,
-                                                     'remote': include_remote})
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"list, offset": list_limit, 'offset': offset})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"classuid": class_guid,
+                                                                       'type': list_type,
+                                                                       'genre':
+                                                                           list_genre})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "group and remote": group_collection,
+        'remote': include_remote})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"list, offset": list_limit,
+                                                                       'offset': offset})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -670,7 +677,9 @@ def db_read_media_sports_list_by_uuid(self, media_guid):
         subtitle_streams = ['None']
         if 'streams' in file_data['FFprobe'] and file_data['FFprobe']['streams'] is not None:
             for stream_info in file_data['FFprobe']['streams']:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"info": stream_info})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "info": stream_info})
                 stream_language = ''
                 stream_title = ''
                 stream_codec = ''
@@ -689,10 +698,14 @@ def db_read_media_sports_list_by_uuid(self, media_guid):
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
-                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'audio'})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                         message_text={
+                                                                             'stuff': 'audio'})
                     audio_streams.append((stream_codec + stream_language
                                           + stream_title)[:-3])
                 elif stream_info['codec_type'] == 'subtitle':
                     subtitle_streams.append(stream_language)
-                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': 'subtitle'})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                         message_text={
+                                                                             'stuff': 'subtitle'})
     return video_data

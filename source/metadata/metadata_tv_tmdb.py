@@ -20,15 +20,18 @@ import json
 import time
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     # tmdb data fetch for tv
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta tv themoviedb save fetch": tmdb_id})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta tv themoviedb save fetch": tmdb_id})
     result_json = common_global.api_instance.com_tmdb_metadata_tv_by_id(tmdb_id)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'tv fetch save themoviedb show': result_json})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'tv fetch save themoviedb show': result_json})
     # 504	Your request to the backend server timed out. Try again.
     if result_json is None or result_json.status_code == 504:
         time.sleep(60)
@@ -37,7 +40,8 @@ async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     elif result_json.status_code == 200:
         series_id, result_json, image_json \
             = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"series": series_id})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"series": series_id})
         await db_connection.db_metatv_insert_tmdb(metadata_uuid,
                                                   series_id,
                                                   result_json['name'],

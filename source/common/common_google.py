@@ -5,9 +5,9 @@
 
 # import google api modules
 import httplib2
+from common import common_logging_elasticsearch_httpx
 from googleapiclient.discovery import build
 
-from . import common_global
 from . import common_network
 
 
@@ -40,7 +40,8 @@ class CommonGoogle:
         channels = []
         playlists = []
         for search_result in search_response.get("items", []):
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'ytsearch': search_result})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'ytsearch': search_result})
             if search_result["id"]["kind"] == "youtube#video":
                 videos.append(search_result["id"]["videoId"])
             elif search_result["id"]["kind"] == "youtube#channel":
@@ -107,8 +108,9 @@ class CommonGoogle:
             comment = item["snippet"]["topLevelComment"]
             author = comment["snippet"]["authorDisplayName"]
             text = comment["snippet"]["textDisplay"]
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Comment by": (
-                author, text)})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                 message_text={"Comment by": (
+                                                                     author, text)})
         return results["items"]
 
     def com_google_youtube_insert_comment(self, channel_id, video_id, text):

@@ -1,6 +1,7 @@
 import os
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from common import common_string
 from sanic import Blueprint
@@ -88,8 +89,9 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
                                                                                offset, int(
                 request.ctx.session[
                     'per_page'])):
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"media": media_data[
-            'mm_media_ffprobe_json']})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"media": media_data[
+                                                                 'mm_media_ffprobe_json']})
         if media_data['mm_media_ffprobe_json'] is not None:
             for stream_data in media_data['mm_media_ffprobe_json']['streams']:
                 if stream_data['codec_type'] == 'video':

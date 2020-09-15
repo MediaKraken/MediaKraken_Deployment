@@ -21,7 +21,8 @@ from sanic_session import Session
 # setup the Sanic app
 app = Sanic(__name__)
 # fire up ES logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_webappsanic')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START')
 # setup the crypto
 # app_crypto = common_hash.CommonHashCrypto()
 # set login endpoint

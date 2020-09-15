@@ -20,6 +20,8 @@ import socket
 import sys
 import time
 
+from common import common_logging_elasticsearch_httpx
+
 from . import common_global
 
 
@@ -40,12 +42,14 @@ def com_net_mediakraken_find_server(server_seconds=2):
                                                              'create socket'})
         sys.exit()
     server_hosts_found = []
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"end time": t_end})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"end time": t_end})
     while time.time() < t_end:
         try:
             search_socket.sendto(b"who is MediaKrakenServer?", ('<broadcast>', 9101))
             server_reply = search_socket.recvfrom(1024)[0]
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Server reply': server_reply})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'Server reply': server_reply})
             if server_reply not in server_hosts_found:
                 server_hosts_found.append(server_reply)
         except socket.error as msg:
@@ -53,5 +57,6 @@ def com_net_mediakraken_find_server(server_seconds=2):
                                                                  'Code': str(msg[0])
                                                                          + ' Message ' + msg[1]})
             sys.exit()
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"hosts found": server_hosts_found})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "hosts found": server_hosts_found})
     return server_hosts_found

@@ -19,7 +19,7 @@
 import json
 import os
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def metadata_sports_lookup(db_connection, download_data):
@@ -35,15 +35,16 @@ async def metadata_sports_lookup(db_connection, download_data):
         metadata_sports_lookup.metadata_last_thesportsdb = None
     metadata_uuid = None  # so not found checks verify later
 
-
     stripped_name = os.path.basename(
         download_data['mdq_download_json']['Path'].replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = await db_connection.db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"searching": stripped_name})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "searching": stripped_name})
         thesportsdb_data = \
             THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(stripped_name)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"sports return": thesportsdb_data})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "sports return": thesportsdb_data})
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
             thesportsdb_data = json.loads(thesportsdb_data)
@@ -58,14 +59,14 @@ async def metadata_sports_lookup(db_connection, download_data):
                     media_id_json = json.dumps({'thesportsdb':
                                                     str(thesportsdb_data['event'][0]['idEvent'])})
                     await db_connection.db_metathesportsdb_insert(media_id_json,
-                                                            thesportsdb_data['event'][0][
-                                                                'strFilename'],
-                                                            json.dumps(
-                                                                thesportsdb_data),
-                                                            json.dumps(image_json))
+                                                                  thesportsdb_data['event'][0][
+                                                                      'strFilename'],
+                                                                  json.dumps(
+                                                                      thesportsdb_data),
+                                                                  json.dumps(image_json))
 
-
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"metadata_sports return uuid": metadata_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "metadata_sports return uuid": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_sports_lookup.metadata_last_id = metadata_uuid
     metadata_sports_lookup.metadata_last_imdb = imdb_id

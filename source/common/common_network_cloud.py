@@ -23,8 +23,8 @@ from datetime import date
 #
 # monkey.patch_all()
 import libcloud
+from common import common_logging_elasticsearch_httpx
 
-from . import common_global
 from . import common_internationalization
 
 supported_providers = {
@@ -90,7 +90,7 @@ class CommonLibCloud:
         filename = os.path.basename(obj.name)
         path = os.path.join(os.path.expanduser('~/Downloads'), filename)
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                                {'Downloading': '%s to %s' % (obj.name, path)})
+        {'Downloading': '%s to %s' % (obj.name, path)})
         obj.download(destination_path=path)
 
     def com_net_cloud_list_container(self):

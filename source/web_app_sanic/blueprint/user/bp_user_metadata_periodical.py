@@ -1,5 +1,6 @@
 from common import common_global
 from common import common_isbn
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 
@@ -22,7 +23,8 @@ async def url_bp_user_metadata_periodical(request):
                                                                                     'per_page']),
                                                                             request.ctx.session[
                                                                                 'search_text']):
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'person data': item_data})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'person data': item_data})
         item_image = "img/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],
                           item_data['mm_metadata_book_name'], item_image))

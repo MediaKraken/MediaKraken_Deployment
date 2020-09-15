@@ -1,4 +1,4 @@
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def db_meta_tv_detail(self, guid):
@@ -22,9 +22,10 @@ async def db_meta_tv_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"show guid": show_guid,
-                                                     'season': season_number,
-                                                     'eps': episode_number})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"show guid": show_guid,
+                                                                       'season': season_number,
+                                                                       'eps': episode_number})
     return await self.db_connection.fetchrow(
         'SELECT row_to_json(json_data)'
         ' FROM (select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''

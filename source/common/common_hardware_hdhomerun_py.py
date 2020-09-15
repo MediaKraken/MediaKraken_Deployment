@@ -16,10 +16,9 @@
   MA 02110-1301, USA.
 """
 
+from common import common_logging_elasticsearch_httpx
 from pyhdhomerun.adapter import HdhrUtility
 from pyhdhomerun.constants import MAP_US_BCAST
-
-from . import common_global
 
 
 # https://github.com/MediaKraken/PyHdHomeRun
@@ -49,7 +48,8 @@ class CommonHardwareHDHomeRunPY:
         Get tuner status
         """
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': vstatus})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': vstatus})
 
     def set_tuner_vchannel(self, device_adapter, vchannel):
         """
@@ -57,7 +57,8 @@ class CommonHardwareHDHomeRunPY:
         """
         device_adapter.set_tuner_vchannel(vchannel)
         (vstatus, raw_data) = device_adapter.get_tuner_vstatus()
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': vstatus})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': vstatus})
 
     def set_stream(self, device_adapter, vchannel, target_uri):
         """
@@ -70,7 +71,8 @@ class CommonHardwareHDHomeRunPY:
         """
         Get supported info
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': device_adapter.get_supported()})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': device_adapter.get_supported()})
 
     def scan(self, device_adapter):
         """

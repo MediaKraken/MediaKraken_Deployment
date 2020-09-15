@@ -26,6 +26,8 @@ import time
 import zipfile
 from threading import Thread
 
+from common import common_logging_elasticsearch_httpx
+
 SHA1 = hashlib.sha1()
 import os.path
 from common import common_config_ini
@@ -348,7 +350,8 @@ class GameAuditer(threading.Thread):
     def load_hash_map_from_database(self):
         if '-nolist' in sys.argv:
             return True
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': "loading roms from db"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': "loading roms from db"})
         # open the database
         option_config_json, db_connection = common_config_ini.com_config_read()
         # read all the audited games

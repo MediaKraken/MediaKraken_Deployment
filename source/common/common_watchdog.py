@@ -18,10 +18,9 @@
 
 import os
 
+from common import common_logging_elasticsearch_httpx
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
-
-from . import common_global
 
 
 class CommonWatchdogHandler(FileSystemEventHandler):
@@ -33,27 +32,31 @@ class CommonWatchdogHandler(FileSystemEventHandler):
         """
         File modified notification
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Modifed": event.src_path})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "Modifed": event.src_path})
 
     def on_deleted(self, event):
         """
         File deleted notification
         """
         # TODO then could remove the media (if a media file) from the db automatically
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Deleted": event.src_path})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "Deleted": event.src_path})
 
     def on_moved(self, event):
         """
         File moved notification
         """
         # TODO update media file path....if a media file
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Moved": event.src_path})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"Moved": event.src_path})
 
     def on_created(self, event):
         """
         File created notification
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"Created": event.src_path})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "Created": event.src_path})
 
 
 #    def on_any_event(self, event):
@@ -78,7 +81,8 @@ class CommonWatchdog:
         self.observer = Observer()
         # pull in all the audit dirs
         for row_data in paths_to_watch:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"path": row_data[0]})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                 message_text={"path": row_data[0]})
             if os.path.isdir(row_data[0]) and not os.path.ismount(row_data[0]):
                 self.observer.schedule(
                     event_handler, path=row_data[0], recursive=False)

@@ -1,4 +1,5 @@
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from sanic import Blueprint
 from sanic import response
 from sanic.response import redirect
@@ -13,9 +14,12 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'movie status': guid, 'event': event_type})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'movie status': guid,
+                                                                       'event': event_type})
     if event_type == "sync":
-        return redirect(request.app.url_for('name_blueprint_user_sync.url_bp_user_sync_edit', guid=guid))
+        return redirect(
+            request.app.url_for('name_blueprint_user_sync.url_bp_user_sync_edit', guid=guid))
     else:
         db_connection = await request.app.db_pool.acquire()
         if event_type == "mismatch":
@@ -43,8 +47,9 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'movie metadata status': guid,
-                                                     'event': event_type})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'movie metadata status': guid,
+        'event': event_type})
     db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(db_connection,
                                                                guid, user.id, event_type)
@@ -58,7 +63,9 @@ async def url_bp_user_status_tv(request, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'tv status': guid, 'event': event_type})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'tv status': guid,
+                                                                       'event': event_type})
     if event_type == "watched":
         pass
     elif event_type == "sync":

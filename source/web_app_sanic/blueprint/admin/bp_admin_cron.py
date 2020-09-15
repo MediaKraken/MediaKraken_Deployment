@@ -1,6 +1,7 @@
 import json
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_network_pika
 from common import common_pagination_bootstrap
 from sanic import Blueprint
@@ -78,7 +79,8 @@ async def url_bp_admin_cron_run(request, user, guid):
     """
     Run cron jobs
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'admin cron run': guid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'admin cron run': guid})
     db_connection = await request.app.db_pool.acquire()
     cron_job_data = await request.app.db_functions.db_cron_info(db_connection, guid)
     cron_json_data = json.loads(cron_job_data['mm_cron_json'])

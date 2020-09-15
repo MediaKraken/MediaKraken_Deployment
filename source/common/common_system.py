@@ -19,8 +19,8 @@
 import subprocess
 
 import psutil
+from common import common_logging_elasticsearch_httpx
 
-from . import common_global
 from . import common_string
 
 
@@ -33,8 +33,9 @@ def pprint_ntuple(nt_result, return_value=None):
         value = getattr(nt_result, name)
         if name != 'percent':
             value = common_string.com_string_bytes2human(value)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': name.capitalize(), 'value':
-            value})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': name.capitalize(), 'value':
+                value})
         tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
     if return_value is not None:
         return tuple_print

@@ -1,6 +1,6 @@
 import uuid
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def db_download_insert(self, provider, que_type, down_json):
@@ -45,8 +45,9 @@ async def db_download_update_provider(self, provider_name, guid):
     """
     Update provider
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'download update provider': provider_name,
-                                                     'guid': guid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'download update provider': provider_name,
+        'guid': guid})
     self.db_connection.execute('update mm_download_que set mdq_provider = $1 where mdq_id = $2',
                                provider_name, guid)
 
@@ -55,8 +56,9 @@ async def db_download_update(self, update_json, guid, update_que_id=None):
     """
     Update download que record
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'download update': update_json,
-                                                     'que': update_que_id, 'guid': guid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'download update': update_json,
+        'que': update_que_id, 'guid': guid})
     if update_que_id is not None:
         self.db_connection.execute('update mm_download_que set mdq_download_json = $1,'
                                    ' mdq_que_type = $2'
@@ -78,9 +80,10 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'db_download_que_exists': download_que_uuid,
-                                                     'name': provider_name,
-                                                     'id': provider_id})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'db_download_que_exists': download_que_uuid,
+        'name': provider_name,
+        'id': provider_id})
     # que type is movie, tv, etc as those numbers could be reused
     self.db_connection.fetchval('SELECT row_to_json(json_data)'
                                 ' FROM (select mdq_download_json->\'MetaNewID\''

@@ -16,9 +16,8 @@
   MA 02110-1301, USA.
 """
 
+from common import common_logging_elasticsearch_httpx
 from synolopy import NasApi
-
-from . import common_global
 
 
 class CommonHardwareSynology:
@@ -30,7 +29,8 @@ class CommonHardwareSynology:
         """
         Connect to synology
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"syn connect": addr})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"syn connect": addr})
         self.synology_nas = NasApi(
             'http://%s:5000/webapi/' % addr, user_name, user_password)
 

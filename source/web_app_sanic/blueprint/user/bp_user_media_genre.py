@@ -1,5 +1,6 @@
 from common import common_global
 from common import common_internationalization
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 
@@ -54,7 +55,7 @@ async def url_bp_user_movie_page(request, user, genre):
         # 0- mm_media_name, 1- mm_media_guid, 2- mm_metadata_user_json,
         # 3 - mm_metadata_localimage_json
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                                {"row2": row_data['mm_metadata_user_json']})
+        {"row2": row_data['mm_metadata_user_json']})
         json_image = row_data['mm_metadata_localimage_json']
         # set watched
         try:
@@ -90,10 +91,11 @@ async def url_bp_user_movie_page(request, user, genre):
             match_status = row_data['mismatch']
         except (KeyError, TypeError):
             match_status = False
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"status": watched_status,
-                                                         'sync': sync_status,
-                                                         'rating': rating_status,
-                                                         'match': match_status})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"status": watched_status,
+                                                                           'sync': sync_status,
+                                                                           'rating': rating_status,
+                                                                           'match': match_status})
         if 'themoviedb' in json_image['Images'] and 'Poster' in json_image['Images']['themoviedb'] \
                 and json_image['Images']['themoviedb']['Poster'] is not None:
             media.append((row_data['mm_media_name'], row_data['mm_media_guid'],

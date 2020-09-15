@@ -1,6 +1,7 @@
 import json
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from sanic import Blueprint
 from sanic.response import redirect
 from web_app_sanic.blueprint.user.bss_form_search import BSSSearchEditForm
@@ -104,7 +105,7 @@ async def url_bp_user_search_nav_media(request):
     determine what search results screen to show
     """
     # TODO!
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "search session": request.ctx.session['search_page']})
     request.ctx.session['search_text'] = request.form.get('nav_search').strip()
     if request.ctx.session['search_page'] == 'media_3d':

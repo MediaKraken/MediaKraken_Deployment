@@ -18,7 +18,7 @@
 
 import subprocess
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 class TestSubprogramLogoDown:
@@ -32,5 +32,6 @@ class TestSubprogramLogoDown:
         """
         proc_info = subprocess.Popen(
             ['python3', './subprogram_logo_download.py'], shell=False)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': "PID: %s" % proc_info.pid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': "PID: %s" % proc_info.pid})
         proc_info.wait()

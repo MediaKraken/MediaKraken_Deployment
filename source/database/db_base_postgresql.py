@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 """
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 # query provided by postgresql wiki
@@ -78,7 +78,8 @@ def db_pgsql_vacuum_table(self, table_name):
         self.db_cursor.execute('VACUUM ANALYZE ' + table_name)
         # self.db_pgsql_set_iso_level(ISOLATION_LEVEL_READ_COMMITTED)
     else:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'Vacuum table missing': table_name})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'Vacuum table missing': table_name})
 
 
 def db_pgsql_set_iso_level(self, isolation_level):
@@ -96,4 +97,4 @@ def db_pgsql_table_exits(self, table_name):
     return self.db_cursor.fetchone()[0]
 
 # TODO - see last analynze, etc
-#SELECT schemaname, relname, last_analyze FROM pg_stat_all_tables WHERE relname = 'city';
+# SELECT schemaname, relname, last_analyze FROM pg_stat_all_tables WHERE relname = 'city';

@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 """
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def search_thesportsdb(db_connection, file_name):
@@ -25,12 +25,14 @@ async def search_thesportsdb(db_connection, file_name):
     """
     try:
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                                {"meta movie search thesportsdb": str(file_name)})
+        {"meta movie search thesportsdb": str(file_name)})
     except:
         pass
 
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'search_thesportsdb': str(file_name)})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'search_thesportsdb': str(file_name)})
 
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'meta thesportsdb uuid': metadata_uuid,
-                                                     'result': match_result})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'meta thesportsdb uuid': metadata_uuid,
+        'result': match_result})
     return metadata_uuid, match_result

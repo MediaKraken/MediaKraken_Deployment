@@ -19,6 +19,7 @@
 import json
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 async def game_system_update():
@@ -41,13 +42,15 @@ async def metadata_game_lookup(db_connection, download_data):
     Lookup game metadata
     """
     metadata_uuid = None  # so not found checks verify later
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'game filename': download_data['Path']})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'game filename': download_data['Path']})
     # TODO determine short name/etc
     for row_data in await db_connection.db_meta_game_by_name(download_data['Path']):
         # TODO handle more than one match
         metadata_uuid = row_data['gi_id']
         break
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta game metadata_uuid B": metadata_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta game metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no matches by name
         # search giantbomb since not matched above via DB or nfo/xml

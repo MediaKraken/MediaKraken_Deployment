@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 """
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def db_metatv_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
@@ -39,8 +39,8 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
     # metadata guid by name
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                            {'db_metatv_guid_by_tvshow_name': str(tvshow_name),
-                                             'year': tvshow_year})
+    {'db_metatv_guid_by_tvshow_name': str(tvshow_name),
+     'year': tvshow_year})
     metadata_guid = None
     if tvshow_year is None:
         self.db_cursor.execute('select mm_metadata_tvshow_guid from mm_metadata_tvshow'
@@ -71,8 +71,9 @@ def db_metatv_guid_by_tvshow_name(self, tvshow_name, tvshow_year=None):
                                 str(int(tvshow_year) - 3)))
     for row_data in self.db_cursor.fetchall():
         metadata_guid = row_data['mm_metadata_tvshow_guid']
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"db find metadata tv guid":
-                                                             metadata_guid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "db find metadata tv guid":
+                metadata_guid})
         break
     return metadata_guid
 
@@ -296,9 +297,10 @@ def db_read_tvmeta_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"show guid": show_guid,
-                                                     'season': season_number,
-                                                     'eps': episode_number})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"show guid": show_guid,
+                                                                       'season': season_number,
+                                                                       'eps': episode_number})
     # self.db_cursor.execute('(select
     #     ' jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'tvmaze\''
     #     '->\'_embedded\'->\'episodes\')::jsonb->\'name\','

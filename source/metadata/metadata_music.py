@@ -18,7 +18,7 @@
 
 import json
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 # example ffprobe output for music file
@@ -42,11 +42,13 @@ async def metadata_music_lookup(db_connection, download_json):
     if not hasattr(metadata_music_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
         metadata_music_lookup.metadata_last_id = None
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta music lookup": download_json})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta music lookup": download_json})
     metadata_uuid = None
     # get ffmpeg data from database
     ffmpeg_data_json = db_connection.db_ffprobe_data(download_json['MediaID'])
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"meta music ffmpeg": ffmpeg_data_json})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "meta music ffmpeg": ffmpeg_data_json})
     # see if record is stored locally as long as there is valid tagging
     if 'format' in ffmpeg_data_json \
             and 'tags' in ffmpeg_data_json['format'] \
@@ -71,6 +73,6 @@ async def metadata_music_lookup(db_connection, download_json):
         db_connection.db_download_update_provider('musicbrainz', download_json['mdq_id'])
         db_connection.db_commit()
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-                                            {"metadata_music_lookup return uuid": metadata_uuid})
+    {"metadata_music_lookup return uuid": metadata_uuid})
     metadata_music_lookup.metadata_last_id = metadata_uuid
     return metadata_uuid

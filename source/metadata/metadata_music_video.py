@@ -21,6 +21,7 @@ import os
 import uuid
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 # imvdb lookup
@@ -33,7 +34,8 @@ async def metadata_music_video_lookup(db_connection, file_name):
         metadata_music_video_lookup.metadata_last_id = None  # it doesn't exist, so initialize it
         metadata_music_video_lookup.metadata_last_band = None
         metadata_music_video_lookup.metadata_last_song = None
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'mv file': file_name})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'mv file': file_name})
     # determine names
     if file_name.find('-') != -1:
         band_name, song_name = os.path.splitext(
@@ -45,24 +47,31 @@ async def metadata_music_video_lookup(db_connection, file_name):
         # set name for lookups
         band_name = band_name.strip().replace(' ', '-')
         song_name = song_name.strip().replace(' ', '-')
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'mv title': band_name, 'song': song_name})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'mv title': band_name,
+                                                                           'song': song_name})
         # if same as last, return last id and save lookup
         if band_name == metadata_music_video_lookup.metadata_last_band \
                 and song_name == metadata_music_video_lookup.metadata_last_song:
             return metadata_music_video_lookup.metadata_last_id
         metadata_uuid = db_connection.db_meta_music_video_lookup(band_name, song_name)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"uuid": metadata_uuid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"uuid": metadata_uuid})
         if metadata_uuid == []:
             metadata_uuid = None
         if metadata_uuid is None:
             if IMVDB_CONNECTION is not None:
                 imvdb_json = IMVDB_CONNECTION.com_imvdb_search_video(band_name, song_name)
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"imvdb return": imvdb_json})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "imvdb return": imvdb_json})
                 if imvdb_json is not None:
                     # parse the results and insert/update
                     for video_data in imvdb_json['results']:
                         # the results are bit crazy....hence the breakup and insert
-                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"vid data": video_data})
+                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                             message_text={
+                                                                                 "vid data": video_data})
                         if db_connection.db_meta_music_video_count(str(video_data['id'])) == 0:
                             # need to submit a fetch record for limiter and rest of video data
                             if db_connection.db_download_que_exists(None,

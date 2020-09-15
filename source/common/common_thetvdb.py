@@ -18,10 +18,9 @@
 
 import shutil
 
-from pytvdbapi import api
-
 # from xml.dom import minidom
-from . import common_global
+from common import common_logging_elasticsearch_httpx
+from pytvdbapi import api
 
 
 class CommonTheTVDB:
@@ -50,13 +49,15 @@ class CommonTheTVDB:
         """
         # TODO deal with year portion of match
         if show_year is not None:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"bah2": show_title + ' ' + str(
-                show_year)})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "bah2": show_title + ' ' + str(
+                    show_year)})
             # this generally fails if I include year....
             show_data = self.tvdb_connection.search(show_title, show_language)
         else:
             show_data = self.tvdb_connection.search(show_title, show_language)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"tvdb search": show_data})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "tvdb search": show_data})
         if len(show_data) > 0:
             show = show_data[0]
             return show.SeriesID
@@ -156,6 +157,10 @@ class CommonTheTVDB:
             # loop through the episodes
             for ep_ndx in range(0, show_number_episodes):
                 episode = season[ep_ndx]
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': episode.EpisodeNumber})
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': episode.EpisodeName})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'stuff': episode.EpisodeNumber})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'stuff': episode.EpisodeName})
         return show_dict

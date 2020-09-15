@@ -20,6 +20,8 @@ import os
 import socket
 import subprocess
 
+from common import common_logging_elasticsearch_httpx
+
 import docker
 from . import common_global
 
@@ -52,7 +54,8 @@ class CommonDocker:
     def com_docker_container_bind(self, container_name='/mkstack_server',
                                   bind_match='/data/devices'):
         for container_inst in self.com_docker_container_list():
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'container_inst': container_inst})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'container_inst': container_inst})
             if container_inst['Names'][0] == container_name:
                 for mount_points in container_inst['Mounts']:
                     if mount_points['Source'].endswith(bind_match):
@@ -61,7 +64,8 @@ class CommonDocker:
     def com_docker_container_id_by_name(self, container_name='/mkstack_database'):
         print('id by name', flush=True)
         for container_inst in self.com_docker_container_list():
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'container_inst name': container_inst})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'container_inst name': container_inst})
             print('con inst', container_inst, flush=True)
             if container_inst['Names'][0] == container_name:
                 print(container_inst['Id'], flush=True)
