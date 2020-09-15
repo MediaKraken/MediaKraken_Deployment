@@ -76,8 +76,7 @@ async def comicvine(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in comicvine rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'comicvine', download_data)
 
 
@@ -89,8 +88,7 @@ async def giantbomb(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in giantbomb rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'giantbomb', download_data)
 
 
@@ -141,8 +139,7 @@ async def musicbrainz(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in musicbrainz rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'musicbrainz', download_data)
 
 
@@ -180,8 +177,7 @@ async def pitchfork(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in pitchfork rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'pitchfork', download_data)
 
 
@@ -206,8 +202,7 @@ async def televisiontunes(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in televisiontunes rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(
         db_connection, 'televisiontunes', download_data)
 
@@ -220,8 +215,7 @@ async def theaudiodb(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in theaudiodb rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'theaudiodb', download_data)
 
 
@@ -233,8 +227,7 @@ async def thegamesdb(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in thegamesdb rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'thegamesdb', download_data)
 
 
@@ -259,8 +252,7 @@ async def thesportsdb(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in thesportsdb rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'thesportsdb', download_data)
 
 
@@ -272,8 +264,7 @@ async def tv_intros(db_connection, download_data):
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "here i am in tv_intros rate":
-            datetime.datetime.now().strftime(
-                "%H:%M:%S.%f")})
+            datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'tv_intros', download_data)
 
 
