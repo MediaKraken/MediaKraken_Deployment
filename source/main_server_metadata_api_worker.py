@@ -366,7 +366,6 @@ async def main(loop):
         for row_data in await db_connection.db_download_read_provider(content_providers):
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
                 "worker meta api row": row_data})
-            row_data = json.loads(row_data['row_to_json'])
             # checking each provider like this to send through the limiter decorator
             if content_providers == 'anidb':
                 await anidb(db_connection, row_data)
