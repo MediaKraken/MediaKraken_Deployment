@@ -25,7 +25,8 @@ from common import common_version
 
 # start logging
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='db_create_update')
 
 # open the database
 db_connection = common_config_ini.com_config_read()

@@ -310,7 +310,7 @@ async def main(loop):
     # start logging
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text='START',
-                                                         index_ext=content_providers.lower())
+                                                         index_name='main_server_metadata_api_worker_' + content_providers.lower())
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "worker meta api name": content_providers})
 

@@ -42,7 +42,8 @@ def mk_schedules_direct_program_info_fetch(meta_program_fetch):
 
 # start logging
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='subprogram_schedules_direct_updates')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

@@ -92,7 +92,8 @@ class MediaKrakenApp:
         metaapp = self
         # start logging
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                             message_text='START')
+                                                             message_text='START',
+                                                             index_name='main_server_link')
         # open the database
         option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.connect_to_server()

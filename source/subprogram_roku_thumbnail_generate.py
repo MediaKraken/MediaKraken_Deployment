@@ -30,7 +30,8 @@ from common import common_signal
 
 # start logging
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='subprogram_roku_thumbnail_generate')
 
 
 class MKConsumer:

@@ -27,7 +27,8 @@ dont_force_localhost = True
 if dont_force_localhost:
     # start logging
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text='START')
+                                                         message_text='START',
+                                                         index_name='db_metadata_fix')
     # open the database
     option_config_json, db_connection = common_config_ini.com_config_read()
 else:

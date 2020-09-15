@@ -22,7 +22,6 @@ import time
 
 from common import common_config_ini
 from common import common_docker
-from common import common_global
 from common import common_logging_elasticsearch_httpx
 from common import common_network_cloud
 from common import common_signal
@@ -35,7 +34,8 @@ if common_system.com_process_list(
 
 # start logging
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='subprogram_postgresql_backup')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

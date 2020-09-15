@@ -31,7 +31,8 @@ if common_system.com_process_list(
 
 # start logging
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='subprogram_match_anime_id')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

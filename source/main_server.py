@@ -34,7 +34,8 @@ from common import common_version
 
 # start logging
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='main_server')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()

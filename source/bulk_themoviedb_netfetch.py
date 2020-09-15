@@ -27,7 +27,8 @@ from common import common_logging_elasticsearch_httpx
 from common import common_network
 
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='bulk_themoviedb_netfetch')
 
 fetch_date = '09_01_2020'
 

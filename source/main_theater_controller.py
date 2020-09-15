@@ -928,7 +928,8 @@ class MediaKrakenApp(App):
 if __name__ == '__main__':
     # start logging
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text='START')
+                                                         message_text='START',
+                                                         index_name='main_theater_controller')
 
     log.startLogging(sys.stdout)  # for twisted
     # set signal exit breaks

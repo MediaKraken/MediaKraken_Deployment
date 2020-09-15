@@ -20,7 +20,6 @@ import json
 import sys
 
 from common import common_config_ini
-from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch_httpx
 from common import common_metadata_provider_anidb
@@ -35,7 +34,8 @@ if common_system.com_process_list(
 
 # start logging
 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                     message_text='START')
+                                                     message_text='START',
+                                                     index_name='subprogram_metadata_anidb_updates')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -57,7 +57,7 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 # store the xref data
 for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
         in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         'stuff': {'ani': anidbid,
                   ' tv': tvdbid,
                   ' imdb': imdbid,

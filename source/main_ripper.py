@@ -28,7 +28,8 @@ class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                             message_text='START')
+                                                             message_text='START',
+                                                             index_name='main_ripper')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
