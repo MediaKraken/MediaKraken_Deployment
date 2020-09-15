@@ -38,7 +38,7 @@ def com_net_mediakraken_find_server(server_seconds=2):
         # allow broadcast otherwise you'll get permission denied 10013 error
         search_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     except socket.error:
-        common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server: Failed to '
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'Network_Find_Server: Failed to '
                                                              'create socket'})
         sys.exit()
     server_hosts_found = []
@@ -53,7 +53,7 @@ def com_net_mediakraken_find_server(server_seconds=2):
             if server_reply not in server_hosts_found:
                 server_hosts_found.append(server_reply)
         except socket.error as msg:
-            common_global.es_inst.com_elastic_index('critical', {'Network_Find_Server Error '
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'Network_Find_Server Error '
                                                                  'Code': str(msg[0])
                                                                          + ' Message ' + msg[1]})
             sys.exit()

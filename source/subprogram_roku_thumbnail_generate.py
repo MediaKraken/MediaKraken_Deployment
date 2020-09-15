@@ -197,17 +197,17 @@ class MKConsumer:
                 try:
                     common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
                 except struct.error:
-                    common_global.es_inst.com_elastic_index('error', {'fail bif': json_message})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'fail bif': json_message})
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
-        common_global.es_inst.com_elastic_index('error', {
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={
             'roku': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
-            common_global.es_inst.com_elastic_index('error',
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text=
                                                     {
                                                         'roku': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
@@ -221,7 +221,7 @@ class MKConsumer:
         self.close_channel()
 
     def close_channel(self):
-        common_global.es_inst.com_elastic_index('error', {'roku': 'Closing the channel'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'roku': 'Closing the channel'})
         self._channel.close()
 
     def run(self):
@@ -231,13 +231,13 @@ class MKConsumer:
     def stop(self):
         if not self._closing:
             self._closing = True
-            common_global.es_inst.com_elastic_index('error', {'roku': 'Stopping'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'roku': 'Stopping'})
             if self._consuming:
                 self.stop_consuming()
                 self._connection.ioloop.start()
             else:
                 self._connection.ioloop.stop()
-            common_global.es_inst.com_elastic_index('error', {'roku': 'Stopped'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'roku': 'Stopped'})
 
     class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
@@ -262,7 +262,7 @@ class MKConsumer:
             if self._consumer.should_reconnect:
                 self._consumer.stop()
                 reconnect_delay = self._get_reconnect_delay()
-                common_global.es_inst.com_elastic_index('error',
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text=
                                                         {'roku': ('Reconnecting after %d seconds',
                                                                   reconnect_delay)})
                 time.sleep(reconnect_delay)

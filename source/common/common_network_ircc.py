@@ -53,7 +53,7 @@ def com_net_ircc_register_device(ircc_device, ircc_service):
     # register device for control
     """
     if ircc_device.register("My IRCC Controller") != unr.UNR_REGISTER_RESULT_OK:
-        common_global.es_inst.com_elastic_index('error', {'stuff': "Registration Failed"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "Registration Failed"})
 
 
 def com_net_ircc_send_command(ircc_device, ircc_service, command_text):

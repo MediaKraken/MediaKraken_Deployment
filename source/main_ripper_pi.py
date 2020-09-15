@@ -83,7 +83,7 @@ class MKEcho(basic.LineReceiver):
         MediaKrakenApp.process_message(mk_app, line)
 
     def connectionLost(self, reason):
-        common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
@@ -304,7 +304,7 @@ class MediaKrakenApp(App):
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
                                                          'UUID': str(uuid.uuid4())}))
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "unknown message type"})
 
     def main_mediakraken_event_button_start(self, *args):
         global thread_status

@@ -106,13 +106,17 @@ class CommonMetadataTMDB:
                                         'reviews,release_dates,videos' %
                                         (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
-                common_global.es_inst.com_elastic_index('error',
-                                                        {"TMDB Req com_tmdb_metadata_by_id":
-                                                             str(exc)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                     message_text=
+                                                                     {
+                                                                         "TMDB Req com_tmdb_metadata_by_id":
+                                                                             str(exc)})
             except httpx.HTTPStatusError as exc:
-                common_global.es_inst.com_elastic_index('error',
-                                                        {"TMDB Stat com_tmdb_metadata_by_id":
-                                                             str(exc)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                     message_text=
+                                                                     {
+                                                                         "TMDB Stat com_tmdb_metadata_by_id":
+                                                                             str(exc)})
 
     async def com_tmdb_metadata_tv_by_id(self, tmdb_id):
         """
@@ -125,13 +129,17 @@ class CommonMetadataTMDB:
                                         'reviews,release_dates,videos' %
                                         (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
-                common_global.es_inst.com_elastic_index('error',
-                                                        {"TMDB Req com_tmdb_metadata_tv_by_id":
-                                                             str(exc)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                     message_text=
+                                                                     {
+                                                                         "TMDB Req com_tmdb_metadata_tv_by_id":
+                                                                             str(exc)})
             except httpx.HTTPStatusError as exc:
-                common_global.es_inst.com_elastic_index('error',
-                                                        {"TMDB Stat com_tmdb_metadata_tv_by_id":
-                                                             str(exc)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                     message_text=
+                                                                     {
+                                                                         "TMDB Stat com_tmdb_metadata_tv_by_id":
+                                                                             str(exc)})
 
     async def com_tmdb_metadata_bio_by_id(self, tmdb_id):
         """
@@ -144,13 +152,17 @@ class CommonMetadataTMDB:
                                         'external_ids,images' %
                                         (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
-                common_global.es_inst.com_elastic_index('error',
-                                                        {"TMDB Req com_tmdb_metadata_bio_by_id":
-                                                             str(exc)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                     message_text=
+                                                                     {
+                                                                         "TMDB Req com_tmdb_metadata_bio_by_id":
+                                                                             str(exc)})
             except httpx.HTTPStatusError as exc:
-                common_global.es_inst.com_elastic_index('error',
-                                                        {"TMDB Stat com_tmdb_metadata_bio_by_id":
-                                                             str(exc)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                     message_text=
+                                                                     {
+                                                                         "TMDB Stat com_tmdb_metadata_bio_by_id":
+                                                                             str(exc)})
 
     def com_tmdb_meta_bio_image_build(self, result_json):
         """

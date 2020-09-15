@@ -25,7 +25,6 @@ import time
 from common import common_config_ini
 from common import common_docker
 from common import common_file
-from common import common_global
 from common import common_hash
 from common import common_logging_elasticsearch_httpx
 from common import common_network_share
@@ -51,9 +50,9 @@ if not os.path.isfile('./key/cacert.pem'):
                                 shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
-        common_global.es_inst.com_elastic_index('critical',
-                                                {
-                                                    'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text=
+        {
+            'stuff': 'Cannot generate SSL certificate. Exiting.....'})
         sys.exit()
 
 # create crypto keys if needed
@@ -63,9 +62,9 @@ if not os.path.isfile('./secure/data.zip'):
     data = common_hash.CommonHashCrypto()
     data.com_hash_gen_crypt_key()
     if not os.path.isfile('./secure/data.zip'):
-        common_global.es_inst.com_elastic_index('critical',
-                                                {
-                                                    'stuff': 'Cannot generate crypto. Exiting.....'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text=
+        {
+            'stuff': 'Cannot generate crypto. Exiting.....'})
         sys.exit()
 
 # open the database
@@ -174,7 +173,8 @@ if os.path.exists('/mediakraken/devices/device_scan.txt'):
                                            device_json=json.dumps(hardware_device))
     os.remove('/mediakraken/devices/device_scan.txt')
 else:
-    common_global.es_inst.com_elastic_index('error', {'no device_scan file found'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                         message_text={'no device_scan file found'})
 
 # commit
 db_connection.db_commit()

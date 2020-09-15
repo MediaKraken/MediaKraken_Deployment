@@ -119,7 +119,7 @@ class CommonMetadataANIdb:
         try:
             self.adba_connection.auth(user_name, user_password)
         except Exception as err_code:
-            common_global.es_inst.com_elastic_index('error', {"exception msg":
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"exception msg":
                                                                   err_code})
         return self.adba_connection
 

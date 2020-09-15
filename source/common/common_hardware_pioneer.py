@@ -41,7 +41,7 @@ class CommonHardwarePioneer:
         try:
             msg = self.pioneer_inst.recv(4096)
         except socket.error as e:
-            common_global.es_inst.com_elastic_index('error', {'Pioneer socket error': e})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'Pioneer socket error': e})
         else:
             if len(msg) == 0:
                 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',

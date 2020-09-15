@@ -58,13 +58,13 @@ status_data = sd.com_schedules_direct_status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
 else:
-    common_global.es_inst.com_elastic_index('critical', {'stuff': 'SD is unavailable'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'stuff': 'SD is unavailable'})
     sys.exit(0)
 # version check
 # version_json = sd.com_Schedules_Direct_Client_Version()
 # TODO
 # if version_json != "MediaKraken_0.1.0":
-#    common_global.es_inst.com_elastic_index('critical', {'stuff':"Outdated Client Version! Upgrade MediaKraken_")
+#    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'stuff':"Outdated Client Version! Upgrade MediaKraken_")
 #    sys.exit(0)
 
 # get headends
@@ -107,7 +107,7 @@ for station_id in db_connection.db_tv_stations_read_stationid_list():
 meta_program_fetch = []
 # grab station info from SD
 if len(station_fetch) > 5000:
-    common_global.es_inst.com_elastic_index('critical',
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text=
                                             {'stuff': 'Too many channels!!!!  Exiting...'})
 elif len(station_fetch) > 0:
     schedule_json = sd.com_schedules_direct_schedules_by_stationid(

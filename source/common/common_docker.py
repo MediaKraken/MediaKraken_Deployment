@@ -105,7 +105,7 @@ class CommonDocker:
             try:
                 return self.cli_api.init_swarm()
             except:
-                common_global.es_inst.com_elastic_index('critical', {'stuff':
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'stuff':
                                                                          'Must define Docker Swarm IP in ENV file since multiple IP'})
         else:
             return self.cli_api.init_swarm(advertise_addr=os.environ['SWARMIP'])

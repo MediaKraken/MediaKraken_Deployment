@@ -144,7 +144,7 @@ class MKEcho(basic.LineReceiver):
     def connectionLost(self, reason):
         global twisted_connection
         twisted_connection = None
-        common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
@@ -481,7 +481,7 @@ class MediaKrakenApp(App):
                 #     proxy_image_detail_movie = Loader.image(pickle_data[1])
                 #     proxy_image_detail_movie.bind(on_load=self._image_loaded_detail_movie)
             else:
-                common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "unknown message type"})
 
     def build_config(self, config):
         """
@@ -717,7 +717,7 @@ class MediaKrakenApp(App):
         elif args[0] == 'live':
             self.root.ids._screen_manager.current = 'Main_Theater_Media_LIVE_TV_List'
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff': "unknown button event"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "unknown button event"})
             if msg is not None:
                 self.send_twisted_message(msg)
 

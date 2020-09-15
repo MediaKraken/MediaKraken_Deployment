@@ -251,7 +251,7 @@ class NetworkEvents(basic.LineReceiver):
             self.send_all_users(json_message['Data'])
 
         else:
-            common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"
         if msg is not None:
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=

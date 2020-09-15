@@ -97,7 +97,7 @@ class MKEcho(basic.LineReceiver):
     def connectionLost(self, reason):
         global twisted_connection
         twisted_connection = None
-        common_global.es_inst.com_elastic_index('error', {'stuff': "connection lost!"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "connection lost!"})
         # reactor.stop() # leave out so it doesn't try to stop a stopped reactor
 
     def sendline_data(self, line):
@@ -292,7 +292,7 @@ class MediaKrakenApp(App):
             # sends the data message direct as a command to local running mpv
             self.mpv_connection.execute(json_message['Data'])
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff': "unknown message type"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "unknown message type"})
 
     def build_config(self, config):
         """
@@ -395,7 +395,7 @@ class MediaKrakenApp(App):
             except:
                 msg = None
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff': "unknown button event"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "unknown button event"})
         if msg is not None:
             self.send_twisted_message(msg)
 

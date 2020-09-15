@@ -64,12 +64,12 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        common_global.es_inst.com_elastic_index('error', {
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={
             'data': 'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            common_global.es_inst.com_elastic_index('error', {
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={
                 'data':
                     'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
             sys.exit()

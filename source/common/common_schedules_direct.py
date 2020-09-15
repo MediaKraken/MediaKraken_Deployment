@@ -51,7 +51,7 @@ class CommonSchedulesDirect:
                                                                                    'token']})
             self.headers['token'] = resp['token']
         else:
-            common_global.es_inst.com_elastic_index('error', {'stuff': "SD Connection failed"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "SD Connection failed"})
 
     def com_schedules_direct_status(self):
         """
@@ -105,9 +105,9 @@ class CommonSchedulesDirect:
         resp = requests.put(self.BASE_API_URL + "/lineups/" +
                             lineup_id, headers=self.headers)
         if resp.json()['response'] == 'INVALID_LINEUP':
-            common_global.es_inst.com_elastic_index('error', {"SD Invalid lineup": lineup_id})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"SD Invalid lineup": lineup_id})
         elif resp.json()['response'] == "DUPLICATE_LINEUP":
-            common_global.es_inst.com_elastic_index('error', {"SD lineup duplicate": lineup_id})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"SD lineup duplicate": lineup_id})
         else:
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
                 "SD lineup added": lineup_id})
@@ -134,10 +134,10 @@ class CommonSchedulesDirect:
         resp = requests.delete(self.BASE_API_URL + "/lineups/" + lineup_id,
                                headers=self.headers)
         if resp.json()['response'] != 'OK':
-            common_global.es_inst.com_elastic_index('error', {"SD Invalid lineup delete":
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"SD Invalid lineup delete":
                                                                   lineup_id})
         elif resp.json()['code'] == 2103:
-            common_global.es_inst.com_elastic_index('error', {"SD lineup not in account":
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"SD lineup not in account":
                                                                   lineup_id})
         else:
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={

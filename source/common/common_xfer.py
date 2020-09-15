@@ -58,7 +58,7 @@ class FileSenderThread(threading.Thread):
             clientsocket.sendall(b'FEND')
             clientsocket.close()
         except socket.error as msg:
-            common_global.es_inst.com_elastic_index('error', {'Sending files failed.':
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'Sending files failed.':
                                                                   str(msg)})
 
 
@@ -125,4 +125,4 @@ class FileReceiverThread(threading.Thread):
             {'stuff': 'Finished getting all files!'})
             del localsocket
         except socket.error as msg:
-            common_global.es_inst.com_elastic_index('error', {"Transfer Failed": str(msg)})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"Transfer Failed": str(msg)})

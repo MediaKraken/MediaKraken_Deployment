@@ -231,13 +231,13 @@ class MKConsumer:
         self.acknowledge_message(basic_deliver.delivery_tag)
 
     def acknowledge_message(self, delivery_tag):
-        common_global.es_inst.com_elastic_index('error', {
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={
             'hardware': ('Acknowledging message %s', delivery_tag)})
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):
         if self._channel:
-            common_global.es_inst.com_elastic_index('error',
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text=
                                                     {
                                                         'hardware': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
@@ -253,7 +253,7 @@ class MKConsumer:
         self.close_channel()
 
     def close_channel(self):
-        common_global.es_inst.com_elastic_index('error', {'hardware': 'Closing the channel'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'hardware': 'Closing the channel'})
         self._channel.close()
 
     def run(self):
@@ -263,13 +263,13 @@ class MKConsumer:
     def stop(self):
         if not self._closing:
             self._closing = True
-            common_global.es_inst.com_elastic_index('error', {'hardware': 'Stopping'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'hardware': 'Stopping'})
             if self._consuming:
                 self.stop_consuming()
                 self._connection.ioloop.start()
             else:
                 self._connection.ioloop.stop()
-            common_global.es_inst.com_elastic_index('error', {'hardware': 'Stopped'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'hardware': 'Stopped'})
 
     class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
@@ -294,7 +294,7 @@ class MKConsumer:
             if self._consumer.should_reconnect:
                 self._consumer.stop()
                 reconnect_delay = self._get_reconnect_delay()
-                common_global.es_inst.com_elastic_index('error',
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text=
                                                         {'hardware': (
                                                             'Reconnecting after %d seconds',
                                                             reconnect_delay)})
