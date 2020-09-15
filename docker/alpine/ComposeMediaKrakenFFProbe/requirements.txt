@@ -4,4 +4,4 @@ pyopenssl==19.0.0
 setuptools==41.0.1
 docker==4.1.0
 pika==1.1.0
-elasticsearch[async]==7.9.1
+httpx==0.14.3
