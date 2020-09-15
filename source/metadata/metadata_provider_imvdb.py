@@ -27,14 +27,14 @@ async def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
     """
     # fetch from imvdb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "meta imvdb save fetch": imvdb_id})
     # fetch and save json data via tmdb id
     result_json = await common_global.api_instance.com_imvdb_video_info(imvdb_id)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "meta imvdb code": result_json.status_code})
     if result_json.status_code == 200:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             "meta imvdb save fetch result":
                 result_json.json()})
         # set and insert the record
@@ -53,7 +53,7 @@ async def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
         metadata_uuid = None
     else:  # is this is None....
         metadata_uuid = None
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={'meta imvdb save fetch uuid':
                                                                            metadata_uuid})
     return metadata_uuid

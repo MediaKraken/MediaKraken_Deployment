@@ -48,10 +48,11 @@ async def anidb(db_connection, download_data):
     """
     Rate limiter for AniDB
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in anidb rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in anidb rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'anidb', download_data)
 
 
@@ -61,7 +62,7 @@ async def chart_lyrics(db_connection, download_data):
     """
     Rate limiter for Chart Lyrics
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in chart_lyrics rate":
             datetime.datetime.now().strftime(
                 "%H:%M:%S.%f")})
@@ -74,7 +75,7 @@ async def comicvine(db_connection, download_data):
     """
     Rate limiter for ComicVine
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in comicvine rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'comicvine', download_data)
@@ -86,7 +87,7 @@ async def giantbomb(db_connection, download_data):
     """
     Rate limiter for GiantBomb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in giantbomb rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'giantbomb', download_data)
@@ -98,10 +99,11 @@ async def imdb(db_connection, download_data):
     """
     Rate limiter for IMDB
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in imdb rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in imdb rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'imdb', download_data)
 
 
@@ -111,10 +113,11 @@ async def imvdb(db_connection, download_data):
     """
     Rate limiter for IMVdb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in imvdb rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in imvdb rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'imvdb', download_data)
 
 
@@ -124,10 +127,11 @@ async def isbndb(db_connection, download_data):
     """
     Rate limiter for isbndb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in isbndb rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in isbndb rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'isbndb', download_data)
 
 
@@ -137,7 +141,7 @@ async def musicbrainz(db_connection, download_data):
     """
     Rate limiter for MusicBrainz
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in musicbrainz rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'musicbrainz', download_data)
@@ -149,10 +153,11 @@ async def omdb(db_connection, download_data):
     """
     Rate limiter for OMDB
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in omdb rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in omdb rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'omdb', download_data)
 
 
@@ -162,10 +167,11 @@ async def openlibrary(db_connection, download_data):
     """
     Rate limiter for openlibrary
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in openlib rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in openlib rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'openlibrary', download_data)
 
 
@@ -175,7 +181,7 @@ async def pitchfork(db_connection, download_data):
     """
     Rate limiter for Pitchfork
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in pitchfork rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'pitchfork', download_data)
@@ -187,10 +193,11 @@ async def pornhub(db_connection, download_data):
     """
     Rate limiter for pornhub
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in pornhub rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in pornhub rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'pornhub', download_data)
 
 
@@ -200,7 +207,7 @@ async def televisiontunes(db_connection, download_data):
     """
     Rate limiter for Television Tunes
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in televisiontunes rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(
@@ -213,7 +220,7 @@ async def theaudiodb(db_connection, download_data):
     """
     Rate limiter for TheAudioDB
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in theaudiodb rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'theaudiodb', download_data)
@@ -225,7 +232,7 @@ async def thegamesdb(db_connection, download_data):
     """
     Rate limiter for thegamesdb
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in thegamesdb rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'thegamesdb', download_data)
@@ -237,10 +244,11 @@ async def themoviedb(db_connection, download_data):
     """
     Rate limiter for theMovieDB
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"here i am in moviedb rate":
-                                                             datetime.datetime.now().strftime(
-                                                                 "%H:%M:%S.%f")})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "here i am in moviedb rate":
+                                                                       datetime.datetime.now().strftime(
+                                                                           "%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'themoviedb', download_data)
 
 
@@ -250,7 +258,7 @@ async def thesportsdb(db_connection, download_data):
     """
     Rate limiter for TheSportsDB
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in thesportsdb rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'thesportsdb', download_data)
@@ -262,7 +270,7 @@ async def tv_intros(db_connection, download_data):
     """
     Rate limiter for TV Intros
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "here i am in tv_intros rate":
             datetime.datetime.now().strftime("%H:%M:%S.%f")})
     await metadata_general.metadata_process(db_connection, 'tv_intros', download_data)
@@ -276,9 +284,9 @@ content_providers = str(sys.argv[1])
 
 async def on_message(message: aio_pika.IncomingMessage):
     async with message.process():
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                             message_text={"Message body",
-                                                                           message.body})
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                   message_text={"Message body",
+                                                                                 message.body})
         json_message = json.loads(message.body)
         if json_message['Type'] == 'Update Metadata':
             # this check is just in case there is a tv/etc collection later
@@ -299,19 +307,20 @@ async def on_message(message: aio_pika.IncomingMessage):
 
 async def main(loop):
     # start logging
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text='START',
-                                                         index_name='main_server_meta_api_worker_'
-                                                                    + content_providers.lower())
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text='START',
+                                                               index_name='main_server_meta_api_worker_'
+                                                                          + content_providers.lower())
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "worker meta api name": content_providers})
 
     # open the database
     option_config_json, db_connection = \
         await common_config_ini.com_config_read_async(loop=loop,
                                                       as_pool=False)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"status": 'after db open'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "status": 'after db open'})
     connection = await aio_pika.connect("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # Creating a channel
     channel = await connection.channel()
@@ -319,11 +328,11 @@ async def main(loop):
     # Declaring queue
     queue = await channel.declare_queue(content_providers,
                                         durable=True)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "status": 'after pika connection'})
     # Start listening
     await queue.consume(on_message)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "status": 'after pika listen'})
     # connection = await aio_pika.connect_robust("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # # Creating channel
@@ -364,8 +373,10 @@ async def main(loop):
     while True:
         # grab new batch of records to process by content provider
         for row_data in await db_connection.db_download_read_provider(content_providers):
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-                "worker meta api row": row_data})
+            common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                       message_text={
+                                                                           "worker meta api row":
+                                                                               row_data})
             # checking each provider like this to send through the limiter decorator
             if content_providers == 'anidb':
                 await anidb(db_connection, row_data)
@@ -403,24 +414,26 @@ async def main(loop):
                 await tv_intros(db_connection, row_data)
             # Z records are the start of all lookups
             elif content_providers == 'Z':
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                     message_text={
-                                                                         'worker Z meta api':
-                                                                             row_data[
-                                                                                 'mdq_download_json'][
-                                                                                 'ClassID'],
-                                                                         'row': row_data['mdq_id'],
-                                                                         'dl json': row_data[
-                                                                             'mdq_download_json']})
+                common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                           message_text={
+                                                                               'worker Z meta api':
+                                                                                   row_data[
+                                                                                       'mdq_download_json'][
+                                                                                       'ClassID'],
+                                                                               'row': row_data[
+                                                                                   'mdq_id'],
+                                                                               'dl json': row_data[
+                                                                                   'mdq_download_json']})
                 metadata_uuid = None
                 # check for dupes by name/year
                 file_name = guessit(row_data['mdq_download_json']['Path'])
                 if type(file_name['title']) == list:
                     file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                     message_text=
-                                                                     {'worker Z filename': str(
-                                                                         file_name)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                           message_text=
+                                                                           {
+                                                                               'worker Z filename': str(
+                                                                                   file_name)})
                 if 'title' in file_name:
                     if 'year' in file_name:
                         if type(file_name['year']) == list:
@@ -432,12 +445,12 @@ async def main(loop):
                     elif file_name['title'].lower() == metadata_last_title:
                         # matches last media scanned, so set with that metadata id
                         metadata_uuid = metadata_last_id
-                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                         message_text=
-                                                                         {
-                                                                             "worker Z meta api uuid": metadata_uuid,
-                                                                             'filename': str(
-                                                                                 file_name)})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                               message_text=
+                                                                               {
+                                                                                   "worker Z meta api uuid": metadata_uuid,
+                                                                                   'filename': str(
+                                                                                       file_name)})
                     # doesn't match the last file, so set the file to be id'd
                     if metadata_uuid is None:
                         # begin id process
@@ -460,14 +473,14 @@ async def main(loop):
                     await db_connection.db_commit()
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
-                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                         message_text={
-                                                                             "worker Z meta api update":
-                                                                                 metadata_uuid,
-                                                                             'row':
-                                                                                 row_data[
-                                                                                     'mdq_download_json'][
-                                                                                     'MediaID']})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                               message_text={
+                                                                                   "worker Z meta api update":
+                                                                                       metadata_uuid,
+                                                                                   'row':
+                                                                                       row_data[
+                                                                                           'mdq_download_json'][
+                                                                                           'MediaID']})
                     await db_connection.db_begin()
                     await db_connection.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                                                            metadata_uuid)

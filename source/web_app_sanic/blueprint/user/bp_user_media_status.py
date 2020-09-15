@@ -14,7 +14,7 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={'movie status': guid,
                                                                        'event': event_type})
     if event_type == "sync":
@@ -47,7 +47,7 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'movie metadata status': guid,
         'event': event_type})
     db_connection = await request.app.db_pool.acquire()
@@ -63,7 +63,7 @@ async def url_bp_user_status_tv(request, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={'tv status': guid,
                                                                        'event': event_type})
     if event_type == "watched":

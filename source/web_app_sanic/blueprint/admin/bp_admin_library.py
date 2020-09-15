@@ -21,10 +21,10 @@ async def url_bp_admin_library(request):
     """
     List all media libraries
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={'lib': request.method})
     if request.method == 'POST':
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={'lib': request.form})
         if "scan" in request.form:
             # submit the message
@@ -33,7 +33,7 @@ async def url_bp_admin_library(request):
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
             request['flash']('Scheduled media scan.', 'success')
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
                 'stuff': 'scheduled media scan'})
     db_connection = await request.app.db_pool.acquire()
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
@@ -104,7 +104,7 @@ async def url_bp_admin_library_edit(request):
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
-                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text=
                                                                          {'smb info': addr,
                                                                           'share': share,

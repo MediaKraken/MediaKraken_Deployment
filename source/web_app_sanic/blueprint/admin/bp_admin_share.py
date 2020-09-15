@@ -71,17 +71,17 @@ async def url_bp_admin_share_edit(request):
     allow user to edit share
     """
     form = BSSShareAddEditForm(request)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={'stuff': 'hereeditshare'})
     if request.method == 'POST':
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={'stuff': 'herepost'})
         if form.validate_on_submit():
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
                 'action': request.form[
                     'action_type']})
             if request.form['action_type'] == 'Add':
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'type': request.form[
                                                                              'storage_mount_type']})
@@ -92,7 +92,7 @@ async def url_bp_admin_share_edit(request):
                     #                    if addr is None: # total junk path for UNC
                     #                        request['flash']("Invalid UNC path.", 'error')
                     #                        return redirect(url_for('admins_share.admin_share_edit_page'))
-                    #                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff':'unc info: %s %s %s' % (addr, share, path))
+                    #                    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'stuff':'unc info: %s %s %s' % (addr, share, path))
                     smb_stuff = common_network_cifs.CommonCIFSShare()
                     smb_stuff.com_cifs_connect(request.form['storage_mount_server'],
                                                user_name=request.form['storage_mount_user'],

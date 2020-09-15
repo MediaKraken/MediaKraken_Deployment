@@ -39,11 +39,11 @@ async def metadata_sports_lookup(db_connection, download_data):
         download_data['mdq_download_json']['Path'].replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = await db_connection.db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             "searching": stripped_name})
         thesportsdb_data = \
             THESPORTSDB_CONNECTION.com_meta_thesportsdb_search_event_by_name(stripped_name)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             "sports return": thesportsdb_data})
         # "valid" key returned in case of null response........or event none
         if thesportsdb_data is not None:
@@ -65,7 +65,7 @@ async def metadata_sports_lookup(db_connection, download_data):
                                                                       thesportsdb_data),
                                                                   json.dumps(image_json))
 
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "metadata_sports return uuid": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_sports_lookup.metadata_last_id = metadata_uuid

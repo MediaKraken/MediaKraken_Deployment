@@ -49,7 +49,7 @@ async def tv_search_tvdb(db_connection, file_name, lang_code='en'):
     file_name = guessit(file_name)
     if type(file_name['title']) == list:
         file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "meta tv search tvdb": str(file_name)})
     metadata_uuid = None
     tvdb_id = None
@@ -60,17 +60,17 @@ async def tv_search_tvdb(db_connection, file_name, lang_code='en'):
         else:
             tvdb_id = str(THETVDB_CONNECTION.com_thetvdb_search(file_name['title'],
                                                                 None, lang_code, True))
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={"response": tvdb_id})
         if tvdb_id is not None:
             #            # since there has been NO match whatsoever.....can "wipe" out everything
             #            media_id_json = json.dumps({'thetvdb': tvdb_id})
-            #            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff':"dbjson: %s", media_id_json)
+            #            common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'stuff':"dbjson: %s", media_id_json)
             # check to see if metadata exists for TVDB id
             metadata_uuid = await db_connection.db_metatv_guid_by_tvdb(tvdb_id)
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
                 "db result": metadata_uuid})
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'meta tv uuid': metadata_uuid,
         'tvdb': tvdb_id})
     return metadata_uuid, tvdb_id
@@ -80,16 +80,16 @@ async def tv_fetch_save_tvdb(db_connection, tvdb_id):
     """
     # tvdb data fetch
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "meta tv tvdb save fetch": tvdb_id})
     metadata_uuid = None
     # fetch XML zip file
     xml_show_data, xml_actor_data, xml_banners_data \
         = THETVDB_API.com_meta_thetvdb_get_zip_by_id(tvdb_id)
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'tv fetch save tvdb show': xml_show_data})
     if xml_show_data is not None:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={'stuff': 'insert'})
         # insert
         image_json = {'Images': {'thetvdb': {
@@ -97,7 +97,7 @@ async def tv_fetch_save_tvdb(db_connection, tvdb_id):
         series_id_json = json.dumps({'imdb': xml_show_data['Data']['Series']['IMDB_ID'],
                                      'thetvdb': str(tvdb_id),
                                      'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={'stuff': 'insert 2'})
         metadata_uuid = await db_connection.db_metatvdb_insert(series_id_json,
                                                                xml_show_data['Data']['Series'][
@@ -109,13 +109,13 @@ async def tv_fetch_save_tvdb(db_connection, tvdb_id):
                                                                                          'Cast': xml_actor_data,
                                                                                          'Banner': xml_banners_data}}}),
                                                                json.dumps(image_json))
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={'stuff': 'insert 3'})
         # insert cast info
         if xml_actor_data is not None:
             await db_connection.db_meta_person_insert_cast_crew('thetvdb',
                                                                 xml_actor_data['Actor'])
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={'stuff': 'insert 4'})
         # save rows for episode image fetch
         if 'Episode' in xml_show_data['Data']:
@@ -125,7 +125,7 @@ async def tv_fetch_save_tvdb(db_connection, tvdb_id):
                 if len(xml_show_data['Data']['Episode'][0]['id']) > 1:
                     # thetvdb is Episode
                     for episode_info in xml_show_data['Data']['Episode']:
-                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'eps info': episode_info})
                         if episode_info['filename'] is not None:

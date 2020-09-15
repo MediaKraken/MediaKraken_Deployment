@@ -36,13 +36,13 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
         metadata_adult_lookup.metadata_last_imdb = None
         metadata_adult_lookup.metadata_last_tmdb = None
     metadata_uuid = None  # so not found checks verify later
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'metadata_adult_lookup': str(file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(download_data['Path'])
     imdb_id, tmdb_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
     if imdb_id is not None or tmdb_id is not None:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             "meta adult look": imdb_id,
             'tmdb': tmdb_id})
     # if same as last, return last id and save lookup
@@ -61,7 +61,7 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = await db_connection.db_meta_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "meta adult metadata_uuid A": metadata_uuid})
     if metadata_uuid is not None:
         await db_connection.db_download_delete(download_data['mdq_id'])
@@ -89,11 +89,11 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
             else:
                 await db_connection.db_download_delete(download_data['mdq_id'])
                 metadata_uuid = dl_meta
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "meta adult metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             'stuff': "meta adult db lookup"})
         # db lookup by name and year (if available)
         if 'year' in file_name:
@@ -101,7 +101,7 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
                                                                       file_name['year'])
         else:
             metadata_uuid = await db_connection.db_find_metadata_guid(file_name['title'], None)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             "meta adult db meta": metadata_uuid})
         if metadata_uuid is None:
             metadata_uuid = download_data['MetaNewID']
@@ -115,7 +115,7 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
             # set provider last so it's not picked up by the wrong thread
             await db_connection.db_download_update_provider('pornhub', download_data['mdq_id'])
             await db_connection.db_commit()
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "metadata_adult return uuid": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_adult_lookup.metadata_last_id = metadata_uuid

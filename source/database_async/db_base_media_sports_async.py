@@ -10,15 +10,15 @@ async def db_media_sports_list(self, class_guid, offset=None, list_limit=0,
     """
     # sports media return
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={"classuid": class_guid,
                                                                        'type': list_type,
                                                                        'genre':
                                                                            list_genre})
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "group and remote": group_collection,
         'remote': include_remote})
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={"list, offset": list_limit,
                                                                        'offset': offset})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
@@ -502,7 +502,7 @@ async def db_media_sports_list_count(self, class_guid, list_type=None,
     """
     # sports media count
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={"classuid counter":
                                                                            class_guid,
                                                                        'type': list_type,
