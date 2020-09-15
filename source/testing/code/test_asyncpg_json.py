@@ -4,6 +4,10 @@ import json
 import asyncpg
 
 
+###
+# fully working for DICT of row along with auto json decode/encode
+###
+
 async def main():
     conn = await asyncpg.connect(user='postgres',
                                  password='metaman',
@@ -23,8 +27,7 @@ async def main():
 
     row = await conn.fetchrow('SELECT id, dob, test_json::json'
                               ' FROM users2 WHERE name = $1', 'Bob')
-    # *row* now contains
-    # asyncpg.Record(id=1, name='Bob', dob=datetime.date(1984, 3, 1))
+
     print(row['id'], row['dob'], row['test_json'])
     print(row['test_json']['test'])
     # Close the connection.
