@@ -10,8 +10,6 @@ async def db_image_list(self, class_guid, offset=0, records=None, search_value=N
     """
     Image list
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_media_path from mm_media'
-                                          ' where mm_media_class_guid = $1 offset $2 limit $3)'
-                                          ' as json_data',
+    return await self.db_connection.fetch('select mm_media_path from mm_media'
+                                          ' where mm_media_class_guid = $1 offset $2 limit $3',
                                           class_guid, offset, records)

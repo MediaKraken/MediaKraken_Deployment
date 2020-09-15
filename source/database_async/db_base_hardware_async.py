@@ -20,11 +20,10 @@ async def db_hardware_json_read(self, manufacturer, model_name):
     """
     Return json for machine/model
     """
-    return await self.db_connection.fetchval('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_hardware_json'
+    return await self.db_connection.fetchval('select mm_hardware_json::json'
                                              ' from mm_hardware_json'
                                              ' where mm_hardware_manufacturer = $1'
-                                             ' and mm_hardware_model = $2) as json_data',
+                                             ' and mm_hardware_model = $2',
                                              manufacturer, model_name)
 
 
@@ -33,7 +32,7 @@ async def db_hardware_insert(self, manufacturer, model_name, json_data):
     await self.db_connection.execute('insert into mm_hardware_json (mm_hardware_id,'
                                      ' mm_hardware_manufacturer,'
                                      ' mm_hardware_model,'
-                                     ' mm_hardware_json)'
+                                     ' mm_hardware_json::json)'
                                      ' values ($1, $2, $3, $4)',
                                      new_guid, manufacturer, model_name, json_data)
     await self.db_connection.execute('commit')

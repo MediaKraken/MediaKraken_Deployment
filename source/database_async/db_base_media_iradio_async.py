@@ -23,19 +23,17 @@ async def db_iradio_list(self, offset=0, records=None, active_station=True,
     Iradio list
     """
     if search_value is not None:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_radio_guid,'
+        return await self.db_connection.fetch('select mm_radio_guid,'
                                               ' mm_radio_name,'
                                               ' mm_radio_address'
                                               ' from mm_radio where mm_radio_guid'
                                               ' in (select mm_radio_guid from mm_radio'
                                               ' where mm_radio_active = $1 and mm_radio_name % $2'
                                               ' order by LOWER(mm_radio_name) offset $3 limit $4)'
-                                              ' order by LOWER(mm_radio_name)) as json_data',
+                                              ' order by LOWER(mm_radio_name)',
                                               active_station, search_value, offset, records)
     else:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_radio_guid,'
+        return await self.db_connection.fetch('select mm_radio_guid,'
                                               ' mm_radio_name,'
                                               ' mm_radio_address'
                                               ' from mm_radio where mm_radio_guid'
@@ -44,7 +42,7 @@ async def db_iradio_list(self, offset=0, records=None, active_station=True,
                                               ' where mm_radio_active = $1'
                                               ' order by LOWER(mm_radio_name)'
                                               ' offset $2 limit $3)'
-                                              ' order by LOWER(mm_radio_name)) as json_data',
+                                              ' order by LOWER(mm_radio_name)',
                                               active_station, offset, records)
 
 

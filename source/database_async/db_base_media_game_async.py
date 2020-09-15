@@ -44,11 +44,10 @@ async def db_media_mame_game_list(self):
     """
     Game systems are NULL for MAME
     """
-    await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                   ' FROM (select gi_id, gi_short_name'
+    await self.db_connection.fetch('select gi_id, gi_short_name'
                                    ' from mm_game_info'
                                    ' where gi_system_id is null'
-                                   ' and gi_gc_category is null) as json_data')
+                                   ' and gi_gc_category is null')
 
 
 async def db_media_game_category_update(self, category, game_id):
@@ -59,13 +58,12 @@ async def db_media_game_category_update(self, category, game_id):
 
 
 async def db_media_game_clone_list(self):
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select gi_id,'
+    return await self.db_connection.fetch('select gi_id,'
                                           ' gi_cloneof'
                                           ' from mm_game_info'
                                           ' where gi_system_id is null'
                                           ' and gi_cloneof IS NOT NULL'
-                                          ' and gi_gc_category is null) as json_data')
+                                          ' and gi_gc_category is null')
 
 
 async def db_media_game_category_by_name(self, category_name):

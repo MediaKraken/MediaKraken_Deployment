@@ -4,8 +4,7 @@ async def db_media_tv_list(self, genre_type=None, list_limit=None,
     # grab tv data
     """
     if search_value is not None:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_metadata_tvshow_name,'
+        return await self.db_connection.fetch('select mm_metadata_tvshow_name,'
                                               ' mm_metadata_tvshow_guid,'
                                               ' count(*) as mm_count,'
                                               ' COALESCE(mm_metadata_tvshow_localimage_json'
@@ -18,11 +17,10 @@ async def db_media_tv_list(self, genre_type=None, list_limit=None,
                                               ' and mm_metadata_tvshow_name % $1'
                                               ' group by mm_metadata_tvshow_guid'
                                               ' order by LOWER(mm_metadata_tvshow_name)'
-                                              ' offset $2 limit $3) as json_data', search_value,
+                                              ' offset $2 limit $3', search_value,
                                               offset, list_limit)
     else:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_metadata_tvshow_name,'
+        return await self.db_connection.fetch('select mm_metadata_tvshow_name,'
                                               ' mm_metadata_tvshow_guid,'
                                               ' count(*) as mm_count,'
                                               ' COALESCE(mm_metadata_tvshow_localimage_json'
@@ -34,7 +32,7 @@ async def db_media_tv_list(self, genre_type=None, list_limit=None,
                                               ' = mm_metadata_tvshow_guid'
                                               ' group by mm_metadata_tvshow_guid'
                                               ' order by LOWER(mm_metadata_tvshow_name)'
-                                              ' offset $1 limit $2) as json_data',
+                                              ' offset $1 limit $2',
                                               offset, list_limit)
 
 

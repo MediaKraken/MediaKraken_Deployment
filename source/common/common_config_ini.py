@@ -16,8 +16,6 @@
   MA 02110-1301, USA.
 """
 
-import json
-
 
 def com_config_read(close_db=False, force_local=False,
                     loop=None, as_pool=False):
@@ -48,6 +46,6 @@ async def com_config_read_async(close_db=False, force_local=False,
     if close_db:
         await db_connection.db_close()
         # since read is from coroutine
-        return json.loads(db_options_json['row_to_json'])['mm_options_json']
+        return db_options_json['mm_options_json']
     # since read is from coroutine
-    return json.loads(db_options_json['row_to_json'])['mm_options_json'], db_connection
+    return db_options_json['mm_options_json'], db_connection

@@ -22,13 +22,11 @@ async def db_library_path_by_uuid(self, dir_id):
     """
     # lib data per id
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_media_dir_guid,'
+    return await self.db_connection.fetchrow('select mm_media_dir_guid,'
                                              ' mm_media_dir_path,'
                                              ' mm_media_dir_class_type'
                                              ' from mm_media_dir'
-                                             ' where mm_media_dir_share_guid = $1)'
-                                             ' as json_data',
+                                             ' where mm_media_dir_share_guid = $1',
                                              dir_id)
 
 
@@ -53,12 +51,11 @@ async def db_library_path_status(self):
     """
     # read scan status
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_media_dir_path,'
+    return await self.db_connection.fetchrow('select mm_media_dir_path,'
                                              ' mm_media_dir_status'
                                              ' from mm_media_dir'
                                              ' where mm_media_dir_status IS NOT NULL'
-                                             ' order by mm_media_dir_path) as json_data')
+                                             ' order by mm_media_dir_path')
 
 
 async def db_library_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
@@ -75,11 +72,10 @@ async def db_library_paths(self, offset=0, records=None):
     """
     # read the paths to audit
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_media_dir_path,'
+    return await self.db_connection.fetch('select mm_media_dir_path,'
                                           ' mm_media_dir_class_type,'
                                           ' mm_media_dir_last_scanned,'
                                           ' mm_media_dir_share_guid'
                                           ' from mm_media_dir'
                                           ' order by mm_media_dir_class_type, mm_media_dir_path'
-                                          ' offset $1 limit $2) as json_data', offset, records)
+                                          ' offset $1 limit $2', offset, records)

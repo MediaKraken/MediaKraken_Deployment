@@ -20,14 +20,13 @@ async def db_notification_read(self, offset=0, records=None):
     """
     # read all notifications
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_notification_guid,'
+    return await self.db_connection.fetch('select mm_notification_guid,'
                                           ' mm_notification_text,'
                                           ' mm_notification_time,'
                                           ' mm_notification_dismissable'
                                           ' from mm_notification'
                                           ' order by mm_notification_time desc'
-                                          ' offset $1 limit $2) as json_data',
+                                          ' offset $1 limit $2',
                                           offset, records)
 
 

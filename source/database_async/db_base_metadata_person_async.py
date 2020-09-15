@@ -15,27 +15,24 @@ async def db_meta_person_as_seen_in(self, person_guid):
     # TODO jin index the credits
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text={"row_data": row_data})
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_metadata_guid,mm_media_name,'
+    return await self.db_connection.fetch('select mm_metadata_guid,mm_media_name,'
                                           ' mm_metadata_localimage_json->\'Poster\''
                                           ' from mm_metadata_movie'
                                           ' where mm_metadata_json->\'credits\'->\'cast\''
                                           ' @> \'[{"id": '
                                           + str(row_data['mmp_person_media_id'])
-                                          + '}]\' order by LOWER(mm_media_name)) as json_data')
+                                          + '}]\' order by LOWER(mm_media_name)')
 
 
 async def db_meta_person_by_guid(self, guid):
     """
     # return person data
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mmp_id, mmp_person_media_id,'
+    return await self.db_connection.fetchrow('select mmp_id, mmp_person_media_id,'
                                              ' mmp_person_meta_json,'
                                              ' mmp_person_image, mmp_person_name,'
                                              ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                                             ' from mm_metadata_person where mmp_id = $1)'
-                                             ' as json_data',
+                                             ' from mm_metadata_person where mmp_id = $1',
                                              guid)
 
 
@@ -45,22 +42,19 @@ async def db_meta_person_list(self, offset=0, records=None, search_value=None):
     """
     # TODO order by birth date
     if search_value is not None:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mmp_id,mmp_person_name,'
+        return await self.db_connection.fetch('select mmp_id,mmp_person_name,'
                                               ' mmp_person_image,'
                                               ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                               ' from mm_metadata_person where mmp_person_name % $1'
-                                              ' order by LOWER(mmp_person_name) offset $2 limit $3)'
-                                              ' as json_data',
+                                              ' order by LOWER(mmp_person_name) offset $2 limit $3',
                                               search_value, offset, records)
     else:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mmp_id,mmp_person_name,'
+        return await self.db_connection.fetch('select mmp_id,mmp_person_name,'
                                               ' mmp_person_image,'
                                               ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
                                               ' from mm_metadata_person'
                                               ' order by LOWER(mmp_person_name)'
-                                              ' offset $1 limit $2) as json_data',
+                                              ' offset $1 limit $2',
                                               offset, records)
 
 
@@ -96,7 +90,7 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
                                      ' mmp_person_media_id,'
-                                     ' mmp_person_meta_json,'
+                                     ' mmp_person_meta_json::json,'
                                      ' mmp_person_image)'
                                      ' values ($1,$2,$3,$4,$5)',
                                      new_guid, person_name, media_id,

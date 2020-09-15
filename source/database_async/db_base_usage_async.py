@@ -9,12 +9,10 @@ async def db_usage_top10_movie(self):
     """
     Top 10 movies
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM'
-                                          ' (select mm_metadata_user_json->\'Watched\'->\'Times\''
+    return await self.db_connection.fetch('select mm_metadata_user_json->\'Watched\'->\'Times\''
                                           ' from mm_metadata_movie'
                                           ' order by mm_metadata_user_json->\'Watched\'->\'Times\''
-                                          ' desc limit 10) as json_data')
+                                          ' desc limit 10')
 
 
 async def db_usage_top10_tv_episode(self):
@@ -28,10 +26,9 @@ async def db_usage_top10_tv_show(self):
     """
     Top 10 TV show
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_metadata_tvshow_user_json'
+    return await self.db_connection.fetch('select mm_metadata_tvshow_user_json'
                                           '->\'Watched\'->\'Times\''
                                           ' from mm_metadata_tvshow'
                                           ' order by'
                                           ' mm_metadata_tvshow_user_json->\'Watched\'->\'Times\''
-                                          ' desc limit 10) as json_data')
+                                          ' desc limit 10')

@@ -16,38 +16,32 @@ async def db_metadata_search(self, search_string, search_type='Local',
         if search_movie:
             # movie section
             json_return_data['Movie'] = json.dumps(
-                await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                               ' FROM (SELECT mm_metadata_guid,'
+                await self.db_connection.fetch('SELECT mm_metadata_guid,'
                                                ' mm_media_name, '
                                                'similarity(mm_media_name, $1) AS sml'
                                                ' FROM mm_metadata_movie'
                                                ' WHERE mm_media_name % $2'
-                                               ' ORDER BY sml DESC, LOWER(mm_media_name))'
-                                               ' as json_data',
+                                               ' ORDER BY sml DESC, LOWER(mm_media_name)',
                                                search_string, search_string))
         if search_tvshow:
             # tv show section
             json_return_data['TVShow'] = json.dumps(
-                await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                               ' FROM (SELECT mm_metadata_tvshow_guid,'
+                await self.db_connection.fetch('SELECT mm_metadata_tvshow_guid,'
                                                ' mm_metadata_tvshow_name,'
                                                ' similarity(mm_metadata_tvshow_name, $1) AS sml'
                                                ' FROM mm_metadata_tvshow'
                                                ' WHERE mm_metadata_tvshow_name % $2'
-                                               ' ORDER BY sml DESC, LOWER(mm_metadata_tvshow_name))'
-                                               ' as json_data',
+                                               ' ORDER BY sml DESC, LOWER(mm_metadata_tvshow_name)',
                                                search_string, search_string))
         if search_album:
             # album section
             json_return_data['Album'] = json.dumps(
-                await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                               ' FROM (SELECT mm_metadata_album_guid,'
+                await self.db_connection.fetch('SELECT mm_metadata_album_guid,'
                                                ' mm_metadata_album_name,'
                                                ' similarity(mm_metadata_album_name, $1) AS sml'
                                                ' FROM mm_metadata_album'
                                                ' WHERE mm_metadata_album_name % $2'
-                                               ' ORDER BY sml DESC, LOWER(mm_metadata_album_name))'
-                                               ' as json_data',
+                                               ' ORDER BY sml DESC, LOWER(mm_metadata_album_name)',
                                                search_string, search_string))
         if search_image:
             # image section
@@ -56,25 +50,21 @@ async def db_metadata_search(self, search_string, search_type='Local',
         if search_publication:
             # publication section
             json_return_data['Publication'] = json.dumps(
-                await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                               ' FROM (SELECT mm_metadata_book_guid,'
+                await self.db_connection.fetch('SELECT mm_metadata_book_guid,'
                                                ' mm_metadata_book_name,'
                                                ' similarity(mm_metadata_book_name, $1) AS sml'
                                                ' FROM mm_metadata_book'
                                                ' WHERE mm_metadata_book_name % $2'
-                                               ' ORDER BY sml DESC, LOWER(mm_metadata_book_name))'
-                                               ' as json_data',
+                                               ' ORDER BY sml DESC, LOWER(mm_metadata_book_name)',
                                                search_string, search_string))
         if search_game:
             # game section
             json_return_data['Game'] = json.dumps(
-                await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                               ' FROM (SELECT gi_id,'
+                await self.db_connection.fetch('SELECT gi_id,'
                                                ' gi_game_info_name,'
                                                ' similarity(gi_game_info_name, $1) AS sml'
                                                ' FROM mm_metadata_game_software_info'
                                                ' WHERE gi_game_info_name % $2'
-                                               ' ORDER BY sml DESC, LOWER(gi_game_info_name))'
-                                               ' as json_data',
+                                               ' ORDER BY sml DESC, LOWER(gi_game_info_name)',
                                                search_string, search_string))
     return json_return_data

@@ -7,12 +7,11 @@ async def db_audit_path_status(self):
     """
     # read scan status
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_media_dir_path,'
+    return await self.db_connection.fetch('select mm_media_dir_path,'
                                           ' mm_media_dir_status'
                                           ' from mm_media_dir'
                                           ' where mm_media_dir_status IS NOT NULL'
-                                          ' order by mm_media_dir_path) as json_data')
+                                          ' order by mm_media_dir_path')
 
 
 async def db_audit_path_update_status(self, lib_guid, status_json):
@@ -82,26 +81,24 @@ async def db_audit_paths(self, offset=0, records=None):
     """
     # read the paths to audit
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_media_dir_path,'
+    return await self.db_connection.fetch('select mm_media_dir_path,'
                                           ' mm_media_dir_class_type,'
                                           ' mm_media_dir_last_scanned,'
                                           ' mm_media_dir_share_guid'
                                           ' from mm_media_dir'
                                           ' order by mm_media_dir_class_type, mm_media_dir_path'
-                                          ' offset $1 limit $2) as json_data', offset, records)
+                                          ' offset $1 limit $2', offset, records)
 
 
 async def db_audit_path_by_uuid(self, dir_id):
     """
     # lib data per id
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_media_dir_guid,'
+    return await self.db_connection.fetchrow('select mm_media_dir_guid,'
                                              ' mm_media_dir_path,'
                                              ' mm_media_dir_class_type'
                                              ' from mm_media_dir'
-                                             ' where mm_media_dir_share_guid = $1) as json_data',
+                                             ' where mm_media_dir_share_guid = $1',
                                              dir_id)
 
 
@@ -109,8 +106,7 @@ async def db_audit_shares(self, offset=0, records=None):
     """
     # read the shares list
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select mm_media_share_guid,'
+    return await self.db_connection.fetch('select mm_media_share_guid,'
                                           ' mm_media_share_type,'
                                           ' mm_media_share_user,'
                                           ' mm_media_share_password,'
@@ -118,7 +114,7 @@ async def db_audit_shares(self, offset=0, records=None):
                                           ' mm_media_share_path'
                                           ' from mm_media_share'
                                           ' order by mm_media_share_type, mm_media_share_server,'
-                                          ' mm_media_share_path offset $1 limit $2) as json_data',
+                                          ' mm_media_share_path offset $1 limit $2',
                                           offset,
                                           records)
 
@@ -136,15 +132,14 @@ async def db_audit_share_by_uuid(self, share_id):
     """
     # share per id
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_media_share_guid,'
+    return await self.db_connection.fetchrow('select mm_media_share_guid,'
                                              ' mm_media_share_type,'
                                              ' mm_media_share_user,'
                                              ' mm_media_share_password,'
                                              ' mm_media_share_server,'
                                              ' mm_media_share_path,'
                                              ' from mm_media_share'
-                                             ' where mm_media_share_guid = $1) as json_data',
+                                             ' where mm_media_share_guid = $1',
                                              share_id)
 
 

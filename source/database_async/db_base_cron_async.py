@@ -15,8 +15,7 @@ async def db_cron_info(self, cron_uuid):
     """
     Cron job info
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_cron_guid,'
+    return await self.db_connection.fetchrow('select mm_cron_guid,'
                                              ' mm_cron_name,'
                                              ' mm_cron_description,'
                                              ' mm_cron_enabled,'
@@ -24,8 +23,7 @@ async def db_cron_info(self, cron_uuid):
                                              ' mm_cron_last_run,'
                                              ' mm_cron_json'
                                              ' from mm_cron'
-                                             ' where mm_cron_guid = $1)'
-                                             ' as json_data', cron_uuid)
+                                             ' where mm_cron_guid = $1', cron_uuid)
 
 
 async def db_cron_insert(self, cron_name, cron_desc, cron_enabled,
@@ -52,8 +50,7 @@ async def db_cron_list(self, enabled_only=False, offset=0, records=None):
     Return cron list
     """
     if not enabled_only:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_cron_guid,'
+        return await self.db_connection.fetch('select mm_cron_guid,'
                                               ' mm_cron_name,'
                                               ' mm_cron_description,'
                                               ' mm_cron_enabled,'
@@ -63,12 +60,10 @@ async def db_cron_list(self, enabled_only=False, offset=0, records=None):
                                               ' from mm_cron where mm_cron_guid'
                                               ' in (select mm_cron_guid from mm_cron'
                                               ' order by mm_cron_name offset $1 limit $2)'
-                                              ' order by mm_cron_name)'
-                                              ' as json_data', offset,
+                                              ' order by mm_cron_name', offset,
                                               records)
     else:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_cron_guid,'
+        return await self.db_connection.fetch('select mm_cron_guid,'
                                               ' mm_cron_name,'
                                               ' mm_cron_description,'
                                               ' mm_cron_enabled,'
@@ -79,7 +74,7 @@ async def db_cron_list(self, enabled_only=False, offset=0, records=None):
                                               ' in (select mm_cron_guid from mm_cron'
                                               ' where mm_cron_enabled = true'
                                               ' order by mm_cron_name offset $1 limit $2)'
-                                              ' order by mm_cron_name) as json_data', offset,
+                                              ' order by mm_cron_name', offset,
                                               records)
 
 

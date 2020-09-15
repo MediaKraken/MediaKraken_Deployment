@@ -11,25 +11,22 @@ async def db_link_list(self, offset=0, records=None, search_value=None):
     Complete list for admins
     """
     if search_value is not None:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_link_guid,'
+        return await self.db_connection.fetch('select mm_link_guid,'
                                               ' mm_link_name,'
-                                              ' mm_link_json'
+                                              ' mm_link_json::json'
                                               ' from mm_link'
                                               ' where mm_link_guid in (select mm_link_guid'
                                               ' from mm_link'
-                                              ' where mm_link_name % $1 offset $2 limit $3))'
-                                              ' as json_data',
+                                              ' where mm_link_name % $1 offset $2 limit $3)',
                                               search_value, offset, records)
     else:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_link_guid,'
+        return await self.db_connection.fetch('select mm_link_guid,'
                                               ' mm_link_name,'
-                                              ' mm_link_json'
+                                              ' mm_link_json::json'
                                               ' from mm_link'
                                               ' where mm_link_guid in (select mm_link_guid'
                                               ' from mm_link'
-                                              ' offset $1 limit $2)) as json_data',
+                                              ' offset $1 limit $2)',
                                               offset, records)
 
 

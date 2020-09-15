@@ -20,14 +20,12 @@ async def db_meta_music_video_detail_uuid(self, item_guid):
     """
     Grab metadata for specified music video
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_media_music_video_band,'
+    return await self.db_connection.fetchrow('select mm_media_music_video_band,'
                                              ' mm_media_music_video_song,'
-                                             ' mm_metadata_music_video_json,'
-                                             ' mm_metadata_music_video_localimage_json'
+                                             ' mm_metadata_music_video_json::json,'
+                                             ' mm_metadata_music_video_localimage_json::json'
                                              ' from mm_metadata_music_video'
-                                             ' where mm_metadata_music_video_guid = $1)'
-                                             ' as json_data',
+                                             ' where mm_metadata_music_video_guid = $1',
                                              item_guid)
 
 
@@ -37,25 +35,23 @@ async def db_meta_music_video_list(self, offset=0, records=None, search_value=No
     """
     # TODO order by release date
     if search_value is not None:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_metadata_music_video_guid,'
+        return await self.db_connection.fetch('select mm_metadata_music_video_guid,'
                                               ' mm_media_music_video_band,'
                                               ' mm_media_music_video_song,'
-                                              ' mm_metadata_music_video_localimage_json'
+                                              ' mm_metadata_music_video_localimage_json::json'
                                               ' from mm_metadata_music_video'
                                               ' where mm_media_music_video_song % $1'
                                               ' order by LOWER(mm_media_music_video_band),'
                                               ' LOWER(mm_media_music_video_song)'
-                                              ' offset $2 limit $3) as json_data',
+                                              ' offset $2 limit $3',
                                               search_value, offset, records)
     else:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_metadata_music_video_guid,'
+        return await self.db_connection.fetch('select mm_metadata_music_video_guid,'
                                               ' mm_media_music_video_band,'
                                               ' mm_media_music_video_song,'
-                                              ' mm_metadata_music_video_localimage_json'
+                                              ' mm_metadata_music_video_localimage_json::json'
                                               ' from mm_metadata_music_video'
                                               ' order by LOWER(mm_media_music_video_band),'
                                               ' LOWER(mm_media_music_video_song)'
-                                              ' offset $1 limit $2) as json_data',
+                                              ' offset $1 limit $2',
                                               offset, records)

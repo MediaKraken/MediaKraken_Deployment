@@ -21,9 +21,8 @@ async def db_user_detail(self, guid):
     """
     # return all data for specified user
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select * from mm_user'
-                                             ' where id = $1) as json_data', guid)
+    return await self.db_connection.fetchrow('select * from mm_user'
+                                             ' where id = $1', guid)
 
 
 async def db_user_insert(self, user_name, user_email, user_password):
@@ -35,7 +34,7 @@ async def db_user_insert(self, user_name, user_email, user_password):
     else:
         user_admin = False
     return await self.db_connection.execute(
-        'insert into mm_user (username, email, password, active, is_admin, user_json)'
+        'insert into mm_user (username, email, password, active, is_admin, user_json::json)'
         ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, {"per_page": 30})'
         ' returning id',
         user_name, user_email, user_password, user_admin), user_admin
@@ -45,8 +44,7 @@ async def db_user_list_name(self, offset=0, records=None):
     """
     # return user list
     """
-    return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                          ' FROM (select id,'
+    return await self.db_connection.fetch('select id,'
                                           ' username,'
                                           ' email,'
                                           ' created_at,'
@@ -56,8 +54,7 @@ async def db_user_list_name(self, offset=0, records=None):
                                           ' from mm_user'
                                           ' where id in (select id from mm_user'
                                           ' order by LOWER(username)'
-                                          ' offset $1 limit $2) order by LOWER(username))'
-                                          ' as json_data',
+                                          ' offset $1 limit $2) order by LOWER(username)',
                                           offset, records)
 
 
@@ -65,12 +62,10 @@ async def db_user_login(self, user_name, user_password):
     """
     # verify user logon
     """
-    result = await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                               ' FROM (select id, active, is_admin,'
+    result = await self.db_connection.fetchrow('select id, active, is_admin,'
                                                ' user_json->\'per_page\' as per_page'
                                                ' from mm_user where username = $1'
-                                               ' and password = crypt($2, password))'
-                                               ' as json_data',
+                                               ' and password = crypt($2, password)',
                                                user_name, user_password)
     if result is not None:
         print(result, flush=True)
@@ -88,7 +83,7 @@ async def db_user_group_insert(self, group_name, group_desc, group_rights_json):
     await self.db_connection.execute('insert into mm_user_group (mm_user_group_guid,'
                                      ' mm_user_group_name,'
                                      ' mm_user_group_description,'
-                                     ' mm_user_group_rights_json)'
+                                     ' mm_user_group_rights_json::json)'
                                      ' values ($1,$2,$3,$4)',
                                      new_user_group_id, group_name,
                                      group_desc, group_rights_json)

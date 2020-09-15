@@ -5,12 +5,10 @@ async def db_device_by_uuid(self, guid):
     """
     Return details from database via uuid
     """
-    return await self.db_connection.fetchrow('SELECT row_to_json(json_data)'
-                                             ' FROM (select mm_device_type,'
-                                             ' mm_device_json'
+    return await self.db_connection.fetchrow('select mm_device_type,'
+                                             ' mm_device_json::json'
                                              ' from mm_device'
-                                             ' where mm_device_id = $1)'
-                                             ' as json_data', guid)
+                                             ' where mm_device_id = $1', guid)
 
 
 async def db_device_check(self, device_type, device_name, device_ip):
@@ -38,22 +36,19 @@ async def db_device_list(self, device_type=None, offset=0, records=None,
     Return list of devices in database
     """
     if device_type is None:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_device_id,'
+        return await self.db_connection.fetch('select mm_device_id,'
                                               ' mm_device_type,'
-                                              ' mm_device_json'
+                                              ' mm_device_json::json'
                                               ' from mm_device'
                                               ' order by mm_device_type'
-                                              ' offset $1 limit $2) as json_data',
+                                              ' offset $1 limit $2',
                                               offset, records)
     else:
-        return await self.db_connection.fetch('SELECT row_to_json(json_data)'
-                                              ' FROM (select mm_device_id,'
+        return await self.db_connection.fetch('select mm_device_id,'
                                               ' mm_device_type,'
-                                              ' mm_device_json'
+                                              ' mm_device_json::json'
                                               ' from mm_device'
-                                              ' where mm_device_type = $1 offset $2 limit $3)'
-                                              ' as json_data',
+                                              ' where mm_device_type = $1 offset $2 limit $3',
                                               device_type, offset, records)
 
 
