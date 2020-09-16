@@ -311,8 +311,6 @@ async def main(loop):
                                                                message_text='START',
                                                                index_name='main_server_meta_api_worker_'
                                                                           + content_providers.lower())
-    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "worker meta api name": content_providers})
 
     # open the database
     option_config_json, db_connection = \
