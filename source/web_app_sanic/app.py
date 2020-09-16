@@ -1,3 +1,4 @@
+import json
 import os
 import traceback
 
@@ -178,6 +179,10 @@ async def register_db(app, loop):
                                     host='mkstack_database',
                                     loop=loop,
                                     max_size=100)
+    await app.db_pool.set_type_codec('json',
+                                     encoder=json.dumps,
+                                     decoder=json.loads,
+                                     schema='pg_catalog')
     print('DB pool created', flush=True)
 
 
