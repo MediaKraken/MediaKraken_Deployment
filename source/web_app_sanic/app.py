@@ -20,10 +20,7 @@ from sanic_session import Session
 
 # setup the Sanic app
 app = Sanic(__name__)
-# fire up ES logging
-await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                     message_text='START',
-                                                     index_name='webapp_app')
+
 # setup the crypto
 # app_crypto = common_hash.CommonHashCrypto()
 # set login endpoint
@@ -162,6 +159,10 @@ async def logout(request):
 
 @app.listener('before_server_start')
 async def register_db(app, loop):
+    # fire up ES logging
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text='START',
+                                                                     index_name='webapp_app')
     # need to leave this here so the "loop" is defined
     print('DB connection start', flush=True)
     if 'POSTGRES_PASSWORD' in os.environ:
