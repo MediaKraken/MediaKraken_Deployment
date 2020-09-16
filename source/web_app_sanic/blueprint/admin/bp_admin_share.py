@@ -72,19 +72,24 @@ async def url_bp_admin_share_edit(request):
     """
     form = BSSShareAddEditForm(request)
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={'stuff': 'hereeditshare'})
+                                                                     message_text={
+                                                                         'stuff': 'hereeditshare'})
     if request.method == 'POST':
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                             message_text={'stuff': 'herepost'})
+                                                                         message_text={
+                                                                             'stuff': 'herepost'})
         if form.validate_on_submit():
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'action': request.form[
-                    'action_type']})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'action':
+                                                                                     request.form[
+                                                                                         'action_type']})
             if request.form['action_type'] == 'Add':
-                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'type': request.form[
-                                                                             'storage_mount_type']})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='info',
+                    message_text={
+                        'type': request.form[
+                            'storage_mount_type']})
                 # check for UNC
                 if request.form['storage_mount_type'] == "unc":
                     #                    addr, share, path = common_string.com_string_unc_to_addr_path(\
