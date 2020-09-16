@@ -82,12 +82,13 @@ async def url_bp_admin_hardware_chromecast_edit(request):
                                                                   {'Name': request.form['name'],
                                                                    'Model': "NA",
                                                                    'IP': request.form['ipaddr']}))
+                    await request.app.db_pool.release(db_connection)
                     return redirect(request.app.url_for('admins_chromecasts.admin_chromecast'))
                 else:
                     request['flash']("Chromecast already in database.", 'error')
+                    await request.app.db_pool.release(db_connection)
                     return redirect(
                         request.app.url_for('admins_chromecasts.admin_chromecast_edit_page'))
-                await request.app.db_pool.release(db_connection)
         else:
             flash_errors(form)
     return {
@@ -116,12 +117,13 @@ async def url_bp_admin_hardware_tvtuner_edit(request):
                                                                   {'Name': request.form['name'],
                                                                    'Model': "NA",
                                                                    'IP': request.form['ipaddr']}))
+                    await request.app.db_pool.release(db_connection)
                     return redirect(request.app.url_for('admins_tvtuners.admin_tvtuners'))
                 else:
                     request['flash']("TV Tuner already in database.", 'error')
+                    await request.app.db_pool.release(db_connection)
                     return redirect(
                         request.app.url_for('admins_tvtuners.admin_tuner_edit_page'))
-                await request.app.db_pool.release(db_connection)
         else:
             flash_errors(form)
     return {

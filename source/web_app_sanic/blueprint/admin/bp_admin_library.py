@@ -22,10 +22,12 @@ async def url_bp_admin_library(request):
     List all media libraries
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={'lib': request.method})
+                                                                     message_text={
+                                                                         'lib': request.method})
     if request.method == 'POST':
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                             message_text={'lib': request.form})
+                                                                         message_text={
+                                                                             'lib': request.form})
         if "scan" in request.form:
             # submit the message
             common_network_pika.com_net_pika_send({'Type': 'Library Scan'},
@@ -33,8 +35,9 @@ async def url_bp_admin_library(request):
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
             request['flash']('Scheduled media scan.', 'success')
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'stuff': 'scheduled media scan'})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'stuff': 'scheduled media scan'})
     db_connection = await request.app.db_pool.acquire()
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
@@ -104,11 +107,12 @@ async def url_bp_admin_library_edit(request):
                 if request.form['library_path'][:1] == "\\":
                     addr, share, path = common_string.com_string_unc_to_addr_path(
                         request.form['library_path'])
-                    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text=
-                                                                         {'smb info': addr,
-                                                                          'share': share,
-                                                                          'path': path})
+                    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                        message_type='info',
+                        message_text=
+                        {'smb info': addr,
+                         'share': share,
+                         'path': path})
                     if addr is None:  # total junk path for UNC
                         request['flash']('Invalid UNC path.', 'error')
                         return redirect(
