@@ -29,6 +29,14 @@ async_db_files = common_file.com_file_dir_list('./database_async', '.py',
                                                directory_only=False,
                                                file_modified=False)
 
+# find all async py files
+async_pool_db_files = common_file.com_file_dir_list('./database_async_pool', '.py',
+                                                    walk_dir=True,
+                                                    skip_junk=True,
+                                                    file_size=False,
+                                                    directory_only=False,
+                                                    file_modified=False)
+
 # read in all the sanic files
 sanic_db_call_table = []
 for sanic_file in sanic_db_files:
@@ -109,7 +117,7 @@ print("Need to Port", len(need_to_port), flush=True)
 for db_call in sorted(need_to_port):
     print("DB call:", db_call, flush=True)
 
-# generate the init file
+# generate the init file for async
 file_handle = open('./database_async/__init__.py', 'w')
 file_handle.write('class MKServerDatabaseAsync:\n')
 file_handle.write('    """\n')
@@ -120,6 +128,56 @@ for file_name in init_dict.keys():
         first_record = True
         file_handle.write(
             '    from database_async.%s \\\n' % os.path.basename(file_name).split('.py')[0])
+        db_call_count = 0
+        for db_call in init_dict[file_name]:
+            db_call_count += 1
+            if first_record:
+                first_record = False
+                if db_call_count == len(init_dict[file_name]):
+                    file_handle.write('        import %s\n' % db_call)
+                else:
+                    file_handle.write('        import %s, \\\n' % db_call)
+            else:
+                if db_call_count == len(init_dict[file_name]):
+                    file_handle.write('        %s\n' % db_call)
+                else:
+                    file_handle.write('        %s, \\\n' % db_call)
+file_handle.close()
+
+# read in all the async pool db files
+async_db_call_table = []
+init_dict = {}
+for db_file in async_pool_db_files:
+    print('DB Async Pool File:', db_file, flush=True)
+    if os.path.basename(db_file) != '__init__.py':
+        file_handle = open(db_file, 'r')
+        db_file_call = []
+        for file_line in file_handle.readlines():
+            if file_line.find('def ') != -1:
+                db_call = file_line.split('def ')[1].split('(')[0]
+                if db_call in db_file_call:
+                    pass
+                else:
+                    db_file_call.append(db_call)
+                if db_call in async_db_call_table:
+                    pass
+                else:
+                    async_db_call_table.append(db_call)
+        file_handle.close()
+        init_dict[db_file] = db_file_call
+print('Unique Async Pool Calls DB', len(async_db_call_table), async_db_call_table, flush=True)
+
+# generate the init file for async pool
+file_handle = open('./database_async_pool/__init__.py', 'w')
+file_handle.write('class MKServerDatabaseAsyncPool:\n')
+file_handle.write('    """\n')
+file_handle.write('    Main database class for async pool database access\n')
+file_handle.write('    """\n')
+for file_name in init_dict.keys():
+    if len(init_dict[file_name]) > 0:
+        first_record = True
+        file_handle.write(
+            '    from database_async_pool.%s \\\n' % os.path.basename(file_name).split('.py')[0])
         db_call_count = 0
         for db_call in init_dict[file_name]:
             db_call_count += 1
