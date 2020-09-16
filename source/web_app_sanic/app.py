@@ -2,12 +2,11 @@ import json
 import os
 import traceback
 
-import database_async as database_base_async
+import database_async_pool as database_base_async_pool
 import pika
 from asyncpg import create_pool
 from common import common_file
 from common import common_global
-# from common import common_hash
 from common import common_logging_elasticsearch_httpx
 from common import common_network
 from sanic import Sanic
@@ -54,7 +53,7 @@ os.system("cp -rf /mediakraken/web_app_sanic/static_copy/* /mediakraken/web_app_
 app.blueprint(blueprint_content_mediakraken)
 
 # setup all the db functions and attempt db connection
-app.db_functions = database_base_async.MKServerDatabaseAsync()
+app.db_functions = database_base_async_pool.MKServerDatabaseAsyncPool()
 
 # setup the pika connection
 common_network.mk_network_service_available(host_dns='mkstack_rabbitmq', host_port='5672')
