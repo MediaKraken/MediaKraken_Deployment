@@ -58,8 +58,9 @@ async def com_meta_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={"filename": media_name})
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "filename": media_name})
     pattern = r'[^\.a-zA-Z]'
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
