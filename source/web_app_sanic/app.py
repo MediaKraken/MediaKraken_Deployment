@@ -21,7 +21,7 @@ from sanic_session import Session
 # setup the Sanic app
 app = Sanic(__name__)
 # fire up ES logging
-common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                      message_text='START',
                                                      index_name='webapp_app')
 # setup the crypto

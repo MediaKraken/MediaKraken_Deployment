@@ -23,7 +23,7 @@ async def url_bp_user_metadata_periodical(request):
                                                                                     'per_page']),
                                                                             request.ctx.session[
                                                                                 'search_text']):
-        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             'person data': item_data})
         item_image = "img/missing_icon.jpg"
         item_list.append((item_data['mm_metadata_book_guid'],

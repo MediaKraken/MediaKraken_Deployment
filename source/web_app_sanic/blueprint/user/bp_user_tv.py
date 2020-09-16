@@ -250,10 +250,10 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
                                                                                    guid,
                                                                                    int(season))
     await request.app.db_pool.release(db_connection)
-    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'dataeps': data_episode_count})
     data_episode_keys = natsort.natsorted(data_episode_count)
-    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'dataepskeys': data_episode_keys})
     # poster image
     try:

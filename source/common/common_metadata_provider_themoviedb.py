@@ -40,9 +40,10 @@ class CommonMetadataTMDB:
         """
         # search for media title and year
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-            "tmdb search": media_title,
-            'year': media_year})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             "tmdb search": media_title,
+                                                                             'year': media_year})
         if media_type == common_global.DLMediaType.Movie.value:
             async with httpx.AsyncClient() as client:
                 search_json = await client.get('https://api.themoviedb.org/3/search/movie'
@@ -65,20 +66,23 @@ class CommonMetadataTMDB:
             return None, None
         # pull json since it's a coroutine above
         search_json = search_json.json()
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-            'search': str(search_json)})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'search': str(
+                                                                                 search_json)})
         if search_json is not None and search_json['total_results'] > 0:
             for res in search_json['results']:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                     message_text={
-                                                                         "result": res['title'],
-                                                                         'id': res['id'],
-                                                                         'date':
-                                                                             res[
-                                                                                 'release_date'].split(
-                                                                                 '-',
-                                                                                 1)[
-                                                                                 0]})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='info',
+                    message_text={
+                        "result": res['title'],
+                        'id': res['id'],
+                        'date':
+                            res[
+                                'release_date'].split(
+                                '-',
+                                1)[
+                                0]})
                 if media_year is not None and type(media_year) is not list \
                         and (str(media_year) == res['release_date'].split('-', 1)[0]
                              or str(int(media_year) - 1) == res['release_date'].split('-', 1)[0]
@@ -106,17 +110,19 @@ class CommonMetadataTMDB:
                                         'reviews,release_dates,videos' %
                                         (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                     message_text=
-                                                                     {
-                                                                         "TMDB Req com_tmdb_metadata_by_id":
-                                                                             str(exc)})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='error',
+                    message_text=
+                    {
+                        "TMDB Req com_tmdb_metadata_by_id":
+                            str(exc)})
             except httpx.HTTPStatusError as exc:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                     message_text=
-                                                                     {
-                                                                         "TMDB Stat com_tmdb_metadata_by_id":
-                                                                             str(exc)})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='error',
+                    message_text=
+                    {
+                        "TMDB Stat com_tmdb_metadata_by_id":
+                            str(exc)})
 
     async def com_tmdb_metadata_tv_by_id(self, tmdb_id):
         """
@@ -129,17 +135,19 @@ class CommonMetadataTMDB:
                                         'reviews,release_dates,videos' %
                                         (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                     message_text=
-                                                                     {
-                                                                         "TMDB Req com_tmdb_metadata_tv_by_id":
-                                                                             str(exc)})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='error',
+                    message_text=
+                    {
+                        "TMDB Req com_tmdb_metadata_tv_by_id":
+                            str(exc)})
             except httpx.HTTPStatusError as exc:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                     message_text=
-                                                                     {
-                                                                         "TMDB Stat com_tmdb_metadata_tv_by_id":
-                                                                             str(exc)})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='error',
+                    message_text=
+                    {
+                        "TMDB Stat com_tmdb_metadata_tv_by_id":
+                            str(exc)})
 
     async def com_tmdb_metadata_bio_by_id(self, tmdb_id):
         """
@@ -152,17 +160,19 @@ class CommonMetadataTMDB:
                                         'external_ids,images' %
                                         (tmdb_id, self.API_KEY), timeout=3.05)
             except httpx.RequestError as exc:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                     message_text=
-                                                                     {
-                                                                         "TMDB Req com_tmdb_metadata_bio_by_id":
-                                                                             str(exc)})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='error',
+                    message_text=
+                    {
+                        "TMDB Req com_tmdb_metadata_bio_by_id":
+                            str(exc)})
             except httpx.HTTPStatusError as exc:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                     message_text=
-                                                                     {
-                                                                         "TMDB Stat com_tmdb_metadata_bio_by_id":
-                                                                             str(exc)})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='error',
+                    message_text=
+                    {
+                        "TMDB Stat com_tmdb_metadata_bio_by_id":
+                            str(exc)})
 
     def com_tmdb_meta_bio_image_build(self, result_json):
         """
@@ -249,8 +259,9 @@ class CommonMetadataTMDB:
         """
         # download info and set data to be ready for insert into database
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-            'tmdb info build': result_json})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'tmdb info build': result_json})
         # create file path for poster
         if 'title' in result_json:  # movie
             image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
@@ -258,8 +269,9 @@ class CommonMetadataTMDB:
         else:  # tv
             image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
                                                                        'poster')
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-            'tmdb image path': image_file_path})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'tmdb image path': image_file_path})
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']

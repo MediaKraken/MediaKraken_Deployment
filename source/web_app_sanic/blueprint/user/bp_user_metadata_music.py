@@ -22,7 +22,7 @@ async def url_bp_user_metadata_music_album_list(request):
                                                                                       'per_page']),
                                                                               request.ctx.session[
                                                                                   'search_text']):
-        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={'album_data': album_data,
                                                                            'id': album_data[
                                                                                'mm_metadata_album_guid'],

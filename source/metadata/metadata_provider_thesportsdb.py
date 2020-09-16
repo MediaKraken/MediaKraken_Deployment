@@ -24,15 +24,15 @@ async def search_thesportsdb(db_connection, file_name):
     # search thesportsdb
     """
     try:
-        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text=
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text=
         {"meta movie search thesportsdb": str(file_name)})
     except:
         pass
 
-    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'search_thesportsdb': str(file_name)})
 
-    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         'meta thesportsdb uuid': metadata_uuid,
         'result': match_result})
     return metadata_uuid, match_result

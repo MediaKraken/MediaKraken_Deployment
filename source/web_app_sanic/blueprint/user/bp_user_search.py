@@ -105,7 +105,7 @@ async def url_bp_user_search_nav_media(request):
     determine what search results screen to show
     """
     # TODO!
-    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
         "search session": request.ctx.session['search_page']})
     request.ctx.session['search_text'] = request.form.get('nav_search').strip()
     if request.ctx.session['search_page'] == 'media_3d':

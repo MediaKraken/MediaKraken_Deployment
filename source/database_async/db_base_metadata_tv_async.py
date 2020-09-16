@@ -21,7 +21,7 @@ async def db_meta_tv_episode(self, show_guid, season_number, episode_number):
     """
     # grab episode detail
     """
-    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                          message_text={"show guid": show_guid,
                                                                        'season': season_number,
                                                                        'eps': episode_number})

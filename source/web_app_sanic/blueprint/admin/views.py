@@ -15,7 +15,7 @@ def admin_required(fn):
     @wraps(fn)
     @login_required
     def decorated_view(*args, **kwargs):
-        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
             "admin access attempt by":
                 user.id})
         if not current_user.is_admin:

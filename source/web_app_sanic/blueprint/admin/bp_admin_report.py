@@ -89,7 +89,7 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
                                                                                offset, int(
                 request.ctx.session[
                     'per_page'])):
-        common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                              message_text={"media": media_data[
                                                                  'mm_media_ffprobe_json']})
         if media_data['mm_media_ffprobe_json'] is not None:
