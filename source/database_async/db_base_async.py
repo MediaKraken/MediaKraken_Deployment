@@ -83,7 +83,7 @@ async def db_commit(self):
                                                                              'stuff': 'db commit'})
     except:
         pass
-    await self.db_connection.execute('commit')
+    await self.db_connection.commit()
 
 
 async def db_rollback(self):
