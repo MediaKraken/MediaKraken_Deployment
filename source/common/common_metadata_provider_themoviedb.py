@@ -174,7 +174,7 @@ class CommonMetadataTMDB:
                         "TMDB Stat com_tmdb_metadata_bio_by_id":
                             str(exc)})
 
-    def com_tmdb_meta_bio_image_build(self, result_json):
+    async def com_tmdb_meta_bio_image_build(self, result_json):
         """
         # download info and set data to be ready for insert into database
         """
@@ -191,7 +191,7 @@ class CommonMetadataTMDB:
         # set local image json
         return image_file_path.replace(common_global.static_data_directory, '')
 
-    def com_tmdb_metadata_id_max(self):
+    async def com_tmdb_metadata_id_max(self):
         """
         Grab high metadata id
         """
@@ -199,7 +199,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/movie/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
-    def com_tmdb_metadata_bio_id_max(self):
+    async def com_tmdb_metadata_bio_id_max(self):
         """
         Grab high bios metadata id (person)
         """
@@ -207,7 +207,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/person/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
-    def com_tmdb_metadata_tv_id_max(self):
+    async def com_tmdb_metadata_tv_id_max(self):
         """
         Grab high tv metadata id
         """
@@ -215,7 +215,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/tv/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
-    def com_tmdb_meta_review_by_id(self, tmdb_id):
+    async def com_tmdb_meta_review_by_id(self, tmdb_id):
         """
         # review by tmdb
         """
@@ -223,7 +223,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/review/%s'
             '?api_key=%s', (self.API_KEY, tmdb_id)))
 
-    def com_tmdb_meta_changes_movie(self):
+    async def com_tmdb_meta_changes_movie(self):
         """
         # movie changes since date within 24 hours
         """
@@ -231,7 +231,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/movie/changes'
             '?api_key=%s' % self.API_KEY))['id']
 
-    def com_tmdb_meta_changes_tv(self):
+    async def com_tmdb_meta_changes_tv(self):
         """
         # tv changes since date within 24 hours
         """
@@ -239,7 +239,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/tv/changes'
             '?api_key=%s' % self.API_KEY))['id']
 
-    def com_tmdb_meta_changes_person(self):
+    async def com_tmdb_meta_changes_person(self):
         """
         # person changes since date within 24 hours
         """
@@ -247,7 +247,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/person/changes'
             '?api_key=%s' % self.API_KEY))['id']
 
-    def com_tmdb_meta_collection_by_id(self, tmdb_id):
+    async def com_tmdb_meta_collection_by_id(self, tmdb_id):
         """
         # collection info
         """
@@ -255,7 +255,7 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/collection/%s'
             '?api_key=%s', (self.API_KEY, tmdb_id)))
 
-    def com_tmdb_meta_info_build(self, result_json):
+    async def com_tmdb_meta_info_build(self, result_json):
         """
         # download info and set data to be ready for insert into database
         """
