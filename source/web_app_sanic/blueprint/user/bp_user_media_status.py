@@ -30,8 +30,6 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
                                                                            db_connection, guid),
                                                                        user.id, event_type)
         else:
-            # await request.app.db_functions.db_media_rating_update(db_connection,
-            #     guid, user.id, event_type)
             await request.app.db_functions.db_meta_movie_status_update(db_connection,
                                                                        await request.app.db_functions.db_metadata_guid_from_media_guid(
                                                                            db_connection, guid),
