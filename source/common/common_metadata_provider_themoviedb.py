@@ -179,8 +179,8 @@ class CommonMetadataTMDB:
         # download info and set data to be ready for insert into database
         """
         # create file path for poster
-        image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
-                                                                   'person')
+        image_file_path = await common_metadata.com_meta_image_file_path(result_json['name'],
+                                                                         'person')
         if 'profile_path' in result_json and result_json['profile_path'] is not None:
             if not os.path.isfile(image_file_path + result_json['profile_path']):
                 if result_json['profile_path'] is not None:
@@ -264,11 +264,11 @@ class CommonMetadataTMDB:
                                                                              'tmdb info build': result_json})
         # create file path for poster
         if 'title' in result_json:  # movie
-            image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
-                                                                       'poster')
+            image_file_path = await common_metadata.com_meta_image_file_path(result_json['title'],
+                                                                             'poster')
         else:  # tv
-            image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
-                                                                       'poster')
+            image_file_path = await common_metadata.com_meta_image_file_path(result_json['name'],
+                                                                             'poster')
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
                                                                              'tmdb image path': image_file_path})
@@ -285,11 +285,11 @@ class CommonMetadataTMDB:
             poster_file_path = image_file_path
         # create file path for backdrop
         if 'title' in result_json:  # movie
-            image_file_path = common_metadata.com_meta_image_file_path(result_json['title'],
-                                                                       'backdrop')
+            image_file_path = await common_metadata.com_meta_image_file_path(result_json['title'],
+                                                                             'backdrop')
         else:  # tv
-            image_file_path = common_metadata.com_meta_image_file_path(result_json['name'],
-                                                                       'backdrop')
+            image_file_path = await common_metadata.com_meta_image_file_path(result_json['name'],
+                                                                             'backdrop')
         backdrop_file_path = None
         if result_json['backdrop_path'] is not None:
             image_file_path += result_json['backdrop_path']
