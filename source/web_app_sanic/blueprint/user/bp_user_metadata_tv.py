@@ -145,9 +145,9 @@ async def url_bp_user_metadata_tvshow_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_tvshow_list',
                                                                       item_count=await request.app.db_functions.db_meta_tv_list_count(
-                                                                          db_connection=db_connection,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -169,7 +169,8 @@ async def url_bp_user_metadata_tvshow_season_detail(request, guid, season):
     Display metadata of tvshow season detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid, db_connection=db_connection)
+    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid,
+                                                                     db_connection=db_connection)
     json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:

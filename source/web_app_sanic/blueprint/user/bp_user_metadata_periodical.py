@@ -34,9 +34,9 @@ async def url_bp_user_metadata_periodical(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_periodical',
                                                                       item_count=await request.app.db_functions.db_meta_periodical_list_count(
-                                                                          db_connection=db_connection,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),

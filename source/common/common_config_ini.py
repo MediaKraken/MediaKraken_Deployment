@@ -25,7 +25,7 @@ def com_config_read(close_db=False, force_local=False,
     # open the database
     import database as database_base
     db_connection = database_base.MKServerDatabase()
-    db_connection.db_open(force_local=force_local)
+    db_connection.db_open(force_local=force_local, loop=None, as_pool=False)
     db_options_json = db_connection.db_opt_status_read()
     if close_db:
         db_connection.db_close()

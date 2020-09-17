@@ -18,7 +18,7 @@
 
 import json
 
-from . import common_network
+from common import common_network
 
 
 class CommonMetadataShoutcast:

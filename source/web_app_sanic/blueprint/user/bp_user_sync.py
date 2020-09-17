@@ -21,15 +21,16 @@ async def url_bp_user_sync_display_all(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_sync',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection=db_connection,
-                                                                          'mm_sync'),
+                                                                          table_name='mm_sync',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
     media_data = await request.app.db_functions.db_sync_list(offset,
                                                              int(request.ctx.session[
-                                                                     'per_page']), db_connection=db_connection)
+                                                                     'per_page']),
+                                                             db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_sync': media_data,
@@ -71,7 +72,8 @@ async def url_bp_user_sync_edit(request, guid):
                      'Progress': 0}
         await request.app.db_functions.db_sync_insert(request.form['name'],
                                                       request.form['target_output_path'],
-                                                      json.dumps(sync_json), db_connection=db_connection)
+                                                      json.dumps(sync_json),
+                                                      db_connection=db_connection)
         await request.app.db_pool.release(db_connection)
         return redirect(
             request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail', guid=guid))

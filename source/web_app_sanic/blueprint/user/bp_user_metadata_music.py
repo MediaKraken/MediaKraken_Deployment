@@ -49,8 +49,8 @@ async def url_bp_user_metadata_music_album_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_music_album_list',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection=db_connection,
-                                                                          'mm_metadata_album'),
+                                                                          table_name='mm_metadata_album',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -76,8 +76,8 @@ async def metadata_music_album_song_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_music_album_song_list',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection=db_connection,
-                                                                          'mm_metadata_music'),
+                                                                          table_name='mm_metadata_music',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),

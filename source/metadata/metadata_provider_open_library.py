@@ -16,28 +16,19 @@
   MA 02110-1301, USA.
 """
 
-import json
-
-from . import common_network
-
-"""
-Website is down for the count!!!
-Website is down for the count!!!
-Website is down for the count!!!
-"""
+from source.common import common_network
 
 
-class CommonMetadataTheLogoDB:
+# https://openlibrary.org/developers/api
+
+class CommonMetadataOpenLibrary:
     """
-    Class for interfacing with thelogodb
+    Class for interfacing with OpenLibrary
     """
 
-    def __init__(self, option_config_json):
-        self.logo_api_key = option_config_json['API']['thelogodb']
+    def __init__(self):
+        pass
 
-    def com_thelogodb_fetch_latest(self):
-        """
-        Grab newest releases
-        """
-        return json.loads(common_network.mk_network_fetch_from_url(
-            'http://www.thelogodb.com/api/json/v1/' + self.logo_api_key + '/tvlatest.php', None))
+    def com_meta_openlibrary_fetch_cover(self, isbn_id, image_path):
+        common_network.mk_network_fetch_from_url('http://covers.openlibrary.org/b/isbn/'
+                                                 + isbn_id + '-L.jpg', image_path)

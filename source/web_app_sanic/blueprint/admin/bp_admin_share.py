@@ -24,8 +24,8 @@ async def url_bp_admin_share(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/admin/admin_share',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection,
-                                                                          'mm_media_share'),
+                                                                          table_name='mm_media_share',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),

@@ -493,7 +493,7 @@ async def main(loop):
                         metadata_last_year = None
                 else:  # invalid guessit guess so set to ZZ to skip for now
                     await db_connection.db_download_update_provider('ZZ', row_data['mdq_id'])
-                    await db_connection.db_commit()
+                    await db_connection.db_commit(db_connection=None)
                 # update the media row with the json media id AND THE proper NAME!!!
                 if metadata_uuid is not None:
                     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
@@ -509,7 +509,7 @@ async def main(loop):
                     await db_connection.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                                                            metadata_uuid)
                     await db_connection.db_download_delete(row_data['mdq_id'])
-                    await db_connection.db_commit()
+                    await db_connection.db_commit(db_connection=None)
         await asyncio.sleep(1)
 
 

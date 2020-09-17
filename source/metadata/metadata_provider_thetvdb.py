@@ -23,7 +23,7 @@ import requests
 import xmltodict
 from common import common_logging_elasticsearch_httpx
 
-from . import common_network
+from source.common import common_network
 
 '''
 http://www.thetvdb.com/wiki/index.php/Programmers_API

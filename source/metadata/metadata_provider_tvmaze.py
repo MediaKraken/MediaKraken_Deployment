@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 """
 
-from . import common_network
+from common import common_network
 
 
 # code to use

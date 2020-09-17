@@ -43,10 +43,10 @@ async def url_bp_user_tv(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_tv',
                                                                       item_count=await request.app.db_functions.db_media_tv_list_count(
-                                                                          db_connection=db_connection,
                                                                           None, None,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -81,7 +81,8 @@ async def url_bp_user_tv_show_detail(request, user, guid):
                 request.app.url_for('name_blueprint_user_tv.url_bp_user_tv_show_detail', guid=guid))
     else:
         # guid, name, id, metajson
-        data_metadata = await request.app.db_functions.db_meta_tv_detail(guid, db_connection=db_connection)
+        data_metadata = await request.app.db_functions.db_meta_tv_detail(guid,
+                                                                         db_connection=db_connection)
         json_metadata = data_metadata['mm_metadata_tvshow_json']
         if 'tvmaze' in json_metadata['Meta']:
             # data_runtime = json_metadata.get(['Meta']['tvmaze']['runtime'], None)
@@ -155,8 +156,10 @@ async def url_bp_user_tv_show_detail(request, user, guid):
         except:
             data_background_image = None
         # grab reviews
-        review = await request.app.db_functions.db_review_list_by_tmdb_guid(guid, db_connection=db_connection)
-        data_season_data = await request.app.db_functions.db_meta_tv_eps_season(guid, db_connection=db_connection)
+        review = await request.app.db_functions.db_review_list_by_tmdb_guid(guid,
+                                                                            db_connection=db_connection)
+        data_season_data = await request.app.db_functions.db_meta_tv_eps_season(guid,
+                                                                                db_connection=db_connection)
         data_season_count = sorted(data_season_data.iterkeys())
         # calculate a better runtime
         minutes, seconds = divmod((float(data_runtime) * 60), 60)
@@ -198,7 +201,8 @@ async def url_bp_user_tv_show_season_detail_page(request, guid, season):
     Display tv season detail page
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid, db_connection=db_connection)
+    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid,
+                                                                     db_connection=db_connection)
     json_metadata = data_metadata['mm_metadata_tvshow_json']
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:

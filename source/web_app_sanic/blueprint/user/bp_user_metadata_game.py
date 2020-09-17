@@ -18,8 +18,8 @@ async def url_bp_user_metadata_game(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_game',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection=db_connection,
-                                                                          'mm_metadata_game_software_info'),
+                                                                          table_name='mm_metadata_game_software_info',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -46,8 +46,8 @@ async def url_bp_user_metadata_game_detail(request, guid):
     """
     db_connection = await request.app.db_pool.acquire()
     media_data = await \
-    request.app.db_functions.db_meta_game_by_guid(guid, db_connection=db_connection)[
-        'gi_game_info_json']
+        request.app.db_functions.db_meta_game_by_guid(guid, db_connection=db_connection)[
+            'gi_game_info_json']
     await request.app.db_pool.release(db_connection)
     return {
         'guid': guid,

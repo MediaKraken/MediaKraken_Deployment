@@ -67,12 +67,13 @@ async def url_bp_admin(request):
     media_matched_count = common_internationalization.com_inter_number_format(
         await request.app.db_functions.db_media_matched_count(db_connection=db_connection))
     media_library_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_table_count('mm_media_dir', db_connection=db_connection))
+        await request.app.db_functions.db_table_count(table_name='mm_media_dir',
+                                                      db_connection=db_connection))
     share_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_table_count('mm_media_share',
+        await request.app.db_functions.db_table_count(table_name='mm_media_share',
                                                       db_connection=db_connection))
     metadata_to_fetch = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_table_count('mm_download_que',
+        await request.app.db_functions.db_table_count(table_name='mm_download_que',
                                                       db_connection=db_connection))
     await request.app.db_pool.release(db_connection)
     return {
