@@ -1,4 +1,4 @@
-async def db_library_path_status(db_connection):
+async def db_library_path_status(self, db_connection):
     """
     # read scan status
     """

@@ -1,4 +1,4 @@
-async def db_opt_json_read(db_connection):
+async def db_opt_json_read(self, db_connection):
     """
     Read options
     """
@@ -7,7 +7,7 @@ async def db_opt_json_read(db_connection):
         ' from mm_options_and_status')
 
 
-async def db_opt_status_read(db_connection):
+async def db_opt_status_read(self, db_connection):
     """
     Read options, status
     """
@@ -16,7 +16,7 @@ async def db_opt_status_read(db_connection):
         ' from mm_options_and_status')
 
 
-async def db_status_json_read(db_connection):
+async def db_status_json_read(self, db_connection):
     """
     Read options
     """

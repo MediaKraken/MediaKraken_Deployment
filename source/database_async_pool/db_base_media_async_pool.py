@@ -1,11 +1,11 @@
-async def db_media_known_count(db_connection):
+async def db_media_known_count(self, db_connection):
     """
     # count known media
     """
     return await db_connection.fetchval('select count(*) from mm_media')
 
 
-async def db_media_matched_count(db_connection):
+async def db_media_matched_count(self, db_connection):
     """
     # count matched media
     """

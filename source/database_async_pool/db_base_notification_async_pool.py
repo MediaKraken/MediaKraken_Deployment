@@ -1,4 +1,4 @@
-async def db_notification_read(db_connection, offset=0, records=None):
+async def db_notification_read(self, db_connection, offset=0, records=None):
     """
     # read all notifications
     """

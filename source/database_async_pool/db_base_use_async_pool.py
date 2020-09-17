@@ -1,4 +1,4 @@
-async def db_user_login(db_connection, user_name, user_password):
+async def db_user_login(self, db_connection, user_name, user_password):
     """
     # verify user logon
     """
@@ -15,7 +15,7 @@ async def db_user_login(db_connection, user_name, user_password):
     return 'invalid_password', None, None
 
 
-async def db_user_count(db_connection, user_name=None):
+async def db_user_count(self, db_connection, user_name=None):
     if user_name is None:
         return await db_connection.fetchval('select count(*) from mm_user')
     else:
@@ -23,7 +23,7 @@ async def db_user_count(db_connection, user_name=None):
                                             ' where username = $1', user_name)
 
 
-async def db_user_insert(db_connection, user_name, user_email, user_password):
+async def db_user_insert(self, db_connection, user_name, user_email, user_password):
     """
     # insert user
     """
