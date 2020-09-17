@@ -12,9 +12,9 @@ async def url_bp_user_playback_album(request, guid):
     Obsolete?
     """
     db_connection = await request.app.db_pool.acquire()
-    data_desc = await request.app.db_functions.db_meta_music_album_by_guid(guid, db_connection)
+    data_desc = await request.app.db_functions.db_meta_music_album_by_guid(guid, db_connection=db_connection)
     data_song_list = await request.app.db_functions.db_meta_music_songs_by_album_guid(guid,
-                                                                                      db_connection)
+                                                                                      db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         data_desc: data_desc,

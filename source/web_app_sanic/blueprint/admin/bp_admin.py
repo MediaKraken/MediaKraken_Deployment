@@ -31,7 +31,8 @@ async def url_bp_admin(request):
     data_alerts = []
     # read in the notifications
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_notification_read(db_connection):
+    for row_data in await request.app.db_functions.db_notification_read(
+            db_connection=db_connection):
         if row_data['mm_notification_dismissable']:  # check for dismissable
             data_alerts_dismissable.append((row_data['mm_notification_guid'],
                                             row_data['mm_notification_text'],
@@ -41,15 +42,17 @@ async def url_bp_admin(request):
                                 row_data['mm_notification_text'],
                                 row_data['mm_notification_time']))
     data_transmission_active = False
-    row_data = json.loads(await request.app.db_functions.db_opt_json_read(db_connection))
+    row_data = json.loads(
+        await request.app.db_functions.db_opt_json_read(db_connection=db_connection))
     if row_data['Docker Instances']['transmission'] is True:
         data_transmission_active = True
     # set the scan info
     data_scan_info = []
-    scanning_json = json.loads(await request.app.db_functions.db_status_json_read(db_connection))
+    scanning_json = json.loads(
+        await request.app.db_functions.db_status_json_read(db_connection=db_connection))
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
-    row_data = await request.app.db_functions.db_library_path_status(db_connection)
+    row_data = await request.app.db_functions.db_library_path_status(db_connection=db_connection)
     if row_data is not None:
         for dir_path in row_data:
             data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
@@ -58,17 +61,19 @@ async def url_bp_admin(request):
     else:
         mediakraken_ip = os.environ['HOST_IP']
     user_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_user_count(db_connection))
+        await request.app.db_functions.db_user_count(db_connection=db_connection))
     media_file_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_media_known_count(db_connection))
+        await request.app.db_functions.db_media_known_count(db_connection=db_connection))
     media_matched_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_media_matched_count(db_connection))
+        await request.app.db_functions.db_media_matched_count(db_connection=db_connection))
     media_library_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_table_count('mm_media_dir', db_connection))
+        await request.app.db_functions.db_table_count('mm_media_dir', db_connection=db_connection))
     share_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_table_count('mm_media_share', db_connection))
+        await request.app.db_functions.db_table_count('mm_media_share',
+                                                      db_connection=db_connection))
     metadata_to_fetch = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_table_count('mm_download_que', db_connection))
+        await request.app.db_functions.db_table_count('mm_download_que',
+                                                      db_connection=db_connection))
     await request.app.db_pool.release(db_connection)
     return {
         'data_user_count': user_count,

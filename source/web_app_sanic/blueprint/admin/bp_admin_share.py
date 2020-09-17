@@ -58,7 +58,7 @@ async def url_bp_admin_share_delete(request):
     Delete share action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_share_delete(request.form['id'], db_connection)
+    await request.app.db_functions.db_share_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -165,6 +165,7 @@ async def url_bp_admin_share_update(request):
                                                            request.form['new_share_password'],
                                                            request.form['new_share_server'],
                                                            request.form['new_share_path'],
-                                                           request.form['id'], db_connection)
+                                                           request.form['id'],
+                                                           db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

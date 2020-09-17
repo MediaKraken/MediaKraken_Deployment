@@ -15,7 +15,8 @@ async def url_bp_user_metadata_person_detail(request, guid):
     Display person detail page
     """
     db_connection = await request.app.db_pool.acquire()
-    person_data = await request.app.db_functions.db_meta_person_by_guid(guid, db_connection)
+    person_data = await request.app.db_functions.db_meta_person_by_guid(guid=guid,
+                                                                        db_connection=db_connection)
     if person_data['mmp_person_image'] is not None:
         try:
             person_image = person_data['mmp_person_image'] + person_data['mmp_meta']
@@ -24,8 +25,8 @@ async def url_bp_user_metadata_person_detail(request, guid):
     else:
         person_image = "img/person_missing.png"
     media_data = await request.app.db_functions.db_meta_person_as_seen_in(person_data['mmp_id'],
-                                                                          db_connection)
-    await request.app.db_pool.release(db_connection)
+                                                                          db_connection=db_connection)
+    await request.app.db_pool.release(db_connection=db_connection)
     return {
         'json_metadata': person_data['mmp_person_meta_json'],
         'data_person_image': person_image,
@@ -48,7 +49,7 @@ async def url_bp_user_metadata_person_list(request):
                                                                                   'per_page']),
                                                                           request.ctx.session[
                                                                               'search_text'],
-                                                                          db_connection):
+                                                                          db_connection=db_connection):
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
                                                                              'person data': person_data,
@@ -72,7 +73,7 @@ async def url_bp_user_metadata_person_list(request):
                                                                       item_count=await request.app.db_functions.db_meta_person_list_count(
                                                                           request.ctx.session[
                                                                               'search_text'],
-                                                                          db_connection),
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),

@@ -26,7 +26,7 @@ async def url_bp_user_iradio_list(request):
         mediadata = await request.app.db_functions.db_iradio_list(offset,
                                                                   int(request.ctx.session[
                                                                           'per_page']),
-                                                                  db_connection)
+                                                                  db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {}
 

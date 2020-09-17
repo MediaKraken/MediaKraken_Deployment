@@ -42,6 +42,7 @@ async def url_bp_admin_messages_delete(request):
     Delete messages action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_message_delete(request.form['id'], db_connection)
+    await request.app.db_functions.db_message_delete(request.form['id'],
+                                                     db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

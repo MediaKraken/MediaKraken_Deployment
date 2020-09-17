@@ -19,7 +19,7 @@ async def url_bp_admin_cron(request):
     Display cron jobs
     """
     db_connection = await request.app.db_pool.acquire()
-    cron_count = await request.app.db_functions.db_cron_list_count(False, db_connection)
+    cron_count = await request.app.db_functions.db_cron_list_count(False, db_connection=db_connection)
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/admin/admin_cron',
@@ -31,7 +31,7 @@ async def url_bp_admin_cron(request):
     cron_data = await request.app.db_functions.db_cron_list(False,
                                                             offset,
                                                             int(request.ctx.session['per_page'],
-                                                                db_connection))
+                                                                db_connection=db_connection))
     await request.app.db_pool.release(db_connection)
     return {
         'media_cron': cron_data,
@@ -48,7 +48,7 @@ async def url_bp_admin_cron_delete(request):
     Delete action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_cron_delete(request.form['id'], db_connection)
+    await request.app.db_functions.db_cron_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -94,6 +94,6 @@ async def url_bp_admin_cron_run(request, user, guid):
                                               'exchange_key'],
                                           route_key=cron_json_data['route_key'])
     await request.app.db_functions.db_cron_time_update(cron_job_data['mm_cron_name'],
-                                                       db_connection)
+                                                       db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return redirect(request.app.url_for('name_blueprint_admin_cron.url_bp_admin_cron'))

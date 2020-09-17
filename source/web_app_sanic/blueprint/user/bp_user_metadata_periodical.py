@@ -23,7 +23,7 @@ async def url_bp_user_metadata_periodical(request):
                                                                                     'per_page']),
                                                                             request.ctx.session[
                                                                                 'search_text'],
-                                                                            db_connection):
+                                                                            db_connection=db_connection):
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
                                                                              'person data': item_data})
@@ -34,7 +34,7 @@ async def url_bp_user_metadata_periodical(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_periodical',
                                                                       item_count=await request.app.db_functions.db_meta_periodical_list_count(
-                                                                          db_connection,
+                                                                          db_connection=db_connection,
                                                                           request.ctx.session[
                                                                               'search_text']),
                                                                       client_items_per_page=
@@ -56,7 +56,8 @@ async def url_bp_user_metadata_periodical_detail(request, guid):
     Display periodical detail page
     """
     db_connection = await request.app.db_pool.acquire()
-    json_metadata = await request.app.db_functions.db_meta_periodical_by_uuid(guid, db_connection)
+    json_metadata = await request.app.db_functions.db_meta_periodical_by_uuid(guid,
+                                                                              db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     try:
         data_name = json_metadata['mm_metadata_book_json']['title']

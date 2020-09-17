@@ -19,14 +19,11 @@ async def db_table_count(self, table_name, db_connection=None):
     return await db_conn.fetchval('select count(*) from ' + table_name)
 
 
-async def db_open(self, force_local=False, loop=None, as_pool=False, db_connection=None):
+async def db_open(self, force_local=False, loop=None, as_pool=False):
     """
     # open database
     """
-    if db_connection is None:
-        db_conn = self.db_connection
-    else:
-        db_conn = db_connection
+    # don't do the db_connection test here.  As this won't be a "separate" pool like webapp
     if force_local:
         database_password = 'metaman'
         database_host = 'localhost'
@@ -49,10 +46,10 @@ async def db_open(self, force_local=False, loop=None, as_pool=False, db_connecti
                                                    database='postgres',
                                                    host=database_host,
                                                    loop=loop)
-    await db_conn.set_type_codec('json',
-                                 encoder=json.dumps,
-                                 decoder=json.loads,
-                                 schema='pg_catalog')
+    await self.db_connection.set_type_codec('json',
+                                            encoder=json.dumps,
+                                            decoder=json.loads,
+                                            schema='pg_catalog')
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'stuff': 'db open async'})

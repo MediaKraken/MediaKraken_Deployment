@@ -13,7 +13,7 @@ async def url_bp_user_image_gallery(request):
     """
     db_connection = await request.app.db_pool.acquire()
     image_data = await request.app.db_functions.db_image_list(common_global.DLMediaType.Picture,
-                                                              db_connection)
+                                                              db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {'image_data': image_data
             }

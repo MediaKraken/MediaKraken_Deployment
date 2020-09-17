@@ -132,13 +132,17 @@ async def url_bp_admin_report_top10(request, mtype):
     db_connection = await request.app.db_pool.acquire()
     top10_data = None
     if mtype == '1':  # all time
-        top10_data = await request.app.db_functions.db_usage_top10_alltime(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_alltime(
+            db_connection=db_connection)
     elif mtype == '2':  # movie
-        top10_data = await request.app.db_functions.db_usage_top10_movie(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_movie(
+            db_connection=db_connection)
     elif mtype == '3':  # tv show
-        top10_data = await request.app.db_functions.db_usage_top10_tv_show(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_tv_show(
+            db_connection=db_connection)
     elif mtype == '4':  # tv episode
-        top10_data = await request.app.db_functions.db_usage_top10_tv_episode(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_tv_episode(
+            db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {'media': top10_data}
 

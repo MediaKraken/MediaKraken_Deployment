@@ -24,7 +24,7 @@ async def url_bp_user_movie_detail(request, user, guid):
             common_network_pika.com_net_pika_send(
                 {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
                  'User': user.id,
-                 'Data': await request.app.db_functions.db_read_media(guid, db_connection)[
+                 'Data': await request.app.db_functions.db_read_media(guid, db_connection=db_connection)[
                      'mm_media_path']},
                 rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
@@ -37,13 +37,13 @@ async def url_bp_user_movie_detail(request, user, guid):
                                     sub=request.form['Video_Play_Subtitles']))
         if request.form['status'] == 'Watched':
             await request.app.db_functions.db_meta_movie_status_update(guid, user.id, False,
-                                                                       db_connection)
+                                                                       db_connection=db_connection)
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
         elif request.form['status'] == 'Unwatched':
             await request.app.db_functions.db_meta_movie_status_update(guid, user.id, True,
-                                                                       db_connection)
+                                                                       db_connection=db_connection)
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
@@ -62,7 +62,7 @@ async def url_bp_user_movie_detail(request, user, guid):
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    await
                                                    request.app.db_functions.db_media_path_by_uuid(
-                                                       media_guid_index, db_connection)[
+                                                       media_guid_index, db_connection=db_connection)[
                                                        0] + '\" http://localhost/stream.ffm'),
                                              stdout=subprocess.PIPE, shell=False)
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
@@ -73,7 +73,7 @@ async def url_bp_user_movie_detail(request, user, guid):
                                     guid=guid))
     else:
         metadata_data = await request.app.db_functions.db_meta_movie_by_media_uuid(guid,
-                                                                                   db_connection)
+                                                                                   db_connection=db_connection)
         # fields returned
         # metadata_data['mm_metadata_json']
         # metadata_data['mm_metadata_localimage_json']
@@ -140,7 +140,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
         for video_version in await request.app.db_functions.db_media_ffprobe_all_guid(guid,
                                                                                       common_global.DLMediaType.Movie.value,
-                                                                                      db_connection):
+                                                                                      db_connection=db_connection):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  "vid_version": video_version})
@@ -216,7 +216,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         # find all devices to playback media on
         # TODO have reactor return client list?
         playback_devices = []
-        for device_item in await request.app.db_functions.db_device_list(db_connection):
+        for device_item in await request.app.db_functions.db_device_list(db_connection=db_connection):
             if device_item['mm_device_type'] == 'Chromecast':
                 playback_devices.append(device_item['mm_device_json']['Name'])
             elif device_item['mm_device_type'] == 'Roku':

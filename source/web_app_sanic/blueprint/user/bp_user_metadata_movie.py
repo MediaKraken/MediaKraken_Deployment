@@ -18,7 +18,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     Display metadata movie detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data = await request.app.db_functions.db_meta_movie_detail(guid, db_connection)
+    data = await request.app.db_functions.db_meta_movie_detail(guid, db_connection=db_connection)
     json_metadata = json.loads(data['mm_metadata_json'])
     json_imagedata = json.loads(data['mm_metadata_localimage_json'])
     # vote count format
@@ -53,7 +53,8 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     except:
         data_background_image = None
     # grab reviews
-    review = await request.app.db_functions.db_review_list_by_tmdb_guid(data[1], db_connection)
+    review = await request.app.db_functions.db_review_list_by_tmdb_guid(data[1],
+                                                                        db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         # data_media_ids: data[1],
@@ -174,6 +175,7 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
                                                                          'event': event_type})
     db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(guid,
-                                                               user.id, event_type, db_connection)
+                                                               user.id, event_type,
+                                                               db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})

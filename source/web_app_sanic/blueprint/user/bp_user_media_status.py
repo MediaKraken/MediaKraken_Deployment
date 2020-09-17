@@ -29,12 +29,12 @@ async def url_bp_user_status_movie(request, user, guid, event_type):
             await request.app.db_functions.db_meta_movie_status_update(
                 await request.app.db_functions.db_metadata_guid_from_media_guid(
                     guid, db_connection),
-                user.id, event_type, db_connection)
+                user.id, event_type, db_connection=db_connection)
         else:
             await request.app.db_functions.db_meta_movie_status_update(
                 await request.app.db_functions.db_metadata_guid_from_media_guid(
                     guid, db_connection),
-                user.id, event_type, db_connection)
+                user.id, event_type, db_connection=db_connection)
         await request.app.db_pool.release(db_connection)
         return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})
 
@@ -52,7 +52,7 @@ async def url_bp_user_status_movie_metadata(request, user, guid, event_type):
                                                                          'event': event_type})
     db_connection = await request.app.db_pool.acquire()
     await request.app.db_functions.db_meta_movie_status_update(guid, user.id, event_type,
-                                                               db_connection)
+                                                               db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})
 

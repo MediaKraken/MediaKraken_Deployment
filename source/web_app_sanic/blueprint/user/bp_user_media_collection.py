@@ -56,7 +56,8 @@ async def url_bp_user_metadata_movie_collection_detail(request, guid):
     Display movie collection metadata detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_collection_read_by_guid(guid, db_connection)
+    data_metadata = await request.app.db_functions.db_collection_read_by_guid(guid,
+                                                                              db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']

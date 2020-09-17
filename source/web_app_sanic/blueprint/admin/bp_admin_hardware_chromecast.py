@@ -22,7 +22,8 @@ async def url_bp_admin_chromecast_update(request):
 @common_global.auth.login_required
 async def url_bp_admin_getChromecastById(request):
     db_connection = await request.app.db_pool.acquire()
-    result = await request.app.db_functions.db_device_by_uuid(request.form['id'], db_connection)
+    result = await request.app.db_functions.db_device_by_uuid(request.form['id'],
+                                                              db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'Id': result['mm_device_id'],
                        'Name': result['mm_device_json']['Name'],

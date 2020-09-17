@@ -22,7 +22,7 @@ async def url_bp_user_sports(request):
             int(request.ctx.session[
                     'per_page']),
             request.ctx.session[
-                'search_text'], db_connection):
+                'search_text'], db_connection=db_connection):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     request.ctx.session['search_page'] = 'media_sports'
@@ -31,7 +31,7 @@ async def url_bp_user_sports(request):
                                                                       item_count=await request.app.db_functions.db_media_sports_list_count(
                                                                           request.ctx.session[
                                                                               'search_text'],
-                                                                          db_connection),
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -52,7 +52,7 @@ async def url_bp_user_sports_detail(request, guid):
     # poster image
     db_connection = await request.app.db_pool.acquire()
     media_data = await request.app.db_functions.db_meta_thesportsdb_select_by_guid(guid,
-                                                                                   db_connection)
+                                                                                   db_connection=db_connection)
     try:
         if json_metadata['LocalImages']['Poster'] is not None:
             data_poster_image = json_metadata['LocalImages']['Poster']

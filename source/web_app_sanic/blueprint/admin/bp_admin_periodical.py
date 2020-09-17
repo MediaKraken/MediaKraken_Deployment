@@ -21,7 +21,8 @@ async def url_bp_admin_periodical_add(request):
                 db_connection = await request.app.db_pool.acquire()
                 await request.app.db_functions.db_media_insert(media_id, None,
                                                                class_uuid,
-                                                               None, None, None, db_connection)
+                                                               None, None, None,
+                                                               db_connection=db_connection)
                 await request.app.db_functions.db_download_insert('Z', 0,
                                                                   json.dumps({'MediaID': media_id,
                                                                               'Path': None,
@@ -30,7 +31,7 @@ async def url_bp_admin_periodical_add(request):
                                                                               'MetaNewID': str(
                                                                                   uuid.uuid4()),
                                                                               'ProviderMetaID': book_item.strip()}),
-                                                                  db_connection)
+                                                                  db_connection=db_connection)
                 await request.app.db_pool.release(db_connection)
         return redirect(request.app.url_for('admins.admin_books_add'))
     form = BookAddForm(request, csrf_enabled=False)

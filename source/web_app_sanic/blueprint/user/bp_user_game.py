@@ -27,7 +27,7 @@ async def url_bp_user_game(request):
                                                                          int(request.ctx.session[
                                                                                  'per_page']),
                                                                          request.ctx.session[
-                                                                             'search_text'], db_connection)
+                                                                             'search_text'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

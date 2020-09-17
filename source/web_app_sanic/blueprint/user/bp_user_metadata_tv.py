@@ -18,7 +18,8 @@ async def url_bp_user_metadata_tvshow_detail(request, guid):
     Display metadata of tvshow
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid, db_connection)
+    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid,
+                                                                     db_connection=db_connection)
     json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
@@ -93,7 +94,7 @@ async def url_bp_user_metadata_tvshow_episode_detail(request, guid, eps_id):
     """
     db_connection = await request.app.db_pool.acquire()
     data_metadata = await request.app.db_functions.db_meta_tv_epsisode_by_id(guid, eps_id,
-                                                                             db_connection)
+                                                                             db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     # poster image
     try:
@@ -135,7 +136,7 @@ async def url_bp_user_metadata_tvshow_list(request):
                                                                            'per_page']),
                                                                    request.ctx.session[
                                                                        'search_text'],
-                                                                   db_connection):
+                                                                   db_connection=db_connection):
         media_tvshow.append((row_data['mm_metadata_tvshow_guid'],
                              row_data['mm_metadata_tvshow_name'],
                              row_data['air_date'].replace('"', ''),
@@ -144,7 +145,7 @@ async def url_bp_user_metadata_tvshow_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_tvshow_list',
                                                                       item_count=await request.app.db_functions.db_meta_tv_list_count(
-                                                                          db_connection,
+                                                                          db_connection=db_connection,
                                                                           request.ctx.session[
                                                                               'search_text']),
                                                                       client_items_per_page=
@@ -168,7 +169,7 @@ async def url_bp_user_metadata_tvshow_season_detail(request, guid, season):
     Display metadata of tvshow season detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid, db_connection)
+    data_metadata = await request.app.db_functions.db_meta_tv_detail(guid, db_connection=db_connection)
     json_metadata = json.loads(data_metadata['mm_metadata_tvshow_json'])
     if 'tvmaze' in json_metadata['Meta']:
         if 'runtime' in json_metadata['Meta']['tvmaze']:
@@ -219,7 +220,7 @@ async def url_bp_user_metadata_tvshow_season_detail(request, guid, season):
             # since | is at first and end....chop off first and last comma
             data_genres_list = data_genres_list[2:-2]
     data_episode_count = await request.app.db_functions.db_meta_tv_season_eps_list(
-        guid, int(season), db_connection)
+        guid, int(season), db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={

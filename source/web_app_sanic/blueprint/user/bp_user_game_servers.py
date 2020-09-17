@@ -17,7 +17,7 @@ async def url_bp_user_game_server_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_game_server',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection,
+                                                                          db_connection=db_connection,
                                                                           'mm_game_dedicated_servers'),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
@@ -26,7 +26,7 @@ async def url_bp_user_game_server_list(request):
     media_data = await request.app.db_functions.db_game_server_list(offset,
                                                                     int(request.ctx.session[
                                                                             'per_page']),
-                                                                    db_connection)
+                                                                    db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

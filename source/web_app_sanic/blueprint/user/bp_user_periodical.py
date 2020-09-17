@@ -20,7 +20,7 @@ async def url_bp_user_periodical_list(request):
                                                                       item_count=await request.app.db_functions.db_media_book_list_count(
                                                                           request.ctx.session[
                                                                               'search_text'],
-                                                                          db_connection),
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -30,7 +30,7 @@ async def url_bp_user_periodical_list(request):
                                                                            'per_page']),
                                                                    request.ctx.session[
                                                                        'search_text'],
-                                                                   db_connection)
+                                                                   db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

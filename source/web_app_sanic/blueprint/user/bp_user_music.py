@@ -30,7 +30,7 @@ async def url_bp_user_album_list(request):
                                                                                'per_page']),
                                                                        request.ctx.session[
                                                                            'search_text'],
-                                                                       db_connection):
+                                                                       db_connection=db_connection):
         if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
                           row_data['mm_metadata_album_json']))
@@ -43,7 +43,7 @@ async def url_bp_user_album_list(request):
                                                                       item_count=await request.app.db_functions.db_media_album_count(
                                                                           request.ctx.session[
                                                                               'search_page'],
-                                                                          db_connection),
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),

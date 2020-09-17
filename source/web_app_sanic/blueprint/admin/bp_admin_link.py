@@ -25,9 +25,9 @@ async def url_bp_admin_server_link(request):
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    link_data = await request.app.db_functions.db_link_list(db_connection,
-                                                            offset,
-                                                            int(request.ctx.session['per_page']))
+    link_data = await request.app.db_functions.db_link_list(offset,
+                                                            int(request.ctx.session['per_page']),
+                                                            db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'data': link_data,
@@ -57,6 +57,6 @@ async def url_bp_admin_link_delete(request):
     Delete linked server action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_link_delete(request.form['id'], db_connection)
+    await request.app.db_functions.db_link_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

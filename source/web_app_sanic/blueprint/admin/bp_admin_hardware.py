@@ -23,7 +23,8 @@ async def url_bp_admin_hardware(request):
         request['flash']("Scheduled hardware scan.", "success")
     chromecast_list = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_device_list('Chromecast', db_connection):
+    for row_data in await request.app.db_functions.db_device_list('Chromecast',
+                                                                  db_connection=db_connection):
         if row_data['mm_device_json']['Model'] == 'Eureka Dongle':
             device_model = 'Chromecast'
         else:
@@ -34,7 +35,8 @@ async def url_bp_admin_hardware(request):
                                 row_data['mm_device_json']['IP'],
                                 True))
     tv_tuners = []
-    for row_data in await request.app.db_functions.db_device_list('tvtuner', db_connection):
+    for row_data in await request.app.db_functions.db_device_list('tvtuner',
+                                                                  db_connection=db_connection):
         tv_tuners.append((row_data['mm_device_id'], row_data['mm_device_json']['HWModel']
                           + " (" + row_data['mm_device_json']['Model'] + ")",
                           row_data['mm_device_json']['IP'],
@@ -55,7 +57,7 @@ async def url_bp_admin_hardware_chromecast_delete(request):
     Delete action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_device_delete(request.form['id'], db_connection)
+    await request.app.db_functions.db_device_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -75,13 +77,13 @@ async def url_bp_admin_hardware_chromecast_edit(request):
                 db_connection = await request.app.db_pool.acquire()
                 if await request.app.db_functions.db_device_check(request.form['name'],
                                                                   request.form['ipaddr'],
-                                                                  db_connection) == 0:
+                                                                  db_connection=db_connection) == 0:
                     request.app.db_functions.db_device_upsert('cast',
                                                               json.dumps(
                                                                   {'Name': request.form['name'],
                                                                    'Model': "NA",
                                                                    'IP': request.form['ipaddr']}),
-                                                              db_connection)
+                                                              db_connection=db_connection)
                     await request.app.db_pool.release(db_connection)
                     return redirect(request.app.url_for('admins_chromecasts.admin_chromecast'))
                 else:
@@ -139,6 +141,6 @@ async def url_bp_admin_hardware_tvtuner_delete(request):
     Delete action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_device_delete(request.form['id'], db_connection)
+    await request.app.db_functions.db_device_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

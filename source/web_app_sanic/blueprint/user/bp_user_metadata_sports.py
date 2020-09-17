@@ -15,7 +15,7 @@ async def url_bp_user_metadata_sports_detail(request, guid):
     """
     db_connection = await request.app.db_pool.acquire()
     media_data = await request.app.db_functions.db_meta_sports_guid_by_thesportsdb(guid,
-                                                                                   db_connection)
+                                                                                   db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'guid': guid,
@@ -38,7 +38,7 @@ async def url_bp_user_metadata_sports_list(request):
                                                                                'per_page']),
                                                                        request.ctx.session[
                                                                            'search_text'],
-                                                                       db_connection):
+                                                                       db_connection=db_connection):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     request.ctx.session['search_page'] = 'meta_sports'
@@ -47,7 +47,7 @@ async def url_bp_user_metadata_sports_list(request):
                                                                       item_count=await request.app.db_functions.db_meta_sports_list_count(
                                                                           request.ctx.session[
                                                                               'search_text'],
-                                                                          db_connection),
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -57,7 +57,7 @@ async def url_bp_user_metadata_sports_list(request):
                                                                             'per_page']),
                                                                     request.ctx.session[
                                                                         'search_text'],
-                                                                    db_connection)
+                                                                    db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_sports_list': media_data,

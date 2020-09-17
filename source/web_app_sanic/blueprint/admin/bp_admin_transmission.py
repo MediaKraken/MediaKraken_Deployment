@@ -17,7 +17,7 @@ async def url_bp_admin_transmission(request):
     """
     db_connection = await request.app.db_pool.acquire()
     trans_connection = common_transmission.CommonTransmission(
-        await request.app.db_functions.db_opt_json_read(db_connection))
+        await request.app.db_functions.db_opt_json_read(db_connection=db_connection))
     await request.app.db_pool.release(db_connection)
     transmission_data = []
     if trans_connection is not None:

@@ -73,7 +73,7 @@ async def url_bp_admin_library(request):
 async def url_bp_admin_library_by_id(request):
     db_connection = await request.app.db_pool.acquire()
     result = await request.app.db_functions.db_library_path_by_uuid(request.form['id'],
-                                                                    db_connection)
+                                                                    db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
@@ -87,7 +87,8 @@ async def url_bp_admin_library_delete(request):
     Delete library action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_library_path_delete(request.form['id'], db_connection)
+    await request.app.db_functions.db_library_path_delete(request.form['id'],
+                                                          db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -176,7 +177,7 @@ async def url_bp_admin_library_edit(request):
         else:
             flash_errors(form)
     share_list = []
-    for row_data in await request.app.db_functions.db_share_list(db_connection):
+    for row_data in await request.app.db_functions.db_share_list(db_connection=db_connection):
         share_name = row_data['mm_media_share_server'] + \
                      ":" + row_data['mm_media_share_path']
         share_list.append((share_name, row_data['mm_media_share_guid']))
@@ -212,6 +213,6 @@ async def url_bp_admin_library_update(request):
     await request.app.db_functions.db_library_path_update_by_uuid(request.form['new_path'],
                                                                   request.form['new_class'],
                                                                   request.form['id'],
-                                                                  db_connection)
+                                                                  db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

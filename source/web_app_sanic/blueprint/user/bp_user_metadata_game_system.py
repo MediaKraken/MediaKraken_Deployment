@@ -19,7 +19,7 @@ async def url_bp_user_metadata_game_system(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_game',
                                                                       item_count=await request.app.db_functions.db_meta_game_system_list_count(
-                                                                          db_connection),
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -29,7 +29,7 @@ async def url_bp_user_metadata_game_system(request):
                                                                                  'per_page']),
                                                                          request.ctx.session[
                                                                              'search_text'],
-                                                                         db_connection)
+                                                                         db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
@@ -46,7 +46,8 @@ async def url_bp_user_metadata_game_system_detail(request, guid):
     Display metadata game detail
     """
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_meta_game_system_by_guid(guid, db_connection)
+    media_data = await request.app.db_functions.db_meta_game_system_by_guid(guid,
+                                                                            db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'guid': guid,

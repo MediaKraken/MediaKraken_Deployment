@@ -16,7 +16,7 @@ async def url_bp_admin_database_statistics(request):
     db_stats_count = []
     db_stats_total = 0
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_pgsql_row_count(db_connection):
+    for row_data in await request.app.db_functions.db_pgsql_row_count(db_connection=db_connection):
         db_stats_total += row_data[2]
         db_stats_count.append((row_data[1],
                                common_internationalization.com_inter_number_format(row_data[2])))
@@ -24,12 +24,14 @@ async def url_bp_admin_database_statistics(request):
         ('Total records:', common_internationalization.com_inter_number_format(db_stats_total)))
     db_size_data = []
     db_size_total = 0
-    for row_data in await request.app.db_functions.db_pgsql_table_sizes(db_connection):
+    for row_data in await request.app.db_functions.db_pgsql_table_sizes(
+            db_connection=db_connection):
         db_size_total += row_data['total_size']
         db_size_data.append(
             (row_data['relation'], common_string.com_string_bytes2human(row_data['total_size'])))
     db_size_data.append(('Total Size:', common_string.com_string_bytes2human(db_size_total)))
-    data_workers = await request.app.db_functions.db_pgsql_parallel_workers(db_connection)
+    data_workers = await request.app.db_functions.db_pgsql_parallel_workers(
+        db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'data_db_size': db_size_data,
