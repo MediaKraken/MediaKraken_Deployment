@@ -79,7 +79,8 @@ async def db_user_login(self, user_name, user_password, db_connection=None):
     return 'invalid_password', None, None
 
 
-async def db_user_group_insert(self, group_name, group_desc, group_rights_json, db_connection=None):
+async def db_user_group_insert(self, group_name, group_desc, group_rights_json,
+                               db_connection=None):
     """
     insert user group
     """

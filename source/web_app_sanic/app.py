@@ -88,8 +88,9 @@ async def login(request):
         username = form.username.data
         db_connection = await request.app.db_pool.acquire()
         user_id, user_admin, user_per_page \
-            = await request.app.db_functions.db_user_login(username,
-                                                           form.password.data, db_connection)
+            = await request.app.db_functions.db_user_login(user_name=username,
+                                                           user_password=form.password.data,
+                                                           db_connection=db_connection)
         await app.db_pool.release(db_connection)
         print(user_id, user_admin, user_per_page, flush=True)
         if user_id is None:  # invalid user name
