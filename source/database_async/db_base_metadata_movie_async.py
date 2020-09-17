@@ -9,11 +9,11 @@ async def db_meta_movie_by_media_uuid(self, media_guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await self.db_connection.fetchrow('select mm_metadata_json::json,'
-                                             ' mm_metadata_localimage_json::json'
-                                             ' from mm_media, mm_metadata_movie'
-                                             ' where mm_media_metadata_guid = mm_metadata_guid'
-                                             ' and mm_media_guid = $1', media_guid)
+    return await db_conn.fetchrow('select mm_metadata_json::json,'
+                                  ' mm_metadata_localimage_json::json'
+                                  ' from mm_media, mm_metadata_movie'
+                                  ' where mm_media_metadata_guid = mm_metadata_guid'
+                                  ' and mm_media_guid = $1', media_guid)
 
 
 async def db_meta_movie_detail(self, media_guid, db_connection=None):
@@ -24,15 +24,15 @@ async def db_meta_movie_detail(self, media_guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await self.db_connection.fetchrow('select mm_metadata_guid,'
-                                             ' mm_metadata_media_id,'
-                                             ' mm_media_name,'
-                                             ' mm_metadata_json::json,'
-                                             ' mm_metadata_localimage_json::json,'
-                                             ' mm_metadata_user_json::json'
-                                             ' from mm_metadata_movie'
-                                             ' where mm_metadata_guid = $1',
-                                             media_guid)
+    return await db_conn.fetchrow('select mm_metadata_guid,'
+                                  ' mm_metadata_media_id,'
+                                  ' mm_media_name,'
+                                  ' mm_metadata_json::json,'
+                                  ' mm_metadata_localimage_json::json,'
+                                  ' mm_metadata_user_json::json'
+                                  ' from mm_metadata_movie'
+                                  ' where mm_metadata_guid = $1',
+                                  media_guid)
 
 
 async def db_meta_movie_list(self, offset=0, records=None, search_value=None, db_connection=None):
@@ -44,30 +44,30 @@ async def db_meta_movie_list(self, offset=0, records=None, search_value=None, db
     else:
         db_conn = db_connection
     if search_value is not None:
-        return await self.db_connection.fetch('select mm_metadata_guid, mm_media_name,'
-                                              ' mm_metadata_json->\'release_date\' as mm_date,'
-                                              ' mm_metadata_localimage_json->\'Poster\''
-                                              ' as mm_poster,'
-                                              ' mm_metadata_user_json::json'
-                                              ' from mm_metadata_movie where mm_metadata_guid'
-                                              ' in (select mm_metadata_guid'
-                                              ' from mm_metadata_movie where mm_media_name % $1'
-                                              ' order by mm_media_name offset $2 limit $3)'
-                                              ' order by mm_media_name, mm_date',
-                                              search_value, offset, records)
+        return await db_conn.fetch('select mm_metadata_guid, mm_media_name,'
+                                   ' mm_metadata_json->\'release_date\' as mm_date,'
+                                   ' mm_metadata_localimage_json->\'Poster\''
+                                   ' as mm_poster,'
+                                   ' mm_metadata_user_json::json'
+                                   ' from mm_metadata_movie where mm_metadata_guid'
+                                   ' in (select mm_metadata_guid'
+                                   ' from mm_metadata_movie where mm_media_name % $1'
+                                   ' order by mm_media_name offset $2 limit $3)'
+                                   ' order by mm_media_name, mm_date',
+                                   search_value, offset, records)
     else:
-        return await self.db_connection.fetch('select mm_metadata_guid, mm_media_name,'
-                                              ' mm_metadata_json->\'release_date\' as mm_date,'
-                                              ' mm_metadata_localimage_json->\'Poster\''
-                                              ' as mm_poster,'
-                                              ' mm_metadata_user_json::json'
-                                              ' from mm_metadata_movie where mm_metadata_guid'
-                                              ' in (select mm_metadata_guid'
-                                              ' from mm_metadata_movie'
-                                              ' order by mm_media_name offset'
-                                              ' $1 limit $2)'
-                                              ' order by mm_media_name, mm_date',
-                                              offset, records)
+        return await db_conn.fetch('select mm_metadata_guid, mm_media_name,'
+                                   ' mm_metadata_json->\'release_date\' as mm_date,'
+                                   ' mm_metadata_localimage_json->\'Poster\''
+                                   ' as mm_poster,'
+                                   ' mm_metadata_user_json::json'
+                                   ' from mm_metadata_movie where mm_metadata_guid'
+                                   ' in (select mm_metadata_guid'
+                                   ' from mm_metadata_movie'
+                                   ' order by mm_media_name offset'
+                                   ' $1 limit $2)'
+                                   ' order by mm_media_name, mm_date',
+                                   offset, records)
 
 
 async def db_meta_movie_count(self, search_value=None, db_connection=None):
@@ -76,11 +76,11 @@ async def db_meta_movie_count(self, search_value=None, db_connection=None):
     else:
         db_conn = db_connection
     if search_value is not None:
-        return await self.db_connection.fetchval('select count(*) from mm_metadata_movie '
-                                                 ' where mm_media_name % $1',
-                                                 search_value)
+        return await db_conn.fetchval('select count(*) from mm_metadata_movie '
+                                      ' where mm_media_name % $1',
+                                      search_value)
     else:
-        return await self.db_connection.fetchval('select count(*) from mm_metadata_movie')
+        return await db_conn.fetchval('select count(*) from mm_metadata_movie')
 
 
 async def db_meta_movie_status_update(self, metadata_guid, user_id, status_text,
@@ -99,10 +99,10 @@ async def db_meta_movie_status_update(self, metadata_guid, user_id, status_text,
         status_setting = status_text
         status_text = 'Rating'
     # grab the user json for the metadata
-    json_data = await self.db_connection.fetchrow('SELECT mm_metadata_user_json::json'
-                                                  ' from mm_metadata_movie'
-                                                  ' where mm_metadata_guid = $1 FOR UPDATE',
-                                                  metadata_guid)
+    json_data = await db_conn.fetchrow('SELECT mm_metadata_user_json::json'
+                                       ' from mm_metadata_movie'
+                                       ' where mm_metadata_guid = $1 FOR UPDATE',
+                                       metadata_guid)
     # split this off so coroutine doesn't get mad
     try:
         json_data = json_data['mm_metadata_user_json']
@@ -124,11 +124,11 @@ async def db_meta_movie_json_update(self, media_guid, metadata_json, db_connecti
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    await self.db_connection.execute('update mm_metadata_movie'
-                                     ' set mm_metadata_user_json::json = $1'
-                                     ' where mm_metadata_guid = $2',
-                                     metadata_json, media_guid)
-    await self.db_connection.execute('commit')
+    await db_conn.execute('update mm_metadata_movie'
+                          ' set mm_metadata_user_json::json = $1'
+                          ' where mm_metadata_guid = $2',
+                          metadata_json, media_guid)
+    await db_conn.execute('commit')
 
 
 async def db_meta_movie_guid_count(self, guid, db_connection=None):
@@ -139,5 +139,5 @@ async def db_meta_movie_guid_count(self, guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await self.db_connection.fetchval('select count(*) from mm_metadata_movie'
-                                             ' where mm_metadata_guid = $1', guid)
+    return await db_conn.fetchval('select count(*) from mm_metadata_movie'
+                                  ' where mm_metadata_guid = $1', guid)

@@ -16,7 +16,7 @@ async def db_table_count(self, table_name, db_connection=None):
         db_conn = db_connection
     # can't %s due to ' inserted
     # All table names will be done by server code, little bobby tables shouldn't apply
-    return await self.db_connection.fetchval('select count(*) from ' + table_name)
+    return await db_conn.fetchval('select count(*) from ' + table_name)
 
 
 async def db_open(self, force_local=False, loop=None, as_pool=False, db_connection=None):
@@ -49,10 +49,10 @@ async def db_open(self, force_local=False, loop=None, as_pool=False, db_connecti
                                                    database='postgres',
                                                    host=database_host,
                                                    loop=loop)
-    await self.db_connection.set_type_codec('json',
-                                            encoder=json.dumps,
-                                            decoder=json.loads,
-                                            schema='pg_catalog')
+    await db_conn.set_type_codec('json',
+                                 encoder=json.dumps,
+                                 decoder=json.loads,
+                                 schema='pg_catalog')
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'stuff': 'db open async'})
@@ -72,7 +72,7 @@ async def db_close(self, db_connection=None):
                                                                              'stuff': 'db close'})
     except:
         pass
-    await self.db_connection.close()
+    await db_conn.close()
 
 
 async def db_begin(self, db_connection=None):
@@ -86,7 +86,7 @@ async def db_begin(self, db_connection=None):
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'stuff': 'db begin'})
-    await self.db_connection.start()
+    await db_conn.start()
 
 
 async def db_commit(self, db_connection=None):
@@ -103,7 +103,7 @@ async def db_commit(self, db_connection=None):
                                                                              'stuff': 'db commit'})
     except:
         pass
-    await self.db_connection.commit()
+    await db_conn.commit()
 
 
 async def db_rollback(self, db_connection=None):
@@ -117,7 +117,7 @@ async def db_rollback(self, db_connection=None):
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'stuff': 'db rollback'})
-    await self.db_connection.rollback()
+    await db_conn.rollback()
 
 
 async def db_table_index_check(self, resource_name, db_connection=None):
@@ -142,8 +142,8 @@ async def db_drop_table(self, table_name, db_connection=None):
     else:
         db_conn = db_connection
     # TODO little bobby tables
-    await self.db_connection.execute('DROP TABLE IF EXISTS '
-                                     + table_name)  # can't %s due to ' inserted
+    await db_conn.execute('DROP TABLE IF EXISTS '
+                          + table_name)  # can't %s due to ' inserted
 
 
 async def db_query(self, query_string, fetch_all=True, db_connection=None):
@@ -162,9 +162,9 @@ async def db_query(self, query_string, fetch_all=True, db_connection=None):
     except:
         pass
     if fetch_all:
-        return await self.db_connection.fetch(query_string)
+        return await db_conn.fetch(query_string)
     else:
-        return await self.db_connection.fetchval(query_string)
+        return await db_conn.fetchval(query_string)
 
 
 async def db_parallel_workers(self, db_connection=None):
@@ -175,4 +175,4 @@ async def db_parallel_workers(self, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await self.db_connection.fetchval('show max_parallel_workers_per_gather')
+    return await db_conn.fetchval('show max_parallel_workers_per_gather')

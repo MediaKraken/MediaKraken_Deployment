@@ -9,9 +9,9 @@ async def db_review_count(self, metadata_id, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await self.db_connection.fetchval('select count(*) from mm_review'
-                                             ' where mm_review_metadata_guid = $1',
-                                             metadata_id)
+    return await db_conn.fetchval('select count(*) from mm_review'
+                                  ' where mm_review_metadata_guid = $1',
+                                  metadata_id)
 
 
 async def db_review_list_by_tmdb_guid(self, metadata_id, db_connection=None):
@@ -24,11 +24,11 @@ async def db_review_list_by_tmdb_guid(self, metadata_id, db_connection=None):
         db_conn = db_connection
     # TODO order by release date
     # TODO order by rating? (optional?)
-    return await self.db_connection.fetch('select mm_review_guid,'
-                                          'mm_review_json::json'
-                                          ' from mm_review'
-                                          ' where mm_review_metadata_id->\'themoviedb\' ? $1',
-                                          metadata_id)
+    return await db_conn.fetch('select mm_review_guid,'
+                               'mm_review_json::json'
+                               ' from mm_review'
+                               ' where mm_review_metadata_id->\'themoviedb\' ? $1',
+                               metadata_id)
 
 
 async def db_review_insert(self, metadata_id, review_json, db_connection=None):

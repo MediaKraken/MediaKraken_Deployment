@@ -20,13 +20,13 @@ async def db_meta_person_as_seen_in(self, person_guid, db_connection=None):
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "row_data": row_data})
-    return await self.db_connection.fetch('select mm_metadata_guid,mm_media_name,'
-                                          ' mm_metadata_localimage_json->\'Poster\''
-                                          ' from mm_metadata_movie'
-                                          ' where mm_metadata_json->\'credits\'->\'cast\''
-                                          ' @> \'[{"id": '
-                                          + str(row_data['mmp_person_media_id'])
-                                          + '}]\' order by LOWER(mm_media_name)')
+    return await db_conn.fetch('select mm_metadata_guid,mm_media_name,'
+                               ' mm_metadata_localimage_json->\'Poster\''
+                               ' from mm_metadata_movie'
+                               ' where mm_metadata_json->\'credits\'->\'cast\''
+                               ' @> \'[{"id": '
+                               + str(row_data['mmp_person_media_id'])
+                               + '}]\' order by LOWER(mm_media_name)')
 
 
 async def db_meta_person_by_guid(self, guid, db_connection=None):
@@ -37,12 +37,12 @@ async def db_meta_person_by_guid(self, guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await self.db_connection.fetchrow('select mmp_id, mmp_person_media_id,'
-                                             ' mmp_person_meta_json,'
-                                             ' mmp_person_image, mmp_person_name,'
-                                             ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                                             ' from mm_metadata_person where mmp_id = $1',
-                                             guid)
+    return await db_conn.fetchrow('select mmp_id, mmp_person_media_id,'
+                                  ' mmp_person_meta_json,'
+                                  ' mmp_person_image, mmp_person_name,'
+                                  ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                  ' from mm_metadata_person where mmp_id = $1',
+                                  guid)
 
 
 async def db_meta_person_list(self, offset=0, records=None, search_value=None, db_connection=None):
@@ -55,20 +55,20 @@ async def db_meta_person_list(self, offset=0, records=None, search_value=None, d
         db_conn = db_connection
     # TODO order by birth date
     if search_value is not None:
-        return await self.db_connection.fetch('select mmp_id,mmp_person_name,'
-                                              ' mmp_person_image,'
-                                              ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                                              ' from mm_metadata_person where mmp_person_name % $1'
-                                              ' order by LOWER(mmp_person_name) offset $2 limit $3',
-                                              search_value, offset, records)
+        return await db_conn.fetch('select mmp_id,mmp_person_name,'
+                                   ' mmp_person_image,'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' from mm_metadata_person where mmp_person_name % $1'
+                                   ' order by LOWER(mmp_person_name) offset $2 limit $3',
+                                   search_value, offset, records)
     else:
-        return await self.db_connection.fetch('select mmp_id,mmp_person_name,'
-                                              ' mmp_person_image,'
-                                              ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
-                                              ' from mm_metadata_person'
-                                              ' order by LOWER(mmp_person_name)'
-                                              ' offset $1 limit $2',
-                                              offset, records)
+        return await db_conn.fetch('select mmp_id,mmp_person_name,'
+                                   ' mmp_person_image,'
+                                   ' mmp_person_meta_json->\'profile_path\' as mmp_meta'
+                                   ' from mm_metadata_person'
+                                   ' order by LOWER(mmp_person_name)'
+                                   ' offset $1 limit $2',
+                                   offset, records)
 
 
 async def db_meta_person_list_count(self, search_value=None, db_connection=None):
@@ -80,10 +80,10 @@ async def db_meta_person_list_count(self, search_value=None, db_connection=None)
     else:
         db_conn = db_connection
     if search_value is not None:
-        return await self.db_connection.fetchval('select count(*) from mm_metadata_person'
-                                                 ' where mmp_person_name % $1', search_value)
+        return await db_conn.fetchval('select count(*) from mm_metadata_person'
+                                      ' where mmp_person_name % $1', search_value)
     else:
-        return await self.db_connection.fetchval('select count(*) from mm_metadata_person')
+        return await db_conn.fetchval('select count(*) from mm_metadata_person')
 
 
 async def db_meta_person_id_count(self, guid):
@@ -94,8 +94,8 @@ async def db_meta_person_id_count(self, guid):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await self.db_connection.fetchval('select count(*) from mm_metadata_person'
-                                             ' where mmp_person_media_id = $1', guid)
+    return await db_conn.fetchval('select count(*) from mm_metadata_person'
+                                  ' where mmp_person_media_id = $1', guid)
 
 
 async def db_meta_person_insert(self, person_name, media_id, person_json,
@@ -115,14 +115,14 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
                                                                              'person': person_json,
                                                                              'image': image_path}})
     new_guid = str(uuid.uuid4())
-    await self.db_connection.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
-                                     ' mmp_person_media_id,'
-                                     ' mmp_person_meta_json::json,'
-                                     ' mmp_person_image)'
-                                     ' values ($1,$2,$3,$4,$5)',
-                                     new_guid, person_name, media_id,
-                                     person_json, image_path)
-    await self.db_connection.execute('commit')
+    await db_conn.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
+                          ' mmp_person_media_id,'
+                          ' mmp_person_meta_json::json,'
+                          ' mmp_person_image)'
+                          ' values ($1,$2,$3,$4,$5)',
+                          new_guid, person_name, media_id,
+                          person_json, image_path)
+    await db_conn.execute('commit')
     return new_guid
 
 
