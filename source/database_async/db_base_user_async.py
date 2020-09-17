@@ -62,11 +62,15 @@ async def db_user_login(self, user_name, user_password, db_connection=None):
     """
     # verify user logon
     """
-    result = await self.db_connection.fetchrow('select id, active, is_admin,'
-                                               ' user_json->\'per_page\' as per_page'
-                                               ' from mm_user where username = $1'
-                                               ' and password = crypt($2, password)',
-                                               user_name, user_password)
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    result = await db_conn.fetchrow('select id, active, is_admin,'
+                                    ' user_json->\'per_page\' as per_page'
+                                    ' from mm_user where username = $1'
+                                    ' and password = crypt($2, password)',
+                                    user_name, user_password)
     if result is not None:
         print(result, flush=True)
         if result['active'] is False:
