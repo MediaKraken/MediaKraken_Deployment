@@ -1,7 +1,7 @@
 import json
 
 
-async def db_meta_movie_by_media_uuid(self, media_guid):
+async def db_meta_movie_by_media_uuid(self, media_guid, db_connection=None):
     """
     # read in metadata via media id
     """
@@ -12,7 +12,7 @@ async def db_meta_movie_by_media_uuid(self, media_guid):
                                              ' and mm_media_guid = $1', media_guid)
 
 
-async def db_meta_movie_detail(self, media_guid):
+async def db_meta_movie_detail(self, media_guid, db_connection=None):
     """
     # read in the media with corresponding metadata
     """
@@ -27,7 +27,7 @@ async def db_meta_movie_detail(self, media_guid):
                                              media_guid)
 
 
-async def db_meta_movie_list(self, offset=0, records=None, search_value=None):
+async def db_meta_movie_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     # return list of movies
     """
@@ -58,7 +58,7 @@ async def db_meta_movie_list(self, offset=0, records=None, search_value=None):
                                               offset, records)
 
 
-async def db_meta_movie_count(self, search_value=None):
+async def db_meta_movie_count(self, search_value=None, db_connection=None):
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*) from mm_metadata_movie '
                                                  ' where mm_media_name % $1',
@@ -67,7 +67,8 @@ async def db_meta_movie_count(self, search_value=None):
         return await self.db_connection.fetchval('select count(*) from mm_metadata_movie')
 
 
-async def db_meta_movie_status_update(self, metadata_guid, user_id, status_text):
+async def db_meta_movie_status_update(self, metadata_guid, user_id, status_text,
+                                      db_connection=None):
     """
     # set status's for metadata
     """
@@ -95,7 +96,7 @@ async def db_meta_movie_status_update(self, metadata_guid, user_id, status_text)
                                          json.dumps(json_data))
 
 
-async def db_meta_movie_json_update(self, media_guid, metadata_json):
+async def db_meta_movie_json_update(self, media_guid, metadata_json, db_connection=None):
     """
     # update the metadata json
     """
@@ -106,7 +107,7 @@ async def db_meta_movie_json_update(self, media_guid, metadata_json):
     await self.db_connection.execute('commit')
 
 
-async def db_meta_movie_guid_count(self, guid):
+async def db_meta_movie_guid_count(self, guid, db_connection=None):
     """
     # does movie exist already by metadata id
     """

@@ -1,4 +1,4 @@
-async def db_meta_periodical_by_uuid(self, book_uuid):
+async def db_meta_periodical_by_uuid(self, book_uuid, db_connection=None):
     """
     grab periodical by uuid
     """
@@ -8,7 +8,8 @@ async def db_meta_periodical_by_uuid(self, book_uuid):
                                              book_uuid)
 
 
-async def db_meta_periodical_list(self, offset=0, records=None, search_value=None):
+async def db_meta_periodical_list(self, offset=0, records=None, search_value=None,
+                                  db_connection=None):
     """
     periodical list
     """
@@ -31,7 +32,7 @@ async def db_meta_periodical_list(self, offset=0, records=None, search_value=Non
                                               offset, records)
 
 
-async def db_meta_periodical_list_count(self, search_value=None):
+async def db_meta_periodical_list_count(self, search_value=None, db_connection=None):
     """
     periodical list count
     """

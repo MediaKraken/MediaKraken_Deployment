@@ -2,7 +2,8 @@ import json
 import uuid
 
 
-async def db_collection_list(self, offset=None, records=None, search_value=None):
+async def db_collection_list(self, offset=None, records=None, search_value=None,
+                             db_connection=None):
     """
     Return collections list from the database
     """
@@ -49,7 +50,7 @@ async def db_collection_list(self, offset=None, records=None, search_value=None)
                                                   offset, records)
 
 
-async def db_collection_list_count(self, search_value=None):
+async def db_collection_list_count(self, search_value=None, db_connection=None):
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*)'
                                                  ' from mm_metadata_collection'
@@ -60,7 +61,7 @@ async def db_collection_list_count(self, search_value=None):
                                                  ' from mm_metadata_collection')
 
 
-async def db_collection_read_by_guid(self, media_uuid):
+async def db_collection_read_by_guid(self, media_uuid, db_connection=None):
     """
     Collection details
     """
@@ -71,7 +72,7 @@ async def db_collection_read_by_guid(self, media_uuid):
                                              media_uuid)
 
 
-async def db_media_collection_scan(self):
+async def db_media_collection_scan(self, db_connection=None):
     """
     Returns a list of movies that belong in a collection specifified by tmdb
     """
@@ -82,7 +83,7 @@ async def db_media_collection_scan(self):
                                           ' order by mm_metadata_json->\'belongs_to_collection\'')
 
 
-async def db_collection_guid_by_name(self, collection_name):
+async def db_collection_guid_by_name(self, collection_name, db_connection=None):
     """
     Return uuid from collection name
     """
@@ -92,7 +93,7 @@ async def db_collection_guid_by_name(self, collection_name):
         collection_name)
 
 
-async def db_collection_by_tmdb(self, tmdb_id):
+async def db_collection_by_tmdb(self, tmdb_id, db_connection=None):
     """
     Return uuid via tmdb id
     """
@@ -102,7 +103,7 @@ async def db_collection_by_tmdb(self, tmdb_id):
 
 
 async def db_collection_insert(self, collection_name, guid_json, metadata_json,
-                               localimage_json):
+                               localimage_json, db_connection=None):
     """
     Insert collection into the database
     """
@@ -118,7 +119,7 @@ async def db_collection_insert(self, collection_name, guid_json, metadata_json,
     return new_guid
 
 
-async def db_collection_update(self, collection_guid, guid_json):
+async def db_collection_update(self, collection_guid, guid_json, db_connection=None):
     """
     Update the ids listed within a collection
     """

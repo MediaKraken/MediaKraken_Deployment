@@ -1,11 +1,11 @@
-async def db_usage_top10_alltime(self):
+async def db_usage_top10_alltime(self, db_connection=None):
     """
     Top 10 of all time
     """
     return await self.db_connection.fetch('select 1 limit 10')
 
 
-async def db_usage_top10_movie(self):
+async def db_usage_top10_movie(self, db_connection=None):
     """
     Top 10 movies
     """
@@ -15,14 +15,14 @@ async def db_usage_top10_movie(self):
                                           ' desc limit 10')
 
 
-async def db_usage_top10_tv_episode(self):
+async def db_usage_top10_tv_episode(self, db_connection=None):
     """
     Top 10 TV episode
     """
     return await self.db_connection.fetch('select 1 limit 10')
 
 
-async def db_usage_top10_tv_show(self):
+async def db_usage_top10_tv_show(self, db_connection=None):
     """
     Top 10 TV show
     """

@@ -1,4 +1,4 @@
-async def db_meta_music_video_count(self, imvdb_id=None, search_value=None):
+async def db_meta_music_video_count(self, imvdb_id=None, search_value=None, db_connection=None):
     """
     Return count of music video metadata
     """
@@ -16,7 +16,7 @@ async def db_meta_music_video_count(self, imvdb_id=None, search_value=None):
                                                  imvdb_id)
 
 
-async def db_meta_music_video_detail_uuid(self, item_guid):
+async def db_meta_music_video_detail_uuid(self, item_guid, db_connection=None):
     """
     Grab metadata for specified music video
     """
@@ -29,7 +29,8 @@ async def db_meta_music_video_detail_uuid(self, item_guid):
                                              item_guid)
 
 
-async def db_meta_music_video_list(self, offset=0, records=None, search_value=None):
+async def db_meta_music_video_list(self, offset=0, records=None, search_value=None,
+                                   db_connection=None):
     """
     List music video metadata
     """

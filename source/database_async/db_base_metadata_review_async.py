@@ -1,4 +1,4 @@
-async def db_review_list_by_tmdb_guid(self, metadata_id):
+async def db_review_list_by_tmdb_guid(self, metadata_id, db_connection=None):
     """
     # grab reviews for metadata
     """

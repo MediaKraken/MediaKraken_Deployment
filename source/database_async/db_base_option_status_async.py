@@ -1,7 +1,7 @@
 import uuid
 
 
-async def db_opt_update(self, option_json):
+async def db_opt_update(self, option_json, db_connection=None):
     """
     Update option json
     """
@@ -11,7 +11,7 @@ async def db_opt_update(self, option_json):
                                      option_json)
 
 
-async def db_opt_json_read(self):
+async def db_opt_json_read(self, db_connection=None):
     """
     Read options
     """
@@ -20,7 +20,7 @@ async def db_opt_json_read(self):
         ' from mm_options_and_status')
 
 
-async def db_opt_status_read(self):
+async def db_opt_status_read(self, db_connection=None):
     """
     Read options, status
     """
@@ -29,7 +29,7 @@ async def db_opt_status_read(self):
         ' from mm_options_and_status')
 
 
-async def db_status_json_read(self):
+async def db_status_json_read(self, db_connection=None):
     """
     Read options
     """
@@ -38,7 +38,7 @@ async def db_status_json_read(self):
         ' from mm_options_and_status')
 
 
-async def db_opt_status_insert(self, option_json, status_json):
+async def db_opt_status_insert(self, option_json, status_json, db_connection=None):
     """
     insert status
     """
@@ -51,7 +51,7 @@ async def db_opt_status_insert(self, option_json, status_json):
     await self.db_connection.execute('commit')
 
 
-async def db_opt_status_update(self, option_json, status_json):
+async def db_opt_status_update(self, option_json, status_json, db_connection=None):
     """
     Update option and status json
     """

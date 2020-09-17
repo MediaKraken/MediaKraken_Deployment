@@ -6,7 +6,7 @@ from common import common_file
 from common import common_logging_elasticsearch_httpx
 
 
-async def db_table_count(self, table_name):
+async def db_table_count(self, table_name, db_connection=None):
     """
     # return count of records in table
     """
@@ -15,7 +15,7 @@ async def db_table_count(self, table_name):
     return await self.db_connection.fetchval('select count(*) from ' + table_name)
 
 
-async def db_open(self, force_local=False, loop=None, as_pool=False):
+async def db_open(self, force_local=False, loop=None, as_pool=False, db_connection=None):
     """
     # open database
     """
@@ -50,7 +50,7 @@ async def db_open(self, force_local=False, loop=None, as_pool=False):
                                                                          'stuff': 'db open async'})
 
 
-async def db_close(self):
+async def db_close(self, db_connection=None):
     """
     # close main db file
     """
@@ -63,7 +63,7 @@ async def db_close(self):
     await self.db_connection.close()
 
 
-async def db_begin(self):
+async def db_begin(self, db_connection=None):
     """
     # start a transaction
     """
@@ -73,7 +73,7 @@ async def db_begin(self):
     await self.db_connection.start()
 
 
-async def db_commit(self):
+async def db_commit(self, db_connection=None):
     """
     # commit changes to media database
     """
@@ -86,7 +86,7 @@ async def db_commit(self):
     await self.db_connection.commit()
 
 
-async def db_rollback(self):
+async def db_rollback(self, db_connection=None):
     """
     # rollback
     """
@@ -96,7 +96,7 @@ async def db_rollback(self):
     await self.db_connection.rollback()
 
 
-async def db_table_index_check(self, resource_name):
+async def db_table_index_check(self, resource_name, db_connection=None):
     """
     # check for table or index
     """
@@ -105,7 +105,7 @@ async def db_table_index_check(self, resource_name):
     return self.db_cursor.fetchval()
 
 
-async def db_drop_table(self, table_name):
+async def db_drop_table(self, table_name, db_connection=None):
     """
     drop a table
     """
@@ -114,7 +114,7 @@ async def db_drop_table(self, table_name):
                                      + table_name)  # can't %s due to ' inserted
 
 
-async def db_query(self, query_string, fetch_all=True):
+async def db_query(self, query_string, fetch_all=True, db_connection=None):
     """
     # general run anything
     """
@@ -131,7 +131,7 @@ async def db_query(self, query_string, fetch_all=True):
         return await self.db_connection.fetchval(query_string)
 
 
-async def db_parallel_workers(self):
+async def db_parallel_workers(self, db_connection=None):
     """
     Return number of workers
     """

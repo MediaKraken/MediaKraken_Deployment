@@ -1,7 +1,7 @@
 import uuid
 
 
-async def db_iradio_insert(self, radio_channel):
+async def db_iradio_insert(self, radio_channel, db_connection=None):
     """
     Insert iradio channel
     """
@@ -18,7 +18,7 @@ async def db_iradio_insert(self, radio_channel):
 
 
 async def db_iradio_list(self, offset=0, records=None, active_station=True,
-                         search_value=None):
+                         search_value=None, db_connection=None):
     """
     Iradio list
     """
@@ -46,7 +46,7 @@ async def db_iradio_list(self, offset=0, records=None, active_station=True,
                                               active_station, offset, records)
 
 
-async def db_iradio_list_count(self, active_station=True, search_value=None):
+async def db_iradio_list_count(self, active_station=True, search_value=None, db_connection=None):
     """
     Iradio count
     """

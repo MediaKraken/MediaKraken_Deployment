@@ -2,7 +2,7 @@ import datetime
 import json
 
 
-async def db_media_duplicate(self, offset=0, records=None):
+async def db_media_duplicate(self, offset=0, records=None, db_connection=None):
     """
     # list duplicates
     """
@@ -20,7 +20,7 @@ async def db_media_duplicate(self, offset=0, records=None):
                                           offset, records)
 
 
-async def db_media_duplicate_count(self):
+async def db_media_duplicate_count(self, db_connection=None):
     """
     # count the duplicates for pagination
     """
@@ -33,7 +33,7 @@ async def db_media_duplicate_count(self):
                                              ' HAVING count(*) > 1) as total')
 
 
-async def db_media_duplicate_detail(self, guid, offset=0, records=None):
+async def db_media_duplicate_detail(self, guid, offset=0, records=None, db_connection=None):
     """
     # list duplicate detail
     """
@@ -47,7 +47,7 @@ async def db_media_duplicate_detail(self, guid, offset=0, records=None):
                                           guid, offset, records)
 
 
-async def db_media_duplicate_detail_count(self, guid):
+async def db_media_duplicate_detail_count(self, guid, db_connection=None):
     """
     # duplicate detail count
     """
@@ -56,7 +56,7 @@ async def db_media_duplicate_detail_count(self, guid):
                                              guid)
 
 
-async def db_media_ffprobe_all_guid(self, media_uuid, media_class_uuid):
+async def db_media_ffprobe_all_guid(self, media_uuid, media_class_uuid, db_connection=None):
     """
     # fetch all media with METADATA match
     """
@@ -72,7 +72,7 @@ async def db_media_ffprobe_all_guid(self, media_uuid, media_class_uuid):
 
 
 async def db_media_insert(self, media_uuid, media_path, media_class_uuid,
-                          media_metadata_uuid, media_ffprobe_json, media_json):
+                          media_metadata_uuid, media_ffprobe_json, media_json, db_connection=None):
     """
     # insert media into database
     """
@@ -87,7 +87,7 @@ async def db_media_insert(self, media_uuid, media_path, media_class_uuid,
                                      media_metadata_uuid, media_ffprobe_json, media_json)
 
 
-async def db_media_known(self, offset=0, records=None):
+async def db_media_known(self, offset=0, records=None, db_connection=None):
     """
     # find all known media
     """
@@ -99,14 +99,14 @@ async def db_media_known(self, offset=0, records=None):
                                           offset, records)
 
 
-async def db_media_known_count(self):
+async def db_media_known_count(self, db_connection=None):
     """
     # count known media
     """
     return await self.db_connection.fetchval('select count(*) from mm_media')
 
 
-async def db_media_matched_count(self):
+async def db_media_matched_count(self, db_connection=None):
     """
     # count matched media
     """
@@ -115,7 +115,7 @@ async def db_media_matched_count(self):
 
 
 async def db_media_new(self, offset=None, records=None, search_value=None,
-                       days_old=7):
+                       days_old=7, db_connection=None):
     """
     # new media
     """
@@ -146,7 +146,7 @@ async def db_media_new(self, offset=None, records=None, search_value=None,
                                               offset, records)
 
 
-async def db_media_new_count(self, search_value=None, days_old=7):
+async def db_media_new_count(self, search_value=None, days_old=7, db_connection=None):
     """
     # new media count
     """
@@ -158,7 +158,7 @@ async def db_media_new_count(self, search_value=None, days_old=7):
                                                  "%Y-%m-%d"))
 
 
-async def db_media_path_by_uuid(self, media_uuid):
+async def db_media_path_by_uuid(self, media_uuid, db_connection=None):
     """
     # find path for media by uuid
     """
@@ -167,7 +167,7 @@ async def db_media_path_by_uuid(self, media_uuid):
                                              media_uuid)
 
 
-async def db_media_rating_update(self, media_guid, user_id, status_text):
+async def db_media_rating_update(self, media_guid, user_id, status_text, db_connection=None):
     """
     # set favorite status for media
     """
@@ -194,7 +194,7 @@ async def db_media_rating_update(self, media_guid, user_id, status_text):
         return None
 
 
-async def db_media_unmatched_list(self, offset=0, list_limit=None):
+async def db_media_unmatched_list(self, offset=0, list_limit=None, db_connection=None):
     return await self.db_connection.fetch('select mm_media_guid,'
                                           ' mm_media_path from mm_media'
                                           ' where mm_media_metadata_guid is NULL'
@@ -202,6 +202,6 @@ async def db_media_unmatched_list(self, offset=0, list_limit=None):
                                           offset, list_limit)
 
 
-async def db_media_unmatched_list_count(self):
+async def db_media_unmatched_list_count(self, db_connection=None):
     return await self.db_connection.fetchval('select count(*) from mm_media'
                                              ' where mm_media_metadata_guid is NULL')

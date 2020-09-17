@@ -1,4 +1,4 @@
-async def db_meta_game_by_guid(self, guid):
+async def db_meta_game_by_guid(self, guid, db_connection=None):
     """
     # return game data
     """
@@ -9,7 +9,7 @@ async def db_meta_game_by_guid(self, guid):
                                              ' where gi_id = $1', guid)
 
 
-async def db_meta_game_by_sha1(self, sha1_hash):
+async def db_meta_game_by_sha1(self, sha1_hash, db_connection=None):
     """
     # return game uuid by sha1 hash
     """
@@ -19,7 +19,7 @@ async def db_meta_game_by_sha1(self, sha1_hash):
                                              sha1_hash)
 
 
-async def db_meta_game_list(self, offset=0, records=None, search_value=None):
+async def db_meta_game_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     # return list of games
     """

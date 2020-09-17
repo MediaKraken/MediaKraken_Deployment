@@ -1,4 +1,4 @@
-async def db_meta_queue_list_count(self, user_id, search_value=None):
+async def db_meta_queue_list_count(self, user_id, search_value=None, db_connection=None):
     """
     Return count of queued media for user
     """

@@ -1,4 +1,4 @@
-async def db_media_book_list(self, offset=0, records=None, search_value=None):
+async def db_media_book_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     book list
     """
@@ -23,7 +23,7 @@ async def db_media_book_list(self, offset=0, records=None, search_value=None):
                                               offset, records)
 
 
-async def db_media_book_list_count(self, search_value=None):
+async def db_media_book_list_count(self, search_value=None, db_connection=None):
     """
     book list count
     """

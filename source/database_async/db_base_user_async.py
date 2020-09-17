@@ -1,7 +1,7 @@
 import uuid
 
 
-async def db_user_count(self, user_name=None):
+async def db_user_count(self, user_name=None, db_connection=None):
     if user_name is None:
         return await self.db_connection.fetchval('select count(*) from mm_user')
     else:
@@ -9,7 +9,7 @@ async def db_user_count(self, user_name=None):
                                                  ' where username = $1', user_name)
 
 
-async def db_user_delete(self, user_guid):
+async def db_user_delete(self, user_guid, db_connection=None):
     """
     # remove user
     """
@@ -17,7 +17,7 @@ async def db_user_delete(self, user_guid):
                                      ' where id = $1', user_guid)
 
 
-async def db_user_detail(self, guid):
+async def db_user_detail(self, guid, db_connection=None):
     """
     # return all data for specified user
     """
@@ -25,7 +25,7 @@ async def db_user_detail(self, guid):
                                              ' where id = $1', guid)
 
 
-async def db_user_insert(self, user_name, user_email, user_password):
+async def db_user_insert(self, user_name, user_email, user_password, db_connection=None):
     """
     # insert user
     """
@@ -40,7 +40,7 @@ async def db_user_insert(self, user_name, user_email, user_password):
         user_name, user_email, user_password, user_admin), user_admin
 
 
-async def db_user_list_name(self, offset=0, records=None):
+async def db_user_list_name(self, offset=0, records=None, db_connection=None):
     """
     # return user list
     """
@@ -58,7 +58,7 @@ async def db_user_list_name(self, offset=0, records=None):
                                           offset, records)
 
 
-async def db_user_login(self, user_name, user_password):
+async def db_user_login(self, user_name, user_password, db_connection=None):
     """
     # verify user logon
     """
@@ -75,7 +75,7 @@ async def db_user_login(self, user_name, user_password):
     return 'invalid_password', None, None
 
 
-async def db_user_group_insert(self, group_name, group_desc, group_rights_json):
+async def db_user_group_insert(self, group_name, group_desc, group_rights_json, db_connection=None):
     """
     insert user group
     """

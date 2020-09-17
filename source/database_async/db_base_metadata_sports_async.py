@@ -1,4 +1,4 @@
-async def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
+async def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid, db_connection=None):
     """
     # metadata guid by thesportsdb id
     """
@@ -9,7 +9,7 @@ async def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid):
                                              thesports_uuid)
 
 
-async def db_meta_sports_list(self, offset=0, records=None, search_value=None):
+async def db_meta_sports_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     # return list of sporting events
     # TODO order by year
@@ -39,7 +39,7 @@ async def db_meta_sports_list(self, offset=0, records=None, search_value=None):
                                               offset, records)
 
 
-async def db_meta_sports_list_count(self, search_value=None):
+async def db_meta_sports_list_count(self, search_value=None, db_connection=None):
     """
     Count sport events
     """

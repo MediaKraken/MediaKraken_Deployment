@@ -1,7 +1,8 @@
 import uuid
 
 
-async def db_hardware_device_count(self, hardware_manufacturer, model_name=None):
+async def db_hardware_device_count(self, hardware_manufacturer, model_name=None,
+                                   db_connection=None):
     """
     Return json for machine/model
     """
@@ -16,7 +17,7 @@ async def db_hardware_device_count(self, hardware_manufacturer, model_name=None)
                                                  hardware_manufacturer, model_name)
 
 
-async def db_hardware_json_read(self, manufacturer, model_name):
+async def db_hardware_json_read(self, manufacturer, model_name, db_connection=None):
     """
     Return json for machine/model
     """
@@ -27,7 +28,7 @@ async def db_hardware_json_read(self, manufacturer, model_name):
                                              manufacturer, model_name)
 
 
-async def db_hardware_insert(self, manufacturer, model_name, json_data):
+async def db_hardware_insert(self, manufacturer, model_name, json_data, db_connection=None):
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_hardware_json (mm_hardware_id,'
                                      ' mm_hardware_manufacturer,'
@@ -39,7 +40,7 @@ async def db_hardware_insert(self, manufacturer, model_name, json_data):
     return new_guid
 
 
-async def db_hardware_delete(self, guid):
+async def db_hardware_delete(self, guid, db_connection=None):
     await self.db_connection.execute('delete from mm_hardware_json'
                                      ' where mm_hardware_id = $1', guid)
     await self.db_connection.execute('commit')

@@ -3,7 +3,7 @@ import os
 import uuid
 
 
-async def db_audit_path_status(self):
+async def db_audit_path_status(self, db_connection=None):
     """
     # read scan status
     """
@@ -14,7 +14,7 @@ async def db_audit_path_status(self):
                                           ' order by mm_media_dir_path')
 
 
-async def db_audit_path_update_status(self, lib_guid, status_json):
+async def db_audit_path_update_status(self, lib_guid, status_json, db_connection=None):
     """
     # update status
     """
@@ -23,7 +23,7 @@ async def db_audit_path_update_status(self, lib_guid, status_json):
                                      status_json, lib_guid)
 
 
-async def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
+async def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid, db_connection=None):
     """
     # update audit path
     """
@@ -33,7 +33,7 @@ async def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
                                      lib_path, class_guid, lib_guid)
 
 
-async def db_audit_path_delete(self, lib_guid):
+async def db_audit_path_delete(self, lib_guid, db_connection=None):
     """
     # remove media path
     """
@@ -41,7 +41,7 @@ async def db_audit_path_delete(self, lib_guid):
         'delete from mm_media_dir where mm_media_dir_share_guid = $1', lib_guid)
 
 
-async def db_audit_path_add(self, dir_path, class_guid, share_guid):
+async def db_audit_path_add(self, dir_path, class_guid, share_guid, db_connection=None):
     """
     # add media path
     """
@@ -57,7 +57,7 @@ async def db_audit_path_add(self, dir_path, class_guid, share_guid):
     return new_guid
 
 
-async def db_audit_path_check(self, dir_path):
+async def db_audit_path_check(self, dir_path, db_connection=None):
     """
     # lib path check (dupes)
     """
@@ -66,7 +66,7 @@ async def db_audit_path_check(self, dir_path):
                                              dir_path)
 
 
-async def db_audit_dir_timestamp_update(self, dir_path):
+async def db_audit_dir_timestamp_update(self, dir_path, db_connection=None):
     """
     # update the timestamp for directory scans
     """
@@ -77,7 +77,7 @@ async def db_audit_dir_timestamp_update(self, dir_path):
                                      dir_path)
 
 
-async def db_audit_paths(self, offset=0, records=None):
+async def db_audit_paths(self, offset=0, records=None, db_connection=None):
     """
     # read the paths to audit
     """
@@ -90,7 +90,7 @@ async def db_audit_paths(self, offset=0, records=None):
                                           ' offset $1 limit $2', offset, records)
 
 
-async def db_audit_path_by_uuid(self, dir_id):
+async def db_audit_path_by_uuid(self, dir_id, db_connection=None):
     """
     # lib data per id
     """
@@ -102,7 +102,7 @@ async def db_audit_path_by_uuid(self, dir_id):
                                              dir_id)
 
 
-async def db_audit_shares(self, offset=0, records=None):
+async def db_audit_shares(self, offset=0, records=None, db_connection=None):
     """
     # read the shares list
     """
@@ -119,7 +119,7 @@ async def db_audit_shares(self, offset=0, records=None):
                                           records)
 
 
-async def db_audit_share_delete(self, share_guid):
+async def db_audit_share_delete(self, share_guid, db_connection=None):
     """
     # remove share
     """
@@ -128,7 +128,7 @@ async def db_audit_share_delete(self, share_guid):
                                      share_guid)
 
 
-async def db_audit_share_by_uuid(self, share_id):
+async def db_audit_share_by_uuid(self, share_id, db_connection=None):
     """
     # share per id
     """
@@ -145,7 +145,7 @@ async def db_audit_share_by_uuid(self, share_id):
 
 async def db_audit_share_update_by_uuid(self, share_type, share_user,
                                         share_password, share_server,
-                                        share_path, share_id):
+                                        share_path, share_id, db_connection=None):
     """
     # update share
     """
@@ -160,7 +160,7 @@ async def db_audit_share_update_by_uuid(self, share_type, share_user,
                                      share_path, share_id)
 
 
-async def db_audit_share_check(self, dir_path):
+async def db_audit_share_check(self, dir_path, db_connection=None):
     """
     # share path check (dupes)
     """
@@ -170,7 +170,7 @@ async def db_audit_share_check(self, dir_path):
 
 
 async def db_audit_share_add(self, share_type, share_user,
-                             share_password, share_server, share_path):
+                             share_password, share_server, share_path, db_connection=None):
     """
     # add share path
     """

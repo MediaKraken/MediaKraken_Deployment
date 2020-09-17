@@ -1,11 +1,11 @@
-async def db_link_delete(self, sync_guid):
+async def db_link_delete(self, sync_guid, db_connection=None):
     """
     Delete server link
     """
     await self.db_connection.execute('delete from mm_link where mm_link_guid = $1', sync_guid)
 
 
-async def db_link_list(self, offset=0, records=None, search_value=None):
+async def db_link_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     Return list of linked server
     Complete list for admins
@@ -30,7 +30,7 @@ async def db_link_list(self, offset=0, records=None, search_value=None):
                                               offset, records)
 
 
-async def db_link_list_count(self, search_value=None):
+async def db_link_list_count(self, search_value=None, db_connection=None):
     """
     Return count of linked servers
     """

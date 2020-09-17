@@ -1,4 +1,4 @@
-async def db_image_count(self, class_guid, search_value=None):
+async def db_image_count(self, class_guid, search_value=None, db_connection=None):
     """
     Image list count
     """
@@ -6,7 +6,8 @@ async def db_image_count(self, class_guid, search_value=None):
                                              ' where mm_media_class_guid = $1', class_guid)
 
 
-async def db_image_list(self, class_guid, offset=0, records=None, search_value=None):
+async def db_image_list(self, class_guid, offset=0, records=None, search_value=None,
+                        db_connection=None):
     """
     Image list
     """

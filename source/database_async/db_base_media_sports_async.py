@@ -6,21 +6,24 @@ from common import common_logging_elasticsearch_httpx
 async def db_media_sports_list(self, class_guid, offset=None, list_limit=0,
                                search_text=None,
                                list_type=None, list_genre='All',
-                               group_collection=False, include_remote=False):
+                               group_collection=False, include_remote=False, db_connection=None):
     """
     # sports media return
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={"classuid": class_guid,
-                                                                       'type': list_type,
-                                                                       'genre':
-                                                                           list_genre})
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "group and remote": group_collection,
-        'remote': include_remote})
+                                                                     message_text={
+                                                                         "classuid": class_guid,
+                                                                         'type': list_type,
+                                                                         'genre':
+                                                                             list_genre})
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={"list, offset": list_limit,
-                                                                       'offset': offset})
+                                                                     message_text={
+                                                                         "group and remote": group_collection,
+                                                                         'remote': include_remote})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "list, offset": list_limit,
+                                                                         'offset': offset})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -498,15 +501,16 @@ async def db_media_sports_list(self, class_guid, offset=None, list_limit=0,
 async def db_media_sports_list_count(self, class_guid, list_type=None,
                                      list_genre='All',
                                      group_collection=False, include_remote=False,
-                                     search_text=None):
+                                     search_text=None, db_connection=None):
     """
     # sports media count
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={"classuid counter":
-                                                                           class_guid,
-                                                                       'type': list_type,
-                                                                       'genre': list_genre})
+                                                                     message_text={
+                                                                         "classuid counter":
+                                                                             class_guid,
+                                                                         'type': list_type,
+                                                                         'genre': list_genre})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":

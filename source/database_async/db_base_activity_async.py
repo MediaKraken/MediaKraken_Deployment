@@ -5,7 +5,7 @@ import uuid
 async def db_activity_insert(self, activity_name, activity_overview,
                              activity_short_overview, activity_type, activity_itemid,
                              activity_userid,
-                             activity_log_severity):
+                             activity_log_severity, db_connection=None):
     """
     Insert server or user activity record
     """
@@ -28,7 +28,7 @@ async def db_activity_insert(self, activity_name, activity_overview,
     return new_guid
 
 
-async def db_activity_purge(self, days_old):
+async def db_activity_purge(self, days_old, db_connection=None):
     """
     Purge records older than specified days
     """

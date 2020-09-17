@@ -1,7 +1,7 @@
 import uuid
 
 
-async def db_device_by_uuid(self, guid):
+async def db_device_by_uuid(self, guid, db_connection=None):
     """
     Return details from database via uuid
     """
@@ -11,7 +11,7 @@ async def db_device_by_uuid(self, guid):
                                              ' where mm_device_id = $1', guid)
 
 
-async def db_device_check(self, device_type, device_name, device_ip):
+async def db_device_check(self, device_type, device_name, device_ip, db_connection=None):
     """
     Check to see if device exists already on db
     """
@@ -21,7 +21,7 @@ async def db_device_check(self, device_type, device_name, device_ip):
         ' and mm_device_json->\'IP\' ? $3', device_type, device_name, device_ip)
 
 
-async def db_device_delete(self, guid):
+async def db_device_delete(self, guid, db_connection=None):
     """
     Remove a device from the database via uuid
     """
@@ -31,7 +31,7 @@ async def db_device_delete(self, guid):
 
 
 async def db_device_list(self, device_type=None, offset=0, records=None,
-                         search_value=None):
+                         search_value=None, db_connection=None):
     """
     Return list of devices in database
     """
@@ -52,7 +52,7 @@ async def db_device_list(self, device_type=None, offset=0, records=None,
                                               device_type, offset, records)
 
 
-async def db_device_update_by_uuid(self, guid, device_type, device_json):
+async def db_device_update_by_uuid(self, guid, device_type, device_json, db_connection=None):
     """
     Update the device in the database
     """
@@ -61,7 +61,7 @@ async def db_device_update_by_uuid(self, guid, device_type, device_json):
                                      ' where mm_device_id = $3', device_type, device_json, guid)
 
 
-async def db_device_upsert(self, device_type, device_json):
+async def db_device_upsert(self, device_type, device_json, db_connection=None):
     """
     Upsert a device into the database
     """

@@ -2,7 +2,7 @@ import json
 import uuid
 
 
-async def db_game_server_list(self, offset=0, records=None):
+async def db_game_server_list(self, offset=0, records=None, db_connection=None):
     """
     Return game server list
     """
@@ -14,7 +14,7 @@ async def db_game_server_list(self, offset=0, records=None):
                                           offset, records)
 
 
-async def db_game_server_upsert(self, server_name, server_json):
+async def db_game_server_upsert(self, server_name, server_json, db_connection=None):
     """
     Upsert a game server into the database
     """

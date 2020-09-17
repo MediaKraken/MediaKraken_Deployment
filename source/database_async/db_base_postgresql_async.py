@@ -1,4 +1,4 @@
-async def db_pgsql_parallel_workers(self):
+async def db_pgsql_parallel_workers(self, db_connection=None):
     """
     Return number of workers
     """
@@ -6,7 +6,7 @@ async def db_pgsql_parallel_workers(self):
 
 
 # query provided by postgresql wiki
-async def db_pgsql_row_count(self):
+async def db_pgsql_row_count(self, db_connection=None):
     """
     # return tables and row count
     """
@@ -18,7 +18,7 @@ async def db_pgsql_row_count(self):
 
 
 # query provided by postgresql wiki
-async def db_pgsql_table_sizes(self):
+async def db_pgsql_table_sizes(self, db_connection=None):
     """
     # return tables sizes (includes indexes, etc)
     """

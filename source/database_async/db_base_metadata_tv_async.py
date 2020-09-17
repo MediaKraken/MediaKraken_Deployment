@@ -1,7 +1,7 @@
 from common import common_logging_elasticsearch_httpx
 
 
-async def db_meta_tv_detail(self, guid):
+async def db_meta_tv_detail(self, guid, db_connection=None):
     """
     # return metadata for tvshow
     """
@@ -17,14 +17,15 @@ async def db_meta_tv_detail(self, guid):
                                              guid)
 
 
-async def db_meta_tv_episode(self, show_guid, season_number, episode_number):
+async def db_meta_tv_episode(self, show_guid, season_number, episode_number, db_connection=None):
     """
     # grab episode detail
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={"show guid": show_guid,
-                                                                       'season': season_number,
-                                                                       'eps': episode_number})
+                                                                     message_text={
+                                                                         "show guid": show_guid,
+                                                                         'season': season_number,
+                                                                         'eps': episode_number})
     return await self.db_connection.fetchrow(
         'select jsonb_array_elements_text(mm_metadata_tvshow_json->\'Meta\'->\'thetvdb\''
         '->\'Episode\')::jsonb->\'EpisodeName\' as eps_name,'
@@ -37,7 +38,7 @@ async def db_meta_tv_episode(self, show_guid, season_number, episode_number):
         show_guid, str(season_number), str(episode_number))
 
 
-async def db_meta_tv_epsisode_by_id(self, show_guid, show_episode_id):
+async def db_meta_tv_epsisode_by_id(self, show_guid, show_episode_id, db_connection=None):
     """
     # grab episode detail by eps id
     """
@@ -58,7 +59,7 @@ async def db_meta_tv_epsisode_by_id(self, show_guid, show_episode_id):
                                              show_guid)
 
 
-async def db_meta_tv_eps_season(self, show_guid):
+async def db_meta_tv_eps_season(self, show_guid, db_connection=None):
     """
     # grab tvmaze ep data for eps per season
     """
@@ -77,7 +78,7 @@ async def db_meta_tv_eps_season(self, show_guid):
     return season_data
 
 
-async def db_meta_tv_list(self, offset=0, records=None, search_value=None):
+async def db_meta_tv_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     # return list of tvshows
     """
@@ -94,7 +95,7 @@ async def db_meta_tv_list(self, offset=0, records=None, search_value=None):
                                           offset, records)
 
 
-async def db_meta_tv_list_count(self, search_value=None):
+async def db_meta_tv_list_count(self, search_value=None, db_connection=None):
     """
     # tvshow count
     """
@@ -106,7 +107,7 @@ async def db_meta_tv_list_count(self, search_value=None):
         return await self.db_connection.fetchval('select count(*) from mm_metadata_tvshow')
 
 
-async def db_meta_tv_season_eps_list(self, show_guid, season_number):
+async def db_meta_tv_season_eps_list(self, show_guid, season_number, db_connection=None):
     """
     # grab episodes within the season
     """

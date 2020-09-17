@@ -1,7 +1,8 @@
 import uuid
 
 
-async def db_notification_insert(self, notification_data, notification_dismissable):
+async def db_notification_insert(self, notification_data, notification_dismissable,
+                                 db_connection=None):
     """
     # insert notifications
     """
@@ -16,7 +17,7 @@ async def db_notification_insert(self, notification_data, notification_dismissab
     return new_guid
 
 
-async def db_notification_read(self, offset=0, records=None):
+async def db_notification_read(self, offset=0, records=None, db_connection=None):
     """
     # read all notifications
     """
@@ -30,7 +31,7 @@ async def db_notification_read(self, offset=0, records=None):
                                           offset, records)
 
 
-async def db_notification_delete(self, notification_uuid):
+async def db_notification_delete(self, notification_uuid, db_connection=None):
     """
     # remove notifications
     """

@@ -1,7 +1,7 @@
 import uuid
 
 
-async def db_review_count(self, metadata_id):
+async def db_review_count(self, metadata_id, db_connection=None):
     """
     # count reviews for media
     """
@@ -10,7 +10,7 @@ async def db_review_count(self, metadata_id):
                                              metadata_id)
 
 
-async def db_review_list_by_tmdb_guid(self, metadata_id):
+async def db_review_list_by_tmdb_guid(self, metadata_id, db_connection=None):
     """
     # grab reviews for metadata
     """
@@ -23,7 +23,7 @@ async def db_review_list_by_tmdb_guid(self, metadata_id):
                                           metadata_id)
 
 
-async def db_review_insert(self, metadata_id, review_json):
+async def db_review_insert(self, metadata_id, review_json, db_connection=None):
     """
     # insert record
     """

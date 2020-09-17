@@ -2,7 +2,7 @@ import uuid
 
 
 async def db_share_add(self, share_type, share_user, share_password, share_server,
-                       share_path):
+                       share_path, db_connection=None):
     """
     # add share path
     """
@@ -19,7 +19,7 @@ async def db_share_add(self, share_type, share_user, share_password, share_serve
     return new_guid
 
 
-async def db_share_check(self, dir_path):
+async def db_share_check(self, dir_path, db_connection=None):
     """
     # share path check (dupes)
     """
@@ -28,7 +28,7 @@ async def db_share_check(self, dir_path):
         dir_path)
 
 
-async def db_share_delete(self, share_guid):
+async def db_share_delete(self, share_guid, db_connection=None):
     """
     # remove share
     """
@@ -36,7 +36,7 @@ async def db_share_delete(self, share_guid):
                                      share_guid)
 
 
-async def db_share_list(self, offset=0, records=None):
+async def db_share_list(self, offset=0, records=None, db_connection=None):
     """
     # read the shares list
     """
@@ -54,7 +54,7 @@ async def db_share_list(self, offset=0, records=None):
 
 async def db_share_update_by_uuid(self, share_type, share_user, share_password,
                                   share_server,
-                                  share_path, share_id):
+                                  share_path, share_id, db_connection=None):
     """
     # update share
     """

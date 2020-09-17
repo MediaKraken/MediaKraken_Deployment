@@ -2,7 +2,7 @@ import datetime
 import uuid
 
 
-async def db_cron_delete(self, cron_uuid):
+async def db_cron_delete(self, cron_uuid, db_connection=None):
     """
     Delete cron job
     """
@@ -11,7 +11,7 @@ async def db_cron_delete(self, cron_uuid):
                                      cron_uuid)
 
 
-async def db_cron_info(self, cron_uuid):
+async def db_cron_info(self, cron_uuid, db_connection=None):
     """
     Cron job info
     """
@@ -27,7 +27,7 @@ async def db_cron_info(self, cron_uuid):
 
 
 async def db_cron_insert(self, cron_name, cron_desc, cron_enabled,
-                         cron_schedule, cron_last_run, cron_json):
+                         cron_schedule, cron_last_run, cron_json, db_connection=None):
     """
     insert cron job
     """
@@ -45,7 +45,7 @@ async def db_cron_insert(self, cron_name, cron_desc, cron_enabled,
     return new_cron_id
 
 
-async def db_cron_list(self, enabled_only=False, offset=0, records=None):
+async def db_cron_list(self, enabled_only=False, offset=0, records=None, db_connection=None):
     """
     Return cron list
     """
@@ -78,7 +78,7 @@ async def db_cron_list(self, enabled_only=False, offset=0, records=None):
                                               records)
 
 
-async def db_cron_list_count(self, enabled_only=False):
+async def db_cron_list_count(self, enabled_only=False, db_connection=None):
     """
     Return number of cron jobs
     """
@@ -89,7 +89,7 @@ async def db_cron_list_count(self, enabled_only=False):
                                                  ' where mm_cron_enabled = true')
 
 
-async def db_cron_time_update(self, cron_type):
+async def db_cron_time_update(self, cron_type, db_connection=None):
     """
     Update the datetime in which a cron job was run
     """

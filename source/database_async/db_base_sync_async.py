@@ -1,7 +1,7 @@
 import uuid
 
 
-async def db_sync_progress_update(self, sync_guid, sync_percent):
+async def db_sync_progress_update(self, sync_guid, sync_percent, db_connection=None):
     """
     # update progress
     """
@@ -10,14 +10,14 @@ async def db_sync_progress_update(self, sync_guid, sync_percent):
     await self.db_connection.execute('commit')
 
 
-async def db_sync_list_count(self):
+async def db_sync_list_count(self, db_connection=None):
     """
     # return count of sync jobs
     """
     return await self.db_connection.fetchval('select count(*) from mm_sync')
 
 
-async def db_sync_delete(self, sync_guid):
+async def db_sync_delete(self, sync_guid, db_connection=None):
     """
     # delete sync job
     """
@@ -26,7 +26,7 @@ async def db_sync_delete(self, sync_guid):
         ' where mm_sync_guid = $1', sync_guid)
 
 
-async def db_sync_insert(self, sync_path, sync_path_to, sync_json):
+async def db_sync_insert(self, sync_path, sync_path_to, sync_json, db_connection=None):
     """
     # insert sync job
     """
@@ -41,7 +41,7 @@ async def db_sync_insert(self, sync_path, sync_path_to, sync_json):
     return new_guid
 
 
-async def db_sync_list(self, offset=0, records=None, user_guid=None):
+async def db_sync_list(self, offset=0, records=None, user_guid=None, db_connection=None):
     """
     # return list of sync jobs
     """

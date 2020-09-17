@@ -1,4 +1,4 @@
-async def db_version_check(self):
+async def db_version_check(self, db_connection=None):
     """
     query db version
     """
@@ -6,7 +6,7 @@ async def db_version_check(self):
                                        ' from mm_version')
 
 
-async def db_version_update(self, version_no):
+async def db_version_update(self, version_no, db_connection=None):
     """
     update db version
     """

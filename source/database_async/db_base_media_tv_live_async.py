@@ -1,4 +1,4 @@
-async def db_tv_schedule_by_date(self, display_date):
+async def db_tv_schedule_by_date(self, display_date, db_connection=None):
     """
     # tv shows for schedule display
     """

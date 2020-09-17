@@ -7,7 +7,7 @@ async def db_metadata_search(self, search_string, search_type='Local',
                              search_album=True,
                              search_image=True,
                              search_publication=True,
-                             search_game=True):
+                             search_game=True, db_connection=None):
     """
     search media local, remote and metadata providers
     """

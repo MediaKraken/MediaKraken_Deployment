@@ -1,11 +1,11 @@
-async def db_metadata_guid_from_media_guid(self, guid):
+async def db_metadata_guid_from_media_guid(self, guid, db_connection=None):
     return await self.db_connection.fetchval('select mm_media_metadata_guid'
                                              ' from mm_media'
                                              ' where mm_media_guid = $1', guid)
 
 
 async def db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
-                              data_image_json):
+                              data_image_json, db_connection=None):
     """
     # insert metadata from themoviedb
     """
@@ -20,7 +20,7 @@ async def db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
     await self.db_connection.execute('commit')
 
 
-async def db_meta_guid_by_imdb(self, imdb_uuid):
+async def db_meta_guid_by_imdb(self, imdb_uuid, db_connection=None):
     """
     # metadata guid by imdb id
     """
@@ -30,7 +30,7 @@ async def db_meta_guid_by_imdb(self, imdb_uuid):
                                              imdb_uuid)
 
 
-async def db_meta_guid_by_tmdb(self, tmdb_uuid):
+async def db_meta_guid_by_tmdb(self, tmdb_uuid, db_connection=None):
     """
     # see if metadata exists type and id
     """

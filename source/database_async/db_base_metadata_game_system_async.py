@@ -1,4 +1,4 @@
-async def db_meta_game_system_by_guid(self, guid):
+async def db_meta_game_system_by_guid(self, guid, db_connection=None):
     """
     # return game system data
     """
@@ -7,7 +7,7 @@ async def db_meta_game_system_by_guid(self, guid):
                                              guid)
 
 
-async def db_meta_game_system_list_count(self, search_value=None):
+async def db_meta_game_system_list_count(self, search_value=None, db_connection=None):
     """
     Return game system count
     """
@@ -22,7 +22,8 @@ async def db_meta_game_system_list_count(self, search_value=None):
             ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
 
 
-async def db_meta_game_system_list(self, offset=0, records=None, search_value=None):
+async def db_meta_game_system_list(self, offset=0, records=None, search_value=None,
+                                   db_connection=None):
     """
     # return list of game systems
     """

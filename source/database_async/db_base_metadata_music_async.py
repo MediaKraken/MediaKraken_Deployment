@@ -1,4 +1,4 @@
-async def db_meta_music_album_by_guid(self, guid):
+async def db_meta_music_album_by_guid(self, guid, db_connection=None):
     """
     # return album data by guid
     """
@@ -7,7 +7,8 @@ async def db_meta_music_album_by_guid(self, guid):
                                              guid)
 
 
-async def db_meta_music_album_list(self, offset=0, records=None, search_value=None):
+async def db_meta_music_album_list(self, offset=0, records=None, search_value=None,
+                                   db_connection=None):
     """
     # return album metadata list
     """
@@ -35,7 +36,7 @@ async def db_meta_music_album_list(self, offset=0, records=None, search_value=No
                                               offset, records)
 
 
-async def db_meta_music_songs_by_album_guid(self, guid):
+async def db_meta_music_songs_by_album_guid(self, guid, db_connection=None):
     """
     # return song list from album guid
     """
@@ -45,7 +46,8 @@ async def db_meta_music_songs_by_album_guid(self, guid):
                                           guid)
 
 
-async def db_meta_music_song_list(self, offset=0, records=None, search_value=None):
+async def db_meta_music_song_list(self, offset=0, records=None, search_value=None,
+                                  db_connection=None):
     """
     # return song metadata list
     """

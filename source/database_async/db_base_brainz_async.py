@@ -1,4 +1,5 @@
-def db_brainz_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass):
+def db_brainz_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbpass,
+                   db_connection=None):
     """
     # open database and pull in config from sqlite and create db if not exist
     """
@@ -20,14 +21,14 @@ def db_brainz_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbp
     #            exit(1)
 
 
-def db_brainz_close(self):
+def db_brainz_close(self, db_connection=None):
     """
     # close main db file
     """
     self.sql3_conn.close()
 
 
-def db_brainz_all_artists(self):
+def db_brainz_all_artists(self, db_connection=None):
     """
     # read in all artists
     """
@@ -46,7 +47,7 @@ def db_brainz_all_artists(self):
     return self.db_cursor.fetchall()
 
 
-def db_brainz_all_albums(self):
+def db_brainz_all_albums(self, db_connection=None):
     """
     # read in all albums
     """
@@ -60,7 +61,7 @@ def db_brainz_all_albums(self):
     return self.db_cursor.fetchall()
 
 
-def db_brainz_all_albums_by_artist(self, artist_id):
+def db_brainz_all_albums_by_artist(self, artist_id, db_connection=None):
     """
     # read in album by artist credit id
     """
@@ -76,7 +77,7 @@ def db_brainz_all_albums_by_artist(self, artist_id):
     return self.db_cursor.fetchall()
 
 
-def db_brainz_all_songs(self):
+def db_brainz_all_songs(self, db_connection=None):
     """
     # read in all songs
     """
@@ -89,7 +90,7 @@ def db_brainz_all_songs(self):
     return self.db_cursor.fetchall()
 
 
-def db_brainz_all_songs_by_rec_uuid(self, record_id):
+def db_brainz_all_songs_by_rec_uuid(self, record_id, db_connection=None):
     """
     # read in all by recording id
     """
@@ -102,7 +103,7 @@ def db_brainz_all_songs_by_rec_uuid(self, record_id):
     return self.db_cursor.fetchall()
 
 
-def db_brainz_all(self):
+def db_brainz_all(self, db_connection=None):
     """
     # read for batch insert
     """

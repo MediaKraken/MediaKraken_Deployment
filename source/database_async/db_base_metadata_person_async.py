@@ -5,7 +5,7 @@ from common import common_global
 from common import common_logging_elasticsearch_httpx
 
 
-async def db_meta_person_as_seen_in(self, person_guid):
+async def db_meta_person_as_seen_in(self, person_guid, db_connection=None):
     """
     # find other media for person
     """
@@ -14,7 +14,8 @@ async def db_meta_person_as_seen_in(self, person_guid):
         return None
     # TODO jin index the credits
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={"row_data": row_data})
+                                                                     message_text={
+                                                                         "row_data": row_data})
     return await self.db_connection.fetch('select mm_metadata_guid,mm_media_name,'
                                           ' mm_metadata_localimage_json->\'Poster\''
                                           ' from mm_metadata_movie'
@@ -24,7 +25,7 @@ async def db_meta_person_as_seen_in(self, person_guid):
                                           + '}]\' order by LOWER(mm_media_name)')
 
 
-async def db_meta_person_by_guid(self, guid):
+async def db_meta_person_by_guid(self, guid, db_connection=None):
     """
     # return person data
     """
@@ -36,7 +37,7 @@ async def db_meta_person_by_guid(self, guid):
                                              guid)
 
 
-async def db_meta_person_list(self, offset=0, records=None, search_value=None):
+async def db_meta_person_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     # return list of people
     """
@@ -58,7 +59,7 @@ async def db_meta_person_list(self, offset=0, records=None, search_value=None):
                                               offset, records)
 
 
-async def db_meta_person_list_count(self, search_value=None):
+async def db_meta_person_list_count(self, search_value=None, db_connection=None):
     """
     # count person metadata
     """
@@ -78,15 +79,17 @@ async def db_meta_person_id_count(self, guid):
 
 
 async def db_meta_person_insert(self, person_name, media_id, person_json,
-                                image_path=None):
+                                image_path=None, db_connection=None):
     """
     # insert person
     """
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'db pers insert': {'name': person_name,
-                           'id': media_id,
-                           'person': person_json,
-                           'image': image_path}})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'db pers insert': {
+                                                                             'name': person_name,
+                                                                             'id': media_id,
+                                                                             'person': person_json,
+                                                                             'image': image_path}})
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
                                      ' mmp_person_media_id,'
@@ -99,12 +102,14 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
     return new_guid
 
 
-async def db_meta_person_insert_cast_crew(self, meta_type, person_json):
+async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_connection=None):
     """
     # batch insert from json of crew/cast
     """
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'db_meta_person_insert_cast_crew': meta_type, 'person': person_json})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'db_meta_person_insert_cast_crew': meta_type,
+                                                                         'person': person_json})
     # TODO failing due to only one person in json?  hence pulling id, etc as the for loop
     multiple_person = False
     try:
@@ -114,8 +119,9 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json):
         pass
     if multiple_person:
         for person_data in person_json:
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                "person data": person_data})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 "person data": person_data})
             if meta_type == "themoviedb":
                 person_id = person_data['id']
                 person_name = person_data['name']
@@ -125,9 +131,10 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             if person_id is not None:
                 # TODO do an upsert instead
                 if await self.db_meta_person_id_count(person_id) > 0:
-                    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             'db_meta_person_insert_cast_crew': "skip insert as person exists"})
+                    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                        message_type='info',
+                        message_text={
+                            'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
                     # Shouldn't need to verify fetch doesn't exist as the person insert
                     # is right below.  As then the next person record read will find
@@ -154,9 +161,10 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             # person_name = None # not used later so don't set
         if person_id is not None:
             if await self.db_meta_person_id_count(meta_type, person_id) > 0:
-                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'stuff': "skippy"})
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='info',
+                    message_text={
+                        'stuff': "skippy"})
             else:
                 # Shouldn't need to verify fetch doesn't exist as the person insert
                 # is right below.  As then the next person record read will find

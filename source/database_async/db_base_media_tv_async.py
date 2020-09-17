@@ -1,5 +1,6 @@
 async def db_media_tv_list(self, genre_type=None, list_limit=None,
-                           group_collection=False, offset=0, search_value=None):
+                           group_collection=False, offset=0, search_value=None,
+                           db_connection=None):
     """
     # grab tv data
     """
@@ -37,7 +38,7 @@ async def db_media_tv_list(self, genre_type=None, list_limit=None,
 
 
 async def db_media_tv_list_count(self, genre_type=None, group_collection=False,
-                                 search_value=None):
+                                 search_value=None, db_connection=None):
     """
     # grab tv data count
     """
