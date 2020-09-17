@@ -11,6 +11,10 @@ async def db_metadata_search(self, search_string, search_type='Local',
     """
     search media local, remote and metadata providers
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     json_return_data = {}
     if search_type == 'Local':
         if search_movie:

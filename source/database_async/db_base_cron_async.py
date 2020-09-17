@@ -6,6 +6,10 @@ async def db_cron_delete(self, cron_uuid, db_connection=None):
     """
     Delete cron job
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('delete from mm_cron'
                                      ' where mm_cron_guid = $1',
                                      cron_uuid)
@@ -15,6 +19,10 @@ async def db_cron_info(self, cron_uuid, db_connection=None):
     """
     Cron job info
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_cron_guid,'
                                              ' mm_cron_name,'
                                              ' mm_cron_description,'
@@ -31,6 +39,10 @@ async def db_cron_insert(self, cron_name, cron_desc, cron_enabled,
     """
     insert cron job
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_cron_id = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_cron (mm_cron_guid,'
                                      ' mm_cron_name,'
@@ -49,6 +61,10 @@ async def db_cron_list(self, enabled_only=False, offset=0, records=None, db_conn
     """
     Return cron list
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if not enabled_only:
         return await self.db_connection.fetch('select mm_cron_guid,'
                                               ' mm_cron_name,'
@@ -82,6 +98,10 @@ async def db_cron_list_count(self, enabled_only=False, db_connection=None):
     """
     Return number of cron jobs
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if not enabled_only:
         return await self.db_connection.fetchval('select count(*) from mm_cron')
     else:
@@ -93,6 +113,10 @@ async def db_cron_time_update(self, cron_type, db_connection=None):
     """
     Update the datetime in which a cron job was run
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('update mm_cron set mm_cron_last_run = $1'
                                      ' where mm_cron_name = $2',
                                      datetime.datetime.now(), cron_type)

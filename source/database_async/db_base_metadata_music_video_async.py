@@ -2,6 +2,10 @@ async def db_meta_music_video_count(self, imvdb_id=None, search_value=None, db_c
     """
     Return count of music video metadata
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if imvdb_id is None:
         if search_value is not None:
             return await self.db_connection.fetchval('select count(*) from mm_metadata_music_video'
@@ -20,6 +24,10 @@ async def db_meta_music_video_detail_uuid(self, item_guid, db_connection=None):
     """
     Grab metadata for specified music video
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_media_music_video_band,'
                                              ' mm_media_music_video_song,'
                                              ' mm_metadata_music_video_json::json,'
@@ -34,6 +42,10 @@ async def db_meta_music_video_list(self, offset=0, records=None, search_value=No
     """
     List music video metadata
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO order by release date
     if search_value is not None:
         return await self.db_connection.fetch('select mm_metadata_music_video_guid,'

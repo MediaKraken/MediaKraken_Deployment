@@ -6,6 +6,10 @@ async def db_media_duplicate(self, offset=0, records=None, db_connection=None):
     """
     # list duplicates
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO technically this will "dupe" things like subtitles atm, so group by class guid?
     return await self.db_connection.fetch('select mm_media_metadata_guid,'
                                           ' mm_media_name,'
@@ -24,6 +28,10 @@ async def db_media_duplicate_count(self, db_connection=None):
     """
     # count the duplicates for pagination
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO technically this will "dupe" things like subtitles atm
     # TODO perhaps group by classid?
     return await self.db_connection.fetchval('select count(*) from (select mm_media_metadata_guid'
@@ -37,6 +45,10 @@ async def db_media_duplicate_detail(self, guid, offset=0, records=None, db_conne
     """
     # list duplicate detail
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select mm_media_guid,'
                                           'mm_media_path,'
                                           'mm_media_ffprobe_json::json'
@@ -51,6 +63,10 @@ async def db_media_duplicate_detail_count(self, guid, db_connection=None):
     """
     # duplicate detail count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_media'
                                              ' where mm_media_metadata_guid = $1',
                                              guid)
@@ -60,6 +76,10 @@ async def db_media_ffprobe_all_guid(self, media_uuid, media_class_uuid, db_conne
     """
     # fetch all media with METADATA match
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch(
         'select distinct mm_media_guid,'
         ' mm_media_ffprobe_json::json'
@@ -76,6 +96,10 @@ async def db_media_insert(self, media_uuid, media_path, media_class_uuid,
     """
     # insert media into database
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('insert into mm_media (mm_media_guid,'
                                      ' mm_media_class_guid,'
                                      ' mm_media_path,'
@@ -91,6 +115,10 @@ async def db_media_known(self, offset=0, records=None, db_connection=None):
     """
     # find all known media
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select mm_media_path'
                                           ' from mm_media where mm_media_guid'
                                           ' in (select mm_media_guid'
@@ -103,6 +131,10 @@ async def db_media_known_count(self, db_connection=None):
     """
     # count known media
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_media')
 
 
@@ -110,6 +142,10 @@ async def db_media_matched_count(self, db_connection=None):
     """
     # count matched media
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_media'
                                              ' where mm_media_metadata_guid is not NULL')
 
@@ -154,6 +190,10 @@ async def db_media_new_count(self, search_value=None, days_old=7, db_connection=
     """
     # new media count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_media, mm_metadata_movie'
                                              ' where mm_media_metadata_guid = mm_metadata_guid'
                                              ' and mm_media_json->>\'DateAdded\' >= $1',
@@ -166,6 +206,10 @@ async def db_media_path_by_uuid(self, media_uuid, db_connection=None):
     """
     # find path for media by uuid
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select mm_media_path from mm_media'
                                              ' where mm_media_guid = $1',
                                              media_uuid)
@@ -175,6 +219,10 @@ async def db_media_rating_update(self, media_guid, user_id, status_text, db_conn
     """
     # set favorite status for media
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if status_text == 'watched' or status_text == 'mismatch':
         status_setting = True
     else:
@@ -199,6 +247,10 @@ async def db_media_rating_update(self, media_guid, user_id, status_text, db_conn
 
 
 async def db_media_unmatched_list(self, offset=0, list_limit=None, db_connection=None):
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select mm_media_guid,'
                                           ' mm_media_path from mm_media'
                                           ' where mm_media_metadata_guid is NULL'
@@ -207,5 +259,9 @@ async def db_media_unmatched_list(self, offset=0, list_limit=None, db_connection
 
 
 async def db_media_unmatched_list_count(self, db_connection=None):
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_media'
                                              ' where mm_media_metadata_guid is NULL')

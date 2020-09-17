@@ -5,6 +5,10 @@ async def db_device_by_uuid(self, guid, db_connection=None):
     """
     Return details from database via uuid
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_device_type,'
                                              ' mm_device_json::json'
                                              ' from mm_device'
@@ -15,6 +19,10 @@ async def db_device_check(self, device_type, device_name, device_ip, db_connecti
     """
     Check to see if device exists already on db
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval(
         'select count(*) from mm_device'
         ' where mm_device_type = $1 mm_device_json->\'Name\' ? $2'
@@ -25,6 +33,10 @@ async def db_device_delete(self, guid, db_connection=None):
     """
     Remove a device from the database via uuid
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute(
         'delete from mm_device'
         ' where mm_device_id = $1', guid)
@@ -35,6 +47,10 @@ async def db_device_list(self, device_type=None, offset=0, records=None,
     """
     Return list of devices in database
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if device_type is None:
         return await self.db_connection.fetch('select mm_device_id,'
                                               ' mm_device_type,'
@@ -56,6 +72,10 @@ async def db_device_update_by_uuid(self, guid, device_type, device_json, db_conn
     """
     Update the device in the database
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('update mm_device set mm_device_type = $1,'
                                      ' mm_device_json = $2'
                                      ' where mm_device_id = $3', device_type, device_json, guid)
@@ -66,6 +86,10 @@ async def db_device_upsert(self, device_type, device_json, db_connection=None):
     Upsert a device into the database
     """
     new_guid = str(uuid.uuid4())
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('INSERT INTO mm_device (mm_device_id,'
                                      ' mm_device_type,'
                                      ' mm_device_json)'

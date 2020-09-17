@@ -6,6 +6,10 @@ async def db_notification_insert(self, notification_data, notification_dismissab
     """
     # insert notifications
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_notification (mm_notification_guid,'
                                      'mm_notification_text,'
@@ -21,6 +25,10 @@ async def db_notification_read(self, offset=0, records=None, db_connection=None)
     """
     # read all notifications
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select mm_notification_guid,'
                                           ' mm_notification_text,'
                                           ' mm_notification_time,'
@@ -35,6 +43,10 @@ async def db_notification_delete(self, notification_uuid, db_connection=None):
     """
     # remove notifications
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('delete from mm_notification'
                                      ' where mm_notification_guid = $1',
                                      notification_uuid)

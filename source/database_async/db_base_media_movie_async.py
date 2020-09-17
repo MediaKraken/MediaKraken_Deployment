@@ -10,6 +10,10 @@ async def db_media_movie_list(self, class_guid, list_type=None, list_genre='All'
     """
     # web media return
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "classuid": class_guid,
@@ -520,6 +524,10 @@ async def db_media_movie_list_count(self, class_guid, list_type=None,
     """
     # web media count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "classuid counter":

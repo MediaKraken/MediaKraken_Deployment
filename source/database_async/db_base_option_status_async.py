@@ -5,6 +5,10 @@ async def db_opt_update(self, option_json, db_connection=None):
     """
     Update option json
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # no need for where clause as it's only the one record
     await self.db_connection.execute('update mm_options_and_status'
                                      ' set mm_options_json::json = $1',
@@ -15,6 +19,10 @@ async def db_opt_json_read(self, db_connection=None):
     """
     Read options
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval(
         'select mm_options_json::json'
         ' from mm_options_and_status')
@@ -24,6 +32,10 @@ async def db_opt_status_read(self, db_connection=None):
     """
     Read options, status
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow(
         'select mm_options_json::json, mm_status_json::json'
         ' from mm_options_and_status')
@@ -33,6 +45,10 @@ async def db_status_json_read(self, db_connection=None):
     """
     Read options
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval(
         'select mm_status_json::json'
         ' from mm_options_and_status')
@@ -42,6 +58,10 @@ async def db_opt_status_insert(self, option_json, status_json, db_connection=Non
     """
     insert status
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('insert into mm_options_and_status'
                                      ' (mm_options_and_status_guid,'
                                      ' mm_options_json::json,'
@@ -55,6 +75,10 @@ async def db_opt_status_update(self, option_json, status_json, db_connection=Non
     """
     Update option and status json
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # no need for where clause as it's only the one record
     await self.db_connection.execute('update mm_options_and_status'
                                      ' set mm_options_json::json = $1,'

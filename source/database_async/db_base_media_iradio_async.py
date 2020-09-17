@@ -5,6 +5,10 @@ async def db_iradio_insert(self, radio_channel, db_connection=None):
     """
     Insert iradio channel
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if await self.db_connection.fetchval('select count(*) from mm_radio'
                                          ' where mm_radio_address = $1',
                                          radio_channel) == 0:
@@ -22,6 +26,10 @@ async def db_iradio_list(self, offset=0, records=None, active_station=True,
     """
     Iradio list
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetch('select mm_radio_guid,'
                                               ' mm_radio_name,'
@@ -50,6 +58,10 @@ async def db_iradio_list_count(self, active_station=True, search_value=None, db_
     """
     Iradio count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*) from mm_radio '
                                                  'where mm_radio_active = $1'

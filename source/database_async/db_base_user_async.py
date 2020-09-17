@@ -2,6 +2,10 @@ import uuid
 
 
 async def db_user_count(self, user_name=None, db_connection=None):
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if user_name is None:
         return await self.db_connection.fetchval('select count(*) from mm_user')
     else:
@@ -13,6 +17,10 @@ async def db_user_delete(self, user_guid, db_connection=None):
     """
     # remove user
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('delete from mm_user'
                                      ' where id = $1', user_guid)
 
@@ -21,6 +29,10 @@ async def db_user_detail(self, guid, db_connection=None):
     """
     # return all data for specified user
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select * from mm_user'
                                              ' where id = $1', guid)
 
@@ -29,6 +41,10 @@ async def db_user_insert(self, user_name, user_email, user_password, db_connecti
     """
     # insert user
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if await self.db_user_count() == 0:
         user_admin = True
     else:
@@ -44,6 +60,10 @@ async def db_user_list_name(self, offset=0, records=None, db_connection=None):
     """
     # return user list
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select id,'
                                           ' username,'
                                           ' email,'
@@ -84,6 +104,10 @@ async def db_user_group_insert(self, group_name, group_desc, group_rights_json,
     """
     insert user group
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_user_group_id = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_user_group (mm_user_group_guid,'
                                      ' mm_user_group_name,'

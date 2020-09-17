@@ -5,6 +5,10 @@ async def db_meta_tv_detail(self, guid, db_connection=None):
     """
     # return metadata for tvshow
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_metadata_tvshow_name,'
                                              ' mm_metadata_tvshow_json::json,'
                                              ' mm_metadata_tvshow_localimage_json,'
@@ -21,6 +25,10 @@ async def db_meta_tv_episode(self, show_guid, season_number, episode_number, db_
     """
     # grab episode detail
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "show guid": show_guid,
@@ -42,6 +50,10 @@ async def db_meta_tv_epsisode_by_id(self, show_guid, show_episode_id, db_connect
     """
     # grab episode detail by eps id
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO tvmaze
     # TODO injection fix
     return await self.db_connection.fetchrow('select eps_data->\'EpisodeName\' as eps_name,'
@@ -63,6 +75,10 @@ async def db_meta_tv_eps_season(self, show_guid, db_connection=None):
     """
     # grab tvmaze ep data for eps per season
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     season_data = {}
     for row_data in await self.db_connection.fetch(
             'select count(*) as ep_count, jsonb_array_elements_text(mm_metadata_tvshow_json'
@@ -82,6 +98,10 @@ async def db_meta_tv_list(self, offset=0, records=None, search_value=None, db_co
     """
     # return list of tvshows
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO order by release date
     return await self.db_connection.fetch('select mm_metadata_tvshow_guid,'
                                           ' mm_metadata_tvshow_name,'
@@ -99,6 +119,10 @@ async def db_meta_tv_list_count(self, search_value=None, db_connection=None):
     """
     # tvshow count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is None:
         return await self.db_connection.fetchval('select count(*) from mm_metadata_tvshow '
                                                  'where mm_metadata_tvshow_name % $1',
@@ -111,6 +135,10 @@ async def db_meta_tv_season_eps_list(self, show_guid, season_number, db_connecti
     """
     # grab episodes within the season
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     episode_data = {}
     # TODO security check the seasonumber since from webpage addy - injection
     await self.db_connection.fetch(

@@ -2,6 +2,10 @@ async def db_media_book_list(self, offset=0, records=None, search_value=None, db
     """
     book list
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetch('select mm_metadata_book_guid,'
                                               ' mm_metadata_book_name'
@@ -27,6 +31,10 @@ async def db_media_book_list_count(self, search_value=None, db_connection=None):
     """
     book list count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*) from mm_metadata_book,'
                                                  ' mm_media'

@@ -2,6 +2,10 @@ async def db_meta_queue_list_count(self, user_id, search_value=None, db_connecti
     """
     Return count of queued media for user
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*)'
                                                  ' from mm_user_queue'

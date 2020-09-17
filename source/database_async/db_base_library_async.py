@@ -6,6 +6,10 @@ async def db_library_path_add(self, dir_path, class_guid, share_guid, db_connect
     """
     # add media path
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_media_dir (mm_media_dir_guid,'
                                      ' mm_media_dir_path,'
@@ -22,6 +26,10 @@ async def db_library_path_by_uuid(self, dir_id, db_connection=None):
     """
     # lib data per id
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_media_dir_guid,'
                                              ' mm_media_dir_path,'
                                              ' mm_media_dir_class_type'
@@ -34,6 +42,10 @@ async def db_library_path_check(self, dir_path, db_connection=None):
     """
     # lib path check (dupes)
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval(
         'select count(*) from mm_media_dir where mm_media_dir_path = $1',
         dir_path)
@@ -43,6 +55,10 @@ async def db_library_path_delete(self, lib_guid, db_connection=None):
     """
     # remove media path
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute(
         'delete from mm_media_dir where mm_media_dir_share_guid = $1', lib_guid)
 
@@ -51,6 +67,10 @@ async def db_library_path_status(self, db_connection=None):
     """
     # read scan status
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_media_dir_path,'
                                              ' mm_media_dir_status'
                                              ' from mm_media_dir'
@@ -62,6 +82,10 @@ async def db_library_path_update_by_uuid(self, lib_path, class_guid, lib_guid, d
     """
     # update audit path
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('update mm_media_dir set mm_media_dir_path = $1,'
                                      ' mm_media_dir_class_type = $2'
                                      ' where mm_media_dir_share_guid = $3',
@@ -72,6 +96,10 @@ async def db_library_paths(self, offset=0, records=None, db_connection=None):
     """
     # read the paths to audit
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select mm_media_dir_path,'
                                           ' mm_media_dir_class_type,'
                                           ' mm_media_dir_last_scanned,'

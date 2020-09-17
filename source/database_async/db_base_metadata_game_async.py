@@ -2,6 +2,10 @@ async def db_meta_game_by_guid(self, guid, db_connection=None):
     """
     # return game data
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select gi_id,'
                                              ' gi_system_id,'
                                              ' gi_game_info_json::json'
@@ -13,6 +17,10 @@ async def db_meta_game_by_sha1(self, sha1_hash, db_connection=None):
     """
     # return game uuid by sha1 hash
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select gi_id'
                                              ' from mm_metadata_game_software_info'
                                              ' where gi_game_info_sha1 = $1',
@@ -23,6 +31,10 @@ async def db_meta_game_list(self, offset=0, records=None, search_value=None, db_
     """
     # return list of games
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetch('select gi_id,gi_game_info_short_name,'
                                               ' gi_game_info_name,'

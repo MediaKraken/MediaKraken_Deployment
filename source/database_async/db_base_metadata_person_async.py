@@ -9,6 +9,10 @@ async def db_meta_person_as_seen_in(self, person_guid, db_connection=None):
     """
     # find other media for person
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     row_data = await self.db_meta_person_by_guid(guid=person_guid)
     if row_data is None:  # exit on not found person
         return None
@@ -29,6 +33,10 @@ async def db_meta_person_by_guid(self, guid, db_connection=None):
     """
     # return person data
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mmp_id, mmp_person_media_id,'
                                              ' mmp_person_meta_json,'
                                              ' mmp_person_image, mmp_person_name,'
@@ -41,6 +49,10 @@ async def db_meta_person_list(self, offset=0, records=None, search_value=None, d
     """
     # return list of people
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO order by birth date
     if search_value is not None:
         return await self.db_connection.fetch('select mmp_id,mmp_person_name,'
@@ -63,6 +75,10 @@ async def db_meta_person_list_count(self, search_value=None, db_connection=None)
     """
     # count person metadata
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*) from mm_metadata_person'
                                                  ' where mmp_person_name % $1', search_value)
@@ -74,6 +90,10 @@ async def db_meta_person_id_count(self, guid):
     """
     # does person exist already by host/id
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_metadata_person'
                                              ' where mmp_person_media_id = $1', guid)
 
@@ -83,6 +103,10 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
     """
     # insert person
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'db pers insert': {
@@ -106,6 +130,10 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
     """
     # batch insert from json of crew/cast
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'db_meta_person_insert_cast_crew': meta_type,

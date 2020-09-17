@@ -5,6 +5,10 @@ async def db_meta_movie_by_media_uuid(self, media_guid, db_connection=None):
     """
     # read in metadata via media id
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_metadata_json::json,'
                                              ' mm_metadata_localimage_json::json'
                                              ' from mm_media, mm_metadata_movie'
@@ -16,6 +20,10 @@ async def db_meta_movie_detail(self, media_guid, db_connection=None):
     """
     # read in the media with corresponding metadata
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_metadata_guid,'
                                              ' mm_metadata_media_id,'
                                              ' mm_media_name,'
@@ -31,6 +39,10 @@ async def db_meta_movie_list(self, offset=0, records=None, search_value=None, db
     """
     # return list of movies
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetch('select mm_metadata_guid, mm_media_name,'
                                               ' mm_metadata_json->\'release_date\' as mm_date,'
@@ -59,6 +71,10 @@ async def db_meta_movie_list(self, offset=0, records=None, search_value=None, db
 
 
 async def db_meta_movie_count(self, search_value=None, db_connection=None):
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*) from mm_metadata_movie '
                                                  ' where mm_media_name % $1',
@@ -72,6 +88,10 @@ async def db_meta_movie_status_update(self, metadata_guid, user_id, status_text,
     """
     # set status's for metadata
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # do before the select to save db lock time
     if status_text == 'watched' or status_text == 'requested':
         status_setting = True
@@ -100,6 +120,10 @@ async def db_meta_movie_json_update(self, media_guid, metadata_json, db_connecti
     """
     # update the metadata json
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('update mm_metadata_movie'
                                      ' set mm_metadata_user_json::json = $1'
                                      ' where mm_metadata_guid = $2',
@@ -111,5 +135,9 @@ async def db_meta_movie_guid_count(self, guid, db_connection=None):
     """
     # does movie exist already by metadata id
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_metadata_movie'
                                              ' where mm_metadata_guid = $1', guid)

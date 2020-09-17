@@ -9,6 +9,10 @@ async def db_activity_insert(self, activity_name, activity_overview,
     """
     Insert server or user activity record
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_user_activity (mm_activity_guid,'
                                      ' mm_activity_name,'
@@ -32,6 +36,10 @@ async def db_activity_purge(self, days_old, db_connection=None):
     """
     Purge records older than specified days
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO broken.....passing %s then + the field
     await self.db_connection.execute('delete from mm_user_activity'
                                      ' where mm_activity_datecreated'

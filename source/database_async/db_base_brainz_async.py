@@ -3,6 +3,10 @@ def db_brainz_open(self, postdbhost, postdbport, postdbname, postdbuser, postdbp
     """
     # open database and pull in config from sqlite and create db if not exist
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     pass
     # setup for unicode
     # psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
@@ -25,6 +29,10 @@ def db_brainz_close(self, db_connection=None):
     """
     # close main db file
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.sql3_conn.close()
 
 
@@ -32,6 +40,10 @@ def db_brainz_all_artists(self, db_connection=None):
     """
     # read in all artists
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.db_cursor.execute('select gid,'
                            'name,'
                            'sort_name,'
@@ -51,6 +63,10 @@ def db_brainz_all_albums(self, db_connection=None):
     """
     # read in all albums
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.db_cursor.execute('select gid,'
                            'name,'
                            'artist_credit,'
@@ -65,6 +81,10 @@ def db_brainz_all_albums_by_artist(self, artist_id, db_connection=None):
     """
     # read in album by artist credit id
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.db_cursor.execute('select gid,'
                            'name,'
                            'artist_credit,'
@@ -81,6 +101,10 @@ def db_brainz_all_songs(self, db_connection=None):
     """
     # read in all songs
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.db_cursor.execute(
         'select gid,'
         'name,'
@@ -94,6 +118,10 @@ def db_brainz_all_songs_by_rec_uuid(self, record_id, db_connection=None):
     """
     # read in all by recording id
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.db_cursor.execute('select gid,'
                            'name,'
                            'recording,'
@@ -107,6 +135,10 @@ def db_brainz_all(self, db_connection=None):
     """
     # read for batch insert
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.db_cursor.execute('select count(*) from artist,'
                            ' release,'
                            ' track'

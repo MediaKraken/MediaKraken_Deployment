@@ -5,6 +5,10 @@ async def db_sync_progress_update(self, sync_guid, sync_percent, db_connection=N
     """
     # update progress
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('update mm_sync set mm_sync_options_json->\'Progress\' = $1'
                                      ' where mm_sync_guid = $2', sync_percent, sync_guid)
     await self.db_connection.execute('commit')
@@ -14,6 +18,10 @@ async def db_sync_list_count(self, db_connection=None):
     """
     # return count of sync jobs
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select count(*) from mm_sync')
 
 
@@ -21,6 +29,10 @@ async def db_sync_delete(self, sync_guid, db_connection=None):
     """
     # delete sync job
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute(
         'delete from mm_sync'
         ' where mm_sync_guid = $1', sync_guid)
@@ -30,6 +42,10 @@ async def db_sync_insert(self, sync_path, sync_path_to, sync_json, db_connection
     """
     # insert sync job
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_sync (mm_sync_guid,'
                                      ' mm_sync_path,'
@@ -45,6 +61,10 @@ async def db_sync_list(self, offset=0, records=None, user_guid=None, db_connecti
     """
     # return list of sync jobs
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO by priority, name, year
     if user_guid is None:
         # complete list for admins

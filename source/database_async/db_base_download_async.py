@@ -7,6 +7,10 @@ async def db_download_insert(self, provider, que_type, down_json, db_connection=
     """
     Create/insert a download into the que
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_download_que (mdq_id,'
                                      'mdq_provider,'
@@ -21,6 +25,10 @@ async def db_download_read_provider(self, provider_name, db_connection=None):
     """
     Read the downloads by provider
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select mdq_id,'
                                           ' mdq_que_type,'
                                           ' mdq_download_json::json'
@@ -34,6 +42,10 @@ async def db_download_delete(self, guid, db_connection=None):
     """
     Remove download
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     self.db_connection.execute('delete from mm_download_que'
                                ' where mdq_id = $1', guid)
     self.db_connection.db_commit()
@@ -43,6 +55,10 @@ async def db_download_update_provider(self, provider_name, guid, db_connection=N
     """
     Update provider
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'download update provider': provider_name,
@@ -55,6 +71,10 @@ async def db_download_update(self, update_json, guid, update_que_id=None, db_con
     """
     Update download que record
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'download update': update_json,
@@ -81,6 +101,10 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'db_download_que_exists': download_que_uuid,

@@ -2,6 +2,10 @@ async def db_meta_periodical_by_uuid(self, book_uuid, db_connection=None):
     """
     grab periodical by uuid
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select mm_metadata_book_json::json'
                                              ' from mm_metadata_book'
                                              ' where mm_metadata_book_guid = $1',
@@ -13,6 +17,10 @@ async def db_meta_periodical_list(self, offset=0, records=None, search_value=Non
     """
     periodical list
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO sort by release date
     if search_value is not None:
         return await self.db_connection.fetch('select mm_metadata_book_guid,'
@@ -36,6 +44,10 @@ async def db_meta_periodical_list_count(self, search_value=None, db_connection=N
     """
     periodical list count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetchval('select count(*)'
                                                  ' from mm_metadata_book'

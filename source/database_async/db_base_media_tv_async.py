@@ -4,6 +4,10 @@ async def db_media_tv_list(self, genre_type=None, list_limit=None,
     """
     # grab tv data
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetch('select mm_metadata_tvshow_name,'
                                               ' mm_metadata_tvshow_guid,'
@@ -42,6 +46,10 @@ async def db_media_tv_list_count(self, genre_type=None, group_collection=False,
     """
     # grab tv data count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     sql_data = await self.db_connection.fetch('select count(*) from mm_metadata_tvshow, mm_media'
                                               ' where mm_media_metadata_guid'
                                               ' = mm_metadata_tvshow_guid')

@@ -2,6 +2,10 @@ async def db_meta_game_system_by_guid(self, guid, db_connection=None):
     """
     # return game system data
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchrow('select * from mm_metadata_game_systems_info'
                                              ' where gs_id = $1',
                                              guid)
@@ -11,6 +15,10 @@ async def db_meta_game_system_list_count(self, search_value=None, db_connection=
     """
     Return game system count
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if search_value is not None:
         return await self.db_connection.fetchval(
             'select count(*) from mm_metadata_game_systems_info'
@@ -27,6 +35,10 @@ async def db_meta_game_system_list(self, offset=0, records=None, search_value=No
     """
     # return list of game systems
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     # TODO might need to sort by release year as well for machines with multiple releases
     if search_value is not None:
         return await self.db_connection.fetch('select gs_id,gs_game_system_name,'

@@ -6,6 +6,10 @@ async def db_hardware_device_count(self, hardware_manufacturer, model_name=None,
     """
     Return json for machine/model
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     if model_name is None:
         return await self.db_connection.fetchval('select count(*) from mm_hardware'
                                                  ' where mm_hardware_manufacturer = $1',
@@ -21,6 +25,10 @@ async def db_hardware_json_read(self, manufacturer, model_name, db_connection=No
     """
     Return json for machine/model
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetchval('select mm_hardware_json::json'
                                              ' from mm_hardware_json'
                                              ' where mm_hardware_manufacturer = $1'
@@ -29,6 +37,10 @@ async def db_hardware_json_read(self, manufacturer, model_name, db_connection=No
 
 
 async def db_hardware_insert(self, manufacturer, model_name, json_data, db_connection=None):
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('insert into mm_hardware_json (mm_hardware_id,'
                                      ' mm_hardware_manufacturer,'
@@ -41,6 +53,10 @@ async def db_hardware_insert(self, manufacturer, model_name, json_data, db_conne
 
 
 async def db_hardware_delete(self, guid, db_connection=None):
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     await self.db_connection.execute('delete from mm_hardware_json'
                                      ' where mm_hardware_id = $1', guid)
     await self.db_connection.execute('commit')

@@ -6,6 +6,10 @@ async def db_game_server_list(self, offset=0, records=None, db_connection=None):
     """
     Return game server list
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     return await self.db_connection.fetch('select mm_game_server_guid,'
                                           ' mm_game_server_name,'
                                           ' mm_game_server_json::json'
@@ -18,6 +22,10 @@ async def db_game_server_upsert(self, server_name, server_json, db_connection=No
     """
     Upsert a game server into the database
     """
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
     new_guid = str(uuid.uuid4())
     await self.db_connection.execute('INSERT INTO mm_game_dedicated_servers (mm_game_server_guid,'
                                      ' mm_game_server_name,'
