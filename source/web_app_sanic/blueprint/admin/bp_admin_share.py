@@ -30,9 +30,9 @@ async def url_bp_admin_share(request):
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_share = await request.app.db_functions.db_share_list(db_connection,
-                                                               offset, int(request.ctx.session[
-                                                                               'per_page']))
+    media_share = await request.app.db_functions.db_share_list(offset, int(request.ctx.session[
+                                                                               'per_page']),
+                                                               db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_dir': media_share,
@@ -44,8 +44,8 @@ async def url_bp_admin_share(request):
 @common_global.auth.login_required
 async def url_bp_admin_share_by_id(request):
     db_connection = await request.app.db_pool.acquire()
-    result = await request.app.db_functions.db_share_update_by_uuid(db_connection,
-                                                                    request.form['id'])
+    result = await request.app.db_functions.db_share_update_by_uuid(request.form['id'],
+                                                                    db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'Id': result['mm_share_dir_guid'],
                        'Path': result['mm_share_dir_path']})
@@ -58,7 +58,7 @@ async def url_bp_admin_share_delete(request):
     Delete share action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_share_delete(db_connection, request.form['id'])
+    await request.app.db_functions.db_share_delete(request.form['id'], db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -128,11 +128,10 @@ async def url_bp_admin_share_edit(request):
                     return redirect(request.app.url_for('admins_share.admin_share_edit_page'))
                 # verify it doesn't exit and add
                 db_connection = await request.app.db_pool.acquire()
-                if await request.app.db_functions.db_share_check(db_connection,
-                                                                 request.form[
-                                                                     'storage_mount_path']) == 0:
-                    await request.app.db_functions.db_share_add(db_connection,
-                                                                request.form[
+                if await request.app.db_functions.db_share_check(request.form[
+                                                                     'storage_mount_path'],
+                                                                 db_connection) == 0:
+                    await request.app.db_functions.db_share_add(request.form[
                                                                     'storage_mount_type'],
                                                                 request.form[
                                                                     'storage_mount_user'],
@@ -141,7 +140,8 @@ async def url_bp_admin_share_edit(request):
                                                                 request.form[
                                                                     'storage_mount_server'],
                                                                 request.form[
-                                                                    'storage_mount_path'])
+                                                                    'storage_mount_path'],
+                                                                db_connection)
                     await request.app.db_pool.release(db_connection)
                     return redirect(request.app.url_for('admins_share.admin_share'))
                 else:
@@ -160,12 +160,11 @@ async def url_bp_admin_share_edit(request):
 @common_global.auth.login_required
 async def url_bp_admin_share_update(request):
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_share_update_by_uuid(db_connection,
-                                                           request.form['new_share_type'],
+    await request.app.db_functions.db_share_update_by_uuid(request.form['new_share_type'],
                                                            request.form['new_share_user'],
                                                            request.form['new_share_password'],
                                                            request.form['new_share_server'],
                                                            request.form['new_share_path'],
-                                                           request.form['id'])
+                                                           request.form['id'], db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

@@ -87,13 +87,11 @@ async def login(request):
         print('here i am in post', flush=True)
         username = form.username.data
         db_connection = await request.app.db_pool.acquire()
-        print('after db connection', flush=True)
         user_id, user_admin, user_per_page \
-            = await request.app.db_functions.db_user_login(db_connection,
-                                                           username,
-                                                           form.password.data)
+            = await request.app.db_functions.db_user_login(username,
+                                                           form.password.data, db_connection)
         await app.db_pool.release(db_connection)
-        print(user_id, user_admin, flush=True)
+        print(user_id, user_admin, user_per_page, flush=True)
         if user_id is None:  # invalid user name
             errors['username_errors'] = "Username invalid"
         elif user_id == 'inactive_account':
@@ -126,7 +124,7 @@ async def register(request):
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
         # verify user doesn't already exist on database
-        if await request.app.db_functions.db_user_count(db_connection, username) == 0:
+        if await request.app.db_functions.db_user_count(username, db_connection) == 0:
             user_id, user_admin, user_per_page = await request.app.db_functions.db_user_insert(
                 db_connection, user_name=username, user_email=form.email.data,
                 user_password=form.password.data)

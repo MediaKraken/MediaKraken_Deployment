@@ -14,8 +14,8 @@ async def url_bp_user_metadata_sports_detail(request, guid):
     Display sports detail metadata
     """
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_meta_sports_guid_by_thesportsdb(db_connection,
-                                                                                   guid)
+    media_data = await request.app.db_functions.db_meta_sports_guid_by_thesportsdb(guid,
+                                                                                   db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'guid': guid,
@@ -33,30 +33,31 @@ async def url_bp_user_metadata_sports_list(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_meta_sports_list(db_connection,
-                                                                       offset,
+    for row_data in await request.app.db_functions.db_meta_sports_list(offset,
                                                                        int(request.ctx.session[
                                                                                'per_page']),
                                                                        request.ctx.session[
-                                                                           'search_text']):
+                                                                           'search_text'],
+                                                                       db_connection):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     request.ctx.session['search_page'] = 'meta_sports'
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_sports_list',
                                                                       item_count=await request.app.db_functions.db_meta_sports_list_count(
-                                                                          db_connection,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_meta_sports_list(db_connection, offset,
+    media_data = await request.app.db_functions.db_meta_sports_list(offset,
                                                                     int(request.ctx.session[
                                                                             'per_page']),
                                                                     request.ctx.session[
-                                                                        'search_text'])
+                                                                        'search_text'],
+                                                                    db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_sports_list': media_data,

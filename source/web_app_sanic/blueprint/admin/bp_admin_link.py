@@ -57,6 +57,6 @@ async def url_bp_admin_link_delete(request):
     Delete linked server action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_link_delete(db_connection, request.form['id'])
+    await request.app.db_functions.db_link_delete(request.form['id'], db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

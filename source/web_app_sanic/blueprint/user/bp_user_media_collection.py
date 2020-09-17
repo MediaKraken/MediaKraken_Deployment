@@ -16,11 +16,12 @@ async def url_bp_user_metadata_movie_collection(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_collection_list(db_connection, offset,
+    for row_data in await request.app.db_functions.db_collection_list(offset,
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       request.ctx.session[
-                                                                          'search_text']):
+                                                                          'search_text'],
+                                                                      db_connection):
         if 'Poster' in row_data['mm_metadata_collection_imagelocal_json']:
             media.append((row_data['mm_metadata_collection_guid'],
                           row_data['mm_metadata_collection_name'],
@@ -55,7 +56,7 @@ async def url_bp_user_metadata_movie_collection_detail(request, guid):
     Display movie collection metadata detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data_metadata = await request.app.db_functions.db_collection_read_by_guid(db_connection, guid)
+    data_metadata = await request.app.db_functions.db_collection_read_by_guid(guid, db_connection)
     await request.app.db_pool.release(db_connection)
     json_metadata = data_metadata['mm_metadata_collection_json']
     json_imagedata = data_metadata['mm_metadata_collection_imagelocal_json']

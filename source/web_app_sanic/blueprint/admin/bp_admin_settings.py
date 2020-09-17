@@ -48,7 +48,7 @@ async def url_bp_admin_settings(request):
         settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
         settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
         # save updated info
-        await request.app.db_functions.db_opt_update(db_connection, settings_json)
+        await request.app.db_functions.db_opt_update(settings_json, db_connection)
     '''
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
                                           choices=[('Never', 'Never'), ('1 Day', '1 Day'),

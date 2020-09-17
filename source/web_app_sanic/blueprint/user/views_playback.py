@@ -14,7 +14,7 @@
 #                                             {"videojs": mtype, 'guid': guid, 'chapter': chapter,
 #                                              'audio': audio, 'sub': sub})
 #     # grab the guid from the comboindex
-#     media_path = await request.app.db_functions.db_media_path_by_uuid(db_connection, guid)
+#     media_path = await request.app.db_functions.db_media_path_by_uuid(guid, db_connection)
 #     # set ffpmeg options with the play_data
 #     atracks = '-map ' + audio
 #     if sub is not None:
@@ -84,7 +84,7 @@
 #         common_network_pika.com_net_pika_send(
 #             {'Type': 'Playback', 'Subtype': 'Play', 'Device': device,
 #              'User': user.id,
-#              'Data': await request.app.db_functions.db_read_media(db_connection, guid)['mm_media_path'],
+#              'Data': await request.app.db_functions.db_read_media(guid, db_connection)['mm_media_path'],
 #              'Audio': audio_track,
 #              'Subtitle': subtitle_track,
 #              'Target': playback_device},

@@ -19,23 +19,23 @@ async def url_bp_user_queue(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_queue',
                                                                       item_count=await request.app.db_functions.db_meta_queue_list_count(
-                                                                          db_connection,
                                                                           common_global.auth.current_user(
                                                                               request)[0],
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_meta_queue_list(db_connection,
-                                                                   common_global.auth.current_user(
-                                                                       request)[0],
+    media_data = await request.app.db_functions.db_meta_queue_list(common_global.auth.current_user(
+        request)[0],
                                                                    offset,
                                                                    int(request.ctx.session[
                                                                            'per_page']),
                                                                    request.ctx.session[
-                                                                       'search_text'])
+                                                                       'search_text'],
+                                                                   db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

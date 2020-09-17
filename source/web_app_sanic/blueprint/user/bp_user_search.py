@@ -51,15 +51,15 @@ async def url_bp_user_search_media(request):
                 game_search = True
             db_connection = await request.app.db_pool.acquire()
             json_data = json.loads(
-                await request.app.db_functions.db_metadata_search(db_connection,
-                                                                  request.form['search_string'],
+                await request.app.db_functions.db_metadata_search(request.form['search_string'],
                                                                   search_type='Local',
                                                                   search_movie=movie_search,
                                                                   search_tvshow=tvshow_search,
                                                                   search_album=album_search,
                                                                   search_image=image_search,
                                                                   search_publication=publication_search,
-                                                                  search_game=game_search))
+                                                                  search_game=game_search,
+                                                                  db_connection=db_connection))
             await request.app.db_pool.release(db_connection)
             if 'Movie' in json_data:
                 for search_item in json_data['Movie']:
@@ -105,8 +105,11 @@ async def url_bp_user_search_nav_media(request):
     determine what search results screen to show
     """
     # TODO!
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "search session": request.ctx.session['search_page']})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "search session":
+                                                                             request.ctx.session[
+                                                                                 'search_page']})
     request.ctx.session['search_text'] = request.form.get('nav_search').strip()
     if request.ctx.session['search_page'] == 'media_3d':
         return redirect(request.app.url_for('name_blueprint_user_media_3d.url_bp_user_media_3d'))

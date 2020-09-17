@@ -24,7 +24,7 @@ async def url_bp_user_movie_detail(request, user, guid):
             common_network_pika.com_net_pika_send(
                 {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
                  'User': user.id,
-                 'Data': await request.app.db_functions.db_read_media(db_connection, guid)[
+                 'Data': await request.app.db_functions.db_read_media(guid, db_connection)[
                      'mm_media_path']},
                 rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
@@ -36,14 +36,14 @@ async def url_bp_user_movie_detail(request, user, guid):
                                     audio=request.form['Video_Play_Audio_Track'],
                                     sub=request.form['Video_Play_Subtitles']))
         if request.form['status'] == 'Watched':
-            await request.app.db_functions.db_meta_movie_status_update(db_connection,
-                                                                       guid, user.id, False)
+            await request.app.db_functions.db_meta_movie_status_update(guid, user.id, False,
+                                                                       db_connection)
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
         elif request.form['status'] == 'Unwatched':
-            await request.app.db_functions.db_meta_movie_status_update(db_connection,
-                                                                       guid, user.id, True)
+            await request.app.db_functions.db_meta_movie_status_update(guid, user.id, True,
+                                                                       db_connection)
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
@@ -62,18 +62,18 @@ async def url_bp_user_movie_detail(request, user, guid):
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    await
                                                    request.app.db_functions.db_media_path_by_uuid(
-                                                       db_connection,
-                                                       media_guid_index)[
+                                                       media_guid_index, db_connection)[
                                                        0] + '\" http://localhost/stream.ffm'),
                                              stdout=subprocess.PIPE, shell=False)
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                "FFServer PID": proc_ffserver.pid})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 "FFServer PID": proc_ffserver.pid})
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
     else:
-        metadata_data = await request.app.db_functions.db_meta_movie_by_media_uuid(db_connection,
-                                                                                   guid)
+        metadata_data = await request.app.db_functions.db_meta_movie_by_media_uuid(guid,
+                                                                                   db_connection)
         # fields returned
         # metadata_data['mm_metadata_json']
         # metadata_data['mm_metadata_localimage_json']
@@ -119,7 +119,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         #     metadata_data['mm_metadata_json']['revenue'])
         # # grab reviews
         # review = []
-        # review_json = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, json_metaid['themoviedb'])
+        # review_json = await request.app.db_functions.db_review_list_by_tmdb_guid(json_metaid['themoviedb'], db_connection)
         # if review_json is not None and len(review_json) > 0:
         #     review_json = review_json[0]
         #     for review_data in review_json[1]['themoviedb']['results']:
@@ -138,11 +138,12 @@ async def url_bp_user_movie_detail(request, user, guid):
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
         ffprobe_data = {}
         # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
-        for video_version in await request.app.db_functions.db_media_ffprobe_all_guid(db_connection,
-                                                                                      guid,
-                                                                                      common_global.DLMediaType.Movie.value):
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                "vid_version": video_version})
+        for video_version in await request.app.db_functions.db_media_ffprobe_all_guid(guid,
+                                                                                      common_global.DLMediaType.Movie.value,
+                                                                                      db_connection):
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 "vid_version": video_version})
             # not all files have ffprobe
             if video_version['mm_media_ffprobe_json'] is None:
                 hours = 0

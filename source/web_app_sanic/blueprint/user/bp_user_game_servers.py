@@ -23,9 +23,10 @@ async def url_bp_user_game_server_list(request):
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_game_server_list(db_connection, offset,
+    media_data = await request.app.db_functions.db_game_server_list(offset,
                                                                     int(request.ctx.session[
-                                                                            'per_page']))
+                                                                            'per_page']),
+                                                                    db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

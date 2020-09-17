@@ -19,18 +19,19 @@ async def url_bp_user_metadata_music_video(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_music_video',
                                                                       item_count=await request.app.db_functions.db_meta_music_video_count(
-                                                                          db_connection,
                                                                           None, request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_meta_music_video_list(db_connection, offset,
+    media_data = await request.app.db_functions.db_meta_music_video_list(offset,
                                                                          int(request.ctx.session[
                                                                                  'per_page']),
                                                                          request.ctx.session[
-                                                                             'search_text'])
+                                                                             'search_text'],
+                                                                         db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
@@ -47,7 +48,8 @@ async def url_bp_user_metadata_music_video_detail(request, guid):
     Display metadata music video detail
     """
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_meta_music_video_detail_uuid(db_connection, guid)
+    media_data = await request.app.db_functions.db_meta_music_video_detail_uuid(guid,
+                                                                                db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data

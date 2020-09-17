@@ -12,7 +12,7 @@ async def url_bp_user_playback_comic(request, guid):
     Display image comic view
     """
     db_connection = await request.app.db_pool.acquire()
-    comic_data = await request.app.db_functions.db_media_path_by_uuid(db_connection, guid)
+    comic_data = await request.app.db_functions.db_media_path_by_uuid(guid, db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         comic_data: comic_data,

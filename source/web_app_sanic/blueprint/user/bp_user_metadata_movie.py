@@ -18,7 +18,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     Display metadata movie detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data = await request.app.db_functions.db_meta_movie_detail(db_connection, guid)
+    data = await request.app.db_functions.db_meta_movie_detail(guid, db_connection)
     json_metadata = json.loads(data['mm_metadata_json'])
     json_imagedata = json.loads(data['mm_metadata_localimage_json'])
     # vote count format
@@ -53,7 +53,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     except:
         data_background_image = None
     # grab reviews
-    review = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, data[1])
+    review = await request.app.db_functions.db_review_list_by_tmdb_guid(data[1], db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         # data_media_ids: data[1],
@@ -81,11 +81,12 @@ async def url_bp_user_metadata_movie_list(request, user):
     media = []
     media_count = 0
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
+    for row_data in await request.app.db_functions.db_meta_movie_list(offset,
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       request.ctx.session[
-                                                                          'search_text']):
+                                                                          'search_text'],
+                                                                      db_connection):
         if row_data['mm_metadata_user_json'] is not None:
             user_json = json.loads(row_data['mm_metadata_user_json'])
         else:
@@ -124,10 +125,11 @@ async def url_bp_user_metadata_movie_list(request, user):
         except (KeyError, TypeError):
             queue_status = None
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                             message_text={"status": watched_status,
-                                                                           'rating': rating_status,
-                                                                           'request': request_status,
-                                                                           'queue': queue_status})
+                                                                         message_text={
+                                                                             "status": watched_status,
+                                                                             'rating': rating_status,
+                                                                             'request': request_status,
+                                                                             'queue': queue_status})
         media_count += 1
         if media_count == 1:
             deck_start = True
@@ -145,9 +147,9 @@ async def url_bp_user_metadata_movie_list(request, user):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_movie_list',
                                                                       item_count=await request.app.db_functions.db_meta_movie_count(
-                                                                          db_connection,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -166,11 +168,12 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'movie metadata status': guid,
-        'event': event_type})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'movie metadata status': guid,
+                                                                         'event': event_type})
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_meta_movie_status_update(db_connection, guid,
-                                                               user.id, event_type)
+    await request.app.db_functions.db_meta_movie_status_update(guid,
+                                                               user.id, event_type, db_connection)
     await request.app.db_pool.release(db_connection)
     return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})

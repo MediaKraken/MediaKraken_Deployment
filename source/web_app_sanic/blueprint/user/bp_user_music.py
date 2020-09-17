@@ -25,11 +25,12 @@ async def url_bp_user_album_list(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_media_album_list(db_connection, offset,
+    for row_data in await request.app.db_functions.db_media_album_list(offset,
                                                                        int(request.ctx.session[
                                                                                'per_page']),
                                                                        request.ctx.session[
-                                                                           'search_text']):
+                                                                           'search_text'],
+                                                                       db_connection):
         if 'mm_metadata_album_json' in row_data:
             media.append((row_data['mm_metadata_album_guid'], row_data['mm_metadata_album_name'],
                           row_data['mm_metadata_album_json']))
@@ -40,9 +41,9 @@ async def url_bp_user_album_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_album_list',
                                                                       item_count=await request.app.db_functions.db_media_album_count(
-                                                                          db_connection,
                                                                           request.ctx.session[
-                                                                              'search_page']),
+                                                                              'search_page'],
+                                                                          db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),

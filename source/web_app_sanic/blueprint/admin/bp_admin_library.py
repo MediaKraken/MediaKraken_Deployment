@@ -50,9 +50,10 @@ async def url_bp_admin_library(request):
                                                                               'per_page']),
                                                                       format_number=True)
     return_media = []
-    for row_data in await request.app.db_functions.db_library_paths(db_connection, offset,
+    for row_data in await request.app.db_functions.db_library_paths(offset,
                                                                     int(request.ctx.session[
-                                                                            'per_page'])):
+                                                                            'per_page']),
+                                                                    db_connection):
         return_media.append((row_data['mm_media_dir_path'],
                              row_data['mm_media_class_guid'],
                              row_data['mm_media_dir_last_scanned'],
@@ -71,8 +72,8 @@ async def url_bp_admin_library(request):
 @common_global.auth.login_required
 async def url_bp_admin_library_by_id(request):
     db_connection = await request.app.db_pool.acquire()
-    result = await request.app.db_functions.db_library_path_by_uuid(db_connection,
-                                                                    request.form['id'])
+    result = await request.app.db_functions.db_library_path_by_uuid(request.form['id'],
+                                                                    db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'Id': result['mm_media_dir_guid'],
                        'Path': result['mm_media_dir_path'],
@@ -86,7 +87,7 @@ async def url_bp_admin_library_delete(request):
     Delete library action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_library_path_delete(db_connection, request.form['id'])
+    await request.app.db_functions.db_library_path_delete(request.form['id'], db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -148,19 +149,18 @@ async def url_bp_admin_library_edit(request):
                         request.app.url_for(
                             'name_blueprint_admin_library.url_bp_admin_library_edit'))
                 # verify it doesn't exist and add
-                if await request.app.db_functions.db_library_path_check(db_connection,
-                                                                        request.form[
-                                                                            'library_path']) == 0:
+                if await request.app.db_functions.db_library_path_check(request.form[
+                                                                            'library_path'],
+                                                                        db_connection) == 0:
                     try:
                         lib_share = request.form['Lib_Share']
                     except:
                         lib_share = None
-                    await request.app.db_functions.db_library_path_add(db_connection,
-                                                                       request.form[
+                    await request.app.db_functions.db_library_path_add(request.form[
                                                                            'library_path'],
                                                                        request.form[
                                                                            'Lib_Class'],
-                                                                       lib_share)
+                                                                       lib_share, db_connection)
                     return redirect(
                         request.app.url_for('name_blueprint_admin_library.url_bp_admin_library'))
                 else:
@@ -209,9 +209,9 @@ async def url_bp_admin_library_edit(request):
 @common_global.auth.login_required
 async def url_bp_admin_library_update(request):
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_library_path_update_by_uuid(db_connection,
-                                                                  request.form['new_path'],
+    await request.app.db_functions.db_library_path_update_by_uuid(request.form['new_path'],
                                                                   request.form['new_class'],
-                                                                  request.form['id'])
+                                                                  request.form['id'],
+                                                                  db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

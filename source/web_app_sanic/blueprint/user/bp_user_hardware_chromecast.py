@@ -16,8 +16,9 @@ async def url_bp_user_chromecast(request, user, action, guid):
     Display chromecast actions page
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={'cast action': action,
-                                                                       'case user': user.id})
+                                                                     message_text={
+                                                                         'cast action': action,
+                                                                         'case user': user.id})
     db_connection = await request.app.db_pool.acquire()
     if action == 'base':
         pass
@@ -36,7 +37,7 @@ async def url_bp_user_chromecast(request, user, action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Cast',
              'User': user.id,
-             'Data': await request.app.db_functions.db_read_media(db_connection, guid)[
+             'Data': await request.app.db_functions.db_read_media(guid, db_connection)[
                  'mm_media_path'],
              'Target': '10.0.0.220'},
             rabbit_host_name='mkstack_rabbitmq',
@@ -72,7 +73,7 @@ async def url_bp_user_chromecast(request, user, action, guid):
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
-    chromecast_data = await request.app.db_functions.db_device_list(db_connection, 'cast')
+    chromecast_data = await request.app.db_functions.db_device_list('cast', db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'data_guid': guid,

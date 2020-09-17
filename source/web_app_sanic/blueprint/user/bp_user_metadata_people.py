@@ -15,7 +15,7 @@ async def url_bp_user_metadata_person_detail(request, guid):
     Display person detail page
     """
     db_connection = await request.app.db_pool.acquire()
-    person_data = await request.app.db_functions.db_meta_person_by_guid(db_connection, guid)
+    person_data = await request.app.db_functions.db_meta_person_by_guid(guid, db_connection)
     if person_data['mmp_person_image'] is not None:
         try:
             person_image = person_data['mmp_person_image'] + person_data['mmp_meta']
@@ -23,8 +23,8 @@ async def url_bp_user_metadata_person_detail(request, guid):
             person_image = "img/person_missing.png"
     else:
         person_image = "img/person_missing.png"
-    media_data = await request.app.db_functions.db_meta_person_as_seen_in(db_connection,
-                                                                          person_data['mmp_id'])
+    media_data = await request.app.db_functions.db_meta_person_as_seen_in(person_data['mmp_id'],
+                                                                          db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'json_metadata': person_data['mmp_person_meta_json'],
@@ -43,14 +43,20 @@ async def url_bp_user_metadata_person_list(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     person_list = []
     db_connection = await request.app.db_pool.acquire()
-    for person_data in await request.app.db_functions.db_meta_person_list(db_connection, offset,
+    for person_data in await request.app.db_functions.db_meta_person_list(offset,
                                                                           int(request.ctx.session[
                                                                                   'per_page']),
                                                                           request.ctx.session[
-                                                                              'search_text']):
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            'person data': person_data, 'im':
-                person_data['mmp_person_image'], 'meta': person_data['mmp_meta']})
+                                                                              'search_text'],
+                                                                          db_connection):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'person data': person_data,
+                                                                             'im':
+                                                                                 person_data[
+                                                                                     'mmp_person_image'],
+                                                                             'meta': person_data[
+                                                                                 'mmp_meta']})
         if person_data['mmp_person_image'] is not None:
             try:
                 person_image = person_data['mmp_person_image'] + person_data['mmp_meta']
@@ -64,9 +70,9 @@ async def url_bp_user_metadata_person_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_person_list',
                                                                       item_count=await request.app.db_functions.db_meta_person_list_count(
-                                                                          db_connection,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
