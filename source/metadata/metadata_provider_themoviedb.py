@@ -408,15 +408,16 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                                                         result_json['title'],
                                                         json.dumps(result_json),
                                                         json.dumps(image_json))
-            if 'credits' in result_json:  # cast/crew doesn't exist on all media
-                if 'cast' in result_json['credits']:
-                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                        result_json['credits'][
-                                                                            'cast'])
-                if 'crew' in result_json['credits']:
-                    await db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                        result_json['credits'][
-                                                                            'crew'])
+                # under guid check as don't need to insert them if already exist
+                if 'credits' in result_json:  # cast/crew doesn't exist on all media
+                    if 'cast' in result_json['credits']:
+                        await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                            result_json['credits'][
+                                                                                'cast'])
+                    if 'crew' in result_json['credits']:
+                        await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                            result_json['credits'][
+                                                                                'crew'])
         # 429	Your request count (#) is over the allowed limit of (40).
         elif result_json.status_code == 429:
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',

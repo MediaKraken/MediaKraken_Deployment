@@ -36,9 +36,11 @@ from . import metadata_tv_tmdb
 
 
 async def metadata_process(thread_db, provider_name, download_data):
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'metadata_process': {'provider': provider_name,
-                             'dl json': download_data}})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'metadata_process': {
+                                                                             'provider': provider_name,
+                                                                             'dl json': download_data}})
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
         await metadata_search(thread_db, provider_name, download_data)
@@ -60,9 +62,10 @@ async def metadata_update(thread_db, provider_name, download_data):
     """
     Update main metadata for specified provider
     """
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'metadata_update': provider_name,
-        'dldata': download_data})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'metadata_update': provider_name,
+                                                                         'dldata': download_data})
     # TODO horribly broken.  Need to add the dlid, that to update, etc
 
 
@@ -117,9 +120,10 @@ async def metadata_search(thread_db, provider_name, download_data):
     elif provider_name == 'musicbrainz':
         metadata_uuid, match_result = metadata_music.metadata_music_lookup(thread_db,
                                                                            download_data)
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            'metadata_uuid': metadata_uuid,
-            'result': match_result})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'metadata_uuid': metadata_uuid,
+                                                                             'result': match_result})
         if metadata_uuid is None:
             lookup_halt = True
     elif provider_name == 'omdb':
@@ -151,9 +155,10 @@ async def metadata_search(thread_db, provider_name, download_data):
                                                                                          download_data[
                                                                                              'mdq_download_json'][
                                                                                              'Path'])
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'metadata_uuid': metadata_uuid,
-                'result': match_result})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'metadata_uuid': metadata_uuid,
+                                                                                 'result': match_result})
             # if match_result is an int, that means the lookup found a match but isn't in db
             if metadata_uuid is None and type(match_result) != int:
                 lookup_halt = True
@@ -165,9 +170,10 @@ async def metadata_search(thread_db, provider_name, download_data):
                                                                          download_data[
                                                                              'mdq_download_json'][
                                                                              'Path'])
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'metadata_uuid': metadata_uuid,
-                'result': match_result})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'metadata_uuid': metadata_uuid,
+                                                                                 'result': match_result})
             # if match_result is an int, that means the lookup found a match but isn't in db
             if metadata_uuid is None and type(match_result) != int:
                 lookup_halt = True
@@ -210,12 +216,14 @@ async def metadata_search(thread_db, provider_name, download_data):
         metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],
                                                          download_data['mdq_id'],
                                                          provider_name, str(match_result))
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            'metaquelook': metadata_uuid})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'metaquelook': metadata_uuid})
         if metadata_uuid is None:
             metadata_uuid = download_data['mdq_download_json']['MetaNewID']
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'meta setfetch': metadata_uuid})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'meta setfetch': metadata_uuid})
             thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
                                          metadata_uuid)
             download_data['mdq_download_json'].update(
@@ -231,12 +239,14 @@ async def metadata_fetch(thread_db, provider_name, download_data):
     """
     Fetch main metadata for specified provider
     """
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'metadata_fetch': provider_name,
-        'dldata': download_data})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'metadata_fetch': provider_name,
+                                                                         'dldata': download_data})
     if provider_name == 'imvdb':
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            'fetch imvdb': provider_name})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'fetch imvdb': provider_name})
         imvdb_id = metadata_provider_imvdb.movie_fetch_save_imvdb(thread_db,
                                                                   download_data[
                                                                       'mdq_download_json'][
@@ -246,8 +256,9 @@ async def metadata_fetch(thread_db, provider_name, download_data):
                                                                       'MetaNewID'])
     elif provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == common_global.DLMediaType.Person.value:
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'fetch person bio': provider_name})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'fetch person bio': provider_name})
             await metadata_provider_themoviedb.metadata_fetch_tmdb_person(
                 thread_db, provider_name, download_data)
         elif download_data['mdq_que_type'] == 0 \
