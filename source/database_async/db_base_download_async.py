@@ -42,6 +42,9 @@ async def db_download_delete(self, guid, db_connection=None):
     """
     Remove download
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'download delete': guid})
     if db_connection is None:
         db_conn = self.db_connection
     else:
