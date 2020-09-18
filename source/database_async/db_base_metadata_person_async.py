@@ -86,7 +86,7 @@ async def db_meta_person_list_count(self, search_value=None, db_connection=None)
         return await db_conn.fetchval('select count(*) from mm_metadata_person')
 
 
-async def db_meta_person_id_count(self, guid):
+async def db_meta_person_id_count(self, guid, db_connection=None):
     """
     # does person exist already by host/id
     """
