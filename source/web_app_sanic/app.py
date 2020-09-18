@@ -91,7 +91,7 @@ async def login(request):
             = await request.app.db_functions.db_user_login(user_name=username,
                                                            user_password=form.password.data,
                                                            db_connection=db_connection)
-        await app.db_pool.release(db_connection=db_connection)
+        await app.db_pool.release(db_connection)
         print(user_id, user_admin, user_per_page, flush=True)
         if user_id is None:  # invalid user name
             errors['username_errors'] = "Username invalid"
@@ -129,7 +129,7 @@ async def register(request):
             user_id, user_admin, user_per_page = await request.app.db_functions.db_user_insert(
                 user_name=username, user_email=form.email.data,
                 user_password=form.password.data, db_connection=db_connection)
-            await app.db_pool.release(db_connection=db_connection)
+            await app.db_pool.release(db_connection)
             if user_id.isnumeric():  # valid user
                 request.ctx.session['search_text'] = None
                 common_global.auth.login_user(request,

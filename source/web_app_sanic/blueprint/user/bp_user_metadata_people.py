@@ -26,7 +26,7 @@ async def url_bp_user_metadata_person_detail(request, guid):
         person_image = "img/person_missing.png"
     media_data = await request.app.db_functions.db_meta_person_as_seen_in(person_data['mmp_id'],
                                                                           db_connection=db_connection)
-    await request.app.db_pool.release(db_connection=db_connection)
+    await request.app.db_pool.release(db_connection)
     return {
         'json_metadata': person_data['mmp_person_meta_json'],
         'data_person_image': person_image,
