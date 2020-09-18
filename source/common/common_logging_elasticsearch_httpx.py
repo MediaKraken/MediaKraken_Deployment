@@ -48,7 +48,7 @@ async def com_es_httpx_post_async(message_type, message_text, index_name=None):
     if not hasattr(com_es_httpx_post_async, "index_ext"):
         # it doesn't exist yet, so initialize it
         # index_name should be populated on first run
-        com_es_httpx_post_async.index_ext = 'httpx_' + index_name.replace(' ', '_')
+        com_es_httpx_post_async.index_ext = 'httpx_async_' + index_name.replace(' ', '_')
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
