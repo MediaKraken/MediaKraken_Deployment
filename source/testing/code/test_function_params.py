@@ -12,3 +12,11 @@ def der():
 
 
 der()
+
+'''
+await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                 message_text={
+                                                                     'function': inspect.stack()[0][3],
+                                                                     'locals': locals(),
+                                                                     'caller': inspect.stack()[1][3]})
+'''
