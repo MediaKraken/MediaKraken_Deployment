@@ -13,7 +13,7 @@ async def db_meta_person_as_seen_in(self, person_guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    row_data = await self.db_meta_person_by_guid(guid=person_guid)
+    row_data = await self.db_meta_person_by_guid(guid=person_guid, db_connection=db_conn)
     if row_data is None:  # exit on not found person
         return None
     # TODO jin index the credits
