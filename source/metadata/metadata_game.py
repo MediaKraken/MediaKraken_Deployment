@@ -31,15 +31,17 @@ async def game_system_update():
                                                                          'locals': locals(),
                                                                          'caller':
                                                                              inspect.stack()[1][3]})
-    data = common_global.api_instance.com_meta_gamesdb_platform_list()[
+    data = await common_global.api_instance.com_meta_gamesdb_platform_list()[
         'Data']['Platforms']['Platform']
     print((type(data)), flush=True)
     print(data, flush=True)
     for game_system in data:
         print(game_system, flush=True)
         game_sys_detail = \
-            common_global.api_instance.com_meta_gamesdb_platform_by_id(game_system['id'])['Data'][
-                'Platform']
+            await \
+                common_global.api_instance.com_meta_gamesdb_platform_by_id(game_system['id'])[
+                    'Data'][
+                    'Platform']
         print((type(game_sys_detail)), flush=True)
         print(game_sys_detail, flush=True)
         break

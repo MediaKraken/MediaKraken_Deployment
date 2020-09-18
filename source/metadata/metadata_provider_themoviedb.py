@@ -454,11 +454,11 @@ async def movie_search_tmdb(db_connection, file_name):
     metadata_uuid = None
     # try to match ID ONLY
     if 'year' in file_name:
-        match_response, match_result = common_global.api_instance.com_tmdb_search(
+        match_response, match_result = await common_global.api_instance.com_tmdb_search(
             file_name['title'], file_name['year'], id_only=True,
             media_type=common_global.DLMediaType.Movie.value)
     else:
-        match_response, match_result = common_global.api_instance.com_tmdb_search(
+        match_response, match_result = await common_global.api_instance.com_tmdb_search(
             file_name['title'], None, id_only=True,
             media_type=common_global.DLMediaType.Movie.value)
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',

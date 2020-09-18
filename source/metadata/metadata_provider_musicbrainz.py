@@ -162,7 +162,7 @@ async def music_search_musicbrainz(db_connection, ffmpeg_data_json):
                                                                                  3]})
     metadata_uuid = None
     # look at musicbrainz server
-    music_data = common_global.api_instance.com_mediabrainz_get_recordings(
+    music_data = await common_global.api_instance.com_mediabrainz_get_recordings(
         ffmpeg_data_json['format']['tags']['ARTIST'],
         ffmpeg_data_json['format']['tags']['ALBUM'],
         ffmpeg_data_json['format']['tags']['TITLE'], return_limit=1)
