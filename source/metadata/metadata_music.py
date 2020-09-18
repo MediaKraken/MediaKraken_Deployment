@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 
 from common import common_logging_elasticsearch_httpx
@@ -38,17 +39,26 @@ async def metadata_music_lookup(db_connection, download_json):
     """
     Music lookup
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     # don't bother checking title/year as the main_server_metadata_api_worker does it already
     if not hasattr(metadata_music_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
         metadata_music_lookup.metadata_last_id = None
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "meta music lookup": download_json})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta music lookup": download_json})
     metadata_uuid = None
     # get ffmpeg data from database
     ffmpeg_data_json = db_connection.db_ffprobe_data(download_json['MediaID'])
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "meta music ffmpeg": ffmpeg_data_json})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta music ffmpeg": ffmpeg_data_json})
     # see if record is stored locally as long as there is valid tagging
     if 'format' in ffmpeg_data_json \
             and 'tags' in ffmpeg_data_json['format'] \
@@ -72,7 +82,9 @@ async def metadata_music_lookup(db_connection, download_json):
         # set provider last so it's not picked up by the wrong thread
         db_connection.db_download_update_provider('musicbrainz', download_json['mdq_id'])
         db_connection.db_commit()
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text=
-    {"metadata_music_lookup return uuid": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text=
+                                                                     {
+                                                                         "metadata_music_lookup return uuid": metadata_uuid})
     metadata_music_lookup.metadata_last_id = metadata_uuid
     return metadata_uuid

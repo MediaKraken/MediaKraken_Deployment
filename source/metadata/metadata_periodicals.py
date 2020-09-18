@@ -16,9 +16,11 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 import os
 
+from common import common_logging_elasticsearch_httpx
 from common import common_metadata
 
 
@@ -26,6 +28,13 @@ async def metadata_periodicals_lookup(db_connection, download_data):
     """
     Lookup via isbn and then name
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     metadata_uuid = None  # so not found checks verify later
     # check if isbn in metaid
     if download_data['ProviderMetaID'] is not None:
@@ -64,6 +73,13 @@ async def metadata_periodicals_cover(db_connection, isbn):
     """
     pull and save the cover image for periodical
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     # TODO use the cover pull in common_metadata_open_library
     url = ('http://covers.openlibrary.org/b/ISBN/%s-L.jpg?default=false', isbn)
 

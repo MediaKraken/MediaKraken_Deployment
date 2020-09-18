@@ -17,6 +17,7 @@
 """
 
 import gzip
+import inspect
 import json
 import sys
 import time
@@ -38,10 +39,19 @@ class CommonMetadataANIdb:
         self.adba_connection = None
         self.db_connection = db_connection
 
-    def com_net_anidb_fetch_titles_file(self):
+    async def com_net_anidb_fetch_titles_file(self):
         """
         Fetch the tarball of anime titles
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         # check to see if local titles file is older than 24 hours
         if common_file.com_file_modification_timestamp('./cache/anidb_titles.gz') \
                 < (time.time() - 86400):
@@ -50,12 +60,19 @@ class CommonMetadataANIdb:
             return True  # new file
         return False
 
-    def com_net_anidb_save_title_data_to_db(self, title_file='./cache/anidb_titles.gz'):
+    async def com_net_anidb_save_title_data_to_db(self, title_file='./cache/anidb_titles.gz'):
         """
         Save anidb title data to database
         """
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                             message_text={'stuff': 'start'})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         file_handle = gzip.open(title_file, 'rb')
         # file_handle = gzip.open(title_file, 'rt', encoding='utf-8') # python 3.3+
         anime_aid = None
@@ -92,10 +109,19 @@ class CommonMetadataANIdb:
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                              message_text={'stuff': 'end'})
 
-    def com_net_anidb_aid_by_title(self, title_to_search):
+    async def com_net_anidb_aid_by_title(self, title_to_search):
         """
         Find AID by title
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         # check the local DB
         local_db_result = self.db_connection.db_meta_anime_title_search(
             title_to_search)
@@ -109,10 +135,19 @@ class CommonMetadataANIdb:
         else:
             return local_db_result
 
-    def com_net_anidb_connect(self, user_name, user_password):
+    async def com_net_anidb_connect(self, user_name, user_password):
         """
         Remote api calls
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         self.adba_connection = adba.Connection(log=True)
         try:
             self.adba_connection.auth(user_name, user_password)
@@ -122,14 +157,32 @@ class CommonMetadataANIdb:
                                                                                    err_code})
         return self.adba_connection
 
-    def com_net_anidb_logout(self):
+    async def com_net_anidb_logout(self):
         """
         Logout of anidb
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         self.adba_connection.logout()
 
-    def com_net_anidb_stop(self):
+    async def com_net_anidb_stop(self):
         """
         Close the anidb connect and stop the thread
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         self.adba_connection.stop()

@@ -16,6 +16,8 @@
   MA 02110-1301, USA.
 """
 
+import inspect
+
 from common import common_logging_elasticsearch_httpx
 from common import common_network
 
@@ -29,38 +31,74 @@ class CommonMetadataTheSportsDB:
     def __init__(self, option_config_json):
         self.thesportsdb_api_key = option_config_json['API']['thesportsdb']
 
-    def com_meta_thesportsdb_search_team_by_name(self, team_name):
+    async def com_meta_thesportsdb_search_team_by_name(self, team_name):
         """
         Team and player looksup
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
                                                         + self.thesportsdb_api_key
                                                         + '/searchteams.php?t='
                                                         + team_name.replace(' ', '%20'), None)
 
-    def com_meta_thesportsdb_search_players_by_team(self, team_name):
+    async def com_meta_thesportsdb_search_players_by_team(self, team_name):
         """
         Get players list by team
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
                                                         + self.thesportsdb_api_key
                                                         + '/searchplayers.php?t='
                                                         + team_name.replace(' ', '%20'), None)
 
-    def com_meta_thesportsdb_search_players_by_name(self, player_name):
+    async def com_meta_thesportsdb_search_players_by_name(self, player_name):
         """
         Get players by name
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
                                                         + self.thesportsdb_api_key
                                                         + '/searchplayers.php?p='
                                                         + player_name.replace(' ', '%20'), None)
 
-    def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,
+    async def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,
                                                                     player_name):
         """
         Search plays by team and player name
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
                                                         + self.thesportsdb_api_key
                                                         + '/searchplayers.php?t='
@@ -72,10 +110,19 @@ class CommonMetadataTheSportsDB:
 
     # event lookups
 
-    def com_meta_thesportsdb_search_event_by_name(self, event_name):
+    async def com_meta_thesportsdb_search_event_by_name(self, event_name):
         """
         Search for events by name
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
                                                         + self.thesportsdb_api_key
                                                         + '/searchevents.php?e='

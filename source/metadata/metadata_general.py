@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 
 from common import common_global
@@ -38,9 +39,11 @@ from . import metadata_tv_tmdb
 async def metadata_process(thread_db, provider_name, download_data):
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         'metadata_process': {
-                                                                             'provider': provider_name,
-                                                                             'dl json': download_data}})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     # TODO art, posters, trailers, etc in here as well
     if download_data['mdq_download_json']['Status'] == "Search":
         await metadata_search(thread_db, provider_name, download_data)
@@ -64,8 +67,11 @@ async def metadata_update(thread_db, provider_name, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         'metadata_update': provider_name,
-                                                                         'dldata': download_data})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     # TODO horribly broken.  Need to add the dlid, that to update, etc
 
 
@@ -73,6 +79,13 @@ async def metadata_search(thread_db, provider_name, download_data):
     """
     Search for metadata via specified provider
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     metadata_uuid = None
     match_result = None
     set_fetch = False
@@ -241,8 +254,11 @@ async def metadata_fetch(thread_db, provider_name, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         'metadata_fetch': provider_name,
-                                                                         'dldata': download_data})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     if provider_name == 'imvdb':
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
@@ -284,6 +300,13 @@ async def metadata_castcrew(thread_db, provider_name, download_data):
     """
     Fetch cast/crew from specified provider
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     # removed themoviedb call as it should be done during the initial fetch
     # setup for FetchReview
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
@@ -296,6 +319,13 @@ async def metadata_image(thread_db, provider_name, download_data):
     """
     Fetch image from specified provider
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     thread_db.db_download_delete(download_data['mdq_id'])
 
 
@@ -303,6 +333,13 @@ async def metadata_review(thread_db, provider_name, download_data):
     """
     Fetch reviews from specified provider
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     if provider_name == 'themoviedb':
         await metadata_provider_themoviedb.movie_fetch_save_tmdb_review(thread_db,
                                                                         download_data[
@@ -316,6 +353,13 @@ async def metadata_collection(thread_db, provider_name, download_data):
     """
     Fetch collection from specified provider
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     if provider_name == 'themoviedb':
         await metadata_provider_themoviedb.movie_fetch_save_tmdb_collection(thread_db,
                                                                             download_data[

@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import os
 import pathlib
 import xml
@@ -30,6 +31,13 @@ async def nfo_xml_file(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     nfo_data = None
     xml_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
@@ -43,8 +51,9 @@ async def nfo_xml_file(media_file_path):
         nfo_file_check = media_file_path.rsplit('.', 1)[0] + '.nfo'
         xml_file_name = media_file_path.rsplit('.', 1)[0] + '.xml'
     if os.path.isfile(nfo_file_check):  # check for nfo
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            'nfo file found': nfo_file_check})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'nfo file found': nfo_file_check})
         try:
             nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
         except xml.parsers.expat.ExpatError:
@@ -54,8 +63,9 @@ async def nfo_xml_file(media_file_path):
     else:
         # only check for xml if nfo doesn't exist
         if os.path.isfile(xml_file_name):  # check for xml
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'xml file found': xml_file_name})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'xml file found': xml_file_name})
             try:
                 xml_data = xmltodict.parse(common_file.com_file_load_data(xml_file_name, False))
             except xml.parsers.expat.ExpatError:
@@ -64,8 +74,9 @@ async def nfo_xml_file(media_file_path):
                 pass
         elif os.path.isfile(
                 os.path.join(os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml')):
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'movie xml file found': xml_file_name})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'movie xml file found': xml_file_name})
             try:
                 xml_data = xmltodict.parse(common_file.com_file_load_data(os.path.join(
                     os.path.dirname(os.path.abspath(media_file_path)), 'movie.xml'), False))
@@ -80,13 +91,21 @@ async def nfo_file_tv(media_file_path):
     """
     Find and load nfo and xml file(s) if they exist
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     nfo_data = None
     # check for NFO or XML as no need to do lookup if ID found in it
     # TODO should check for one dir back too I suppose
     nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvinfo.nfo'
     if os.path.isfile(nfo_file_check):  # check for nfo
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            'nfo tv file found': nfo_file_check})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'nfo tv file found': nfo_file_check})
         try:
             nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
         except xml.parsers.expat.ExpatError:
@@ -96,8 +115,9 @@ async def nfo_file_tv(media_file_path):
     else:
         nfo_file_check = media_file_path.rsplit('/', 1)[0] + 'tvshow.nfo'
         if os.path.isfile(nfo_file_check):  # check for nfo
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-                'nfo tv file found2': nfo_file_check})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'nfo tv file found2': nfo_file_check})
             try:
                 nfo_data = xmltodict.parse(common_file.com_file_load_data(nfo_file_check, False))
             except xml.parsers.expat.ExpatError:
@@ -111,6 +131,13 @@ async def nfo_xml_id_lookup(nfo_data, xml_data):
     """
     Lookup by id's in nfo/xml files
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     imdb_id = None
     tmdb_id = None
     # load both fields for more data in media_id_json on db
@@ -159,8 +186,9 @@ async def nfo_xml_id_lookup(nfo_data, xml_data):
                 except:
                     pass
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={'nfo/xml imdb': imdb_id,
-                                                                       'tmdb': tmdb_id})
+                                                                     message_text={
+                                                                         'nfo/xml imdb': imdb_id,
+                                                                         'tmdb': tmdb_id})
     return imdb_id, tmdb_id
 
 
@@ -168,6 +196,13 @@ async def nfo_id_lookup_tv(nfo_data):
     """
     Look up id's in nfo/xml lookup for tv
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     imdb_id = None
     tvdb_id = None
     tmdb_id = None
@@ -192,7 +227,8 @@ async def nfo_id_lookup_tv(nfo_data):
         except KeyError:
             pass
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={'nfo tv imdb': imdb_id,
-                                                                       'tvdb': tvdb_id,
-                                                                       'tmdb': tmdb_id})
+                                                                     message_text={
+                                                                         'nfo tv imdb': imdb_id,
+                                                                         'tvdb': tvdb_id,
+                                                                         'tmdb': tmdb_id})
     return imdb_id, tvdb_id, tmdb_id

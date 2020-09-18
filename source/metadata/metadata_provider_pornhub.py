@@ -16,7 +16,10 @@
   MA 02110-1301, USA.
 """
 
+import inspect
+
 import pornhub
+from common import common_logging_elasticsearch_httpx
 
 
 # https://github.com/MediaKraken-Dep/pornhub-api
@@ -32,9 +35,27 @@ class CommonMetadataPornhub:
         else:
             self.pornhub_inst = pornhub.PornHub(proxy_ip, proxy_port)
 
-    def com_meta_pornhub_stars(self, star_limit):
+    async def com_meta_pornhub_stars(self, star_limit):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return self.pornhub_inst.getStars(star_limit)
 
-    def com_meta_pornhub_search(self, search_keywords, quantity, page):
+    async def com_meta_pornhub_search(self, search_keywords, quantity, page):
         self.pornhub_inst = pornhub.PornHub(search_keywords)
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return self.pornhub_inst.getVideos(quantity, page=page)

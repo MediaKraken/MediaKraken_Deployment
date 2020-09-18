@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 
 from common import common_global
@@ -29,6 +30,13 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
     Movie lookup
     This is the main function called from metadata_identification
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     # don't bother checking title/year as the main_server_metadata_api_worker does it already
     if not hasattr(metadata_movie_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
@@ -36,15 +44,18 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
         metadata_movie_lookup.metadata_last_imdb = None
         metadata_movie_lookup.metadata_last_tmdb = None
     metadata_uuid = None  # so not found checks verify later
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'metadata_movie_lookup': str(file_name)})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'metadata_movie_lookup': str(
+                                                                             file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(download_data['Path'])
     imdb_id, tmdb_id = metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
     if imdb_id is not None or tmdb_id is not None:
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            "meta movie look": imdb_id,
-            'tmdb': tmdb_id})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             "meta movie look": imdb_id,
+                                                                             'tmdb': tmdb_id})
     # if same as last, return last id and save lookup
     if (imdb_id is not None and imdb_id == metadata_movie_lookup.metadata_last_imdb) \
             or (tmdb_id is not None and tmdb_id == metadata_movie_lookup.metadata_last_tmdb):
@@ -58,8 +69,9 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "meta movie metadata_uuid A": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta movie metadata_uuid A": metadata_uuid})
     if metadata_uuid is None:
         # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
@@ -86,19 +98,22 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
     # leave this AFTER the dl check as it looks at tmdbid and imdb for values!
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            'stuff': "meta movie db lookup"})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'stuff': "meta movie db lookup"})
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],
                                                                 file_name['year'])
         else:
             metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            "meta movie db meta": metadata_uuid})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             "meta movie db meta": metadata_uuid})
 
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "meta movie metadata_uuid B": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta movie metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         metadata_uuid = download_data['MetaNewID']
         # no matches by name/year on local database
@@ -111,8 +126,9 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
         # set provider last so it's not picked up by the wrong thread
         db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
         db_connection.db_commit()
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "metadata_movie return uuid": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "metadata_movie return uuid": metadata_uuid})
     # set last values to negate lookups for same title/show
     metadata_movie_lookup.metadata_last_id = metadata_uuid
     metadata_movie_lookup.metadata_last_imdb = imdb_id

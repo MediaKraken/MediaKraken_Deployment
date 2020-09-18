@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import os
 import uuid
 
@@ -39,10 +40,13 @@ async def metadata_identification(db_connection, class_text, download_que_json,
     """
     Determine which provider to start lookup via class text
     """
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "metadata_identification": class_text,
-        'path': download_que_json['Path'],
-        'json': download_que_json})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     metadata_uuid = None
 
     if download_que_type == common_global.DLMediaType.Movie.value:
@@ -165,6 +169,8 @@ async def metadata_identification(db_connection, class_text, download_que_json,
         pass
     elif class_text == "Video Game Superplay":
         pass
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text=
-    {"metadata_identification uuid return": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text=
+                                                                     {
+                                                                         "metadata_identification uuid return": metadata_uuid})
     return metadata_uuid

@@ -16,7 +16,10 @@
   MA 02110-1301, USA.
 """
 
+import inspect
+
 import giantbomb
+from common import common_logging_elasticsearch_httpx
 
 
 # https://www.giantbomb.com/api/
@@ -29,7 +32,16 @@ class CommonMetadataGiantbomb:
     def __init__(self, api_key, user_agent):
         self.giantbomb_inst = giantbomb.Api(api_key, user_agent)
 
-    def com_meta_gb_getplatforms(self, offset=0):
+    async def com_meta_gb_getplatforms(self, offset=0):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return self.giantbomb_inst.getPlatforms(offset)
 
 

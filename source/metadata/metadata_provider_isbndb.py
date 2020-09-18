@@ -16,6 +16,8 @@
   MA 02110-1301, USA.
 """
 
+import inspect
+
 import requests
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -32,10 +34,19 @@ class CommonMetadataISBNdb:
 
     # http://isbndb.com/api/v2/docs/authors
     # http://isbndb.com/api/v2/json/[your-api-key]/author/richards_rowland
-    def com_isbndb_author(self, author_name):
+    async def com_isbndb_author(self, author_name):
         """
         Grab the author
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
                                                         + self.api_key + '/author/' + author_name,
                                                         None)
@@ -44,10 +55,19 @@ class CommonMetadataISBNdb:
 
     # http://isbndb.com/api/v2/docs/publishers
     # http://isbndb.com/api/v2/json/[your-api-key]/publisher/chapman_hall_crc
-    def com_isbndb_publisher(self, publisher_name):
+    async def com_isbndb_publisher(self, publisher_name):
         """
         Grab the publisher
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
                                                         + self.api_key + '/publisher/'
                                                         + publisher_name, None)
@@ -62,10 +82,19 @@ class CommonMetadataISBNdb:
     # http://isbndb.com/api/v2/json/[your-api-key]/prices/084930315X
     # http://isbndb.com/api/v2/json/[your-api-key]/prices/9780849303159
     # http://isbndb.com/api/v2/json/[your-api-key]/prices/principles_of_solid_mechanics
-    def com_isbndb_prices(self, book_info):
+    async def com_isbndb_prices(self, book_info):
         """
         Grab prices
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
                                                         + self.api_key + '/prices/'
                                                         + book_info, None)
@@ -74,10 +103,19 @@ class CommonMetadataISBNdb:
     # http://isbndb.com/api/v2/json/[your-api-key]/book/084930315X
     # http://isbndb.com/api/v2/json/[your-api-key]/book/9780849303159
     # http://isbndb.com/api/v2/json/[your-api-key]/book/principles_of_solid_mechanics
-    def com_isbndb_books(self, book_info):
+    async def com_isbndb_books(self, book_info):
         """
         Search
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return requests.get('http://isbndb.com/api/v2/json/'
                             + self.api_key + '/book/' + book_info, timeout=5)
 
@@ -88,10 +126,13 @@ async def metadata_periodicals_search_isbndb(db_connection, lookup_name):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "meta book search isbndb": lookup_name})
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'wh': common_global.api_instance})
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     metadata_uuid = None
     if common_global.api_instance is not None:
         api_response = await common_global.api_instance.com_isbndb_books(lookup_name)

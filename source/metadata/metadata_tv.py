@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 
 from common import common_global
@@ -28,6 +29,15 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
     """
     Lookup tv metadata
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     # don't bother checking title/year as the main_server_metadata_api_worker does it already
     if not hasattr(metadata_tv_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
@@ -36,15 +46,18 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
         metadata_tv_lookup.metadata_last_tvdb = None
         metadata_tv_lookup.metadata_last_tmdb = None
     metadata_uuid = None  # so not found checks verify later
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        'metadata_tv_lookup': str(file_name)})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'metadata_tv_lookup': str(
+                                                                             file_name)})
     # determine provider id's from nfo/xml if they exist
     nfo_data = metadata_nfo_xml.nfo_file_tv(download_data['Path'])
     imdb_id, tvdb_id, tmdb_id = metadata_nfo_xml.nfo_id_lookup_tv(nfo_data)
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                         message_text={"tv look": imdb_id,
-                                                                       'tbdb': tvdb_id,
-                                                                       'themoviedb': tmdb_id})
+                                                                     message_text={
+                                                                         "tv look": imdb_id,
+                                                                         'tbdb': tvdb_id,
+                                                                         'themoviedb': tmdb_id})
     # if same as last, return last id and save lookup
     # check these dupes as the nfo/xml files might not exist to pull the metadata id from
     if imdb_id is not None and imdb_id == metadata_tv_lookup.metadata_last_imdb:
@@ -64,8 +77,9 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
     if imdb_id is not None and metadata_uuid is None:
         metadata_uuid = await db_connection.db_metatv_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "meta tv metadata_uuid A": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta tv metadata_uuid A": metadata_uuid})
     if metadata_uuid is None:
         # id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
@@ -105,12 +119,15 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                 await db_connection.db_commit()
             else:
                 metadata_uuid = dl_meta
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-        "meta tv metadata_uuid B": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta tv metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no ids found on the local database so begin name/year searches
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text=
-        {'stuff': "tv db lookup", 'file': str(file_name)})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text=
+                                                                         {'stuff': "tv db lookup",
+                                                                          'file': str(file_name)})
         # db lookup by name and year (if available)
         if 'year' in file_name:
             metadata_uuid = await db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
@@ -118,8 +135,9 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
         else:
             metadata_uuid = await db_connection.db_metatv_guid_by_tvshow_name(file_name['title'],
                                                                               None)
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text={
-            "tv db meta": metadata_uuid})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             "tv db meta": metadata_uuid})
         if metadata_uuid is None:
             # no matches by name/year
             # search themoviedb since not matched above via DB or nfo/xml

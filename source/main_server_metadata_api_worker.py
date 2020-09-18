@@ -15,9 +15,8 @@
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
 """
-
 import asyncio
-import datetime
+import inspect
 import json
 import subprocess
 import sys
@@ -50,9 +49,11 @@ async def anidb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in anidb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'anidb', download_data)
 
 
@@ -64,9 +65,11 @@ async def chart_lyrics(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in chart_lyrics rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'chart_lyrics', download_data)
 
 
@@ -78,9 +81,11 @@ async def comicvine(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in comicvine rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'comicvine', download_data)
 
 
@@ -92,9 +97,11 @@ async def giantbomb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in giantbomb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'giantbomb', download_data)
 
 
@@ -106,9 +113,11 @@ async def imdb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in imdb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'imdb', download_data)
 
 
@@ -120,9 +129,11 @@ async def imvdb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in imvdb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'imvdb', download_data)
 
 
@@ -134,9 +145,11 @@ async def isbndb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in isbndb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'isbndb', download_data)
 
 
@@ -148,9 +161,11 @@ async def musicbrainz(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in musicbrainz rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'musicbrainz', download_data)
 
 
@@ -162,9 +177,11 @@ async def omdb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in omdb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'omdb', download_data)
 
 
@@ -176,9 +193,11 @@ async def openlibrary(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in openlib rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'openlibrary', download_data)
 
 
@@ -190,9 +209,11 @@ async def pitchfork(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in pitchfork rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'pitchfork', download_data)
 
 
@@ -204,9 +225,11 @@ async def pornhub(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in pornhub rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'pornhub', download_data)
 
 
@@ -218,9 +241,11 @@ async def televisiontunes(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in televisiontunes rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(
         db_connection, 'televisiontunes', download_data)
 
@@ -233,9 +258,11 @@ async def theaudiodb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in theaudiodb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'theaudiodb', download_data)
 
 
@@ -247,9 +274,11 @@ async def thegamesdb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in thegamesdb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'thegamesdb', download_data)
 
 
@@ -261,9 +290,11 @@ async def themoviedb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in moviedb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'themoviedb', download_data)
 
 
@@ -275,9 +306,11 @@ async def thesportsdb(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in thesportsdb rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'thesportsdb', download_data)
 
 
@@ -289,9 +322,11 @@ async def tv_intros(db_connection, download_data):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         "here i am in tv_intros rate":
-                                                                             datetime.datetime.now().strftime(
-                                                                                 "%H:%M:%S.%f")})
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     await metadata_general.metadata_process(db_connection, 'tv_intros', download_data)
 
 
@@ -305,8 +340,13 @@ async def on_message(message: aio_pika.IncomingMessage):
     async with message.process():
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
-                                                                             "Message body",
-                                                                             message.body})
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         json_message = json.loads(message.body)
         if json_message['Type'] == 'Update Metadata':
             # this check is just in case there is a tv/etc collection later
@@ -336,9 +376,6 @@ async def main(loop):
     option_config_json, db_connection = \
         await common_config_ini.com_config_read_async(loop=loop,
                                                       as_pool=False)
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         "status": 'after db open'})
     connection = await aio_pika.connect("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # Creating a channel
     channel = await connection.channel()
@@ -346,14 +383,9 @@ async def main(loop):
     # Declaring queue
     queue = await channel.declare_queue(content_providers,
                                         durable=True)
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         "status": 'after pika connection'})
     # Start listening
     await queue.consume(on_message)
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         "status": 'after pika listen'})
+
     # connection = await aio_pika.connect_robust("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # # Creating channel
     # channel = await connection.channel()

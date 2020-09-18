@@ -16,8 +16,11 @@
   MA 02110-1301, USA.
 """
 
+import inspect
+
 import requests
 import xmltodict
+from common import common_logging_elasticsearch_httpx
 
 
 class CommonMetadataGamesDB:
@@ -30,61 +33,133 @@ class CommonMetadataGamesDB:
         self.httpheaders = {'Accept': 'application/json',
                             'Content-Type': 'application/x-www-form-urlencoded'}
 
-    def com_meta_gamesdb_platform_list(self):
+    async def com_meta_gamesdb_platform_list(self):
         """
         Get platform list
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformsList.php',
                                             verify=False, headers=self.httpheaders, timeout=5).text)
 
-    def com_meta_gamesdb_platform_by_id(self, platform_id):
+    async def com_meta_gamesdb_platform_by_id(self, platform_id):
         """
         Platform info by id
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatform.php?id=%s' % platform_id,
                                             verify=False, headers=self.httpheaders, timeout=5).text)
 
-    def com_meta_gamesdb_games_by_name(self, game_name):
+    async def com_meta_gamesdb_games_by_name(self, game_name):
         """
         # 'mega man'
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?name=%s'
                                             % game_name.replace(' ', '%20'),
                                             verify=False, headers=self.httpheaders, timeout=5).text)
 
-    def com_meta_gamesdb_games_by_id(self, game_id):
+    async def com_meta_gamesdb_games_by_id(self, game_id):
         """
         # game by id
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?id=%s' % game_id,
                                             verify=False, headers=self.httpheaders, timeout=5).text)
 
-    def com_meta_gamesdb_games_art_by_id(self, game_id):
+    async def com_meta_gamesdb_games_art_by_id(self, game_id):
         """
         # game by id
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetArt.php?id=%s' % game_id,
                                             verify=False, headers=self.httpheaders, timeout=5).text)
 
-    def com_meta_gamesdb_games_by_platform_id(self, platform_id):
+    async def com_meta_gamesdb_games_by_platform_id(self, platform_id):
         """
         Games by platform id
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s'
                                             % platform_id,
                                             verify=False, headers=self.httpheaders, timeout=5).text)
 
-    def com_meta_gamesdb_games_by_platform_name(self, platform_name):
+    async def com_meta_gamesdb_games_by_platform_name(self, platform_name):
         """
         Games by platform id
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'PlatformGames.php?platform=%s'
                                             % platform_name,
                                             verify=False, headers=self.httpheaders, timeout=5).text)
 
-    def com_meta_gamesdb_games_updated_seconds(self, update_time):
+    async def com_meta_gamesdb_games_updated_seconds(self, update_time):
         """
         Games updated in last n seconds
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return xmltodict.parse(requests.get(self.BASE_URL + 'Updates.php?time=%s' % update_time,
                                             verify=False, headers=self.httpheaders, timeout=5).text)

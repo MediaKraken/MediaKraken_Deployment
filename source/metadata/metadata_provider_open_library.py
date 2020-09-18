@@ -16,6 +16,10 @@
   MA 02110-1301, USA.
 """
 
+import inspect
+
+from common import common_logging_elasticsearch_httpx
+
 from source.common import common_network
 
 
@@ -29,6 +33,15 @@ class CommonMetadataOpenLibrary:
     def __init__(self):
         pass
 
-    def com_meta_openlibrary_fetch_cover(self, isbn_id, image_path):
+    async def com_meta_openlibrary_fetch_cover(self, isbn_id, image_path):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         common_network.mk_network_fetch_from_url('http://covers.openlibrary.org/b/isbn/'
                                                  + isbn_id + '-L.jpg', image_path)

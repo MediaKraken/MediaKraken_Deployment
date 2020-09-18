@@ -16,12 +16,14 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import urllib.error
 import urllib.parse
 import urllib.request
 
 import requests
 from common import common_hash
+from common import common_logging_elasticsearch_httpx
 from common import common_version
 
 
@@ -33,7 +35,16 @@ class CommonMetadataTheSubDB:
                        % common_version.APP_VERSION)
     }
 
-    def com_meta_thesubdb_search(self, filename, langs):
+    async def com_meta_thesubdb_search(self, filename, langs):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         filehash = common_hash.com_hash_thesubdb(filename)
         response = requests.get(self.url, params={'action': 'search', 'hash': filehash},
                                 headers=self.headers, timeout=5)
@@ -50,6 +61,15 @@ class CommonMetadataTheSubDB:
                 subtitles.append({'lang': lang, 'link': sublink})
         return subtitles
 
-    def com_meta_thesubdb_download(self, subtitle, stream):
+    async def com_meta_thesubdb_download(self, subtitle, stream):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         response = requests.get(subtitle["link"], headers=self.headers, timeout=5)
         stream.write(response.content)

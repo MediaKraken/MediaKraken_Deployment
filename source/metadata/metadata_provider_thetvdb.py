@@ -16,6 +16,7 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import io
 import zipfile
 
@@ -38,11 +39,20 @@ class CommonMetadataTheTVDB:
     def __init__(self, option_config_json):
         self.thetvdb_connection = option_config_json['API']['thetvdb']
 
-    def com_meta_thetvdb_updates(self, frequency='day'):
+    async def com_meta_thetvdb_updates(self, frequency='day'):
         """
         # http://www.thetvdb.com/wiki/index.php/API:Update_Records
         # frequency = all, day, month, week
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         updates_xml_zip = zipfile.ZipFile(io.StringIO(common_network
             .mk_network_fetch_from_url(
             'http://thetvdb.com/api/' + self.thetvdb_connection
@@ -54,10 +64,19 @@ class CommonMetadataTheTVDB:
                 updates_xml_zip.read(zippedshowFile))
         return xml_show_data
 
-    def com_meta_thetvdb_get_zip_by_id(self, tv_show_id, lang_code='en'):
+    async def com_meta_thetvdb_get_zip_by_id(self, tv_show_id, lang_code='en'):
         """
         Fetch zip by id
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         xml_show_data = None
         xml_actor_data = None
         xml_banners_data = None
@@ -110,34 +129,70 @@ class CommonMetadataTheTVDB:
     # + self.thetvdb_connection + '/mirrors.xml', None)
     #        return mirror_list_xml
 
-    def com_meta_thetvdb_get_server_epoc_time(self):
+    async def com_meta_thetvdb_get_server_epoc_time(self):
         """
         Get epoc time from api server
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url(
             'http://thetvdb.com/api/Updates.php?type=none', None)
 
-    def com_meta_thetvdb_updates_by_epoc(self, epoc_timestamp):
+    async def com_meta_thetvdb_updates_by_epoc(self, epoc_timestamp):
         """
         Get updates by epoc
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url(
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
-    def com_meta_thetvdb_update_series_read(self, tv_show_id, lang_code='en'):
+    async def com_meta_thetvdb_update_series_read(self, tv_show_id, lang_code='en'):
         """
         Update series
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
                                                         + self.thetvdb_connection
                                                         + '/series/' + tv_show_id
                                                         + '/' + lang_code + '.xml',
                                                         None)
 
-    def com_meta_thetvdb_update_episode_read(self, tv_eps_id, lang_code='en'):
+    async def com_meta_thetvdb_update_episode_read(self, tv_eps_id, lang_code='en'):
         """
         Update episode
         """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
         return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
                                                         + self.thetvdb_connection
                                                         + '/episodes/' + tv_eps_id
