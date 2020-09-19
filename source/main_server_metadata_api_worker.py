@@ -246,8 +246,7 @@ async def televisiontunes(db_connection, download_data):
                                                                          'locals': locals(),
                                                                          'caller':
                                                                              inspect.stack()[1][3]})
-    await metadata_general.metadata_process(
-        db_connection, 'televisiontunes', download_data)
+    await metadata_general.metadata_process(db_connection, 'televisiontunes', download_data)
 
 
 @common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['theaudiodb'][0]

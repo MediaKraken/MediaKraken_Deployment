@@ -215,18 +215,18 @@ async def metadata_search(thread_db, provider_name, download_data):
 
     # if search is being updated to new provider
     if update_provider is not None:
-        thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
-        thread_db.db_commit()
+        await thread_db.db_download_update_provider(update_provider, download_data['mdq_id'])
+        await thread_db.db_commit()
         return metadata_uuid  # no need to continue with checks
     # if lookup halt set to ZZ so it doesn't get picked up by metadata dl queue
     if lookup_halt:
-        thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
-        thread_db.db_commit()
+        await thread_db.db_download_update_provider('ZZ', download_data['mdq_id'])
+        await thread_db.db_commit()
         return metadata_uuid  # no need to continue with checks
     # if set fetch, set provider id and status on dl record
     if set_fetch:
         # first verify a download queue record doesn't exist for this id
-        metadata_uuid = thread_db.db_download_que_exists(download_data['mdq_id'],
+        metadata_uuid = await thread_db.db_download_que_exists(download_data['mdq_id'],
                                                          download_data['mdq_id'],
                                                          provider_name, str(match_result))
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
@@ -237,14 +237,14 @@ async def metadata_search(thread_db, provider_name, download_data):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'meta setfetch': metadata_uuid})
-            thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
+            await thread_db.db_update_media_id(download_data['mdq_download_json']['MediaID'],
                                          metadata_uuid)
             download_data['mdq_download_json'].update(
                 {'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
-            thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
+            await thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                          download_data['mdq_id'])
-            thread_db.db_commit()
+            await thread_db.db_commit()
     return metadata_uuid
 
 
@@ -312,7 +312,7 @@ async def metadata_castcrew(thread_db, provider_name, download_data):
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
     thread_db.db_download_update(json.dumps(download_data['mdq_download_json']),
                                  download_data['mdq_id'])
-    thread_db.db_commit()
+    await thread_db.db_commit()
 
 
 async def metadata_image(thread_db, provider_name, download_data):

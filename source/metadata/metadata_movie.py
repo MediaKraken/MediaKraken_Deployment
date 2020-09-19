@@ -64,10 +64,10 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
     # doesn't match last id's so continue lookup
     # if ids from nfo/xml, query local db to see if exist
     if tmdb_id is not None:
-        metadata_uuid = db_connection.db_meta_guid_by_tmdb(tmdb_id)
+        metadata_uuid = await db_connection.db_meta_guid_by_tmdb(tmdb_id)
     # keep these separate just in case imdb is there but tmdb isn't
     if imdb_id is not None and metadata_uuid is None:
-        metadata_uuid = db_connection.db_meta_guid_by_imdb(imdb_id)
+        metadata_uuid = await db_connection.db_meta_guid_by_imdb(imdb_id)
     # if ids from nfo/xml on local db
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
@@ -79,20 +79,20 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
                 provider_id = str(tmdb_id)
             else:
                 provider_id = imdb_id
-            dl_meta = db_connection.db_download_que_exists(download_data['mdq_id'],
-                                                           common_global.DLMediaType.Movie.value,
-                                                           'themoviedb',
-                                                           provider_id)
+            dl_meta = await db_connection.db_download_que_exists(download_data['mdq_id'],
+                                                                 common_global.DLMediaType.Movie.value,
+                                                                 'themoviedb',
+                                                                 provider_id)
             if dl_meta is None:
                 metadata_uuid = download_data['MetaNewID']
                 download_data.update({'Status': 'Fetch', 'ProviderMetaID': provider_id})
-                db_connection.db_begin()
-                db_connection.db_download_update(json.dumps(download_data),
-                                                 download_data['mdq_id'])
+                await db_connection.db_begin()
+                await db_connection.db_download_update(json.dumps(download_data),
+                                                       download_data['mdq_id'])
                 # set provider last so it's not picked up by the wrong thread too early
-                db_connection.db_download_update_provider('themoviedb',
-                                                          download_data['mdq_id'])
-                db_connection.db_commit()
+                await db_connection.db_download_update_provider('themoviedb',
+                                                                download_data['mdq_id'])
+                await db_connection.db_commit()
             else:
                 metadata_uuid = dl_meta
     # leave this AFTER the dl check as it looks at tmdbid and imdb for values!
@@ -103,10 +103,10 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
                                                                              'stuff': "meta movie db lookup"})
         # db lookup by name and year (if available)
         if 'year' in file_name:
-            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'],
-                                                                file_name['year'])
+            metadata_uuid = await db_connection.db_find_metadata_guid(file_name['title'],
+                                                                      file_name['year'])
         else:
-            metadata_uuid = db_connection.db_find_metadata_guid(file_name['title'], None)
+            metadata_uuid = await db_connection.db_find_metadata_guid(file_name['title'], None)
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
                                                                              "meta movie db meta": metadata_uuid})
@@ -120,12 +120,12 @@ async def metadata_movie_lookup(db_connection, download_data, file_name):
         # search themoviedb since not matched above via DB or nfo/xml
         download_data.update({'Status': 'Search'})
         # save the updated status
-        db_connection.db_begin()
-        db_connection.db_download_update(json.dumps(download_data),
-                                         download_data['mdq_id'])
+        await db_connection.db_begin()
+        await db_connection.db_download_update(json.dumps(download_data),
+                                               download_data['mdq_id'])
         # set provider last so it's not picked up by the wrong thread
-        db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
-        db_connection.db_commit()
+        await db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
+        await db_connection.db_commit()
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "metadata_movie return uuid": metadata_uuid})
