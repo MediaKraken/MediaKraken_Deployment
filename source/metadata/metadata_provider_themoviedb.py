@@ -691,6 +691,5 @@ async def metadata_fetch_tmdb_person(db_connection, provider_name, download_data
                                                       result_json.json(),
                                                       await common_global.api_instance.com_tmdb_meta_bio_image_build(
                                                           result_json.json()))
-            # commit happens in download delete
             await db_connection.db_download_delete(download_data['mdq_id'])
             await db_connection.db_commit()
