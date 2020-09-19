@@ -37,11 +37,11 @@ def worker(row_data):
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text={'row': row_data})
     # open the database
-    option_config_json, thread_db = common_config_ini.com_config_read()
+    option_config_json, db_connection = common_config_ini.com_config_read()
     # row_data
     # 0 mm_sync_guid uuid NOT NULL, 1 mm_sync_path text, 2 mm_sync_path_to text,
     # 3 mm_sync_options_json jsonb
-    ffmpeg_params = ['./bin/ffmpeg', '-i', thread_db.db_media_path_by_uuid(
+    ffmpeg_params = ['./bin/ffmpeg', '-i', db_connection.db_media_path_by_uuid(
         row_data['mm_sync_options_json']['Media GUID'])[0]]
     if row_data['mm_sync_options_json']['Options']['Size'] != "Clone":
         ffmpeg_params.extend(('-fs',
@@ -79,9 +79,9 @@ def worker(row_data):
             elif line[0:5] == "frame":
                 time_string = timedelta(float(line.split('=', 5)[5].split(' ', 1)[0]))
                 time_percent = time_string.total_seconds() / media_duration.total_seconds()
-                thread_db.db_sync_progress_update(row_data['mm_sync_guid'],
-                                                  time_percent)
-                thread_db.db_commit()
+                db_connection.db_sync_progress_update(row_data['mm_sync_guid'],
+                                                      time_percent)
+                db_connection.db_commit()
         else:
             break
     ffmpeg_pid.wait()
@@ -103,10 +103,10 @@ def worker(row_data):
                                           row_data['mm_sync_path_to'] + "."
                                           + row_data['mm_sync_options_json']['Options'][
                                               'VContainer'].split('/', 1)[1], False)
-    thread_db.db_sync_delete(row_data[0])  # guid of sync record
-    # thread_db.store record in activity table
-    thread_db.db_commit()
-    thread_db.db_close()
+    db_connection.db_sync_delete(row_data[0])  # guid of sync record
+    # db_connection.store record in activity table
+    db_connection.db_commit()
+    db_connection.db_close()
     return
 
 

@@ -614,7 +614,7 @@ async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, do
                                                                                  3]})
     # store/update the record
     # don't string this since it's a pure result store
-    collection_guid = db_connection.db_collection_by_tmdb(tmdb_collection_id)
+    collection_guid = await db_connection.db_collection_by_tmdb(tmdb_collection_id)
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "collection": tmdb_collection_id,
@@ -652,7 +652,7 @@ async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, do
         return 0  # to add totals later
 
 
-async def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
+async def metadata_fetch_tmdb_person(db_connection, provider_name, download_data):
     """
     fetch person bio
     """
@@ -683,13 +683,13 @@ async def metadata_fetch_tmdb_person(thread_db, provider_name, download_data):
                                                                                  result_json.json()})
         if result_json is None or result_json.status_code == 502:
             time.sleep(60)
-            await metadata_fetch_tmdb_person(thread_db, provider_name, download_data)
+            await metadata_fetch_tmdb_person(db_connection, provider_name, download_data)
         elif result_json.status_code == 200:
-            await thread_db.db_meta_person_update(provider_name,
-                                                  download_data['mdq_download_json'][
-                                                      'ProviderMetaID'],
-                                                  result_json.json(),
-                                                  await common_global.api_instance.com_tmdb_meta_bio_image_build(
-                                                      result_json.json()))
+            await db_connection.db_meta_person_update(provider_name,
+                                                      download_data['mdq_download_json'][
+                                                          'ProviderMetaID'],
+                                                      result_json.json(),
+                                                      await common_global.api_instance.com_tmdb_meta_bio_image_build(
+                                                          result_json.json()))
             # commit happens in download delete
-            await thread_db.db_download_delete(download_data['mdq_id'])
+            await db_connection.db_download_delete(download_data['mdq_id'])

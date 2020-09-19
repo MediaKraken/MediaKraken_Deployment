@@ -53,15 +53,15 @@ def worker(audit_directory):
     """
     dir_path, media_class_type_uuid, dir_guid = audit_directory
     # open the database
-    option_config_json, thread_db = common_config_ini.com_config_read()
+    option_config_json, db_connection = common_config_ini.com_config_read()
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text={'worker dir': dir_path})
     original_media_class = media_class_type_uuid
     # update the timestamp now so any other media added DURING this scan don't get skipped
-    thread_db.db_audit_dir_timestamp_update(dir_path)
-    thread_db.db_audit_path_update_status(dir_guid,
-                                          json.dumps({'Status': 'File search scan', 'Pct': 0}))
-    thread_db.db_commit()
+    db_connection.db_audit_dir_timestamp_update(dir_path)
+    db_connection.db_audit_path_update_status(dir_guid,
+                                              json.dumps({'Status': 'File search scan', 'Pct': 0}))
+    db_connection.db_commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
         file_data = []
@@ -186,8 +186,8 @@ def worker(audit_directory):
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
                 media_id = str(uuid.uuid4())
-                thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
-                                          media_json)
+                db_connection.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
+                                              media_json)
                 # verify ffprobe and bif should run on the data
                 if ffprobe_bif_data and file_extension[
                                         1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
@@ -214,35 +214,36 @@ def worker(audit_directory):
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert
-                    thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
-                                                                     'Path': file_name,
-                                                                     'ClassID': new_class_type_uuid,
-                                                                     'Status': None,
-                                                                     'MetaNewID': str(uuid.uuid4()),
-                                                                     'ProviderMetaID': None}))
+                    db_connection.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
+                                                                         'Path': file_name,
+                                                                         'ClassID': new_class_type_uuid,
+                                                                         'Status': None,
+                                                                         'MetaNewID': str(
+                                                                             uuid.uuid4()),
+                                                                         'ProviderMetaID': None}))
         total_scanned += 1
-        thread_db.db_audit_path_update_status(dir_guid,
-                                              json.dumps({'Status': 'File scan: '
-                                                                    + common_internationalization.com_inter_number_format(
-                                                  total_scanned)
-                                                                    + ' / ' + common_internationalization.com_inter_number_format(
-                                                  total_file_in_dir),
-                                                          'Pct': (
-                                                                         total_scanned / total_file_in_dir) * 100}))
-        thread_db.db_commit()
+        db_connection.db_audit_path_update_status(dir_guid,
+                                                  json.dumps({'Status': 'File scan: '
+                                                                        + common_internationalization.com_inter_number_format(
+                                                      total_scanned)
+                                                                        + ' / ' + common_internationalization.com_inter_number_format(
+                                                      total_file_in_dir),
+                                                              'Pct': (
+                                                                             total_scanned / total_file_in_dir) * 100}))
+        db_connection.db_commit()
     # end of for loop for each file in library
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
     {'worker dir done': dir_path,
      'media class': media_class_type_uuid})
     # set to none so it doesn't show up anymore in admin status page
-    thread_db.db_audit_path_update_status(dir_guid, None)
+    db_connection.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
         # add notification to admin status page
-        thread_db.db_notification_insert(
+        db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_files)
             + " file(s) added from " + dir_path, True)
-    thread_db.db_commit()
-    thread_db.db_close()
+    db_connection.db_commit()
+    db_connection.db_close()
     return
 
 
