@@ -1,3 +1,4 @@
+import inspect
 import json
 import os
 
@@ -10,6 +11,15 @@ async def db_table_count(self, table_name, db_connection=None):
     """
     # return count of records in table
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -23,6 +33,15 @@ async def db_open(self, force_local=False, loop=None, as_pool=False):
     """
     # open database
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     # don't do the db_connection test here.  As this won't be a "separate" pool like webapp
     if force_local:
         database_password = 'metaman'
@@ -50,25 +69,25 @@ async def db_open(self, force_local=False, loop=None, as_pool=False):
                                             encoder=json.dumps,
                                             decoder=json.loads,
                                             schema='pg_catalog')
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'stuff': 'db open async'})
 
 
 async def db_close(self, db_connection=None):
     """
     # close main db file
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    try:
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             'stuff': 'db close'})
-    except:
-        pass
     await db_conn.close()
 
 
@@ -76,6 +95,15 @@ async def db_begin(self, db_connection=None):
     """
     # start a transaction
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -90,6 +118,15 @@ async def db_commit(self, db_connection=None):
     """
     # commit changes to media database
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -107,6 +144,15 @@ async def db_rollback(self, db_connection=None):
     """
     # rollback
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -121,6 +167,15 @@ async def db_table_index_check(self, resource_name, db_connection=None):
     """
     # check for table or index
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -134,6 +189,15 @@ async def db_drop_table(self, table_name, db_connection=None):
     """
     drop a table
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -147,17 +211,20 @@ async def db_query(self, query_string, fetch_all=True, db_connection=None):
     """
     # general run anything
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     # TODO little bobby tables
     if db_connection is None:
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    try:
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             "query": query_string})
-    except:
-        pass
     if fetch_all:
         return await db_conn.fetch(query_string)
     else:
@@ -168,6 +235,15 @@ async def db_parallel_workers(self, db_connection=None):
     """
     Return number of workers
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
