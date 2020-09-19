@@ -108,9 +108,6 @@ async def db_begin(self, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'stuff': 'db begin'})
     await db_conn.execute('begin')
 
 
@@ -131,12 +128,6 @@ async def db_commit(self, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    try:
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             'stuff': 'db commit'})
-    except:
-        pass
     await db_conn.execute('commit')
 
 
@@ -157,9 +148,6 @@ async def db_rollback(self, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'stuff': 'db rollback'})
     await db_conn.execute('rollback')
 
 
