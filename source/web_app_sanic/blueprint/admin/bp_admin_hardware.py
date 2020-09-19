@@ -114,12 +114,14 @@ async def url_bp_admin_hardware_tvtuner_edit(request):
                 if await request.app.db_functions.db_device_check(request.form['name'],
                                                                   request.form['ipaddr'],
                                                                   db_connection) == 0:
-                    request.app.db_functions.db_device_upsert('tvtuner',
-                                                              json.dumps(
-                                                                  {'Name': request.form['name'],
-                                                                   'Model': "NA",
-                                                                   'IP': request.form['ipaddr']}),
-                                                              db_connection)
+                    await request.app.db_functions.db_device_upsert('tvtuner',
+                                                                    json.dumps(
+                                                                        {'Name': request.form[
+                                                                            'name'],
+                                                                         'Model': "NA",
+                                                                         'IP': request.form[
+                                                                             'ipaddr']}),
+                                                                    db_connection)
                     await request.app.db_pool.release(db_connection)
                     return redirect(request.app.url_for('admins_tvtuners.admin_tvtuners'))
                 else:
