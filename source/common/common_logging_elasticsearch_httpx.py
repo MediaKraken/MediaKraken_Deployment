@@ -32,7 +32,7 @@ def com_es_httpx_post(message_type, message_text, index_name=None):
             'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
             % (com_es_httpx_post.index_ext,),
             data='{"@timestamp": "'
-                 + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+                 + datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
                  + '", "message": "%s",' % (message_text,)
                  + ' "type": "%s",' % (message_type,)
                  + ' "user": {"id": "metaman"}}',
@@ -55,7 +55,7 @@ async def com_es_httpx_post_async(message_type, message_text, index_name=None):
                 'http://th-elk-1.beaverbay.local:9200/%s/MediaKraken'
                 % (com_es_httpx_post_async.index_ext,),
                 data='{"@timestamp": "'
-                     + datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+                     + datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
                      + '", "message": "%s",' % (message_text,)
                      + ' "type": "%s",' % (message_type,)
                      + ' "user": {"id": "metaman"}}',
