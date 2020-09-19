@@ -1,11 +1,23 @@
 import datetime
+import inspect
 import uuid
+
+from common import common_logging_elasticsearch_httpx
 
 
 async def db_cron_delete(self, cron_uuid, db_connection=None):
     """
     Delete cron job
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -19,6 +31,15 @@ async def db_cron_info(self, cron_uuid, db_connection=None):
     """
     Cron job info
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -39,6 +60,15 @@ async def db_cron_insert(self, cron_name, cron_desc, cron_enabled,
     """
     insert cron job
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -61,6 +91,15 @@ async def db_cron_list(self, enabled_only=False, offset=0, records=None, db_conn
     """
     Return cron list
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -98,6 +137,15 @@ async def db_cron_list_count(self, enabled_only=False, db_connection=None):
     """
     Return number of cron jobs
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -113,6 +161,15 @@ async def db_cron_time_update(self, cron_type, db_connection=None):
     """
     Update the datetime in which a cron job was run
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:

@@ -1,3 +1,4 @@
+import inspect
 import uuid
 
 from common import common_logging_elasticsearch_httpx
@@ -7,6 +8,15 @@ async def db_download_insert(self, provider, que_type, down_json, db_connection=
     """
     Create/insert a download into the que
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -25,6 +35,15 @@ async def db_download_read_provider(self, provider_name, db_connection=None):
     """
     Read the downloads by provider
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -44,7 +63,13 @@ async def db_download_delete(self, guid, db_connection=None):
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         'download delete': guid})
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -57,14 +82,19 @@ async def db_download_update_provider(self, provider_name, guid, db_connection=N
     """
     Update provider
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'download update provider': provider_name,
-                                                                         'guid': guid})
     db_conn.execute('update mm_download_que set mdq_provider = $1 where mdq_id = $2',
                     provider_name, guid)
 
@@ -73,15 +103,19 @@ async def db_download_update(self, update_json, guid, update_que_id=None, db_con
     """
     Update download que record
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'download update': update_json,
-                                                                         'que': update_que_id,
-                                                                         'guid': guid})
     if update_que_id is not None:
         db_conn.execute('update mm_download_que set mdq_download_json::json = $1,'
                         ' mdq_que_type = $2'
@@ -103,15 +137,19 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
     # doing the query itself
     # this should now catch anything that's Fetch+, there should also technically
     # only ever be one Fetch+, rest should be search or null
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text={
-                                                                         'db_download_que_exists': download_que_uuid,
-                                                                         'name': provider_name,
-                                                                         'id': provider_id})
     # que type is movie, tv, etc as those numbers could be reused
     return db_conn.fetchval('select mdq_download_json->\'MetaNewID\''
                             ' from mm_download_que'

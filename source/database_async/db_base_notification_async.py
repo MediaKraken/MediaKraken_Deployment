@@ -1,4 +1,7 @@
+import inspect
 import uuid
+
+from common import common_logging_elasticsearch_httpx
 
 
 async def db_notification_insert(self, notification_data, notification_dismissable,
@@ -6,6 +9,15 @@ async def db_notification_insert(self, notification_data, notification_dismissab
     """
     # insert notifications
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -25,6 +37,15 @@ async def db_notification_read(self, offset=0, records=None, db_connection=None)
     """
     # read all notifications
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -43,6 +64,15 @@ async def db_notification_delete(self, notification_uuid, db_connection=None):
     """
     # remove notifications
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:

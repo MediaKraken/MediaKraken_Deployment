@@ -1,7 +1,21 @@
+import inspect
+
+from common import common_logging_elasticsearch_httpx
+
+
 async def db_meta_game_by_guid(self, guid, db_connection=None):
     """
     # return game data
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -17,6 +31,15 @@ async def db_meta_game_by_sha1(self, sha1_hash, db_connection=None):
     """
     # return game uuid by sha1 hash
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -31,6 +54,15 @@ async def db_meta_game_list(self, offset=0, records=None, search_value=None, db_
     """
     # return list of games
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:

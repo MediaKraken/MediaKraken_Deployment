@@ -1,5 +1,8 @@
 import datetime
+import inspect
 import uuid
+
+from common import common_logging_elasticsearch_httpx
 
 
 async def db_activity_insert(self, activity_name, activity_overview,
@@ -9,6 +12,15 @@ async def db_activity_insert(self, activity_name, activity_overview,
     """
     Insert server or user activity record
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -36,6 +48,15 @@ async def db_activity_purge(self, days_old, db_connection=None):
     """
     Purge records older than specified days
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
     if db_connection is None:
         db_conn = self.db_connection
     else:
