@@ -51,7 +51,6 @@ async def db_download_delete(self, guid, db_connection=None):
         db_conn = db_connection
     db_conn.execute('delete from mm_download_que'
                     ' where mdq_id = $1', guid)
-    db_conn.db_commit()
 
 
 async def db_download_update_provider(self, provider_name, guid, db_connection=None):
@@ -114,8 +113,8 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
                                                                          'name': provider_name,
                                                                          'id': provider_id})
     # que type is movie, tv, etc as those numbers could be reused
-    db_conn.fetchval('select mdq_download_json->\'MetaNewID\''
-                     ' from mm_download_que'
-                     ' where mdq_provider = $1 and mdq_que_type = $2'
-                     ' and mdq_download_json->\'ProviderMetaID\' ? $3 limit 1',
-                     provider_name, download_que_type, provider_id)
+    return db_conn.fetchval('select mdq_download_json->\'MetaNewID\''
+                            ' from mm_download_que'
+                            ' where mdq_provider = $1 and mdq_que_type = $2'
+                            ' and mdq_download_json->\'ProviderMetaID\' ? $3 limit 1',
+                            provider_name, download_que_type, provider_id)

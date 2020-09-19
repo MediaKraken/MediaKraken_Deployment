@@ -156,6 +156,7 @@ async def metadata_search(db_connection, provider_name, download_data):
         if metadata_uuid is not None:
             # TODO add theme.mp3 dl'd above to media table
             await db_connection.db_download_delete(download_data['mdq_id'])
+            await db_connection.db_commit()
             return  # since it's a search/fetch/insert in one shot
         else:
             lookup_halt = True
@@ -296,6 +297,7 @@ async def metadata_fetch(db_connection, provider_name, download_data):
                                                       download_data['mdq_download_json'][
                                                           'MetaNewID'])
     await db_connection.db_download_delete(download_data['mdq_id'])
+    await db_connection.db_commit()
 
 
 async def metadata_castcrew(db_connection, provider_name, download_data):
@@ -329,6 +331,7 @@ async def metadata_image(db_connection, provider_name, download_data):
                                                                          'caller':
                                                                              inspect.stack()[1][3]})
     await db_connection.db_download_delete(download_data['mdq_id'])
+    await db_connection.db_commit()
 
 
 async def metadata_review(db_connection, provider_name, download_data):
@@ -349,6 +352,7 @@ async def metadata_review(db_connection, provider_name, download_data):
                                                                             'ProviderMetaID'])
     # review is last.....so can delete download que
     await db_connection.db_download_delete(download_data['mdq_id'])
+    await db_connection.db_commit()
 
 
 async def metadata_collection(db_connection, provider_name, download_data):
@@ -370,3 +374,4 @@ async def metadata_collection(db_connection, provider_name, download_data):
                                                                             download_data)
     # only one record for this so nuke it
     await db_connection.db_download_delete(download_data['mdq_id'])
+    await db_connection.db_commit()

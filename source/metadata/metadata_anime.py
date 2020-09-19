@@ -59,14 +59,17 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
     # if same as last, return last id and save lookup
     if imdb_id is not None and imdb_id == metadata_anime_lookup.metadata_last_imdb:
         await db_connection.db_download_delete(download_data['mdq_id'])
+        await db_connection.db_commit()
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
     if tmdb_id is not None and tmdb_id == metadata_anime_lookup.metadata_last_tmdb:
         await db_connection.db_download_delete(download_data['mdq_id'])
+        await db_connection.db_commit()
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
     if anidb_id is not None and anidb_id == metadata_anime_lookup.metadata_last_anidb:
         await db_connection.db_download_delete(download_data['mdq_id'])
+        await db_connection.db_commit()
         # don't need to set last......since they are equal
         return metadata_anime_lookup.metadata_last_id
     # if ids from nfo/xml, query local db to see if exist
@@ -82,6 +85,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                          "meta anime metadata_uuid A": metadata_uuid})
     if metadata_uuid is not None:
         await db_connection.db_download_delete(download_data['mdq_id'])
+        await db_connection.db_commit()
         # fall through here to set last name/year id's
     else:
         # id is known from nfo/xml but not in db yet so fetch data
@@ -103,6 +107,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                     await db_connection.db_commit()
                 else:
                     await db_connection.db_download_delete(download_data['mdq_id'])
+                    await db_connection.db_commit()
                     metadata_uuid = dl_meta
             else:
                 dl_meta = await db_connection.db_download_que_exists(download_data['mdq_id'],
@@ -121,6 +126,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                     await db_connection.db_commit()
                 else:
                     await db_connection.db_download_delete(download_data['mdq_id'])
+                    await db_connection.db_commit()
                     metadata_uuid = dl_meta
         if metadata_uuid is None and anidb_id is not None:
             dl_meta = await db_connection.db_download_que_exists(download_data['mdq_id'],
@@ -139,6 +145,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                 await db_connection.db_commit()
             else:
                 await db_connection.db_download_delete(download_data['mdq_id'])
+                await db_connection.db_commit()
                 metadata_uuid = dl_meta
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={

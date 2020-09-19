@@ -66,6 +66,7 @@ async def metadata_periodicals_lookup(db_connection, download_data):
     else:
         # meta uuid is found so delete
         await db_connection.db_download_delete(download_que_id)
+        await db_connection.db_commit()
     return metadata_uuid
 
 
