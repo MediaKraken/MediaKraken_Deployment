@@ -75,7 +75,7 @@ async def db_download_delete(self, guid, db_connection=None):
     else:
         db_conn = db_connection
     db_conn.execute('delete from mm_download_que'
-                    ' where mdq_id = $1', guid)
+                    ' where mdq_id = $1', str(guid))
 
 
 async def db_download_update_provider(self, provider_name, guid, db_connection=None):
