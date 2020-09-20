@@ -19,7 +19,7 @@
 import inspect
 
 from common import common_logging_elasticsearch_httpx
-from common import common_network
+from common import common_network_async
 
 
 # http://www.thesportsdb.com/forum/viewtopic.php?f=6&t=5
@@ -44,10 +44,11 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
-                                                        + self.thesportsdb_api_key
-                                                        + '/searchteams.php?t='
-                                                        + team_name.replace(' ', '%20'), None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key
+            + '/searchteams.php?t='
+            + team_name.replace(' ', '%20'), None)
 
     async def com_meta_thesportsdb_search_players_by_team(self, team_name):
         """
@@ -62,10 +63,11 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
-                                                        + self.thesportsdb_api_key
-                                                        + '/searchplayers.php?t='
-                                                        + team_name.replace(' ', '%20'), None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key
+            + '/searchplayers.php?t='
+            + team_name.replace(' ', '%20'), None)
 
     async def com_meta_thesportsdb_search_players_by_name(self, player_name):
         """
@@ -80,13 +82,14 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
-                                                        + self.thesportsdb_api_key
-                                                        + '/searchplayers.php?p='
-                                                        + player_name.replace(' ', '%20'), None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key
+            + '/searchplayers.php?p='
+            + player_name.replace(' ', '%20'), None)
 
     async def com_meta_thesportsdb_search_players_by_team_and_player_name(self, team_name,
-                                                                    player_name):
+                                                                          player_name):
         """
         Search plays by team and player name
         """
@@ -99,14 +102,15 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
-                                                        + self.thesportsdb_api_key
-                                                        + '/searchplayers.php?t='
-                                                        + team_name.replace(' ', '%20')
-                                                        + '&p=' +
-                                                        player_name.replace(
-                                                            ' ', '%20'),
-                                                        None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key
+            + '/searchplayers.php?t='
+            + team_name.replace(' ', '%20')
+            + '&p=' +
+            player_name.replace(
+                ' ', '%20'),
+            None)
 
     # event lookups
 
@@ -123,10 +127,11 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://www.thesportsdb.com/api/v1/json/'
-                                                        + self.thesportsdb_api_key
-                                                        + '/searchevents.php?e='
-                                                        + event_name.replace(' ', '%20'), None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://www.thesportsdb.com/api/v1/json/'
+            + self.thesportsdb_api_key
+            + '/searchevents.php?e='
+            + event_name.replace(' ', '%20'), None)
 
 
 # Search for event by event file name

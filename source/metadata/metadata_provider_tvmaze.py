@@ -19,7 +19,7 @@
 import inspect
 
 from common import common_logging_elasticsearch_httpx
-from common import common_network
+from common import common_network_async
 
 
 # code to use
@@ -48,8 +48,9 @@ class CommonMetadatatvmaze:
                                                                                  inspect.stack()[1][
                                                                                      3]})
         url_opts = page_no,
-        return common_network.mk_network_fetch_from_url((self.API_BASE_URL + 'shows?page=%s'
-                                                         % url_opts), None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            (self.API_BASE_URL + 'shows?page=%s'
+             % url_opts), None)
 
     async def com_meta_tvmaze_show_updated(self):
         """
@@ -65,7 +66,7 @@ class CommonMetadatatvmaze:
                                                                                  inspect.stack()[1][
                                                                                      3]})
         # returns id's and timestamps of last changed
-        return common_network.mk_network_fetch_from_url(
+        return await common_network_async.mk_network_fetch_from_url_asymc(
             self.API_BASE_URL + 'updates/shows', None)
 
     async def com_meta_tvmaze_widesearch(self, show_name, show_year=None):
@@ -85,8 +86,9 @@ class CommonMetadatatvmaze:
             url_opts = show_name,
         else:
             url_opts = (show_name + ' ' + str(show_year)),
-        return common_network.mk_network_fetch_from_url((self.API_BASE_URL + 'search/shows?q=%s'
-                                                         % url_opts), None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            (self.API_BASE_URL + 'search/shows?q=%s'
+             % url_opts), None)
 
     async def com_meta_tvmaze_narrowsearch(self, show_name, show_year=None):
         """
@@ -105,7 +107,7 @@ class CommonMetadatatvmaze:
             url_opts = show_name,
         else:
             url_opts = (show_name + ' ' + show_year),
-        return common_network.mk_network_fetch_from_url((
+        return await common_network_async.mk_network_fetch_from_url_asymc((
                 self.API_BASE_URL + 'singlesearch/shows?q=%s' % url_opts), None)
 
     async def com_meta_tvmaze_show_by_id(self, tvmaze_id, imdb_id=None, tvdb_id=None,
@@ -127,21 +129,21 @@ class CommonMetadatatvmaze:
         if tvmaze_id is not None:
             url_opts = tvmaze_id,
             if embed_info:
-                result_json = common_network.mk_network_fetch_from_url((
+                result_json = await common_network_async.mk_network_fetch_from_url_asymc((
                         self.API_BASE_URL + 'shows/%s?embed[]=episodes&embed[]=cast'
                         % url_opts), None)
             else:
-                result_json = common_network.mk_network_fetch_from_url((
+                result_json = await common_network_async.mk_network_fetch_from_url_asymc((
                         self.API_BASE_URL + 'shows/%s' % url_opts), None)
         else:
             # currently embed options don't work on the lookup calls
             if imdb_id is not None and result_json is None:
                 url_opts = imdb_id,
-                result_json = common_network.mk_network_fetch_from_url((
+                result_json = await common_network_async.mk_network_fetch_from_url_asymc((
                         self.API_BASE_URL + 'lookup/shows?imdb=%s' % url_opts), None)
             elif tvdb_id is not None and result_json is None:
                 url_opts = tvdb_id,
-                result_json = common_network.mk_network_fetch_from_url((
+                result_json = await common_network_async.mk_network_fetch_from_url_asymc((
                         self.API_BASE_URL + 'lookup/shows?thetvdb=%s' % url_opts), None)
             if embed_info and result_json is not None:
                 result_json = self.com_meta_tvmaze_show_by_id(result_json['id'], None,
@@ -161,8 +163,9 @@ class CommonMetadatatvmaze:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url(self.API_BASE_URL + 'search/people?q=%s'
-                                                        % (person_name,))
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            self.API_BASE_URL + 'search/people?q=%s'
+            % (person_name,))
 
     async def com_meta_tvmaze_schedule(self, country_code=None, schedule_date=None):
         """
@@ -177,10 +180,11 @@ class CommonMetadatatvmaze:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        result_json = common_network.mk_network_fetch_from_url(self.API_BASE_URL + 'schedule',
-                                                               None)
-        result_json = common_network.mk_network_fetch_from_url(
+        result_json = await common_network_async.mk_network_fetch_from_url_asymc(
+            self.API_BASE_URL + 'schedule',
+            None)
+        result_json = await common_network_async.mk_network_fetch_from_url_asymc(
             self.API_BASE_URL + 'schedule?country=US&date=2014-12-01', None)
-        result_json = common_network.mk_network_fetch_from_url(
+        result_json = await common_network_async.mk_network_fetch_from_url_asymc(
             self.API_BASE_URL + 'schedule/full', None)
         return result_json

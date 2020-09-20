@@ -20,7 +20,7 @@ import inspect
 import json
 
 from common import common_logging_elasticsearch_httpx
-from common import common_network
+from common import common_network_async
 
 
 class CommonMetadataShoutcast:
@@ -69,7 +69,7 @@ class CommonMetadataShoutcast:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(common_network.mk_network_fetch_from_url(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
             self.shoutcast_url + 'Top500?k=' + self.shoutcast_api_key
             + self.com_shoutcast_generate_options(rec_limit, bit_rate, media_type), None))
 
@@ -87,7 +87,7 @@ class CommonMetadataShoutcast:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(common_network.mk_network_fetch_from_url(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
             self.shoutcast_url + 'stationsearch?k=' + self.shoutcast_api_key
             + ('&search=%s' % search_string.replace(' ', '+'))
             + self.com_shoutcast_generate_options(rec_limit, bit_rate, media_type), None))
@@ -106,7 +106,7 @@ class CommonMetadataShoutcast:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(common_network.mk_network_fetch_from_url(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
             self.shoutcast_url + 'stationsearch?k=' + self.shoutcast_api_key
             + ('&genresearch=%s' % genre_string.replace(' ', '+'))
             + self.com_shoutcast_generate_options(rec_limit, bit_rate, media_type), None))
@@ -124,7 +124,7 @@ class CommonMetadataShoutcast:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(common_network.mk_network_fetch_from_url(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
             self.shoutcast_url + 'genrelist?k=' + self.shoutcast_api_key, None))
 
 # TODO

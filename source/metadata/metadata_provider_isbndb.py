@@ -21,7 +21,7 @@ import inspect
 import requests
 from common import common_global
 from common import common_logging_elasticsearch_httpx
-from common import common_network
+from common import common_network_async
 
 
 class CommonMetadataISBNdb:
@@ -47,9 +47,10 @@ class CommonMetadataISBNdb:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
-                                                        + self.api_key + '/author/' + author_name,
-                                                        None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://isbndb.com/api/v2/json/'
+            + self.api_key + '/author/' + author_name,
+            None)
 
     # http://isbndb.com/api/v2/xml/mykey/books?q=science
 
@@ -68,9 +69,10 @@ class CommonMetadataISBNdb:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
-                                                        + self.api_key + '/publisher/'
-                                                        + publisher_name, None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://isbndb.com/api/v2/json/'
+            + self.api_key + '/publisher/'
+            + publisher_name, None)
 
     # http://isbndb.com/api/v2/docs/subjects
     # http://isbndb.com/api/v2/json/[your-api-key]/subject/brain_diseases_diagnosis
@@ -95,9 +97,10 @@ class CommonMetadataISBNdb:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://isbndb.com/api/v2/json/'
-                                                        + self.api_key + '/prices/'
-                                                        + book_info, None)
+        return await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://isbndb.com/api/v2/json/'
+            + self.api_key + '/prices/'
+            + book_info, None)
 
     # http://isbndb.com/api/v2/docs/books
     # http://isbndb.com/api/v2/json/[your-api-key]/book/084930315X

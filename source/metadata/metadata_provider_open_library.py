@@ -20,8 +20,6 @@ import inspect
 
 from common import common_logging_elasticsearch_httpx
 
-from source.common import common_network
-
 
 # https://openlibrary.org/developers/api
 
@@ -43,5 +41,6 @@ class CommonMetadataOpenLibrary:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        common_network.mk_network_fetch_from_url('http://covers.openlibrary.org/b/isbn/'
-                                                 + isbn_id + '-L.jpg', image_path)
+        await common_network_async.mk_network_fetch_from_url_asymc(
+            'http://covers.openlibrary.org/b/isbn/'
+            + isbn_id + '-L.jpg', image_path)

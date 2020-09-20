@@ -24,7 +24,7 @@ import time
 
 from common import common_file
 from common import common_logging_elasticsearch_httpx
-from common import common_network
+from common import common_network_async
 
 sys.path.append("../common")
 import adba
@@ -55,8 +55,9 @@ class CommonMetadataANIdb:
         # check to see if local titles file is older than 24 hours
         if common_file.com_file_modification_timestamp('./cache/anidb_titles.gz') \
                 < (time.time() - 86400):
-            common_network.mk_network_fetch_from_url('http://anidb.net/api/anime-titles.xml.gz',
-                                                     './cache/anidb_titles.gz')
+            await common_network_async.mk_network_fetch_from_url_asymc(
+                'http://anidb.net/api/anime-titles.xml.gz',
+                './cache/anidb_titles.gz')
             return True  # new file
         return False
 

@@ -125,7 +125,7 @@ class CommonMetadataTheTVDB:
 
     #    # depreciated....they round-robin at their end
     #    def com_meta_TheTVDB_Get_Mirrors():
-    #        mirror_list_xml = common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
+    #        mirror_list_xml = await common_network_async.mk_network_fetch_from_url_asymc('http://thetvdb.com/api/'
     # + self.thetvdb_connection + '/mirrors.xml', None)
     #        return mirror_list_xml
 
@@ -142,7 +142,7 @@ class CommonMetadataTheTVDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url(
+        return await common_network_async.mk_network_fetch_from_url_asymc(
             'http://thetvdb.com/api/Updates.php?type=none', None)
 
     async def com_meta_thetvdb_updates_by_epoc(self, epoc_timestamp):
@@ -158,7 +158,7 @@ class CommonMetadataTheTVDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url(
+        return await common_network_async.mk_network_fetch_from_url_asymc(
             'http://thetvdb.com/api/Updates.php?type=all&time=' + str(epoc_timestamp), None)
 
     async def com_meta_thetvdb_update_series_read(self, tv_show_id, lang_code='en'):
@@ -174,11 +174,11 @@ class CommonMetadataTheTVDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
-                                                        + self.thetvdb_connection
-                                                        + '/series/' + tv_show_id
-                                                        + '/' + lang_code + '.xml',
-                                                        None)
+        return await common_network_async.mk_network_fetch_from_url_asymc('http://thetvdb.com/api/'
+                                                                          + self.thetvdb_connection
+                                                                          + '/series/' + tv_show_id
+                                                                          + '/' + lang_code + '.xml',
+                                                                          None)
 
     async def com_meta_thetvdb_update_episode_read(self, tv_eps_id, lang_code='en'):
         """
@@ -193,11 +193,11 @@ class CommonMetadataTheTVDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return common_network.mk_network_fetch_from_url('http://thetvdb.com/api/'
-                                                        + self.thetvdb_connection
-                                                        + '/episodes/' + tv_eps_id
-                                                        + '/' + lang_code + '.xml',
-                                                        None)
+        return await common_network_async.mk_network_fetch_from_url_asymc('http://thetvdb.com/api/'
+                                                                          + self.thetvdb_connection
+                                                                          + '/episodes/' + tv_eps_id
+                                                                          + '/' + lang_code + '.xml',
+                                                                          None)
 
 
 '''

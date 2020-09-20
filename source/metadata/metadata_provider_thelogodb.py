@@ -18,7 +18,7 @@
 
 import json
 
-from common import common_network
+from common import common_network_async
 
 """
 Website is down for the count!!!
@@ -39,5 +39,5 @@ class CommonMetadataTheLogoDB:
         """
         Grab newest releases
         """
-        return json.loads(common_network.mk_network_fetch_from_url(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
             'http://www.thelogodb.com/api/json/v1/' + self.logo_api_key + '/tvlatest.php', None))
