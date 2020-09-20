@@ -41,6 +41,6 @@ class CommonMetadataOpenLibrary:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        await common_network_async.mk_network_fetch_from_url_asymc(
+        await common_network_async.mk_network_fetch_from_url_async(
             'http://covers.openlibrary.org/b/isbn/'
             + isbn_id + '-L.jpg', image_path)

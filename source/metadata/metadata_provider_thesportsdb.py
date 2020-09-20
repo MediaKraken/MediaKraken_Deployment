@@ -44,7 +44,7 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://www.thesportsdb.com/api/v1/json/'
             + self.thesportsdb_api_key
             + '/searchteams.php?t='
@@ -63,7 +63,7 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://www.thesportsdb.com/api/v1/json/'
             + self.thesportsdb_api_key
             + '/searchplayers.php?t='
@@ -82,7 +82,7 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://www.thesportsdb.com/api/v1/json/'
             + self.thesportsdb_api_key
             + '/searchplayers.php?p='
@@ -102,7 +102,7 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://www.thesportsdb.com/api/v1/json/'
             + self.thesportsdb_api_key
             + '/searchplayers.php?t='
@@ -127,7 +127,7 @@ class CommonMetadataTheSportsDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://www.thesportsdb.com/api/v1/json/'
             + self.thesportsdb_api_key
             + '/searchevents.php?e='

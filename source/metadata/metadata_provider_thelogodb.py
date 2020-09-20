@@ -39,5 +39,5 @@ class CommonMetadataTheLogoDB:
         """
         Grab newest releases
         """
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'http://www.thelogodb.com/api/json/v1/' + self.logo_api_key + '/tvlatest.php', None))

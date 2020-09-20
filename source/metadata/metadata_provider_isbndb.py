@@ -47,7 +47,7 @@ class CommonMetadataISBNdb:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://isbndb.com/api/v2/json/'
             + self.api_key + '/author/' + author_name,
             None)
@@ -69,7 +69,7 @@ class CommonMetadataISBNdb:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://isbndb.com/api/v2/json/'
             + self.api_key + '/publisher/'
             + publisher_name, None)
@@ -97,7 +97,7 @@ class CommonMetadataISBNdb:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return await common_network_async.mk_network_fetch_from_url_asymc(
+        return await common_network_async.mk_network_fetch_from_url_async(
             'http://isbndb.com/api/v2/json/'
             + self.api_key + '/prices/'
             + book_info, None)

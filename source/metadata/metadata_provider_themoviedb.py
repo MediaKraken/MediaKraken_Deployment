@@ -229,7 +229,7 @@ class CommonMetadataTMDB:
             if not os.path.isfile(image_file_path + result_json['profile_path']):
                 if result_json['profile_path'] is not None:
                     if not os.path.isfile(image_file_path):
-                        await common_network_async.mk_network_fetch_from_url_asymc(
+                        await common_network_async.mk_network_fetch_from_url_async(
                             'https://image.tmdb.org/t/p/original' + result_json['profile_path'],
                             image_file_path + result_json['profile_path'])
         # set local image json
@@ -248,7 +248,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/movie/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -265,7 +265,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/person/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -282,7 +282,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/tv/latest'
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -299,7 +299,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/review/%s'
             '?api_key=%s', (self.API_KEY, tmdb_id)))
 
@@ -316,7 +316,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/movie/changes'
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -333,7 +333,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/tv/changes'
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -350,7 +350,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/person/changes'
             '?api_key=%s' % self.API_KEY))['id']
 
@@ -367,7 +367,7 @@ class CommonMetadataTMDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_asymc(
+        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
             'https://api.themoviedb.org/3/collection/%s'
             '?api_key=%s', (self.API_KEY, tmdb_id)))
 
@@ -398,7 +398,7 @@ class CommonMetadataTMDB:
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']
             if not os.path.isfile(image_file_path):
-                if await common_network_async.mk_network_fetch_from_url_asymc(
+                if await common_network_async.mk_network_fetch_from_url_async(
                         'https://image.tmdb.org/t/p/original'
                         + result_json['poster_path'],
                         image_file_path):
@@ -417,7 +417,7 @@ class CommonMetadataTMDB:
         if result_json['backdrop_path'] is not None:
             image_file_path += result_json['backdrop_path']
             if not os.path.isfile(image_file_path):
-                if await common_network_async.mk_network_fetch_from_url_asymc(
+                if await common_network_async.mk_network_fetch_from_url_async(
                         'https://image.tmdb.org/t/p/original'
                         + result_json['backdrop_path'],
                         image_file_path):
