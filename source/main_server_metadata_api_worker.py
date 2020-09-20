@@ -26,19 +26,19 @@ from common import common_config_ini
 from common import common_global
 from common import common_logging_elasticsearch_httpx
 from common import common_metadata_limiter
-from common import common_metadata_provider_anidb
-from common import common_metadata_provider_imvdb
-from common import common_metadata_provider_isbndb
-from common import common_metadata_provider_musicbrainz
-from common import common_metadata_provider_thegamesdb
-from common import common_metadata_provider_themoviedb
-from common import common_metadata_provider_thesportsdb
 from common import common_signal
 from common import common_string
 from common.common_metadata_limiter import *
 from guessit import guessit
 from metadata import metadata_general
 from metadata import metadata_identification
+from metadata import metadata_provider_anidb
+from metadata import metadata_provider_imvdb
+from metadata import metadata_provider_isbndb
+from metadata import metadata_provider_musicbrainz
+from metadata import metadata_provider_thegamesdb
+from metadata import metadata_provider_themoviedb
+from metadata import metadata_provider_thesportsdb
 
 
 @common_metadata_limiter.ratelimited(common_metadata_limiter.API_LIMIT['anidb'][0]
@@ -397,25 +397,25 @@ async def main(loop):
 
     # setup the api key instances, if needed
     if content_providers == 'anidb':
-        common_global.api_instance = common_metadata_provider_anidb.CommonMetadataANIdb(
+        common_global.api_instance = metadata_provider_anidb.CommonMetadataANIdb(
             option_config_json)
     elif content_providers == 'imvdb':
-        common_global.api_instance = common_metadata_provider_imvdb.CommonMetadataIMVdb(
+        common_global.api_instance = metadata_provider_imvdb.CommonMetadataIMVdb(
             option_config_json)
     elif content_providers == 'isbndb':
-        common_global.api_instance = common_metadata_provider_isbndb.CommonMetadataISBNdb(
+        common_global.api_instance = metadata_provider_isbndb.CommonMetadataISBNdb(
             option_config_json)
     elif content_providers == 'musicbrainz':
-        common_global.api_instance = common_metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
+        common_global.api_instance = metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
             option_config_json)
     elif content_providers == 'thegamesdb':
-        common_global.api_instance = common_metadata_provider_thegamesdb.CommonMetadataGamesDB(
+        common_global.api_instance = metadata_provider_thegamesdb.CommonMetadataGamesDB(
             option_config_json)
     elif content_providers == 'themoviedb':
-        common_global.api_instance = common_metadata_provider_themoviedb.CommonMetadataTMDB(
+        common_global.api_instance = metadata_provider_themoviedb.CommonMetadataTMDB(
             option_config_json)
     elif content_providers == 'thesportsdb':
-        common_global.api_instance = common_metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
+        common_global.api_instance = metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
             option_config_json)
     # setup last used id's per thread
     metadata_last_id = None
