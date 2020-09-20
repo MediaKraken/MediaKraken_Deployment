@@ -21,7 +21,6 @@ import json
 import time
 
 import musicbrainzngs
-import psycopg2
 from common import common_global
 from common import common_logging_elasticsearch_httpx
 from common import common_version
