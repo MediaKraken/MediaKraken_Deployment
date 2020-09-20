@@ -66,7 +66,7 @@ async def db_media_movie_list(self, class_guid, list_type=None, list_genre='All'
                                                    offset, list_limit)
                 else:
                     if offset is None:
-                        return await db_conn.fetch('mm_media_metadata_guid)'
+                        return await db_conn.fetch('select mm_media_metadata_guid)'
                                                    ' mm_media_name, mm_media_guid,'
                                                    ' mm_metadata_user_json::json,'
                                                    ' mm_metadata_localimage_json,'

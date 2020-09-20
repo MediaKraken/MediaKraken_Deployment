@@ -25,6 +25,14 @@ async def main():
     # await conn.execute('INSERT INTO users2(name, dob, test_json) VALUES($1, $2, $3)',
     #                    'Bob', datetime.date(1984, 3, 1), json.dumps({'test': 'works'}))
 
+    # shows that one CANNOT use ::json in the insert
+    # await conn.execute('INSERT INTO users2(name, test_json::json) VALUES($1, $2)',
+    #                    'Bob', {'test': 'works'})
+
+    # shows that one CANNOT use ::json in the update
+    # await conn.execute('update users2 set name = $1, test_json::json = $2',
+    #                    'Bob', json.dumps({'test': 'works'}))
+
     row = await conn.fetchrow('SELECT id, dob, test_json::json'
                               ' FROM users2 WHERE name = $1', 'Bob')
 

@@ -72,7 +72,7 @@ async def db_review_insert(self, metadata_id, review_json, db_connection=None):
     new_guid = str(uuid.uuid4())
     await self.db_cursor.execute('insert into mm_review (mm_review_guid,'
                                  ' mm_review_metadata_id,'
-                                 ' mm_review_json::json)'
+                                 ' mm_review_json)'
                                  ' values ($1,$2,$3)',
                                  new_guid, metadata_id, review_json)
     await self.db_cursor.db_commit()

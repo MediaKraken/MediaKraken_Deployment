@@ -89,7 +89,7 @@ async def db_user_insert(self, user_name, user_email, user_password, db_connecti
     else:
         user_admin = False
     return await db_conn.execute(
-        'insert into mm_user (username, email, password, active, is_admin, user_json::json)'
+        'insert into mm_user (username, email, password, active, is_admin, user_json)'
         ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, {"per_page": 30})'
         ' returning id',
         user_name, user_email, user_password, user_admin), user_admin
@@ -178,7 +178,7 @@ async def db_user_group_insert(self, group_name, group_desc, group_rights_json,
     await db_conn.execute('insert into mm_user_group (mm_user_group_guid,'
                           ' mm_user_group_name,'
                           ' mm_user_group_description,'
-                          ' mm_user_group_rights_json::json)'
+                          ' mm_user_group_rights_json)'
                           ' values ($1,$2,$3,$4)',
                           new_user_group_id, group_name,
                           group_desc, group_rights_json)

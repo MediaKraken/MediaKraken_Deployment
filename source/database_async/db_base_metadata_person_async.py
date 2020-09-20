@@ -165,7 +165,7 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
     new_guid = str(uuid.uuid4())
     await db_conn.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
                           ' mmp_person_media_id,'
-                          ' mmp_person_meta_json::json,'
+                          ' mmp_person_meta_json,'
                           ' mmp_person_image)'
                           ' values ($1,$2,$3,$4,$5)',
                           new_guid, person_name, media_id,

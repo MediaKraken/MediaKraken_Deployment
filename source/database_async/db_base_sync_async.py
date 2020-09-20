@@ -89,7 +89,7 @@ async def db_sync_insert(self, sync_path, sync_path_to, sync_json, db_connection
     await db_conn.execute('insert into mm_sync (mm_sync_guid,'
                           ' mm_sync_path,'
                           ' mm_sync_path_to,'
-                          ' mm_sync_options_json::json)'
+                          ' mm_sync_options_json)'
                           ' values ($1, $2, $3, $4)',
                           new_guid, sync_path,
                           sync_path_to, sync_json)

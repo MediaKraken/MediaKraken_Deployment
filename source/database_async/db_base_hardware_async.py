@@ -75,7 +75,7 @@ async def db_hardware_insert(self, manufacturer, model_name, json_data, db_conne
     await db_conn.execute('insert into mm_hardware_json (mm_hardware_id,'
                           ' mm_hardware_manufacturer,'
                           ' mm_hardware_model,'
-                          ' mm_hardware_json::json)'
+                          ' mm_hardware_json)'
                           ' values ($1, $2, $3, $4)',
                           new_guid, manufacturer, model_name, json_data)
     await db_conn.execute('commit')

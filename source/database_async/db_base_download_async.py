@@ -25,7 +25,7 @@ async def db_download_insert(self, provider, que_type, down_json, db_connection=
     await db_conn.execute('insert into mm_download_que (mdq_id,'
                           'mdq_provider,'
                           'mdq_que_type,'
-                          'mdq_download_json::json)'
+                          'mdq_download_json)'
                           ' values ($1, $2, $3, $4)',
                           new_guid, provider, que_type, down_json)
     return new_guid
@@ -117,12 +117,12 @@ async def db_download_update(self, update_json, guid, update_que_id=None, db_con
     else:
         db_conn = db_connection
     if update_que_id is not None:
-        db_conn.execute('update mm_download_que set mdq_download_json::json = $1,'
+        db_conn.execute('update mm_download_que set mdq_download_json = $1,'
                         ' mdq_que_type = $2'
                         ' where mdq_id = $3',
                         update_json, update_que_id, guid)
     else:
-        db_conn.execute('update mm_download_que set mdq_download_json::json = $1'
+        db_conn.execute('update mm_download_que set mdq_download_json = $1'
                         ' where mdq_id = $2', (update_json, guid))
 
 

@@ -23,7 +23,7 @@ async def db_opt_update(self, option_json, db_connection=None):
         db_conn = db_connection
     # no need for where clause as it's only the one record
     await db_conn.execute('update mm_options_and_status'
-                          ' set mm_options_json::json = $1',
+                          ' set mm_options_json = $1',
                           option_json)
 
 
@@ -112,8 +112,8 @@ async def db_opt_status_insert(self, option_json, status_json, db_connection=Non
         db_conn = db_connection
     await db_conn.execute('insert into mm_options_and_status'
                           ' (mm_options_and_status_guid,'
-                          ' mm_options_json::json,'
-                          ' mm_status_json::json)'
+                          ' mm_options_json,'
+                          ' mm_status_json)'
                           ' values ($1,$2,$3)',
                           str(uuid.uuid4()), option_json, status_json)
     await db_conn.execute('commit')
@@ -138,7 +138,7 @@ async def db_opt_status_update(self, option_json, status_json, db_connection=Non
         db_conn = db_connection
     # no need for where clause as it's only the one record
     await db_conn.execute('update mm_options_and_status'
-                          ' set mm_options_json::json = $1,'
-                          ' mm_status_json::json = $2',
+                          ' set mm_options_json = $1,'
+                          ' mm_status_json = $2',
                           option_json, status_json)
     await db_conn.execute('commit')

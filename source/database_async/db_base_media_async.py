@@ -161,7 +161,7 @@ async def db_media_insert(self, media_uuid, media_path, media_class_uuid,
                           ' mm_media_class_guid,'
                           ' mm_media_path,'
                           ' mm_media_metadata_guid,'
-                          ' mm_media_ffprobe_json::json,'
+                          ' mm_media_ffprobe_json,'
                           ' mm_media_json)'
                           ' values ($1, $2, $3, $4, $5, $6)',
                           media_uuid, media_class_uuid, media_path,

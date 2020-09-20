@@ -182,7 +182,7 @@ async def db_meta_movie_json_update(self, media_guid, metadata_json, db_connecti
     else:
         db_conn = db_connection
     await db_conn.execute('update mm_metadata_movie'
-                          ' set mm_metadata_user_json::json = $1'
+                          ' set mm_metadata_user_json = $1'
                           ' where mm_metadata_guid = $2',
                           metadata_json, media_guid)
     await db_conn.execute('commit')

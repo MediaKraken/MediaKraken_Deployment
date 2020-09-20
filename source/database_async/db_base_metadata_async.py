@@ -43,8 +43,8 @@ async def db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
     await db_conn.execute('insert into mm_metadata_movie (mm_metadata_guid,'
                           ' mm_metadata_media_id,'
                           ' mm_media_name,'
-                          ' mm_metadata_json::json,'
-                          ' mm_metadata_localimage_json::json)'
+                          ' mm_metadata_json,'
+                          ' mm_metadata_localimage_json)'
                           ' values ($1,$2,$3,$4,$5)',
                           uuid_id, series_id, data_title,
                           data_json, data_image_json)
