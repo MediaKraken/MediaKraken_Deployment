@@ -63,8 +63,7 @@ for tvmaze_id, tvmaze_time in list(result.items()):
                                              json.dumps({'MediaID': None,
                                                          'Path': None, 'ClassID': None,
                                                          'Status': 'Fetch',
-                                                         'MetaNewID': str(
-                                                             uuid.uuid4()),
+                                                         'MetaNewID': uuid.uuid4(),
                                                          'ProviderMetaID': tvmaze_id}))
 
 # commit all changes to db

@@ -66,7 +66,7 @@ def db_sync_insert(self, sync_path, sync_path_to, sync_json):
     """
     # insert sync job
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_sync (mm_sync_guid,'
                            ' mm_sync_path,'
                            ' mm_sync_path_to,'

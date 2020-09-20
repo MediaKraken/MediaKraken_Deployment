@@ -25,7 +25,7 @@ async def db_activity_insert(self, activity_name, activity_overview,
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_user_activity (mm_activity_guid,'
                           ' mm_activity_name,'
                           ' mm_activity_overview,'

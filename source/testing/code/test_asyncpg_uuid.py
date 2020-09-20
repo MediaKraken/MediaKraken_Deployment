@@ -24,14 +24,14 @@ async def main():
     # uuid and str(uuid) both return as UUID type
     # uuid and str(uuid) both return as UUID type
     await conn.execute('INSERT INTO users20(name, test_json, user_id) VALUES($1, $2, $3)',
-                       'Bob', json.dumps({'test': 'works'}), str(uuid.uuid4()))
+                       'Bob', json.dumps({'test': 'works'}), uuid.uuid4())
 
     # ERROR uuid is not json serializable
     # await conn.execute('INSERT INTO users20(name, test_json, user_id) VALUES($1, $2, $3)',
-    #                    'Bob', json.dumps({'test': uuid.uuid4()}), str(uuid.uuid4()))
+    #                    'Bob', json.dumps({'test': uuid.uuid4()}), uuid.uuid4())
 
     await conn.execute('INSERT INTO users20(name, test_json, user_id) VALUES($1, $2, $3)',
-                       'Bob', json.dumps({'test': str(uuid.uuid4())}), uuid.uuid4())
+                       'Bob', json.dumps({'test': uuid.uuid4()}), uuid.uuid4())
 
     x = uuid.UUID('{00010203-0405-0607-0809-0a0b0c0d0e0f}')
     print(x, type(x))

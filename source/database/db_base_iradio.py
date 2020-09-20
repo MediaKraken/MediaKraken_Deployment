@@ -27,7 +27,7 @@ def db_iradio_insert(self, radio_channel):
                               ' where mm_radio_address = %s',
                               (radio_channel,)):
         if self.db_cursor.fetchall()[0][0] == 0:
-            new_guid = str(uuid.uuid4())
+            new_guid = uuid.uuid4()
             self.db_cursor.execute('insert into mm_radio (mm_radio_guid,'
                                    ' mm_radio_address,'
                                    'mm_radio_active)'

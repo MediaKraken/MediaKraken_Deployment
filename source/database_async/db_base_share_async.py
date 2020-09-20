@@ -22,7 +22,7 @@ async def db_share_add(self, share_type, share_user, share_password, share_serve
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_media_share (mm_media_share_guid,'
                           ' mm_media_share_type,'
                           ' mm_media_share_user,'

@@ -27,7 +27,7 @@ def db_meta_anime_title_insert(self, ani_media_id_json, ani_name, ani_json,
     """
     Insert new anidb entries into database
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_anime(mm_metadata_anime_guid,'
                            ' mm_metadata_anime_media_id,'
                            ' mm_media_anime_name,'

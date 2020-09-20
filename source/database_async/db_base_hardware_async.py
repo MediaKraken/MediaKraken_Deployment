@@ -71,7 +71,7 @@ async def db_hardware_insert(self, manufacturer, model_name, json_data, db_conne
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_hardware_json (mm_hardware_id,'
                           ' mm_hardware_manufacturer,'
                           ' mm_hardware_model,'

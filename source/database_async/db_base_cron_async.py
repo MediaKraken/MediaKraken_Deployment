@@ -73,7 +73,7 @@ async def db_cron_insert(self, cron_name, cron_desc, cron_enabled,
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_cron_id = str(uuid.uuid4())
+    new_cron_id = uuid.uuid4()
     await db_conn.execute('insert into mm_cron (mm_cron_guid,'
                           ' mm_cron_name,'
                           ' mm_cron_description,'

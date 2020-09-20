@@ -84,7 +84,7 @@ def db_meta_games_system_insert(self, platform_name,
     """
     # insert game system
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_game_systems_info(gs_id,'
                            ' gs_game_system_name,'
                            ' gs_game_system_alias,'
@@ -116,7 +116,7 @@ def db_meta_games_system_game_count(self, short_name):
 
 
 def db_meta_game_system_upsert(self, system_name, system_alias=None, system_json=None):
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('INSERT INTO mm_metadata_game_systems_info'
                            ' (gs_id,'
                            ' gs_game_system_name,'

@@ -98,5 +98,5 @@ def db_opt_status_insert(self, option_json, status_json):
                            'mm_options_json,'
                            'mm_status_json)'
                            ' values (%s,%s,%s)',
-                           (str(uuid.uuid4()), option_json, status_json))
+                           (uuid.uuid4(), option_json, status_json))
     self.db_commit()

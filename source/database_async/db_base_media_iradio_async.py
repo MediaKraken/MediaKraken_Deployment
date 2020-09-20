@@ -24,7 +24,7 @@ async def db_iradio_insert(self, radio_channel, db_connection=None):
     if await db_conn.fetchval('select count(*) from mm_radio'
                               ' where mm_radio_address = $1',
                               radio_channel) == 0:
-        new_guid = str(uuid.uuid4())
+        new_guid = uuid.uuid4()
         self.db_cursor.execute('insert into mm_radio (mm_radio_guid,'
                                ' mm_radio_address,'
                                ' mm_radio_active)'

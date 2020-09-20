@@ -115,7 +115,7 @@ async def db_opt_status_insert(self, option_json, status_json, db_connection=Non
                           ' mm_options_json,'
                           ' mm_status_json)'
                           ' values ($1,$2,$3)',
-                          str(uuid.uuid4()), option_json, status_json)
+                          uuid.uuid4(), option_json, status_json)
     await db_conn.execute('commit')
 
 

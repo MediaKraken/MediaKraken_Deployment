@@ -18,4 +18,4 @@
 
 import uuid
 
-print(str(uuid.uuid4()), flush=True)
+print(uuid.uuid4(), flush=True)

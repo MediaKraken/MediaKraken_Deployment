@@ -22,7 +22,7 @@ async def db_notification_insert(self, notification_data, notification_dismissab
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_notification (mm_notification_guid,'
                           'mm_notification_text,'
                           'mm_notification_time,'

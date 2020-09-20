@@ -24,7 +24,7 @@ async def main():
     #                    ' name text, user_id uuid)')
     #
     # await conn.execute('INSERT INTO users9(name, user_id) VALUES($1, $2)',
-    #                    'Bob', str(uuid.uuid4()))
+    #                    'Bob', uuid.uuid4())
 
     delete_me = (await conn.fetchrow('SELECT user_id FROM users9'))
     print(delete_me['user_id'])

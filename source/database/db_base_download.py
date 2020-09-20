@@ -25,7 +25,7 @@ def db_download_insert(self, provider, que_type, down_json):
     """
     Create/insert a download into the que
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_download_que (mdq_id,'
                            'mdq_provider,'
                            'mdq_que_type,'

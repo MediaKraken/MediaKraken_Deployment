@@ -85,7 +85,7 @@ async def db_sync_insert(self, sync_path, sync_path_to, sync_json, db_connection
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_sync (mm_sync_guid,'
                           ' mm_sync_path,'
                           ' mm_sync_path_to,'

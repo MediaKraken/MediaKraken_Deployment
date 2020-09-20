@@ -201,7 +201,7 @@ async def db_collection_insert(self, collection_name, guid_json, metadata_json,
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute(
         'insert into mm_metadata_collection (mm_metadata_collection_guid,'
         ' mm_metadata_collection_name, mm_metadata_collection_media_ids,'

@@ -107,7 +107,7 @@ def db_meta_person_insert(self, person_name, media_id, person_json,
                            'id': media_id,
                            'person': person_json,
                            'image': image_path}})
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_person (mmp_id, mmp_person_name,'
                            ' mmp_person_media_id,'
                            ' mmp_person_meta_json,'

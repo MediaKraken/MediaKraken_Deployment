@@ -33,7 +33,7 @@ def db_hardware_json_read(self, manufacturer, model_name):
 
 
 def db_hardware_insert(self, manufacturer, model_name, json_data):
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_hardware_json (mm_hardware_id,'
                            ' mm_hardware_manufacturer,'
                            ' mm_hardware_model,'

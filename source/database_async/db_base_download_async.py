@@ -21,7 +21,7 @@ async def db_download_insert(self, provider, que_type, down_json, db_connection=
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_download_que (mdq_id,'
                           'mdq_provider,'
                           'mdq_que_type,'

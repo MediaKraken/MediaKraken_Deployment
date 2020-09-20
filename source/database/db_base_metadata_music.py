@@ -64,7 +64,7 @@ def db_meta_musician_add(self, data_name, data_id, data_json):
     """
     # insert musician
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_musician (mm_metadata_musician_guid,'
                            ' mm_metadata_musician_name,'
                            ' mm_metadata_musician_id,'
@@ -91,7 +91,7 @@ def db_meta_album_add(self, data_name, data_id, data_json):
     """
     # insert album
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_album (mm_metadata_album_guid,'
                            ' mm_metadata_album_name,'
                            ' mm_metadata_album_id,'
@@ -118,7 +118,7 @@ def db_meta_song_add(self, data_name, data_id, data_json):
     """
     # insert song
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_music (mm_metadata_music_guid,'
                            ' mm_metadata_music_name, mm_metadata_media_music_id,'
                            ' mm_metadata_music_json) values (%s,%s,%s,%s)',

@@ -59,7 +59,7 @@ async def metadata_identification(db_connection, class_text, download_que_json,
                                                                    guessit_file_name)
     elif download_que_type == common_global.DLMediaType.Movie_Home.value \
             or download_que_type == common_global.DLMediaType.Picture.value:
-        metadata_uuid = str(uuid.uuid4())
+        metadata_uuid = uuid.uuid4()
 
     # find data by class type
     if class_text == "Adult":

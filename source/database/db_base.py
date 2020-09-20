@@ -33,7 +33,8 @@ def db_open(self, force_local=False):
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
-    # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
+    psycopg2.extras.register_uuid()
+    psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     if force_local:
         self.sql3_conn = psycopg2.connect(

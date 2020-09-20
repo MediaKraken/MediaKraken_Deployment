@@ -47,7 +47,7 @@ async def db_game_server_upsert(self, server_name, server_json, db_connection=No
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('INSERT INTO mm_game_dedicated_servers (mm_game_server_guid,'
                           ' mm_game_server_name,'
                           ' mm_game_server_json)'

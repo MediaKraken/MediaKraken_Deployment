@@ -23,7 +23,7 @@ def db_game_server_insert(self, game_server_name, game_server_json):
     """
     insert game server
     """
-    new_id = str(uuid.uuid4())
+    new_id = uuid.uuid4()
     self.db_cursor.execute('insert into mm_game_dedicated_servers (mm_game_server_guid,'
                            ' mm_game_server_name,'
                            ' mm_game_server_json)'

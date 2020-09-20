@@ -157,7 +157,7 @@ def db_meta_game_insert(self, game_system_id, game_short_name, game_name, game_j
     """
     Insert game
     """
-    new_game_id = str(uuid.uuid4())
+    new_game_id = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_game_software_info(gi_id, gi_system_id, '
                            'gi_game_info_short_name,'
                            ' gi_game_info_name,'
@@ -209,7 +209,7 @@ def db_meta_game_category_by_name(self, category_name):
 
 
 def db_meta_game_category_add(self, category_name):
-    category_uuid = str(uuid.uuid4())
+    category_uuid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_game_category (gc_id, gc_category)'
                            ' values (%s, %s)',
                            (category_uuid, category_name))

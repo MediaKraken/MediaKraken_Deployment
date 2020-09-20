@@ -45,7 +45,7 @@ def db_tv_station_insert(self, station_id, channel_id):
     # insert station/channel unless it exists
     """
     if self.db_tv_station_exist(station_id, channel_id) == 0:
-        new_guid = str(uuid.uuid4())
+        new_guid = uuid.uuid4()
         self.db_cursor.execute('insert into mm_tv_stations (mm_tv_stations_id,'
                                ' mm_tv_station_id,'
                                ' mm_tv_station_channel)'
@@ -90,7 +90,7 @@ def db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
                                (schedule_json, station_id, schedule_date))
         self.db_commit()
     else:
-        new_guid = str(uuid.uuid4())
+        new_guid = uuid.uuid4()
         self.db_cursor.execute('insert into mm_tv_schedule (mm_tv_schedule_id,'
                                ' mm_tv_schedule_station_id,'
                                ' mm_tv_schedule_date,'
@@ -114,7 +114,7 @@ def db_tv_program_insert(self, program_id, program_json):
                                (program_json, program_id))
         self.db_commit()
     else:
-        new_guid = str(uuid.uuid4())
+        new_guid = uuid.uuid4()
         self.db_cursor.execute('insert into mm_tv_schedule_program'
                                ' (mm_tv_schedule_program_guid,'
                                ' mm_tv_schedule_program_id,'

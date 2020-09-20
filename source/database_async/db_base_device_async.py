@@ -142,7 +142,7 @@ async def db_device_upsert(self, device_type, device_json, db_connection=None):
                                                                          'caller':
                                                                              inspect.stack()[1][
                                                                                  3]})
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     if db_connection is None:
         db_conn = self.db_connection
     else:

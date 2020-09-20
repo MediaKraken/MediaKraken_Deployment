@@ -97,7 +97,7 @@ for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
                                                          'Path': None,
                                                          'ClassID': None,
                                                          'Status': 'Fetch',
-                                                         'MetaNewID': str(uuid.uuid4()),
+                                                         'MetaNewID': uuid.uuid4(),
                                                          'ProviderMetaID': str(
                                                              tv_change['id'])}))
     else:
@@ -107,7 +107,7 @@ for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
                                                      'Path': None,
                                                      'ClassID': None,
                                                      'Status': 'Update',
-                                                     'MetaNewID': str(uuid.uuid4()),
+                                                     'MetaNewID': uuid.uuid4(),
                                                      'ProviderMetaID': str(
                                                          tv_change['id'])}))
 

@@ -64,7 +64,7 @@ def db_audit_path_add(self, dir_path, class_guid, share_guid):
     """
     # add media path
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_media_dir (mm_media_dir_guid,'
                            ' mm_media_dir_path,'
                            ' mm_media_dir_class_type,'
@@ -194,7 +194,7 @@ def db_audit_share_add(self, share_type, share_user, share_password, share_serve
     """
     # add share path
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_media_share (mm_media_share_guid,'
                            ' mm_media_share_type,'
                            ' mm_media_share_user,'

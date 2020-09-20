@@ -46,7 +46,7 @@ def db_review_insert(self, metadata_id, review_json):
     """
     # insert record
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_review (mm_review_guid,'
                            ' mm_review_metadata_id,'
                            ' mm_review_json)'

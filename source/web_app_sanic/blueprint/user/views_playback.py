@@ -24,7 +24,7 @@
 #     # fire up ffmpeg process
 #     if mtype == "hls":
 #         # must be done here so can send commands for the right stream
-#         target_uuid = str(uuid.uuid4())
+#         target_uuid = uuid.uuid4()
 #         vid_name = "./static/cache/" + target_uuid + ".m3u8"
 #
 #         # ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360

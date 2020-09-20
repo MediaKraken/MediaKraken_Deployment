@@ -322,7 +322,7 @@ class MediaKrakenApp(App):
             # Send a uuid for this connection. This way same installs can be copied, etc.
             # and not run into each other.
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
-                                                         'UUID': str(uuid.uuid4()),
+                                                         'UUID': uuid.uuid4(),
                                                          'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)
@@ -619,7 +619,7 @@ class MediaKrakenApp(App):
     def theater_play_server(self):
         # the server will have the target device....to know if cast/stream/etc
         self.send_twisted_message(json.dumps({'Type': 'Play', 'Subtype': 'Client',
-                                              'UUID': MediaKrakenApp.media_uuid,
+                                              'UUID': str(MediaKrakenApp.media_uuid),
                                               'Target': self.root.ids.theater_media_video_play_local_spinner.text}))
 
     # hue lights

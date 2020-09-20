@@ -22,7 +22,7 @@ async def db_library_path_add(self, dir_path, class_guid, share_guid, db_connect
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_media_dir (mm_media_dir_guid,'
                           ' mm_media_dir_path,'
                           ' mm_media_dir_class_type,'

@@ -119,7 +119,7 @@ def db_collection_insert(self, collection_name, guid_json, metadata_json,
     """
     Insert collection into the database
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_collection (mm_metadata_collection_guid,'
                            ' mm_metadata_collection_name, mm_metadata_collection_media_ids,'
                            ' mm_metadata_collection_json, mm_metadata_collection_imagelocal_json)'

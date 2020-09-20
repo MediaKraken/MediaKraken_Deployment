@@ -24,7 +24,7 @@ def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,
     """
     # insert media into database
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_media_remote (mmr_media_guid,'
                            ' mmr_media_link_id,'
                            ' mmr_media_uuid,'

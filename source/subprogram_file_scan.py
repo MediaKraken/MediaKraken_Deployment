@@ -185,7 +185,7 @@ def worker(audit_directory):
                     file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
-                media_id = str(uuid.uuid4())
+                media_id = uuid.uuid4()
                 db_connection.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
                                               media_json)
                 # verify ffprobe and bif should run on the data

@@ -174,7 +174,7 @@ async def db_user_group_insert(self, group_name, group_desc, group_rights_json,
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_user_group_id = str(uuid.uuid4())
+    new_user_group_id = uuid.uuid4()
     await db_conn.execute('insert into mm_user_group (mm_user_group_guid,'
                           ' mm_user_group_name,'
                           ' mm_user_group_description,'

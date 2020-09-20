@@ -118,7 +118,7 @@ class CommonTheTVDB:
     #     #    json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'themoviedb':'', 'anidb':'',\
     # # 'RT':'', 'OpenMovieDB':'', 'FanArt':'', 'ScreenGrabber':'', 'zap2it':''})
     #     #    db_meta_Save_Season(self,season_json):
-    #     #    sql_params = str(uuid.uuid4()),season_json
+    #     #    sql_params = uuid.uuid4(),season_json
     #     #    self.db_cursor.execute('insert into mm_media_seasons (mm_media_seasons_guid,\
     # # mm_media_season_json) values (%s,%s)',sql_params)
     #
@@ -126,7 +126,7 @@ class CommonTheTVDB:
     #         json_media_id = json.dumps({'imdb':'', 'thetvdb':'', 'themoviedb':'', 'anidb':'', 'rt':'',
     #             'omdb':'', 'fanart':'', 'screengrabber':'', 'zap2it':''})
     #     #    db_meta_Save_Episode(self,episode_id_json, episode_name, episode_json)
-    #     #    sql_params = str(uuid.uuid4()),episode_id_json, episode_name, episode_json
+    #     #    sql_params = uuid.uuid4(),episode_id_json, episode_name, episode_json
     #     #    self.db_cursor.execute('insert into mm_metadata (mm_metadata_guid,\
     #         #mm_metadata_media_id, mm_media_name, mm_metadata_json) values (%s,%s,%s,%s)',sql_params)
     #         return metadata_uuid

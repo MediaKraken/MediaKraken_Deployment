@@ -109,7 +109,7 @@ async def db_audit_path_add(self, dir_path, class_guid, share_guid, db_connectio
                                                                          'caller':
                                                                              inspect.stack()[1][
                                                                                  3]})
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     if db_connection is None:
         db_conn = self.db_connection
     else:
@@ -368,7 +368,7 @@ async def db_audit_share_add(self, share_type, share_user,
                                                                          'caller':
                                                                              inspect.stack()[1][
                                                                                  3]})
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     if db_connection is None:
         db_conn = self.db_connection
     else:

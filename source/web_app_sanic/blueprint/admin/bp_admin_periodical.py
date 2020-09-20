@@ -17,7 +17,7 @@ async def url_bp_admin_periodical_add(request):
         class_uuid = common_global.DLMediaType.Publication_Book.value
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
-                media_id = str(uuid.uuid4())
+                media_id = uuid.uuid4()
                 db_connection = await request.app.db_pool.acquire()
                 await request.app.db_functions.db_media_insert(media_id, None,
                                                                class_uuid,
