@@ -33,9 +33,18 @@ async def main():
     await conn.execute('INSERT INTO users20(name, test_json, user_id) VALUES($1, $2, $3)',
                        'Bob', json.dumps({'test': str(uuid.uuid4())}), uuid.uuid4())
 
+    x = uuid.UUID('{00010203-0405-0607-0809-0a0b0c0d0e0f}')
+    print(x, type(x))
+
     for row in await conn.fetch('SELECT name, test_json::json, user_id FROM users20'):
-        print(row, type(row['test_json']))  # shows as dict
+        print(row, type(row['test_json']), row['user_id'])  # shows as dict
         print(row['test_json']['test'], type(row['test_json']['test']))  # shows as str of course
+        # test UUID convert
+        # print(uuid.UUID(row['user_id']))  # no works
+        # print(uuid.UUID(row['user_id'].replace('-', '')))  # no work
+        # print(uuid.UUID('\'{' + row['test_json']['user_id'] + '}\''))  # no work
+        # print(uuid.UUID('{' + row['user_id'] + '}'))  # no work
+        print(uuid.UUID('{%s}' % row['user_id']))  # works
     # Close the connection.
     await conn.close()
 
