@@ -34,14 +34,6 @@ jinja_template = None
 api_instance = None
 
 
-@unique
-class DLDownloadType(IntFlag):
-    Movie = 1
-    TV = 2
-    Person = 3
-    Trailer = 4
-
-
 # stuff in comments are the old class TEXT
 @unique
 class DLMediaType(IntFlag):
