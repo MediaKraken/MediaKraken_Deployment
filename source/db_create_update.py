@@ -883,12 +883,6 @@ if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is Non
 if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
     db_connection.db_query('CREATE INDEX mdq_que_type_idx_name'
                            ' ON mm_download_que(mdq_que_type)')
-# type
-# 0 - initial insert and/or default for the provider
-# 1 - movie
-# 2 - tv
-# 3 - person
-# 4 - trailer
 
 # hardware device
 db_connection.db_query('create table IF NOT EXISTS mm_device (mm_device_id uuid'
