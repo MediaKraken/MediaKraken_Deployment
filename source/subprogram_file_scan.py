@@ -214,13 +214,15 @@ def worker(audit_directory):
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert
-                    db_connection.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
-                                                                         'Path': file_name,
-                                                                         'ClassID': new_class_type_uuid,
-                                                                         'Status': None,
-                                                                         'MetaNewID': str(
-                                                                             uuid.uuid4()),
-                                                                         'ProviderMetaID': None}))
+                    db_connection.db_download_insert(provider='Z',
+                                                     que_type=0,
+                                                     down_json=json.dumps({'MediaID': media_id,
+                                                                           'Path': file_name,
+                                                                           'Status': None,
+                                                                           'ProviderMetaID': None}),
+                                                     down_new_uuid=uuid.uuid4(),
+                                                     down_class_uuid=new_class_type_uuid
+                                                     )
         total_scanned += 1
         db_connection.db_audit_path_update_status(dir_guid,
                                                   json.dumps({'Status': 'File scan: '

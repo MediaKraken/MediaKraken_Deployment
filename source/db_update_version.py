@@ -371,6 +371,12 @@ if db_connection.db_version_check() < 29:
     db_connection.db_version_update(29)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 30:
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN mdq_new_uuid uuid;')
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN mdq_class_uuid uuid;')
+    db_connection.db_version_update(30)
+    db_connection.db_commit()
+
 # close the database
 db_connection.db_close()
 
