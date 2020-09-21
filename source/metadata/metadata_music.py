@@ -68,7 +68,7 @@ async def metadata_music_lookup(db_connection, download_json):
         if db_result is not None:
             metadata_uuid = db_result['mm_metadata_music_guid']
     if metadata_uuid is None:
-        metadata_uuid = download_json['MetaNewID']
+        metadata_uuid = download_json['mdq_new_uuid']
         # no matches on local database
         # search musicbrainz since not matched above via DB
         download_json.update({'Status': 'Search'})

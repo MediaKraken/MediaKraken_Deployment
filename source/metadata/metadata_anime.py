@@ -95,7 +95,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                common_global.DLMediaType.Movie.value,
                                                                'themoviedb', str(tmdb_id))
                 if dl_meta is None:
-                    metadata_uuid = download_data['MetaNewID']
+                    metadata_uuid = download_data['mdq_new_uuid']
                     await download_data.update(
                         {'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
                     await db_connection.db_begin()
@@ -114,7 +114,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                      common_global.DLMediaType.Movie.value,
                                                                      'themoviedb', imdb_id)
                 if dl_meta is None:
-                    metadata_uuid = download_data['MetaNewID']
+                    metadata_uuid = download_data['mdq_new_uuid']
                     download_data.update(
                         {'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     await db_connection.db_begin()
@@ -133,7 +133,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                  common_global.DLMediaType.Movie.value,
                                                                  'anidb', str(anidb_id))
             if dl_meta is None:
-                metadata_uuid = download_data['MetaNewID']
+                metadata_uuid = download_data['mdq_new_uuid']
                 await download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
                 await db_connection.db_begin()

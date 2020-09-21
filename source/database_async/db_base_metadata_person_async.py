@@ -221,10 +221,11 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                     # is right below.  As then the next person record read will find
                     # the inserted record.
                     # insert download record for bio/info
-                    await self.db_download_insert(meta_type, common_global.DLMediaType.Person.value,
-                                                  json.dumps({"Status": "Fetch",
-                                                              "ProviderMetaID": str(
-                                                                  person_id)}))
+                    await self.db_download_insert(provider=meta_type,
+                                                  que_type=common_global.DLMediaType.Person.value,
+                                                  down_json=json.dumps({"Status": "Fetch",
+                                                                        "ProviderMetaID": str(
+                                                                            person_id)}))
                     # insert person record
                     await self.db_meta_person_insert(person_name,
                                                      person_id,
@@ -251,10 +252,11 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                 # is right below.  As then the next person record read will find
                 # the inserted record.
                 # insert download record for bio/info
-                await self.db_download_insert(meta_type, common_global.DLMediaType.Person.value,
-                                              json.dumps({"Status": "Fetch",
-                                                          "ProviderMetaID": str(
-                                                              person_id)}))
+                await self.db_download_insert(provider=meta_type,
+                                              que_type=common_global.DLMediaType.Person.value,
+                                              down_json=json.dumps({"Status": "Fetch",
+                                                                    "ProviderMetaID": str(
+                                                                        person_id)}))
                 # insert person record
                 await self.db_meta_person_insert(person_name,
                                                  person_id,

@@ -62,24 +62,22 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                              message_text={'dl_meta': dl_meta})
         if dl_meta is None:
-            db_connection.db_download_insert('themoviedb', common_global.DLMediaType.Movie.value,
-                                             json.dumps({'MediaID': None,
-                                                         'Path': None,
-                                                         'ClassID': None,
-                                                         'Status': 'Fetch',
-                                                         'MetaNewID': str(uuid.uuid4()),
-                                                         'ProviderMetaID': str(
-                                                             movie_change['id'])}))
+            db_connection.db_download_insert(provider='themoviedb',
+                                             que_type=common_global.DLMediaType.Movie.value,
+                                             down_json=json.dumps({'Status': 'Fetch',
+                                                                   'ProviderMetaID': str(
+                                                                       movie_change['id'])}),
+                                             down_new_uuid=uuid.uuid4(),
+                                             )
     else:
         # it's on the database, so must update the record with latest information
-        db_connection.db_download_insert('themoviedb', common_global.DLMediaType.Movie.value,
-                                         json.dumps({'MediaID': None,
-                                                     'Path': None,
-                                                     'ClassID': None,
-                                                     'Status': 'Update',
-                                                     'MetaNewID': str(uuid.uuid4()),
-                                                     'ProviderMetaID': str(
-                                                         movie_change['id'])}))
+        db_connection.db_download_insert(provider='themoviedb',
+                                         que_type=common_global.DLMediaType.Movie.value,
+                                         down_json=json.dumps({'Status': 'Update',
+                                                               'ProviderMetaID': str(
+                                                                   movie_change['id'])}),
+                                         down_new_uuid=uuid.uuid4(),
+                                         )
 # TODO this should go through the limiter
 # process tv changes
 for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
@@ -90,24 +88,22 @@ for tv_change in tmdb.com_tmdb_meta_changes_tv()['results']:
         dl_meta = db_connection.db_download_que_exists(None, common_global.DLMediaType.TV.value,
                                                        'themoviedb', str(tv_change['id']))
         if dl_meta is None:
-            db_connection.db_download_insert('themoviedb', common_global.DLMediaType.TV.value,
-                                             json.dumps({'MediaID': None,
-                                                         'Path': None,
-                                                         'ClassID': None,
-                                                         'Status': 'Fetch',
-                                                         'MetaNewID': uuid.uuid4(),
-                                                         'ProviderMetaID': str(
-                                                             tv_change['id'])}))
+            db_connection.db_download_insert(provider='themoviedb',
+                                             que_type=common_global.DLMediaType.TV.value,
+                                             down_json=json.dumps({'Status': 'Fetch',
+                                                                   'ProviderMetaID': str(
+                                                                       tv_change['id'])}),
+                                             down_new_uuid=uuid.uuid4(),
+                                             )
     else:
         # it's on the database, so must update the record with latest information
-        db_connection.db_download_insert('themoviedb', common_global.DLMediaType.TV.value,
-                                         json.dumps({'MediaID': None,
-                                                     'Path': None,
-                                                     'ClassID': None,
-                                                     'Status': 'Update',
-                                                     'MetaNewID': uuid.uuid4(),
-                                                     'ProviderMetaID': str(
-                                                         tv_change['id'])}))
+        db_connection.db_download_insert(provider='themoviedb',
+                                         que_type=common_global.DLMediaType.TV.value,
+                                         down_json=json.dumps({'Status': 'Update',
+                                                               'ProviderMetaID': str(
+                                                                   tv_change['id'])}),
+                                         down_new_uuid=uuid.uuid4(),
+                                         )
 
 # commit all changes
 db_connection.db_commit()

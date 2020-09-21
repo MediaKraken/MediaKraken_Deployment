@@ -91,7 +91,7 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                                                                  common_global.DLMediaType.TV.value,
                                                                  'themoviedb', provider_id)
             if dl_meta is None:
-                metadata_uuid = download_data['MetaNewID']
+                metadata_uuid = download_data['mdq_new_uuid']
                 download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': provider_id})
                 await db_connection.db_begin()
@@ -108,7 +108,7 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                                                                  common_global.DLMediaType.TV.value,
                                                                  'thetvdb', str(tvdb_id))
             if dl_meta is None:
-                metadata_uuid = download_data['MetaNewID']
+                metadata_uuid = download_data['mdq_new_uuid']
                 download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
                 await db_connection.db_begin()

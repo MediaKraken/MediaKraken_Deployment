@@ -59,12 +59,12 @@ for tvmaze_id, tvmaze_time in list(result.items()):
         if db_connection.db_download_que_exists(None, common_global.DLMediaType.TV.value, 'tvmaze',
                                                 tvmaze_id) is None:
             # insert new record as it's a new show
-            db_connection.db_download_insert('tvmaze', common_global.DLMediaType.TV.value,
-                                             json.dumps({'MediaID': None,
-                                                         'Path': None, 'ClassID': None,
-                                                         'Status': 'Fetch',
-                                                         'MetaNewID': str(uuid.uuid4()),
-                                                         'ProviderMetaID': tvmaze_id}))
+            db_connection.db_download_insert(provider='tvmaze',
+                                             que_type=common_global.DLMediaType.TV.value,
+                                             down_json=json.dumps({'Status': 'Fetch',
+                                                                   'ProviderMetaID': tvmaze_id}),
+                                             down_new_uuid=uuid.uuid4(),
+                                             )
 
 # commit all changes to db
 db_connection.db_commit()

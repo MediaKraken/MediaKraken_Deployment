@@ -236,7 +236,7 @@ async def metadata_search(db_connection, provider_name, download_data):
                                                                          message_text={
                                                                              'metaquelook': metadata_uuid})
         if metadata_uuid is None:
-            metadata_uuid = download_data['mdq_download_json']['MetaNewID']
+            metadata_uuid = download_data['mdq_new_uuid']
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'meta setfetch': metadata_uuid})
@@ -271,8 +271,7 @@ async def metadata_fetch(db_connection, provider_name, download_data):
                                                                             'mdq_download_json'][
                                                                             'ProviderMetaID'],
                                                                         download_data[
-                                                                            'mdq_download_json'][
-                                                                            'MetaNewID'])
+                                                                            'mdq_new_uuid'])
     elif provider_name == 'themoviedb':
         if download_data['mdq_que_type'] == common_global.DLMediaType.Person.value:
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
@@ -288,14 +287,12 @@ async def metadata_fetch(db_connection, provider_name, download_data):
                                                                          'mdq_download_json'][
                                                                          'ProviderMetaID'],
                                                                      download_data[
-                                                                         'mdq_download_json'][
-                                                                         'MetaNewID'])
+                                                                         'mdq_new_uuid'])
         elif download_data['mdq_que_type'] == common_global.DLMediaType.TV.value:
             await metadata_tv_tmdb.tv_fetch_save_tmdb(db_connection,
                                                       download_data['mdq_download_json'][
                                                           'ProviderMetaID'],
-                                                      download_data['mdq_download_json'][
-                                                          'MetaNewID'])
+                                                      download_data['mdq_new_uuid'])
     await db_connection.db_download_delete(download_data['mdq_id'])
     await db_connection.db_commit()
 

@@ -18,6 +18,7 @@
 
 import inspect
 import json
+import uuid
 
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -93,7 +94,7 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
                                                                  'pornhub',
                                                                  provider_id)
             if dl_meta is None:
-                metadata_uuid = download_data['MetaNewID']
+                metadata_uuid = download_data['mdq_new_uuid']
                 download_data.update({'Status': 'Fetch', 'ProviderMetaID': provider_id})
                 await db_connection.db_begin()
                 await db_connection.db_download_update(json.dumps(download_data),
@@ -123,7 +124,7 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
                                                                          message_text={
                                                                              "meta adult db meta": metadata_uuid})
         if metadata_uuid is None:
-            metadata_uuid = download_data['MetaNewID']
+            metadata_uuid = download_data['mdq_new_uuid']
             # no matches by name/year on local database
             # search themoviedb since not matched above via DB or nfo/xml
             download_data.update({'Status': 'Search'})

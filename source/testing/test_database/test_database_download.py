@@ -43,9 +43,9 @@ class TestDatabaseDownload:
         # create/insert a download
         """
         self.db_connection.db_rollback()
-        self.new_guid = self.db_connection.db_download_insert('themovedb',
-                                                              common_global.DLMediaType.Movie.value,
-                                                              json.dumps({'test': 234}))
+        self.new_guid = self.db_connection.db_download_insert(provider='themovedb',
+                                                              que_type=common_global.DLMediaType.Movie.value,
+                                                              down_json=json.dumps({'test': 234}))
 
     @pytest.mark.parametrize(("provider_name"), [
         ('themoviedb'),

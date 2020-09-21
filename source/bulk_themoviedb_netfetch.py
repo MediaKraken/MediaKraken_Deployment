@@ -51,10 +51,12 @@ for json_row in json_data.splitlines():
                                                              common_global.DLMediaType.Movie.value,
                                                              'themoviedb',
                                                              str(tmdb_to_fetch)) is None):
-        db_connection.db_download_insert('themoviedb', common_global.DLMediaType.Movie.value,
-                                         json.dumps({"Status": "Fetch",
-                                                     "ProviderMetaID": tmdb_to_fetch,
-                                                     "MetaNewID": str(uuid.uuid4())}))
+        db_connection.db_download_insert(provider='themoviedb',
+                                         que_type=common_global.DLMediaType.Movie.value,
+                                         down_json=json.dumps({"Status": "Fetch",
+                                                               "ProviderMetaID": tmdb_to_fetch}),
+                                         down_new_uuid=uuid.uuid4(),
+                                         )
 os.remove('movie.gz')
 
 force_dl = False
@@ -73,10 +75,12 @@ for json_row in json_data.splitlines():
                                                              common_global.DLMediaType.TV.value,
                                                              'themoviedb',
                                                              tmdb_to_fetch) is None):
-        db_connection.db_download_insert('themoviedb', common_global.DLMediaType.TV.value,
-                                         json.dumps({"Status": "Fetch",
-                                                     "ProviderMetaID": tmdb_to_fetch,
-                                                     "MetaNewID": str(uuid.uuid4())}))
+        db_connection.db_download_insert(provider='themoviedb',
+                                         que_type=common_global.DLMediaType.TV.value,
+                                         down_json=json.dumps({"Status": "Fetch",
+                                                               "ProviderMetaID": tmdb_to_fetch}),
+                                         down_new_uuid=uuid.uuid4(),
+                                         )
 os.remove('tv.gz')
 
 # no reason to do the person....as the above meta will fetch them from cast/crew

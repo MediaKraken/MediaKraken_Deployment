@@ -105,7 +105,7 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
         'name': provider_name,
         'id': provider_id})
     # if download_que_uuid is not None:
-    #     self.db_cursor.execute('select mdq_download_json->\'MetaNewID\' from mm_download_que'
+    #     self.db_cursor.execute('select mdq_new_uuid from mm_download_que'
     #                            ' where mdq_provider = %s and mdq_que_type = %s'
     #                            ' and mdq_download_json->\'ProviderMetaID\' ? %s'
     #                            ' and mdq_download_json->>\'Status\' <> \'Search\''
@@ -113,7 +113,7 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     #                            (provider_name, download_que_type, provider_id))
     # else:
     # que type is movie, tv, etc as those numbers could be reused
-    self.db_cursor.execute('select mdq_download_json->\'MetaNewID\''
+    self.db_cursor.execute('select mdq_new_uuid'
                            ' from mm_download_que'
                            ' where mdq_provider = %s and mdq_que_type = %s'
                            ' and mdq_download_json->\'ProviderMetaID\' ? %s limit 1',

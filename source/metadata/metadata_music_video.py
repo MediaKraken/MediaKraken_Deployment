@@ -91,13 +91,14 @@ async def metadata_music_video_lookup(db_connection, file_name):
                                                                     common_global.DLMediaType.Music_Video.value,
                                                                     'imvdb',
                                                                     str(video_data['id'])) is None:
-                                db_connection.db_download_insert('imvdb',
-                                                                 common_global.DLMediaType.Music_Video.value,
-                                                                 json.dumps({"Status": "Fetch",
-                                                                             "ProviderMetaID": str(
-                                                                                 video_data['id']),
-                                                                             "MetaNewID": str(
-                                                                                 uuid.uuid4())}))
+                                db_connection.db_download_insert(provider='imvdb',
+                                                                 que_type=common_global.DLMediaType.Music_Video.value,
+                                                                 down_json=json.dumps(
+                                                                     {"Status": "Fetch",
+                                                                      "ProviderMetaID": str(
+                                                                          video_data['id'])}),
+                                                                 down_new_uuid=uuid.uuid4(),
+                                                                 )
                             # db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],
                             #                                       video_data['song_slug'], json.dumps(
                             #         {'imvdb': str(video_data['id'])}),

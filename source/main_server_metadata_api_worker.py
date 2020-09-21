@@ -469,13 +469,9 @@ async def main(loop):
                     message_type='info',
                     message_text={
                         'worker Z meta api':
-                            row_data[
-                                'mdq_download_json'][
-                                'ClassID'],
-                        'row': row_data[
-                            'mdq_id'],
-                        'dl json': row_data[
-                            'mdq_download_json']})
+                            row_data['mdq_class_uuid'],
+                        'row': row_data['mdq_id'],
+                        'dl json': row_data['mdq_download_json']})
                 metadata_uuid = None
                 # check for dupes by name/year
                 file_name = guessit(row_data['mdq_download_json']['Path'])
@@ -483,10 +479,7 @@ async def main(loop):
                     file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                     message_type='info',
-                    message_text=
-                    {
-                        'worker Z filename': str(
-                            file_name)})
+                    message_text={'worker Z filename': str(file_name)})
                 if 'title' in file_name:
                     if 'year' in file_name:
                         if type(file_name['year']) == list:
@@ -500,16 +493,14 @@ async def main(loop):
                         metadata_uuid = metadata_last_id
                     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                         message_type='info',
-                        message_text=
-                        {
-                            "worker Z meta api uuid": metadata_uuid,
-                            'filename': str(file_name)})
+                        message_text={"worker Z meta api uuid": metadata_uuid,
+                                      'filename': str(file_name)})
                     # doesn't match the last file, so set the file to be id'd
                     if metadata_uuid is None:
                         # begin id process
                         metadata_uuid = await metadata_identification.metadata_identification(
                             db_connection,
-                            row_data['mdq_download_json']['ClassID'],
+                            row_data['mdq_class_uuid'],
                             row_data['mdq_download_json'],
                             row_data['mdq_id'],
                             row_data['mdq_que_type'],
@@ -529,12 +520,8 @@ async def main(loop):
                     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                         message_type='info',
                         message_text={
-                            "worker Z meta api update":
-                                metadata_uuid,
-                            'row':
-                                row_data[
-                                    'mdq_download_json'][
-                                    'MediaID']})
+                            "worker Z meta api update": metadata_uuid,
+                            'row': row_data['mdq_download_json']['MediaID']})
                     await db_connection.db_begin()
                     await db_connection.db_update_media_id(row_data['mdq_download_json']['MediaID'],
                                                            metadata_uuid)
