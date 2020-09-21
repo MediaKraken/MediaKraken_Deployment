@@ -302,7 +302,7 @@ class MediaKrakenApp(App):
         # determine message type and work to be done
         if json_message['Type'] == "Ident":
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
-                                                         'UUID': uuid.uuid4()}))
+                                                         'UUID': str(uuid.uuid4())}))
         else:
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff': "unknown message type"})
 

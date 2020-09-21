@@ -235,7 +235,7 @@ class MKConsumer:
                 if json_message['Subtype'] == 'Play':
                     # to address the 30 char name limit for container
                     name_container = (json_message['User'] + '_'
-                                      + uuid.uuid4().replace('-', ''))[:30]
+                                      + str(uuid.uuid4()).replace('-', ''))[:30]
                     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                                          message_text={
                                                                              'cont': name_container})

@@ -54,7 +54,7 @@ for json_row in json_data.splitlines():
         db_connection.db_download_insert('themoviedb', common_global.DLMediaType.Movie.value,
                                          json.dumps({"Status": "Fetch",
                                                      "ProviderMetaID": tmdb_to_fetch,
-                                                     "MetaNewID": uuid.uuid4()}))
+                                                     "MetaNewID": str(uuid.uuid4())}))
 os.remove('movie.gz')
 
 force_dl = False
@@ -76,7 +76,7 @@ for json_row in json_data.splitlines():
         db_connection.db_download_insert('themoviedb', common_global.DLMediaType.TV.value,
                                          json.dumps({"Status": "Fetch",
                                                      "ProviderMetaID": tmdb_to_fetch,
-                                                     "MetaNewID": uuid.uuid4()}))
+                                                     "MetaNewID": str(uuid.uuid4())}))
 os.remove('tv.gz')
 
 # no reason to do the person....as the above meta will fetch them from cast/crew

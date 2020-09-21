@@ -67,8 +67,7 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
                                                          'Path': None,
                                                          'ClassID': None,
                                                          'Status': 'Fetch',
-                                                         'MetaNewID': str(
-                                                             uuid.uuid4()),
+                                                         'MetaNewID': str(uuid.uuid4()),
                                                          'ProviderMetaID': str(
                                                              movie_change['id'])}))
     else:
@@ -78,8 +77,7 @@ for movie_change in tmdb.com_tmdb_meta_changes_movie()['results']:
                                                      'Path': None,
                                                      'ClassID': None,
                                                      'Status': 'Update',
-                                                     'MetaNewID': str(
-                                                         uuid.uuid4()),
+                                                     'MetaNewID': str(uuid.uuid4()),
                                                      'ProviderMetaID': str(
                                                          movie_change['id'])}))
 # TODO this should go through the limiter

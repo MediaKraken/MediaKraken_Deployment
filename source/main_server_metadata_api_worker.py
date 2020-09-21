@@ -503,8 +503,7 @@ async def main(loop):
                         message_text=
                         {
                             "worker Z meta api uuid": metadata_uuid,
-                            'filename': str(
-                                file_name)})
+                            'filename': str(file_name)})
                     # doesn't match the last file, so set the file to be id'd
                     if metadata_uuid is None:
                         # begin id process

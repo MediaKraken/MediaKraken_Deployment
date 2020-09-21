@@ -322,7 +322,7 @@ class MediaKrakenApp(App):
             # Send a uuid for this connection. This way same installs can be copied, etc.
             # and not run into each other.
             self.send_twisted_message_thread(json.dumps({'Type': 'Ident',
-                                                         'UUID': uuid.uuid4(),
+                                                         'UUID': str(uuid.uuid4()),
                                                          'Platform': platform.node()}))
             # start up the image refresh since we have a connection
             Clock.schedule_interval(self.main_image_refresh, 5.0)

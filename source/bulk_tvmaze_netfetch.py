@@ -50,8 +50,7 @@ if option_config_json['API']['tvmaze'] is not None:
                                                      json.dumps({"Status": "Fetch",
                                                                  "ProviderMetaID": str(
                                                                      tvmaze_id),
-                                                                 "MetaNewID": str(
-                                                                     uuid.uuid4())}))
+                                                                 "MetaNewID": str(uuid.uuid4())}))
         # commit all changes
         db_connection.db_commit()
 
