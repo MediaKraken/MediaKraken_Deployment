@@ -125,7 +125,8 @@ async def register(request):
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
         # verify user doesn't already exist on database
-        if await request.app.db_functions.db_user_count(username, db_connection=db_connection) == 0:
+        if await request.app.db_functions.db_user_count(user_name=username,
+                                                        db_connection=db_connection) == 0:
             user_id, user_admin, user_per_page = await request.app.db_functions.db_user_insert(
                 user_name=username, user_email=form.email.data,
                 user_password=form.password.data, db_connection=db_connection)
