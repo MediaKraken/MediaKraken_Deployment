@@ -130,9 +130,7 @@ CREATE TABLE public.mm_download_que (
     mdq_id uuid NOT NULL,
     mdq_provider text,
     mdq_que_type smallint,
-    mdq_download_json jsonb,
-    mdq_new_uuid uuid,
-    mdq_class_uuid uuid
+    mdq_download_json jsonb
 );
 
 
