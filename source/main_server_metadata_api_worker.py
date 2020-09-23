@@ -375,7 +375,8 @@ async def main(loop):
     option_config_json, db_connection = \
         await common_config_ini.com_config_read_async(loop=loop,
                                                       as_pool=False)
-    connection = await aio_pika.connect("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
+    # start up rabbitmq
+    connection = await aio_pika.connect_robust("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # Creating a channel
     channel = await connection.channel()
     await channel.set_qos(prefetch_count=1)
