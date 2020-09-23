@@ -16,7 +16,7 @@ async def url_bp_admin_database_statistics(request):
     db_stats_count = []
     db_stats_total = 0
     db_connection = await request.app.db_pool.acquire()
-    db_version = await request.app.db_functions.db_pgsql_version()
+    db_version = await request.app.db_functions.db_pgsql_version(db_connection=db_connection)
     for row_data in await request.app.db_functions.db_pgsql_row_count(db_connection=db_connection):
         db_stats_total += row_data[2]
         db_stats_count.append((row_data[1],
