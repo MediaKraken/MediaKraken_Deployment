@@ -145,7 +145,7 @@ async def url_bp_user_metadata_movie_list(request, user):
                       row_data['mm_date'], row_data['mm_poster'].replace('"', ''), watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
     request.ctx.session['search_page'] = 'meta_movie'
-    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page=page,
                                                                       url='/user/user_meta_movie_list',
                                                                       item_count=await request.app.db_functions.db_meta_movie_count(
                                                                           request.ctx.session[
