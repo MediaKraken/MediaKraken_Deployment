@@ -23,7 +23,7 @@ async def url_bp_admin_cron(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page=page,
                                                                       url='/admin/admin_cron',
                                                                       item_count=await request.app.db_functions.db_cron_list_count(
-                                                                          False,
+                                                                          enabled_only=False,
                                                                           db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
