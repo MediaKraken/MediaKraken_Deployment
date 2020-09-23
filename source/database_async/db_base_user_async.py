@@ -84,7 +84,7 @@ async def db_user_insert(self, user_name, user_email, user_password, db_connecti
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    if await self.db_user_count() == 0:
+    if await self.db_user_count(user_name=None, db_connection=db_conn) == 0:
         user_admin = True
     else:
         user_admin = False
