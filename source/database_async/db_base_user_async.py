@@ -1,4 +1,5 @@
 import inspect
+import json
 import uuid
 
 from common import common_logging_elasticsearch_httpx
@@ -90,9 +91,9 @@ async def db_user_insert(self, user_name, user_email, user_password, db_connecti
         user_admin = False
     return await db_conn.execute(
         'insert into mm_user (username, email, password, active, is_admin, user_json)'
-        ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, {"per_page": 30})'
+        ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, $5)'
         ' returning id',
-        user_name, user_email, user_password, user_admin), user_admin
+        user_name, user_email, user_password, user_admin, json.dumps({"per_page": 30})), user_admin
 
 
 async def db_user_list_name(self, offset=0, records=None, db_connection=None):
