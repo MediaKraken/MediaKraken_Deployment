@@ -218,7 +218,8 @@ class MKServerDatabaseAsync:
         db_opt_status_insert, \
         db_opt_status_update
     from database_async.db_base_postgresql_async \
-        import db_pgsql_parallel_workers, \
+        import db_pgsql_version, \
+        db_pgsql_parallel_workers, \
         db_pgsql_row_count, \
         db_pgsql_table_sizes
     from database_async.db_base_queue_async \
