@@ -38,6 +38,8 @@ async def url_bp_admin_cron(request):
     return {
         'media_cron': cron_data,
         'pagination_links': pagination,
+        'page': page,
+        'per_page': int(request.ctx.session['per_page'])
     }
 
 
