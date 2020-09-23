@@ -19,7 +19,8 @@ async def url_bp_admin_cron(request):
     Display cron jobs
     """
     db_connection = await request.app.db_pool.acquire()
-    cron_count = await request.app.db_functions.db_cron_list_count(False, db_connection=db_connection)
+    cron_count = await request.app.db_functions.db_cron_list_count(False,
+                                                                   db_connection=db_connection)
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/admin/admin_cron',
@@ -28,10 +29,11 @@ async def url_bp_admin_cron(request):
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    cron_data = await request.app.db_functions.db_cron_list(False,
-                                                            offset,
-                                                            int(request.ctx.session['per_page'],
-                                                                db_connection=db_connection))
+    cron_data = await request.app.db_functions.db_cron_list(enabled_only=False,
+                                                            offset=offset,
+                                                            records=int(
+                                                                request.ctx.session['per_page']),
+                                                            db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_cron': cron_data,
