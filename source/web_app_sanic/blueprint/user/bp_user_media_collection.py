@@ -33,9 +33,10 @@ async def url_bp_user_metadata_movie_collection(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_media_movie_collection',
                                                                       item_count=await request.app.db_functions.db_collection_list_count(
-                                                                          db_connection,
+                                                                          search_value=
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
