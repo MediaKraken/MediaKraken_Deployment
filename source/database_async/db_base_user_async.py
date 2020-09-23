@@ -93,7 +93,8 @@ async def db_user_insert(self, user_name, user_email, user_password, db_connecti
         'insert into mm_user (username, email, password, active, is_admin, user_json)'
         ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, $5)'
         ' returning id',
-        user_name, user_email, user_password, user_admin, json.dumps({"per_page": 30})), user_admin
+        user_name, user_email, user_password, user_admin,
+        json.dumps({"per_page": 30})), user_admin, 30
 
 
 async def db_user_list_name(self, offset=0, records=None, db_connection=None):
