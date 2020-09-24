@@ -380,9 +380,13 @@ async def main(loop):
     # Creating a channel
     channel = await connection.channel()
     await channel.set_qos(prefetch_count=1)
+    # Declaring exchange
+    exchange = await channel.declare_exchange("direct", durable=True)
     # Declaring queue
     queue = await channel.declare_queue(content_providers,
                                         durable=True)
+    # Binding queue
+    await queue.bind(exchange, 'mkque_metadata_ex')
     # Start listening
     await queue.consume(on_message)
 
