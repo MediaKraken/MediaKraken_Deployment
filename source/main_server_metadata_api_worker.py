@@ -375,13 +375,16 @@ async def main(loop):
     option_config_json, db_connection = \
         await common_config_ini.com_config_read_async(loop=loop,
                                                       as_pool=False)
+
     # start up rabbitmq
     connection = await aio_pika.connect_robust("amqp://guest:guest@mkstack_rabbitmq/", loop=loop)
     # Creating a channel
     channel = await connection.channel()
     await channel.set_qos(prefetch_count=1)
     # Declaring exchange
-    exchange = await channel.declare_exchange("direct", durable=True)
+    exchange = await channel.declare_exchange(exchange='mkque_metadata_ex',
+                                              exchange_type="direct",
+                                              durable=True)
     # Declaring queue
     queue = await channel.declare_queue(content_providers,
                                         durable=True)
