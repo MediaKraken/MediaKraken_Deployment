@@ -3,6 +3,8 @@ import asyncio
 import aio_pika
 
 
+# works fine against local rabbit
+
 async def process_message(message: aio_pika.IncomingMessage):
     async with message.process():
         print(message.body)
