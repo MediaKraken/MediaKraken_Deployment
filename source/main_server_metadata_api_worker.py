@@ -383,10 +383,10 @@ async def main(loop):
     await channel.set_qos(prefetch_count=1)
     # Declaring exchange
     exchange = await channel.declare_exchange(name='mkque_metadata_ex',
-                                              exchange_type="direct",
+                                              type=aio_pika.ExchangeType.DIRECT,
                                               durable=True)
     # Declaring queue
-    queue = await channel.declare_queue(content_providers,
+    queue = await channel.declare_queue(name=content_providers,
                                         durable=True)
     # Binding queue
     await queue.bind(exchange, 'mkque_metadata_ex')
