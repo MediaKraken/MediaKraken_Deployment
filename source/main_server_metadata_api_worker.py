@@ -346,7 +346,12 @@ async def on_message(message: aio_pika.IncomingMessage):
                                                                              inspect.stack()[1][
                                                                                  3]})
     async with message.process():
-        json_message = json.loads(message.body)
+        try:
+            json_message = json.loads(message.body)
+        except json.decoder.JSONDecodeError as e:
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 'on message': e})
         if json_message['Type'] == 'Update Metadata':
             # this check is just in case there is a tv/etc collection later
             if content_providers == 'themoviedb':
