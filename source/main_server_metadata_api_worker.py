@@ -382,7 +382,7 @@ async def main(loop):
     channel = await connection.channel()
     await channel.set_qos(prefetch_count=1)
     # Declaring exchange
-    exchange = await channel.declare_exchange(exchange='mkque_metadata_ex',
+    exchange = await channel.declare_exchange(name='mkque_metadata_ex',
                                               exchange_type="direct",
                                               durable=True)
     # Declaring queue
