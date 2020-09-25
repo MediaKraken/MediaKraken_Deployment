@@ -394,7 +394,7 @@ async def main(loop):
     queue = await channel.declare_queue(name=content_providers,
                                         durable=True)
     # Binding queue
-    await queue.bind(exchange=aio_pika.ExchangeType.DIRECT, routing_key='mkque_metadata_ex')
+    await queue.bind(exchange=exchange, routing_key='mkque_metadata_ex')
     # Start listening
     await queue.consume(on_message)
 
