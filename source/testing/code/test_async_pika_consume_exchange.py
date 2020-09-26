@@ -9,7 +9,7 @@ async def on_message(message: aio_pika.IncomingMessage):
         try:
             json_message = json.loads(message.body)
         except json.decoder.JSONDecodeError as e:
-            print('json error')
+            print('json error:', message.body)
             return
         print(json_message)
         await aio_pika.IncomingMessage.ack()
