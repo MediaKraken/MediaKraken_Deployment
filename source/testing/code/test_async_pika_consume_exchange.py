@@ -42,20 +42,6 @@ async def main(loop):
     await queue.consume(on_message)
     print('here6')
 
-    # connection = await aio_pika.connect_robust(
-    #     "amqp://guest:guest@127.0.0.1/", loop=loop
-    # )
-    # queue_name = "test_queue"
-    # # Creating channel
-    # channel = await connection.channel()
-    # # Maximum message count which will be
-    # # processing at the same time.
-    # await channel.set_qos(prefetch_count=1)
-    # # Declaring queue
-    # queue = await channel.declare_queue(queue_name, auto_delete=True)
-    # await queue.consume(on_message)
-    # return connection
-
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
