@@ -33,7 +33,6 @@ trailer_dir = [
 def build_trailer_dirs():
     for trailer_info in trailer_dir:
         for ndx in ascii_lowercase:
-            os.makedirs(
-                os.path.join(common_global.static_data_directory + '/meta/trailers',
-                             trailer_info,
-                             ndx), exist_ok=True)
+            for ndx2 in ascii_lowercase:
+                os.makedirs(os.path.join(common_global.static_data_directory + '/meta/trailers',
+                                         trailer_info, ndx, ndx2), exist_ok=True)
