@@ -400,140 +400,140 @@ async def main(loop):
     await queue.bind(exchange=exchange, routing_key='mkque_metadata_ex')
     # Start listening
     await queue.consume(on_message)
-    #
-    # # setup the api key instances, if needed
-    # if content_providers == 'anidb':
-    #     common_global.api_instance = metadata_provider_anidb.CommonMetadataANIdb(
-    #         option_config_json)
-    # elif content_providers == 'imvdb':
-    #     common_global.api_instance = metadata_provider_imvdb.CommonMetadataIMVdb(
-    #         option_config_json)
-    # elif content_providers == 'isbndb':
-    #     common_global.api_instance = metadata_provider_isbndb.CommonMetadataISBNdb(
-    #         option_config_json)
-    # elif content_providers == 'musicbrainz':
-    #     common_global.api_instance = metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
-    #         option_config_json)
-    # elif content_providers == 'thegamesdb':
-    #     common_global.api_instance = metadata_provider_thegamesdb.CommonMetadataGamesDB(
-    #         option_config_json)
-    # elif content_providers == 'themoviedb':
-    #     common_global.api_instance = metadata_provider_themoviedb.CommonMetadataTMDB(
-    #         option_config_json)
-    # elif content_providers == 'thesportsdb':
-    #     common_global.api_instance = metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
-    #         option_config_json)
-    # # setup last used id's per thread
-    # metadata_last_id = None
-    # metadata_last_title = None
-    # metadata_last_year = None
-    # while True:
-    #     # grab new batch of records to process by content provider
-    #     for row_data in await db_connection.db_download_read_provider(content_providers):
-    #         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-    #                                                                          message_text={
-    #                                                                              "worker meta api row":
-    #                                                                                  row_data})
-    #         # checking each provider like this to send through the limiter decorator
-    #         if content_providers == 'anidb':
-    #             await anidb(db_connection, row_data)
-    #         elif content_providers == 'chart_lyrics':
-    #             await chart_lyrics(db_connection, row_data)
-    #         elif content_providers == 'comicvine':
-    #             await comicvine(db_connection, row_data)
-    #         elif content_providers == 'giantbomb':
-    #             await giantbomb(db_connection, row_data)
-    #         elif content_providers == 'imdb':
-    #             await imdb(db_connection, row_data)
-    #         elif content_providers == 'imvdb':
-    #             await imvdb(db_connection, row_data)
-    #         elif content_providers == 'isbndb':
-    #             await isbndb(db_connection, row_data)
-    #         elif content_providers == 'musicbrainz':
-    #             await musicbrainz(db_connection, row_data)
-    #         elif content_providers == 'omdb':
-    #             await omdb(db_connection, row_data)
-    #         elif content_providers == 'pitchfork':
-    #             await pitchfork(db_connection, row_data)
-    #         elif content_providers == 'pornhub':
-    #             await pornhub(db_connection, row_data)
-    #         elif content_providers == 'televisiontunes':
-    #             await televisiontunes(db_connection, row_data)
-    #         elif content_providers == 'theaudiodb':
-    #             await theaudiodb(db_connection, row_data)
-    #         elif content_providers == 'thegamesdb':
-    #             await thegamesdb(db_connection, row_data)
-    #         elif content_providers == 'themoviedb':
-    #             await themoviedb(db_connection, row_data)
-    #         elif content_providers == 'thesportsdb':
-    #             await thesportsdb(db_connection, row_data)
-    #         elif content_providers == 'tv_intros':
-    #             await tv_intros(db_connection, row_data)
-    #         # Z records are the start of all lookups
-    #         elif content_providers == 'Z':
-    #             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
-    #                 message_type='info',
-    #                 message_text={
-    #                     'worker Z meta api':
-    #                         row_data['mdq_class_uuid'],
-    #                     'row': row_data['mdq_id'],
-    #                     'dl json': row_data['mdq_download_json']})
-    #             metadata_uuid = None
-    #             # check for dupes by name/year
-    #             file_name = guessit(row_data['mdq_download_json']['Path'])
-    #             if type(file_name['title']) == list:
-    #                 file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
-    #             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
-    #                 message_type='info',
-    #                 message_text={'worker Z filename': str(file_name)})
-    #             if 'title' in file_name:
-    #                 if 'year' in file_name:
-    #                     if type(file_name['year']) == list:
-    #                         file_name['year'] = file_name['year'][0]
-    #                     if file_name['title'].lower() == metadata_last_title \
-    #                             and file_name['year'] == metadata_last_year:
-    #                         # matches last media scanned, so set with that metadata id
-    #                         metadata_uuid = metadata_last_id
-    #                 elif file_name['title'].lower() == metadata_last_title:
-    #                     # matches last media scanned, so set with that metadata id
-    #                     metadata_uuid = metadata_last_id
-    #                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
-    #                     message_type='info',
-    #                     message_text={"worker Z meta api uuid": metadata_uuid,
-    #                                   'filename': str(file_name)})
-    #                 # doesn't match the last file, so set the file to be id'd
-    #                 if metadata_uuid is None:
-    #                     # begin id process
-    #                     metadata_uuid = await metadata_identification.metadata_identification(
-    #                         db_connection,
-    #                         row_data['mdq_class_uuid'],
-    #                         row_data['mdq_download_json'],
-    #                         row_data['mdq_id'],
-    #                         row_data['mdq_que_type'],
-    #                         file_name)
-    #                 # allow NONE to be set so, unmatched stuff can work for skipping
-    #                 metadata_last_id = metadata_uuid
-    #                 metadata_last_title = file_name['title'].lower()
-    #                 try:
-    #                     metadata_last_year = file_name['year']
-    #                 except KeyError:
-    #                     metadata_last_year = None
-    #             else:  # invalid guessit guess so set to ZZ to skip for now
-    #                 await db_connection.db_download_update_provider('ZZ', row_data['mdq_id'])
-    #                 await db_connection.db_commit()
-    #             # update the media row with the json media id AND THE proper NAME!!!
-    #             if metadata_uuid is not None:
-    #                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
-    #                     message_type='info',
-    #                     message_text={
-    #                         "worker Z meta api update": metadata_uuid,
-    #                         'row': row_data['mdq_download_json']['MediaID']})
-    #                 await db_connection.db_begin()
-    #                 await db_connection.db_update_media_id(row_data['mdq_download_json']['MediaID'],
-    #                                                        metadata_uuid)
-    #                 await db_connection.db_download_delete(row_data['mdq_id'])
-    #                 await db_connection.db_commit()
-    await asyncio.sleep(1)
+
+    # setup the api key instances, if needed
+    if content_providers == 'anidb':
+        common_global.api_instance = metadata_provider_anidb.CommonMetadataANIdb(
+            option_config_json)
+    elif content_providers == 'imvdb':
+        common_global.api_instance = metadata_provider_imvdb.CommonMetadataIMVdb(
+            option_config_json)
+    elif content_providers == 'isbndb':
+        common_global.api_instance = metadata_provider_isbndb.CommonMetadataISBNdb(
+            option_config_json)
+    elif content_providers == 'musicbrainz':
+        common_global.api_instance = metadata_provider_musicbrainz.CommonMetadataMusicbrainz(
+            option_config_json)
+    elif content_providers == 'thegamesdb':
+        common_global.api_instance = metadata_provider_thegamesdb.CommonMetadataGamesDB(
+            option_config_json)
+    elif content_providers == 'themoviedb':
+        common_global.api_instance = metadata_provider_themoviedb.CommonMetadataTMDB(
+            option_config_json)
+    elif content_providers == 'thesportsdb':
+        common_global.api_instance = metadata_provider_thesportsdb.CommonMetadataTheSportsDB(
+            option_config_json)
+    # setup last used id's per thread
+    metadata_last_id = None
+    metadata_last_title = None
+    metadata_last_year = None
+    while True:
+        # grab new batch of records to process by content provider
+        for row_data in await db_connection.db_download_read_provider(content_providers):
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 "worker meta api row":
+                                                                                     row_data})
+            # checking each provider like this to send through the limiter decorator
+            if content_providers == 'anidb':
+                await anidb(db_connection, row_data)
+            elif content_providers == 'chart_lyrics':
+                await chart_lyrics(db_connection, row_data)
+            elif content_providers == 'comicvine':
+                await comicvine(db_connection, row_data)
+            elif content_providers == 'giantbomb':
+                await giantbomb(db_connection, row_data)
+            elif content_providers == 'imdb':
+                await imdb(db_connection, row_data)
+            elif content_providers == 'imvdb':
+                await imvdb(db_connection, row_data)
+            elif content_providers == 'isbndb':
+                await isbndb(db_connection, row_data)
+            elif content_providers == 'musicbrainz':
+                await musicbrainz(db_connection, row_data)
+            elif content_providers == 'omdb':
+                await omdb(db_connection, row_data)
+            elif content_providers == 'pitchfork':
+                await pitchfork(db_connection, row_data)
+            elif content_providers == 'pornhub':
+                await pornhub(db_connection, row_data)
+            elif content_providers == 'televisiontunes':
+                await televisiontunes(db_connection, row_data)
+            elif content_providers == 'theaudiodb':
+                await theaudiodb(db_connection, row_data)
+            elif content_providers == 'thegamesdb':
+                await thegamesdb(db_connection, row_data)
+            elif content_providers == 'themoviedb':
+                await themoviedb(db_connection, row_data)
+            elif content_providers == 'thesportsdb':
+                await thesportsdb(db_connection, row_data)
+            elif content_providers == 'tv_intros':
+                await tv_intros(db_connection, row_data)
+            # Z records are the start of all lookups
+            elif content_providers == 'Z':
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='info',
+                    message_text={
+                        'worker Z meta api':
+                            row_data['mdq_class_uuid'],
+                        'row': row_data['mdq_id'],
+                        'dl json': row_data['mdq_download_json']})
+                metadata_uuid = None
+                # check for dupes by name/year
+                file_name = guessit(row_data['mdq_download_json']['Path'])
+                if type(file_name['title']) == list:
+                    file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
+                await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                    message_type='info',
+                    message_text={'worker Z filename': str(file_name)})
+                if 'title' in file_name:
+                    if 'year' in file_name:
+                        if type(file_name['year']) == list:
+                            file_name['year'] = file_name['year'][0]
+                        if file_name['title'].lower() == metadata_last_title \
+                                and file_name['year'] == metadata_last_year:
+                            # matches last media scanned, so set with that metadata id
+                            metadata_uuid = metadata_last_id
+                    elif file_name['title'].lower() == metadata_last_title:
+                        # matches last media scanned, so set with that metadata id
+                        metadata_uuid = metadata_last_id
+                    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                        message_type='info',
+                        message_text={"worker Z meta api uuid": metadata_uuid,
+                                      'filename': str(file_name)})
+                    # doesn't match the last file, so set the file to be id'd
+                    if metadata_uuid is None:
+                        # begin id process
+                        metadata_uuid = await metadata_identification.metadata_identification(
+                            db_connection,
+                            row_data['mdq_class_uuid'],
+                            row_data['mdq_download_json'],
+                            row_data['mdq_id'],
+                            row_data['mdq_que_type'],
+                            file_name)
+                    # allow NONE to be set so, unmatched stuff can work for skipping
+                    metadata_last_id = metadata_uuid
+                    metadata_last_title = file_name['title'].lower()
+                    try:
+                        metadata_last_year = file_name['year']
+                    except KeyError:
+                        metadata_last_year = None
+                else:  # invalid guessit guess so set to ZZ to skip for now
+                    await db_connection.db_download_update_provider('ZZ', row_data['mdq_id'])
+                    await db_connection.db_commit()
+                # update the media row with the json media id AND THE proper NAME!!!
+                if metadata_uuid is not None:
+                    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                        message_type='info',
+                        message_text={
+                            "worker Z meta api update": metadata_uuid,
+                            'row': row_data['mdq_download_json']['MediaID']})
+                    await db_connection.db_begin()
+                    await db_connection.db_update_media_id(row_data['mdq_download_json']['MediaID'],
+                                                           metadata_uuid)
+                    await db_connection.db_download_delete(row_data['mdq_id'])
+                    await db_connection.db_commit()
+        await asyncio.sleep(1)
 
 
 if __name__ == "__main__":
