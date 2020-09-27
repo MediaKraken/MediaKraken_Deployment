@@ -4,15 +4,17 @@ import json
 import aio_pika
 
 
+# grabs the messages but errors with already processed with the ACK in there
+
 async def on_message(message: aio_pika.IncomingMessage):
     async with message.process():
         try:
             json_message = json.loads(message.body)
+            print(json_message)
         except json.decoder.JSONDecodeError as e:
             print('json error:', message.body)
             return
-        print(json_message)
-        await aio_pika.IncomingMessage.ack()
+        #await message.ack()
         await asyncio.sleep(1)
 
 
