@@ -345,31 +345,31 @@ async def on_message(message: aio_pika.IncomingMessage):
                                                                          'caller':
                                                                              inspect.stack()[1][
                                                                                  3]})
-    async with message.process(ignore_processed=True):
-        try:
-            json_message = json.loads(message.body)
-        except json.decoder.JSONDecodeError as e:
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                             message_text={
-                                                                                 'on message': e})
-            await message.reject()
-            await asyncio.sleep(1)
-            return
-        if json_message['Type'] == 'Update Metadata':
-            # this check is just in case there is a tv/etc collection later
-            if content_providers == 'themoviedb':
-                # TODO verify it isn't already running!
-                subprocess.Popen(['python3', json_message['JSON']['program']],
-                                 stdout=subprocess.PIPE, shell=False)
-        elif json_message['Type'] == 'Update Collection':
-            # this check is just in case there is a tv/etc collection later
-            if content_providers == 'themoviedb':
-                # TODO verify it isn't already running!
-                subprocess.Popen(['python3', json_message['JSON']['program']],
-                                 stdout=subprocess.PIPE, shell=False)
-        # TODO add record for activity/etc for the user who ran this
-        await message.ack()
-        await asyncio.sleep(1)
+    # async with message.process(ignore_processed=True):
+    #     try:
+    #         json_message = json.loads(message.body)
+    #     except json.decoder.JSONDecodeError as e:
+    #         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+    #                                                                          message_text={
+    #                                                                              'on message': e})
+    #         await message.reject()
+    #         await asyncio.sleep(1)
+    #         return
+    #     if json_message['Type'] == 'Update Metadata':
+    #         # this check is just in case there is a tv/etc collection later
+    #         if content_providers == 'themoviedb':
+    #             # TODO verify it isn't already running!
+    #             subprocess.Popen(['python3', json_message['JSON']['program']],
+    #                              stdout=subprocess.PIPE, shell=False)
+    #     elif json_message['Type'] == 'Update Collection':
+    #         # this check is just in case there is a tv/etc collection later
+    #         if content_providers == 'themoviedb':
+    #             # TODO verify it isn't already running!
+    #             subprocess.Popen(['python3', json_message['JSON']['program']],
+    #                              stdout=subprocess.PIPE, shell=False)
+    #     # TODO add record for activity/etc for the user who ran this
+    #     await message.ack()
+    #     await asyncio.sleep(1)
 
 
 async def main(loop):
