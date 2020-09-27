@@ -24,26 +24,20 @@ async def main(loop):
 
     # start up rabbitmq
     connection = await aio_pika.connect_robust("amqp://guest:guest@127.0.0.1/", loop=loop)
-    print('here1')
     # Creating a channel
     channel = await connection.channel()
     await channel.set_qos(prefetch_count=1)
-    print('here2')
     # Declaring exchange
     exchange = await channel.declare_exchange(name='mkque_metadata_ex',
                                               type=aio_pika.ExchangeType.DIRECT,
                                               durable=True)
-    print('here3')
     # Declaring queue
     queue = await channel.declare_queue(name=content_providers,
                                         durable=True)
-    print('here4')
     # Binding queue
     await queue.bind(exchange=exchange, routing_key='mkque_metadata_ex')
-    print('here5')
     # Start listening
     await queue.consume(on_message)
-    print('here6')
 
 
 if __name__ == "__main__":
