@@ -1,6 +1,6 @@
 ﻿# Download base image
 #FROM debian:10.4-slim
-FROM python:3.8.1-buster
+FROM python:3.8.6-slim-buster
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
 LABEL Description="This image holds the base image"
