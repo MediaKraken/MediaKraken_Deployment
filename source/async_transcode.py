@@ -1,6 +1,6 @@
 import asyncio
 import json
-
+from common import common_logging_elasticsearch_httpx
 import aio_pika
 from common import common_network
 
@@ -33,12 +33,17 @@ async def main(loop):
     queue = await channel.declare_queue(name='transcode',
                                         durable=True)
     # Binding queue
-    await queue.bind(exchange=exchange, routing_key='mkque_transcode_ex')
+    await queue.bind(exchange=exchange,
+                     routing_key='mkque_transcode_ex')
     # Start listening
     await queue.consume(on_message)
 
 
 if __name__ == "__main__":
+    # start logging
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='START',
+                                                         index_name='transcode')
     # fire off wait for it script to allow connection
     common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
     # start up the async loop and launch

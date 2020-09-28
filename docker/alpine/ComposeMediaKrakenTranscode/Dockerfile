@@ -2,7 +2,7 @@
 FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbaseffmpeg:dev
 
 LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the Roku thumbnail generator app"
+LABEL Description="This image holds the transcoding app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
