@@ -32,11 +32,11 @@ from common import common_system
 
 async def main(loop):
     # start logging
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text='START',
-                                                         index_name='bulk_themoviedb_netfetch')
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text='START',
+                                                               index_name='async_bulk_themoviedb_netfetch')
 
-    fetch_date = '09_01_2020'
+    fetch_date = '09_20_2020'
 
     # open the database
     option_config_json, db_connection = \
@@ -105,8 +105,8 @@ async def main(loop):
     # close DB
     db_connection.db_close(db_connection=db_connection)
 
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text='STOP')
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text='STOP')
 
 
 if __name__ == "__main__":
