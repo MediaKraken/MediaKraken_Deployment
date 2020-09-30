@@ -19,12 +19,7 @@
 import json
 
 from common import common_config_ini
-from common import common_internationalization
 from common import common_metadata_provider_thegamesdb
-
-# init totals
-total_game_systems = 0
-total_games = 0
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
@@ -33,7 +28,7 @@ GAMESDB_CONNECTION = common_metadata_provider_thegamesdb.CommonMetadataGamesDB()
 
 # grab and insert all platforms
 for platform in \
-list(GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items())[0]:
+        list(GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].items())[0]:
     if platform != 'Platform':
         for game_systems in platform:
             print(game_systems, flush=True)
@@ -52,24 +47,9 @@ list(GAMESDB_CONNECTION.com_meta_gamesdb_platform_list()['Data']['Platforms'].it
                                                           system_alias,
                                                           json.dumps(platform_json))
                 db_connection.db_commit()
-                total_game_systems += 1
-
-# send notifications
-if total_games > 0:
-    db_connection.db_notification_insert(
-        common_internationalization.com_inter_number_format(total_games)
-        + " games(s) metadata added.", True)
-
-if total_game_systems > 0:
-    db_connection.db_notification_insert(
-        common_internationalization.com_inter_number_format(total_game_systems)
-        + " game system(s) metadata added.", True)
 
 # commit all changes
 db_connection.db_commit()
-
-# vaccum tables that had records added
-db_connection.db_pgsql_vacuum_table('mm_metadata_game_systems_info')
 
 # close DB
 db_connection.db_close()
