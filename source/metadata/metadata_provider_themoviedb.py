@@ -303,40 +303,6 @@ class CommonMetadataTMDB:
             'https://api.themoviedb.org/3/review/%s'
             '?api_key=%s', (self.API_KEY, tmdb_id)))
 
-    async def com_tmdb_meta_changes_movie(self):
-        """
-        # movie changes since date within 24 hours
-        """
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             'function':
-                                                                                 inspect.stack()[0][
-                                                                                     3],
-                                                                             'locals': locals(),
-                                                                             'caller':
-                                                                                 inspect.stack()[1][
-                                                                                     3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
-            'https://api.themoviedb.org/3/movie/changes'
-            '?api_key=%s' % self.API_KEY))['id']
-
-    async def com_tmdb_meta_changes_tv(self):
-        """
-        # tv changes since date within 24 hours
-        """
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             'function':
-                                                                                 inspect.stack()[0][
-                                                                                     3],
-                                                                             'locals': locals(),
-                                                                             'caller':
-                                                                                 inspect.stack()[1][
-                                                                                     3]})
-        return json.loads(await common_network_async.mk_network_fetch_from_url_async(
-            'https://api.themoviedb.org/3/tv/changes'
-            '?api_key=%s' % self.API_KEY))['id']
-
     async def com_tmdb_meta_changes_person(self):
         """
         # person changes since date within 24 hours

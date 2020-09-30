@@ -140,7 +140,7 @@ else:
 #          '/mediakraken/subprogram_subtitle_downloader.py',
 #          {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
 #         ('The Movie Database', 'Grab updated movie metadata',
-#          '/mediakraken/subprogram_metadata_tmdb_updates.py',
+#          '/mediakraken/async_metadata_themoviedb_updates.py',
 #          {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
 #         ('TheTVDB Update', 'Grab updated TheTVDB metadata',
 #          '/mediakraken/subprogram_metadata_thetvdb_updates.py',
