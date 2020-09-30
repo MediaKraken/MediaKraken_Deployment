@@ -125,6 +125,9 @@ async def main(loop):
     # close DB
     db_connection.db_close(db_connection=db_connection)
 
+    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text='STOP')
+
 
 if __name__ == "__main__":
     # verify this program isn't already running!
