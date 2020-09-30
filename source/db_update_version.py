@@ -377,6 +377,12 @@ if db_connection.db_version_check() < 30:
     db_connection.db_version_update(30)
     db_connection.db_commit()
 
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+
+
 # close the database
 db_connection.db_close()
 
