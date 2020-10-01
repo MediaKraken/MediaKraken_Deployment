@@ -43,11 +43,6 @@ async def main(loop):
         await common_config_ini.com_config_read_async(loop=loop,
                                                       as_pool=False)
 
-    force_dl = False
-    if await db_connection.db_table_count('mm_metadata_movie', db_connection=db_connection) == 0 \
-            and await db_connection.db_table_count('mm_download_que',
-                                                   db_connection=db_connection) == 0:
-        force_dl = True
     # start up the range fetches for movie
     file_name = 'http://files.tmdb.org/p/exports/movie_ids_%s.json.gz' % fetch_date
     await common_network_async.mk_network_fetch_from_url_async(file_name, 'movie.gz')
@@ -55,9 +50,8 @@ async def main(loop):
     for json_row in json_data.splitlines():
         tmdb_to_fetch = str(json.loads(json_row)['id'])
         # check to see if we already have it
-        if force_dl or (
-                await db_connection.db_meta_tmdb_count(tmdb_to_fetch,
-                                                       db_connection=db_connection) == 0
+        if (await db_connection.db_meta_tmdb_count(tmdb_to_fetch,
+                                                   db_connection=db_connection) == 0
                 and await db_connection.db_download_que_exists(None,
                                                                common_global.DLMediaType.Movie.value,
                                                                'themoviedb',
@@ -72,11 +66,6 @@ async def main(loop):
                                                    )
     os.remove('movie.gz')
 
-    force_dl = False
-    if await db_connection.db_table_count('mm_metadata_tvshow', db_connection=db_connection) == 0 \
-            and await db_connection.db_table_count('mm_download_que',
-                                                   db_connection=db_connection) == 0:
-        force_dl = True
     # start up the range fetches for tv
     file_name = 'http://files.tmdb.org/p/exports/tv_series_ids_%s.json.gz' % fetch_date
     await common_network_async.mk_network_fetch_from_url_async(file_name, 'tv.gz')
@@ -84,9 +73,8 @@ async def main(loop):
     for json_row in json_data.splitlines():
         tmdb_to_fetch = str(json.loads(json_row)['id'])
         # check to see if we already have it
-        if force_dl or (
-                await db_connection.db_meta_tmdb_count(tmdb_to_fetch,
-                                                       db_connection=db_connection) == 0
+        if (await db_connection.db_meta_tmdb_count(tmdb_to_fetch,
+                                                   db_connection=db_connection) == 0
                 and await db_connection.db_download_que_exists(None,
                                                                common_global.DLMediaType.TV.value,
                                                                'themoviedb',
