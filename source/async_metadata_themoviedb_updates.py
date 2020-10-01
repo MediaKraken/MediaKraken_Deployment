@@ -54,7 +54,7 @@ async def main(loop):
                                                                              'mov': movie_change[
                                                                                  'id']})
         # verify it's not already in the database
-        if await db_connection.db_meta_guid_by_tmdb(str(movie_change['id']),
+        if await db_connection.db_meta_guid_by_tmdb(tmdb_uuid=str(movie_change['id']),
                                                     db_connection=db_connection) is None:
             # verify there is not a dl que for this record
             dl_meta = await db_connection.db_download_que_exists(None,

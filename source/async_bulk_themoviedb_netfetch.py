@@ -50,12 +50,12 @@ async def main(loop):
     for json_row in json_data.splitlines():
         tmdb_to_fetch = str(json.loads(json_row)['id'])
         # check to see if we already have it
-        if (await db_connection.db_meta_tmdb_count(tmdb_to_fetch,
-                                                   db_connection=db_connection) == 0
-                and await db_connection.db_download_que_exists(None,
-                                                               common_global.DLMediaType.Movie.value,
-                                                               'themoviedb',
-                                                               str(tmdb_to_fetch),
+        if (await db_connection.db_meta_movie_count(search_value=tmdb_to_fetch,
+                                                    db_connection=db_connection) == 0
+                and await db_connection.db_download_que_exists(download_que_uuid=None,
+                                                               download_que_type=common_global.DLMediaType.Movie.value,
+                                                               provider_name='themoviedb',
+                                                               provider_id=tmdb_to_fetch,
                                                                db_connection=db_connection) is None):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.Movie.value,
@@ -73,12 +73,12 @@ async def main(loop):
     for json_row in json_data.splitlines():
         tmdb_to_fetch = str(json.loads(json_row)['id'])
         # check to see if we already have it
-        if (await db_connection.db_meta_tmdb_count(tmdb_to_fetch,
-                                                   db_connection=db_connection) == 0
-                and await db_connection.db_download_que_exists(None,
-                                                               common_global.DLMediaType.TV.value,
-                                                               'themoviedb',
-                                                               tmdb_to_fetch,
+        if (await db_connection.db_meta_tv_list_count(search_value=tmdb_to_fetch,
+                                                      db_connection=db_connection) == 0
+                and await db_connection.db_download_que_exists(download_que_uuid=None,
+                                                               download_que_type=common_global.DLMediaType.TV.value,
+                                                               provider_name='themoviedb',
+                                                               provider_id=tmdb_to_fetch,
                                                                db_connection=db_connection) is None):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.TV.value,
