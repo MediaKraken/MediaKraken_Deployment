@@ -47,7 +47,7 @@ async def main(loop):
     # process movie changes
     new_movie_data = json.loads(await common_network_async.mk_network_fetch_from_url_async(
         'https://api.themoviedb.org/3/movie/changes'
-        '?api_key=%s' % option_config_json['API']['themoviedb']))['id']
+        '?api_key=%s' % option_config_json['API']['themoviedb']))
     for movie_change in new_movie_data['results']:
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
@@ -89,7 +89,7 @@ async def main(loop):
     # process tv changes
     new_tv_data = json.loads(await common_network_async.mk_network_fetch_from_url_async(
         'https://api.themoviedb.org/3/tv/changes'
-        '?api_key=%s' % option_config_json['API']['themoviedb']))['id']
+        '?api_key=%s' % option_config_json['API']['themoviedb']))
     for tv_change in new_tv_data['results']:
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
