@@ -199,7 +199,8 @@ class MKServerDatabaseAsync:
         db_meta_sports_list, \
         db_meta_sports_list_count
     from database_async.db_base_metadata_tv_async \
-        import db_meta_tv_detail, \
+        import db_metatv_guid_by_tmdb, \
+        db_meta_tv_detail, \
         db_meta_tv_episode, \
         db_meta_tv_epsisode_by_id, \
         db_meta_tv_eps_season, \
