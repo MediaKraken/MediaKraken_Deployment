@@ -49,7 +49,7 @@ async def main(loop):
         force_dl = True
     # start up the range fetches for movie
     file_name = 'http://files.tmdb.org/p/exports/movie_ids_%s.json.gz' % fetch_date
-    common_network.mk_network_fetch_from_url(file_name, 'movie.gz')
+    common_network.mk_network_fetch_from_url_async(file_name, 'movie.gz')
     json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
     for json_row in json_data.splitlines():
         tmdb_to_fetch = str(json.loads(json_row)['id'])
@@ -76,7 +76,7 @@ async def main(loop):
         force_dl = True
     # start up the range fetches for tv
     file_name = 'http://files.tmdb.org/p/exports/tv_series_ids_%s.json.gz' % fetch_date
-    common_network.mk_network_fetch_from_url(file_name, 'tv.gz')
+    common_network.mk_network_fetch_from_url_async(file_name, 'tv.gz')
     json_data = common_file.com_file_ungzip('tv.gz').decode('utf-8')
     for json_row in json_data.splitlines():
         tmdb_to_fetch = str(json.loads(json_row)['id'])
