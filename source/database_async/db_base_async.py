@@ -169,8 +169,8 @@ async def db_table_index_check(self, resource_name, db_connection=None):
     else:
         db_conn = db_connection
     # TODO little bobby tables
-    self.db_cursor.execute('SELECT to_regclass(\'public.$1\')', resource_name)
-    return self.db_cursor.fetchval()
+    await self.db_cursor.execute('SELECT to_regclass(\'public.$1\')', resource_name)
+    return await self.db_cursor.fetchval()
 
 
 async def db_drop_table(self, table_name, db_connection=None):
