@@ -189,6 +189,7 @@ class MKServerDatabaseAsync:
         db_meta_person_list_count, \
         db_meta_person_id_count, \
         db_meta_person_insert, \
+        db_meta_person_update, \
         db_meta_person_insert_cast_crew
     from database_async.db_base_metadata_review_async \
         import db_review_list_by_tmdb_guid
