@@ -6,9 +6,9 @@ import subprocess
 
 import aio_pika
 from common import common_ffmpeg
-from common import common_metadata
 from common import common_hardware_roku_bif
 from common import common_logging_elasticsearch_httpx
+from common import common_metadata
 from common import common_network
 
 
@@ -27,9 +27,10 @@ async def on_message(message: aio_pika.IncomingMessage):
                 try:
                     common_hardware_roku_bif.com_roku_create_bif(json_message['Media Path'])
                 except struct.error:
-                    common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='error',
-                                                                               message_text={
-                                                                                   'fail bif': json_message})
+                    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
+                        message_type='error',
+                        message_text={
+                            'fail bif': json_message})
         elif json_message['Type'] == 'FFMPEG':
             if json_message['Subtype'] == 'Probe':
                 # scan media file via ffprobe
