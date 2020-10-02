@@ -54,14 +54,14 @@ async def main(loop):
                                                                              'mov': movie_change[
                                                                                  'id']})
         # verify it's not already in the database
-        if await db_connection.db_meta_guid_by_tmdb(tmdb_uuid=str(movie_change['id']),
+        if await db_connection.db_meta_guid_by_tmdb(tmdb_uuid=movie_change['id'],
                                                     db_connection=None) is None:
             # verify there is not a dl que for this record
             dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                  download_que_type=common_global.DLMediaType.Movie.value,
                                                                  provider_name='themoviedb',
-                                                                 provider_id=str(
-                                                                     movie_change['id']),
+                                                                 provider_id=
+                                                                 movie_change['id'],
                                                                  db_connection=None)
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
@@ -70,9 +70,9 @@ async def main(loop):
                 await db_connection.db_download_insert(provider='themoviedb',
                                                        que_type=common_global.DLMediaType.Movie.value,
                                                        down_json=json.dumps({'Status': 'Fetch',
-                                                                             'ProviderMetaID': str(
+                                                                             'ProviderMetaID':
                                                                                  movie_change[
-                                                                                     'id'])}),
+                                                                                     'id']}),
                                                        down_new_uuid=uuid.uuid4(),
                                                        db_connection=None
                                                        )
@@ -81,8 +81,8 @@ async def main(loop):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.Movie.value,
                                                    down_json=json.dumps({'Status': 'Update',
-                                                                         'ProviderMetaID': str(
-                                                                             movie_change['id'])}),
+                                                                         'ProviderMetaID':
+                                                                             movie_change['id']}),
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )
@@ -98,19 +98,19 @@ async def main(loop):
                                                                                       tv_change[
                                                                                           'id']})
         # verify it's not already in the database
-        if await db_connection.db_metatv_guid_by_tmdb(str(tv_change['id']),
+        if await db_connection.db_metatv_guid_by_tmdb(tv_change['id'],
                                                       db_connection=None) is None:
             dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                  download_que_type=common_global.DLMediaType.TV.value,
                                                                  provider_name='themoviedb',
-                                                                 provider_id=str(tv_change['id']),
+                                                                 provider_id=tv_change['id'],
                                                                  db_connection=None)
             if dl_meta is None:
                 await db_connection.db_download_insert(provider='themoviedb',
                                                        que_type=common_global.DLMediaType.TV.value,
                                                        down_json=json.dumps({'Status': 'Fetch',
-                                                                             'ProviderMetaID': str(
-                                                                                 tv_change['id'])}),
+                                                                             'ProviderMetaID':
+                                                                                 tv_change['id']}),
                                                        down_new_uuid=uuid.uuid4(),
                                                        db_connection=None
                                                        )
@@ -119,8 +119,8 @@ async def main(loop):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.TV.value,
                                                    down_json=json.dumps({'Status': 'Update',
-                                                                         'ProviderMetaID': str(
-                                                                             tv_change['id'])}),
+                                                                         'ProviderMetaID':
+                                                                             tv_change['id']}),
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )
