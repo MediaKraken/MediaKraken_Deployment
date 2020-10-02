@@ -16,10 +16,10 @@
   MA 02110-1301, USA.
 """
 
+import asyncio
 import inspect
 import json
 import os
-import time
 
 import httpx
 from common import common_global
@@ -634,29 +634,17 @@ async def metadata_fetch_tmdb_person(db_connection, provider_name, download_data
                                                                              inspect.stack()[1][
                                                                                  3]})
     if common_global.api_instance is not None:
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             "meta person tmdb save fetch":
-                                                                                 download_data})
         # fetch and save json data via tmdb id
         result_json = await common_global.api_instance.com_tmdb_metadata_bio_by_id(
             download_data['mdq_download_json']['ProviderMetaID'])
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             "meta person code":
-                                                                                 result_json.status_code})
-        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                         message_text={
-                                                                             "meta person save fetch result":
-                                                                                 result_json.json()})
         if result_json is None or result_json.status_code == 502:
-            time.sleep(60)
+            await asyncio.sleep(60)
             await metadata_fetch_tmdb_person(db_connection, provider_name, download_data)
         elif result_json.status_code == 200:
             await db_connection.db_meta_person_update(provider_name=provider_name,
                                                       provider_uuid=
                                                       int(download_data['mdq_download_json'][
-                                                          'ProviderMetaID']),
+                                                              'ProviderMetaID']),
                                                       person_bio=result_json.json(),
                                                       person_image=await common_global.api_instance.com_tmdb_meta_bio_image_build(
                                                           result_json.json()))
