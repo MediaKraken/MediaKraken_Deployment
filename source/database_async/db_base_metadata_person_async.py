@@ -174,6 +174,31 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
     return new_guid
 
 
+async def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person_image,
+                                db_connection=None):
+    """
+    update the person bio/etc
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    await db_conn.execute('update mm_metadata_person set mmp_person_meta_json = $1,'
+                          ' mmp_person_image = $2'
+                          ' where mmp_person_media_id = $3',
+                          json.dumps(person_bio), person_image, provider_uuid)
+    await db_conn.execute('commit')
+
+
 async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_connection=None):
     """
     # batch insert from json of crew/cast
