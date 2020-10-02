@@ -4,7 +4,7 @@ import uuid
 from common import common_logging_elasticsearch_httpx
 
 
-async def db_download_insert(self, provider, que_type, down_json, down_new_uuid, down_class_uuid,
+async def db_download_insert(self, provider, que_type, down_json, down_new_uuid,
                              db_connection=None):
     """
     Create/insert a download into the que
@@ -28,8 +28,8 @@ async def db_download_insert(self, provider, que_type, down_json, down_new_uuid,
                           'mdq_que_type,'
                           'mdq_download_json,'
                           ' mdq_new_uuid)'
-                          ' values ($1, $2, $3, $4, $5, $6)',
-                          new_guid, provider, que_type, down_json, down_new_uuid, down_class_uuid)
+                          ' values ($1, $2, $3, $4, $5)',
+                          new_guid, provider, que_type, down_json, down_new_uuid)
     return new_guid
 
 
