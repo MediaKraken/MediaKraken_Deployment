@@ -653,11 +653,12 @@ async def metadata_fetch_tmdb_person(db_connection, provider_name, download_data
             time.sleep(60)
             await metadata_fetch_tmdb_person(db_connection, provider_name, download_data)
         elif result_json.status_code == 200:
-            await db_connection.db_meta_person_update(provider_name,
-                                                      download_data['mdq_download_json'][
-                                                          'ProviderMetaID'],
-                                                      result_json.json(),
-                                                      await common_global.api_instance.com_tmdb_meta_bio_image_build(
+            await db_connection.db_meta_person_update(provider_name=provider_name,
+                                                      provider_uuid=
+                                                      int(download_data['mdq_download_json'][
+                                                          'ProviderMetaID']),
+                                                      person_bio=result_json.json(),
+                                                      person_image=await common_global.api_instance.com_tmdb_meta_bio_image_build(
                                                           result_json.json()))
             await db_connection.db_download_delete(download_data['mdq_id'])
             await db_connection.db_commit()
