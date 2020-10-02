@@ -76,8 +76,8 @@ async def db_download_delete(self, guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    db_conn.execute('delete from mm_download_que'
-                    ' where mdq_id = $1', str(guid))
+    await db_conn.execute('delete from mm_download_que'
+                          ' where mdq_id = $1', str(guid))
 
 
 async def db_download_update_provider(self, provider_name, guid, db_connection=None):
@@ -97,8 +97,8 @@ async def db_download_update_provider(self, provider_name, guid, db_connection=N
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    db_conn.execute('update mm_download_que set mdq_provider = $1 where mdq_id = $2',
-                    provider_name, guid)
+    await db_conn.execute('update mm_download_que set mdq_provider = $1 where mdq_id = $2',
+                          provider_name, guid)
 
 
 async def db_download_update(self, update_json, guid, update_que_id=None, db_connection=None):
@@ -119,13 +119,13 @@ async def db_download_update(self, update_json, guid, update_que_id=None, db_con
     else:
         db_conn = db_connection
     if update_que_id is not None:
-        db_conn.execute('update mm_download_que set mdq_download_json = $1,'
-                        ' mdq_que_type = $2'
-                        ' where mdq_id = $3',
-                        update_json, update_que_id, guid)
+        await db_conn.execute('update mm_download_que set mdq_download_json = $1,'
+                              ' mdq_que_type = $2'
+                              ' where mdq_id = $3',
+                              update_json, update_que_id, guid)
     else:
-        db_conn.execute('update mm_download_que set mdq_download_json = $1'
-                        ' where mdq_id = $2', (update_json, guid))
+        await db_conn.execute('update mm_download_que set mdq_download_json = $1'
+                              ' where mdq_id = $2', (update_json, guid))
 
 
 async def db_download_que_exists(self, download_que_uuid, download_que_type,
@@ -153,8 +153,8 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
     else:
         db_conn = db_connection
     # que type is movie, tv, etc as those numbers could be reused
-    return db_conn.fetchval('select mdq_new_uuid'
-                            ' from mm_download_que'
-                            ' where mdq_provider = $1 and mdq_que_type = $2'
-                            ' and mdq_download_json->\'ProviderMetaID\' ? $3 limit 1',
-                            provider_name, download_que_type, provider_id)
+    return await db_conn.fetchval('select mdq_new_uuid'
+                                  ' from mm_download_que'
+                                  ' where mdq_provider = $1 and mdq_que_type = $2'
+                                  ' and mdq_download_json->\'ProviderMetaID\' ? $3 limit 1',
+                                  provider_name, download_que_type, provider_id)

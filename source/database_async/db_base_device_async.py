@@ -67,9 +67,8 @@ async def db_device_delete(self, guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    await db_conn.execute(
-        'delete from mm_device'
-        ' where mm_device_id = $1', guid)
+    await db_conn.execute('delete from mm_device'
+                          ' where mm_device_id = $1', guid)
 
 
 async def db_device_list(self, device_type=None, offset=0, records=None,
