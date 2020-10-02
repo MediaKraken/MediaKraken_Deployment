@@ -55,14 +55,14 @@ async def main(loop):
                                                                                  'id']})
         # verify it's not already in the database
         if await db_connection.db_meta_guid_by_tmdb(tmdb_uuid=str(movie_change['id']),
-                                                    db_connection=db_connection) is None:
+                                                    db_connection=None) is None:
             # verify there is not a dl que for this record
             dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                  download_que_type=common_global.DLMediaType.Movie.value,
                                                                  provider_name='themoviedb',
                                                                  provider_id=str(
                                                                      movie_change['id']),
-                                                                 db_connection=db_connection)
+                                                                 db_connection=None)
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'dl_meta': dl_meta})
@@ -74,7 +74,7 @@ async def main(loop):
                                                                                  movie_change[
                                                                                      'id'])}),
                                                        down_new_uuid=uuid.uuid4(),
-                                                       db_connection=db_connection
+                                                       db_connection=None
                                                        )
         else:
             # it's on the database, so must update the record with latest information
@@ -84,7 +84,7 @@ async def main(loop):
                                                                          'ProviderMetaID': str(
                                                                              movie_change['id'])}),
                                                    down_new_uuid=uuid.uuid4(),
-                                                   db_connection=db_connection
+                                                   db_connection=None
                                                    )
     # TODO this should go through the limiter
     # process tv changes
@@ -99,12 +99,12 @@ async def main(loop):
                                                                                           'id']})
         # verify it's not already in the database
         if await db_connection.db_metatv_guid_by_tmdb(str(tv_change['id']),
-                                                      db_connection=db_connection) is None:
+                                                      db_connection=None) is None:
             dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                  download_que_type=common_global.DLMediaType.TV.value,
                                                                  provider_name='themoviedb',
                                                                  provider_id=str(tv_change['id']),
-                                                                 db_connection=db_connection)
+                                                                 db_connection=None)
             if dl_meta is None:
                 await db_connection.db_download_insert(provider='themoviedb',
                                                        que_type=common_global.DLMediaType.TV.value,
@@ -112,7 +112,7 @@ async def main(loop):
                                                                              'ProviderMetaID': str(
                                                                                  tv_change['id'])}),
                                                        down_new_uuid=uuid.uuid4(),
-                                                       db_connection=db_connection
+                                                       db_connection=None
                                                        )
         else:
             # it's on the database, so must update the record with latest information
@@ -122,14 +122,14 @@ async def main(loop):
                                                                          'ProviderMetaID': str(
                                                                              tv_change['id'])}),
                                                    down_new_uuid=uuid.uuid4(),
-                                                   db_connection=db_connection
+                                                   db_connection=None
                                                    )
 
     # commit all changes
-    await db_connection.db_commit(db_connection=db_connection)
+    await db_connection.db_commit(db_connection=None)
 
     # close DB
-    await db_connection.db_close(db_connection=db_connection)
+    await db_connection.db_close(db_connection=None)
 
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text='STOP')

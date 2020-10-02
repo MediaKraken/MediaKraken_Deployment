@@ -51,18 +51,18 @@ async def main(loop):
         tmdb_to_fetch = str(json.loads(json_row)['id'])
         # check to see if we already have it
         if (await db_connection.db_meta_movie_count(search_value=tmdb_to_fetch,
-                                                    db_connection=db_connection) == 0
+                                                    db_connection=None) == 0
                 and await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                download_que_type=common_global.DLMediaType.Movie.value,
                                                                provider_name='themoviedb',
                                                                provider_id=tmdb_to_fetch,
-                                                               db_connection=db_connection) is None):
+                                                               db_connection=None) is None):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.Movie.value,
                                                    down_json=json.dumps({"Status": "Fetch",
                                                                          "ProviderMetaID": tmdb_to_fetch}),
                                                    down_new_uuid=uuid.uuid4(),
-                                                   db_connection=db_connection
+                                                   db_connection=None
                                                    )
     os.remove('movie.gz')
 
@@ -74,28 +74,28 @@ async def main(loop):
         tmdb_to_fetch = str(json.loads(json_row)['id'])
         # check to see if we already have it
         if (await db_connection.db_meta_tv_list_count(search_value=tmdb_to_fetch,
-                                                      db_connection=db_connection) == 0
+                                                      db_connection=None) == 0
                 and await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                download_que_type=common_global.DLMediaType.TV.value,
                                                                provider_name='themoviedb',
                                                                provider_id=tmdb_to_fetch,
-                                                               db_connection=db_connection) is None):
+                                                               db_connection=None) is None):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.TV.value,
                                                    down_json=json.dumps({"Status": "Fetch",
                                                                          "ProviderMetaID": tmdb_to_fetch}),
                                                    down_new_uuid=uuid.uuid4(),
-                                                   db_connection=db_connection
+                                                   db_connection=None
                                                    )
     os.remove('tv.gz')
 
     # no reason to do the person....as the above meta will fetch them from cast/crew
 
     # commit all changes
-    await db_connection.db_commit(db_connection=db_connection)
+    await db_connection.db_commit(db_connection=None)
 
     # close DB
-    await db_connection.db_close(db_connection=db_connection)
+    await db_connection.db_close(db_connection=None)
 
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text='STOP')
