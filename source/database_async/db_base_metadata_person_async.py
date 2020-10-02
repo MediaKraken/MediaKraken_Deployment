@@ -225,7 +225,8 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                                                   que_type=common_global.DLMediaType.Person.value,
                                                   down_json=json.dumps({"Status": "Fetch",
                                                                         "ProviderMetaID": str(
-                                                                            person_id)}))
+                                                                            person_id)}),
+                                                  down_new_uuid=None)
                     # insert person record
                     await self.db_meta_person_insert(person_name,
                                                      person_id,
@@ -256,7 +257,8 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                                               que_type=common_global.DLMediaType.Person.value,
                                               down_json=json.dumps({"Status": "Fetch",
                                                                     "ProviderMetaID": str(
-                                                                        person_id)}))
+                                                                        person_id)}),
+                                              down_new_uuid=None)
                 # insert person record
                 await self.db_meta_person_insert(person_name,
                                                  person_id,
