@@ -57,10 +57,11 @@ async def main(loop):
         if await db_connection.db_meta_guid_by_tmdb(tmdb_uuid=str(movie_change['id']),
                                                     db_connection=db_connection) is None:
             # verify there is not a dl que for this record
-            dl_meta = await db_connection.db_download_que_exists(None,
-                                                                 common_global.DLMediaType.Movie.value,
-                                                                 'themoviedb',
-                                                                 str(movie_change['id']),
+            dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
+                                                                 download_que_type=common_global.DLMediaType.Movie.value,
+                                                                 provider_name='themoviedb',
+                                                                 provider_id=str(
+                                                                     movie_change['id']),
                                                                  db_connection=db_connection)
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
@@ -99,9 +100,10 @@ async def main(loop):
         # verify it's not already in the database
         if await db_connection.db_metatv_guid_by_tmdb(str(tv_change['id']),
                                                       db_connection=db_connection) is None:
-            dl_meta = await db_connection.db_download_que_exists(None,
-                                                                 common_global.DLMediaType.TV.value,
-                                                                 'themoviedb', str(tv_change['id']),
+            dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
+                                                                 download_que_type=common_global.DLMediaType.TV.value,
+                                                                 provider_name='themoviedb',
+                                                                 provider_id=str(tv_change['id']),
                                                                  db_connection=db_connection)
             if dl_meta is None:
                 await db_connection.db_download_insert(provider='themoviedb',
