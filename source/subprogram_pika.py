@@ -26,7 +26,6 @@ import uuid
 import pika
 from common import common_device_capability
 from common import common_docker
-from common import common_global
 from common import common_logging_elasticsearch_httpx
 from common import common_network
 from common import common_signal
@@ -217,21 +216,22 @@ class MKConsumer:
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                                  message_text={"body": body})
             json_message = json.loads(body)
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-                'json body': json_message})
-            if json_message['type'] == 'Cron Run':
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                 message_text={
+                                                                     'json body': json_message})
+            if json_message['Type'] == 'Cron Run':
                 if os.path.splitext(json_message['JSON']['program'])[1] == '.py':
                     subprocess.Popen(['python3', json_message['JSON']['program']],
                                      stdout=subprocess.PIPE, shell=False)
                 else:
                     subprocess.Popen(['/usr/sbin', json_message['JSON']['program']],
                                      stdout=subprocess.PIPE, shell=False)
-            elif json_message['type'] == 'Library Scan':
+            elif json_message['Type'] == 'Library Scan':
                 # This is split out since can be done via admin website and cron jobs
                 # TODO launch a container to do this.....so, if it gets stuck the others still go
                 subprocess.Popen(['python3', '/mediakraken/subprogram_file_scan.py'],
                                  stdout=subprocess.PIPE, shell=False)
-            elif json_message['type'] == 'Playback':
+            elif json_message['Type'] == 'Playback':
                 if json_message['Subtype'] == 'Play':
                     # to address the 30 char name limit for container
                     name_container = (json_message['User'] + '_'
@@ -317,8 +317,9 @@ class MKConsumer:
                                               " -output_ts_offset {output_ts_offset:.6f}" \
                                               " -t {t:.6f} pipe:%d.ts".format(**locals())
                     else:
-                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text=
-                                                                {'stuff': 'unknown subtype'})
+                        common_logging_elasticsearch_httpx.com_es_httpx_post(
+                            message_type='critical', message_text=
+                            {'stuff': 'unknown subtype'})
                     if container_command is not None:
                         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                                              message_text=
@@ -357,8 +358,8 @@ class MKConsumer:
     def stop_consuming(self):
         if self._channel:
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text=
-                                                    {
-                                                        'pika': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
+            {
+                'pika': 'Sending a Basic.Cancel RPC command to RabbitMQ'})
             cb = functools.partial(
                 self.on_cancelok, userdata=self._consumer_tag)
             self._channel.basic_cancel(self._consumer_tag, cb)
@@ -370,7 +371,8 @@ class MKConsumer:
         self.close_channel()
 
     def close_channel(self):
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'pika': 'Closing the channel'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={
+            'pika': 'Closing the channel'})
         self._channel.close()
 
     def run(self):
@@ -380,13 +382,15 @@ class MKConsumer:
     def stop(self):
         if not self._closing:
             self._closing = True
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'pika': 'Stopping'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                 message_text={'pika': 'Stopping'})
             if self._consuming:
                 self.stop_consuming()
                 self._connection.ioloop.start()
             else:
                 self._connection.ioloop.stop()
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'pika': 'Stopped'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                 message_text={'pika': 'Stopped'})
 
     class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
@@ -411,9 +415,11 @@ class MKConsumer:
             if self._consumer.should_reconnect:
                 self._consumer.stop()
                 reconnect_delay = self._get_reconnect_delay()
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text=
-                                                        {'pika': ('Reconnecting after %d seconds',
-                                                                  reconnect_delay)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                     message_text=
+                                                                     {'pika': (
+                                                                     'Reconnecting after %d seconds',
+                                                                     reconnect_delay)})
                 time.sleep(reconnect_delay)
                 self._consumer = MKConsumer(self._amqp_url)
 
