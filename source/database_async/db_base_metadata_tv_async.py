@@ -244,3 +244,24 @@ async def db_meta_tv_season_eps_list(self, show_guid, season_number, db_connecti
                 row_data['eps_name'], row_data['eps_filename'], row_data['eps_id'],
                 str(season_number))
     return episode_data
+
+
+async def db_meta_tv_count_by_id(self, guid, db_connection=None):
+    """
+    # does movie exist already by provider id
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchval('select count(*) from mm_metadata_tvshow'
+                                  ' where mm_metadata_media_tvshow_id = $1', guid)

@@ -168,7 +168,8 @@ class MKServerDatabaseAsync:
         db_meta_movie_count, \
         db_meta_movie_status_update, \
         db_meta_movie_json_update, \
-        db_meta_movie_guid_count
+        db_meta_movie_guid_count, \
+        db_meta_movie_count_by_id
     from database_async.db_base_metadata_music_async \
         import db_meta_music_album_by_guid, \
         db_meta_music_album_list, \
@@ -207,7 +208,8 @@ class MKServerDatabaseAsync:
         db_meta_tv_eps_season, \
         db_meta_tv_list, \
         db_meta_tv_list_count, \
-        db_meta_tv_season_eps_list
+        db_meta_tv_season_eps_list, \
+        db_meta_tv_count_by_id
     from database_async.db_base_notification_async \
         import db_notification_insert, \
         db_notification_read, \

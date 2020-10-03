@@ -36,7 +36,7 @@ async def main(loop):
                                                                      message_text='START',
                                                                      index_name='async_bulk_themoviedb_netfetch')
 
-    fetch_date = '09_20_2020'
+    fetch_date = '09_30_2020'
 
     # open the database
     option_config_json, db_connection = \
@@ -48,14 +48,17 @@ async def main(loop):
     await common_network_async.mk_network_fetch_from_url_async(file_name, 'movie.gz')
     json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
     for json_row in json_data.splitlines():
-        tmdb_to_fetch = str(json.loads(json_row)['id'])
-        # check to see if we already have it
-        if (await db_connection.db_meta_movie_count(search_value=tmdb_to_fetch,
-                                                    db_connection=None) == 0
+        tmdb_to_fetch = json.loads(json_row)
+        # TODO check settings to pull down adult records
+        if tmdb_to_fetch['adult']:
+            pass
+        # check to see if we already have it....need to do by ID as duplicate named movies, etc
+        if (await db_connection.db_meta_movie_count_by_id(search_value=tmdb_to_fetch['id'],
+                                                          db_connection=None) == 0
                 and await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                download_que_type=common_global.DLMediaType.Movie.value,
                                                                provider_name='themoviedb',
-                                                               provider_id=tmdb_to_fetch,
+                                                               provider_id=tmdb_to_fetch['id'],
                                                                db_connection=None) is None):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.Movie.value,
@@ -71,19 +74,23 @@ async def main(loop):
     await common_network_async.mk_network_fetch_from_url_async(file_name, 'tv.gz')
     json_data = common_file.com_file_ungzip('tv.gz').decode('utf-8')
     for json_row in json_data.splitlines():
-        tmdb_to_fetch = str(json.loads(json_row)['id'])
-        # check to see if we already have it
-        if (await db_connection.db_meta_tv_list_count(search_value=tmdb_to_fetch,
-                                                      db_connection=None) == 0
+        tmdb_to_fetch = json.loads(json_row)
+        # TODO check settings to pull down adult records
+        if tmdb_to_fetch['adult']:
+            pass
+        # check to see if we already have it....need to do by ID as duplicate named TV, etc
+        if (await db_connection.db_meta_tv_count_by_id(search_value=tmdb_to_fetch['id'],
+                                                       db_connection=None) == 0
                 and await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                download_que_type=common_global.DLMediaType.TV.value,
                                                                provider_name='themoviedb',
-                                                               provider_id=tmdb_to_fetch,
+                                                               provider_id=tmdb_to_fetch['id'],
                                                                db_connection=None) is None):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.TV.value,
                                                    down_json=json.dumps({"Status": "Fetch",
-                                                                         "ProviderMetaID": tmdb_to_fetch}),
+                                                                         "ProviderMetaID":
+                                                                             tmdb_to_fetch['id']}),
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )

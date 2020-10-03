@@ -207,3 +207,24 @@ async def db_meta_movie_guid_count(self, guid, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetchval('select count(*) from mm_metadata_movie'
                                   ' where mm_metadata_guid = $1', guid)
+
+
+async def db_meta_movie_count_by_id(self, guid, db_connection=None):
+    """
+    # does movie exist already by provider id
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchval('select count(*) from mm_metadata_movie'
+                                  ' where mm_metadata_media_id = $1', guid)
