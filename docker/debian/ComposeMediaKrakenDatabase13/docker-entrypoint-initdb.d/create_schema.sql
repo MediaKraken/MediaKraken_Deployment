@@ -566,7 +566,6 @@ ALTER TABLE public.mm_radio OWNER TO postgres;
 
 CREATE TABLE public.mm_review (
     mm_review_guid uuid NOT NULL,
-    mm_review_metadata_id jsonb,
     mm_review_metadata_guid uuid,
     mm_review_json jsonb
 );
@@ -1081,7 +1080,7 @@ COPY public.mm_radio (mm_radio_guid, mm_radio_name, mm_radio_description, mm_rad
 -- Data for Name: mm_review; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_review (mm_review_guid, mm_review_metadata_id, mm_review_metadata_guid, mm_review_json) FROM stdin;
+COPY public.mm_review (mm_review_guid, mm_review_metadata_guid, mm_review_json) FROM stdin;
 \.
 
 
@@ -2215,14 +2214,6 @@ CREATE INDEX mm_metadata_person_idxgin_meta_json ON public.mm_metadata_person US
 --
 
 CREATE INDEX mm_metadata_review_idx_metadata_uuid ON public.mm_review USING btree (mm_review_metadata_guid);
-
-
---
--- TOC entry 3141 (class 1259 OID 17364)
--- Name: mm_metadata_review_idxgin_media_json; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_metadata_review_idxgin_media_json ON public.mm_review USING gin (mm_review_metadata_id);
 
 
 --

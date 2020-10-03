@@ -463,11 +463,8 @@ if db_connection.db_table_index_check('mm_user_idx_username') is None:
 
 # add table for reviews
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_review (mm_review_guid uuid'
-                       ' CONSTRAINT mm_review_pk PRIMARY KEY, mm_review_metadata_id jsonb,'
+                       ' CONSTRAINT mm_review_pk PRIMARY KEY,'
                        ' mm_review_metadata_guid uuid, mm_review_json jsonb)')
-if db_connection.db_table_index_check('mm_metadata_review_idxgin_media_json') is None:
-    db_connection.db_query('CREATE INDEX mm_metadata_review_idxgin_media_json'
-                           ' ON mm_review USING gin (mm_review_metadata_id)')
 if db_connection.db_table_index_check('mm_metadata_review_idx_metadata_uuid') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_review_idx_metadata_uuid'
                            ' ON mm_review(mm_review_metadata_guid)')

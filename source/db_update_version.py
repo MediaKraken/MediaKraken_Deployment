@@ -377,6 +377,11 @@ if db_connection.db_version_check() < 30:
     db_connection.db_version_update(30)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 31:
+    db_connection.db_query('ALTER TABLE mm_review DROP COLUMN mm_review_metadata_id;')
+    db_connection.db_version_update(31)
+    db_connection.db_commit()
+
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names

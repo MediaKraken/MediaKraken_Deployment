@@ -230,7 +230,7 @@ class MKServerDatabaseAsync:
         import db_meta_queue_list_count
     from database_async.db_base_review_async \
         import db_review_count, \
-        db_review_list_by_tmdb_guid, \
+        db_review_list_by_meta_guid, \
         db_review_insert
     from database_async.db_base_share_async \
         import db_share_add, \
