@@ -45,12 +45,14 @@ async def mk_network_fetch_from_url_async(url, directory=None):
             message_text=
             {
                 "mk_network_fetch_from_url_async request": str(exc)})
+        return False
     except httpx.HTTPStatusError as exc:
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
             message_type='error',
             message_text=
             {
                 "mk_network_fetch_from_url_async status": str(exc)})
+        return False
     if directory is not None and datafile.status_code == 200:
         try:
             localfile = open(directory, 'wb')
