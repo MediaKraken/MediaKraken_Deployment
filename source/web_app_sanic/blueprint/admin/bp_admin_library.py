@@ -54,11 +54,11 @@ async def url_bp_admin_library(request):
                                                                     int(request.ctx.session[
                                                                             'per_page']),
                                                                     db_connection):
-        return_media.append((row_data['mm_media_dir_path'],
-                             row_data['mm_media_class_guid'],
+        return_media.append((row_data['mm_media_dir_guid'],
+                             row_data['mm_media_dir_path'],
+                             common_global.DLMediaType.row_data['mm_media_dir_class_type'].name,
                              row_data['mm_media_dir_last_scanned'],
-                             common_global.DLMediaType.row_data['mm_media_class_guid'].name,
-                             row_data['mm_media_dir_guid']))
+                             ))
     await request.app.db_pool.release(db_connection)
     return {
         'media_dir': return_media,
