@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 """
 
+import datetime
 import json
 
-import psycopg2.extras
 from common import common_config_ini
 from common import common_logging_elasticsearch_httpx
 
@@ -62,7 +62,7 @@ else:
 # if db_connection.db_version_check() == 4:
 #     # add cron job
 #     db_connection.db_cron_insert('Trailer', 'Download new trailers', False, 'Days 1',
-#                                  psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+#                                  datetime.datetime(1970, 1, 1, 0, 0, 1),
 #                                  './subprogram_metadata_trailer_download.py')
 #     db_connection.db_version_update(5)
 #     db_connection.db_commit()
@@ -291,7 +291,7 @@ else:
 if db_connection.db_version_check() < 23:
     # retro update
     db_connection.db_cron_insert('Retro game data', 'Grab updated metadata for retro game(s)',
-                                 False, 'Days 1', psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+                                 False, 'Days 1', datetime.datetime(1970, 1, 1, 0, 0, 1),
                                  json.dumps({'exchange_key': 'mkque_ex', 'route_key': 'mkque',
                                              'Type': 'Cron Run',
                                              'program': '/mediakraken/subprogram_metadata_games.py'}),

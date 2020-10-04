@@ -16,9 +16,9 @@
   MA 02110-1301, USA.
 """
 
+import datetime
 import json
 
-import psycopg2
 from common import common_config_ini
 from common import common_logging_elasticsearch_httpx
 from common import common_version
@@ -610,7 +610,7 @@ base_cron = [
 if db_connection.db_query('select count(*) from mm_cron', fetch_all=False) == 0:
     for base_item in base_cron:
         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
-                                     psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+                                     datetime.datetime(1970, 1, 1, 0, 0, 1),
                                      json.dumps(base_item[2]))
 
 # create internet radio tables

@@ -121,7 +121,7 @@ async def db_audit_path_add(self, dir_path, class_guid, share_guid, db_connectio
                           ' mm_media_dir_share_guid)'
                           ' values ($1,$2,$3,$4,$5)',
                           (new_guid, dir_path, class_guid,
-                           psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), share_guid))
+                           datetime.datetime(1970, 1, 1, 0, 0, 1), share_guid))
     return new_guid
 
 
