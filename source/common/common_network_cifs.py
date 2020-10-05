@@ -17,21 +17,19 @@
 """
 
 import os
-import urllib.error
-import urllib.parse
-import urllib.request
 
 import smbclient
-from common import common_logging_elasticsearch_httpx
 from smb.SMBConnection import SMBConnection
-from smb.SMBHandler import SMBHandler
+
+from . import common_logging_elasticsearch_httpx
 
 
 # has v3 support
 class CommonNetworkCIFS:
-    def __init__(self, server_name, share_name, username=None, password=None, encrypt=False):
-        if username is None:
+    def __init__(self, server_name, share_name, username='guest', password=None, encrypt=False):
+        if password is None:
             smbclient.register_session(server_name,
+                                       username=username,
                                        encrypt=encrypt,
                                        )
         else:
@@ -83,38 +81,38 @@ class CommonNetworkCIFS:
 
 
 # only does v1 and v2
-class CommonNetworkCIFSShareURL:
-    """
-    Handle CIFS shares
-    """
-
-    def __init__(self):
-        pass
-
-    def com_cifs_url_director(self, connect_string):
-        """
-        Create director for CIFS management
-        """
-        self.director = urllib.request.build_opener(SMBHandler)
-
-    def com_cifs_url_download(self, connect_string):
-        """
-        Grab file from CIFS
-        """
-        # For paths/files with unicode characters, simply pass in the URL as an unicode string
-        file_con = self.director.open(
-            'smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
-        # Process file_con like a file-like object and then close it.
-        file_con.close()
-
-    def com_cifs_url_upload(self, file_path, connect_string):
-        """
-        Post file via CIFS
-        """
-        file_con = self.director.open(
-            'smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat',
-            data=open(file_path, 'rb'))
-        file_con.close()
+# class CommonNetworkCIFSShareURL:
+#     """
+#     Handle CIFS shares
+#     """
+#
+#     def __init__(self):
+#         pass
+#
+#     def com_cifs_url_director(self, connect_string):
+#         """
+#         Create director for CIFS management
+#         """
+#         self.director = urllib.request.build_opener(SMBHandler)
+#
+#     def com_cifs_url_download(self, connect_string):
+#         """
+#         Grab file from CIFS
+#         """
+#         # For paths/files with unicode characters, simply pass in the URL as an unicode string
+#         file_con = self.director.open(
+#             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/waffle.dat')
+#         # Process file_con like a file-like object and then close it.
+#         file_con.close()
+#
+#     def com_cifs_url_upload(self, file_path, connect_string):
+#         """
+#         Post file via CIFS
+#         """
+#         file_con = self.director.open(
+#             'smb://myuserID:mypassword@192.168.1.1/sharedfolder/upload_file.dat',
+#             data=open(file_path, 'rb'))
+#         file_con.close()
 
 
 # only does v1 and v2
@@ -123,16 +121,8 @@ class CommonCIFSShare:
     Handle CIFS shares
     """
 
-    def __init__(self):
-        self.smb_conn = None
-
-    def com_cifs_connect(self, ip_addr, user_name='guest', user_password=''):
-        """
-        Connect to share
-        """
-        server_name = 'Server'
-        client_name = 'My Computer'
-        self.smb_conn = SMBConnection(user_name, user_password, client_name, server_name,
+    def __init__(self, ip_addr, user_name='guest', user_password=''):
+        self.smb_conn = SMBConnection(user_name, user_password, 'My Computer', 'Server',
                                       use_ntlm_v2=True)
         self.smb_conn.connect(ip_addr, 139)
 
@@ -216,11 +206,5 @@ class CommonCIFSShare:
             #            for ndx in self.com_cifs_walk(share_name, new_path):
             for ndx in self.com_cifs_walk(share_name, os.path.join(file_path, name)):
                 yield ndx
-
-
+        return dirs, nondirs
 #    ans = com_cifs_Walk(conn, 'SHARE_FOLDER',file_path= '/')
-
-
-cifs_inst = CommonNetworkCIFS('th-zfs-1.beaverbay.local', 'TankAll')
-cifs_inst.com_cifs_directory_file_list(r'\\th-zfs-1.beaverbay.local\TankAll\Backups')
-cifs_inst.com_cifs_file_walk(r'\\th-zfs-1.beaverbay.local\TankAll\Backups')
