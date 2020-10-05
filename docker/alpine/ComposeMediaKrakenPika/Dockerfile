@@ -31,6 +31,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   net-snmp-dev \
   openldap-dev \
   portaudio-dev \
+  krb5-dev \
   postgresql-client \
   py3-psycopg2 \
   py3-psutil \
