@@ -20,6 +20,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   cifs-utils \
   nfs-utils \
   libressl \
+  libressl-dev \
   net-snmp \
   python3 \
   openrc \
@@ -36,6 +37,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
     python3-dev \
     linux-headers \
     musl-dev \
+    libressl-dev \
   && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
