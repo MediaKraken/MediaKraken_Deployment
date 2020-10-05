@@ -29,7 +29,6 @@ transmissionrpc==0.11
 passwordmeter==0.1.8
 cssmin==0.2.0
 incremental==17.5.0
-pysmb==1.1.27
 python-stdnum==1.11
 Babel==2.8.0
 docker==4.3.1
@@ -62,3 +61,5 @@ uritemplate==3.0.1
 wcwidth==0.1.7
 httplib2.ca_certs_locater==0.2.0
 speedtest-cli==2.1.2
+pysmb==1.2.2  # due to file scan program
+smbprotocol[kerberos]==1.2.0  # due to file scan program

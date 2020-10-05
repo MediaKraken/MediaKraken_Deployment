@@ -19,6 +19,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   git \
   gcc \
   g++ \
+  krb5-dev \
   libstdc++ \
   jpeg-dev \
   libffi-dev \
