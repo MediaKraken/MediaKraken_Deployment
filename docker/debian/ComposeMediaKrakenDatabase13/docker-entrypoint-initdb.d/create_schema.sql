@@ -262,23 +262,6 @@ CREATE TABLE public.mm_media_remote (
 ALTER TABLE public.mm_media_remote OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 17036)
--- Name: mm_media_share; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.mm_media_share (
-    mm_media_share_guid uuid NOT NULL,
-    mm_media_share_type text,
-    mm_media_share_user text,
-    mm_media_share_password text,
-    mm_media_share_server text,
-    mm_media_share_path text
-);
-
-
-ALTER TABLE public.mm_media_share OWNER TO postgres;
-
---
 -- TOC entry 217 (class 1259 OID 17042)
 -- Name: mm_metadata_album; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -894,16 +877,6 @@ COPY public.mm_media_remote (mmr_media_guid, mmr_media_link_id, mmr_media_uuid, 
 
 
 --
--- TOC entry 3316 (class 0 OID 17036)
--- Dependencies: 216
--- Data for Name: mm_media_share; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.mm_media_share (mm_media_share_guid, mm_media_share_type, mm_media_share_user, mm_media_share_password, mm_media_share_server, mm_media_share_path) FROM stdin;
-\.
-
-
---
 -- TOC entry 3317 (class 0 OID 17042)
 -- Dependencies: 217
 -- Data for Name: mm_metadata_album; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -1324,15 +1297,6 @@ ALTER TABLE ONLY public.mm_media_dir
 
 ALTER TABLE ONLY public.mm_media
     ADD CONSTRAINT mm_media_pk PRIMARY KEY (mm_media_guid);
-
-
---
--- TOC entry 3017 (class 2606 OID 17233)
--- Name: mm_media_share mm_media_share_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.mm_media_share
-    ADD CONSTRAINT mm_media_share_pk PRIMARY KEY (mm_media_share_guid);
 
 
 --

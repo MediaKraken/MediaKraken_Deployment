@@ -382,6 +382,11 @@ if db_connection.db_version_check() < 31:
     db_connection.db_version_update(31)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 32:
+    db_connection.db_query('DROP TABLE mm_media_share;')
+    db_connection.db_version_update(32)
+    db_connection.db_commit()
+
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names

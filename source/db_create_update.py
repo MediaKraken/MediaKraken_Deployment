@@ -39,15 +39,6 @@ if db_connection.db_table_count('mm_version') == 0:
     db_connection.db_query(
         'insert into mm_version (mm_version_no) values (%s)' % common_version.DB_VERSION)
 
-# create tables for media shares to mount
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_share_guid uuid'
-                       ' CONSTRAINT mm_media_share_pk PRIMARY KEY,'
-                       ' mm_media_share_type text,'
-                       ' mm_media_share_user text,'
-                       ' mm_media_share_password text,'
-                       ' mm_media_share_server text,'
-                       ' mm_media_share_path text)')
-
 # create tables for media directories to scan
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_guid uuid'
                        ' CONSTRAINT mm_media_dir_pk PRIMARY KEY,'
