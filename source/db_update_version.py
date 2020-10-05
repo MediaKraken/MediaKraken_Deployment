@@ -384,6 +384,9 @@ if db_connection.db_version_check() < 31:
 
 if db_connection.db_version_check() < 32:
     db_connection.db_query('DROP TABLE mm_media_share;')
+    db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_share_guid;')
+    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_username text;')
+    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_password text;')
     db_connection.db_version_update(32)
     db_connection.db_commit()
 

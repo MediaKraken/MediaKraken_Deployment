@@ -45,11 +45,9 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_gu
                        ' mm_media_dir_path text,'
                        ' mm_media_dir_class_type smallint,'
                        ' mm_media_dir_last_scanned timestamp,'
-                       ' mm_media_dir_share_guid uuid,'
-                       ' mm_media_dir_status jsonb)')
-if db_connection.db_table_index_check('mm_media_dir_idx_share') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_media_dir_idx_share ON mm_media_dir(mm_media_dir_share_guid)')
+                       ' mm_media_dir_status jsonb,'
+                       ' mm_media_dir_username text,'
+                       ' mm_media_dir_password text)')
 
 '''
 ALTER TABLE mm_media_dir

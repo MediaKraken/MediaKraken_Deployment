@@ -235,9 +235,10 @@ CREATE TABLE public.mm_media_dir (
     mm_media_dir_guid uuid NOT NULL,
     mm_media_dir_path text,
     mm_media_dir_last_scanned timestamp without time zone,
-    mm_media_dir_share_guid uuid,
     mm_media_dir_status jsonb,
-    mm_media_dir_class_type smallint
+    mm_media_dir_class_type smallint,
+    mm_media_dir_username text,
+    mm_media_dir_password text,
 );
 
 
@@ -862,7 +863,7 @@ COPY public.mm_media (mm_media_guid, mm_media_metadata_guid, mm_media_path, mm_m
 -- Data for Name: mm_media_dir; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.mm_media_dir (mm_media_dir_guid, mm_media_dir_path, mm_media_dir_last_scanned, mm_media_dir_share_guid, mm_media_dir_status, mm_media_dir_class_type) FROM stdin;
+COPY public.mm_media_dir (mm_media_dir_guid, mm_media_dir_path, mm_media_dir_last_scanned, mm_media_dir_status, mm_media_dir_class_type) FROM stdin;
 \.
 
 
@@ -1706,14 +1707,6 @@ CREATE INDEX mm_link_json_idxgin ON public.mm_link USING gin (mm_link_json);
 --
 
 CREATE INDEX mm_media_anime_name_trigram_idx ON public.mm_metadata_anime USING gist (mm_media_anime_name public.gist_trgm_ops);
-
-
---
--- TOC entry 3008 (class 1259 OID 17305)
--- Name: mm_media_dir_idx_share; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX mm_media_dir_idx_share ON public.mm_media_dir USING btree (mm_media_dir_share_guid);
 
 
 --
