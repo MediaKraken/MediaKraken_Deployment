@@ -27,6 +27,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   linux-headers \
   musl-dev \
+  krb5-dev \
   && pip3 install --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del \
