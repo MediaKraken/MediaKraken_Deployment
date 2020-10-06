@@ -70,12 +70,12 @@
                                             {% for row_data in media_dir %}
                                             <tr>
                                                 <td>{{ loop.index + (page - 1) * per_page }}</td>
-                                                <td>{{ row_data[0] }}</td>
                                                 <td>{{ row_data[1] }}</td>
-                                                {% if row_data[2]|string == '1970-01-01 00:00:01' %}
+                                                <td>{{ row_data[2] }}</td>
+                                                {% if row_data[3]|string == '1970-01-01 00:00:01' %}
                                                 <td><i>Never Scanned</i></td>
                                                 {% else %}
-                                                <td>{{ row_data[2] }}</td>
+                                                <td>{{ row_data[3] }}</td>
                                                 {% endif %}
                                                 <div class="pull-right action-buttons">
                                                     <td>
