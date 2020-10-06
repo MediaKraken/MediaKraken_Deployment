@@ -65,9 +65,8 @@ def worker(audit_directory):
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
         file_data = []
-        smb_stuff = common_network_cifs.CommonCIFSShare()
         addr, share, path = common_string.com_string_unc_to_addr_path(dir_path)
-        smb_stuff.com_cifs_connect(addr)
+        smb_stuff = common_network_cifs.CommonCIFSShare(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
                 # TODO can I do os.path.join with UNC?
@@ -275,15 +274,14 @@ for row_data in db_connection.db_audit_paths():
                                                          message_text={"Audit Path": str(row_data)})
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
-        smb_stuff = common_network_cifs.CommonCIFSShare()
         addr, share, path = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
-        smb_stuff.com_cifs_connect(addr)
+        smb_stuff = common_network_cifs.CommonCIFSShare(ip_addr=addr)
         if smb_stuff.com_cifs_share_directory_check(share, path):
             if datetime.strptime(time.ctime(
                     smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
                     "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
                 audit_directories.append((row_data['mm_media_dir_path'],
-                                          str(row_data['mm_media_class_guid']),
+                                          row_data['mm_media_dir_class_type'],
                                           row_data['mm_media_dir_guid']))
                 db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
                                                           json.dumps({'Status': 'Added to scan',
@@ -327,11 +325,6 @@ if len(audit_directories) > 0:
 
 # commit
 db_connection.db_commit()
-
-# vacuum tables that had records added
-# TODO psycopg2.errors.ActiveSqlTransaction: VACUUM cannot run inside a transaction block
-# db_connection.db_pgsql_vacuum_table('mm_media')
-# db_connection.db_pgsql_vacuum_table('mm_download_que')
 
 # Cancel the consumer and return any pending messages
 channel.cancel()
