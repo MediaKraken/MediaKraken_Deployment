@@ -98,7 +98,8 @@ def db_audit_paths(self, offset=0, records=None):
     """
     self.db_cursor.execute('select mm_media_dir_path,'
                            ' mm_media_dir_class_type,'
-                           ' mm_media_dir_last_scanned'
+                           ' mm_media_dir_last_scanned,'
+                           ' mm_media_dir_guid'
                            ' from mm_media_dir'
                            ' order by mm_media_dir_class_type, mm_media_dir_path'
                            ' offset %s limit %s', (offset, records))
