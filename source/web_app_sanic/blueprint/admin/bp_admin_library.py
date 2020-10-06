@@ -34,7 +34,7 @@ async def url_bp_admin_library(request):
                                                   rabbit_host_name='mkstack_rabbitmq',
                                                   exchange_name='mkque_ex',
                                                   route_key='mkque')
-            request['flash']('Scheduled media scan.', 'success')
+            # TODO request['flash']('Scheduled media scan.', 'success')
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'stuff': 'scheduled media scan'})
