@@ -55,7 +55,9 @@ async def url_bp_admin(request):
     row_data = await request.app.db_functions.db_library_path_status(db_connection=db_connection)
     if row_data is not None:
         for dir_path in row_data:
-            data_scan_info.append((dir_path[0], dir_path[1]['Status'], dir_path[1]['Pct']))
+            data_scan_info.append((dir_path['mm_media_dir_path'],
+                                   dir_path['mm_media_dir_status']['Status'],
+                                   dir_path['mm_media_dir_status']['Pct']))
     if os.environ['SWARMIP'] != 'None':
         mediakraken_ip = os.environ['SWARMIP']
     else:
