@@ -167,7 +167,7 @@ async def db_library_paths(self, offset=0, records=None, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetch('select mm_media_dir_path,'
                                ' mm_media_dir_class_type,'
-                               ' mm_media_dir_last_scanned,'
+                               ' mm_media_dir_last_scanned'
                                ' from mm_media_dir'
                                ' order by mm_media_dir_class_type, mm_media_dir_path'
                                ' offset $1 limit $2', offset, records)
