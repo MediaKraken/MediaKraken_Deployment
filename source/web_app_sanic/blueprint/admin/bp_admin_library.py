@@ -56,7 +56,7 @@ async def url_bp_admin_library(request):
                                                                     db_connection):
         return_media.append((row_data['mm_media_dir_guid'],
                              row_data['mm_media_dir_path'],
-                             common_global.DLMediaType.row_data['mm_media_dir_class_type'].name,
+                             common_global.DLMediaType(row_data['mm_media_dir_class_type']).name,
                              row_data['mm_media_dir_last_scanned'],
                              ))
     await request.app.db_pool.release(db_connection)
