@@ -69,9 +69,6 @@ async def url_bp_admin(request):
     media_library_count = common_internationalization.com_inter_number_format(
         await request.app.db_functions.db_table_count(table_name='mm_media_dir',
                                                       db_connection=db_connection))
-    share_count = common_internationalization.com_inter_number_format(
-        await request.app.db_functions.db_table_count(table_name='mm_media_share',
-                                                      db_connection=db_connection))
     metadata_to_fetch = common_internationalization.com_inter_number_format(
         await request.app.db_functions.db_table_count(table_name='mm_download_que',
                                                       db_connection=db_connection))
@@ -84,16 +81,13 @@ async def url_bp_admin(request):
         'data_server_info_server_ip_external': outside_ip,
         'data_server_info_server_version': common_version.APP_VERSION,
         'data_server_uptime': common_system.com_system_uptime(),
-        'data_active_streams': common_internationalization.com_inter_number_format(
-            0),
+        'data_active_streams': common_internationalization.com_inter_number_format(0),
         'data_alerts_dismissable': data_alerts_dismissable,
         'data_alerts': data_alerts,
         'data_count_media_files': media_file_count,
         'data_count_matched_media': media_matched_count,
-        'data_count_streamed_media': common_internationalization.com_inter_number_format(
-            0),
+        'data_count_streamed_media': common_internationalization.com_inter_number_format(0),
         'data_library': media_library_count,
-        'data_share': share_count,
         'data_transmission_active': data_transmission_active,
         'data_scan_info': data_scan_info,
         'data_count_meta_fetch': metadata_to_fetch,
