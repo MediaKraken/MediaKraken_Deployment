@@ -52,12 +52,11 @@ async def url_bp_admin(request):
         await request.app.db_functions.db_status_json_read(db_connection=db_connection))
     if 'Status' in scanning_json:
         data_scan_info.append(('System', scanning_json['Status'], scanning_json['Pct']))
-    row_data = await request.app.db_functions.db_library_path_status(db_connection=db_connection)
-    if row_data is not None:
-        for dir_path in row_data:
-            data_scan_info.append((dir_path['mm_media_dir_path'],
-                                   dir_path['mm_media_dir_status']['Status'],
-                                   dir_path['mm_media_dir_status']['Pct']))
+    for row_data in await request.app.db_functions.db_library_path_status(
+            db_connection=db_connection):
+        data_scan_info.append((row_data['mm_media_dir_path'],
+                               row_data['mm_media_dir_status']['Status'],
+                               row_data['mm_media_dir_status']['Pct']))
     if os.environ['SWARMIP'] != 'None':
         mediakraken_ip = os.environ['SWARMIP']
     else:
