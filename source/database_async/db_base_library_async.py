@@ -117,11 +117,11 @@ async def db_library_path_status(self, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchrow('select mm_media_dir_path,'
-                                  ' mm_media_dir_status::json'
-                                  ' from mm_media_dir'
-                                  ' where mm_media_dir_status IS NOT NULL'
-                                  ' order by mm_media_dir_path')
+    return await db_conn.fetch('select mm_media_dir_path,'
+                               ' mm_media_dir_status::json'
+                               ' from mm_media_dir'
+                               ' where mm_media_dir_status IS NOT NULL'
+                               ' order by mm_media_dir_path')
 
 
 async def db_library_path_update_by_uuid(self, lib_path, class_guid, lib_guid, db_connection=None):
