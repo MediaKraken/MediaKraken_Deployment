@@ -131,6 +131,7 @@ class CommonCIFSShare:
         try:
             self.smb_conn.connect(ip_addr, 139)
         except socket.gaierror:
+            # TODO send notification that it failed
             return False
         return True
 
