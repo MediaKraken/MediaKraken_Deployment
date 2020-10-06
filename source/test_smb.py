@@ -2,7 +2,8 @@ from common import common_network_cifs
 
 # works fine against my main samba array
 
-cifs_inst = common_network_cifs.CommonCIFSShare('th-zfs-1.beaverbay.local')
+cifs_inst = common_network_cifs.CommonCIFSShare()
+cifs_inst.com_cifs_open('th-zfs-1.beaverbay.local')
 print(cifs_inst.com_cifs_share_list_by_connection())
 for data in cifs_inst.com_cifs_walk(share_name='TankAll', file_path='Backups'):
     print(data)

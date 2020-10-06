@@ -66,7 +66,8 @@ def worker(audit_directory):
     if dir_path[:1] == "\\":
         file_data = []
         addr, share, path = common_string.com_string_unc_to_addr_path(dir_path)
-        smb_stuff = common_network_cifs.CommonCIFSShare(addr)
+        smb_stuff = common_network_cifs.CommonCIFSShare()
+        smb_stuff.com_cifs_open(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
                 # TODO can I do os.path.join with UNC?
@@ -275,21 +276,22 @@ for row_data in db_connection.db_audit_paths():
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
         addr, share, path = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
-        smb_stuff = common_network_cifs.CommonCIFSShare(ip_addr=addr)
-        if smb_stuff.com_cifs_share_directory_check(share, path):
-            if datetime.strptime(time.ctime(
-                    smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
-                    "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
-                audit_directories.append((row_data['mm_media_dir_path'],
-                                          row_data['mm_media_dir_class_type'],
-                                          row_data['mm_media_dir_guid']))
-                db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
-                                                          json.dumps({'Status': 'Added to scan',
-                                                                      'Pct': 100}))
-        else:
-            db_connection.db_notification_insert('UNC Library path not found: %s'
-                                                 % row_data['mm_media_dir_path'], True)
-        smb_stuff.com_cifs_close()
+        smb_stuff = common_network_cifs.CommonCIFSShare()
+        if smb_stuff.com_cifs_open(ip_addr=addr):
+            if smb_stuff.com_cifs_share_directory_check(share, path):
+                if datetime.strptime(time.ctime(
+                        smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
+                        "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+                    audit_directories.append((row_data['mm_media_dir_path'],
+                                              row_data['mm_media_dir_class_type'],
+                                              row_data['mm_media_dir_guid']))
+                    db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
+                                                              json.dumps({'Status': 'Added to scan',
+                                                                          'Pct': 100}))
+            else:
+                db_connection.db_notification_insert('UNC Library path not found: %s'
+                                                     % row_data['mm_media_dir_path'], True)
+            smb_stuff.com_cifs_close()
     else:
         # make sure the path still exists
         if not os.path.isdir(os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path'])):

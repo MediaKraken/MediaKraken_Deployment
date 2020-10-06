@@ -17,6 +17,7 @@
 """
 
 import os
+import socket
 
 import smbclient
 from smb.SMBConnection import SMBConnection
@@ -121,10 +122,17 @@ class CommonCIFSShare:
     Handle CIFS shares
     """
 
-    def __init__(self, ip_addr, user_name='guest', user_password=''):
+    def __init__(self):
+        self.smb_conn = None
+
+    def com_cifs_open(self, ip_addr, user_name='guest', user_password=''):
         self.smb_conn = SMBConnection(user_name, user_password, 'My Computer', 'Server',
                                       use_ntlm_v2=True)
-        self.smb_conn.connect(ip_addr, 139)
+        try:
+            self.smb_conn.connect(ip_addr, 139)
+        except socket.gaierror:
+            return False
+        return True
 
     def com_cifs_share_list_by_connection(self):
         """
