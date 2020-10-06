@@ -37,7 +37,6 @@ blueprint_admin_content = Blueprint.group(blueprint_admin,
                                           blueprint_admin_periodical,
                                           blueprint_admin_report,
                                           blueprint_admin_settings,
-                                          blueprint_admin_share,
                                           blueprint_admin_transmission,
                                           blueprint_admin_users,
                                           )
