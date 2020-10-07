@@ -68,7 +68,8 @@ def db_download_update_provider(self, provider_name, guid):
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         'download update provider': provider_name,
         'guid': guid})
-    self.db_cursor.execute('update mm_download_que set mdq_provider = %s where mdq_id = %s',
+    self.db_cursor.execute('update mm_download_que set mdq_provider = %s'
+                           ' where mdq_id = %s',
                            (provider_name, guid))
 
 
@@ -115,7 +116,8 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
     # que type is movie, tv, etc as those numbers could be reused
     self.db_cursor.execute('select mdq_new_uuid'
                            ' from mm_download_que'
-                           ' where mdq_provider = %s and mdq_que_type = %s'
+                           ' where mdq_provider = %s'
+                           ' and mdq_que_type = %s'
                            ' and mdq_download_json->\'ProviderMetaID\' ? %s limit 1',
                            (provider_name, download_que_type, provider_id))
     # if no data, send none back

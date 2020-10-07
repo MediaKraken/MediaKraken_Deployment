@@ -156,6 +156,7 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
     # que type is movie, tv, etc as those numbers could be reused
     return await db_conn.fetchval('select mdq_new_uuid'
                                   ' from mm_download_que'
-                                  ' where mdq_provider = $1 and mdq_que_type = $2'
+                                  ' where mdq_provider = $1'
+                                  ' and mdq_que_type = $2'
                                   ' and mdq_download_json->\'ProviderMetaID\' ? $3 limit 1',
                                   provider_name, download_que_type, str(provider_id))
