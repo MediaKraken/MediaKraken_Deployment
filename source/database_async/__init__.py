@@ -152,7 +152,8 @@ class MKServerDatabaseAsync:
         import db_metadata_guid_from_media_guid, \
         db_meta_insert_tmdb, \
         db_meta_guid_by_imdb, \
-        db_meta_guid_by_tmdb
+        db_meta_guid_by_tmdb, \
+        db_find_metadata_guid
     from database_async.db_base_metadata_game_async \
         import db_meta_game_by_guid, \
         db_meta_game_by_sha1, \
