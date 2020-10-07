@@ -216,7 +216,7 @@ def worker(audit_directory):
                     # media id begin and download que insert
                     db_connection.db_download_insert(provider='Z',
                                                      que_type=0,
-                                                     down_json=json.dumps({'MediaID': media_id,
+                                                     down_json=json.dumps({'MediaID': str(media_id),
                                                                            'Path': file_name}),
                                                      down_new_uuid=uuid.uuid4(),
                                                      down_class_uuid=new_class_type_uuid
