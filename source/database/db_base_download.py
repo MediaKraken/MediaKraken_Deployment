@@ -27,10 +27,11 @@ def db_download_insert(self, provider, que_type, down_json, down_new_uuid, down_
     """
     new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_download_que (mdq_id,'
-                           'mdq_provider,'
-                           'mdq_que_type,'
-                           'mdq_download_json,'
-                           'mdq_new_uuid)'
+                           ' mdq_provider,'
+                           ' mdq_que_type,'
+                           ' mdq_download_json,'
+                           ' mdq_new_uuid,'
+                           ' mdq_class_uuid)'
                            ' values (%s,%s,%s,%s,%s,%s)',
                            (new_guid, provider, que_type, down_json,
                             down_new_uuid, down_class_uuid))
