@@ -196,7 +196,7 @@ def worker(audit_directory):
                     channel.basic_publish(exchange='mkque_ffmpeg_ex',
                                           routing_key='mkffmpeg',
                                           body=json.dumps(
-                                              {'Type': 'FFProbe', 'Media UUID': media_id,
+                                              {'Type': 'FFProbe', 'Media UUID': str(media_id),
                                                'Media Path': file_name}),
                                           properties=pika.BasicProperties(content_type='text/plain',
                                                                           delivery_mode=2))
@@ -206,7 +206,7 @@ def worker(audit_directory):
                                               routing_key='mkroku',
                                               body=json.dumps(
                                                   {'Type': 'Roku', 'Subtype': 'Thumbnail',
-                                                   'Media UUID': media_id,
+                                                   'Media UUID': str(media_id),
                                                    'Media Path': file_name}),
                                               properties=pika.BasicProperties(
                                                   content_type='text/plain',
