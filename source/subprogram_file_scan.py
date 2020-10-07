@@ -60,7 +60,7 @@ def worker(audit_directory):
     # update the timestamp now so any other media added DURING this scan don't get skipped
     db_connection.db_audit_dir_timestamp_update(dir_path)
     db_connection.db_audit_path_update_status(dir_guid,
-                                              json.dumps({'Status': 'File search scan', 'Pct': 0}))
+                                              json.dumps({'Status': 'File search scan', 'Pct': 'NA'}))
     db_connection.db_commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
