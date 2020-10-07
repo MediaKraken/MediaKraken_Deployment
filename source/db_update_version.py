@@ -390,6 +390,12 @@ if db_connection.db_version_check() < 32:
     db_connection.db_version_update(32)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 33:
+    db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN mdq_class_uuid;')
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN mdq_class_uuid smallint;')
+    db_connection.db_version_update(33)
+    db_connection.db_commit()
+
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names

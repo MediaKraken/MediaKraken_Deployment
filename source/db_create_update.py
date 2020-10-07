@@ -860,7 +860,7 @@ if db_connection.db_table_index_check('mm_metadata_person_idxgin_meta_json') is 
 db_connection.db_query('create table IF NOT EXISTS mm_download_que (mdq_id uuid'
                        ' CONSTRAINT mdq_id_pk primary key, mdq_provider text,'
                        ' mdq_que_type smallint, mdq_download_json jsonb,'
-                       ' mdq_new_uuid uuid, mdq_class_uuid uuid)')
+                       ' mdq_new_uuid uuid, mdq_class_uuid smallint)')
 if db_connection.db_table_index_check('mm_download_idx_provider') is None:
     db_connection.db_query(
         'CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
