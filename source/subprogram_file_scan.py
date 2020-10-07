@@ -188,29 +188,29 @@ def worker(audit_directory):
                 media_id = uuid.uuid4()
                 db_connection.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
                                               media_json)
-                # verify ffprobe and bif should run on the data
-                if ffprobe_bif_data and file_extension[
-                                        1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
-                        and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
-                    # Send a message so ffprobe runs
-                    channel.basic_publish(exchange='mkque_ffmpeg_ex',
-                                          routing_key='mkffmpeg',
-                                          body=json.dumps(
-                                              {'Type': 'FFProbe', 'Media UUID': str(media_id),
-                                               'Media Path': file_name}),
-                                          properties=pika.BasicProperties(content_type='text/plain',
-                                                                          delivery_mode=2))
-                    if original_media_class != common_global.DLMediaType.Music.value:
-                        # Send a message so roku thumbnail is generated
-                        channel.basic_publish(exchange='mkque_roku_ex',
-                                              routing_key='mkroku',
-                                              body=json.dumps(
-                                                  {'Type': 'Roku', 'Subtype': 'Thumbnail',
-                                                   'Media UUID': str(media_id),
-                                                   'Media Path': file_name}),
-                                              properties=pika.BasicProperties(
-                                                  content_type='text/plain',
-                                                  delivery_mode=2))
+                # # verify ffprobe and bif should run on the data
+                # if ffprobe_bif_data and file_extension[
+                #                         1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                #         and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
+                #     # Send a message so ffprobe runs
+                #     channel.basic_publish(exchange='mkque_ffmpeg_ex',
+                #                           routing_key='mkffmpeg',
+                #                           body=json.dumps(
+                #                               {'Type': 'FFProbe', 'Media UUID': str(media_id),
+                #                                'Media Path': file_name}),
+                #                           properties=pika.BasicProperties(content_type='text/plain',
+                #                                                           delivery_mode=2))
+                #     if original_media_class != common_global.DLMediaType.Music.value:
+                #         # Send a message so roku thumbnail is generated
+                #         channel.basic_publish(exchange='mkque_roku_ex',
+                #                               routing_key='mkroku',
+                #                               body=json.dumps(
+                #                                   {'Type': 'Roku', 'Subtype': 'Thumbnail',
+                #                                    'Media UUID': str(media_id),
+                #                                    'Media Path': file_name}),
+                #                               properties=pika.BasicProperties(
+                #                                   content_type='text/plain',
+                #                                   delivery_mode=2))
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert
