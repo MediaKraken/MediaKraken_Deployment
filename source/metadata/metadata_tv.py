@@ -51,8 +51,8 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                                                                          'metadata_tv_lookup': str(
                                                                              file_name)})
     # determine provider id's from nfo/xml if they exist
-    nfo_data = metadata_nfo_xml.nfo_file_tv(download_data['Path'])
-    imdb_id, tvdb_id, tmdb_id = metadata_nfo_xml.nfo_id_lookup_tv(nfo_data)
+    nfo_data = await metadata_nfo_xml.nfo_file_tv(download_data['Path'])
+    imdb_id, tvdb_id, tmdb_id = await metadata_nfo_xml.nfo_id_lookup_tv(nfo_data)
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "tv look": imdb_id,

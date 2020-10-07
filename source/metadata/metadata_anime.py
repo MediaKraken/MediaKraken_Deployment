@@ -48,8 +48,8 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                          'meta anime look filename': str(
                                                                              file_name)})
     # determine provider id's from nfo/xml if they exist
-    nfo_data, xml_data = metadata_nfo_xml.nfo_xml_file(file_name)
-    imdb_id, tmdb_id, anidb_id = metadata_nfo_xml.nfo_xml_id_lookup(
+    nfo_data, xml_data = await metadata_nfo_xml.nfo_xml_file(file_name)
+    imdb_id, tmdb_id, anidb_id = await metadata_nfo_xml.nfo_xml_id_lookup(
         nfo_data, xml_data)
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
