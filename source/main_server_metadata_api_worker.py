@@ -505,7 +505,6 @@ async def main(loop):
                     if metadata_uuid is None:
                         # begin id process
                         metadata_uuid = await metadata_identification.metadata_identification(
-                            db_connection,
                             row_data['mdq_class_uuid'],
                             row_data['mdq_download_json'],
                             row_data['mdq_id'],
