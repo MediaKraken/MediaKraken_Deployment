@@ -112,7 +112,8 @@ class MKServerDatabaseAsync:
         db_media_path_by_uuid, \
         db_media_rating_update, \
         db_media_unmatched_list, \
-        db_media_unmatched_list_count
+        db_media_unmatched_list_count, \
+        db_update_media_id
     from database_async.db_base_media_game_async \
         import db_media_game_system_list_count, \
         db_media_game_system_list, \

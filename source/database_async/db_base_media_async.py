@@ -403,3 +403,24 @@ async def db_media_unmatched_list_count(self, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetchval('select count(*) from mm_media'
                                   ' where mm_media_metadata_guid is NULL')
+
+
+async def db_update_media_id(self, media_guid, metadata_guid, db_connection=None):
+    """
+    # update the mediaid
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    await db_conn.execute('update mm_media set mm_media_metadata_guid = $1'
+                          ' where mm_media_guid = $2', metadata_guid, media_guid)
