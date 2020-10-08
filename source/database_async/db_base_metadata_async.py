@@ -117,27 +117,26 @@ async def db_find_metadata_guid(self, media_name, media_release_year, db_connect
     metadata_guid = None
     if media_release_year is not None:
         # for year and -3/+3 year as well
-        # TODO readd lower to json orig title
-        await db_conn.execute('select mm_metadata_guid from mm_metadata_movie'
-                              ' where (LOWER(mm_media_name) = $1'
-                              ' or lower(mm_metadata_json->>\'original_title\') = $2)'
-                              ' and substring(mm_metadata_json->>\'release_date\' from 0 for 5)'
-                              ' in ($3,$4,$5,$6,$7,$8,$9)',
-                              media_name.lower(), media_name.lower(),
-                              str(media_release_year),
-                              str(int(media_release_year) + 1),
-                              str(int(media_release_year) + 2),
-                              str(int(media_release_year) + 3),
-                              str(int(media_release_year) - 1),
-                              str(int(media_release_year) - 2),
-                              str(int(media_release_year) - 3))
+        meta_results = await db_conn.fetch('select mm_metadata_guid from mm_metadata_movie'
+                                           ' where (LOWER(mm_media_name) = $1'
+                                           ' or lower(mm_metadata_json->>\'original_title\') = $2)'
+                                           ' and substring(mm_metadata_json->>\'release_date\''
+                                           ' from 0 for 5)'
+                                           ' in ($3,$4,$5,$6,$7,$8,$9)',
+                                           media_name.lower(), media_name.lower(),
+                                           str(media_release_year),
+                                           str(int(media_release_year) + 1),
+                                           str(int(media_release_year) + 2),
+                                           str(int(media_release_year) + 3),
+                                           str(int(media_release_year) - 1),
+                                           str(int(media_release_year) - 2),
+                                           str(int(media_release_year) - 3))
     else:
-        # TODO readd lower to json orig title
-        await db_conn.execute('select mm_metadata_guid from mm_metadata_movie'
-                              ' where (LOWER(mm_media_name) = $1'
-                              ' or lower(mm_metadata_json->>\'original_title\') = $2)',
-                              media_name.lower(), media_name.lower())
-    for row_data in await db_conn.fetch():
+        meta_results = await db_conn.fetch('select mm_metadata_guid from mm_metadata_movie'
+                                           ' where (LOWER(mm_media_name) = $1'
+                                           ' or lower(mm_metadata_json->>\'original_title\') = $2)',
+                                           media_name.lower(), media_name.lower())
+    for row_data in meta_results:
         # TODO should probably handle multiple results better.   Perhaps a notification?
         metadata_guid = row_data['mm_metadata_guid']
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
