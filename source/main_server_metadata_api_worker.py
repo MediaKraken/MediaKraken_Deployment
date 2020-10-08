@@ -506,10 +506,7 @@ async def main(loop):
                         # begin id process
                         metadata_uuid = await metadata_identification.metadata_identification(
                             db_connection,
-                            row_data['mdq_class_uuid'],
-                            row_data['mdq_download_json'],
-                            row_data['mdq_que_type'],
-                            row_data['mdq_new_uuid'],
+                            row_data,
                             file_name)
                     # allow NONE to be set so, unmatched stuff can work for skipping
                     metadata_last_id = metadata_uuid

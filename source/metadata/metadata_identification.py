@@ -35,8 +35,7 @@ from . import metadata_sports
 from . import metadata_tv
 
 
-async def metadata_identification(db_connection, class_type, download_que_json,
-                                  download_que_type, dl_new_uuid, guessit_file_name):
+async def metadata_identification(db_connection, dl_row, guessit_file_name):
     """
     Determine which provider to start lookup via class text
     """
@@ -48,69 +47,69 @@ async def metadata_identification(db_connection, class_type, download_que_json,
                                                                          'caller':
                                                                              inspect.stack()[1][3]})
     metadata_uuid = None
-
-    if class_type == common_global.DLMediaType.Movie.value \
-            or class_type == common_global.DLMediaType.Movie_Extras.value \
-            or class_type == common_global.DLMediaType.Movie_Subtitle.value \
-            or class_type == common_global.DLMediaType.Movie_Theme.value \
-            or class_type == common_global.DLMediaType.Movie_Trailer.value:
-        metadata_uuid = await metadata_movie.metadata_movie_lookup(db_connection,
-                                                                   download_que_json,
-                                                                   dl_new_uuid,
-                                                                   guessit_file_name)
-    elif class_type == common_global.DLMediaType.Movie_Home.value \
-            or class_type == common_global.DLMediaType.Picture.value:
-        metadata_uuid = uuid.uuid4()
-
     # find data by class type
-    if class_type == common_global.DLMediaType.Adult.value:
+    if dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie.value \
+            or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Extras.value \
+            or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Subtitle.value \
+            or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Theme.value \
+            or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Trailer.value:
+        metadata_uuid = await metadata_movie.metadata_movie_lookup(db_connection,
+                                                                   dl_row['mdq_download_json'],
+                                                                   dl_row['mdq_new_uuid'],
+                                                                   guessit_file_name)
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Home.value \
+            or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Picture.value:
+        metadata_uuid = uuid.uuid4()
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Adult.value:
         metadata_uuid = await metadata_adult.metadata_adult_lookup(db_connection,
-                                                                   download_que_json,
+                                                                   dl_row['mdq_download_json'],
+                                                                   dl_row['mdq_new_uuid'],
                                                                    guessit_file_name)
-    elif class_type == common_global.DLMediaType.Anime.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Anime.value:
         metadata_uuid = await metadata_anime.metadata_anime_lookup(db_connection,
-                                                                   download_que_json,
+                                                                   dl_row['mdq_download_json'],
+                                                                   dl_row['mdq_new_uuid'],
                                                                    guessit_file_name)
-    elif class_type == common_global.DLMediaType.Publication_Book.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Publication_Book.value:
         metadata_uuid = await metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                               download_que_json)
-    elif class_type == common_global.DLMediaType.Game_CHD.value:
+                                                                               dl_row['mdq_download_json'])
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_CHD.value:
         metadata_uuid = await db_connection.db_meta_game_by_name_and_system(os.path.basename(
-            os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
+            os.path.splitext(dl_row['mdq_download_json']['Path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = common_hash.com_hash_sha1_c(download_que_json['Path'])
+            sha1_value = common_hash.com_hash_sha1_c(dl_row['mdq_download_json']['Path'])
             metadata_uuid = await db_connection.db_meta_game_by_sha1(sha1_value)
-    elif class_type == common_global.DLMediaType.Game_ISO.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_ISO.value:
         metadata_uuid = await db_connection.db_meta_game_by_name_and_system(os.path.basename(
-            os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
+            os.path.splitext(dl_row['mdq_download_json']['Path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = common_hash.com_hash_sha1_c(download_que_json['Path'])
+            sha1_value = common_hash.com_hash_sha1_c(dl_row['mdq_download_json']['Path'])
             metadata_uuid = await db_connection.db_meta_game_by_sha1(sha1_value)
-    elif class_type == common_global.DLMediaType.Game_ROM.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_ROM.value:
         metadata_uuid = await db_connection.db_meta_game_by_name_and_system(os.path.basename(
-            os.path.splitext(download_que_json['Path'])[0]), lookup_system_id)
+            os.path.splitext(dl_row['mdq_download_json']['Path'])[0]), lookup_system_id)
         if metadata_uuid is None:
             sha1_hash = common_hash.com_hash_sha1_by_filename(
-                download_que_json['Path'])
+                dl_row['mdq_download_json']['Path'])
             if sha1_hash is not None:
                 metadata_uuid = await db_connection.db_meta_game_by_sha1(sha1_hash)
-    elif class_type == common_global.DLMediaType.Publication_Magazine.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Publication_Magazine.value:
         metadata_uuid = await metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                               download_que_json)
-    elif class_type == common_global.DLMediaType.Music.value:
+                                                                               dl_row['mdq_download_json'])
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Music.value:
         metadata_uuid = await metadata_music.metadata_music_lookup(db_connection,
-                                                                   download_que_json)
-    elif class_type == common_global.DLMediaType.Music_Lyrics.value:
+                                                                   dl_row['mdq_download_json'])
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Music_Lyrics.value:
         # search musicbrainz as the lyrics should already be in the file/record
         pass
-    elif class_type == common_global.DLMediaType.Music_Video.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Music_Video.value:
         metadata_uuid = await metadata_music_video.metadata_music_video_lookup(db_connection,
-                                                                               download_que_json[
+                                                                               dl_row['mdq_download_json'][
                                                                                    'Path'],
-                                                                               download_que_id)
-    elif class_type == common_global.DLMediaType.Sports.value:
+                                                                               dl_row['mdq_id'])
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Sports.value:
         metadata_uuid = await metadata_sports.metadata_sports_lookup(db_connection,
-                                                                     download_que_json)
+                                                                     dl_row['mdq_download_json'])
     # elif class_text == "TV Extras":
     #     # include end slash so media doesn't get chopped up
     #     metadata_uuid = await db_connection.db_read_media_path_like(os.path.abspath(
@@ -122,11 +121,11 @@ async def metadata_identification(db_connection, class_type, download_que_json,
     #                                                        download_que_json,
     #                                                        download_que_id,
     #                                                        guessit_file_name)
-    elif class_type == common_global.DLMediaType.TV.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.TV.value:
         metadata_uuid = await metadata_tv.metadata_tv_lookup(db_connection,
-                                                             download_que_json,
+                                                             dl_row['mdq_download_json'],
                                                              guessit_file_name)
-    # elif class_text == common_global.DLMediaType.TV_Theme.value:
+    # elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.TV_Theme.value:
     #     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'stuff': 'tv theme ident'})
     #     # include end slash so theme.mp3 doesn't get chopped up
     #     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'stuff': 'tv theme ident 2'})
@@ -150,7 +149,7 @@ async def metadata_identification(db_connection, class_type, download_que_json,
     #             # TODO so, the show hasn't been fetched yet.....so, no path match
     #             db_connection.db_download_update_provider(
     #                 'ZZ', download_que_id)
-    # elif class_text == common_global.DLMediaType.TV_Trailer.value:
+    # elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.TV_Trailer.value:
     #     # include end slash so theme.mp3 doesn't get chopped up
     #     metadata_uuid = db_connection.db_read_media_path_like(os.path.abspath(
     #         download_que_json['Path'].replace('/trailers/', '/').rsplit('/', 1)[0]))
@@ -161,14 +160,14 @@ async def metadata_identification(db_connection, class_type, download_que_json,
     #                                                        download_que_json,
     #                                                        download_que_id,
     #                                                        guessit_file_name)
-    elif class_type == common_global.DLMediaType.Game.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game.value:
         metadata_uuid = await metadata_game.metadata_game_lookup(db_connection,
-                                                                 download_que_json)
-    elif class_type == common_global.DLMediaType.Game_Intro.value:
+                                                                 dl_row['mdq_download_json'])
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_Intro.value:
         pass
-    elif class_type == common_global.DLMediaType.Game_Speedrun.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_Speedrun.value:
         pass
-    elif class_type == common_global.DLMediaType.Game_Superplay.value:
+    elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_Superplay.value:
         pass
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text=
