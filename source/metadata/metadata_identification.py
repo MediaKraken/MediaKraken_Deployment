@@ -54,25 +54,22 @@ async def metadata_identification(db_connection, dl_row, guessit_file_name):
             or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Theme.value \
             or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Trailer.value:
         metadata_uuid = await metadata_movie.metadata_movie_lookup(db_connection,
-                                                                   dl_row['mdq_download_json'],
-                                                                   dl_row['mdq_new_uuid'],
+                                                                   dl_row,
                                                                    guessit_file_name)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Movie_Home.value \
             or dl_row['mdq_class_uuid'] == common_global.DLMediaType.Picture.value:
         metadata_uuid = uuid.uuid4()
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Adult.value:
         metadata_uuid = await metadata_adult.metadata_adult_lookup(db_connection,
-                                                                   dl_row['mdq_download_json'],
-                                                                   dl_row['mdq_new_uuid'],
+                                                                   dl_row,
                                                                    guessit_file_name)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Anime.value:
         metadata_uuid = await metadata_anime.metadata_anime_lookup(db_connection,
-                                                                   dl_row['mdq_download_json'],
-                                                                   dl_row['mdq_new_uuid'],
+                                                                   dl_row,
                                                                    guessit_file_name)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Publication_Book.value:
         metadata_uuid = await metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                               dl_row['mdq_download_json'])
+                                                                               dl_row)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_CHD.value:
         metadata_uuid = await db_connection.db_meta_game_by_name_and_system(os.path.basename(
             os.path.splitext(dl_row['mdq_download_json']['Path'])[0]), lookup_system_id)
@@ -95,21 +92,19 @@ async def metadata_identification(db_connection, dl_row, guessit_file_name):
                 metadata_uuid = await db_connection.db_meta_game_by_sha1(sha1_hash)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Publication_Magazine.value:
         metadata_uuid = await metadata_periodicals.metadata_periodicals_lookup(db_connection,
-                                                                               dl_row['mdq_download_json'])
+                                                                               dl_row)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Music.value:
         metadata_uuid = await metadata_music.metadata_music_lookup(db_connection,
-                                                                   dl_row['mdq_download_json'])
+                                                                   dl_row)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Music_Lyrics.value:
         # search musicbrainz as the lyrics should already be in the file/record
         pass
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Music_Video.value:
         metadata_uuid = await metadata_music_video.metadata_music_video_lookup(db_connection,
-                                                                               dl_row['mdq_download_json'][
-                                                                                   'Path'],
-                                                                               dl_row['mdq_id'])
+                                                                               dl_row)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Sports.value:
         metadata_uuid = await metadata_sports.metadata_sports_lookup(db_connection,
-                                                                     dl_row['mdq_download_json'])
+                                                                     dl_row)
     # elif class_text == "TV Extras":
     #     # include end slash so media doesn't get chopped up
     #     metadata_uuid = await db_connection.db_read_media_path_like(os.path.abspath(
@@ -118,12 +113,11 @@ async def metadata_identification(db_connection, dl_row, guessit_file_name):
     #         db_connection.db_download_delete(download_que_id)
     #     else:
     #         metadata_uuid = await metadata_tv.metadata_tv_lookup(db_connection,
-    #                                                        download_que_json,
-    #                                                        download_que_id,
+    #                                                        dl_row,
     #                                                        guessit_file_name)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.TV.value:
         metadata_uuid = await metadata_tv.metadata_tv_lookup(db_connection,
-                                                             dl_row['mdq_download_json'],
+                                                             dl_row,
                                                              guessit_file_name)
     # elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.TV_Theme.value:
     #     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'stuff': 'tv theme ident'})
@@ -157,12 +151,11 @@ async def metadata_identification(db_connection, dl_row, guessit_file_name):
     #         db_connection.db_download_delete(download_que_id)
     #     else:
     #         metadata_uuid = metadata_tv.metadata_tv_lookup(db_connection,
-    #                                                        download_que_json,
-    #                                                        download_que_id,
+    #                                                        dl_row,
     #                                                        guessit_file_name)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game.value:
         metadata_uuid = await metadata_game.metadata_game_lookup(db_connection,
-                                                                 dl_row['mdq_download_json'])
+                                                                 dl_row)
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_Intro.value:
         pass
     elif dl_row['mdq_class_uuid'] == common_global.DLMediaType.Game_Speedrun.value:
