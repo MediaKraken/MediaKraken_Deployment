@@ -128,7 +128,7 @@ async def db_download_update(self, update_json, guid, update_que_id=None, db_con
                               update_json, update_que_id, guid)
     else:
         await db_conn.execute('update mm_download_que set mdq_download_json = $1'
-                              ' where mdq_id = $2', (update_json, guid))
+                              ' where mdq_id = $2', update_json, guid)
 
 
 async def db_download_que_exists(self, download_que_uuid, download_que_type,
