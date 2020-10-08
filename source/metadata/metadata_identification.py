@@ -36,7 +36,7 @@ from . import metadata_tv
 
 
 async def metadata_identification(db_connection, class_type, download_que_json,
-                                  download_que_type, guessit_file_name):
+                                  download_que_type, dl_new_uuid, guessit_file_name):
     """
     Determine which provider to start lookup via class text
     """
@@ -56,6 +56,7 @@ async def metadata_identification(db_connection, class_type, download_que_json,
             or class_type == common_global.DLMediaType.Movie_Trailer.value:
         metadata_uuid = await metadata_movie.metadata_movie_lookup(db_connection,
                                                                    download_que_json,
+                                                                   dl_new_uuid,
                                                                    guessit_file_name)
     elif class_type == common_global.DLMediaType.Movie_Home.value \
             or class_type == common_global.DLMediaType.Picture.value:

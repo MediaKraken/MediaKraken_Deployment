@@ -509,6 +509,7 @@ async def main(loop):
                             row_data['mdq_class_uuid'],
                             row_data['mdq_download_json'],
                             row_data['mdq_que_type'],
+                            row_data['mdq_new_uuid'],
                             file_name)
                     # allow NONE to be set so, unmatched stuff can work for skipping
                     metadata_last_id = metadata_uuid
