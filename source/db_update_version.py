@@ -396,6 +396,14 @@ if db_connection.db_version_check() < 33:
     db_connection.db_version_update(33)
     db_connection.db_commit()
 
+
+if db_connection.db_version_check() < 34:
+    db_connection.db_query('ALTER TABLE mm_link ADD COLUMN mm_link_username text;')
+    db_connection.db_query('ALTER TABLE mm_link ADD COLUMN mm_link_password text;')
+    db_connection.db_version_update(34)
+    db_connection.db_commit()
+
+
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names

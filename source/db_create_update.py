@@ -95,7 +95,9 @@ if db_connection.db_table_index_check('mmr_media_idx_link_uuid') is None:
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_link (mm_link_guid uuid'
                        ' CONSTRAINT mm_link_guid_pk PRIMARY KEY,'
                        ' mm_link_name text,'
-                       ' mm_link_json jsonb)')
+                       ' mm_link_json jsonb,'
+                       ' mm_link_username text,'
+                       ' mm_link_password text)')
 if db_connection.db_table_index_check('mm_link_json_idxgin') is None:
     db_connection.db_query('CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json)')
 if db_connection.db_table_index_check('mm_link_idx_name') is None:
