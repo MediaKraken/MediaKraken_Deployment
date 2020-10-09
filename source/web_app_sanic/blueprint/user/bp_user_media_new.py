@@ -27,7 +27,7 @@ async def url_bp_user_media_new(request):
              media_file['mm_media_name'], None))
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page=page,
                                                                       url='/user/user_media_new',
-                                                                      item_count=await request.app.db_functions.db_meta_movie_count(
+                                                                      item_count=await request.app.db_functions.db_media_new_count(
                                                                           request.ctx.session[
                                                                               'search_text'],
                                                                           days_old=7,
