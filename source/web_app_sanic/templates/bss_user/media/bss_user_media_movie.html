@@ -42,7 +42,7 @@
     <div>
     {% if media %}
     <div id="filterdiv">
-        <form name="media_filter" action="{{url_for('user_movie_genre.user_movie_genre_page')}}" method="post">
+        <form name="media_filter" action="{{url_for('name_blueprint_user_media_genre.url_bp_user_movie_page')}}" method="post">
             <p>Media Filters:
             <button type="submit" value="movie_genre">Genre</button>
             Rating:
@@ -72,7 +72,7 @@
         <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 = watched or not -->
         <div class="main_photo">
             <div data-id={{row_data[1]}}>
-                <a href= "{{ url_for('user_movie.movie_detail', guid=row_data[1]) }}">
+                <a href= "{{ url_for('name_blueprint_user_movie.url_bp_user_movie_detail', guid=row_data[1]) }}">
                 {% if row_data[2] == None %}
                     <img src="{{ url_for('static', filename='img/Movie-icon.png') }}" height="300" width="200">
                     {% if row_data[3] == True %}
