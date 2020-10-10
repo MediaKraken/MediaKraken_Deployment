@@ -1,3 +1,5 @@
+import json
+
 from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch_httpx
@@ -18,10 +20,10 @@ async def url_bp_user_media_genre(request):
     db_connection = await request.app.db_pool.acquire()
     for row_data in await request.app.db_functions.db_media_movie_count_by_genre(
             common_global.DLMediaType.Movie.value, db_connection=db_connection):
-        media.append((row_data['gen']['name'],
-                      common_internationalization.com_inter_number_format(
-                          row_data[1]),
-                      row_data[0]['name'] + ".png"))
+        json_result = json.loads(row_data['gen'])
+        media.append((json_result['name'],
+                      common_internationalization.com_inter_number_format(row_data['gen_count']),
+                      json_result['name'] + ".png"))
     return {
         'media': sorted(media)
     }
