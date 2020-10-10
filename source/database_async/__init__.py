@@ -131,7 +131,8 @@ class MKServerDatabaseAsync:
         db_iradio_list_count
     from database_async.db_base_media_movie_async \
         import db_media_movie_list, \
-        db_media_movie_list_count
+        db_media_movie_list_count, \
+        db_media_movie_count_by_genre
     from database_async.db_base_media_music_async \
         import db_media_album_count, \
         db_media_album_list

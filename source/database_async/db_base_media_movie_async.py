@@ -3,6 +3,7 @@ import inspect
 
 from common import common_logging_elasticsearch_httpx
 
+
 #####################################
 # Not using :;json due to unions
 #####################################
@@ -707,3 +708,34 @@ async def db_media_movie_list_count(self, class_guid, list_type=None,
                         list_genre)
             else:
                 return await db_conn.fetchval('select 1')
+
+
+async def db_media_movie_count_by_genre(self, class_guid, db_connection=None):
+    """
+    # movie count by genre
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetch(
+        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb as gen,'
+        ' count(mm_metadata_json->\'genres\')'
+        ' from ((select distinct on (mm_media_metadata_guid)'
+        ' mm_metadata_json from mm_media, mm_metadata_movie'
+        ' where mm_media_class_guid = $1'
+        ' and mm_media_metadata_guid = mm_metadata_guid) union (select distinct'
+        ' on (mmr_media_metadata_guid) mm_metadata_json from mm_media_remote,'
+        ' mm_metadata_movie where mmr_media_class_guid = $2'
+        ' and mmr_media_metadata_guid = mm_metadata_guid))'
+        ' as temp group by gen',
+        class_guid, class_guid)
