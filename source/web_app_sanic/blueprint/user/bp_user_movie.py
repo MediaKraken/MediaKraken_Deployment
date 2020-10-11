@@ -24,7 +24,8 @@ async def url_bp_user_movie_detail(request, user, guid):
             common_network_pika.com_net_pika_send(
                 {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
                  'User': user.id,
-                 'Data': await request.app.db_functions.db_read_media(guid, db_connection=db_connection)[
+                 'Data': await
+                 request.app.db_functions.db_read_media(guid, db_connection=db_connection)[
                      'mm_media_path']},
                 rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
@@ -62,7 +63,8 @@ async def url_bp_user_movie_detail(request, user, guid):
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    await
                                                    request.app.db_functions.db_media_path_by_uuid(
-                                                       media_guid_index, db_connection=db_connection)[
+                                                       media_guid_index,
+                                                       db_connection=db_connection)[
                                                        0] + '\" http://localhost/stream.ffm'),
                                              stdout=subprocess.PIPE, shell=False)
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
@@ -74,31 +76,23 @@ async def url_bp_user_movie_detail(request, user, guid):
     else:
         metadata_data = await request.app.db_functions.db_meta_movie_by_media_uuid(guid,
                                                                                    db_connection=db_connection)
-        # fields returned
-        # metadata_data['mm_metadata_json']
-        # metadata_data['mm_metadata_localimage_json']
-
         # poster image
         try:
             # don't bother checking for NONE as that's valid
-            data_poster_image = \
-                metadata_data['mm_metadata_localimage_json']['Poster']
+            data_poster_image = metadata_data['mm_metadata_localimage_json']['Poster']
         except:
             data_poster_image = None
         # background image
         try:
             # don't bother checking for NONE as that's valid
-            data_background_image = \
-                metadata_data['mm_metadata_localimage_json']['Backdrop']
+            data_background_image = metadata_data['mm_metadata_localimage_json']['Backdrop']
         except:
             data_background_image = None
 
         # build gen list
         genres_list = []
-        for ndx in range(0, len(
-                metadata_data['mm_metadata_json']['genres'])):
-            genres_list.append(
-                metadata_data['mm_metadata_json']['genres'][ndx]['name'])
+        for ndx in range(0, len(metadata_data['mm_metadata_json']['genres'])):
+            genres_list.append(metadata_data['mm_metadata_json']['genres'][ndx]['name'])
 
         # not sure if the following with display anymore
         # # vote count format
@@ -216,7 +210,8 @@ async def url_bp_user_movie_detail(request, user, guid):
         # find all devices to playback media on
         # TODO have reactor return client list?
         playback_devices = []
-        for device_item in await request.app.db_functions.db_device_list(db_connection=db_connection):
+        for device_item in await request.app.db_functions.db_device_list(
+                db_connection=db_connection):
             if device_item['mm_device_type'] == 'Chromecast':
                 playback_devices.append(device_item['mm_device_json']['Name'])
             elif device_item['mm_device_type'] == 'Roku':
