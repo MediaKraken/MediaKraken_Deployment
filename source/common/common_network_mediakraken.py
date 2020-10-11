@@ -22,8 +22,6 @@ import time
 
 from common import common_logging_elasticsearch_httpx
 
-from . import common_global
-
 
 def com_net_mediakraken_find_server(server_seconds=2):
     """
@@ -38,8 +36,9 @@ def com_net_mediakraken_find_server(server_seconds=2):
         # allow broadcast otherwise you'll get permission denied 10013 error
         search_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     except socket.error:
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'Network_Find_Server: Failed to '
-                                                             'create socket'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text={
+            'Network_Find_Server: Failed to '
+            'create socket'})
         sys.exit()
     server_hosts_found = []
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
@@ -53,9 +52,12 @@ def com_net_mediakraken_find_server(server_seconds=2):
             if server_reply not in server_hosts_found:
                 server_hosts_found.append(server_reply)
         except socket.error as msg:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'Network_Find_Server Error '
-                                                                 'Code': str(msg[0])
-                                                                         + ' Message ' + msg[1]})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical',
+                                                                 message_text={
+                                                                     'Network_Find_Server Error '
+                                                                     'Code': str(msg[0])
+                                                                             + ' Message ' + msg[
+                                                                                 1]})
             sys.exit()
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         "hosts found": server_hosts_found})
