@@ -128,9 +128,10 @@ async def db_media_ffprobe_all_guid(self, media_uuid, media_class_uuid, db_conne
         db_conn = self.db_connection
     else:
         db_conn = db_connection
+    # take off ::json due to distinct
     return await db_conn.fetch(
         'select distinct mm_media_guid,'
-        ' mm_media_ffprobe_json::json'
+        ' mm_media_ffprobe_json'
         ' from mm_media, mm_metadata_movie'
         ' where mm_media_metadata_guid = '
         '(select mm_media_metadata_guid'
