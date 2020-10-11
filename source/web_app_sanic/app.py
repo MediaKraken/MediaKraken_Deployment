@@ -157,6 +157,13 @@ async def logout(request):
     return response.redirect('/login')
 
 
+async def init_connection(conn):
+    await conn.set_type_codec('json',
+                              encoder=json.dumps,
+                              decoder=json.loads,
+                              schema='pg_catalog')
+
+
 @app.listener('before_server_start')
 async def register_db(app, loop):
     # fire up ES logging
@@ -177,11 +184,8 @@ async def register_db(app, loop):
                                     database='postgres',
                                     host='mkstack_database',
                                     loop=loop,
-                                    max_size=100)
-    await app.db_pool.set_type_codec('json',
-                                     encoder=json.dumps,
-                                     decoder=json.loads,
-                                     schema='pg_catalog')
+                                    max_size=100,
+                                    init=init_connection)
     print('DB pool created', flush=True)
 
 
