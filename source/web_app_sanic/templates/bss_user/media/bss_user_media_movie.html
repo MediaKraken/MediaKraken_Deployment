@@ -94,7 +94,7 @@
                         <p class="description_content_left">{{row_data[0]}}</p>
                     </div>
                 {% else %}
-                    <img src="{{ url_for('static', filename=row_data[2] ) }}" height="300" width="200">
+                    <img src="{{ url_for('static', filename=row_data[2].replace('\"', '')) }}" height="300" width="200">
                     {% if row_data[3] == True %}
                     <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" height="20" width="20">
                     {% endif %}

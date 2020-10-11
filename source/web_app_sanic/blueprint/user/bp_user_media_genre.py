@@ -95,7 +95,7 @@ async def url_bp_user_movie_page(request, user, genre):
                                                                              'rating': rating_status,
                                                                              'match': match_status})
         media.append((row_data['mm_media_name'], row_data['mm_media_guid'],
-                      row_data['mm_poster'].replace('"', ''),
+                      row_data['mm_poster'],
                       watched_status, sync_status, rating_status, match_status))
     total = await request.app.db_functions.db_media_movie_list_count(
         common_global.DLMediaType.Movie.value,
