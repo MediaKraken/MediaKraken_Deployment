@@ -728,7 +728,7 @@ async def db_media_movie_count_by_genre(self, class_guid, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetch(
-        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')b as gen,'
+        'select jsonb_array_elements_text(mm_metadata_json->\'genres\') as gen,'
         ' count(mm_metadata_json->\'genres\') as gen_count'
         ' from ((select distinct on (mm_media_metadata_guid)'
         ' mm_metadata_json from mm_media, mm_metadata_movie'
