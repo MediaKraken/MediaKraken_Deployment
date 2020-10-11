@@ -85,17 +85,15 @@ async def url_bp_user_search_media(request):
     # search_resolution
     # search_audio_channels
     # search_audio_codec
-
-
-return {
-    'media': movie,
-    'media_tvshow': tvshow,
-    'media_album': album,
-    'media_image': image,
-    'media_book': publication,
-    'media_game': game,
-    'form': form
-}
+    return {
+        'media': movie,
+        'media_tvshow': tvshow,
+        'media_album': album,
+        'media_image': image,
+        'media_book': publication,
+        'media_game': game,
+        'form': form
+    }
 
 
 @blueprint_user_search.route("/user_search_nav", methods=["GET", "POST"])
