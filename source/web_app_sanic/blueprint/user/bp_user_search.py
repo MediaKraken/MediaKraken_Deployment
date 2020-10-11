@@ -1,5 +1,3 @@
-import json
-
 from common import common_global
 from common import common_logging_elasticsearch_httpx
 from sanic import Blueprint
@@ -50,52 +48,54 @@ async def url_bp_user_search_media(request):
             elif request.form['search_media_type'] == 'game':
                 game_search = True
             db_connection = await request.app.db_pool.acquire()
-            json_data = json.loads(
-                await request.app.db_functions.db_metadata_search(request.form['search_string'],
-                                                                  search_type='Local',
-                                                                  search_movie=movie_search,
-                                                                  search_tvshow=tvshow_search,
-                                                                  search_album=album_search,
-                                                                  search_image=image_search,
-                                                                  search_publication=publication_search,
-                                                                  search_game=game_search,
-                                                                  db_connection=db_connection))
-            await request.app.db_pool.release(db_connection)
-            if 'Movie' in json_data:
-                for search_item in json_data['Movie']:
-                    movie.append(search_item)
-            if 'TVShow' in json_data:
-                for search_item in json_data['TVShow']:
-                    tvshow.append(search_item)
-            if 'Album' in json_data:
-                for search_item in json_data['Album']:
-                    album.append(search_item)
-            if 'Image' in json_data:
-                for search_item in json_data['Image']:
-                    image.append(search_item)
-            if 'Publication' in json_data:
-                for search_item in json_data['Publication']:
-                    publication.append(search_item)
-            if 'Game' in json_data:
-                for search_item in json_data['Game']:
-                    game.append(search_item)
-        elif request.form['action_type'] == 'Search Metadata Providers':
-            pass
-        # TODO
-        # search_primary_language
-        # search_secondary_language
-        # search_resolution
-        # search_audio_channels
-        # search_audio_codec
-    return {
-        'media': movie,
-        'media_tvshow': tvshow,
-        'media_album': album,
-        'media_image': image,
-        'media_book': publication,
-        'media_game': game,
-        'form': form
-    }
+            json_data = await request.app.db_functions.db_metadata_search(
+                request.form['search_string'],
+                search_type='Local',
+                search_movie=movie_search,
+                search_tvshow=tvshow_search,
+                search_album=album_search,
+                search_image=image_search,
+                search_publication=publication_search,
+                search_game=game_search,
+                db_connection=db_connection)
+        await request.app.db_pool.release(db_connection)
+        if 'Movie' in json_data:
+            for search_item in json_data['Movie']:
+                movie.append(search_item)
+        if 'TVShow' in json_data:
+            for search_item in json_data['TVShow']:
+                tvshow.append(search_item)
+        if 'Album' in json_data:
+            for search_item in json_data['Album']:
+                album.append(search_item)
+        if 'Image' in json_data:
+            for search_item in json_data['Image']:
+                image.append(search_item)
+        if 'Publication' in json_data:
+            for search_item in json_data['Publication']:
+                publication.append(search_item)
+        if 'Game' in json_data:
+            for search_item in json_data['Game']:
+                game.append(search_item)
+    elif request.form['action_type'] == 'Search Metadata Providers':
+        pass
+    # TODO
+    # search_primary_language
+    # search_secondary_language
+    # search_resolution
+    # search_audio_channels
+    # search_audio_codec
+
+
+return {
+    'media': movie,
+    'media_tvshow': tvshow,
+    'media_album': album,
+    'media_image': image,
+    'media_book': publication,
+    'media_game': game,
+    'form': form
+}
 
 
 @blueprint_user_search.route("/user_search_nav", methods=["GET", "POST"])

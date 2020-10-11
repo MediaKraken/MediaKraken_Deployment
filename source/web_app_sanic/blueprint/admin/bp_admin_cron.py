@@ -87,7 +87,7 @@ async def url_bp_admin_cron_run(request, user, guid):
                                                                          'admin cron run': guid})
     db_connection = await request.app.db_pool.acquire()
     cron_job_data = await request.app.db_functions.db_cron_info(guid, db_connection)
-    cron_json_data = json.loads(cron_job_data['mm_cron_json'])
+    cron_json_data = cron_job_data['mm_cron_json']
     # submit the message
     common_network_pika.com_net_pika_send({'Type': cron_json_data['Type'],
                                            'User': user.id,

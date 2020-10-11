@@ -1,5 +1,3 @@
-import json
-
 from common import common_global
 from common import common_internationalization
 from common import common_logging_elasticsearch_httpx
@@ -20,35 +18,33 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     db_connection = await request.app.db_pool.acquire()
     data = await request.app.db_functions.db_meta_movie_detail(media_guid=guid,
                                                                db_connection=db_connection)
-    json_metadata = json.loads(data['mm_metadata_json'])
-    json_imagedata = json.loads(data['mm_metadata_localimage_json'])
     # vote count format
     try:
         data_vote_count = common_internationalization.com_inter_number_format(
-            json_metadata['vote_count'])
+            data['mm_metadata_json']['vote_count'])
     except:
         data_vote_count = 'NA'
     # build gen list
     genres_list = ''
-    for ndx in range(0, len(json_metadata['genres'])):
-        genres_list += (json_metadata['genres'][ndx]['name'] + ', ')
+    for ndx in range(0, len(data['mm_metadata_json']['genres'])):
+        genres_list += (data['mm_metadata_json']['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
-    for ndx in range(0, len(json_metadata['production_companies'])):
+    for ndx in range(0, len(data['mm_metadata_json']['production_companies'])):
         production_list \
-            += (json_metadata['production_companies'][ndx]['name'] + ', ')
+            += (data['mm_metadata_json']['production_companies'][ndx]['name'] + ', ')
     # poster image
     try:
-        if json_imagedata['Poster'] is not None:
-            data_poster_image = json_imagedata['Poster']
+        if data['mm_metadata_localimage_json']['Poster'] is not None:
+            data_poster_image = data['mm_metadata_localimage_json']['Poster']
         else:
             data_poster_image = None
     except:
         data_poster_image = None
     # background image
     try:
-        if json_imagedata['Backdrop'] is not None:
-            data_background_image = json_imagedata['Backdrop']
+        if data['mm_metadata_localimage_json']['Backdrop'] is not None:
+            data_background_image = data['mm_metadata_localimage_json']['Backdrop']
         else:
             data_background_image = None
     except:
@@ -59,7 +55,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     await request.app.db_pool.release(db_connection)
     return {
         'data_name': data['mm_media_name'],
-        'json_metadata': json_metadata,
+        'json_metadata': data['mm_metadata_json'],
         'data_genres': genres_list[:-2],
         'data_production': production_list[:-2],
         'data_review': review,
@@ -67,7 +63,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
         'data_background_image': data_background_image,
         'data_vote_count': data_vote_count,
         'data_budget': common_internationalization.com_inter_number_format(
-            json_metadata['budget'])
+            data['mm_metadata_json']['budget'])
     }
 
 
@@ -89,13 +85,12 @@ async def url_bp_user_metadata_movie_list(request, user):
                                                                           'search_text'],
                                                                       db_connection):
         if row_data['mm_metadata_user_json'] is not None:
-            user_json = json.loads(row_data['mm_metadata_user_json'])
+            user_json = row_data['mm_metadata_user_json']
         else:
             user_json = None
         # set watched
         try:
-            watched_status \
-                = user_json['UserStats'][str(user.id)]['watched']
+            watched_status = user_json['UserStats'][str(user.id)]['watched']
         except (KeyError, TypeError):
             watched_status = False
         # set rating

@@ -130,15 +130,14 @@ async def url_bp_user_internet_youtube(request):
                                                                              message_text={
                                                                                  'searchurllink': url_link})
             youtube_videos.append(
-                json.loads(g.google_instance.com_google_youtube_info(url_link, 'snippet')))
+                g.google_instance.com_google_youtube_info(url_link, 'snippet'))
     else:
         # get trending for specified country code
         for url_link in common_network_youtube.com_net_yt_trending(locale.getdefaultlocale()[0]):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'urllink': url_link})
-            youtube_videos.append(json.loads(g.google_instance.com_google_youtube_info(url_link,
-                                                                                       'snippet')))
+            youtube_videos.append(g.google_instance.com_google_youtube_info(url_link, 'snippet'))
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          'temphold': youtube_videos})
@@ -155,6 +154,6 @@ async def url_bp_user_internet_youtube_detail(request, uuid):
     Display youtube details page
     """
     return {
-        'media': json.loads(g.google_instance.com_google_youtube_info(uuid)),
+        'media': g.google_instance.com_google_youtube_info(uuid),
         'data_guid': uuid
     }
