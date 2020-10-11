@@ -1,3 +1,4 @@
+import json
 import subprocess
 from shlex import split
 
@@ -19,6 +20,10 @@ async def url_bp_user_movie_detail(request, user, guid):
     Display move detail page
     """
     db_connection = await request.app.db_pool.acquire()
+    await request.app.db_pool.set_type_codec('json',
+                                             encoder=json.dumps,
+                                             decoder=json.loads,
+                                             schema='pg_catalog')
     if request.method == 'POST':
         if request.form['playback'] == 'Web Viewer':
             common_network_pika.com_net_pika_send(
