@@ -81,7 +81,7 @@ async def db_media_duplicate_detail(self, guid, offset=0, records=None, db_conne
         db_conn = db_connection
     return await db_conn.fetch('select mm_media_guid,'
                                'mm_media_path,'
-                               'mm_media_ffprobe_json::json'
+                               'mm_media_ffprobe_json'
                                ' from mm_media where mm_media_guid'
                                ' in (select mm_media_guid from mm_media'
                                ' where mm_media_metadata_guid = $1'
@@ -128,7 +128,7 @@ async def db_media_ffprobe_all_guid(self, media_uuid, media_class_uuid, db_conne
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    # take off ::json due to distinct
+    # take off  due to distinct
     return await db_conn.fetch(
         'select distinct mm_media_guid,'
         ' mm_media_ffprobe_json'
@@ -350,7 +350,7 @@ async def db_media_rating_update(self, media_guid, user_id, status_text, db_conn
         status_setting = status_text
         status_text = 'Rating'
     try:
-        json_data = await db_conn.fetchval('SELECT mm_media_json::json from mm_media'
+        json_data = await db_conn.fetchval('SELECT mm_media_json from mm_media'
                                            ' where mm_media_guid = $1 FOR UPDATE',
                                            media_guid)
         if 'UserStats' not in json_data:

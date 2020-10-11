@@ -53,7 +53,7 @@ async def db_download_read_provider(self, provider_name, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetch('select mdq_id,'
                                ' mdq_que_type,'
-                               ' mdq_download_json::json,'
+                               ' mdq_download_json,'
                                ' mdq_new_uuid,'
                                ' mdq_class_uuid'
                                ' from mm_download_que'

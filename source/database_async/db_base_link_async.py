@@ -44,7 +44,7 @@ async def db_link_list(self, offset=0, records=None, search_value=None, db_conne
     if search_value is not None:
         return await db_conn.fetch('select mm_link_guid,'
                                    ' mm_link_name,'
-                                   ' mm_link_json::json'
+                                   ' mm_link_json'
                                    ' from mm_link'
                                    ' where mm_link_guid in (select mm_link_guid'
                                    ' from mm_link'
@@ -53,7 +53,7 @@ async def db_link_list(self, offset=0, records=None, search_value=None, db_conne
     else:
         return await db_conn.fetch('select mm_link_guid,'
                                    ' mm_link_name,'
-                                   ' mm_link_json::json'
+                                   ' mm_link_json'
                                    ' from mm_link'
                                    ' where mm_link_guid in (select mm_link_guid'
                                    ' from mm_link'

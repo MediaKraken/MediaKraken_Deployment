@@ -24,7 +24,7 @@ async def db_game_server_list(self, offset=0, records=None, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetch('select mm_game_server_guid,'
                                ' mm_game_server_name,'
-                               ' mm_game_server_json::json'
+                               ' mm_game_server_json'
                                ' from mm_game_dedicated_servers'
                                ' order by mm_game_server_name offset $1 limit $2',
                                offset, records)

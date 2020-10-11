@@ -54,7 +54,7 @@ async def db_media_album_list(self, offset=0, per_page=None, search_value=None, 
     if search_value is not None:
         return await db_conn.fetch('select mm_metadata_album_guid,'
                                    ' mm_metadata_album_name,'
-                                   ' mm_metadata_album_json::json'
+                                   ' mm_metadata_album_json'
                                    ' from mm_metadata_album, mm_media'
                                    ' where mm_media_metadata_guid'
                                    ' = mm_metadata_album_guid'
@@ -66,7 +66,7 @@ async def db_media_album_list(self, offset=0, per_page=None, search_value=None, 
     else:
         return await db_conn.fetch('select mm_metadata_album_guid,'
                                    ' mm_metadata_album_name,'
-                                   ' mm_metadata_album_json::json'
+                                   ' mm_metadata_album_json'
                                    ' from mm_metadata_album, mm_media'
                                    ' where mm_media_metadata_guid'
                                    ' = mm_metadata_album_guid'

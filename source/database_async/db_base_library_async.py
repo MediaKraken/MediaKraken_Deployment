@@ -118,7 +118,7 @@ async def db_library_path_status(self, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetch('select mm_media_dir_path,'
-                               ' mm_media_dir_status::json'
+                               ' mm_media_dir_status'
                                ' from mm_media_dir'
                                ' where mm_media_dir_status IS NOT NULL'
                                ' order by mm_media_dir_path')

@@ -48,7 +48,7 @@ async def db_meta_music_album_list(self, offset=0, records=None, search_value=No
     if search_value is not None:
         return await db_conn.fetch('select mm_metadata_album_guid,'
                                    ' mm_metadata_album_name,'
-                                   ' mm_metadata_album_json::json,'
+                                   ' mm_metadata_album_json,'
                                    ' mm_metadata_album_localimage'
                                    ' from mm_metadata_album'
                                    ' where mm_metadata_album_name % $1'
@@ -59,7 +59,7 @@ async def db_meta_music_album_list(self, offset=0, records=None, search_value=No
     else:
         return await db_conn.fetch('select mm_metadata_album_guid,'
                                    ' mm_metadata_album_name,'
-                                   ' mm_metadata_album_json::json,'
+                                   ' mm_metadata_album_json,'
                                    ' mm_metadata_album_localimage'
                                    ' from mm_metadata_album'
                                    ' order by LOWER(mm_metadata_album_name)'

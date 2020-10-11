@@ -50,7 +50,7 @@ async def db_hardware_json_read(self, manufacturer, model_name, db_connection=No
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchval('select mm_hardware_json::json'
+    return await db_conn.fetchval('select mm_hardware_json'
                                   ' from mm_hardware_json'
                                   ' where mm_hardware_manufacturer = $1'
                                   ' and mm_hardware_model = $2',

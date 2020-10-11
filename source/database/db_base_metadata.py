@@ -59,7 +59,7 @@ def db_meta_genre_list_count(self):
     # count all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                           '->\'genres\')::jsonb'
+                           '->\'genres\')b'
                            ' from mm_metadata_movie')
     return len(self.db_cursor.fetchall())
 
@@ -69,8 +69,8 @@ def db_meta_genre_list(self, offset=0, records=None):
     # grab all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                           '->\'genres\')::jsonb from mm_metadata_movie'
-                           ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb offset %s limit %s',
+                           '->\'genres\')b from mm_metadata_movie'
+                           ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')b offset %s limit %s',
                            (offset, records))
     return self.db_cursor.fetchall()
 
@@ -80,9 +80,9 @@ def db_meta_movie_count_genre(self):
     # movie count by genre
     """
     self.db_cursor.execute(
-        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb as gen,'
+        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')b as gen,'
         ' count(mm_metadata_json->\'genres\') from mm_metadata_movie group by gen'
-        ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb ')
+        ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')b ')
     return self.db_cursor.fetchall()
 
 

@@ -22,7 +22,7 @@ async def db_device_by_uuid(self, guid, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchrow('select mm_device_type,'
-                                  ' mm_device_json::json'
+                                  ' mm_device_json'
                                   ' from mm_device'
                                   ' where mm_device_id = $1', guid)
 
@@ -92,7 +92,7 @@ async def db_device_list(self, device_type=None, offset=0, records=None,
     if device_type is None:
         return await db_conn.fetch('select mm_device_id,'
                                    ' mm_device_type,'
-                                   ' mm_device_json::json'
+                                   ' mm_device_json'
                                    ' from mm_device'
                                    ' order by mm_device_type'
                                    ' offset $1 limit $2',
@@ -100,7 +100,7 @@ async def db_device_list(self, device_type=None, offset=0, records=None,
     else:
         return await db_conn.fetch('select mm_device_id,'
                                    ' mm_device_type,'
-                                   ' mm_device_json::json'
+                                   ' mm_device_json'
                                    ' from mm_device'
                                    ' where mm_device_type = $1 offset $2 limit $3',
                                    device_type, offset, records)

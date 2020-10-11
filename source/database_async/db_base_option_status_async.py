@@ -45,7 +45,7 @@ async def db_opt_json_read(self, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchval(
-        'select mm_options_json::json'
+        'select mm_options_json'
         ' from mm_options_and_status')
 
 
@@ -67,7 +67,7 @@ async def db_opt_status_read(self, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchrow(
-        'select mm_options_json::json, mm_status_json::json'
+        'select mm_options_json, mm_status_json'
         ' from mm_options_and_status')
 
 
@@ -89,7 +89,7 @@ async def db_status_json_read(self, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchval(
-        'select mm_status_json::json'
+        'select mm_status_json'
         ' from mm_options_and_status')
 
 

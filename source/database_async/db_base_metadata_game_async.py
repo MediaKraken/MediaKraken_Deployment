@@ -22,7 +22,7 @@ async def db_meta_game_by_guid(self, guid, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetchrow('select gi_id,'
                                   ' gi_system_id,'
-                                  ' gi_game_info_json::json'
+                                  ' gi_game_info_json'
                                   ' from mm_metadata_game_software_info'
                                   ' where gi_id = $1', guid)
 

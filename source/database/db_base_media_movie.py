@@ -42,7 +42,7 @@ def db_media_movie_count_by_genre(self, class_guid):
     # movie count by genre
     """
     self.db_cursor.execute(
-        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb as gen,'
+        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')b as gen,'
         ' count(mm_metadata_json->\'genres\')'
         ' from ((select distinct on (mm_media_metadata_guid)'
         ' mm_metadata_json from mm_media, mm_metadata_movie'
@@ -376,7 +376,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
                                                ' mm_metadata_collection_guid as guid,'
-                                               ' null::jsonb as metajson,'
+                                               ' nullb as metajson,'
                                                ' mm_media_path as mediapath'
                                                ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name),'
@@ -395,7 +395,7 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                ' and mm_media_metadata_guid = mm_metadata_guid'
                                                ' and (mm_metadata_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
-                                               ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
+                                               ' mm_metadata_collection_guid as guid, nullb as metajson,'
                                                ' mm_media_path as mediapath, mm_metadata_json'
                                                ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name),'
@@ -418,8 +418,8 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                # TODO put back in
                                                #                        ' union select mm_metadata_collection_name as name,'
                                                #                        ' mm_metadata_collection_guid as guid,'
-                                               #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
-                                               #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
+                                               #                        ' nullb as mediajson, nullb as metajson,'
+                                               #                        ' nullb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
                                                ') as temp'
                                                ' order by LOWER(name),'
@@ -440,8 +440,8 @@ def db_web_media_list(self, class_guid, list_type=None, list_genre='All',
                                                # TODO put back in
                                                #                        ' union select mm_metadata_collection_name as name,'
                                                #                        ' mm_metadata_collection_guid as guid,'
-                                               #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
-                                               #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
+                                               #                        ' nullb as mediajson, nullb as metajson,'
+                                               #                        ' nullb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
                                                ') as temp'
                                                ' order by LOWER(name),'

@@ -27,7 +27,7 @@ async def db_collection_list(self, offset=None, records=None, search_value=None,
         if search_value is not None:
             return await db_conn.fetch('select mm_metadata_collection_guid,'
                                        ' mm_metadata_collection_name,'
-                                       ' mm_metadata_collection_imagelocal_json::json'
+                                       ' mm_metadata_collection_imagelocal_json'
                                        ' from mm_metadata_collection'
                                        ' where mm_metadata_collection_name % $1'
                                        ' order by mm_metadata_collection_name',
@@ -35,14 +35,14 @@ async def db_collection_list(self, offset=None, records=None, search_value=None,
         else:
             return await db_conn.fetch('select mm_metadata_collection_guid,'
                                        ' mm_metadata_collection_name,'
-                                       ' mm_metadata_collection_imagelocal_json::json'
+                                       ' mm_metadata_collection_imagelocal_json'
                                        ' from mm_metadata_collection'
                                        ' order by mm_metadata_collection_name')
     else:
         if search_value is not None:
             return await db_conn.fetch('select mm_metadata_collection_guid,'
                                        ' mm_metadata_collection_name,'
-                                       ' mm_metadata_collection_imagelocal_json::json'
+                                       ' mm_metadata_collection_imagelocal_json'
                                        ' from mm_metadata_collection'
                                        ' where mm_metadata_collection_guid'
                                        ' in (select mm_metadata_collection_guid'
@@ -55,7 +55,7 @@ async def db_collection_list(self, offset=None, records=None, search_value=None,
         else:
             return await db_conn.fetch('select mm_metadata_collection_guid,'
                                        ' mm_metadata_collection_name,'
-                                       ' mm_metadata_collection_imagelocal_json::json'
+                                       ' mm_metadata_collection_imagelocal_json'
                                        ' from mm_metadata_collection'
                                        ' where mm_metadata_collection_guid'
                                        ' in (select mm_metadata_collection_guid'
@@ -108,7 +108,7 @@ async def db_collection_read_by_guid(self, media_uuid, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchrow('select mm_metadata_collection_json,'
-                                  ' mm_metadata_collection_imagelocal_json::json'
+                                  ' mm_metadata_collection_imagelocal_json'
                                   ' from mm_metadata_collection'
                                   ' where mm_metadata_collection_guid = $1',
                                   media_uuid)

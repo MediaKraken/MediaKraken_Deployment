@@ -22,7 +22,7 @@ async def db_tv_schedule_by_date(self, display_date, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetch('select mm_tv_station_name,'
                                ' mm_tv_station_channel,'
-                               ' mm_tv_schedule_json::json'
+                               ' mm_tv_schedule_json'
                                ' from mm_tv_stations, mm_tv_schedule'
                                ' where mm_tv_schedule_station_id = mm_tv_station_id'
                                ' and mm_tv_schedule_date = $1'

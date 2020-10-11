@@ -20,7 +20,7 @@ async def db_meta_periodical_by_uuid(self, book_uuid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchrow('select mm_metadata_book_json::json'
+    return await db_conn.fetchrow('select mm_metadata_book_json'
                                   ' from mm_metadata_book'
                                   ' where mm_metadata_book_guid = $1',
                                   book_uuid)
