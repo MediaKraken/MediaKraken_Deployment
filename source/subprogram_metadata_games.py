@@ -43,13 +43,37 @@ common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
 common_signal.com_signal_set_break()
 
 # open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
+option_config_json, db_connection = common_config_ini.com_config_read(force_local=True)
 
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does
 
 # However, mame games are still being put as "games" and not systems
 # to ease search and other filters by game/system
+
+update_game = 0
+insert_game = 0
+
+
+def process_mame_record(game_xml):
+    global update_game
+    global insert_game
+    # TODO change this to upsert
+    json_data = xmltodict.parse(game_xml)
+    # see if exists then need to update
+    if db_connection.db_meta_game_list_count(json_data['machine']['@name']) > 0:
+        # TODO handle shortname properly
+        db_connection.db_meta_game_update(None, json_data['machine']['@name'],
+                                          json_data['machine']['description'],
+                                          json_data)
+        update_game += 1
+    else:
+        # TODO handle shortname properly
+        db_connection.db_meta_game_insert(None, json_data['machine']['@name'],
+                                          json_data['machine']['description'],
+                                          json_data)
+        insert_game += 1
+
 
 # create mame game list
 file_name = ('/mediakraken/emulation/mame0%slx.zip' %
@@ -60,28 +84,32 @@ if not os.path.exists(file_name):
         ('https://github.com/mamedev/mame/releases/download/mame0%s/mame0%slx.zip'
          % (option_config_json['MAME']['Version'], option_config_json['MAME']['Version'])),
         file_name)
+    # unzip to file to try to save memory
     zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
-    update_game = 0
-    insert_game = 0
-    for zippedfile in zip_handle.namelist():
-        json_data = xmltodict.parse(zip_handle.read(zippedfile))
-        for child_of_root in json_data['mame']['machine']:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-                'child': child_of_root,
-                'childname': child_of_root['@name']})
-            # TODO change this to upsert
-            # see if exists then need to update
-            if db_connection.db_meta_game_list_count(child_of_root['@name']) > 0:
-                # TODO handle shortname properly
-                db_connection.db_meta_game_update(
-                    None, child_of_root['@name'], child_of_root['description'], child_of_root)
-                update_game += 1
-            else:
-                # TODO handle shortname properly
-                db_connection.db_meta_game_insert(
-                    None, child_of_root['@name'], child_of_root['description'], child_of_root)
-                insert_game += 1
+    zip_handle.extractall('/mediakraken/emulation/')
     zip_handle.close()
+    # this is done to keep xmltodict from running out of memory while processing
+    game_xml = ''
+    first_record = True
+    old_line = None
+    with open('/mediakraken/emulation/mame0%s.xml'
+              % option_config_json['MAME']['Version']) as infile:
+        for line in infile:
+            if line.find('</mame>') == 0:  # skip the last line
+                pass
+            elif line.find('	<machine') == 0:  # first position of line
+                old_line = line
+                if first_record is False:
+                    process_mame_record(line + game_xml)
+                    game_xml = ''
+                first_record = False
+            else:
+                if first_record is False:
+                    game_xml += line
+        # game_xml += line  # get last value - do NOT do this as it'll attach </mame>
+    # do last machine
+    process_mame_record(old_line + game_xml)
+    # write totals
     if update_game > 0:
         db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(update_game)
@@ -92,6 +120,8 @@ if not os.path.exists(file_name):
             common_internationalization.com_inter_number_format(insert_game)
             + " games(s) metadata added from MAME %s XML" % option_config_json['MAME']['Version'],
             True)
+    # commit all changes to db
+    db_connection.db_commit()
 
 # load games from hash files
 file_name = ('/mediakraken/emulation/mame0%s.zip' %
@@ -184,6 +214,8 @@ if not os.path.exists(file_name):
                 total_software_update)
             + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME'][
                 'Version'], True)
+    # commit all changes to db
+    db_connection.db_commit()
 
 # update mame game descriptions from history dat
 file_name = ('/mediakraken/emulation/history%s.zip' %
@@ -260,6 +292,8 @@ if not os.path.exists(file_name):
                 total_software_update)
             + " games(s) metadata updated from MAME %s hash" % option_config_json['MAME'][
                 'Version'], True)
+    # commit all changes to db
+    db_connection.db_commit()
 
 # read the category file and create dict/list for it
 cat_file = open("Category.ini", "r")
