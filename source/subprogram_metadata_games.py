@@ -134,13 +134,7 @@ if not os.path.exists(file_name):
         file_name)
     total_software = 0
     total_software_update = 0
-    # do this all the time, since could be a new one
-    with zipfile.ZipFile(file_name, 'r') as zf:
-        zf.extract('mame-mame0%s.zip' % option_config_json['MAME']['Version'],
-                   '/mediakraken/emulation/')
-    zip_handle = zipfile.ZipFile(
-        '/mediakraken/emulation/mame-mame0%s.zip' % option_config_json['MAME']['Version'],
-        'r')  # issues if u do RB
+    zip_handle = zipfile.ZipFile(file_name, 'r')  # issues if u do RB
     for zippedfile in zip_handle.namelist():
         print('zip: %s' % zippedfile, flush=True)
         if zippedfile[0:5] == 'hash/' and zippedfile != 'hash/':
