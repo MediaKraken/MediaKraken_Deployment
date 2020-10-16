@@ -19,15 +19,11 @@
 import gzip
 import inspect
 import json
-import sys
 import time
 
 from common import common_file
 from common import common_logging_elasticsearch_httpx
 from common import common_network_async
-
-sys.path.append("../common")
-import adba
 
 
 class CommonMetadataANIdb:
