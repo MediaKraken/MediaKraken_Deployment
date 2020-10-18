@@ -396,13 +396,29 @@ if db_connection.db_version_check() < 33:
     db_connection.db_version_update(33)
     db_connection.db_commit()
 
-
 if db_connection.db_version_check() < 34:
     db_connection.db_query('ALTER TABLE mm_link ADD COLUMN mm_link_username text;')
     db_connection.db_query('ALTER TABLE mm_link ADD COLUMN mm_link_password text;')
     db_connection.db_version_update(34)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 35:
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_developer (mm_developer_id uuid'
+        ' CONSTRAINT mm_developer_id primary key,'
+        ' mm_developer_name text,'
+        ' mm_developer_json jsonb')
+    db_connection.db_query('CREATE INDEX mm_developer_name_idx'
+                           ' ON mm_developer(mm_developer_name)')
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_publisher (mm_publisher_id uuid'
+        ' CONSTRAINT mm_publisher_id primary key,'
+        ' mm_publisher_name text,'
+        ' mm_publisher_json jsonb')
+    db_connection.db_query('CREATE INDEX mm_publisher_name_idx'
+                           ' ON mm_publisher(mm_publisher_name)')
+    db_connection.db_version_update(35)
+    db_connection.db_commit()
 
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
