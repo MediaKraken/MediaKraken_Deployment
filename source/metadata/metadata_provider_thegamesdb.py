@@ -17,8 +17,7 @@
 """
 
 import inspect
-
-import requests
+import httpx
 import xmltodict
 from common import common_logging_elasticsearch_httpx
 
@@ -46,8 +45,10 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformsList.php',
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'GetPlatformsList.php',
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
 
     async def com_meta_gamesdb_platform_by_id(self, platform_id):
         """
@@ -62,8 +63,10 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatform.php?id=%s' % platform_id,
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'GetPlatform.php?id=%s' % platform_id,
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
 
     async def com_meta_gamesdb_games_by_name(self, game_name):
         """
@@ -78,9 +81,11 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?name=%s'
-                                            % game_name.replace(' ', '%20'),
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'GetGamesList.php?name=%s'
+                                                    % game_name.replace(' ', '%20'),
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
 
     async def com_meta_gamesdb_games_by_id(self, game_id):
         """
@@ -95,8 +100,10 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetGamesList.php?id=%s' % game_id,
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'GetGamesList.php?id=%s' % game_id,
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
 
     async def com_meta_gamesdb_games_art_by_id(self, game_id):
         """
@@ -111,8 +118,10 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetArt.php?id=%s' % game_id,
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'GetArt.php?id=%s' % game_id,
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
 
     async def com_meta_gamesdb_games_by_platform_id(self, platform_id):
         """
@@ -127,9 +136,11 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s'
-                                            % platform_id,
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'GetPlatformGames.php?platform=%s'
+                                                    % platform_id,
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
 
     async def com_meta_gamesdb_games_by_platform_name(self, platform_name):
         """
@@ -144,9 +155,11 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'PlatformGames.php?platform=%s'
-                                            % platform_name,
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'PlatformGames.php?platform=%s'
+                                                    % platform_name,
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
 
     async def com_meta_gamesdb_games_updated_seconds(self, update_time):
         """
@@ -161,5 +174,7 @@ class CommonMetadataGamesDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        return xmltodict.parse(requests.get(self.BASE_URL + 'Updates.php?time=%s' % update_time,
-                                            verify=False, headers=self.httpheaders, timeout=5).text)
+        async with httpx.AsyncClient() as client:
+            return xmltodict.parse(await client.get(self.BASE_URL + 'Updates.php?time=%s' % update_time,
+                                                    headers=self.httpheaders,
+                                                    timeout=3.05))
