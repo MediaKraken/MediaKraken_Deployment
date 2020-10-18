@@ -4,7 +4,7 @@ from os.path import sep, expanduser, dirname
 
 from kivy.app import App
 from kivy.factory import Factory
-from kivy.garden.filebrowser import FileBrowser
+from kivy.garden.filebrowser import FileBrowser  # garden install filebrowser
 from kivy.properties import BooleanProperty
 from kivy.properties import ObjectProperty
 from kivy.uix.behaviors import FocusBehavior
@@ -93,7 +93,7 @@ class MainRenamer(App):
         if platform == 'win':
             user_path = dirname(expanduser('~')) + sep + 'Documents'
         else:
-            user_path = expanduser('~') + sep + 'Documents'
+            user_path = expanduser('~') + sep + 'Videos'
         browser = FileBrowser(select_string='Select',
                               dirselect=True,
                               multiselect=True,

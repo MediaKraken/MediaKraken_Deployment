@@ -178,3 +178,21 @@ class CommonMetadataGamesDB:
             return xmltodict.parse(await client.get(self.BASE_URL + 'Updates.php?time=%s' % update_time,
                                                     headers=self.httpheaders,
                                                     timeout=3.05))
+
+    async def com_meta_gamesdb_bulk_json(self, update_time):
+        """
+        Grab the json database dump and process
+        """
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'function':
+                                                                                 inspect.stack()[0][
+                                                                                     3],
+                                                                             'locals': locals(),
+                                                                             'caller':
+                                                                                 inspect.stack()[1][
+                                                                                     3]})
+        async with httpx.AsyncClient() as client:
+            for game_row in xmltodict.parse(await client.get(
+                    'https://cdn.thegamesdb.net/json/database-latest.json', timeout=3.05))['games']:
+                pass

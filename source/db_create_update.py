@@ -648,6 +648,23 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'
 # if db_connection.db_table_index_check('mm_country_idx_lang') is None:
 #    db_connection.db_query('CREATE INDEX mm_country_idx_lang ON mm_country(mm_country_lang_guid)')
 
+db_connection.db_query(
+    'create table IF NOT EXISTS mm_developer (mm_developer_id uuid'
+    ' CONSTRAINT mm_developer_id primary key,'
+    ' mm_developer_name text,'
+    ' mm_developer_json jsonb')
+if db_connection.db_table_index_check('mm_developer_name_idx') is None:
+    db_connection.db_query('CREATE INDEX mm_developer_name_idx'
+                           ' ON mm_developer(mm_developer_name)')
+
+db_connection.db_query(
+    'create table IF NOT EXISTS mm_publisher (mm_publisher_id uuid'
+    ' CONSTRAINT mm_publisher_id primary key,'
+    ' mm_publisher_name text,'
+    ' mm_publisher_json jsonb')
+if db_connection.db_table_index_check('mm_publisher_name_idx') is None:
+    db_connection.db_query('CREATE INDEX mm_publisher_name_idx'
+                           ' ON mm_publisher(mm_publisher_name)')
 
 # create table for logos
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_logo (mm_metadata_logo_guid uuid'
