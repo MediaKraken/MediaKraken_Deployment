@@ -20,7 +20,7 @@ import inspect
 import urllib.error
 import urllib.parse
 import urllib.request
-
+import httpx
 import requests
 from common import common_hash
 from common import common_logging_elasticsearch_httpx
@@ -46,8 +46,11 @@ class CommonMetadataTheSubDB:
                                                                                  inspect.stack()[1][
                                                                                      3]})
         filehash = common_hash.com_hash_thesubdb(filename)
-        response = requests.get(self.url, params={'action': 'search', 'hash': filehash},
-                                headers=self.headers, timeout=5)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(self.url,
+                                        params={'action': 'search', 'hash': filehash},
+                                        headers=self.headers,
+                                        timeout=3.05)
         if response.status_code == 404:
             # no subtitle found
             return []
@@ -71,5 +74,6 @@ class CommonMetadataTheSubDB:
                                                                              'caller':
                                                                                  inspect.stack()[1][
                                                                                      3]})
-        response = requests.get(subtitle["link"], headers=self.headers, timeout=5)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(subtitle["link"], headers=self.headers, timeout=5)
         stream.write(response.content)

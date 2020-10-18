@@ -53,7 +53,7 @@ class CommonMetadataIMVdb:
                              + "?include=sources,credits,bts,featured,popularity,countries",
                              headers=self.headers)
         try:
-            # common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"imvdb Info Status":
+            # common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {"imvdb Info Status":
             #                                                      resp.status_code, 'json': resp.json()})
             return resp.json()
         except:
@@ -77,7 +77,7 @@ class CommonMetadataIMVdb:
                                 + song_title.replace(' ', '+')),
                              headers=self.headers)
         try:
-            # common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"imvdb Video Status":
+            # common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {"imvdb Video Status":
             #                                                      resp.status_code, 'json': resp.json()})
             return resp.json()
         except:
@@ -99,7 +99,7 @@ class CommonMetadataIMVdb:
         resp = requests.post(self.base_api_url + "/search/entities?q="
                              + artist_name.replace(' ', '+'), headers=self.headers)
         try:
-            # common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"imvdb Entities Status":
+            # common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {"imvdb Entities Status":
             #                                                      resp.status_code, 'json': resp.json()})
             return resp.json()
         except:

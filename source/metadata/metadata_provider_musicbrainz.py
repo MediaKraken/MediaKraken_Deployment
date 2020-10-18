@@ -104,16 +104,16 @@ class CommonMetadataMusicbrainz:
             result = musicbrainzngs.search_releases(artist=artist_name, release=artist_recording,
                                                     limit=return_limit, strict=strict_flag)
         if not result['release-list']:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                 message_text={
-                                                                     'stuff': "no release found"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='error',
+                                                                       message_text={
+                                                                           'stuff': "no release found"})
             return None
         else:
             for (idx, release) in enumerate(result['release-list']):
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                     message_text={
-                                                                         "match #{}:".format(
-                                                                             idx + 1)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                           message_text={
+                                                                               "match #{}:".format(
+                                                                                   idx + 1)})
                 self.show_release_details(release)
             return release['id']
 
@@ -135,16 +135,16 @@ class CommonMetadataMusicbrainz:
                                                   recording=song_name, limit=return_limit,
                                                   strict=strict_flag)
         if not result['recording-list']:
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
-                                                                 message_text={
-                                                                     'stuff': "no recording found"})
+            common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='error',
+                                                                       message_text={
+                                                                           'stuff': "no recording found"})
             return None
         else:
             for (idx, release) in enumerate(result['recording-list']):
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                     message_text={
-                                                                         "match #{}:".format(
-                                                                             idx + 1)})
+                common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                           message_text={
+                                                                               "match #{}:".format(
+                                                                                   idx + 1)})
                 self.show_release_details(release)
             return release['id']
 
