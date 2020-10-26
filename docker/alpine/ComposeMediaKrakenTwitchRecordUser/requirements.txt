@@ -8,6 +8,6 @@ PySocks==1.7.1
 python-twitch-client==0.6.0
 requests==2.24.0
 six==1.15.0
-streamlink==1.5.0
-urllib3==1.25.10
+streamlink==1.7.0
+urllib3==1.25.11
 websocket-client==0.57.0
