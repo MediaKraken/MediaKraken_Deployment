@@ -141,11 +141,11 @@ async def db_device_upsert(self, device_type, device_json, db_connection=None):
                                                                          'caller':
                                                                              inspect.stack()[1][
                                                                                  3]})
-    new_guid = uuid.uuid4()
     if db_connection is None:
         db_conn = self.db_connection
     else:
         db_conn = db_connection
+    new_guid = uuid.uuid4()
     await db_conn.execute('INSERT INTO mm_device (mm_device_id,'
                           ' mm_device_type,'
                           ' mm_device_json)'
@@ -154,3 +154,51 @@ async def db_device_upsert(self, device_type, device_json, db_connection=None):
                           ' DO UPDATE SET mm_device_type = $4, mm_device_json = $5',
                           new_guid, device_type, device_json, device_type, device_json)
     return new_guid
+
+
+async def db_device_read(self, guid, db_connection=None):
+    """
+    Return details from database via uuid
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchrow('select mm_device_type,'
+                                  ' mm_device_json'
+                                  ' from mm_device'
+                                  ' where mm_device_id = $1', guid)
+
+
+async def db_device_count(self, device_type=None, search_value=None, db_connection=None):
+    """
+    Return the number of devices in database
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    if device_type is None:
+        return await db_conn.fetchval('select count(*) from mm_device')
+    else:
+        return await db_conn.fetchval('select count(*) from mm_device'
+                                      ' where mm_device_type = $1',
+                                      device_type)

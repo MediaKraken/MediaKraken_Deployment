@@ -1,5 +1,5 @@
 import inspect
-
+import uuid
 from common import common_logging_elasticsearch_httpx
 
 
@@ -84,3 +84,28 @@ async def db_link_list_count(self, search_value=None, db_connection=None):
                                       search_value)
     else:
         return await db_conn.fetchval('select count(*) from mm_link')
+
+
+async def db_link_insert(self, link_json, db_connection=None):
+    """
+    Insert linked server
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    new_guid = uuid.uuid4()
+    await db_conn.execute('insert into mm_link (mm_link_guid,'
+                          ' mm_link_json)'
+                          ' values (%s, %s)', new_guid, link_json)
+    await db_conn.db_commit()
+    return new_guid

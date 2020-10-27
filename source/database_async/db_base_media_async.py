@@ -425,3 +425,126 @@ async def db_update_media_id(self, media_guid, metadata_guid, db_connection=None
         db_conn = db_connection
     await db_conn.execute('update mm_media set mm_media_metadata_guid = $1'
                           ' where mm_media_guid = $2', metadata_guid, media_guid)
+
+
+async def db_matched_media_count(self, db_connection=None):
+    """
+    # count matched media
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchval('select count(*) from mm_media'
+                                  ' where mm_media_metadata_guid is not NULL')
+
+
+async def db_ffprobe_data(self, guid, db_connection=None):
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await self.db_cursor.fetchval('select mm_media_ffprobe_json from mm_media'
+                                         ' where mm_media_guid = $1', guid)
+
+
+async def db_known_media_count(self, db_connection=None):
+    """
+    # count known media
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchval('select count(*) from mm_media')
+
+
+async def db_known_media(self, offset=0, records=None, db_connection=None):
+    """
+    # find all known media
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetch('select mm_media_path'
+                               ' from mm_media where mm_media_guid'
+                               ' in (select mm_media_guid'
+                               ' from mm_media order by mm_media_path'
+                               ' offset $1 limit $2)'
+                               ' order by mm_media_path', offset, records)
+
+
+async def db_unmatched_list_count(self, db_connection=None):
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchval('select count(*) from mm_media'
+                                  ' where mm_media_metadata_guid is NULL')
+
+
+async def db_unmatched_list(self, offset=0, list_limit=None, db_connection=None):
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetch('select mm_media_guid,'
+                               ' mm_media_path from mm_media'
+                               ' where mm_media_metadata_guid is NULL'
+                               ' order by mm_media_path offset $1 limit $2',
+                               offset, list_limit)
