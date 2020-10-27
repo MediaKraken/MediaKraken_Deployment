@@ -1,5 +1,5 @@
 service_identity==17.0.0
-cryptography==2.3.1
+cryptography==3.2
 pyopenssl==19.0.0 
 setuptools==41.0.1
 docker==4.1.0
