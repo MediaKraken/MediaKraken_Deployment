@@ -4,9 +4,30 @@ import inspect
 from common import common_logging_elasticsearch_httpx
 
 
-#####################################
-# Not using :;json due to unions
-#####################################
+async def db_media_random(self, db_connection=None):
+    """
+    Find random movie
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchrow('select mm_metadata_guid,'
+                                  'mm_media_guid '
+                                  'from mm_media,'
+                                  'mm_metadata_movie'
+                                  ' where mm_media_metadata_guid = mm_metadata_guid'
+                                  ' and random() < 0.01 limit 1')
+
 
 async def db_media_movie_list(self, class_guid, list_type=None, list_genre='all',
                               list_limit=0, group_collection=False, offset=None,

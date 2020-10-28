@@ -95,10 +95,8 @@ async def db_meta_game_list(self, offset=0, records=None, search_value=None, db_
                                    offset, records)
 
 
-b
-
-
-async def db_meta_game_insert(self, game_system_id, game_short_name, game_name, game_json, db_connection=None):
+async def db_meta_game_insert(self, game_system_id, game_short_name, game_name, game_json,
+                              db_connection=None):
     """
     Insert game
     """
@@ -126,7 +124,8 @@ async def db_meta_game_insert(self, game_system_id, game_short_name, game_name, 
     return new_game_id
 
 
-async def db_meta_game_update(self, game_system_id, game_short_name, game_name, game_json, db_connection=None):
+async def db_meta_game_update(self, game_system_id, game_short_name, game_name, game_json,
+                              db_connection=None):
     """
     Update game
    async """

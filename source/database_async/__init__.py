@@ -75,7 +75,8 @@ class MKServerDatabaseAsync:
         db_media_game_clone_list, \
         db_media_game_category_by_name
     from database_async.db_base_media_movie_async \
-        import db_media_movie_list, \
+        import db_media_random, \
+        db_media_movie_list, \
         db_media_movie_list_count, \
         db_media_movie_count_by_genre
     from database_async.db_base_media_music_async \
@@ -187,7 +188,9 @@ class MKServerDatabaseAsync:
         db_user_login, \
         db_user_group_insert
     from database_async.db_base_metadata_music_video_async \
-        import db_meta_music_video_count, \
+        import db_meta_music_video_lookup, \
+        db_meta_music_video_add, \
+        db_meta_music_video_count, \
         db_meta_music_video_detail_uuid, \
         db_meta_music_video_list
     from database_async.db_base_metadata_tv_async \
@@ -264,7 +267,8 @@ class MKServerDatabaseAsync:
         import db_pgsql_version, \
         db_pgsql_parallel_workers, \
         db_pgsql_row_count, \
-        db_pgsql_table_sizes
+        db_pgsql_table_sizes, \
+        db_pgsql_vacuum_stat_by_day
     from database_async.db_base_hardware_async \
         import db_hardware_device_count, \
         db_hardware_json_read, \
