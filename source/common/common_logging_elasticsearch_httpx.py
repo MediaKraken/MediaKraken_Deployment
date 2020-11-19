@@ -40,6 +40,8 @@ def com_es_httpx_post(message_type, message_text, index_name=None):
             timeout=3.05)
     except httpx.TimeoutException as exc:
         return None
+    except httpx.ConnectError as exc:
+        return None
     return response
 
 
@@ -62,5 +64,7 @@ async def com_es_httpx_post_async(message_type, message_text, index_name=None):
                 headers={"Content-Type": "application/json"},
                 timeout=3.05)
         except httpx.TimeoutException as exc:
+            return None
+        except httpx.ConnectError as exc:
             return None
         return response
