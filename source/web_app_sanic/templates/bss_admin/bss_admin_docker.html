@@ -78,23 +78,19 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Operating System</th>
-                                                <th>Kernel</th>
+                                                <th>ID</th>
                                                 <th>Docker Engine</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for row_data in docker_nodes %}
                                             <tr>
-                                                <td>Cell 1</td>
-                                                <td>Cell 2</td>
-                                                <td>Cell 3</td>
-                                                <td>Cell 4</td>
+                                                <td>{{ row_data['Description']['Hostname'] }}</td>
+                                                <td>{{ row_data['Description']['Platform']['OS'] }}</td>
+                                                <td>{{ row_data['ID'] }}</td>
+                                                <td>{{ row_data['Description']['Engine']['EngineVersion'] }}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Cell 3</td>
-                                                <td>Cell 4</td>
-                                                <td>Cell 3</td>
-                                                <td>Cell 4</td>
-                                            </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

@@ -21,10 +21,13 @@ async def url_bp_admin_docker_stat(request):
                                                                          'Docker info': docker_info})
     if 'Managers' not in docker_info['Swarm'] or docker_info['Swarm']['Managers'] == 0:
         docker_swarm = "Cluster not active"
+        docker_nodes = None
     else:
         docker_swarm = docker_inst.com_docker_swarm_inspect()[
             'JoinTokens']['Worker']
+        docker_nodes = docker_inst.com_docker_node_list()
     return {
         'data_host': docker_info,
         'data_swam': docker_swarm,
+        'data_nodes': docker_nodes,
     }
