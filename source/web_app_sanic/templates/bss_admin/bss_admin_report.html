@@ -31,38 +31,39 @@
                 <div class="container-fluid">
                     <fieldset>
                         <legend><strong>Media Report</strong></legend><div>
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Provider</th>
-                    <th>Active</th>
-                    <th>API Key</th>
-                    <th>Secret Key</th>
-                    <th>Bucket/Path</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row_data in cloud_providers %}
-                <tr>
-                    <td>{{ loop.index + (page - 1) * per_page }}</td>
-                    <td>{{ row_data[1] }}</td>
-                    <td>{{ row_data[2] }}</td>
-                    <td>{{ row_data[3] }}</td>
-                    <td>{{ row_data[4] }}</td>
-                    <td>{{ row_data[5] }}</td>
-                    <div class="pull-right action-buttons">
-                        <td>
-                            <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} onclick="EditUser(this)" ><span class="fas pencil-alt"></span></button></a>
-                        </td>
-                    </div>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div></fieldset>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Provider</th>
+                                        <th>Active</th>
+                                        <th>API Key</th>
+                                        <th>Secret Key</th>
+                                        <th>Bucket/Path</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row_data in cloud_providers %}
+                                    <tr>
+                                        <td>{{ loop.index + (page - 1) * per_page }}</td>
+                                        <td>{{ row_data[1] }}</td>
+                                        <td>{{ row_data[2] }}</td>
+                                        <td>{{ row_data[3] }}</td>
+                                        <td>{{ row_data[4] }}</td>
+                                        <td>{{ row_data[5] }}</td>
+                                        <div class="pull-right action-buttons">
+                                            <td>
+                                                <p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" <a data-id={{ row_data[0] }} onclick="EditUser(this)" ><span class="fas pencil-alt"></span></button></a>
+                                            </td>
+                                        </div>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
