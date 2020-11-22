@@ -60,7 +60,8 @@ def worker(audit_directory):
     # update the timestamp now so any other media added DURING this scan don't get skipped
     db_connection.db_audit_dir_timestamp_update(dir_path)
     db_connection.db_audit_path_update_status(dir_guid,
-                                              json.dumps({'Status': 'File search scan', 'Pct': 'NA'}))
+                                              json.dumps({'Status': 'File search scan',
+                                                          'Pct': 'NA'}))
     db_connection.db_commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
@@ -71,9 +72,8 @@ def worker(audit_directory):
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
                 # TODO can I do os.path.join with UNC?
-                # TODO as of right now this will break with spaces in share/dir/filename
-                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]
-                                 + '\\' + file_name)
+                file_data.append('\\\\\'' + addr + '\\' + share + '\\' + dir_data[0]
+                                 + '\\' + file_name + '\'')
         smb_stuff.com_cifs_close()
     else:
         file_data = common_file.com_file_dir_list(dir_path, None, True, False)
