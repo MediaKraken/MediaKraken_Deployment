@@ -58,7 +58,8 @@ status_data = sd.com_schedules_direct_status()
 if status_data['systemStatus'][0]['status'] == "Online":
     pass
 else:
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'stuff': 'SD is unavailable'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical',
+                                                         message_text={'stuff': 'SD is unavailable'})
     sys.exit(0)
 # version check
 # version_json = sd.com_Schedules_Direct_Client_Version()

@@ -60,14 +60,27 @@ def com_isbn_mask(isbn_string, isbn_seperator='-'):
 
 def com_isbn_meta(isbn_string):
     """
-    Gives you the main metadata associated with the ISBN. As service parameter you can use: 'goob' uses the Google Books service (no key is needed) and is the default option, 'openl' uses the OpenLibrary.org api (no key is needed). You can enter API keys with config.add_apikey(service, apikey) (see example below). The output can be formatted as bibtex, csl (CSL-JSON), msword, endnote, refworks, opf or json (BibJSON) bibliographic formats with isbnlib.registry.bibformatters. cache only allows two values: 'default' or None. You can change the kind of cache by using isbnlib.registry.set_cache (see below). Now, you can extend the functionality of this function by adding pluggins, more metadata providers or new bibliographic formatters (check for available pluggins).
+    Gives you the main metadata associated with the ISBN.
+    As service parameter you can use: 'goob' uses the Google Books service (no key is needed)
+    and is the default option, 'openl' uses the OpenLibrary.org api (no key is needed).
+    You can enter API keys with config.add_apikey(service, apikey) (see example below).
+    The output can be formatted as bibtex, csl (CSL-JSON), msword, endnote, refworks,
+    opf or json (BibJSON) bibliographic formats with isbnlib.registry.bibformatters.
+    cache only allows two values: 'default' or None. You can change the kind of cache by
+    using isbnlib.registry.set_cache (see below). Now, you can extend the functionality
+    of this function by adding pluggins, more metadata providers or new bibliographic
+    formatters (check for available pluggins).
     """
     return isbnlib.meta(isbn_string, service='default', cache='default')
 
 
 def com_isbn_editions(isbn_string):
     """
-    Returns the list of ISBNs of editions related with this ISBN. By default uses 'merge' (merges 'openl' and 'thingl'), but other providers are available: 'openl' users Open Library, 'thingl' (uses the service ThingISBN from LibraryThing) and 'any' (first tries 'openl', if no data, then 'thingl').
+    Returns the list of ISBNs of editions related with this ISBN.
+    By default uses 'merge' (merges 'openl' and 'thingl'),
+    but other providers are available: 'openl' users Open Library, 'thingl'
+    (uses the service ThingISBN from LibraryThing) and 'any'
+    (first tries 'openl', if no data, then 'thingl').
     """
     return isbnlib.editions(isbn_string, service='merge')
 

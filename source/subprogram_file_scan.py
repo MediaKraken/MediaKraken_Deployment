@@ -86,7 +86,7 @@ def worker(audit_directory):
         else:
             # add to global so next scan won't do again
             global_known_media.append(file_name)
-            # set lower here so I can remove alot of .lower() in the code below
+            # set lower here so I can remove a lot of .lower() in the code below
             filename_base, file_extension = os.path.splitext(file_name.lower())
             # checking subtitles for parts as need multiple files for multiple media files
             if file_extension[1:] in common_file_extentions.MEDIA_EXTENSION \
@@ -232,9 +232,9 @@ def worker(audit_directory):
                                                                              total_scanned / total_file_in_dir) * 100}))
         db_connection.db_commit()
     # end of for loop for each file in library
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-    {'worker dir done': dir_path,
-     'media class': media_class_type_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'worker dir done': dir_path,
+                                                                       'media class': media_class_type_uuid})
     # set to none so it doesn't show up anymore in admin status page
     db_connection.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:

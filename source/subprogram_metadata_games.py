@@ -358,7 +358,7 @@ if not os.path.exists(file_name):
     wip_in_progress = False
     romset_in_progress = False
     # store args to sql
-    sys_shortname = ""
+    sys_short_name = ""
     sys_longname = None
     sys_manufacturer = None
     sys_year = None
@@ -382,8 +382,8 @@ if not os.path.exists(file_name):
             if line.find("DRIVERS INFO") != -1:  # stop at drivers
                 break
             line = line.replace("    ", "")
-            if line[0] == "#" or len(line) < 4 or line.find(
-                    "$mame") == 0:  # skip comments and blank lines
+            if line[0] == "#" or len(line) < 4 \
+                    or line.find("$mame") == 0:  # skip comments and blank lines
                 if line.find("$mame") == 0:
                     skip_next_line = True
                     long_name_next = True

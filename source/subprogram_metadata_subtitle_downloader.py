@@ -65,7 +65,7 @@ for lib_row in db_connection.db_library_paths():
             file_handle = subprocess.Popen(shlex.split(
                 "subliminal -l " + sub_lang + " -- \"" + media_row + "\""),
                 stdout=subprocess.PIPE, shell=False)
-            cmd_output = file_handle.read()
+            cmd_output = file_handle.communicate()[0]
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
                 'Download Status': cmd_output})
 

@@ -57,15 +57,17 @@ common_metadata_scudlee.mk_scudlee_fetch_xml()
 # store the xref data
 for anidbid, tvdbid, imdbid, default_tvseason, mapping_data, before_data \
         in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-        'stuff': {'ani': anidbid,
-                  ' tv': tvdbid,
-                  ' imdb': imdbid,
-                  ' default': default_tvseason,
-                  ' map': mapping_data,
-                  ' before': before_data}})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={
+                                                             'stuff': {'ani': anidbid,
+                                                                       ' tv': tvdbid,
+                                                                       ' imdb': imdbid,
+                                                                       ' default': default_tvseason,
+                                                                       ' map': mapping_data,
+                                                                       ' before': before_data}})
     db_connection.db_meta_anime_update_meta_id(json.dumps({'anidb': anidbid,
-                                                           'thetvdb': tvdbid, 'imdb': imdbid}),
+                                                           'thetvdb': tvdbid,
+                                                           'imdb': imdbid}),
                                                json.dumps({'Default': default_tvseason,
                                                            'Map': mapping_data}), before_data)
 

@@ -49,7 +49,8 @@ def com_file_modification_timestamp(file_name):
         return None
 
 
-def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=False,
+def com_file_save_data(file_name, data_block, as_pickle=False,
+                       with_timestamp=False,
                        file_ext=None):
     """
     Save data as file

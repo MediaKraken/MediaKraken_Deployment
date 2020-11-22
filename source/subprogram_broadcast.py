@@ -32,7 +32,6 @@ common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', messag
 
 # TODO?  # grab container list - do here since server could have restarted on other port
 # TODO?  how/why would the above happen
-# TODO I have this hardcoded........not good  (port number)
 docker_port = None
 while docker_port is None:
     for container_json in docker_inst.com_docker_container_list():
@@ -40,6 +39,7 @@ while docker_port is None:
             'container_json': container_json})
         # grab ports for server
         if container_json['Names'][0].find('mkstack_reactor') != -1:
+            # this will do port lookup
             docker_port = str(
                 docker_inst.com_docker_port(container_json['Id'], 8903)[0]['HostPort'])
             break

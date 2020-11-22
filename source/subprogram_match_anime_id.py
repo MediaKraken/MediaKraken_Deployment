@@ -69,7 +69,8 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
         else:
             # should be valid data, do the update
             db_connection.db_meta_update_media_id_from_scudlee(row_data[1],
-                                                               row_data[2], row_data[0])
+                                                               row_data[2],
+                                                               row_data[0])
 
 # begin the collections match/create/update
 for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():

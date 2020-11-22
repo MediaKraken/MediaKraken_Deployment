@@ -45,11 +45,15 @@ class CommonEbookWrite:
         book.set_language('en')
 
         book.add_author('Author Authorowski')
-        book.add_author('Danko Bananko', file_as='Gospodin Danko Bananko', role='ill',
+        book.add_author('Danko Bananko',
+                        file_as='Gospodin Danko Bananko',
+                        role='ill',
                         uid='coauthor')
 
         # create chapter
-        c1 = epub.EpubHtml(title='Intro', file_name='chap_01.xhtml', lang='hr')
+        c1 = epub.EpubHtml(title='Intro',
+                           file_name='chap_01.xhtml',
+                           lang='hr')
         c1.content = u'<h1>Intro heading</h1><p>Zaba je skocila u baru.</p>'
 
         # add chapter
@@ -67,7 +71,9 @@ class CommonEbookWrite:
 
         # define CSS style
         style = 'BODY {color: white;}'
-        nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css",
+        nav_css = epub.EpubItem(uid="style_nav",
+                                file_name="style/nav.css",
+                                media_type="text/css",
                                 content=style)
 
         # add CSS file

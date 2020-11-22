@@ -61,10 +61,10 @@ for libretro_core in common_network.mk_network_fetch_from_url(libtro_url
     else:
         download_core = True
     if download_core:
-        # download the missing cores
+        # download the missing or newer core
         common_network.mk_network_fetch_from_url(libtro_url + core_name,
                                                  '/mediakraken/emulation/cores/' + core_name)
-        # unzip the cores for use
+        # unzip the core for use
         common_file.com_file_unzip('/mediakraken/emulation/cores/' + core_name,
                                    target_destination_directory=None, remove_zip=True)
 
