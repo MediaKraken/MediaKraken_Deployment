@@ -60,7 +60,6 @@ if not os.path.isfile('./secure/data.zip'):
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         'stuff': 'data.zip not found, generating.'})
     data = common_hash.CommonHashCrypto()
-    data.com_hash_gen_crypt_key()
     if not os.path.isfile('./secure/data.zip'):
         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text=
         {
