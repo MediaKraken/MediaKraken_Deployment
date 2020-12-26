@@ -242,7 +242,8 @@ class ROMFileParser:
         # parse for multi roms archives and files
         curs_game.execute('select gir_gi_id,gir_rom_name,gir_sha1,gir_merged_rom_name from'
                           ' game_info,game_info_roms where gi_id = gir_gi_id and gi_id'
-                          ' IN (select gir_gi_id from game_info_roms group by gir_gi_id having count(*) > 1)')
+                          ' IN (select gir_gi_id from game_info_roms'
+                          ' group by gir_gi_id having count(*) > 1)')
         first_rec = True
         for sql_row in curs_game:
             if first_rec:
@@ -282,7 +283,8 @@ class ROMFileParser:
         db_full_hash_dict = []
         temp_list = []
         curs_game.execute('select gir_gi_id,gir_sha1 from game_info,game_info_roms'
-                          ' where gi_id = gir_gi_id and gi_id IN (select gir_gi_id from game_info_roms'
+                          ' where gi_id = gir_gi_id and gi_id IN'
+                          ' (select gir_gi_id from game_info_roms'
                           ' group by gir_gi_id having count(*) = 1)')
         for sql_row in curs_game:
             temp_list.append(sql_row[0])

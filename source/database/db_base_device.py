@@ -103,6 +103,7 @@ def db_device_check(self, device_type, device_name, device_ip):
     """
     Check to see if device exists already on db
     """
+    # TODO EXISTS
     self.db_cursor.execute(
         'select count(*) from mm_device'
         ' where mm_device_type = %s mm_device_json->\'Name\' ? %s'

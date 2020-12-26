@@ -49,5 +49,5 @@ if current_host_working_directory is None:
 docker_inst.com_docker_network_prune()
 docker_inst.com_docker_network_create()
 docker_inst.com_docker_run_elk(current_host_working_directory)
-docker_inst.com_docker_run_pgadmin()
-docker_inst.com_docker_run_portainer(current_host_working_directory)
+# docker_inst.com_docker_run_pgadmin()
+# docker_inst.com_docker_run_portainer(current_host_working_directory)

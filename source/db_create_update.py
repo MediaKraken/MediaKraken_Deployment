@@ -598,6 +598,7 @@ base_cron = [
       'program': '/mediakraken/subprogram_sync.py'}),
 ]
 # create base cron entries
+# TODO EXISTS
 if db_connection.db_query('select count(*) from mm_cron', fetch_all=False) == 0:
     for base_item in base_cron:
         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
@@ -721,26 +722,27 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_profile (mm_user_prof
 if db_connection.db_table_index_check('mm_user_profile_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_profile_idx_name'
                            ' ON mm_user_profile(mm_user_profile_name)')
-db_connection.db_query('select count(*) from mm_user_profile')
-# NC17, R, PG-13, PG, G
-base_user = (
-    ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
-                          'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-                          'Images': True, 'Games': True, 'Books': True, 'IRadio': True,
-                          'Home': True,
-                          '3D': True, 'Internet': True, 'Lang': 'en'})),
-    ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
-                         'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-                         'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
-                         '3D': True, 'Internet': True, 'Lang': 'en'})),
-    ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
-                          'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,
-                          'Images': True, 'Games': True, 'Books': True, 'IRadio': False,
-                          'Home': True,
-                          '3D': False, 'Internet': False, 'Lang': 'en'}))
-)
-for base_item in base_user:
-    db_connection.db_user_profile_insert(base_item[0], base_item[1])
+# TODO EXISTS
+if db_connection.db_query('select count(*) from mm_user_profile', fetch_all=False) == 0:
+    # NC17, R, PG-13, PG, G
+    base_user = (
+        ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
+                              'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
+                              'Images': True, 'Games': True, 'Books': True, 'IRadio': True,
+                              'Home': True,
+                              '3D': True, 'Internet': True, 'Lang': 'en'})),
+        ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
+                             'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
+                             'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
+                             '3D': True, 'Internet': True, 'Lang': 'en'})),
+        ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
+                              'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,
+                              'Images': True, 'Games': True, 'Books': True, 'IRadio': False,
+                              'Home': True,
+                              '3D': False, 'Internet': False, 'Lang': 'en'}))
+    )
+    for base_item in base_user:
+        db_connection.db_user_profile_insert(base_item[0], base_item[1])
 
 # create options and status table
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
@@ -748,6 +750,7 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
                        ' CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
                        ' mm_options_json jsonb,'
                        ' mm_status_json jsonb)')
+# TODO EXISTS
 if db_connection.db_query('select count(*) from mm_options_and_status', fetch_all=False) == 0:
     db_connection.db_opt_status_insert(json.dumps({
         'Account': {

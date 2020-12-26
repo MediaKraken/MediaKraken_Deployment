@@ -73,16 +73,15 @@ class TestDatabaseMetadataPeople:
         self.db_connection.db_rollback()
         self.db_connection.db_meta_person_by_name(person_name)
 
-    @pytest.mark.parametrize(("host_type", "guid", "expected_result"), [
-        ('themoviedb', 169, 0),  # TODO set back to 1 with real id
-        ('fake', 1000, 0)])
-    def test_db_meta_person_id_count(self, host_type, guid, expected_result):
+    @pytest.mark.parametrize(("guid", "expected_result"), [
+        (169, 0),  # TODO set back to 1 with real id
+        (1000, 0)])
+    def test_db_meta_person_id_count(self, guid, expected_result):
         """
         # does person exist already by host/id
         """
         self.db_connection.db_rollback()
-        assert self.db_connection.db_meta_person_id_count(
-            host_type, guid) == expected_result
+        assert self.db_connection.db_meta_person_id_count(guid) == expected_result
 
     # insert person
     # def db_metdata_person_insert(self, person_name, media_id_json, person_json, image_json=None):

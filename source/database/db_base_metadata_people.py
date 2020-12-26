@@ -84,9 +84,8 @@ def db_meta_person_id_count(self, guid):
     """
     # does person exist already by host/id
     """
-    # TODO little bobby tables
-    self.db_cursor.execute('select count(*) from mm_metadata_person'
-                           ' where mmp_person_media_id = %s' % guid)
+    self.db_cursor.execute('SELECT EXISTS(SELECT 1 FROM mm_metadata_person'
+                           ' WHERE mmp_person_media_id = %s limit 1) limit 1' % guid)
     return self.db_cursor.fetchone()[0]
 
 
@@ -184,7 +183,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_id = None
             # person_name = None # not used later so don't set
         if person_id is not None:
-            if self.db_meta_person_id_count(meta_type, person_id) > 0:
+            # TODO EXISTS
+            if self.db_meta_person_id_count(person_id) > 0:
                 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                                      message_text={
                                                                          'stuff': "skippy"})

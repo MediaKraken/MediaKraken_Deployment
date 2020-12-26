@@ -83,6 +83,7 @@ def db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
     self.db_cursor.execute('select count(*) from mm_tv_schedule'
                            ' where mm_tv_schedule_station_id = %s and mm_tv_schedule_date = %s',
                            (station_id, schedule_date))
+    # TODO change to upsert
     if self.db_cursor.fetchone()[0] > 0:
         self.db_cursor.execute('update mm_tv_schedule set mm_tv_schedule_json = %s'
                                ' where mm_tv_schedule_station_id = %s'
@@ -107,6 +108,7 @@ def db_tv_program_insert(self, program_id, program_json):
     """
     self.db_cursor.execute('select count(*) from mm_tv_schedule_program'
                            ' where mm_tv_schedule_program_id = %s', (program_id,))
+    # TODO change to upsert
     if self.db_cursor.fetchone()[0] > 0:
         self.db_cursor.execute('update mm_tv_schedule_program'
                                ' set mm_tv_schedule_program_json = %s'

@@ -23,6 +23,7 @@ def db_iradio_insert(self, radio_channel):
     """
     Insert iradio channel
     """
+    # TODO UPSERT
     if self.db_cursor.execute('select count(*) from mm_radio'
                               ' where mm_radio_address = %s',
                               (radio_channel,)):

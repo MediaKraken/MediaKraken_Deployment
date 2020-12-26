@@ -77,7 +77,8 @@ def db_audit_path_check(self, dir_path):
     """
     # lib path check (dupes)
     """
-    self.db_cursor.execute('select count(*) from mm_media_dir where mm_media_dir_path = %s',
+    self.db_cursor.execute('SELECT EXISTS(SELECT 1 FROM mm_media_dir'
+                           ' WHERE mm_media_dir_path = %s limit 1) limit 1',
                            (dir_path,))
     return self.db_cursor.fetchone()[0]
 
@@ -182,7 +183,8 @@ def db_audit_share_check(self, dir_path):
     """
     # share path check (dupes)
     """
-    self.db_cursor.execute('select count(*) from mm_media_share where mm_media_share_path = %s',
+    self.db_cursor.execute('SELECT EXISTS(SELECT 1 FROM mm_media_share'
+                           ' WHERE mm_media_share_path = %s limit 1) limit 1',
                            (dir_path,))
     return self.db_cursor.fetchone()[0]
 

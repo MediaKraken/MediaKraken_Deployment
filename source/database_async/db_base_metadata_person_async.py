@@ -140,8 +140,8 @@ async def db_meta_person_id_count(self, guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchval('select count(*) from mm_metadata_person'
-                                  ' where mmp_person_media_id = $1', guid)
+    return await db_conn.fetchval('SELECT EXISTS(SELECT 1 FROM mm_metadata_person'
+                                  ' WHERE mmp_person_media_id = $1 limit 1) limit 1', guid)
 
 
 async def db_meta_person_insert(self, person_name, media_id, person_json,
@@ -269,7 +269,8 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
             person_id = None
             # person_name = None # not used later so don't set
         if person_id is not None:
-            if await self.db_meta_person_id_count(meta_type, person_id) > 0:
+            # TODO upsert instead
+            if await self.db_meta_person_id_count(person_id) > 0:
                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                     message_type='info',
                     message_text={
