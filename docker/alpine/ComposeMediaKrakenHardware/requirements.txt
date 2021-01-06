@@ -5,7 +5,7 @@ rxv==0.6.0
 python-nest==4.1.0
 onkyo-eiscp==1.2.7
 soco==0.20
-pyatv==0.7.4
+pyatv==0.7.5
 xmltodict==0.12.0
 tripplite==0.3.0
 onvif_zeep==0.2.12
