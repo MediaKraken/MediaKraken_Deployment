@@ -56,7 +56,7 @@
                                 <tbody>
                                     {% for row_data in cloud_providers %}
                                     <tr>
-                                        <td>{{ loop.index + (page - 1) * per_page }}</td>
+                                        <td>{{ loop.index }}</td>
                                         <td>{{ row_data[1] }}</td>
                                         <td>{{ row_data[2] }}</td>
                                         <td>{{ row_data[3] }}</td>
