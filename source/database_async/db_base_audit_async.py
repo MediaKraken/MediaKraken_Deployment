@@ -141,8 +141,8 @@ async def db_audit_path_check(self, dir_path, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchval('select count(*) from mm_media_dir'
-                                  ' where mm_media_dir_path = $1',
+    return await db_conn.fetchval('select exists(select 1 from mm_media_dir'
+                                  ' where mm_media_dir_path = $1 limit 1) limit 1',
                                   dir_path)
 
 
@@ -348,8 +348,8 @@ async def db_audit_share_check(self, dir_path, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchval('select count(*) from mm_media_share'
-                                  ' where mm_media_share_path = $1',
+    return await db_conn.fetchval('select exists(select 1 from mm_media_share'
+                                  ' where mm_media_share_path = $1 limit 1) limit 1',
                                   dir_path)
 
 

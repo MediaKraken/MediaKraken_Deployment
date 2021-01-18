@@ -7,7 +7,7 @@ from common import common_file
 from common import common_logging_elasticsearch_httpx
 
 
-async def db_table_count(self, table_name, db_connection=None):
+async def db_table_count(self, table_name, db_connection=None, exists=False):
     """
     # return count of records in table
     """
@@ -26,7 +26,11 @@ async def db_table_count(self, table_name, db_connection=None):
         db_conn = db_connection
     # can't %s due to ' inserted
     # All table names will be done by server code, little bobby tables shouldn't apply
-    return await db_conn.fetchval('select count(*) from ' + table_name)
+    if exists:
+        return await db_conn.fetchval('select exists(select 1 from '
+                                      + table_name + ' limit 1) limit 1')
+    else:
+        return await db_conn.fetchval('select count(*) from ' + table_name)
 
 
 async def db_open(self, force_local=False, loop=None, as_pool=False):

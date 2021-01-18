@@ -237,7 +237,7 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                 person_name = None
             if person_id is not None:
                 # TODO do an upsert instead
-                if await self.db_meta_person_id_count(person_id) > 0:
+                if await self.db_meta_person_id_count(person_id) is True:
                     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                         message_type='info',
                         message_text={
@@ -270,7 +270,7 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
             # person_name = None # not used later so don't set
         if person_id is not None:
             # TODO upsert instead
-            if await self.db_meta_person_id_count(person_id) > 0:
+            if await self.db_meta_person_id_count(person_id) is True:
                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                     message_type='info',
                     message_text={

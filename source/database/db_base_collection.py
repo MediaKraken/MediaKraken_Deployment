@@ -21,6 +21,7 @@ import uuid
 
 
 def db_collection_list_count(self, search_value=None):
+    # TODO exists
     if search_value is not None:
         self.db_cursor.execute('select count(*)'
                                ' from mm_metadata_collection'

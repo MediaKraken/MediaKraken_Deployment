@@ -74,8 +74,8 @@ class TestDatabaseMetadataPeople:
         self.db_connection.db_meta_person_by_name(person_name)
 
     @pytest.mark.parametrize(("guid", "expected_result"), [
-        (169, 0),  # TODO set back to 1 with real id
-        (1000, 0)])
+        (169, False),  # TODO set back to 1 with real id
+        (1000, False)])
     def test_db_meta_person_id_count(self, guid, expected_result):
         """
         # does person exist already by host/id

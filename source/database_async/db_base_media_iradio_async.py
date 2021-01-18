@@ -21,6 +21,7 @@ async def db_iradio_insert(self, radio_channel, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
+    # TODO exists
     if await db_conn.fetchval('select count(*) from mm_radio'
                               ' where mm_radio_address = $1',
                               radio_channel) == 0:

@@ -113,13 +113,16 @@ def db_table_index_check(self, resource_name):
     return self.db_cursor.fetchone()[0]
 
 
-def db_table_count(self, table_name):
+def db_table_count(self, table_name, exists=False):
     """
     # return count of records in table
     """
     # can't %s due to ' inserted
     # TODO little bobby tables
-    self.db_cursor.execute('select count(*) from ' + table_name)
+    if exists:
+        self.db_cursor.execute('select exists(select 1 from ' + table_name + ' limit 1) limit 1 ')
+    else:
+        self.db_cursor.execute('select count(*) from ' + table_name)
     return self.db_cursor.fetchone()[0]
 
 

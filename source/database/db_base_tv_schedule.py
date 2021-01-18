@@ -59,9 +59,10 @@ def db_tv_station_exist(self, station_id, channel_id):
     """
     # channel exist check
     """
-    self.db_cursor.execute('select count(*) from mm_tv_stations'
+    self.db_cursor.execute('select exists(select 1 from mm_tv_stations'
                            ' where mm_tv_station_id = %s'
-                           ' and mm_tv_station_channel = %s', (station_id, channel_id))
+                           ' and mm_tv_station_channel = %s limit 1) limit 1',
+                           (station_id, channel_id))
     return self.db_cursor.fetchone()[0]
 
 

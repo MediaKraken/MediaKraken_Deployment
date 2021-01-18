@@ -44,6 +44,7 @@ async def db_device_check(self, device_type, device_name, device_ip, db_connecti
         db_conn = self.db_connection
     else:
         db_conn = db_connection
+    # TODO exists
     return await db_conn.fetchval(
         'select count(*) from mm_device'
         ' where mm_device_type = $1 mm_device_json->\'Name\' ? $2'

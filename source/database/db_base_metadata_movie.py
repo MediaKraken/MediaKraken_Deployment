@@ -25,8 +25,8 @@ def db_meta_movie_guid_count(self, guid):
     """
     # does movie exist already by metadata id
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_movie'
-                           ' where mm_metadata_guid = %s', (guid,))
+    self.db_cursor.execute('select exists(select 1 from mm_metadata_movie'
+                           ' where mm_metadata_guid = %s limit 1) limit 1', (guid,))
     return self.db_cursor.fetchone()[0]
 
 

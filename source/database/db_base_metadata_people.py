@@ -153,7 +153,7 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 person_name = None
             if person_id is not None:
                 # TODO do an upsert instead
-                if self.db_meta_person_id_count(person_id) > 0:
+                if self.db_meta_person_id_count(person_id) is True:
                     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                                          message_text={
                                                                              'db_meta_person_insert_cast_crew': "skip insert as person exists"})
@@ -183,8 +183,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
             person_id = None
             # person_name = None # not used later so don't set
         if person_id is not None:
-            # TODO EXISTS
-            if self.db_meta_person_id_count(person_id) > 0:
+            # tODO do upsert instead
+            if self.db_meta_person_id_count(person_id) is True:
                 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                                      message_text={
                                                                          'stuff': "skippy"})

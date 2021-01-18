@@ -132,8 +132,8 @@ def db_meta_tmdb_count(self, tmdb_id):
     """
     # see if metadata exists via themovedbid
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_movie'
-                           ' where mm_metadata_media_id = %s', (tmdb_id,))
+    self.db_cursor.execute('select exists(select 1 from mm_metadata_movie'
+                           ' where mm_metadata_media_id = %s limit 1) limit 1', (tmdb_id,))
     return self.db_cursor.fetchone()[0]
 
 
