@@ -20,6 +20,7 @@ RUN sed -i "2 s/^#//" /etc/apk/repositories \
   && sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   python3 \
+  py3-pip \
   && pip3 install --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
