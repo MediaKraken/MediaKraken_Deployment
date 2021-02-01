@@ -20,13 +20,15 @@ async def url_bp_admin_server_link(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/admin/admin_link',
                                                                       item_count=await request.app.db_functions.db_link_list_count(
-                                                                          db_connection),
+                                                                          search_value=None,
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
     link_data = await request.app.db_functions.db_link_list(offset,
                                                             int(request.ctx.session['per_page']),
+                                                            search_value=None,
                                                             db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
