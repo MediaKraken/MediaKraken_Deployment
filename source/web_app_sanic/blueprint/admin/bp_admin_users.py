@@ -44,7 +44,8 @@ async def url_bp_admin_user(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/admin/admin_users',
                                                                       item_count=await request.app.db_functions.db_user_count(
-                                                                          db_connection),
+                                                                          user_name=None,
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
