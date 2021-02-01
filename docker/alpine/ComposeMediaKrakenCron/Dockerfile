@@ -12,7 +12,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # had to go back to update instead of no-cache......throws errors
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+RUN sed -i "s/dl-2.cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --update \
   alpine-sdk \
   python3-dev \
