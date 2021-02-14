@@ -38,6 +38,7 @@ RUN sed -i "s/dl-2.cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   openssl \
   py3-numpy \
   py3-psutil \
+  rust \
   && export PYCURL_SSL_LIBRARY=openssl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
