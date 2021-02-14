@@ -1,6 +1,6 @@
-pika==1.1.0
+pika==1.2.0
 docker==4.4.1
 pycountry==20.7.3  # due to file scan program
 babel==2.9.0  # due to file scan program
 pysmb==1.2.6  # due to file scan program
-smbprotocol[kerberos]==1.2.0  # due to file scan program
+smbprotocol[kerberos]==1.4.0  # due to file scan program

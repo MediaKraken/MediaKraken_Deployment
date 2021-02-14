@@ -1,7 +1,7 @@
 aio-pika==6.7.1
-asyncpg==0.21.0
+asyncpg==0.22.0
 beautifulsoup4==4.9.3
-guessit==3.2.0
+guessit==3.3.1
 musicbrainzngs==0.7.1
 pitchfork==0.1.5
 xmltodict==0.12.0

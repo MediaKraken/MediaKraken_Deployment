@@ -1,5 +1,5 @@
 httpx==0.16.1  # httpx since using ffmpeg image
 aio-pika==6.7.1
-asyncpg==0.21.0
+asyncpg==0.22.0
 pysmb==1.2.6  # due to file access
-smbprotocol[kerberos]==1.2.0  # due to file access
+smbprotocol[kerberos]==1.4.0  # due to file access
