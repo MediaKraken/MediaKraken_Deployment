@@ -17,7 +17,6 @@ WORKDIR /mediakraken
 # had to go back to update instead of no-cache......throws errors
 RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
   && apk add --update \
-  python \
   cifs-utils \
   nfs-utils \
   bash \
