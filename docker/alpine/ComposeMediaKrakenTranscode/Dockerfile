@@ -22,6 +22,7 @@ RUN apk add --no-cache \
   libressl-dev \
   net-snmp \
   python3 \
+  py3-pip \
   openrc \
   gcc \
   python3-dev \
