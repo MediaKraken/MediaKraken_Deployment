@@ -33,6 +33,7 @@ RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/reposito
   python3 \
   python3-dev \
   openrc \
+  py3-pip \
   py3-service_identity \
   py3-setuptools \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
