@@ -3,10 +3,9 @@ FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbaseffmpeg:dev
 ARG ALPMIRROR
 ARG PIPMIRROR
 
-ENV NODE_VERSION 10.14.2
+ENV NODE_VERSION 15.8.0
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-    && addgroup -g 1000 node \
+RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache \
         libstdc++ \

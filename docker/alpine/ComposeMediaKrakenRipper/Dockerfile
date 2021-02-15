@@ -12,8 +12,7 @@ RUN mkdir /mediakraken
 
 WORKDIR /mediakraken
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   abcde \
   openjdk8-jre-base \
   python3
