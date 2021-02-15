@@ -15,8 +15,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # had to go back to update instead of no-cache......throws errors
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
+RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
   && apk add --update \
   python \
   cifs-utils \
