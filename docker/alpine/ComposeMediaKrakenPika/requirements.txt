@@ -1,5 +1,5 @@
 pika==1.2.0
-docker==4.4.1
+docker==4.4.2
 pycountry==20.7.3  # due to file scan program
 babel==2.9.0  # due to file scan program
 pysmb==1.2.6  # due to file scan program

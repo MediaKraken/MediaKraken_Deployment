@@ -1,6 +1,6 @@
 passwordmeter==0.1.8
 twisted==20.3.0
 pika==1.2.0
-docker==4.4.1
+docker==4.4.2
 pysmb==1.2.6
-cryptography==3.4.5
+cryptography==3.4.6
