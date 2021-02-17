@@ -1,4 +1,4 @@
-# https://github.com/CM2Walki/steamcmd - non root version
+# https://github.com/CM2Walki/steamcmd - non root version  02/16/2021
 
 ############################################################
 # Dockerfile that contains SteamCMD
