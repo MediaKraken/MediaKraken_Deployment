@@ -63,3 +63,4 @@ httplib2.ca_certs_locater==0.2.0
 speedtest-cli==2.1.2
 pysmb==1.2.6  # due to file scan program
 smbprotocol[kerberos]==1.4.0  # due to file scan program
+ytpy==2021.1.31
