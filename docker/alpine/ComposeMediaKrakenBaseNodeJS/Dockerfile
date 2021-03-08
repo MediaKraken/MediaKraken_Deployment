@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/node/
-FROM alpine:3.13
+FROM alpine:3.13.2
 
 ENV NODE_VERSION 15.8.0
 

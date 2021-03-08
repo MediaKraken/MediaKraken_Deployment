@@ -1,4 +1,4 @@
-FROM alpine:3.13.1 as builder
+FROM alpine:3.13.2 as builder
 
 ARG ALPMIRROR
 ARG PIPMIRROR
