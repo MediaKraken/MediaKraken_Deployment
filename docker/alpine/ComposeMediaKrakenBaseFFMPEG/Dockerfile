@@ -9,7 +9,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
 ARG FDKAAC_VERSION=0.1.5
 ARG X264_VERSION=20191217-2245-stable
 ARG X265_VERSION=3.2.1
-ARG FFMPEG_VERSION="4.3.1"
+ARG FFMPEG_VERSION="4.3.2"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 COPY scripts /mediakraken
@@ -148,7 +148,7 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.13.1
+FROM alpine:3.13.2
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
