@@ -38,7 +38,7 @@ from twisted.protocols import basic
 import kivy
 from kivy.app import App
 
-kivy.require('1.11.0')
+kivy.require('2.0.0')
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
 from kivy.uix.popup import Popup

@@ -64,7 +64,7 @@ else:
         Config.set('graphics', 'height', 480)
         Config.set('graphics', 'fullscreen', 'fake')
 
-kivy.require('1.11.0')
+kivy.require('2.0.0')
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.settings import SettingsWithSidebar
