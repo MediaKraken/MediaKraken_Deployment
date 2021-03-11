@@ -8,7 +8,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
 
 ARG FDKAAC_VERSION=0.1.5
 ARG X264_VERSION=20191217-2245-stable
-ARG X265_VERSION=3.2.1
+ARG X265_VERSION=3.4
 ARG FFMPEG_VERSION="4.3.2"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
@@ -59,13 +59,13 @@ RUN buildDeps="autoconf \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
     apk add --no-cache ${buildDeps} libgcc libstdc++ ca-certificates && \
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L --insecure https://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-${X264_VERSION}.tar.bz2 | \
-    tar -jx --strip-components=1 && \
+    git clone https://code.videolan.org/videolan/x264.git && \
+    cd x264 && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-pic --enable-shared --disable-cli && \
     make -j`getconf _NPROCESSORS_ONLN` && \
     make install && \
     DIR=$(mktemp -d) && cd ${DIR} && \
-    curl -L --insecure https://get.videolan.org/x265/x265_${X265_VERSION}.tar.gz | \
+    curl -L --insecure https://github.com/videolan/x265/archive/${X265_VERSION}.tar.gz | \
     tar -zx --strip-components=1 && \
     cd build/linux && \
     cmake -G "Unix Makefiles" ../../source && \
