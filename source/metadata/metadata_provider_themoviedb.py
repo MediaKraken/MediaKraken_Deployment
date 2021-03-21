@@ -360,7 +360,8 @@ class CommonMetadataTMDB:
                                                                              'poster')
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
-                                                                             'tmdb image path': image_file_path})
+                                                                             'tmdb image path':
+                                                                                 image_file_path})
         poster_file_path = None
         if result_json['poster_path'] is not None:
             image_file_path += result_json['poster_path']

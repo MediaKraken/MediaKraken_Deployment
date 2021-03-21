@@ -23,8 +23,7 @@ async def url_bp_admin_docker_stat(request):
         docker_swarm = "Cluster not active"
         docker_nodes = None
     else:
-        docker_swarm = docker_inst.com_docker_swarm_inspect()[
-            'JoinTokens']['Worker']
+        docker_swarm = docker_inst.com_docker_swarm_inspect()['JoinTokens']['Worker']
         docker_nodes = docker_inst.com_docker_node_list()
     return {
         'data_host': docker_info,
