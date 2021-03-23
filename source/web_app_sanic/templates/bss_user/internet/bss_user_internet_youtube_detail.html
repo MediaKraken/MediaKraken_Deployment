@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>MediaKraken - Flickr</title>
+    <title>MediaKraken - Youtube</title>
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link href="{{ url_for('static', filename='fonts/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -42,28 +42,24 @@
     </nav>
     <!-- End: Navigation with Button -->
     <div>
-        {% if media %}
-            <div>
-                {% for row_data in media %}
-                    <div class="main_photo">
-                        <a href= "{{ url_for('user_internet.user_internet_flickr_detail', guid=row_data[0]) }}" }} >
-                        <img src="{{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" height="180" width="320">
-                        </a>
-                        <div class="description">
-                            <p class="description_content_left">{{row_data[0] + ": " + row_data[2]}}</p>
-                        </div>
-                    </div>
-                {% endfor %}
+        <form id="SearchForm" class="form form-youtube" method="POST" action="{{ url_for('user_internet.user_internet_youtube') }}" role="form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.search_text.label}}
+                {{form.search_text(placeholder="Search string", class_="form-control")}}
             </div>
-        {% else %}
-            <p id="general_text">No Flickr media found.</p>
-        {% endif %}
+        </form>
+        <video id="vid1" src="" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" data-setup='{"fluid":"true","techOrder":["youtube"]}'>
+            <source src={{"http://www.youtube.com/watch?v=" + data_guid}} type="video/youtube">
+        </video>
     </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
         </div>
     </footer>
+    <script src="{{ url_for('static', filename='videojs/video.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='videojs/Youtube.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>

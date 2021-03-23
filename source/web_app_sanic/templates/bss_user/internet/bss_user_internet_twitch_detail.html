@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>MediaKraken - Flickr</title>
+    <title>MediaKraken - Twitch</title>
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link href="{{ url_for('static', filename='fonts/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -42,22 +42,17 @@
     </nav>
     <!-- End: Navigation with Button -->
     <div>
-        {% if media %}
-            <div>
-                {% for row_data in media %}
-                    <div class="main_photo">
-                        <a href= "{{ url_for('user_internet.user_internet_flickr_detail', guid=row_data[0]) }}" }} >
-                        <img src="{{ row_data[1] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '') }}" height="180" width="320">
-                        </a>
-                        <div class="description">
-                            <p class="description_content_left">{{row_data[0] + ": " + row_data[2]}}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p id="general_text">No Flickr media found.</p>
-        {% endif %}
+    <div id="twitch-embed"></div>
+    <!-- Load the Twitch embed script -->
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+    <!-- Create a Twitch.Embed object that will render within the "twitch-embed" root element. -->
+    <script type="text/javascript">
+      new Twitch.Embed("twitch-embed", {
+        width: 1280,
+        height: 720,
+        channel: "{{media}}"
+      });
+    </script>
     </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">

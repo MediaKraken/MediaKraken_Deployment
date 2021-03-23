@@ -42,7 +42,21 @@
     </nav>
     <!-- End: Navigation with Button -->
     <div>
-        
+        {% if media %}
+            <div>
+                {% for row_data in media %}
+                    {% if row_data[2] == None %}
+                        <a href= "{{ url_for('user_internet.user_internet_vimeo_detail', guid=row_data[1]) }}" > {{row_data[0]}}</a>
+                    {% else %}
+                        <a href= "{{ url_for('user_internet.user_internet_vimeo_detail', guid=row_data[1]) }}" >
+                        <img src= "{{ url_for('static', filename='meta/images/' + row_data[2] | replace('/mediakraken/web_app/MediaKraken/static/meta/images/', '')) }}" height="300" width="200">
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p id="general_text">No Vimeo media found.</p>
+        {% endif %}
     </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
