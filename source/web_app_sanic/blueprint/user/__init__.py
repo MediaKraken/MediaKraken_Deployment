@@ -10,6 +10,10 @@ from .bp_user_home_media import blueprint_user_home_media
 from .bp_user_homepage import blueprint_user_homepage
 from .bp_user_image import blueprint_user_image
 from .bp_user_internet import blueprint_user_internet
+from .bp_user_internet_flickr import blueprint_user_internet_flickr
+from .bp_user_internet_twitch import blueprint_user_internet_twitch
+from .bp_user_internet_vimeo import blueprint_user_internet_vimeo
+from .bp_user_internet_youtube import blueprint_user_internet_youtube
 from .bp_user_media_3d import blueprint_user_media_3d
 from .bp_user_media_collection import blueprint_user_media_collection
 from .bp_user_media_genre import blueprint_user_media_genre
@@ -50,6 +54,10 @@ blueprint_user_content = Blueprint.group(blueprint_user_cctv,
                                          blueprint_user_homepage,
                                          blueprint_user_image,
                                          blueprint_user_internet,
+                                         blueprint_user_internet_flickr,
+                                         blueprint_user_internet_twitch,
+                                         blueprint_user_internet_vimeo,
+                                         blueprint_user_internet_youtube,
                                          blueprint_user_media_3d,
                                          blueprint_user_media_collection,
                                          blueprint_user_media_genre,
