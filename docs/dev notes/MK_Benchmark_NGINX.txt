@@ -1,6 +1,6 @@
 Nginx proxy:
-[root@th-jenkins-1 source]# ab -n 10000 -c 30 https://th-swarm-1:8900/
-This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
+spoot@th-gluster-1:~$ ab -n 10000 -c 30 https://th-swarm-1:8900/
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
 
@@ -22,40 +22,42 @@ Server Software:        nginx
 Server Hostname:        th-swarm-1
 Server Port:            8900
 SSL/TLS Protocol:       TLSv1.2,ECDHE-RSA-AES256-GCM-SHA384,2048,256
+Server Temp Key:        X25519 253 bits
+TLS Server Name:        th-swarm-1
 
 Document Path:          /
-Document Length:        4545 bytes
+Document Length:        0 bytes
 
 Concurrency Level:      30
-Time taken for tests:   24.017 seconds
+Time taken for tests:   6.538 seconds
 Complete requests:      10000
 Failed requests:        0
-Write errors:           0
-Total transferred:      49429277 bytes
-HTML transferred:       45450000 bytes
-Requests per second:    416.37 [#/sec] (mean)
-Time per request:       72.052 [ms] (mean)
-Time per request:       2.402 [ms] (mean, across all concurrent requests)
-Transfer rate:          2009.84 [Kbytes/sec] received
+Non-2xx responses:      10000
+Total transferred:      2810000 bytes
+HTML transferred:       0 bytes
+Requests per second:    1529.59 [#/sec] (mean)
+Time per request:       19.613 [ms] (mean)
+Time per request:       0.654 [ms] (mean, across all concurrent requests)
+Transfer rate:          419.74 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        3    4   1.9      4      40
-Processing:     8   68   5.2     67     141
-Waiting:        7   68   5.2     67     141
-Total:         15   72   5.5     71     144
+Connect:        3    8   4.5      7      74
+Processing:     1   11   5.6     11      95
+Waiting:        1   11   5.6     11      94
+Total:          5   20   7.3     19     106
 
 Percentage of the requests served within a certain time (ms)
-  50%     71
-  66%     72
-  75%     73
-  80%     73
-  90%     76
-  95%     80
-  98%     88
-  99%     94
- 100%    144 (longest request)
-[root@th-jenkins-1 source]#
+  50%     19
+  66%     21
+  75%     22
+  80%     23
+  90%     26
+  95%     29
+  98%     33
+  99%     37
+ 100%    106 (longest request)
+
 
 *************************************
 
