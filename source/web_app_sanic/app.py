@@ -201,9 +201,10 @@ async def hello(request, user):
     return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
 
 
-# print out all routes for debugging purposes
-for handler, (rule, router) in app.router.routes_names.items():
-    print(rule, flush=True)
+# # print out all routes for debugging purposes
+# for handler, (rule, router) in app.router.routes_names.items():
+#     print(rule, flush=True)
+print(app.router.routes_all, flush=True)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
