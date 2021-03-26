@@ -204,7 +204,9 @@ async def hello(request, user):
 # # print out all routes for debugging purposes
 # for handler, (rule, router) in app.router.routes_names.items():
 #     print(rule, flush=True)
-print(app.router.routes_all, flush=True)
+for route in app.router.routes_all.items():
+    print(route, flush=True)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
