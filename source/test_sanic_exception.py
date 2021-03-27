@@ -15,7 +15,8 @@ async def test(request):
 @app.exception(Exception)
 async def no_details_to_user(request, exception):
     print('This route goes BOOM {}'.format(request.url), flush=True)
-    print(traceback.print_exc(), flush=True)
+    print('Trace:', traceback.print_exc(), flush=True)
+    print('Sanic:', exception, flush=True)
 
 
 if __name__ == '__main__':
