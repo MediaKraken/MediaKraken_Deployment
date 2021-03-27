@@ -74,6 +74,7 @@ async def page_not_found(request, exception):
 async def no_details_to_user(request, exception):
     print('This route goes BOOM {}'.format(request.url), flush=True)
     print('Trace:', traceback.print_exc(), flush=True)
+    print('Trace2:', traceback.format_exc(), flush=True)
     print('Sanic:', exception, flush=True)
     return redirect(app.url_for('name_blueprint_error.url_bp_public_error_500'))
 
