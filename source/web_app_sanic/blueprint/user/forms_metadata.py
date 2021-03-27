@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from sanic_wtf import SanicForm as Form
-from wtforms import TextField, TextAreaField
+from wtforms import StringField, TextAreaField
 from wtforms.validators import DataRequired
 
 
@@ -9,8 +9,8 @@ class MetaMovieEditForm(Form):
     """
     # for editing the movie metadata
     """
-    name = TextField('Name', validators=[DataRequired()])
-    alt_name = TextField('Alternate Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
+    alt_name = StringField('Alternate Name', validators=[DataRequired()])
     overview = TextAreaField('Overview', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -27,7 +27,7 @@ class MetaAlbumEditForm(Form):
     """
     # for editing the album metadata
     """
-    name = TextField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -44,7 +44,7 @@ class MetaSongEditForm(Form):
     """
     # for editing the song metadata
     """
-    name = TextField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     lyrics = TextAreaField('Lyrics', validators=[DataRequired()])
 
@@ -62,7 +62,7 @@ class MetaTVShowEditForm(Form):
     """
     # for editing the tvshow metadata
     """
-    name = TextField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -79,7 +79,7 @@ class MetaTVShowEpisodeEditForm(Form):
     """
     # for editing the tvshow episode metadata
     """
-    name = TextField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -96,7 +96,7 @@ class MetaGameEditForm(Form):
     """
     # for editing the game metadata
     """
-    name = TextField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
@@ -113,7 +113,7 @@ class MetaGameSystemEditForm(Form):
     """
     # for editing the game system metadata
     """
-    name = TextField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):

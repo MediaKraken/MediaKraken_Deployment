@@ -1,12 +1,12 @@
 from sanic_wtf import SanicForm
-from wtforms import TextField, SelectField
+from wtforms import StringField, SelectField
 from wtforms.validators import DataRequired, Length
 
 
 # for editing sync jobs
 class BSSSyncEditForm(SanicForm):
     # fields
-    name = TextField("Name", validators=[DataRequired()])
+    name = StringField("Name", validators=[DataRequired()])
     target_type = SelectField("Sync Type", choices=[('Local File System', 'Local File System'),
                                                     ("Remote Client", "Remote Client"),
                                                     ("google", "Google Drive"),
@@ -63,7 +63,7 @@ class BSSSyncEditForm(SanicForm):
                                                              ('2822400', '2,822,400 SACD')])
     target_priority = SelectField("Priority", choices=[('1', 'Low'), ('2', 'Medium'),
                                                        ('3', 'High'), ('4', 'ASAP')])
-    target_output_path = TextField("Output File", validators=[DataRequired(),
+    target_output_path = StringField("Output File", validators=[DataRequired(),
                                                               Length(min=1, max=255)])
 
     def __init__(self, *args, **kwargs):

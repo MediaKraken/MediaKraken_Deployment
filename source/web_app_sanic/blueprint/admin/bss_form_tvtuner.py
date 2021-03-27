@@ -1,5 +1,5 @@
 from sanic_wtf import SanicForm
-from wtforms import TextField, BooleanField
+from wtforms import StringField, BooleanField
 from wtforms.validators import DataRequired
 
 
@@ -7,8 +7,8 @@ class BSSTVTunerEditForm(SanicForm):
     """
     for editing the tvtuner devices
     """
-    name = TextField('Name', validators=[DataRequired()])
-    ipaddr = TextField('IP Address', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
+    ipaddr = StringField('IP Address', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
 
     def __init__(self, *args, **kwargs):

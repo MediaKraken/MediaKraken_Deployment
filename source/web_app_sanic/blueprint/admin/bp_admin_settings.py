@@ -69,7 +69,7 @@ async def url_bp_admin_settings(request):
     # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
-    docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
+    docker_musicbrainz_code = StringField('Brainzcode', validators=[DataRequired(),
                                                                   Length(min=1, max=250)])
     '''
     await request.app.db_pool.release(db_connection)

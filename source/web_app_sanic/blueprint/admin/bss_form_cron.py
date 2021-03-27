@@ -1,7 +1,7 @@
 from decimal import ROUND_UP
 
 from sanic_wtf import SanicForm
-from wtforms import TextField, TextAreaField, BooleanField, SelectField, DecimalField
+from wtforms import StringField, TextAreaField, BooleanField, SelectField, DecimalField
 from wtforms.validators import DataRequired
 
 
@@ -9,7 +9,7 @@ class BSSCronEditForm(SanicForm):
     """
     for editing the cron jobs
     """
-    name = TextField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     enabled = BooleanField('Enabled')
     interval = SelectField('Interval', choices=[('Minutes', 'Minutes'), ('Hours', 'Hours'),
