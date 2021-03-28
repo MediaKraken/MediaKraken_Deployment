@@ -90,8 +90,8 @@ async def db_user_insert(self, user_name, user_email, user_password, db_connecti
     else:
         user_admin = False
     return await db_conn.execute(
-        'insert into mm_user (username, email, password, active, is_admin, user_json)'
-        ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, $5)'
+        'insert into mm_user (username, email, password, active, is_admin, user_json, created_at)'
+        ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, $5, current_timestamp)'
         ' returning id',
         user_name, user_email, user_password, user_admin,
         json.dumps({"per_page": 30})), user_admin, 30
