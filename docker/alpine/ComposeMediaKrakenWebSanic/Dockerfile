@@ -44,7 +44,6 @@ RUN sed -i "s/dl-2.cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install git+https://github.com/MediaKraken/sanic-auth \
-  && pip3 install git+https://github.com/MediaKraken/sanic-wtf \
   && apk del \
   gcc \
   g++ \
