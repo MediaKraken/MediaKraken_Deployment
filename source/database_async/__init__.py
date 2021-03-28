@@ -277,6 +277,7 @@ class MKServerDatabaseAsync:
         import db_user_count, \
         db_user_delete, \
         db_user_detail, \
+        db_user_exists, \
         db_user_insert, \
         db_user_list_name, \
         db_user_login, \

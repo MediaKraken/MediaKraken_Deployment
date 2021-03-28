@@ -73,9 +73,9 @@ async def page_not_found(request, exception):
 @app.exception(Exception)
 async def no_details_to_user(request, exception):
     print('This route goes BOOM {}'.format(request.url), flush=True)
-    #print('Trace_Print:', traceback.print_exc(), flush=True)
+    # print('Trace_Print:', traceback.print_exc(), flush=True)
     print('Trace_Format:', traceback.format_exc(), flush=True)
-    #print('Sanic:', exception, flush=True)
+    # print('Sanic:', exception, flush=True)
     return redirect(app.url_for('name_blueprint_error.url_bp_public_error_500'))
 
 
@@ -123,26 +123,26 @@ async def register(request):
     errors = {}
     form = BSSRegisterForm(request)
     if request.method == 'POST':  # and form.validate():
-        username = form.username.data
         # we need to create a new user
         db_connection = await request.app.db_pool.acquire()
         # verify user doesn't already exist on database
-        if await request.app.db_functions.db_user_count(user_name=username,
-                                                        db_connection=db_connection) == 0:
+        if await request.app.db_functions.db_user_exists(user_name=form.username.data,
+                                                         db_connection=db_connection) is False:
             user_id, user_admin, user_per_page = await request.app.db_functions.db_user_insert(
-                user_name=username, user_email=form.email.data,
+                user_name=form.username.data, user_email=form.email.data,
                 user_password=form.password.data, db_connection=db_connection)
             await app.db_pool.release(db_connection)
             if user_id.isnumeric():  # valid user
                 request.ctx.session['search_text'] = None
                 common_global.auth.login_user(request,
                                               User(id=user_id,
-                                                   name=username,
+                                                   name=form.username.data,
                                                    admin=user_admin,
                                                    per_page=user_per_page))
                 return redirect(app.url_for('name_blueprint_user_homepage.url_bp_user_homepage'))
-            # failed to insert into database
-            errors['validate_errors'] = "Failed to create user"
+            else:
+                # failed to insert into database
+                errors['validate_errors'] = "Failed to create user"
         else:
             errors['validate_errors'] = "Username already exists"
     errors['token_errors'] = '<br>'.join(form.csrf_token.errors)
@@ -208,7 +208,6 @@ async def hello(request, user):
 #     print(rule, flush=True)
 for route in app.router.routes_all.items():
     print(route, flush=True)
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)

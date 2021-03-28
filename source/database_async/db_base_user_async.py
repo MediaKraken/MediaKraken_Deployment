@@ -68,6 +68,27 @@ async def db_user_detail(self, guid, db_connection=None):
                                   ' where id = $1', guid)
 
 
+async def db_user_exists(self, user_name, db_connection=None):
+    """
+    # determine if user exists
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchrow('select exists(select 1 from mm_user'
+                                  ' where username = $1', user_name)
+
+
 async def db_user_insert(self, user_name, user_email, user_password, db_connection=None):
     """
     # insert user
