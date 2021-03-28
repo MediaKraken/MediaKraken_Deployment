@@ -293,13 +293,15 @@ class MKConsumer:
     def stop(self):
         if not self._closing:
             self._closing = True
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'download': 'Stopping'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                 message_text={'download': 'Stopping'})
             if self._consuming:
                 self.stop_consuming()
                 self._connection.ioloop.start()
             else:
                 self._connection.ioloop.stop()
-            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'download': 'Stopped'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                                 message_text={'download': 'Stopped'})
 
     class ReconnectingExampleConsumer:
         """This is an example consumer that will reconnect if the nested
