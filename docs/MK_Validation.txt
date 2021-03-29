@@ -6,8 +6,27 @@ The Jenkins docker image I use is jenkins/jenkins:lts
 The ELK docker image I use is https://github.com/spujadas/elk-docker
     This is used to view logs as they are output via MK programs
 
+# debian buster
+apt install python3-dotenv
+Buster upgrade broke  python3 -m pip install --user packagetoinstall
+
+
 Run the following tests from under the MediaKraken_CI
     python3 validate_code.py
-        Bandit to find unsecured code - against MediaKraken_Deployment source
+        Bandit (https://github.com/PyCQA/bandit) to find unsecured code - against MediaKraken_Deployment source
+            pip3 install bandit==1.7.0
+        Graudit (https://github.com/wireghoul/graudit) - against MediaKraken_Deployment source
+            cd ~
+            git clone https://github.com/wireghoul/graudit
+            ln -s ~/graudit/graudit /bin/graudit
         Vulture to find dead code - against MediaKraken_Deployment source
+            pip3 install vulture==2.3
         Taint to find unsecured code - against MediaKraken_Deployment source
+            pip3 install python-taint==0.42
+    python3 validate_docker.py
+        Trivy (https://github.com/aquasecurity/trivy) Vulnerability Scanner for Containers - against docker images
+            apt-get install wget apt-transport-https gnupg lsb-release
+            wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
+            echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list
+            apt-get update
+            apt-get install trivy
