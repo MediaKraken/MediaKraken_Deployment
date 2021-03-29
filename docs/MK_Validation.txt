@@ -1,0 +1,13 @@
+= Description of validation and testing process via CI =
+
+The Jenkins docker image I use is jenkins/jenkins:lts
+    Then I install pip requirements file
+
+The ELK docker image I use is https://github.com/spujadas/elk-docker
+    This is used to view logs as they are output via MK programs
+
+Run the following tests from under the MediaKraken_CI
+    python3 validate_code.py
+        Bandit to find unsecured code - against MediaKraken_Deployment source
+        Vulture to find dead code - against MediaKraken_Deployment source
+        Taint to find unsecured code - against MediaKraken_Deployment source
