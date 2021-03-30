@@ -1,8 +1,8 @@
 # Download base image
 FROM alpine:3.12
 
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This holds the image for pgbouncer"
+LABEL author="Quinn D Granfor, spootdev@gmail.com"
+LABEL description="This holds the image for pgbouncer"
 
 ARG ALPMIRROR
 

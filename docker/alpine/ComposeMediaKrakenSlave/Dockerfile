@@ -1,8 +1,8 @@
 # Download base image
 FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbasenodeffmpeg:dev
 
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the main slave app"
+LABEL author="Quinn D Granfor, spootdev@gmail.com"
+LABEL description="This image holds the main slave app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR

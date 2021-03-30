@@ -1,8 +1,8 @@
 # Download base image
 FROM mediakraken/mkbaseffmpeg:dev
 
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the ripper app"
+LABEL author="Quinn D Granfor, spootdev@gmail.com"
+LABEL description="This image holds the ripper app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
