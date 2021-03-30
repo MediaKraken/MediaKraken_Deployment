@@ -17,7 +17,7 @@ WORKDIR /mediakraken
 
 # pip3 is installed now in community, hence the first sed
 RUN sed -i "2 s/^#//" /etc/apk/repositories \
-  && sed -i "s/dl-2.cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+  && sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   python3==3.8.8 \
   py3-pip==20.3.4-r0 \
