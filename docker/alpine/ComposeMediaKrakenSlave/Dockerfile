@@ -36,7 +36,7 @@ RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/reposito
   py3-pip \
   py3-service_identity \
   py3-setuptools \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && npm install -g castnow \
   && apk del \
   alpine-sdk \

@@ -18,7 +18,7 @@ RUN sed -i "s/dl-2-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   openrc \
   py3-psycopg2 \
   py3-psutil \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apk add --no-cache \
   py-setuptools

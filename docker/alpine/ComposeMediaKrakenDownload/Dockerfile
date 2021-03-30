@@ -25,8 +25,8 @@ RUN sed -i "s/dl-2.cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   py3-psycopg2 \
   python3-dev \
   xmlsec-dev \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && pip3 install -e git+https://github.com/MediaKraken-Dep/dosage#egg=dosage \
+  && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && pip3 install --no-cache-dir -e git+https://github.com/MediaKraken-Dep/dosage#egg=dosage \
   && apk del \
   gcc \
   git \

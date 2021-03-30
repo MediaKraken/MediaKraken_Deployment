@@ -32,8 +32,8 @@ RUN apk add --no-cache \
   libffi-dev \
   rust \
   cargo \
-  && pip3 install --upgrade pip \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && pip3 install --no-cache-dir --upgrade pip \
+  && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del \
     gcc \
     python3-dev \

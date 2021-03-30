@@ -77,7 +77,7 @@ COPY pg.conf.template /etc/barman/barman.d/pg.conf.template
 COPY wal_archiver.py /usr/local/lib/python3.7/dist-packages/barman/wal_archiver.py
 
 # Install barman exporter
-RUN pip install barman-exporter && mkdir /node_exporter
+RUN pip install --no-cache-dir barman-exporter && mkdir /node_exporter
 VOLUME /node_exporter
 
 ENV TINI_VERSION v0.18.0
