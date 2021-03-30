@@ -24,7 +24,12 @@ Run the following tests from under the MediaKraken_CI
         Taint to find unsecured code - against MediaKraken_Deployment source
             pip3 install python-taint==0.42
     python3 validate_docker.py
-        Trivy (https://github.com/aquasecurity/trivy) Vulnerability Scanner for Containers - against docker images
+        Hadolint (https://github.com/hadolint/hadolint) - lint your Dockerfile
+            # docker pull hadolint/hadolint
+            wget https://github.com/hadolint/hadolint/releases/download/v2.0.0/hadolint-Linux-x86_64
+            mv hadolint-Linux-x86_64 /usr/bin/hadolint
+            chmod +x /usr/bin/hadolint
+        Trivy (https://github.com/aquasecurity/trivy) Vulnerability Scanner for Containers - against docker images - alerts on apps/packages installed in the OS
             apt-get install wget apt-transport-https gnupg lsb-release
             wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
             echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list
