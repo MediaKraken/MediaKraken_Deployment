@@ -19,7 +19,7 @@ WORKDIR /mediakraken
 RUN sed -i "2 s/^#//" /etc/apk/repositories \
   && sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
-  python3==3.8.8 \
+  python3==3.8.8-r0 \
   py3-pip==20.3.4-r0 \
   && pip3 install --no-cache-dir --upgrade pip==21.0.1 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
