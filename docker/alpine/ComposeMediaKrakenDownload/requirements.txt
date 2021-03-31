@@ -3,7 +3,7 @@ youtube-dl==2020.3.24
 docker==4.1.0
 pysmb==1.1.27
 xmltodict==0.12.0
-lxml==4.5.0
+lxml==4.6.3
 requests==2.22.0
 six==1.12.0
 cssselect==1.0.3
