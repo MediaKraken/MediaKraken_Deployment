@@ -15,15 +15,15 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
-  alpine-sdk \
-  gcc \
-  git \
-  libhdhomerun \
-  linux-headers \
-  musl-dev \
-  py3-requests \
-  py3-setuptools \
-  python3-dev \
+  alpine-sdk==1.0-r0 \
+  gcc==10.2.1_pre1-r3 \
+  git==2.30.2-r0 \
+  libhdhomerun==20200225-r0 \
+  linux-headers==5.7.8-r0 \
+  musl-dev==1.2.2-r0 \
+  py3-requests==2.25.1-r1 \
+  py3-setuptools==51.3.3-r0 \
+  python3-dev==3.8.8-r0 \
   && git clone https://github.com/MediaKraken/PyHdHomeRun \
   && cd PyHdHomeRun \
   && python3 setup.py install \

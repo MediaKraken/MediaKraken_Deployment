@@ -13,7 +13,7 @@ WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
-  alpine-sdk \
+  alpine-sdk==1.0-r0 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apk del \

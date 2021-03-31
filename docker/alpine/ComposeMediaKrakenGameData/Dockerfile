@@ -14,10 +14,10 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
-  ca-certificates \
-  openrc \
-  py3-psycopg2 \
-  py3-psutil \
+  ca-certificates==20191127-r5 \
+  openrc==0.42.1-r19 \
+  py3-psycopg2==2.8.6-r0 \
+  py3-psutil==5.8.0-r0 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apk add --no-cache \

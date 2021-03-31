@@ -16,20 +16,21 @@ WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
-  gcc \
-  git \
-  libxml2-dev \
-  linux-headers \
-  musl-dev \
-  py3-apache-libcloud \
-  py3-psycopg2 \
-  python3-dev \
-  xmlsec-dev \
+  gcc==10.2.1_pre1-r3 \
+  git==2.30.2-r0 \
+  libxml2-dev==2.9.10-r6 \
+  linux-headers==5.7.8-r0 \
+  musl-dev==1.2.2-r0 \
+  py3-apache-libcloud==3.3.0-r0 \
+  py3-psycopg2==2.8.6-r0 \
+  python3-dev==3.8.8-r0 \
+  xmlsec-dev==1.2.31-r0 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install --no-cache-dir -e git+https://github.com/MediaKraken-Dep/dosage#egg=dosage \
   && apk del \
   gcc \
   git \
+  python3-dev \
   && rm requirements.txt
 
 COPY wait-for-it-ash-busybox130.sh /mediakraken
