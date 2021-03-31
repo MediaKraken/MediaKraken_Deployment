@@ -13,7 +13,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
-RUN sed -i "s/dl-2.cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
+RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   alpine-sdk \
   gcc \

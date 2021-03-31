@@ -1,12 +1,10 @@
 # https://github.com/MediaKraken-Dependancies/docker-inotify
-FROM alpine:3.8
+FROM alpine:3.13.3
 
-MAINTAINER spootdev@gmail based on code by pstauffer@confirm.ch
+LABEL maintainer="spootdev@gmail based on code by pstauffer@confirm.ch"
 
 COPY init.sh /init.sh
-RUN apk --update upgrade && \
-    apk add --update curl inotify-tools && \
-    rm -rf /var/cache/apk/* && \
+RUN apk add --no-cache curl inotify-tools && \
     chmod 750 /init.sh
 
 WORKDIR /tmp
