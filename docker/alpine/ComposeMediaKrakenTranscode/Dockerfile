@@ -29,6 +29,7 @@ RUN apk add --no-cache \
   linux-headers \
   musl-dev \
   krb5-dev \
+  libffi \
   libffi-dev \
   rust \
   cargo \
@@ -41,6 +42,7 @@ RUN apk add --no-cache \
     musl-dev \
     libressl-dev \
     cargo \
+    libffi-dev \
   && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
