@@ -21,14 +21,26 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   linux-headers \
   musl-dev \
   python3-dev \
+  libffi \
   libffi-dev \
+  libxslt \
   libxslt-dev \
+  libxml2 \
   libxml2-dev \
   openrc \
+  libressl \
   libressl-dev \
   libarchive \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && apk del gcc linux-headers musl-dev python3-dev \
+  && apk del \
+  gcc \
+  libffi-dev \
+  linux-headers \
+  libxslt-dev \
+  libxml2-dev \
+  libressl-dev \
+  musl-dev \
+  python3-dev \
   && rm requirements.txt \
   && apk add --no-cache \
   py3-setuptools \
