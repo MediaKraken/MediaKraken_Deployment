@@ -40,6 +40,7 @@ RUN apk add --no-cache \
     linux-headers \
     musl-dev \
     libressl-dev \
+    cargo \
   && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
