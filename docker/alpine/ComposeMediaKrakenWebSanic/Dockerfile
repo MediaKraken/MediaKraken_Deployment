@@ -45,6 +45,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install --no-cache-dir git+https://github.com/MediaKraken/sanic-auth \
   && apk del \
+  cargo \
   gcc \
   g++ \
   git \

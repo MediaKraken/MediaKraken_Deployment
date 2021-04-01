@@ -31,6 +31,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --no-cache-dir git+https://github.com/MediaKraken/phue \
   && rm requirements.txt \
   && apk del \
+  cargo \
   gcc \
   git \
   linux-headers \
