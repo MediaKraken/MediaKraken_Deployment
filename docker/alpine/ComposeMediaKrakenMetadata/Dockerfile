@@ -30,7 +30,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del gcc linux-headers musl-dev python3-dev \
   && rm requirements.txt \
-  && apk add \
+  && apk add --no-cache \
   py3-setuptools \
   py3-service_identity \
   && rc-update add netmount \

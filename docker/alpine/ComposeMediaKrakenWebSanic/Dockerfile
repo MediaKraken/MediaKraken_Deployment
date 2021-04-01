@@ -48,6 +48,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   gcc \
   g++ \
   git \
+  make \
   musl-dev \
   linux-headers \
   python3-dev \

@@ -2,7 +2,7 @@
 
 FROM alpine:3.13.3
 
-MAINTAINER Open Source Services [opensourceservices.fr]
+LABEL maintainer="Open Source Services [opensourceservices.fr]"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
