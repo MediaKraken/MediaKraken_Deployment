@@ -57,7 +57,7 @@ RUN buildDeps="autoconf \
         yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
-    apk add --no-cache ${buildDeps} libgcc libstdc++ ca-certificates && \
+    apk add --no-cache ${buildDeps} libgcc libstdc++ ca-certificates busybox==1.32.1-r5 && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     git clone https://code.videolan.org/videolan/x264.git && \
     cd x264 && \
@@ -155,6 +155,7 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --no-cache \
+    busybox==1.32.1-r5 \
     bash==5.1.0-r0 \
     samba-client==4.13.7-r0 \
     lame==3.100-r0 \

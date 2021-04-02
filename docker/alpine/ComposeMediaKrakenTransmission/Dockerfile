@@ -9,6 +9,7 @@ ARG PIPMIRROR
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
     && apk add --no-cache \
+    busybox==1.32.1-r5 \
     transmission-daemon==3.00-r2
 
 RUN mkdir -p /transmission/downloads \
