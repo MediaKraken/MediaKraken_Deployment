@@ -155,28 +155,28 @@ COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --no-cache \
-    bash \
-    samba-client \
-    lame \
-    libass \
-    libmodplug \
-    libogg \
-    libtheora \
-    libvorbis \
-    opus \
-    speex \
-    xvidcore \
-    freetype \
-    zlib \
-    openjpeg \
-    libwebp \
-    soxr \
-    fontconfig \
-    libvpx \
-    librtmp \
-    libva \
-    libvdpau \
-    libva-intel-driver \
+    bash==5.1.0-r0 \
+    samba-client==4.13.7-r0 \
+    lame==3.100-r0 \
+    libass==0.15.0-r0 \
+    libmodplug==0.8.9.0-r0 \
+    libogg==1.3.4-r0 \
+    libtheora==1.1.1-r16 \
+    libvorbis==1.3.7-r0 \
+    opus==1.3.1-r1 \
+    speex==1.2.0-r0 \
+    xvidcore==1.3.7-r1 \
+    freetype==2.10.4-r1 \
+    zlib==1.2.11-r3 \
+    openjpeg==2.4.0-r0 \
+    libwebp==1.1.0-r0 \
+    soxr==0.1.3-r2 \
+    fontconfig==2.13.1-r3 \
+    libvpx==1.9.0-r0 \
+    librtmp==2.4_git20190330-r1 \
+    libva==2.10.0-r0 \
+    libvdpau==1.4-r0 \
+    libva-intel-driver==2.4.1-r0 \
     && rm -Rf /home/* && \
     ffmpeg -buildconf
 

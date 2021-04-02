@@ -18,6 +18,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   gcc==10.2.1_pre1-r3 \
   git==2.30.2-r0 \
+  libxml2==2.9.10-r6 \
   libxml2-dev==2.9.10-r6 \
   linux-headers==5.7.8-r0 \
   musl-dev==1.2.2-r0 \
@@ -30,6 +31,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk del \
   gcc \
   git \
+  libxml2-dev \
   python3-dev \
   && rm requirements.txt
 
