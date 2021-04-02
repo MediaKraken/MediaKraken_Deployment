@@ -29,7 +29,7 @@ RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/reposito
   musl-dev==1.2.2-r0 \
   net-snmp==5.9-r2 \
   net-snmp-dev==5.9-r2 \
-  nginx-mod-rtmp@edge \
+  nginx-mod-rtmp==1.18.0-r13 \
   python3==3.8.8-r0 \
   python3-dev==3.8.8-r0 \
   openrc==0.42.1-r19 \
