@@ -14,23 +14,23 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
-  ca-certificates \
-  cifs-utils \
-  nfs-utils \
-  gcc \
-  linux-headers \
-  musl-dev \
-  python3-dev \
-  libffi \
-  libffi-dev \
-  libxslt \
-  libxslt-dev \
-  libxml2 \
-  libxml2-dev \
-  openrc \
-  libressl \
-  libressl-dev \
-  libarchive \
+  ca-certificates==20191127-r5 \
+  cifs-utils==6.12-r0 \
+  nfs-utils==2.5.2-r0 \
+  gcc==10.2.1_pre1-r3 \
+  linux-headers==5.7.8-r0 \
+  musl-dev==1.2.2-r0 \
+  python3-dev==3.8.8-r0 \
+  libffi==3.3-r2 \
+  libffi-dev==3.3-r2 \
+  libxslt==1.1.34-r0 \
+  libxslt-dev==1.1.34-r0 \
+  libxml2==2.9.10-r6 \
+  libxml2-dev==2.9.10-r6 \
+  openrc==0.42.1-r19 \
+  libressl==3.1.5-r0 \
+  libressl-dev==3.1.5-r0 \
+  libarchive==3.5.1-r0 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del \
   gcc \
@@ -43,8 +43,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   && rm requirements.txt \
   && apk add --no-cache \
-  py3-setuptools \
-  py3-service_identity \
+  py3-setuptools==51.3.3-r0 \
+  py3-service_identity==18.1.0-r3 \
   && rc-update add netmount \
   && rc-update add rpcbind
 #  && pip3 install -e git+https://github.com/agonzalezro/python-opensubtitles#egg=python-opensubtitles #TODO removed for now

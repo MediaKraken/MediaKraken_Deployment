@@ -1,5 +1,5 @@
 pika==1.2.0
-youtube-dl==2021.3.14
+youtube-dl==2021.4.1
 docker==4.4.4
 pysmb==1.2.6
 xmltodict==0.12.0

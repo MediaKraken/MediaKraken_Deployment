@@ -35,3 +35,6 @@ Run the following tests from under the MediaKraken_CI
             echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list
             apt-get update
             apt-get install trivy
+            # to run as server
+            trivy server --listen 0.0.0.0:9999
+            trivy client --remote http://localhost:9999 alpine:3.10
