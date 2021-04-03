@@ -157,19 +157,6 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # runs ffprobe
-  ffprobe:
-    image: mediakraken/mkffprobe:latest
-    secrets:
-      - db_password
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_ffprobe_metadata.py
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    volumes:
-      - ./mkmount:/mediakraken/mnt:ro
-    networks:
-      - mediakraken_network_backend
-
   # runs hardware
   hardware:
     image: mediakraken/mkhardware:latest
@@ -419,6 +406,19 @@ services:
       replicas: 0
       placement:
         constraints: [node.role == manager]
+
+  # runs transcode
+  transcode:
+    image: mediakraken/mktranscode:latest
+    secrets:
+      - db_password
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 async_transcode.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      - ./mkmount:/mediakraken/mnt:ro
+    networks:
+      - mediakraken_network_backend
 
   transmission:
     image: mediakraken/mktransmission:latest
