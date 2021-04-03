@@ -8,6 +8,7 @@ ARG ALPMIRROR
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
+  busybox==1.32.1-r5 \
   c-ares==1.17.1-r1 \
   libevent==2.1.12-r1 \
   openssl==1.1.1k-r0 \
