@@ -24,6 +24,8 @@ Run the following tests from under the MediaKraken_CI
         Taint to find unsecured code - against MediaKraken_Deployment source
             pip3 install python-taint==0.42
     python3 validate_docker.py
+        Docker Bench Security - https://github.com/docker/docker-bench-security
+            docker_bench_security.sh from the above link
         Hadolint (https://github.com/hadolint/hadolint) - lint your Dockerfile
             # docker pull hadolint/hadolint
             wget https://github.com/hadolint/hadolint/releases/download/v2.0.0/hadolint-Linux-x86_64
@@ -38,3 +40,10 @@ Run the following tests from under the MediaKraken_CI
             # to run as server
             trivy server --listen 0.0.0.0:9999
             trivy client --remote http://localhost:9999 alpine:3.10
+    python3 validate_web_security
+            nikto - https://github.com/sullo/nikto Nikto web server scanner
+                git clone https://github.com/sullo/nikto
+            mablanco/rapidscan - https://github.com/skavngr/rapidscan
+            Wapiti - https://wapiti.sourceforge.io/ - Wapiti allows you to audit the security of your websites or web applications.
+                apt install wapiti
+    python3 validate_web_selenium
