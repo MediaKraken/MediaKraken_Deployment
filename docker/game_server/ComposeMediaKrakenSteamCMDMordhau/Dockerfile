@@ -13,7 +13,7 @@ ENV DLURL https://raw.githubusercontent.com/CM2Walki/Mordhau
 # Install Mordhau server dependencies and clean up
 RUN set -x \
 	&& apt-get update \
-	&& apt-get install -y --no-install-recommends --no-install-suggests \
+	&& apt-get install -y --allow-downgrades --no-install-recommends --no-install-suggests \
 		libfontconfig1=2.13.1-2 \
 		libpangocairo-1.0-0=1.42.4-8~deb10u1 \
 		libnss3=2:3.42.1-1+deb10u3 \
