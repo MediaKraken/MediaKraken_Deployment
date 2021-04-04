@@ -12,7 +12,7 @@ WORKDIR /mediakraken
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   && apk add --no-cache \
   go==1.15.10-r0 \
-  go get github.com/anacrolix/dms \
+  go get https://github.com/anacrolix/dms \
   cifs-utils==6.12-r0 \
   curl==7.74.0-r1 \
   curl-dev==7.74.0-r1 \
