@@ -1,4 +1,4 @@
-# https://github.com/CM2Walki/steamcmd - non root version  02/16/2021
+# https://github.com/CM2Walki/steamcmd - non root version  2021/04/04
 
 ############################################################
 # Dockerfile that contains SteamCMD
@@ -30,6 +30,9 @@ RUN set -x \
 		nano=3.2-3 \
 		libsdl2-2.0-0:i386=2.0.9+dfsg1-1 \
 		curl=7.64.0-4+deb10u1 \
+		locales=2.28-10 \
+	&& sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+	&& dpkg-reconfigure --frontend=noninteractive locales \
 	&& useradd -u "${PUID}" -m "${USER}" \
         && su "${USER}" -c \
                 "mkdir -p \"${STEAMCMDDIR}\" \

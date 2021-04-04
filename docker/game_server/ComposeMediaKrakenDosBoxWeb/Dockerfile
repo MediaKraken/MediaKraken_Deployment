@@ -1,9 +1,9 @@
-# https://github.com/theonemule/dos-game
+# https://github.com/theonemule/dos-game    2021/04/04
 
-FROM ubuntu:18.04
+FROM ubuntu:20.10
 ENV USER=root
 ENV PASSWORD=password1
-ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN=true
 COPY keen /dos/keen
 RUN apt-get update && \
