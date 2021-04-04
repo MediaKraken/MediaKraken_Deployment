@@ -57,7 +57,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   python3-dev \
   && apk add \
   py-setuptools \
-  && rm requirements.txt \
+  && rm requirements.txt
 
 # Copy the source files for the app
 COPY src /mediakraken
