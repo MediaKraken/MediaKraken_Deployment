@@ -55,8 +55,8 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   portaudio-dev \
   postgresql-dev \
   python3-dev \
-  && apk add \
-  py-setuptools \
+  && apk add --no-cache \
+  py3-setuptools==51.3.3-r0 \
   && rm requirements.txt
 
 # Copy the source files for the app
