@@ -54,6 +54,11 @@ Maybe:
 https://github.com/vintasoftware/python-linters-and-code-analysis
 https://github.com/analysis-tools-dev/static-analysis#python
 
+https://github.com/pawamoy/dependenpy
+https://github.com/collab-qa/check-all-the-things
+https://github.com/almandin/fuxploider
+https://github.com/drwetter/testssl.sh
+
 cppcheck - c/c++ code checker
     http://cppcheck.sourceforge.net/
 Clair - docker vuln scanner
@@ -78,7 +83,7 @@ Vuls - os scanner via ssh
     https://vuls.io/docs/en/tutorial-docker.html
     https://github.com/ishiDACo/vulsrepo
 
-Nonproject
+Nonproject:
 core intruque = attack surface checker - looks for stuff running that's insecure
     https://core.intrigue.io/
 archerysec - vuln db and monitor
