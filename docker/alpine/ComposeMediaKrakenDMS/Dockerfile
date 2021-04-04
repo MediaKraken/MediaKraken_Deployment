@@ -2,13 +2,11 @@
 FROM  th-registry-1.beaverbay.local:5000/mediakraken/mkbaseffmpeg:dev
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
-LABEL description="This image holds the dms app"
+LABEL description="This holds the dms app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
 
-# copy PIP requirements
-COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
@@ -56,8 +54,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
   postgresql-dev \
   python3-dev \
   && apk add --no-cache \
-  py3-setuptools==51.3.3-r0 \
-  && rm requirements.txt
+  py3-setuptools==51.3.3-r0
 
 # Copy the source files for the app
 COPY src /mediakraken
