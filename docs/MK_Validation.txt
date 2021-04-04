@@ -15,7 +15,7 @@ Run the following tests from under the MediaKraken_CI
     python3 validate_code.py
         Bandit (https://github.com/PyCQA/bandit) to find unsecured code - against MediaKraken_Deployment source
             pip3 install bandit==1.7.0
-        Graudit (https://github.com/wireghoul/graudit) - against MediaKraken_Deployment source
+        # TODO FIX Graudit (https://github.com/wireghoul/graudit) - against MediaKraken_Deployment source
             cd ~
             git clone https://github.com/wireghoul/graudit
             ln -s ~/graudit/graudit /bin/graudit
@@ -44,6 +44,42 @@ Run the following tests from under the MediaKraken_CI
             nikto - https://github.com/sullo/nikto Nikto web server scanner
                 git clone https://github.com/sullo/nikto
             mablanco/rapidscan - https://github.com/skavngr/rapidscan
+            # TODO Sitadel - https://github.com/shenril/Sitadel
             Wapiti - https://wapiti.sourceforge.io/ - Wapiti allows you to audit the security of your websites or web applications.
                 apt install wapiti
     python3 validate_web_selenium
+
+
+Maybe:
+https://github.com/vintasoftware/python-linters-and-code-analysis
+https://github.com/analysis-tools-dev/static-analysis#python
+
+cppcheck - c/c++ code checker
+    http://cppcheck.sourceforge.net/
+Clair - docker vuln scanner
+    https://github.com/arminc/clair-scanner
+    https://github.com/arminc/clair-local-scan
+dagda - static analysis of known vulnerabilities, trojans, viruses, malware & other malicious threats in docker images/containers
+    https://github.com/eliasgranderubio/dagda
+pocsuite3 - remote vulnerability testing
+    https://github.com/knownsec/pocsuite3
+pyflakes - python linter
+    https://github.com/PyCQA/pyflakes
+pylint - python linter
+    https://www.pylint.org/
+safety - pip requiments security check
+    https://pyup.io/safety/
+Shellcheck - shell script checker
+    https://github.com/anordal/shellharden
+    https://github.com/koalaman/shellcheck
+Sonarqube - code scanner
+    https://docs.sonarqube.org/latest/setup/install-server/
+Vuls - os scanner via ssh
+    https://vuls.io/docs/en/tutorial-docker.html
+    https://github.com/ishiDACo/vulsrepo
+
+Nonproject
+core intruque = attack surface checker - looks for stuff running that's insecure
+    https://core.intrigue.io/
+archerysec - vuln db and monitor
+    https://www.archerysec.com/index.html
