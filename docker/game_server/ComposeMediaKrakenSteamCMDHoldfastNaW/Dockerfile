@@ -16,7 +16,6 @@ RUN set -x \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
 		wget=1.20.1-1.1 \
-		ca-certificates=20200601~deb10u1 \
 		libsqlite3-0=3.27.2-3+deb10u1 \
 		tini=0.18.0-1 \
 	&& mkdir -p "${STEAMAPPDIR}" \
