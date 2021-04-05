@@ -85,8 +85,8 @@ async def db_user_exists(self, user_name, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchrow('select exists(select 1 from mm_user'
-                                  ' where username = $1', user_name)
+    return await db_conn.fetchval('select exists(select 1 from mm_user'
+                                  ' where username = $1)', user_name)
 
 
 async def db_user_insert(self, user_name, user_email, user_password, db_connection=None):
