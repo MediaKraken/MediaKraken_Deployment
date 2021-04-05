@@ -1,4 +1,4 @@
-FROM ubuntu:19.10
+FROM ubuntu:20.10
 LABEL maintainer="Tim Sogard <docker@timsogard.com>"
 COPY . /opt/quake2
 RUN useradd -m -s /bin/bash quake2
