@@ -3,9 +3,10 @@
 ############################################################
 # Dockerfile that contains SteamCMD
 ############################################################
-FROM debian:buster-slim
+FROM debian:10.9-slim
 
-LABEL maintainer="walentinlamonos@gmail.com"
+LABEL author="walentinlamonos@gmail.com"
+LABEL maintainer="spootdev@gmail.com"
 ARG PUID=1000
 
 ENV USER steam
