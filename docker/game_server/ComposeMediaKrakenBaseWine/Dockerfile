@@ -2,7 +2,7 @@ FROM ubuntu:20.10
 WORKDIR /root
 RUN apt update -y
 RUN apt install wine-stable wine-development winetricks xdotool -y
-RUN dpkg –add-architecture i386
+RUN dpkg -–add-architecture i386
 RUN apt-get update && apt-get install wine32 -y
 RUN apt install zenity -y
 ARG DEBIAN_FRONTEND=noninteractive
