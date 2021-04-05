@@ -1,4 +1,4 @@
-FROM i386/ubuntu:18.04
+FROM i386/ubuntu:20.10
 
 # Prepare the system
 RUN apt-get update && \
