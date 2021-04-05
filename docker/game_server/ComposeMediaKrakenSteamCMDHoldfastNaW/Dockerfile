@@ -15,7 +15,6 @@ ENV DLURL https://raw.githubusercontent.com/CM2Walki/HoldfastNaW
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		wget=1.20.1-1.1 \
 		libsqlite3-0=3.27.2-3+deb10u1 \
 		tini=0.18.0-1 \
 	&& mkdir -p "${STEAMAPPDIR}" \
@@ -23,6 +22,10 @@ RUN set -x \
 	&& wget "${DLURL}/master/etc/tinientry.sh" -O "${HOMEDIR}/tinientry.sh" \
 	&& chmod +x "${HOMEDIR}/entry.sh" "${HOMEDIR}/tinientry.sh" \
 	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${HOMEDIR}/tinientry.sh" "${STEAMAPPDIR}" \	
+	&& apt-get remove --purge -y \
+		wget \
+	&& apt-get clean autoclean \
+	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV FPSMAX=300 \

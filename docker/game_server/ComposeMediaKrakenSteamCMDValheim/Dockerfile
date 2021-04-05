@@ -16,7 +16,6 @@ ENV DLURL https://raw.githubusercontent.com/CM2Walki/Valheim
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		wget=1.20.1-1.1 \
 		lib32z1=1:1.2.11.dfsg-1 \
 		tini=0.18.0-1 \
 		libc6-dev=2.28-10 \
@@ -26,6 +25,10 @@ RUN set -x \
 	&& wget --max-redirect=30 "${DLURL}/master/etc/tinientry.sh" -O "${HOMEDIR}/tinientry.sh" \
 	&& chmod +x "${HOMEDIR}/entry.sh" "${HOMEDIR}/tinientry.sh" \
 	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${HOMEDIR}/tinientry.sh" "${STEAMAPPDIR}" \	
+	&& apt-get remove --purge -y \
+		wget \
+	&& apt-get clean autoclean \
+	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/*
 	
 ENV SERVER_PORT=2456 \

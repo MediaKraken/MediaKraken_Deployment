@@ -12,12 +12,14 @@ ENV DLURL https://raw.githubusercontent.com/CM2Walki/Squad
 
 RUN set -x \
 	&& apt-get update \
-	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		wget=1.20.1-1.1 \
 	&& wget "${DLURL}/master/etc/entry.sh" -O "${HOMEDIR}/entry.sh" \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	&& chmod 755 "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" \
 	&& chown "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" \
+	&& apt-get remove --purge -y \
+		wget \
+	&& apt-get clean autoclean \
+	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV PORT=7787 \

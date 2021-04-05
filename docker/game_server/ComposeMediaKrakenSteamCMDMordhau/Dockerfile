@@ -29,12 +29,15 @@ RUN set -x \
 		libxrandr2=2:1.5.1-1 \
 		libcurl3-gnutls=7.64.0-4+deb10u1 \
 		libcurl4=7.64.0-4+deb10u1 \
-		wget=1.20.1-1.1 \
 		iputils-ping=3:20180629-2+deb10u2 \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	&& wget --max-redirect=30 "${DLURL}/master/etc/entry.sh" -O "${HOMEDIR}/entry.sh" \
 	&& chmod +x "${HOMEDIR}/entry.sh" \
 	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" \
+	&& apt-get remove --purge -y \
+		wget \
+	&& apt-get clean autoclean \
+	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV SERVER_ADMINPW="replacethisyoumadlad" \

@@ -16,7 +16,6 @@ ENV DLURL https://raw.githubusercontent.com/CM2Walki/TF2
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		wget=1.20.1-1.1 \
 		lib32z1=1:1.2.11.dfsg-1 \
 		libncurses5:i386=6.1+20181013-2+deb10u2 \
 		libbz2-1.0:i386=1.0.6-9.2~deb10u1 \
@@ -36,6 +35,10 @@ RUN set -x \
 	   } > "${HOMEDIR}/${STEAMAPP}_update.txt" \
 	&& chmod +x "${HOMEDIR}/entry.sh" \
 	&& chown -R "${USER}:${USER}" "${HOMEDIR}/entry.sh" "${STEAMAPPDIR}" "${HOMEDIR}/${STEAMAPP}_update.txt" \
+	&& apt-get remove --purge -y \
+		wget \
+	&& apt-get clean autoclean \
+	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV SRCDS_FPSMAX=300 \
