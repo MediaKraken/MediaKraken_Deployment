@@ -2,7 +2,7 @@ FROM mono:latest
 
 MAINTAINER Jason Rivers <docker@jasonrivers.co.uk>
 
-RUN apt-get update && apt-get install	\
+RUN apt-get update && apt-get install -y	\
 	wget				\
 	unzip				&& \
 	apt-get clean
