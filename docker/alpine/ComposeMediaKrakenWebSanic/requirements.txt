@@ -3,7 +3,7 @@ ujson==4.0.2
 Jinja2==2.11.3
 email-validator==1.1.2
 WTForms==2.3.3
-sanic==21.3.2
+sanic==20.12.2
 sanic-jinja2==0.9.1
 sanic-session==0.7.3
 sanic-wtf==0.6.0
