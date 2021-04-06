@@ -14,10 +14,8 @@ ENV WINDWARD_SERVER_NAME="Windward Server" \
     WINDWARD_SERVER_PORT=5127 \
     WINDWARD_SERVER_PUBLIC=0
 
-RUN apk --update --no-cache add curl unzip zstd
-
 # Note - This line taken from frolvlad/alpine-mono since we have to build it ourselves here
-RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates tar xz && \
+RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates tar zstd && \
     wget "https://www.archlinux.org/packages/extra/x86_64/mono/download/" -O "/tmp/mono.pkg.tar.zst" && \
     tar -I zstd -xvf "/tmp/mono.pkg.tar.zst" && \
     cert-sync /etc/ssl/certs/ca-certificates.crt && \
