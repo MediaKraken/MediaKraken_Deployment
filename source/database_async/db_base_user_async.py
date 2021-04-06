@@ -86,7 +86,7 @@ async def db_user_exists(self, user_name, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchval('select exists(select 1 from mm_user'
-                                  ' where username = $1)', user_name)
+                                  ' where username = $1 limit 1) limit 1', user_name)
 
 
 async def db_user_insert(self, user_name, user_email, user_password, db_connection=None):
@@ -112,10 +112,10 @@ async def db_user_insert(self, user_name, user_email, user_password, db_connecti
         user_admin = False
     return await db_conn.execute(
         'insert into mm_user (username, email, password, active, is_admin, user_json, created_at)'
-        ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, $5, current_timestamp)'
+        ' values ($1, $2, crypt($3, gen_salt(\'bf\', 10)), True, $4, {"per_page": 30},'
+        ' current_timestamp)'
         ' returning id',
-        user_name, user_email, user_password, user_admin,
-        json.dumps({"per_page": 30})), user_admin, 30
+        user_name, user_email, user_password, user_admin), user_admin, 30
 
 
 async def db_user_list_name(self, offset=0, records=None, db_connection=None):
