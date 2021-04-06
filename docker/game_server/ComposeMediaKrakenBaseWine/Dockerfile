@@ -1,24 +1,46 @@
-# https://sick.codes/run-wine-windows-inside-docker-autoclick-winetricks-save-as-dotnet45-net46/
-FROM ubuntu:20.10
+ARG BASE_IMAGE="scottyhardy/docker-remote-desktop"
+ARG TAG="latest"
+FROM ${BASE_IMAGE}:${TAG}
 
-ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=UTC
-ENV DISPLAY :99
+# Install prerequisites
+RUN apt-get update \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        ca-certificates \
+        cabextract \
+        git \
+        gosu \
+        gpg-agent \
+        p7zip \
+        pulseaudio \
+        pulseaudio-utils \
+        software-properties-common \
+        tzdata \
+        unzip \
+        wget \
+        winbind \
+        xvfb \
+        zenity \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /root
+# Install wine
+ARG WINE_BRANCH="stable"
+RUN wget -nv -O- https://dl.winehq.org/wine-builds/winehq.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add - \
+    && apt-add-repository "deb https://dl.winehq.org/wine-builds/ubuntu/ $(grep VERSION_CODENAME= /etc/os-release | cut -d= -f2) main" \
+    && dpkg --add-architecture i386 \
+    && apt-get update \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y --install-recommends winehq-${WINE_BRANCH} \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt update -y
-  && apt install wine-stable wine-development winetricks xdotool -y
-  && dpkg --add-architecture i386
-  && apt-get update && apt-get install wine32 -y
-  && apt install zenity -y
-  && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-  && apt-get install keyboard-configuration -y
-  && apt install xfce4 xfce4-goodies -y
-  && apt install xvfb -y
-  && apt install winbind -y
+# Install winetricks
+RUN wget -nv -O /usr/bin/winetricks https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks \
+    && chmod +x /usr/bin/winetricks
 
-COPY display.sh display.sh
-RUN chmod a+x display.sh
+# Download gecko and mono installers
+COPY download_gecko_and_mono.sh /root/download_gecko_and_mono.sh
+RUN chmod +x /root/download_gecko_and_mono.sh \
+    && /root/download_gecko_and_mono.sh "$(dpkg -s wine-${WINE_BRANCH} | grep "^Version:\s" | awk '{print $2}' | sed -E 's/~.*$//')"
 
-CMD { bash display.sh; }
+COPY pulse-client.conf /root/pulse/client.conf
+COPY entrypoint.sh /usr/bin/entrypoint
+ENTRYPOINT ["/usr/bin/entrypoint"]

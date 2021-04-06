@@ -1,0 +1,613 @@
+#!/usr/bin/env bash
+
+print_help () {
+    echo "Usage: $0 [OPTION[=VALUE]]... [COMMAND [ARGS]...]..."
+    echo
+    echo "Run the docker-wine container with behaviour determined by the following"
+    echo "OPTIONS:"
+    echo "  --cache               Use the cached image pulled from Docker Hub and don't"
+    echo "                           attempt to pull the latest version"
+    echo "  --local               Use locally built docker-wine image instead of pulling"
+    echo "                          image from Docker Hub"
+    echo "  --local=VALUE         Specify an alternate locally built image and use instead"
+    echo "                           of pulling image from Docker Hub"
+    echo "  --rm                  Start the container in non-persistent mode. i.e. Without"
+    echo "                          mounting the user's home to a volume or path on the"
+    echo "                          host"
+    echo "  --tag=VALUE           Specify an image tag to use (default is latest)"
+    echo "  --name=VALUE          Name of the docker container instantiated"
+    echo "                          (default is 'wine')"
+    echo "  --as-root             Start the container as root"
+    echo "  --as-me               Start the container using your current username, UID and"
+    echo "                          GID (default when alternate --home value specified)"
+    echo "  --notty               Start container attached with no tty"
+    echo "  --nordp               Use a version of the docker-wine image that does not"
+    echo "                          include RDP server packages for a reduced image size"
+    echo "  --rdp                 Shortcut for --rdp=interactive"
+    echo "  --rdp=OPTION          Runs docker-wine container with Remote Desktop Protocol"
+    echo "                          server"
+    echo "                        Valid values for OPTION are:"
+    echo "                          no             Don't use RDP server (default)"
+    echo "                          start          Start the RDP server as a detached"
+    echo "                                           daemon"
+    echo "                          stop           Stop the detached RDP server by"
+    echo "                                           stopping the container"
+    echo "                          restart        Restart the detached RDP server by"
+    echo "                                           stopping and starting the container"
+    echo "                          interactive    Start the RDP server and also run an"
+    echo "                                           interactive bash session"
+    echo "  --rdp-port=VALUE      Bind RDP to a different TCP port (default is 3389)"
+    echo "  --shm-size=VALUE      Set the shared memory size (default is '1g' for 1 GB)"
+    echo "  --xvfb[=OPTIONAL]     Start xvfb"
+    echo "                        OPTIONAL consists of comma separated values of:"
+    echo "                          SERVER_NR      Server number to use, eg. :1"
+    echo "                          SCREEN         Screen number to use, eg. 0"
+    echo "                          RESOLUTION     Screen resolution, eg. 320x240x8"
+    echo "                        If OPTIONAL is left blank, defaults to:"
+    echo "                          :95,0,320x240x8"
+    echo "  --sound=OPTION        Select a pulseaudio configuration for sound output when"
+    echo "                          running in X11 forwarding mode"
+    echo "                        Valid values for OPTION are:"
+    echo "                          default        Use the default pulseaudio config for"
+    echo "                                           host OS (unix is default for Linux,"
+    echo "                                           dummy is default for macOS)"
+    echo "                          unix           Use UNIX socket '/tmp/pulse-socket' to"
+    echo "                                           connect to the host machine's"
+    echo "                                           pulseaudio server (Linux only)"
+    echo "                          dummy          Run pulseaudio server in container with"
+    echo "                                           dummy (null) output"
+    echo "                          none           Alias for dummy"
+    echo "  --home-volume=VALUE   Use an alternate volume to winehome for storing"
+    echo "                          persistent user data. Valid values can specify either"
+    echo "                          a docker volume or local path"
+    echo "                        e.g."
+    echo "                          --home=my_new_volume"
+    echo "                          --home=/tmp/my_user"
+    echo "  --home=VALUE          Specify an alternate path for the user's home within the"
+    echo "                          container (default is /home/\$USER)"
+    echo "  --force-owner         Allow the user to take ownership of a home volume that"
+    echo "                          belongs to another user (NOTE: Use with caution!)"
+    echo "  --password=VALUE      Specify a password for the user in plain text (default"
+    echo "                          is the user's username)"
+    echo "  --password-prompt     Prompt to set a password for the user"
+    echo "  --secure-password=VALUE   Provide an encrypted password for the user"
+    echo "  --device=VALUE        Bind device(s) to container.  Uses standard docker"
+    echo "                          syntax and multiple statements are allowed"
+    echo "  --env=VALUE           Specify additional environment variable(s) to be passed"
+    echo "                          to the container.  Uses standard docker syntax and"
+    echo "                          multiple statements are allowed"
+    echo "  --network=VALUE       Specify the network to connect the container to.  Uses"
+    echo "                          standard docker syntax"
+    echo "  --volume=VALUE        Specify additional volume(s) to be mounted.  Uses"
+    echo "                          standard docker syntax and multiple statements are"
+    echo "                          allowed"
+    echo "  --workdir=VALUE       Specify alternate WORKDIR (default is \$HOME)"
+    echo "  --help                Display this help screen and exit"
+    echo
+    echo "e.g."
+    echo "  $0"
+    echo "  $0 wine notepad"
+    echo "  $0 wineboot --init"
+    echo "  $0 --local --volume=my_vol:/some/path:ro"
+    echo "  $0 --local --as-me wine notepad"
+    echo "  $0 --as-root --rdp"
+    echo "  $0 --rdp=start --password=pa55w0rd"
+}
+
+add_run_arg () {
+    RUN_ARGS+=("$1")
+}
+
+add_run_args_for_as_me () {
+    USER_HOME="${HOME}"
+    WORKDIR="${USER_HOME}"
+    add_run_arg --env="USER_NAME=$(whoami)"
+    add_run_arg --env="USER_UID=$(id -u)"
+    add_run_arg --env="USER_GID=$(id -g)"
+    add_run_arg --env="USER_HOME=${USER_HOME}"
+}
+
+encrypt_password () {
+    local password="$1"
+    local encrypted_password
+
+    if [ -z "${password}" ]; then
+        echo "ERROR: Password cannot be left blank"
+        exit 1
+    fi
+
+    encrypted_password="$(openssl passwd -1 -salt "$(openssl rand -base64 6)" "${password}")"
+
+    # Add encrypted password to run args
+    add_run_arg --env="USER_PASSWD=${encrypted_password}"
+}
+
+add_run_arg_timezone () {
+    local tz
+
+    if [ -f "/etc/timezone" ]; then
+        tz="$(cat /etc/timezone)"
+    elif [ -f "/etc/localtime" ]; then
+        tz="$(readlink /etc/localtime | awk -F/ '{print $(NF-1)"/"$NF}')"
+    else
+        tz="UTC"
+    fi
+
+    add_run_arg --env="TZ=${tz}"
+}
+
+configure_xquartz () {
+
+    # Return 0 (true) if this function makes any changes
+    local changes_made=1
+
+    # Check XQuartz installed
+    if ! [ -f /opt/X11/bin/xquartz ]; then
+        local answer
+        local attempts
+        local max_attempts=5
+
+        # Prompt to allow install
+        echo "XQuartz needs to be installed for X11 forwarding to operate. If necessary, Homebrew will also be installed to perform the installation of XQuartz."
+        for (( attempts = 0; attempts < max_attempts; attempts++ )); do
+
+            read -r -p "Do you want to continue? [y/N] " answer
+
+            # Default is No
+            [ -z "${answer}" ] && answer="n"
+
+            case "${answer}" in
+                [Yy]|[Yy][Ee][Ss])
+                    install_xquartz || exit 1
+                    changes_made=0
+                    break
+                    ;;
+                [Nn]|[Nn][Oo])
+                    echo "Unable to start container with X11 forwarding. Please install XQuartz or alternatively use Remote Desktop. e.g. $0 --rdp"
+                    exit 0
+                    ;;
+                *)
+                    echo "Invalid response.  Please use y or n"
+                    ;;
+            esac
+        done
+
+        # Fail after too many attempts
+        if [ "${attempts}" -ge "${max_attempts}" ]; then
+            echo "ERROR: Too many invalid responses"
+            exit 1
+        fi
+    fi
+
+    # Configure XQuartz
+    if [ "$(defaults read org.macosforge.xquartz.X11 app_to_run)" != "/usr/bin/true" ]; then
+        defaults write org.macosforge.xquartz.X11 app_to_run /usr/bin/true
+        changes_made=0
+    fi
+
+    if [ "$(defaults read org.macosforge.xquartz.X11 nolisten_tcp)" != "0" ]; then
+        defaults write org.macosforge.xquartz.X11 nolisten_tcp 0
+        changes_made=0
+    fi
+
+    if [ "$(defaults read org.macosforge.xquartz.X11 enable_iglx)" != "1" ]; then
+
+        # Enable GLX (OpenGL)
+        defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+        changes_made=0
+    fi
+
+    return $changes_made
+}
+
+install_xquartz() {
+
+    # Return 0 if XQuartz is successfully installed
+    local installed=1
+
+    # Install Homebrew
+    if ! command -v brew >/dev/null 2>&1; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+        # Confirm installed
+        if ! command -v brew >/dev/null 2>&1; then
+            echo "ERROR: Failed to install Homebrew, unable to proceed with XQuartz installation"
+            exit 1
+        fi
+    fi
+
+    # Install XQuartz
+    if ! [ -f /opt/X11/bin/xquartz ]; then
+        brew cask install xquartz
+
+        # Confirm installed
+        [ -f /opt/X11/bin/xquartz ] && installed=0
+    fi
+
+    return $installed
+}
+
+add_x11_key () {
+    local display="$1"
+
+    # Check for .Xauthority which is required for authenticating as the current user on the host's X11 server
+    if [ -z "${XAUTHORITY:-${HOME}/.Xauthority}" ]; then
+        echo "ERROR: No valid .Xauthority file found for X11"
+        exit 1
+    fi
+
+    # Get the hex key for the display from host user's .Xauthority file and store in ~/.docker-wine.Xkey
+    xauth list "${display}" | head -n1 | awk '{print $3}' > ~/.docker-wine.Xkey
+
+    # Lock down permissions
+    chmod 600 ~/.docker-wine.Xkey
+
+    # Add .Xkey to the run args
+    add_run_arg --volume="${HOME}/.docker-wine.Xkey:/root/.Xkey:ro"
+}
+
+configure_sound () {
+    local os="$1"
+
+    case "${os}" in
+        linux)
+            if [ "${SOUND}" == "default" ]; then
+                SOUND="unix"
+            fi
+            ;;
+        macos)
+            if [ "${SOUND}" == "default" ]; then
+                SOUND="dummy"
+            fi
+            ;;
+        *)
+            echo "ERROR: '${os}' is not a valid OS string for configuring sound"
+            exit 1
+            ;;
+    esac
+
+    case "${SOUND}" in
+        unix)
+            configure_pulseaudio_unix_socket
+            ;;
+        dummy|none)
+            add_run_arg --env="DUMMY_PULSEAUDIO=yes"
+            ;;
+        *)
+            echo "ERROR: '${SOUND}' is not a valid option for configuring sound"
+            exit 1
+            ;;
+    esac
+}
+
+configure_pulseaudio_unix_socket () {
+
+    # Use audio if pulseaudio is installed
+    if command -v pulseaudio >/dev/null 2>&1; then
+
+        # One-off setup for creation of UNIX socket for pulseaudio to allow access for other users
+        if [ ! -f "${HOME}/.config/pulse/default.pa" ]; then
+            echo "INFO: Creating pulseaudio config file ${HOME}/.config/pulse/default.pa"
+            mkdir -p "${HOME}/.config/pulse"
+            echo -e ".include /etc/pulse/default.pa\nload-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/pulse-socket" > "${HOME}/.config/pulse/default.pa"
+        fi
+
+        # Restart pulseaudio daemon to create the UNIX socket
+        if [ ! -e "/tmp/pulse-socket" ]; then
+            echo "INFO: No socket found for pulseaudio so restarting service..."
+            pulseaudio -k
+            pulseaudio --start
+            sleep 1
+        fi
+
+        # Add the pulseaudio UNIX socket to run args
+        if [ -e "/tmp/pulse-socket" ]; then
+            add_run_arg --volume="/tmp/pulse-socket:/tmp/pulse-socket"
+        else
+            echo "INFO: pulseaudio socket /tmp/pulse-socket doesn't exist, so sound will not function"
+        fi
+    else
+        echo "INFO: pulseaudio not installed so running without sound"
+    fi
+}
+
+run_container () {
+    local mode
+
+    case "$1" in
+        interactive)
+            mode="-it"
+            ;;
+        detached)
+            mode="--detach"
+            ;;
+        *)
+            echo "ERROR: '$1' is not a valid container run mode"
+            exit 1
+            ;;
+    esac
+
+    # Add common docker run args
+    add_run_arg --rm
+    add_run_arg --hostname="$(hostname)"
+    add_run_arg --name="${CONTAINER_NAME}"
+    add_run_arg --shm-size="${SHM_SIZE}"
+    add_run_arg --workdir="${WORKDIR}"
+    add_run_arg_timezone
+
+    # Append -nordp to image tag if NO_RDP is set to 'yes'
+    if [ "${NO_RDP}" == "yes" ]; then
+
+        # Only append if image tag specified does not already end in -nordp
+        if ! echo "${IMAGE_TAG}" | grep -q -E "\-nordp$"; then
+            IMAGE_TAG="${IMAGE_TAG}-nordp"
+        fi
+    fi
+
+    # Grab the latest image from docker hub or use the locally built version
+    if [ "${USE_LOCAL_IMAGE}" == "no" ]; then
+        [ "${DOCKER_PULL_IMAGE}" == "yes" ] && docker pull "${DOCKER_IMAGE}:${IMAGE_TAG}"
+    else
+        DOCKER_IMAGE="${LOCAL_IMAGE}"
+    fi
+
+    # Add volume for user home only if not using --rm option
+    if [ "${NO_USER_VOLUME}" == "no" ]; then
+        add_run_arg --volume="${USER_VOLUME}:${USER_HOME}"
+
+        # Create the docker volume to store user's home only if using default winehome
+        if [ "${USER_VOLUME}" == "winehome" ] && ! docker volume ls -qf "name=winehome" | grep -q "^winehome$"; then
+            echo "INFO: Creating Docker volume container 'winehome'..."
+            docker volume create winehome
+        fi
+    fi
+
+    # NOTTY rules them all
+    if [ "${NOTTY}" == "yes" ] ; then
+        docker run "${RUN_ARGS[@]}" "${DOCKER_IMAGE}:${IMAGE_TAG}" "${CMD_ARGS[@]}"
+    else
+        docker run "${mode}" "${RUN_ARGS[@]}" "${DOCKER_IMAGE}:${IMAGE_TAG}" "${CMD_ARGS[@]}"
+    fi
+}
+
+
+# Set default values
+CONTAINER_NAME="wine"
+DOCKER_IMAGE="scottyhardy/docker-wine"
+DOCKER_PULL_IMAGE="yes"
+HOST_RDP_PORT="3389"
+IMAGE_TAG="latest"
+LOCAL_IMAGE="docker-wine"
+NO_RDP="no"
+NO_USER_VOLUME="no"
+NOTTY="no"
+SHM_SIZE="1g"
+SOUND="default"
+USE_LOCAL_IMAGE="no"
+USE_RDP_SERVER="no"
+USER_HOME="/home/wineuser"
+USER_VOLUME="winehome"
+WORKDIR="${USER_HOME}"
+USE_XVFB="no"
+XVFB_RESOLUTION="320x240x8"
+XVFB_SCREEN="0"
+XVFB_SERVER=":95"
+
+# Array to store all of the `docker run` arguments
+RUN_ARGS=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --cache)
+        DOCKER_PULL_IMAGE="no"
+        ;;
+    --local)
+        USE_LOCAL_IMAGE="yes"
+        ;;
+    --local=*)
+        USE_LOCAL_IMAGE="yes"
+        LOCAL_IMAGE="${1#*=}"
+        ;;
+    --rm)
+        NO_USER_VOLUME="yes"
+        ;;
+    --tag=*)
+        IMAGE_TAG="${1#*=}"
+        ;;
+    --name=*)
+        CONTAINER_NAME="${1#*=}"
+        ;;
+    --as-root)
+        add_run_arg --env="RUN_AS_ROOT=yes"
+        WORKDIR="/"
+        ;;
+    --as-me)
+        add_run_args_for_as_me
+        ;;
+    --notty)
+        NOTTY="yes"
+        ;;
+    --nordp)
+        NO_RDP="yes"
+        ;;
+    --rdp)
+        USE_RDP_SERVER="interactive"
+        ;;
+    --rdp=*)
+        USE_RDP_SERVER="${1#*=}"
+        ;;
+    --rdp-port=*)
+        HOST_RDP_PORT="${1#*=}"
+        ;;
+    --shm-size=*)
+        SHM_SIZE="${1#*=}"
+        ;;
+    --xvfb)
+        USE_XVFB="yes"
+        ;;
+    --xvfb=*)
+        USE_XVFB="yes"
+        IFS=, read -r XVFB_SERVER XVFB_SCREEN XVFB_RESOLUTION <<< "${1#*=}"
+        ;;
+    --sound=*)
+        SOUND="${1#*=}"
+        ;;
+    --home-volume=*)
+        USER_VOLUME="${1#*=}"
+
+        # Start container as self to prevent unintentionally changing ownership of a user's local filesystem by wineuser
+        add_run_args_for_as_me
+        ;;
+    --home=*)
+        USER_HOME="${1#*=}"
+        add_run_arg --env="USER_HOME=${USER_HOME}"
+        ;;
+    --force-owner)
+        add_run_arg --env="FORCED_OWNERSHIP=yes"
+        ;;
+    --password=*)
+        encrypt_password "${1#*=}"
+        ;;
+    --password-prompt)
+        read -r -s -p "Password: " PASSWD
+        echo
+        encrypt_password "${PASSWD}"
+        ;;
+    --secure-password=*)
+        add_run_arg --env="USER_PASSWD=${1#*=}"
+        ;;
+    --device=*|--env=*|--network=*|--volume=*)
+        add_run_arg "$1"
+        ;;
+    --workdir=*)
+        WORKDIR="${1#*=}"
+        ;;
+    --help)
+        print_help
+        exit 0
+        ;;
+    -*)
+        echo "ERROR: '$1' is not a valid option"
+        echo
+        print_help
+        exit 1
+        ;;
+    *)
+        break
+        ;;
+    esac
+    shift
+done
+
+# Collect remaining command line args to pass to the container to run
+CMD_ARGS=("$@")
+
+# Sanity checks
+if ! docker system info >/dev/null 2>&1; then
+    echo "ERROR: Docker is not running or not installed, unable to proceed"
+    exit 1
+fi
+
+if ! echo "${USE_RDP_SERVER}" | grep -q -E "^(no|start|stop|restart|interactive)$"; then
+    echo "ERROR: '${USE_RDP_SERVER}' is not a valid value for --rdp option"
+    exit 1
+fi
+
+if [ "${USE_RDP_SERVER}" != "no" ] && [ -n "${CMD_ARGS[0]}" ]; then
+    echo "ERROR: Commands cannot be passed to container when using --rdp option"
+    exit 1
+fi
+
+if [ "${USE_RDP_SERVER}" != "no" ] && [ "${NO_RDP}" != "no" ]; then
+    echo "ERROR: Cannot combine conflicting options --rdp and --nordp"
+    exit 1
+fi
+
+# Run xvfb and send everything into the void
+if [ "${USE_XVFB}" == "yes" ] ; then
+    add_run_arg --env="USE_XVFB=yes"
+    add_run_arg --env="XVFB_SERVER=${XVFB_SERVER}"
+    add_run_arg --env="XVFB_SCREEN=${XVFB_SCREEN}"
+    add_run_arg --env="XVFB_RESOLUTION=${XVFB_RESOLUTION}"
+    add_run_arg --env="DISPLAY=${XVFB_SERVER}"
+
+    run_container "interactive"
+
+# Run in RDP mode
+elif [ "${USE_RDP_SERVER}" != "no" ]; then
+
+    add_run_arg --env="RDP_SERVER=yes"
+    add_run_arg --publish="${HOST_RDP_PORT}:3389/tcp"
+
+    case "${USE_RDP_SERVER}" in
+        interactive)
+            CMD_ARGS=("/bin/bash")
+            run_container "interactive"
+            ;;
+        start)
+            run_container "detached"
+            ;;
+        stop)
+            docker kill "${CONTAINER_NAME}"
+            ;;
+        restart)
+            docker kill "${CONTAINER_NAME}"
+            run_container "detached"
+            ;;
+        *)
+            echo "ERROR: '${USE_RDP_SERVER}' is not a valid value for --rdp option"
+            exit 1
+            ;;
+    esac
+
+# Run in X11 forwarding mode
+else
+
+    # Set CMD_ARGS to /bin/bash if no commands specified
+    [ -z "${CMD_ARGS[0]}" ] && CMD_ARGS=("/bin/bash")
+
+    # Run in X11 forwarding mode on macOS
+    if [ "$(uname)" == "Darwin" ]; then
+
+        # Advise to reboot if need to configure XQuartz
+        if configure_xquartz; then
+            echo "INFO: XQuartz configuration updated.  Please reboot to enable X11 forwarding to operate."
+            exit 0
+        fi
+
+        # Ensure XQuartz is running so ~/.Xauthority file is updated with new X11 key
+        if ! ps -e | awk '{print $4}' | grep -q "/opt/X11/bin/Xquartz"; then
+            open -a xquartz
+        fi
+
+        # Store the X11 key for the display in ~/.docker-wine.Xkey and add to run args
+        add_x11_key ":0"
+
+        # Configure sound output
+        configure_sound "macos"
+
+        # Add macOS run args
+        add_run_arg --env="DISPLAY=host.docker.internal:0"
+
+        run_container "interactive"
+
+    # Run in X11 forwarding mode on Linux
+    elif [ "$(uname)" == "Linux" ]; then
+
+        # Store the X11 key for the display in ~/.docker-wine.Xkey and add to run args
+        add_x11_key "$DISPLAY"
+
+        # Configure sound output
+        configure_sound "linux"
+
+        # Add Linux run args
+        add_run_arg --env="DISPLAY"
+        add_run_arg --volume="/tmp/.X11-unix:/tmp/.X11-unix:ro"
+
+        run_container "interactive"
+
+    else
+        echo "ERROR: '$(uname)' OS is not supported"
+        exit 1
+    fi
+fi
