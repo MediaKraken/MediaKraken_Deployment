@@ -12,8 +12,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   ca-certificates==20191127-r5 \
   cifs-utils==6.12-r0 \
   nfs-utils==2.5.2-r0 \

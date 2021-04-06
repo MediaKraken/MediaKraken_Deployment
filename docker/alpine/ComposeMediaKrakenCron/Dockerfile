@@ -12,8 +12,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # had to go back to update instead of no-cache......throws errors
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   alpine-sdk==1.0-r0 \
   python3-dev==3.8.8-r0 \
   linux-headers==5.7.8-r0 \

@@ -12,8 +12,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   ack==3.4.0-r0 \
   curl==7.74.0-r1 \
   curl-dev==7.74.0-r1 \

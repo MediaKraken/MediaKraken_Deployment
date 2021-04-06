@@ -11,8 +11,7 @@ ARG PIPMIRROR
 COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   eudev==3.2.9-r3 \
   eudev-dev==3.2.9-r3 \
   gcc==10.2.1_pre1-r3 \

@@ -14,8 +14,7 @@ RUN mkdir /mediakraken/downloads
 COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   gcc==10.2.1_pre1-r3 \
   git==2.30.2-r0 \
   libxml2==2.9.10-r6 \

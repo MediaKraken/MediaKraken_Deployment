@@ -13,8 +13,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   alpine-sdk==1.0-r0 \
   gcc==10.2.1_pre1-r3 \
   git==2.30.2-r0 \

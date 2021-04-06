@@ -11,8 +11,7 @@ ARG PIPMIRROR
 COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   alpine-sdk==1.0-r0 \
   libffi==3.3-r2 \
   libffi-dev==3.3-r2 \

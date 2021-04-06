@@ -12,8 +12,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
+RUN apk add --no-cache \
   ca-certificates==20191127-r5 \
   openrc==0.42.1-r19 \
   py3-psycopg2==2.8.6-r0 \
