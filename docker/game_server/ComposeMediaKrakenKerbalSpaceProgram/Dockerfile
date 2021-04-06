@@ -17,7 +17,7 @@ EXPOSE 6702
 
 USER ksp
 
-ENV SERVER_REMOTE_FILE	https://d-mp.org/downloads/release/latest/DMPServer.zip
+ENV SERVER_REMOTE_FILE https://d-mp.org/builds/release/v0.3.7.1/DMPServer.zip
 
 RUN cd /data/ksp && wget ${SERVER_REMOTE_FILE} && unzip DMPServer.zip	
 
