@@ -42,7 +42,9 @@
     </nav>
     <!-- End: Navigation with Button -->
     {% if media_game %}
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
@@ -65,7 +67,9 @@
             </tbody>
         </table>
     </div>
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     {% else %}
     <p id="general_text">No game metadata found.</p>
     {% endif %}
