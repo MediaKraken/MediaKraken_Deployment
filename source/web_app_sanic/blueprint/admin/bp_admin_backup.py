@@ -65,7 +65,7 @@ async def url_bp_admin_backup(request):
         'errors': errors,
         'backup_list': sorted(backup_files, reverse=True),
         'data_interval': ('Hours', 'Days', 'Weekly'),
-        'data_class': common_network_cloud.supported_providers,
+        'data_class': common_network_cloud.com_libcloud_storage_provider_list(),
         'data_enabled': backup_enabled,
         'pagination_links': pagination,
         'page': page,
