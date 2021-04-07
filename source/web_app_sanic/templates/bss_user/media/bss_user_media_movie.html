@@ -67,7 +67,9 @@
             </p>
         </form>
     </div>
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     <!-- this div is needed to show up between pagination correctly -->
     <div id="the-movie-node">
         {% for row_data in media %}
@@ -113,7 +115,9 @@
         </div>
         {% endfor %}
     </div>
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     {% else %}
     <p id="general_text">No movie media found.</p>
     {% endif %}
