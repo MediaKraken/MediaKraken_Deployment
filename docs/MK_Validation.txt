@@ -58,6 +58,7 @@ https://github.com/pawamoy/dependenpy
 https://github.com/collab-qa/check-all-the-things
 https://github.com/almandin/fuxploider
 https://github.com/drwetter/testssl.sh
+https://github.com/facebook/pyre-check
 
 cppcheck - c/c++ code checker
     http://cppcheck.sourceforge.net/
