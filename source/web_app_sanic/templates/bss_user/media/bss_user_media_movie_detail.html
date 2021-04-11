@@ -152,7 +152,7 @@
                                         {% for chapter_info in data_json_media_chapters %}
                                         <div class="col-1-4">
                                             <a href="{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}">
-                                                <img src="{{ url_for('static', filename='meta/images/' + chapter_info[1] }}" height="150" width="150">
+                                                <img src="{{ url_for('static', filename='meta/images/' + chapter_info[1]) }}" height="150" width="150">
                                             </a>
                                         </div>
                                         {% endfor %}
