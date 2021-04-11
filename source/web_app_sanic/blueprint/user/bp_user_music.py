@@ -16,7 +16,7 @@ async def url_bp_user_album_detail(request, guid):
 
 
 @blueprint_user_music.route("/user_album_list")
-@common_global.jinja_template.template('bss_user/user_music_album.html')
+@common_global.jinja_template.template('bss_user/media/bss_user_media_music_album.html')
 @common_global.auth.login_required
 async def url_bp_user_album_list(request):
     """
