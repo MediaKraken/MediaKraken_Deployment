@@ -40,24 +40,6 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    {% if media %}
-    <div id="filterdiv">
-        <form name="media_filter" action="{{url_for('user_sports_genre.user_sports_genre_page')}}" method="post">
-            <p>Media Filters:
-            <button type="submit" value="sports_genre">Genre</button>
-            Status:
-            <select name="sports_status", id="sports_status">
-                <option value="All">All</option>
-                <option value="Unwatched">Unwatched</option>
-                <option value="Watched">Watched</option>
-                <option value="In Progress">In Progress</option>
-            </select>
-            </p>
-        </form>
-    </div>
-    {% if pagination_links != None %}
-        {{ pagination_links }}
-    {% endif %}
     <!-- this div is needed to show up between pagination correctly -->
     {% if media %}
     <div id="filter_tv_div">
@@ -127,7 +109,8 @@
     {% endif %}
     {% else %}
     <p id="general_text">No TV media found.</p>
-    {% endif %}    <footer class="bg-white sticky-footer">
+    {% endif %}
+    <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
         </div>
