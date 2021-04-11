@@ -40,7 +40,85 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div></div></div>
+    {% if media %}
+    <div id="filter_game_div">
+        <form name="media_filter" action="{{url_for('name_blueprint_user_game_genre.url_bp_user_game_genre')}}" method="post">
+            <p>Media Filters:
+            <button type="submit" value="game_genre">Genre</button>
+            Rating:
+            <select name="game_rating", id="game_rating">
+                <option value="All">All</option>
+                <option value="E">Everyone</option>
+                <option value="E+">Everyone 10+</option>
+                <option value="T">Teen</option>
+                <option value="M">Mature 17+</option>
+                <option value="Ao">Adults 18+</option>
+                <option value="RP">Rating Pending</option>
+            </select>
+            Status:
+            <select name="game_status", id="game_status">
+                <option value="All">All</option>
+                <option value="Unplayed">Unplayed</option>
+                <option value="Played">Played</option>
+                <option value="Completed">Completed</option>
+            </select>
+            </p>
+        </form>
+    </div>
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
+    <!-- this div is needed to show up between pagination correctly -->
+    <div id="the-game-node">
+        {% for row_data in media %}
+        <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 = watched or not -->
+        <div class="main_photo">
+            <div data-id={{row_data[1]}}>
+                <a href= "{{ url_for('name_blueprint_user_game.url_bp_user_game_detail', guid=row_data[1]) }}">
+                {% if row_data[2] == None %}
+                    <img src="{{ url_for('static', filename='img/Movie-icon.png') }}" height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="{{ url_for('static', filename='img/synced.jpg') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="exclamation_icon" src="{{ url_for('static', filename='img/exclamation-circle-frame.png') }}" height="20" width="20">
+                    {% endif %}
+                    </a>
+                    <div class="description">
+                        <p class="description_content_left">{{row_data[0]}}</p>
+                    </div>
+                {% else %}
+                    <img src="{{ url_for('static', filename='meta/images/' + row_data[2]) }}" height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="{{ url_for('static', filename='img/synced.jpg') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="exclamation_icon" src="{{ url_for('static', filename='img/exclamation-circle-frame.png') }}" height="20" width="20">
+                    {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
+    {% else %}
+    <p id="general_text">No game media found.</p>
+    {% endif %}
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
