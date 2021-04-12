@@ -420,6 +420,13 @@ if db_connection.db_version_check() < 35:
     db_connection.db_version_update(35)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 36:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'MAME': {'Version': 230}})
+    db_connection.db_opt_update(json.dumps(options_json))
+    db_connection.db_version_update(36)
+    db_connection.db_commit()
+
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
