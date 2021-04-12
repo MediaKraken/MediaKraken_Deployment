@@ -43,7 +43,7 @@ common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
 common_signal.com_signal_set_break()
 
 # open the database
-option_config_json, db_connection = common_config_ini.com_config_read(force_local=True)
+option_config_json, db_connection = common_config_ini.com_config_read(force_local=False)
 
 # technically arcade games are "systems"....
 # they just don't have @isdevice = 'yes' like mess hardware does
