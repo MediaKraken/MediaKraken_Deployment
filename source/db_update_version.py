@@ -30,7 +30,7 @@ if dont_force_localhost:
                                                          message_text='START',
                                                          index_name='db_update_version')
     # open the database
-    option_config_json, db_connection = common_config_ini.com_config_read()
+    option_config_json, db_connection = common_config_ini.com_config_read(force_local=False)
 else:
     # open the database
     option_config_json, db_connection = common_config_ini.com_config_read(force_local=True)

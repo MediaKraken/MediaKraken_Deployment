@@ -29,7 +29,7 @@ common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                      index_name='db_create_update')
 
 # open the database
-db_connection = common_config_ini.com_config_read()
+db_connection = common_config_ini.com_config_read(force_local=True)
 
 # create table for version
 db_connection.db_query(
