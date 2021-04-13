@@ -45,12 +45,10 @@ async def db_meta_game_system_list_count(self, search_value=None, db_connection=
     if search_value is not None:
         return await db_conn.fetchval(
             'select count(*) from mm_metadata_game_systems_info'
-            ' where gs_game_system_json->\'@isdevice\' ? \'yes\''
-            ' and gs_game_system_name % $1', search_value)
+            ' where gs_game_system_name % $1', search_value)
     else:
         return await db_conn.fetchval(
-            'select count(*) from mm_metadata_game_systems_info'
-            ' where gs_game_system_json->\'@isdevice\' ? \'yes\'')
+            'select count(*) from mm_metadata_game_systems_info')
 
 
 async def db_meta_game_system_list(self, offset=0, records=None, search_value=None,
@@ -79,9 +77,8 @@ async def db_meta_game_system_list(self, offset=0, records=None, search_value=No
                                    ' from mm_metadata_game_systems_info'
                                    ' where gs_id in (select gs_id'
                                    ' from mm_metadata_game_systems_info'
-                                   ' where gs_game_system_json->\'@isdevice\''
-                                   ' ? \'yes\' and gs_game_system_name % $1 '
-                                   'order by gs_game_system_json->\'description\''
+                                   ' where gs_game_system_name % $1'
+                                   ' order by gs_game_system_json->\'description\''
                                    ' offset $2 limit $2)'
                                    ' order by gs_game_system_json->\'description\'',
                                    search_value, offset, records)
@@ -92,9 +89,7 @@ async def db_meta_game_system_list(self, offset=0, records=None, search_value=No
                                    ' from mm_metadata_game_systems_info'
                                    ' where gs_id in (select gs_id'
                                    ' from mm_metadata_game_systems_info'
-                                   ' where gs_game_system_json->\'@isdevice\''
-                                   ' ? \'yes\' '
-                                   'order by gs_game_system_json->\'description\''
+                                   ' order by gs_game_system_json->\'description\''
                                    ' offset $1 limit $2)'
                                    ' order by gs_game_system_json->\'description\'',
                                    offset, records)
