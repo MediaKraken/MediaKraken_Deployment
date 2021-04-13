@@ -220,7 +220,7 @@ file_name = ('/mediakraken/emulation/history%s.zip' %
 # only do the parse/import if not processed before
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
-        ('https://www.arcade-history.com/dats/history%s.zip' %
+        ('https://www.arcade-history.com/dats/historydat%s.zip' %
          option_config_json['MAME']['Version']),
         file_name)
     game_titles = []
@@ -300,7 +300,7 @@ file_name = ('/mediakraken/emulation/category%s.zip' %
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
         (
-                'http://www.progettosnaps.net/download?tipo=category&file=/renameset/packs/pS_category_%s.zip' %
+                'https://www.progettosnaps.net/download?tipo=category&file=/renameset/packs/pS_category_%s.zip' %
                 option_config_json['MAME']['Version']),
         file_name)
 
@@ -308,7 +308,6 @@ if not os.path.exists(file_name):
         zf.extract('folders/category.ini', '/mediakraken/emulation/')
     history_file = open("/mediakraken/emulation/category.ini", "r",
                         encoding='utf-8')
-
     cat_file = open("category.ini", "r", encoding='utf-8')
     cat_dictionary = {}
     category = ""
@@ -343,7 +342,7 @@ file_name = ('/mediakraken/emulation/messinfo%s.zip' %
 if not os.path.exists(file_name):
     common_network.mk_network_fetch_from_url(
         (
-                'http://www.progettosnaps.net/download?tipo=messinfo&file=pS_messinfo_%s.zip' %
+                'https://www.progettosnaps.net/download?tipo=messinfo&file=pS_messinfo_%s.zip' %
                 option_config_json['MAME']['Version']),
         file_name)
 
