@@ -73,7 +73,8 @@ async def db_meta_game_system_list(self, offset=0, records=None, search_value=No
     if search_value is not None:
         return await db_conn.fetch('select gs_id,gs_game_system_name,'
                                    'gs_game_system_json->\'description\','
-                                   'gs_game_system_json->\'year\''
+                                   'gs_game_system_json->\'year\','
+                                   'gs_game_system_alias,'
                                    ' from mm_metadata_game_systems_info'
                                    ' where gs_id in (select gs_id'
                                    ' from mm_metadata_game_systems_info'
@@ -85,7 +86,8 @@ async def db_meta_game_system_list(self, offset=0, records=None, search_value=No
     else:
         return await db_conn.fetch('select gs_id,gs_game_system_name,'
                                    'gs_game_system_json->\'description\','
-                                   'gs_game_system_json->\'year\''
+                                   'gs_game_system_json->\'year\','
+                                   'gs_game_system_alias,'
                                    ' from mm_metadata_game_systems_info'
                                    ' where gs_id in (select gs_id'
                                    ' from mm_metadata_game_systems_info'
