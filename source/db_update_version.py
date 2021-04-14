@@ -427,11 +427,20 @@ if db_connection.db_version_check() < 36:
     db_connection.db_version_update(36)
     db_connection.db_commit()
 
-# TODO add the rename to cron program names
-# TODO add the rename to cron program names
-# TODO add the rename to cron program names
-# TODO add the rename to cron program names
+if db_connection.db_version_check() < 36:
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info'
+                           ' ADD COLUMN gi_game_info_blake3 text;')
+    db_connection.db_query('CREATE INDEX mm_metadata_game_software_info_sha1_idx'
+                           ' ON mm_metadata_game_software_info(gi_game_info_sha1)')
+    db_connection.db_query('CREATE INDEX mm_metadata_game_software_info_blake3_idx'
+                           ' ON mm_metadata_game_software_info(gi_game_info_blake3)')
+    db_connection.db_version_update(37)
+    db_connection.db_commit()
 
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
 
 # close the database
 db_connection.db_close()
