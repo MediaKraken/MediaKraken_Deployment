@@ -134,16 +134,17 @@ class MKServerDatabaseAsync:
         db_unmatched_list_count, \
         db_unmatched_list
     from database_async.db_base_media_game_async \
-        import db_media_game_system_list_count, \
-        db_media_game_system_list, \
-        db_media_game_list_by_system_count, \
-        db_media_game_list_by_system, \
-        db_media_game_list_count, \
+        import db_media_game_list_count, \
         db_media_game_list, \
         db_media_mame_game_list, \
         db_media_game_category_update, \
         db_media_game_clone_list, \
         db_media_game_category_by_name
+    from database_async.db_base_media_game_system_async \
+        import db_media_game_list_by_system_count, \
+        db_media_game_list_by_system, \
+        db_media_game_system_list_count, \
+        db_media_game_system_list
     from database_async.db_base_media_iradio_async \
         import db_iradio_insert, \
         db_iradio_list, \
@@ -179,6 +180,7 @@ class MKServerDatabaseAsync:
     from database_async.db_base_metadata_game_async \
         import db_meta_game_by_guid, \
         db_meta_game_by_sha1, \
+        db_meta_game_by_blake3, \
         db_meta_game_list, \
         db_meta_game_insert, \
         db_meta_game_update, \
