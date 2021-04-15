@@ -18,7 +18,7 @@ RUN apk add --no-cache \
   libressl-dev==3.1.5-r0 \
   cifs-utils==6.12-r0 \
   curl==7.76.1-r0 \
-  curl-dev==7.74.0-r1 \
+  curl-dev==7.76.1-r0 \
   nfs-utils==2.5.2-r0 \
   libffi==3.3-r2 \
   libffi-dev==3.3-r2 \
