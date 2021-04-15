@@ -4,5 +4,5 @@ ldap3==2.9
 pycountry==20.7.3
 twisted==21.2.0
 pika==1.2.0
-docker==4.4.4
+docker==5.0.0
 pysmb==1.2.6

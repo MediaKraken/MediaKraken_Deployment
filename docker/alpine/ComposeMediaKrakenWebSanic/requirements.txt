@@ -3,7 +3,7 @@ ujson==4.0.2
 Jinja2==2.11.3
 email-validator==1.1.2
 WTForms==2.3.3
-sanic==20.12.2
+sanic==20.12.2  # 21.3.2 breaks StringField wtforms
 sanic-jinja2==0.9.1
 sanic-session==0.7.3
 sanic-wtf==0.6.0
@@ -32,7 +32,7 @@ cssmin==0.2.0
 incremental==21.3.0
 python-stdnum==1.16
 Babel==2.9.0
-docker==4.4.4
+docker==5.0.0
 isbntools==4.3.25
 beautifulsoup4==4.9.3
 appnope==0.1.2
