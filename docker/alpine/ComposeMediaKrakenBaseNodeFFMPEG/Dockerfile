@@ -5,11 +5,10 @@ ARG PIPMIRROR
 
 ENV NODE_VERSION 15.8.0
 
-# busybox isn't r6 due to alpine-baselayout dependancy
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache \
-        busybox \
+        busybox==1.32.1-r6 \
         libstdc++ \
     && apk add --no-cache --virtual .build-deps \
         curl \
@@ -79,7 +78,7 @@ RUN addgroup -g 1000 node \
 
 ENV YARN_VERSION 1.22.5
 
-RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar busybox==1.32.1-r5 \
+RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
     6A010C5166006599AA17F08146C2130DFD2497F5 \
   ; do \
