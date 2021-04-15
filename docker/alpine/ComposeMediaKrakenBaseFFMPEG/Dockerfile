@@ -1,4 +1,4 @@
-FROM alpine:3.13.3 as builder
+FROM alpine:3.13.5 as builder
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -148,14 +148,14 @@ RUN buildDeps="autoconf \
     make install && \
     hash -r
     
-FROM alpine:3.13.3
+FROM alpine:3.13.5
 
 COPY --from=builder /usr/local/bin/ffmpeg /usr/local/bin/ffmpeg
 COPY --from=builder /usr/local/bin/ffprobe /usr/local/bin/ffprobe
 COPY --from=builder /usr/local/lib /usr/local/lib
 
 RUN apk add --no-cache \
-    busybox==1.32.1-r5 \
+    busybox==1.32.1-r6 \
     bash==5.1.0-r0 \
     samba-client==4.13.7-r0 \
     lame==3.100-r0 \

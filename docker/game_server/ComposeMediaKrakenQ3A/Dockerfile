@@ -1,4 +1,4 @@
-FROM alpine:3.13.3 as builder
+FROM alpine:3.13.5 as builder
 LABEL maintainer="jberrenberg v1.3"
 
 # to reduce image size all build and cleanup steps are performed in one docker layer
@@ -14,7 +14,7 @@ RUN \
   unzip /tmp/build/quake3-latest-pk3s.zip -d /tmp/build/ && \
   cp -r /tmp/build/quake3-latest-pk3s/* ~/ioquake3
  
-FROM alpine:3.13.3
+FROM alpine:3.13.5
 RUN adduser ioq3srv -D
 COPY --from=builder /root/ioquake3 /home/ioq3srv/ioquake3
 RUN ln -s /pak0.pk3 /home/ioq3srv/ioquake3/baseq3/pak0.pk3
