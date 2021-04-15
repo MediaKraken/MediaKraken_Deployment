@@ -8,7 +8,7 @@ circuit-board.png https://www.flaticon.com/free-icon/circuit-board_18019
 dislike-thumb
 earth.png https://www.flaticon.com/free-icon/earth_44386
 eye.png
-favorite-mark
+favorite-mark.png https://www.flaticon.com/free-icon/star_786331
 flickr
 headphone.png https://www.flaticon.com/free-icon/headphone-symbol_27130
 light-bulb
