@@ -14,8 +14,8 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --no-cache \
   ack==3.4.0-r0 \
-  curl==7.74.0-r1 \
-  curl-dev==7.74.0-r1 \
+  curl==7.76.1-r0 \
+  curl-dev==7.76.1-r0 \
   git==2.30.2-r0 \
   gcc==10.2.1_pre1-r3 \
   g++==10.2.1_pre1-r3 \

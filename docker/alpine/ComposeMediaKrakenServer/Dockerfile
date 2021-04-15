@@ -18,8 +18,8 @@ RUN apk add --no-cache \
   openssl==1.1.1k-r0 \
   openssl-dev==1.1.1k-r0 \
   cifs-utils==6.12-r0 \
-  curl==7.74.0-r1 \
-  curl-dev==7.74.0-r1 \
+  curl==7.76.1-r0 \
+  curl-dev==7.76.1-r0 \
   nfs-utils==2.5.2-r0 \
   jpeg==9d-r1 \
   jpeg-dev==9d-r1 \
