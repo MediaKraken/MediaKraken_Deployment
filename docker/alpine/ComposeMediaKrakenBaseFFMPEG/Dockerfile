@@ -156,7 +156,7 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 
 # busybox isn't r6 due to other dependancy
 RUN apk add --no-cache \
-    busybox==1.32.1-r5 \
+    busybox \
     bash==5.1.0-r0 \
     samba-client==4.13.7-r0 \
     lame==3.100-r0 \

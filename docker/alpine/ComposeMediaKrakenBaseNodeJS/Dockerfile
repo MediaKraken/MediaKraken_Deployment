@@ -3,11 +3,10 @@ FROM alpine:3.13.5
 
 ENV NODE_VERSION 15.8.0
 
-# busybox isn't r6 due to alpine-baselayout dependancy
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache \
-        busybox==1.32.1-r5 \
+        busybox \
         libstdc++ \
     && apk add --no-cache --virtual .build-deps \
         curl \

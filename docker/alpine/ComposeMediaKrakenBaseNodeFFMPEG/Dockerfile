@@ -9,7 +9,7 @@ ENV NODE_VERSION 15.8.0
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
     && apk add --no-cache \
-        busybox==1.32.1-r5 \
+        busybox \
         libstdc++ \
     && apk add --no-cache --virtual .build-deps \
         curl \
