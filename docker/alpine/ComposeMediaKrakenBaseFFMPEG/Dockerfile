@@ -9,7 +9,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
 ARG FDKAAC_VERSION=0.1.5
 ARG X264_VERSION=20191217-2245-stable
 ARG X265_VERSION=3.4
-ARG FFMPEG_VERSION="4.3.2"
+ARG FFMPEG_VERSION="4.4"
 ARG OPENMPT_VERSION=0.2.8760-beta27
 
 COPY scripts /mediakraken
@@ -57,7 +57,7 @@ RUN buildDeps="autoconf \
         yasm \
         zlib-dev" && \
     export MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" && \
-    apk add --no-cache ${buildDeps} libgcc libstdc++ ca-certificates busybox==1.32.1-r5 && \
+    apk add --no-cache ${buildDeps} libgcc==10.2.1_pre1-r3 libstdc++==10.2.1_pre1-r3 ca-certificates==20191127-r5 busybox==1.32.1-r6 && \
     DIR=$(mktemp -d) && cd ${DIR} && \
     git clone https://code.videolan.org/videolan/x264.git && \
     cd x264 && \
@@ -156,7 +156,7 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 
 # busybox isn't r6 due to other dependancy
 RUN apk add --no-cache \
-    busybox \
+    busybox==1.32.1-r6 \
     bash==5.1.0-r0 \
     samba-client==4.13.7-r0 \
     lame==3.100-r0 \
