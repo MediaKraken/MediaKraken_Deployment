@@ -13,7 +13,7 @@ async def url_bp_user_cctv(request):
     Display cctv page
     """
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_sync_list(db_connection)
+    media_data = await request.app.db_functions.db_sync_list(db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_sync': media_data,

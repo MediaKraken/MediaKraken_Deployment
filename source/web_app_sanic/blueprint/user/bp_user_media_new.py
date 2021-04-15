@@ -16,20 +16,26 @@ async def url_bp_user_media_new(request):
     request.ctx.session['search_page'] = 'new_media'
     media_data = []
     db_connection = await request.app.db_pool.acquire()
-    for media_file in await request.app.db_functions.db_media_new(db_connection, offset, per_page,
-                                                        request.ctx.session['search_text'],
-                                                        days_old=7):
+    for media_file in await request.app.db_functions.db_media_new(offset, int(request.ctx.session[
+                                                                                  'per_page']),
+                                                                  request.ctx.session[
+                                                                      'search_text'],
+                                                                  days_old=7,
+                                                                  db_connection=db_connection):
         media_data.append(
             (media_file['mm_media_class_guid'],
              media_file['mm_media_name'], None))
-    pagination = Pagination(request,
-                            total=await request.app.db_functions.db_media_new_count(db_connection,
-                                request.ctx.session['search_text'],
-                                days_old=7),
-                            record_name='new media',
-                            format_total=True,
-                            format_number=True,
-                            )
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page=page,
+                                                                      url='/user/user_media_new',
+                                                                      item_count=await request.app.db_functions.db_media_new_count(
+                                                                          request.ctx.session[
+                                                                              'search_text'],
+                                                                          days_old=7,
+                                                                          db_connection=db_connection),
+                                                                      client_items_per_page=
+                                                                      int(request.ctx.session[
+                                                                              'per_page']),
+                                                                      format_number=True)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

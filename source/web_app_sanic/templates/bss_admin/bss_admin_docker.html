@@ -29,7 +29,6 @@
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_report.url_bp_admin_report') }}"><i class="fas fa-clipboard-list"></i><span>Reports</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_settings.url_bp_admin_settings') }}"><i class="fas fa-cogs"></i><span>Server</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_link.url_bp_admin_server_link') }}"><i class="fas fa-link"></i><span>Server Links</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_share.url_bp_admin_share') }}"><i class="fas fa-share"></i><span>Shares (UNC/SMB/NFS)</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_transmission.url_bp_admin_transmission') }}"><i class="fas fa-bolt"></i><span>Transmission</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_users.url_bp_admin_user') }}"><i class="fas fa-user-alt"></i><span>Users</span></a>
                     </li>
@@ -79,23 +78,19 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Operating System</th>
-                                                <th>Kernel</th>
+                                                <th>ID</th>
                                                 <th>Docker Engine</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {% for row_data in docker_nodes %}
                                             <tr>
-                                                <td>Cell 1</td>
-                                                <td>Cell 2</td>
-                                                <td>Cell 3</td>
-                                                <td>Cell 4</td>
+                                                <td>{{ row_data['Description']['Hostname'] }}</td>
+                                                <td>{{ row_data['Description']['Platform']['OS'] }}</td>
+                                                <td>{{ row_data['ID'] }}</td>
+                                                <td>{{ row_data['Description']['Engine']['EngineVersion'] }}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Cell 3</td>
-                                                <td>Cell 4</td>
-                                                <td>Cell 3</td>
-                                                <td>Cell 4</td>
-                                            </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

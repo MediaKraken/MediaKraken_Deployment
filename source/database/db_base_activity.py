@@ -26,7 +26,7 @@ def db_activity_insert(self, activity_name, activity_overview,
     """
     Insert server or user activity record
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_user_activity (mm_activity_guid,'
                            ' mm_activity_name,'
                            ' mm_activity_overview,'

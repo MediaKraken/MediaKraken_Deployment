@@ -16,15 +16,17 @@ async def url_bp_user_iradio_list(request):
     media = []
     db_connection = await request.app.db_pool.acquire()
     if request.ctx.session['search_text'] is not None:
-        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset,
+        mediadata = await request.app.db_functions.db_iradio_list(offset,
                                                                   int(request.ctx.session[
                                                                           'per_page']),
                                                                   search_value=request.ctx.session[
-                                                                      'search_text'])
+                                                                      'search_text'],
+                                                                  db_connection=db_connection)
     else:
-        mediadata = await request.app.db_functions.db_iradio_list(db_connection, offset,
+        mediadata = await request.app.db_functions.db_iradio_list(offset,
                                                                   int(request.ctx.session[
-                                                                          'per_page']))
+                                                                          'per_page']),
+                                                                  db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {}
 

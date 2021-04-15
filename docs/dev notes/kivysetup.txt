@@ -6,6 +6,17 @@ pip3 install pillow
 windows 7 and 10 require different sdl libs found in source/theater_resources
 
 
+
+on debian buster
+apt install libgl-dev
+pip3 install kivy pillow
+#pip3 install pygame     depreciated
+# pip3 install kivy-deps.sdl2     windows only
+apt install xclip xsel
+garden install filebrowser
+
+
+
 kivy
 ***********************
 new custom build

@@ -1,8 +1,10 @@
+import json
 import subprocess
 from shlex import split
 
 from common import common_global
 from common import common_internationalization
+from common import common_logging_elasticsearch_httpx
 from common import common_network_pika
 from sanic import Blueprint
 from sanic.response import redirect
@@ -23,7 +25,8 @@ async def url_bp_user_movie_detail(request, user, guid):
             common_network_pika.com_net_pika_send(
                 {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Web',
                  'User': user.id,
-                 'Data': await request.app.db_functions.db_read_media(db_connection, guid)[
+                 'Data': await
+                 request.app.db_functions.db_read_media(guid, db_connection=db_connection)[
                      'mm_media_path']},
                 rabbit_host_name='mkstack_rabbitmq',
                 exchange_name='mkque_ex',
@@ -35,14 +38,14 @@ async def url_bp_user_movie_detail(request, user, guid):
                                     audio=request.form['Video_Play_Audio_Track'],
                                     sub=request.form['Video_Play_Subtitles']))
         if request.form['status'] == 'Watched':
-            await request.app.db_functions.db_meta_movie_status_update(db_connection,
-                                                                       guid, user.id, False)
+            await request.app.db_functions.db_meta_movie_status_update(guid, user.id, False,
+                                                                       db_connection=db_connection)
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
         elif request.form['status'] == 'Unwatched':
-            await request.app.db_functions.db_meta_movie_status_update(db_connection,
-                                                                       guid, user.id, True)
+            await request.app.db_functions.db_meta_movie_status_update(guid, user.id, True,
+                                                                       db_connection=db_connection)
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
@@ -61,42 +64,36 @@ async def url_bp_user_movie_detail(request, user, guid):
             proc_ffserver = subprocess.Popen(split('ffmpeg  -i \"',
                                                    await
                                                    request.app.db_functions.db_media_path_by_uuid(
-                                                       db_connection,
-                                                       media_guid_index)[
+                                                       media_guid_index,
+                                                       db_connection=db_connection)[
                                                        0] + '\" http://localhost/stream.ffm'),
                                              stdout=subprocess.PIPE, shell=False)
-            common_global.es_inst.com_elastic_index('info', {"FFServer PID": proc_ffserver.pid})
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 "FFServer PID": proc_ffserver.pid})
             return redirect(
                 request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail',
                                     guid=guid))
     else:
-        metadata_data = await request.app.db_functions.db_meta_movie_by_media_uuid(db_connection,
-                                                                                   guid)
-        # fields returned
-        # metadata_data['mm_metadata_json']
-        # metadata_data['mm_metadata_localimage_json']
-
+        metadata_data = await request.app.db_functions.db_meta_movie_by_media_uuid(guid,
+                                                                                   db_connection=db_connection)
         # poster image
         try:
             # don't bother checking for NONE as that's valid
-            data_poster_image = \
-                metadata_data['mm_metadata_localimage_json']['Poster']
+            data_poster_image = metadata_data['mm_metadata_localimage_json']['Poster']
         except:
             data_poster_image = None
         # background image
         try:
             # don't bother checking for NONE as that's valid
-            data_background_image = \
-                metadata_data['mm_metadata_localimage_json']['Backdrop']
+            data_background_image = metadata_data['mm_metadata_localimage_json']['Backdrop']
         except:
             data_background_image = None
 
         # build gen list
         genres_list = []
-        for ndx in range(0, len(
-                metadata_data['mm_metadata_json']['genres'])):
-            genres_list.append(
-                metadata_data['mm_metadata_json']['genres'][ndx]['name'])
+        for ndx in range(0, len(metadata_data['mm_metadata_json']['genres'])):
+            genres_list.append(metadata_data['mm_metadata_json']['genres'][ndx]['name'])
 
         # not sure if the following with display anymore
         # # vote count format
@@ -117,7 +114,7 @@ async def url_bp_user_movie_detail(request, user, guid):
         #     metadata_data['mm_metadata_json']['revenue'])
         # # grab reviews
         # review = []
-        # review_json = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, json_metaid['themoviedb'])
+        # review_json = await request.app.db_functions.db_review_list_by_tmdb_guid(json_metaid['themoviedb'], db_connection)
         # if review_json is not None and len(review_json) > 0:
         #     review_json = review_json[0]
         #     for review_data in review_json[1]['themoviedb']['results']:
@@ -136,10 +133,12 @@ async def url_bp_user_movie_detail(request, user, guid):
         # check to see if there are other version(s) of this video file (dvd, hddvd, etc)
         ffprobe_data = {}
         # TODO  the following does alot of repeats sumhow.   due to dict it stomps over itself
-        for video_version in await request.app.db_functions.db_media_ffprobe_all_guid(db_connection,
-                                                                                      guid,
-                                                                                      common_global.DLMediaType.Movie.value):
-            common_global.es_inst.com_elastic_index('info', {"vid_version": video_version})
+        for video_version in await request.app.db_functions.db_media_ffprobe_all_guid(guid,
+                                                                                      common_global.DLMediaType.Movie.value,
+                                                                                      db_connection=db_connection):
+            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                             message_text={
+                                                                                 "vid_version": video_version})
             # not all files have ffprobe
             if video_version['mm_media_ffprobe_json'] is None:
                 hours = 0
@@ -212,7 +211,8 @@ async def url_bp_user_movie_detail(request, user, guid):
         # find all devices to playback media on
         # TODO have reactor return client list?
         playback_devices = []
-        for device_item in await request.app.db_functions.db_device_list(db_connection):
+        for device_item in await request.app.db_functions.db_device_list(
+                db_connection=db_connection):
             if device_item['mm_device_type'] == 'Chromecast':
                 playback_devices.append(device_item['mm_device_json']['Name'])
             elif device_item['mm_device_type'] == 'Roku':

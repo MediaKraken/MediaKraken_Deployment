@@ -18,6 +18,7 @@
 
 import requests
 import xmltodict
+from common import common_logging_elasticsearch_httpx
 
 from . import common_global
 from . import common_network_ssdp
@@ -67,15 +68,15 @@ def com_hard_chrome_play_youtube(youtube_video_guid, ip_addr, port=8008):
     response = requests.post(('http://%s:%s/apps/YouTube' % (ip_addr, port)),
                              data={'v': youtube_video_guid})
     if response.status_code != 200:
-        if common_global.es_inst is not None:
-            common_global.es_inst.com_elastic_index('info', {'yt play guid': youtube_video_guid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'yt play guid': youtube_video_guid})
 
 
 def com_hard_chrome_youtube_stop(ip_addr, port=8008):
     response = requests.delete('http://%s:%s/apps/YouTube' % (ip_addr, port))
     if response.status_code != 200:
-        if common_global.es_inst is not None:
-            common_global.es_inst.com_elastic_index('info', {'yt stop ip_addr': ip_addr})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'yt stop ip_addr': ip_addr})
 
 # TODO http://CHROMECAST_IP:8008/ssdp/device-desc.xml
 # TODO http://CHROMECAST_IP:8008/apps/ChromeCast

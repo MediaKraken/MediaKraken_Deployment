@@ -37,16 +37,61 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div></div></div>
+    <div class="row">
+        <div class="col"><img src="/assets/img/headphone.png"></div>
+        <div class="col">
+            <div class="row">
+                <div class="col"><span>Band: {{}}</span></div>
+                <div class="col"><span>Released: 9999/99/99</span></div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p><br>Album: {{json_metadata['mm_metadata_json']['overview']}}<br><br></p>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div class="row"></div>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p><br>Overview: {{json_metadata['mm_metadata_json']['overview']}}<br><br></p>
+        </div>
+    </div>
+    <div class="row">
+    {% if data_json_media_songs %}
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    Songs
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                    <div class="grid">
+                        {% for chapter_info in data_json_media_songs %}
+                        <div class="col-1-4">
+                            <a href="{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}">
+                                <img src="{{ url_for('static', filename='meta/images/' + chapter_info[1]) }}" height="150" width="150">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
         </div>
     </footer>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="/assets/js/script.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
 </body>
 
 </html>

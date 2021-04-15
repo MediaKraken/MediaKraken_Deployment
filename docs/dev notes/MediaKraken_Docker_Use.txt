@@ -53,6 +53,8 @@ docker run -it th-registry-1.beaverbay.local:5000/mediakraken/mkwebappdeb:dev /b
 
 docker run -it th-registry-1.beaverbay.local:5000/mediakraken/mkwebappasync:dev /bin/ash
 
+docker run -it --network=mk_mediakraken_network --env POSTGRES_PASSWORD=${DBPASS} th-registry-1.beaverbay.local:5000/mediakraken/mkgamedata:dev /bin/ash
+
 docker run -it mediakraken/ansible_runner_service /bin/bash
 
 

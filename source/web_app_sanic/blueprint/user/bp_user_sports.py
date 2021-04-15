@@ -16,22 +16,22 @@ async def url_bp_user_sports(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_media_sports_list(db_connection,
-                                                                        common_global.DLMediaType.Sports.value,
-                                                                        offset,
-                                                                        int(request.ctx.session[
-                                                                                'per_page']),
-                                                                        request.ctx.session[
-                                                                            'search_text']):
+    for row_data in await request.app.db_functions.db_media_sports_list(
+            common_global.DLMediaType.Sports.value,
+            offset,
+            int(request.ctx.session[
+                    'per_page']),
+            request.ctx.session[
+                'search_text'], db_connection=db_connection):
         media.append((row_data['mm_metadata_sports_guid'],
                       row_data['mm_metadata_sports_name']))
     request.ctx.session['search_page'] = 'media_sports'
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_sports',
                                                                       item_count=await request.app.db_functions.db_media_sports_list_count(
-                                                                          db_connection,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -51,8 +51,8 @@ async def url_bp_user_sports_detail(request, guid):
     """
     # poster image
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_meta_thesportsdb_select_by_guid(db_connection,
-                                                                                   guid)
+    media_data = await request.app.db_functions.db_meta_thesportsdb_select_by_guid(guid,
+                                                                                   db_connection=db_connection)
     try:
         if json_metadata['LocalImages']['Poster'] is not None:
             data_poster_image = json_metadata['LocalImages']['Poster']

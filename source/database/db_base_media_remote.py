@@ -24,7 +24,7 @@ def db_insert_remote_media(self, media_link_uuid, media_uuid, media_class_uuid,
     """
     # insert media into database
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_media_remote (mmr_media_guid,'
                            ' mmr_media_link_id,'
                            ' mmr_media_uuid,'
@@ -91,7 +91,7 @@ def db_known_remote_media_count(self):
 #        elif row_data[1] == 'Book':
 #            pass
 #        else:
-#            common_global.es_inst.com_elastic_index('error', {'stuff':'Link bad data type: %s', row_data[1])
+#            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={'stuff':'Link bad data type: %s', row_data[1])
 #            return None
 #        if metadata_guid is not None:
 #            self.db_insert_remote_media(link_uuid, row_data[0], \

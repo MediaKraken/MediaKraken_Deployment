@@ -20,14 +20,15 @@ import json
 import os
 
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 
 dont_force_localhost = True
 
 if dont_force_localhost:
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_update_version')
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='START',
+                                                         index_name='db_metadata_fix')
     # open the database
     option_config_json, db_connection = common_config_ini.com_config_read()
 else:
@@ -121,3 +122,7 @@ db_connection.db_close()
 print('Movie: ', total_movie, flush=True)
 print('TV: ', total_tv, flush=True)
 print('Person: ', total_person, flush=True)
+
+if dont_force_localhost:
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='STOP')

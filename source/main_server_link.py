@@ -22,7 +22,7 @@ import sys
 
 from common import common_config_ini
 from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 from twisted.internet import reactor, ssl
 # import twisted files that are required
@@ -61,17 +61,20 @@ class TheaterFactory(ClientFactory):
         self.protocol = None
 
     def startedConnecting(self, connector):
-        common_global.es_inst.com_elastic_index('info', {
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
             'Started to connect to': connector.getDestination()})
 
     def clientConnectionLost(self, conn, reason):
-        common_global.es_inst.com_elastic_index('info', {'Connection Lost'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'Connection Lost'})
 
     def clientConnectionFailed(self, conn, reason):
-        common_global.es_inst.com_elastic_index('info', {'Connection Failed'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'Connection Failed'})
 
     def buildProtocol(self, addr):
-        common_global.es_inst.com_elastic_index('info', {'Connected to': str(addr)})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'Connected to': str(addr)})
         self.protocol = TheaterClient()
         return self.protocol
 
@@ -88,8 +91,9 @@ class MediaKrakenApp:
         root = MediaKrakenApp()
         metaapp = self
         # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-            'main_server_link')
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text='START',
+                                                             index_name='main_server_link')
         # open the database
         option_config_json, self.db_connection = common_config_ini.com_config_read()
         self.connect_to_server()
@@ -107,16 +111,20 @@ class MediaKrakenApp:
         """
         Process network message from server
         """
-        common_global.es_inst.com_elastic_index('info', {"body": server_msg})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"body": server_msg})
         # network_base.NetworkEvents.ampq_message_received(body)
         json_message = json.loads(server_msg)
-        common_global.es_inst.com_elastic_index('info', {'json body': json_message})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'json body': json_message})
         msg = None
         if json_message['Type'] == "Ident":
             msg = "VALIDATE " + "link" + " " + "password" + " " + platform.node()
         elif json_message['Type'] == "Receive New Media":
             for new_media in json_message['Data']:
-                common_global.es_inst.com_elastic_index('info', {'new_media': new_media})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'new_media': new_media})
                 # returns: 0-mm_media_guid, 1-'Movie', 2-mm_media_ffprobe_json,
                 # 3-mm_metadata_media_id jsonb
                 metadata_guid = None
@@ -155,9 +163,11 @@ class MediaKrakenApp:
                                                           metadata_guid)
             self.db_connection.db_commit()
         else:
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'unknown message type'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'stuff': 'unknown message type'})
         if msg is not None:
-            common_global.es_inst.com_elastic_index('info', {'stuff': 'should be sending data'})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'stuff': 'should be sending data'})
             networkProtocol.sendString(msg)
 
 

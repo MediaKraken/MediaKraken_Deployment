@@ -41,7 +41,9 @@
     </nav>
     <!-- End: Navigation with Button -->
     <div><div>    {% if media %}
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
@@ -61,7 +63,9 @@
             </tbody>
         </table>
     </div>
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     {% else %}
     <p id="general_text">No tv season metadata found.</p>
     {% endif %}</div></div>

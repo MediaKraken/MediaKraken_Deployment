@@ -21,9 +21,6 @@ from enum import unique, IntFlag
 # static data BASE directory
 static_data_directory = '/mediakraken/web_app_sanic/static'  # do NOT put / at end!
 
-# instance for elasticsearch
-es_inst = None
-
 # clients connected to server available for playback
 client_devices = []
 
@@ -35,6 +32,7 @@ jinja_template = None
 
 # api instance
 api_instance = None
+
 
 # stuff in comments are the old class TEXT
 @unique
@@ -79,6 +77,7 @@ class DLMediaType(IntFlag):
     Publication_Comic = 602  # "Comic"
     Publication_Comic_Strip = 603  # "Comic Strip"
     Publication_Magazine = 604  # "Magazine"
+    Publication_Graphic_Novel = 605
 
     TV_Episode = 201  # "TV: Episode"
     TV_Extras = 202  # "TV: Extras"

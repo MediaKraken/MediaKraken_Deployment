@@ -44,7 +44,7 @@ import subprocess
 import sys
 
 from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 
 
@@ -54,8 +54,9 @@ def main(argv):
     Main commercial strip
     """
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-        'subprogram_commercial_strip')
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='START',
+                                                         index_name='subprogram_commercial_strip')
     # set signal exit breaks
     common_signal.com_signal_set_break()
     inputfile = None
@@ -63,12 +64,12 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        common_global.es_inst.com_elastic_index('error', {
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={
             'data': 'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            common_global.es_inst.com_elastic_index('error', {
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={
                 'data':
                     'subprogram_commercial_strip -i <inputfile> -o <outputfile>'})
             sys.exit()
@@ -79,8 +80,10 @@ def main(argv):
     # kick off ffmpeg process
     proc = subprocess.Popen(shlex.split('ffmpeg ' + subproccess_args),
                             stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {"pid": proc.pid,
-                                                     "input": inputfile, "output": outputfile})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"pid": proc.pid,
+                                                                       "input": inputfile,
+                                                                       "output": outputfile})
     proc.wait()
 
 

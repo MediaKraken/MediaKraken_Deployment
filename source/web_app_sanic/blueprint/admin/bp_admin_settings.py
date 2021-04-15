@@ -14,7 +14,7 @@ async def url_bp_admin_settings(request):
     Display server settings page
     """
     db_connection = await request.app.db_pool.acquire()
-    settings_json = await request.app.db_functions.db_opt_json_read(db_connection)
+    settings_json = await request.app.db_functions.db_opt_json_read(db_connection=db_connection)
     # setup the crypto
     data = common_hash.CommonHashCrypto()
     mediabrainz_api_key = None
@@ -48,7 +48,7 @@ async def url_bp_admin_settings(request):
         settings_json['MediaKrakenServer']['Server Name'] = request.form['servername']
         settings_json['MediaKrakenServer']['MOTD'] = request.form['servermotd']
         # save updated info
-        await request.app.db_functions.db_opt_update(db_connection, settings_json)
+        await request.app.db_functions.db_opt_update(settings_json, db_connection=db_connection)
     '''
     activity_purge_interval = SelectField('Purge Activity Data Older Than',
                                           choices=[('Never', 'Never'), ('1 Day', '1 Day'),
@@ -69,7 +69,7 @@ async def url_bp_admin_settings(request):
     # meta_language = SelectField('Interval', choices=[('Hours', 'Hours'),\
     # ('Days', 'Days'), ('Weekly', 'Weekly')])
     metadata_sub_skip_if_audio = BooleanField('Skip subtitle if lang in audio track')
-    docker_musicbrainz_code = TextField('Brainzcode', validators=[DataRequired(),
+    docker_musicbrainz_code = StringField('Brainzcode', validators=[DataRequired(),
                                                                   Length(min=1, max=250)])
     '''
     await request.app.db_pool.release(db_connection)

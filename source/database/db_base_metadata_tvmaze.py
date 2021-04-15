@@ -38,7 +38,7 @@ def db_meta_tvmaze_insert(self, series_id_json, tvmaze_name, show_detail,
     """
     Insert tv series into db
     """
-    new_uuid = str(uuid.uuid4())
+    new_uuid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'
                            ' mm_metadata_media_tvshow_id,'
                            ' mm_metadata_tvshow_name,'

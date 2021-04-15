@@ -4,7 +4,7 @@ from os.path import sep, expanduser, dirname
 
 from kivy.app import App
 from kivy.factory import Factory
-from kivy.garden.filebrowser import FileBrowser
+from kivy.garden.filebrowser import FileBrowser  # garden install filebrowser
 from kivy.properties import BooleanProperty
 from kivy.properties import ObjectProperty
 from kivy.uix.behaviors import FocusBehavior
@@ -45,14 +45,14 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            # common_global.es_inst.com_elastic_index('info',
+            # common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
             #                                         {'stuff': "selection changed to {0}".format(
             #                                             rv.data[index])})
             # if twisted_connection is not None:
             #     MKFactory.protocol.sendline_data(twisted_connection,
             #                                      json.dumps({'Type': 'Media', 'Subtype': 'Detail',
             #                                                  'UUID': rv.data[index]['uuid']}))
-            # common_global.es_inst.com_elastic_index('info', {'stuff': rv.data[index]['path']})
+            # common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {'stuff': rv.data[index]['path']})
             MainRenamer.media_path = rv.data[index]['path']
             MainRenamer.media_uuid = rv.data[index]['uuid']
 
@@ -93,7 +93,7 @@ class MainRenamer(App):
         if platform == 'win':
             user_path = dirname(expanduser('~')) + sep + 'Documents'
         else:
-            user_path = expanduser('~') + sep + 'Documents'
+            user_path = expanduser('~') + sep + 'Videos'
         browser = FileBrowser(select_string='Select',
                               dirselect=True,
                               multiselect=True,

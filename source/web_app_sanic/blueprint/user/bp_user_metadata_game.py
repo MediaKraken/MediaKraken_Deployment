@@ -18,17 +18,18 @@ async def url_bp_user_metadata_game(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_game',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection,
-                                                                          'mm_metadata_game_software_info'),
+                                                                          table_name='mm_metadata_game_software_info',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_meta_game_list(db_connection, offset,
+    media_data = await request.app.db_functions.db_meta_game_list(offset,
                                                                   int(request.ctx.session[
                                                                           'per_page']),
                                                                   request.ctx.session[
-                                                                      'search_text'])
+                                                                      'search_text'],
+                                                                  db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_game': media_data,
@@ -44,8 +45,9 @@ async def url_bp_user_metadata_game_detail(request, guid):
     Display game metadata detail
     """
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_meta_game_by_guid(db_connection,
-                                                                     guid)['gi_game_info_json']
+    media_data = await \
+        request.app.db_functions.db_meta_game_by_guid(guid, db_connection=db_connection)[
+            'gi_game_info_json']
     await request.app.db_pool.release(db_connection)
     return {
         'guid': guid,

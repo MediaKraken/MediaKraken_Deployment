@@ -20,8 +20,6 @@ import datetime
 import os
 import uuid
 
-import psycopg2
-
 
 def db_audit_path_status(self):
     """
@@ -39,7 +37,7 @@ def db_audit_path_update_status(self, lib_guid, status_json):
     # update status
     """
     self.db_cursor.execute('update mm_media_dir set mm_media_dir_status = %s'
-                           ' where mm_media_dir_share_guid = %s', (status_json, lib_guid))
+                           ' where mm_media_dir_guid = %s', (status_json, lib_guid))
 
 
 def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
@@ -48,7 +46,7 @@ def db_audit_path_update_by_uuid(self, lib_path, class_guid, lib_guid):
     """
     self.db_cursor.execute('update mm_media_dir set mm_media_dir_path = %s,'
                            ' mm_media_dir_class_type = %s'
-                           ' where mm_media_dir_share_guid = %s',
+                           ' where mm_media_dir_guid = %s',
                            (lib_path, class_guid, lib_guid))
 
 
@@ -57,22 +55,21 @@ def db_audit_path_delete(self, lib_guid):
     # remove media path
     """
     self.db_cursor.execute(
-        'delete from mm_media_dir where mm_media_dir_share_guid = %s', (lib_guid,))
+        'delete from mm_media_dir where mm_media_dir_guid = %s', (lib_guid,))
 
 
 def db_audit_path_add(self, dir_path, class_guid, share_guid):
     """
     # add media path
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_media_dir (mm_media_dir_guid,'
                            ' mm_media_dir_path,'
                            ' mm_media_dir_class_type,'
-                           ' mm_media_dir_last_scanned,'
-                           ' mm_media_dir_share_guid)'
+                           ' mm_media_dir_last_scanned)'
                            ' values (%s,%s,%s,%s,%s)',
                            (new_guid, dir_path, class_guid,
-                            psycopg2.Timestamp(1970, 1, 1, 0, 0, 1), share_guid))
+                            datetime.datetime(1970, 1, 1, 0, 0, 1), share_guid))
     return new_guid
 
 
@@ -80,7 +77,8 @@ def db_audit_path_check(self, dir_path):
     """
     # lib path check (dupes)
     """
-    self.db_cursor.execute('select count(*) from mm_media_dir where mm_media_dir_path = %s',
+    self.db_cursor.execute('SELECT EXISTS(SELECT 1 FROM mm_media_dir'
+                           ' WHERE mm_media_dir_path = %s limit 1) limit 1',
                            (dir_path,))
     return self.db_cursor.fetchone()[0]
 
@@ -102,7 +100,7 @@ def db_audit_paths(self, offset=0, records=None):
     self.db_cursor.execute('select mm_media_dir_path,'
                            ' mm_media_dir_class_type,'
                            ' mm_media_dir_last_scanned,'
-                           ' mm_media_dir_share_guid'
+                           ' mm_media_dir_guid'
                            ' from mm_media_dir'
                            ' order by mm_media_dir_class_type, mm_media_dir_path'
                            ' offset %s limit %s', (offset, records))
@@ -117,7 +115,7 @@ def db_audit_path_by_uuid(self, dir_id):
                            ' mm_media_dir_path,'
                            ' mm_media_dir_class_type'
                            ' from mm_media_dir'
-                           ' where mm_media_dir_share_guid = %s', (dir_id,))
+                           ' where mm_media_dir_guid = %s', (dir_id,))
     try:
         return self.db_cursor.fetchone()
     except:
@@ -185,7 +183,8 @@ def db_audit_share_check(self, dir_path):
     """
     # share path check (dupes)
     """
-    self.db_cursor.execute('select count(*) from mm_media_share where mm_media_share_path = %s',
+    self.db_cursor.execute('SELECT EXISTS(SELECT 1 FROM mm_media_share'
+                           ' WHERE mm_media_share_path = %s limit 1) limit 1',
                            (dir_path,))
     return self.db_cursor.fetchone()[0]
 
@@ -194,7 +193,7 @@ def db_audit_share_add(self, share_type, share_user, share_password, share_serve
     """
     # add share path
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_media_share (mm_media_share_guid,'
                            ' mm_media_share_type,'
                            ' mm_media_share_user,'

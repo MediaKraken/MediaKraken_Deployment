@@ -1,9 +1,8 @@
 ﻿# Download base image
-#FROM debian:10.4-slim
-FROM python:3.8.1-buster
+FROM python:3.9.4-slim-buster
 
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the base image"
+LABEL author="Quinn D Granfor, spootdev@gmail.com"
+LABEL description="This image holds the base image"
 
 ARG PIPMIRROR
 
@@ -16,6 +15,7 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 RUN apt update && apt -y install \
+  && pip3 install --upgrade pip \
   && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && rm requirements.txt \
   && apt clean \

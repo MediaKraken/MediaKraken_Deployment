@@ -1,6 +1,7 @@
 import os
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from common import common_string
 from sanic import Blueprint
@@ -25,9 +26,10 @@ async def url_bp_admin_report_all_media(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media_data = []
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_media_known(db_connection, offset,
+    for row_data in await request.app.db_functions.db_media_known(offset,
                                                                   int(request.ctx.session[
-                                                                          'per_page'])):
+                                                                          'per_page']),
+                                                                  db_connection):
         media_data.append((row_data['mm_media_path'],
                            common_string.com_string_bytes2human(
                                os.path.getsize(row_data['mm_media_path']))))
@@ -63,10 +65,10 @@ async def url_bp_admin_report_all_duplicate_media(request):
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    report_media = await request.app.db_functions.db_media_duplicate(db_connection,
-                                                                     offset,
+    report_media = await request.app.db_functions.db_media_duplicate(offset,
                                                                      int(request.ctx.session[
-                                                                             'per_page']))
+                                                                             'per_page']),
+                                                                     db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': report_media,
@@ -84,12 +86,14 @@ async def url_bp_admin_report_duplicate_detail(request, guid):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for media_data in await request.app.db_functions.db_media_duplicate_detail(db_connection, guid,
+    for media_data in await request.app.db_functions.db_media_duplicate_detail(guid,
                                                                                offset, int(
                 request.ctx.session[
-                    'per_page'])):
-        common_global.es_inst.com_elastic_index('info', {"media": media_data[
-            'mm_media_ffprobe_json']})
+                    'per_page']), db_connection):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             "media": media_data[
+                                                                                 'mm_media_ffprobe_json']})
         if media_data['mm_media_ffprobe_json'] is not None:
             for stream_data in media_data['mm_media_ffprobe_json']['streams']:
                 if stream_data['codec_type'] == 'video':
@@ -128,13 +132,17 @@ async def url_bp_admin_report_top10(request, mtype):
     db_connection = await request.app.db_pool.acquire()
     top10_data = None
     if mtype == '1':  # all time
-        top10_data = await request.app.db_functions.db_usage_top10_alltime(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_alltime(
+            db_connection=db_connection)
     elif mtype == '2':  # movie
-        top10_data = await request.app.db_functions.db_usage_top10_movie(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_movie(
+            db_connection=db_connection)
     elif mtype == '3':  # tv show
-        top10_data = await request.app.db_functions.db_usage_top10_tv_show(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_tv_show(
+            db_connection=db_connection)
     elif mtype == '4':  # tv episode
-        top10_data = await request.app.db_functions.db_usage_top10_tv_episode(db_connection)
+        top10_data = await request.app.db_functions.db_usage_top10_tv_episode(
+            db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {'media': top10_data}
 
@@ -156,11 +164,11 @@ async def url_bp_admin_report_display_all_unmatched_media(request):
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    unmatched_media = await request.app.db_functions.db_media_unmatched_list(db_connection,
-                                                                             offset=offset,
+    unmatched_media = await request.app.db_functions.db_media_unmatched_list(offset=offset,
                                                                              list_limit=int(
                                                                                  request.ctx.session[
-                                                                                     'per_page']))
+                                                                                     'per_page']),
+                                                                             db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': unmatched_media,

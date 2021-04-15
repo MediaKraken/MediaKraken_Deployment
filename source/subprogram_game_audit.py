@@ -26,6 +26,8 @@ import time
 import zipfile
 from threading import Thread
 
+from common import common_logging_elasticsearch_httpx
+
 SHA1 = hashlib.sha1()
 import os.path
 from common import common_config_ini
@@ -240,7 +242,8 @@ class ROMFileParser:
         # parse for multi roms archives and files
         curs_game.execute('select gir_gi_id,gir_rom_name,gir_sha1,gir_merged_rom_name from'
                           ' game_info,game_info_roms where gi_id = gir_gi_id and gi_id'
-                          ' IN (select gir_gi_id from game_info_roms group by gir_gi_id having count(*) > 1)')
+                          ' IN (select gir_gi_id from game_info_roms'
+                          ' group by gir_gi_id having count(*) > 1)')
         first_rec = True
         for sql_row in curs_game:
             if first_rec:
@@ -280,7 +283,8 @@ class ROMFileParser:
         db_full_hash_dict = []
         temp_list = []
         curs_game.execute('select gir_gi_id,gir_sha1 from game_info,game_info_roms'
-                          ' where gi_id = gir_gi_id and gi_id IN (select gir_gi_id from game_info_roms'
+                          ' where gi_id = gir_gi_id and gi_id IN'
+                          ' (select gir_gi_id from game_info_roms'
                           ' group by gir_gi_id having count(*) = 1)')
         for sql_row in curs_game:
             temp_list.append(sql_row[0])
@@ -348,7 +352,8 @@ class GameAuditer(threading.Thread):
     def load_hash_map_from_database(self):
         if '-nolist' in sys.argv:
             return True
-        common_global.es_inst.com_elastic_index('info', {'stuff': "loading roms from db"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': "loading roms from db"})
         # open the database
         option_config_json, db_connection = common_config_ini.com_config_read()
         # read all the audited games

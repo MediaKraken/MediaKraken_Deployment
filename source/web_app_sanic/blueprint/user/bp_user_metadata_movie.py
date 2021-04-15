@@ -1,7 +1,6 @@
-import json
-
 from common import common_global
 from common import common_internationalization
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from sanic import Blueprint, response
 
@@ -17,47 +16,46 @@ async def url_bp_user_metadata_movie_detail(request, guid):
     Display metadata movie detail
     """
     db_connection = await request.app.db_pool.acquire()
-    data = await request.app.db_functions.db_meta_movie_detail(db_connection, guid)
-    json_metadata = json.loads(data['mm_metadata_json'])
-    json_imagedata = json.loads(data['mm_metadata_localimage_json'])
+    data = await request.app.db_functions.db_meta_movie_detail(media_guid=guid,
+                                                               db_connection=db_connection)
     # vote count format
     try:
         data_vote_count = common_internationalization.com_inter_number_format(
-            json_metadata['vote_count'])
+            data['mm_metadata_json']['vote_count'])
     except:
         data_vote_count = 'NA'
     # build gen list
     genres_list = ''
-    for ndx in range(0, len(json_metadata['genres'])):
-        genres_list += (json_metadata['genres'][ndx]['name'] + ', ')
+    for ndx in range(0, len(data['mm_metadata_json']['genres'])):
+        genres_list += (data['mm_metadata_json']['genres'][ndx]['name'] + ', ')
     # build production list
     production_list = ''
-    for ndx in range(0, len(json_metadata['production_companies'])):
+    for ndx in range(0, len(data['mm_metadata_json']['production_companies'])):
         production_list \
-            += (json_metadata['production_companies'][ndx]['name'] + ', ')
+            += (data['mm_metadata_json']['production_companies'][ndx]['name'] + ', ')
     # poster image
     try:
-        if json_imagedata['Poster'] is not None:
-            data_poster_image = json_imagedata['Poster']
+        if data['mm_metadata_localimage_json']['Poster'] is not None:
+            data_poster_image = data['mm_metadata_localimage_json']['Poster']
         else:
             data_poster_image = None
     except:
         data_poster_image = None
     # background image
     try:
-        if json_imagedata['Backdrop'] is not None:
-            data_background_image = json_imagedata['Backdrop']
+        if data['mm_metadata_localimage_json']['Backdrop'] is not None:
+            data_background_image = data['mm_metadata_localimage_json']['Backdrop']
         else:
             data_background_image = None
     except:
         data_background_image = None
     # grab reviews
-    review = await request.app.db_functions.db_review_list_by_tmdb_guid(db_connection, data[1])
+    review = await request.app.db_functions.db_review_list_by_meta_guid(metadata_id=guid,
+                                                                        db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
-        # data_media_ids: data[1],
-        'data_name': data[2],
-        'json_metadata': json_metadata,
+        'data_name': data['mm_media_name'],
+        'json_metadata': data['mm_metadata_json'],
         'data_genres': genres_list[:-2],
         'data_production': production_list[:-2],
         'data_review': review,
@@ -65,7 +63,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
         'data_background_image': data_background_image,
         'data_vote_count': data_vote_count,
         'data_budget': common_internationalization.com_inter_number_format(
-            json_metadata['budget'])
+            data['mm_metadata_json']['budget'])
     }
 
 
@@ -80,19 +78,19 @@ async def url_bp_user_metadata_movie_list(request, user):
     media = []
     media_count = 0
     db_connection = await request.app.db_pool.acquire()
-    for row_data in await request.app.db_functions.db_meta_movie_list(db_connection, offset,
+    for row_data in await request.app.db_functions.db_meta_movie_list(offset,
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       request.ctx.session[
-                                                                          'search_text']):
+                                                                          'search_text'],
+                                                                      db_connection):
         if row_data['mm_metadata_user_json'] is not None:
-            user_json = json.loads(row_data['mm_metadata_user_json'])
+            user_json = row_data['mm_metadata_user_json']
         else:
             user_json = None
         # set watched
         try:
-            watched_status \
-                = user_json['UserStats'][str(user.id)]['watched']
+            watched_status = user_json['UserStats'][str(user.id)]['watched']
         except (KeyError, TypeError):
             watched_status = False
         # set rating
@@ -122,10 +120,12 @@ async def url_bp_user_metadata_movie_list(request, user):
             queue_status = user_json['UserStats'][str(user.id)]['queue']
         except (KeyError, TypeError):
             queue_status = None
-        common_global.es_inst.com_elastic_index('info', {"status": watched_status,
-                                                         'rating': rating_status,
-                                                         'request': request_status,
-                                                         'queue': queue_status})
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             "status": watched_status,
+                                                                             'rating': rating_status,
+                                                                             'request': request_status,
+                                                                             'queue': queue_status})
         media_count += 1
         if media_count == 1:
             deck_start = True
@@ -137,15 +137,15 @@ async def url_bp_user_metadata_movie_list(request, user):
         else:
             deck_break = False
         media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
-                      row_data['mm_date'], row_data['mm_poster'].replace('"', ''), watched_status,
+                      row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
     request.ctx.session['search_page'] = 'meta_movie'
-    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page=page,
                                                                       url='/user/user_meta_movie_list',
                                                                       item_count=await request.app.db_functions.db_meta_movie_count(
-                                                                          db_connection,
                                                                           request.ctx.session[
-                                                                              'search_text']),
+                                                                              'search_text'],
+                                                                          db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -164,10 +164,13 @@ async def url_bp_user_metadata_movie_status(request, user, guid, event_type):
     """
     Set media status for specified media, user
     """
-    common_global.es_inst.com_elastic_index('info', {'movie metadata status': guid,
-                                                     'event': event_type})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'movie metadata status': guid,
+                                                                         'event': event_type})
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_meta_movie_status_update(db_connection, guid,
-                                                               user.id, event_type)
+    await request.app.db_functions.db_meta_movie_status_update(guid,
+                                                               user.id, event_type,
+                                                               db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})

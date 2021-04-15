@@ -19,8 +19,7 @@
 import sys
 
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_metadata_scudlee
 from common import common_signal
 from common import common_system
@@ -31,7 +30,9 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_anime_scudlee')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START',
+                                                     index_name='subprogram_match_anime_id')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -58,7 +59,8 @@ def store_update_record(db_connection, collection_name, guid_list):
 common_metadata_scudlee.mk_scudlee_fetch_xml()
 # begin the media match on NULL matches
 for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
-    common_global.es_inst.com_elastic_index('info', {'row': 'row_data'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'row': 'row_data'})
     if row_data is not None:
         # skip media with "no" match...rowdata2 is imdbid
         # just check for non int then it's a non tvdb id
@@ -67,7 +69,8 @@ for row_data in common_metadata_scudlee.mk_scudlee_anime_list_parse():
         else:
             # should be valid data, do the update
             db_connection.db_meta_update_media_id_from_scudlee(row_data[1],
-                                                               row_data[2], row_data[0])
+                                                               row_data[2],
+                                                               row_data[0])
 
 # begin the collections match/create/update
 for row_data in common_metadata_scudlee.mk_scudlee_anime_set_parse():

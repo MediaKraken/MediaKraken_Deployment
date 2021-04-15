@@ -21,15 +21,16 @@ async def url_bp_user_sync_display_all(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_sync',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection,
-                                                                          'mm_sync'),
+                                                                          table_name='mm_sync',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_sync_list(db_connection, offset,
+    media_data = await request.app.db_functions.db_sync_list(offset,
                                                              int(request.ctx.session[
-                                                                     'per_page']))
+                                                                     'per_page']),
+                                                             db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_sync': media_data,
@@ -44,7 +45,7 @@ async def url_bp_user_admin_sync_delete_page(request):
     Display sync delete action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_sync_delete(db_connection, request.form['id'])
+    await request.app.db_functions.db_sync_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -69,9 +70,10 @@ async def url_bp_user_sync_edit(request, guid):
                      'Priority': request.form['target_priority'],
                      'Status': 'Scheduled',
                      'Progress': 0}
-        await request.app.db_functions.db_sync_insert(db_connection, request.form['name'],
+        await request.app.db_functions.db_sync_insert(request.form['name'],
                                                       request.form['target_output_path'],
-                                                      json.dumps(sync_json))
+                                                      json.dumps(sync_json),
+                                                      db_connection=db_connection)
         await request.app.db_pool.release(db_connection)
         return redirect(
             request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail', guid=guid))

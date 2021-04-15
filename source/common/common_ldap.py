@@ -65,7 +65,7 @@ below is all python-ldap, moving to ldap3
 #         """
 #         Ldap logon check
 #         """
-#         common_global.es_inst.com_elastic_index('info', {"ldap login": user_name})
+#         common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text= {"ldap login": user_name})
 #         try:
 #             dn_name = "sAMAccountName=" + user_name + ",dc=" + self.dc_name + ",dc=local"
 #             self.con.simple_bind_s(dn_name, user_password)

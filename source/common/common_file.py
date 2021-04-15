@@ -22,8 +22,42 @@ import pickle
 import time
 import zipfile
 from os import walk  # pylint: disable=C0412
+from string import ascii_lowercase
+
+from common import common_global
 
 from . import common_string
+
+image_dir = [
+    'backdrop',
+    'banner',
+    'box_bluray',
+    'box_cd',
+    'box_dvd',
+    'box_hddvd',
+    'box_laserdisc',
+    'box_uhd',
+    'box_vhs',
+    'chapter',
+    'character',
+    'fanart',
+    'game',
+    'game_box',
+    'game_media',
+    'logo',
+    'media_bluray',
+    'media_cd',
+    'media_dvd',
+    'media_hddvd',
+    'media_laserdisc',
+    'media_uhd',
+    'media_vhs',
+    'person',
+    'poster',
+    'profile',
+    'still',
+    'episodes',
+]
 
 JUNK_FILES = [
     '(gameplay)',
@@ -37,6 +71,30 @@ JUNK_FILES = [
     'deleted scene',
 ]
 
+trailer_dir = [
+    'trailer',
+    'behind',
+    'clip',
+    'carpool',
+    'featurette',
+]
+
+
+def com_file_build_image_dirs():
+    for image_info in image_dir:
+        for ndx in ascii_lowercase:
+            for ndx2 in ascii_lowercase:
+                os.makedirs(os.path.join(common_global.static_data_directory + '/meta/images',
+                                         image_info, ndx, ndx2), exist_ok=True)
+
+
+def com_file_build_trailer_dirs():
+    for trailer_info in trailer_dir:
+        for ndx in ascii_lowercase:
+            for ndx2 in ascii_lowercase:
+                os.makedirs(os.path.join(common_global.static_data_directory + '/meta/trailers',
+                                         trailer_info, ndx, ndx2), exist_ok=True)
+
 
 def com_file_modification_timestamp(file_name):
     """
@@ -49,7 +107,8 @@ def com_file_modification_timestamp(file_name):
         return None
 
 
-def com_file_save_data(file_name, data_block, as_pickle=False, with_timestamp=False,
+def com_file_save_data(file_name, data_block, as_pickle=False,
+                       with_timestamp=False,
                        file_ext=None):
     """
     Save data as file
@@ -97,8 +156,8 @@ def com_file_dir_list_dict(dir_name, file_modified=False):
             file_name)
 
 
-def com_file_dir_list(dir_name, filter_text, walk_dir, skip_junk=True, file_size=False,
-                      directory_only=False, file_modified=False):
+def com_file_dir_list(dir_name, filter_text=None, walk_dir=None, skip_junk=True,
+                      file_size=False, directory_only=False, file_modified=False):
     """
     Find all filtered files in directory
     """

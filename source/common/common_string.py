@@ -19,7 +19,7 @@
 import re
 from socket import inet_ntoa
 
-from . import common_global
+from common import common_logging_elasticsearch_httpx
 
 STACK_CD = re.compile('-cd\d', re.IGNORECASE)
 STACK_CD1 = re.compile('-cd1(?!\d)', re.IGNORECASE)
@@ -81,8 +81,9 @@ def com_string_password_test(password_text):
         'Very strong',
     )
     strength, improvements = passwordmeter.test(password_text)
-    common_global.es_inst.com_elastic_index('info', {'Password strength: {} ({})'.format(
-        strength, (ratings[min(len(ratings) - 1, int(strength * len(ratings)))]))})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'Password strength: {} ({})'.format(
+            strength, (ratings[min(len(ratings) - 1, int(strength * len(ratings)))]))})
     return (strength, improvements)
 
 

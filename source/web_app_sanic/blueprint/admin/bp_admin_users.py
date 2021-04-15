@@ -14,7 +14,7 @@ async def url_bp_admin_user_delete(request):
     Delete user action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_user_delete(db_connection, request.form['id'])
+    await request.app.db_functions.db_user_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -27,7 +27,7 @@ async def url_bp_admin_user_detail(request, guid):
     Display user details
     """
     db_connection = await request.app.db_pool.acquire()
-    data_user = await request.app.db_functions.db_user_detail(db_connection, guid)
+    data_user = await request.app.db_functions.db_user_detail(guid, db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {'data_user': data_user}
 
@@ -44,15 +44,16 @@ async def url_bp_admin_user(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/admin/admin_users',
                                                                       item_count=await request.app.db_functions.db_user_count(
-                                                                          db_connection),
+                                                                          user_name=None,
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    data_users = await request.app.db_functions.db_user_list_name(db_connection,
-                                                                  offset,
+    data_users = await request.app.db_functions.db_user_list_name(offset,
                                                                   int(request.ctx.session[
-                                                                          'per_page']))
+                                                                          'per_page']),
+                                                                  db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'users': data_users,

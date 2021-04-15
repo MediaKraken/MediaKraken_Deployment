@@ -128,6 +128,7 @@ class ServerDatabaseBrainz:
         """
         # read for batch insert
         """
+        # TODO EXISTS
         self.db_cursor.execute('select count(*) from artist,'
                                ' release,'
                                ' track'

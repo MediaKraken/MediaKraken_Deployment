@@ -42,7 +42,9 @@
     </nav>
     <!-- End: Navigation with Button -->
     <div><div>    {% if media %}
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     <div id="the-node">
         {% for row_data in media %}
         <div class="main_photo">
@@ -71,7 +73,9 @@
         </div>
         {% endfor %}
     </div>
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     {% else %}
     <p id="general_text">No music album metadata found.</p>
     {% endif %}

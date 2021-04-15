@@ -16,19 +16,20 @@
   MA 02110-1301, USA.
 """
 
+import datetime
 import json
 
-import psycopg2
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_version
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_create_update')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START',
+                                                     index_name='db_create_update')
 
 # open the database
-db_connection = common_config_ini.com_config_read()
+db_connection = common_config_ini.com_config_read(force_local=True)
 
 # create table for version
 db_connection.db_query(
@@ -38,26 +39,15 @@ if db_connection.db_table_count('mm_version') == 0:
     db_connection.db_query(
         'insert into mm_version (mm_version_no) values (%s)' % common_version.DB_VERSION)
 
-# create tables for media shares to mount
-db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_share (mm_media_share_guid uuid'
-                       ' CONSTRAINT mm_media_share_pk PRIMARY KEY,'
-                       ' mm_media_share_type text,'
-                       ' mm_media_share_user text,'
-                       ' mm_media_share_password text,'
-                       ' mm_media_share_server text,'
-                       ' mm_media_share_path text)')
-
 # create tables for media directories to scan
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_media_dir (mm_media_dir_guid uuid'
                        ' CONSTRAINT mm_media_dir_pk PRIMARY KEY,'
                        ' mm_media_dir_path text,'
                        ' mm_media_dir_class_type smallint,'
                        ' mm_media_dir_last_scanned timestamp,'
-                       ' mm_media_dir_share_guid uuid,'
-                       ' mm_media_dir_status jsonb)')
-if db_connection.db_table_index_check('mm_media_dir_idx_share') is None:
-    db_connection.db_query(
-        'CREATE INDEX mm_media_dir_idx_share ON mm_media_dir(mm_media_dir_share_guid)')
+                       ' mm_media_dir_status jsonb,'
+                       ' mm_media_dir_username text,'
+                       ' mm_media_dir_password text)')
 
 '''
 ALTER TABLE mm_media_dir
@@ -105,7 +95,9 @@ if db_connection.db_table_index_check('mmr_media_idx_link_uuid') is None:
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_link (mm_link_guid uuid'
                        ' CONSTRAINT mm_link_guid_pk PRIMARY KEY,'
                        ' mm_link_name text,'
-                       ' mm_link_json jsonb)')
+                       ' mm_link_json jsonb,'
+                       ' mm_link_username text,'
+                       ' mm_link_password text)')
 if db_connection.db_table_index_check('mm_link_json_idxgin') is None:
     db_connection.db_query('CREATE INDEX mm_link_json_idxgin ON mm_link USING gin (mm_link_json)')
 if db_connection.db_table_index_check('mm_link_idx_name') is None:
@@ -462,11 +454,8 @@ if db_connection.db_table_index_check('mm_user_idx_username') is None:
 
 # add table for reviews
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_review (mm_review_guid uuid'
-                       ' CONSTRAINT mm_review_pk PRIMARY KEY, mm_review_metadata_id jsonb,'
+                       ' CONSTRAINT mm_review_pk PRIMARY KEY,'
                        ' mm_review_metadata_guid uuid, mm_review_json jsonb)')
-if db_connection.db_table_index_check('mm_metadata_review_idxgin_media_json') is None:
-    db_connection.db_query('CREATE INDEX mm_metadata_review_idxgin_media_json'
-                           ' ON mm_review USING gin (mm_review_metadata_id)')
 if db_connection.db_table_index_check('mm_metadata_review_idx_metadata_uuid') is None:
     db_connection.db_query('CREATE INDEX mm_metadata_review_idx_metadata_uuid'
                            ' ON mm_review(mm_review_metadata_guid)')
@@ -541,7 +530,7 @@ base_cron = [
      {'exchange_key': 'mkque_metadata_ex',
       'route_key': 'themoviedb',
       'Type': 'Update Metadata',
-      'program': '/mediakraken/subprogram_metadata_tmdb_updates.py'}),
+      'program': '/mediakraken/async_metadata_themoviedb_updates.py'}),
 
     # will run within the pike container via "cron"
     ('Retro Game Data', 'Grab updated metadata for retro game(s)',
@@ -609,10 +598,11 @@ base_cron = [
       'program': '/mediakraken/subprogram_sync.py'}),
 ]
 # create base cron entries
-if db_connection.db_query('select count(*) from mm_cron', fetch_all=False) == 0:
+if db_connection.db_query('select exists(select 1 from mm_cron limit 1) limit 1',
+                          fetch_all=False) is False:
     for base_item in base_cron:
         db_connection.db_cron_insert(base_item[0], base_item[1], False, 'Days 1',
-                                     psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+                                     datetime.datetime(1970, 1, 1, 0, 0, 1),
                                      json.dumps(base_item[2]))
 
 # create internet radio tables
@@ -659,6 +649,23 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_loan (mm_loan_guid uuid'
 # if db_connection.db_table_index_check('mm_country_idx_lang') is None:
 #    db_connection.db_query('CREATE INDEX mm_country_idx_lang ON mm_country(mm_country_lang_guid)')
 
+db_connection.db_query(
+    'create table IF NOT EXISTS mm_developer (mm_developer_id uuid'
+    ' CONSTRAINT mm_developer_id primary key,'
+    ' mm_developer_name text,'
+    ' mm_developer_json jsonb')
+if db_connection.db_table_index_check('mm_developer_name_idx') is None:
+    db_connection.db_query('CREATE INDEX mm_developer_name_idx'
+                           ' ON mm_developer(mm_developer_name)')
+
+db_connection.db_query(
+    'create table IF NOT EXISTS mm_publisher (mm_publisher_id uuid'
+    ' CONSTRAINT mm_publisher_id primary key,'
+    ' mm_publisher_name text,'
+    ' mm_publisher_json jsonb')
+if db_connection.db_table_index_check('mm_publisher_name_idx') is None:
+    db_connection.db_query('CREATE INDEX mm_publisher_name_idx'
+                           ' ON mm_publisher(mm_publisher_name)')
 
 # create table for logos
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_metadata_logo (mm_metadata_logo_guid uuid'
@@ -715,26 +722,31 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_user_profile (mm_user_prof
 if db_connection.db_table_index_check('mm_user_profile_idx_name') is None:
     db_connection.db_query('CREATE INDEX mm_user_profile_idx_name'
                            ' ON mm_user_profile(mm_user_profile_name)')
-db_connection.db_query('select count(*) from mm_user_profile')
-# NC17, R, PG-13, PG, G
-base_user = (
-    ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
-                          'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-                          'Images': True, 'Games': True, 'Books': True, 'IRadio': True,
-                          'Home': True,
-                          '3D': True, 'Internet': True, 'Lang': 'en'})),
-    ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
-                         'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': True,
-                         'Images': True, 'Games': True, 'Books': True, 'IRadio': True, 'Home': True,
-                         '3D': True, 'Internet': True, 'Lang': 'en'})),
-    ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
-                          'Movie': True, 'Music': True, 'TV': True, 'Sports': True, 'LiveTV': False,
-                          'Images': True, 'Games': True, 'Books': True, 'IRadio': False,
-                          'Home': True,
-                          '3D': False, 'Internet': False, 'Lang': 'en'}))
-)
-for base_item in base_user:
-    db_connection.db_user_profile_insert(base_item[0], base_item[1])
+if db_connection.db_query('select exists(select 1 from mm_user_profile limit 1) limit 1',
+                          fetch_all=False) is False:
+    # NC17, R, PG-13, PG, G
+    base_user = (
+        ('Adult', json.dumps({'Adult': True, 'MaxRating': 5, 'Sync': True, 'MaxBR': 100,
+                              'Movie': True, 'Music': True, 'TV': True,
+                              'Sports': True, 'LiveTV': True,
+                              'Images': True, 'Games': True, 'Books': True, 'IRadio': True,
+                              'Home': True,
+                              '3D': True, 'Internet': True, 'Lang': 'en'})),
+        ('Teen', json.dumps({'Adult': False, 'MaxRating': 3, 'Sync': False, 'MaxBR': 50,
+                             'Movie': True, 'Music': True, 'TV': True,
+                             'Sports': True, 'LiveTV': True,
+                             'Images': True, 'Games': True, 'Books': True,
+                             'IRadio': True, 'Home': True,
+                             '3D': True, 'Internet': True, 'Lang': 'en'})),
+        ('Child', json.dumps({'Adult': False, 'MaxRating': 0, 'Sync': False, 'MaxBR': 20,
+                              'Movie': True, 'Music': True, 'TV': True,
+                              'Sports': True, 'LiveTV': False,
+                              'Images': True, 'Games': True, 'Books': True, 'IRadio': False,
+                              'Home': True,
+                              '3D': False, 'Internet': False, 'Lang': 'en'}))
+    )
+    for base_item in base_user:
+        db_connection.db_user_profile_insert(base_item[0], base_item[1])
 
 # create options and status table
 db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
@@ -742,7 +754,8 @@ db_connection.db_query('CREATE TABLE IF NOT EXISTS mm_options_and_status'
                        ' CONSTRAINT mm_options_and_status_guid_pk PRIMARY KEY,'
                        ' mm_options_json jsonb,'
                        ' mm_status_json jsonb)')
-if db_connection.db_query('select count(*) from mm_options_and_status', fetch_all=False) == 0:
+if db_connection.db_query('select exists(select 1 from mm_options_and_status limit 1) limit 1',
+                          fetch_all=False) is False:
     db_connection.db_opt_status_insert(json.dumps({
         'Account': {
             'ScheduleDirect': {'User': None,
@@ -819,7 +832,7 @@ db_connection.db_query('create table IF NOT EXISTS mm_metadata_game_software_inf
                        ' gi_game_info_json jsonb)')
 if db_connection.db_table_index_check('gi_system_id_ndx') is None:
     db_connection.db_query('CREATE INDEX gi_system_id_ndx'
-                           ' on mm_metadata_game_software_info (gi_system_id)')  # so can match systems quickly
+                           ' on mm_metadata_game_software_info (gi_system_id)')
 if db_connection.db_table_index_check('mm_game_info_idxgin_json') is None:
     db_connection.db_query('CREATE INDEX mm_game_info_idxgin_json'
                            ' ON mm_metadata_game_software_info USING gin (gi_game_info_json)')
@@ -872,7 +885,8 @@ if db_connection.db_table_index_check('mm_metadata_person_idxgin_meta_json') is 
 # queue
 db_connection.db_query('create table IF NOT EXISTS mm_download_que (mdq_id uuid'
                        ' CONSTRAINT mdq_id_pk primary key, mdq_provider text,'
-                       ' mdq_que_type smallint, mdq_download_json jsonb)')
+                       ' mdq_que_type smallint, mdq_download_json jsonb,'
+                       ' mdq_new_uuid uuid, mdq_class_uuid smallint)')
 if db_connection.db_table_index_check('mm_download_idx_provider') is None:
     db_connection.db_query(
         'CREATE INDEX mm_download_idx_provider ON mm_download_que(mdq_provider)')
@@ -882,12 +896,6 @@ if db_connection.db_table_index_check('mm_download_que_idxgin_meta_json') is Non
 if db_connection.db_table_index_check('mdq_que_type_idx_name') is None:
     db_connection.db_query('CREATE INDEX mdq_que_type_idx_name'
                            ' ON mm_download_que(mdq_que_type)')
-# type
-# 0 - initial insert and/or default for the provider
-# 1 - movie
-# 2 - tv
-# 3 - person
-# 4 - trailer
 
 # hardware device
 db_connection.db_query('create table IF NOT EXISTS mm_device (mm_device_id uuid'
@@ -1019,7 +1027,8 @@ if db_connection.db_table_index_check('gi_game_idx_name_trigram_idx') is None:
         'CREATE INDEX gi_game_idx_name_trigram_idx ON mm_metadata_game_software_info'
         ' USING gist(gi_game_info_name gist_trgm_ops);')
 # since it's json, gist trgm_ops won't work
-# db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
+# db_connection.db_query('CREATE INDEX mm_metadata_collection_name_trigram_idx
+# ON mm_metadata_collection USING gist(mm_metadata_collection_name gist_trgm_ops);')
 if db_connection.db_table_index_check('mmp_person_name_trigram_idx') is None:
     db_connection.db_query(
         'CREATE INDEX mmp_person_name_trigram_idx ON mm_metadata_person'
@@ -1027,3 +1036,6 @@ if db_connection.db_table_index_check('mmp_person_name_trigram_idx') is None:
 
 db_connection.db_commit()
 db_connection.db_close()
+
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='STOP')

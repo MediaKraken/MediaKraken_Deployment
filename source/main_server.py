@@ -25,57 +25,63 @@ import time
 from common import common_config_ini
 from common import common_docker
 from common import common_file
-from common import common_global
 from common import common_hash
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network_share
 from common import common_signal
 from common import common_version
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_server')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START',
+                                                     index_name='main_server')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
 
-common_global.es_inst.com_elastic_index('info', {'PATH': os.environ['PATH']})
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text={'PATH': os.environ['PATH']})
 
 # check for and create ssl certs if needed
 if not os.path.isfile('./key/cacert.pem'):
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'Cert not found, generating.'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'stuff': 'Cert not found, generating.'})
     proc_ssl = subprocess.Popen(['python3', './subprogram_ssl_keygen.py'], stdout=subprocess.PIPE,
                                 shell=False)
     proc_ssl.wait()
     if not os.path.isfile('./key/cacert.pem'):
-        common_global.es_inst.com_elastic_index('critical',
-                                                {
-                                                    'stuff': 'Cannot generate SSL certificate. Exiting.....'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text=
+        {
+            'stuff': 'Cannot generate SSL certificate. Exiting.....'})
         sys.exit()
 
 # create crypto keys if needed
 if not os.path.isfile('./secure/data.zip'):
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'data.zip not found, generating.'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'stuff': 'data.zip not found, generating.'})
     data = common_hash.CommonHashCrypto()
-    data.com_hash_gen_crypt_key()
     if not os.path.isfile('./secure/data.zip'):
-        common_global.es_inst.com_elastic_index('critical',
-                                                {
-                                                    'stuff': 'Cannot generate crypto. Exiting.....'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text=
+        {
+            'stuff': 'Cannot generate crypto. Exiting.....'})
         sys.exit()
 
 # open the database
 option_config_json, db_connection = common_config_ini.com_config_read()
 
 # check db version
-common_global.es_inst.com_elastic_index('info', {'db1': db_connection.db_version_check()})
-common_global.es_inst.com_elastic_index('info', {'db2': common_version.DB_VERSION})
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    'db1': db_connection.db_version_check()})
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+    'db2': common_version.DB_VERSION})
 if db_connection.db_version_check() != common_version.DB_VERSION:
-    common_global.es_inst.com_elastic_index('info',
-                                            {'stuff': 'Database upgrade in progress...'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
+    {'stuff': 'Database upgrade in progress...'})
     db_create_pid = subprocess.Popen(['python3', './db_update_version.py'], stdout=subprocess.PIPE,
                                      shell=False)
     db_create_pid.wait()
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'Database upgrade complete.'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'stuff': 'Database upgrade complete.'})
 
 # setup the docker environment
 docker_inst = common_docker.CommonDocker()
@@ -83,8 +89,8 @@ docker_inst = common_docker.CommonDocker()
 docker_info = docker_inst.com_docker_info()
 if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0) \
         or 'Managers' not in docker_info['Swarm']:
-    common_global.es_inst.com_elastic_index('info',
-                                            {'stuff': 'attempting to init swarm as manager'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
+    {'stuff': 'attempting to init swarm as manager'})
     # init host to swarm mode
     docker_inst.com_docker_swarm_init()
 
@@ -96,7 +102,8 @@ link_pid = {}
 for link_data in db_connection.db_link_list():
     proc_link = subprocess.Popen(['python3', './main_server_link.py', link_data[2]['IP'],
                                   str(link_data[2]['Port'])], stdout=subprocess.PIPE, shell=False)
-    common_global.es_inst.com_elastic_index('info', {'Link PID': proc_link.pid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'Link PID': proc_link.pid})
     link_pid[link_data[0]] = proc_link.pid
 
 # get current working directory from host maps
@@ -139,10 +146,12 @@ docker_inst.com_docker_run_device_scan(current_host_working_directory)
 # sleep for minute so hardware scan has time to run
 time.sleep(60)
 if os.path.exists('/mediakraken/devices/device_scan.txt'):
-    common_global.es_inst.com_elastic_index('info', {'hardware_device': 'file exists'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'hardware_device': 'file exists'})
     for hardware_device in common_file.com_file_load_data(
             file_name='/mediakraken/devices/device_scan.txt', as_pickle=True):
-        common_global.es_inst.com_elastic_index('info', {'hardware_device': hardware_device})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'hardware_device': hardware_device})
         if 'Chromecast' in hardware_device:
             db_connection.db_device_upsert(device_type='Chromecast',
                                            device_json=json.dumps(hardware_device))
@@ -163,7 +172,8 @@ if os.path.exists('/mediakraken/devices/device_scan.txt'):
                                            device_json=json.dumps(hardware_device))
     os.remove('/mediakraken/devices/device_scan.txt')
 else:
-    common_global.es_inst.com_elastic_index('error', {'no device_scan file found'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error',
+                                                         message_text={'no device_scan file found'})
 
 # commit
 db_connection.db_commit()

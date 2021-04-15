@@ -21,6 +21,8 @@ import random
 import re
 import string  # pylint: disable=W0402
 
+from common import common_logging_elasticsearch_httpx
+
 from . import common_global
 from . import common_network
 
@@ -52,11 +54,13 @@ def com_meta_calc_trailer_weight(trailer_file_list, title_name, title_year):
     return best_match, old_weight
 
 
-def com_meta_image_file_path(media_name, media_type):
+async def com_meta_image_file_path(media_name, media_type):
     """
     Determine file path of images
     """
-    common_global.es_inst.com_elastic_index('info', {"filename": media_name})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                               message_text={
+                                                                   "filename": media_name})
     pattern = r'[^\.a-zA-Z]'
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
@@ -78,11 +82,13 @@ def com_meta_image_file_path(media_name, media_type):
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
     # os.path.join should be adding the terminating slash
-    common_global.es_inst.com_elastic_index('info', {'file image path': file_path})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'file image path': file_path})
     return file_path
 
 
-def com_meta_image_path(media_name, media_type, source_link, source_file):
+async def com_meta_image_path(media_name, media_type, source_link, source_file):
     """
     determine image location
     media name - used to determine a-z dir
@@ -91,7 +97,7 @@ def com_meta_image_path(media_name, media_type, source_link, source_file):
     source_file - the "file name" on the url
     """
     url = ''
-    file_path = com_meta_image_file_path(media_name, media_type)
+    file_path = await com_meta_image_file_path(media_name, media_type)
     # determine url and such
     if source_link == 'themoviedb':
         url = 'https://image.tmdb.org/t/p/original/'

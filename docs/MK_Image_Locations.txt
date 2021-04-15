@@ -1,21 +1,82 @@
-https://www.flaticon.com/free-icon/books-stack-of-three_29302
-https://www.flaticon.com/free-icon/boat-anchor_94
-https://www.flaticon.com/free-icon/database_149748
+# image name and where they are from
+3D.png https://www.flaticon.com/free-icon/3d-glasses-for-cinema_49229
+add-button.png https://www.flaticon.com/free-icon/add-button_109789
+books.png https://www.flaticon.com/free-icon/books-stack-of-three_29302
+bricks-wall-and-demolition-ball.png https://www.flaticon.com/free-icon/bricks-wall-and-demolition-ball_46445
+browser
+circuit-board.png https://www.flaticon.com/free-icon/circuit-board_18019
+dislike-thumb
+earth.png https://www.flaticon.com/free-icon/earth_44386
+eye.png
+favorite-mark.png https://www.flaticon.com/free-icon/star_786331
+flickr
+headphone.png https://www.flaticon.com/free-icon/headphone-symbol_27130
+light-bulb
+lightbulb_off
+lightbulb_on
+listening-music-video-clip-with-auricular.png https://www.flaticon.com/free-icon/listening-music-video-clip-with-auricular_26489
+magnifyingl-glass
+Missing_icon - from user
+movie_ticket.png https://www.flaticon.com/free-icon/theater-ticket_12872
+movie-icon
+new.png https://www.flaticon.com/free-icon/new_628647
+person_missing
+photo
+pile-of-dung.png https://www.flaticon.com/free-icon/pile-of-dung_64552
+radio
+rectangles.png https://www.flaticon.com/free-icon/rectangles_98068
+settings.png https://www.flaticon.com/free-icon/settings-gears_60473
+stadium.png https://www.flaticon.com/free-icon/stadium_88961
+surveilance-cctv-symbol.png https://www.flaticon.com/free-icon/surveillance-cctv-symbol-in-rounded-triangle_36477
+television
+television_live https://www.flaticon.com/free-icon/journalist_21791
+thumbs-up.png https://www.flaticon.com/free-icon/like_1077095
+twitch https://www.flaticon.com/free-icon/twitch_160193
+vid_camera
+vid_game.png https://www.flaticon.com/free-icon/play-station-controller_75472
+viemo_icon_with_on_blue
+worker-of-construction-working-with-a-shovel-beside-material-pile.png https://www.flaticon.com/free-icon/worker-of-construction-working-with-a-shovel-beside-material-pile_46257
+youtube-logo.png https://www.flaticon.com/free-icon/youtube-logo_37922
+
+<div>Icons made by <a href="http://www.flaticon.com/authors/simpleicon" title="SimpleIcon">SimpleIcon</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Icons made by <a href="http://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Sync icon via <a href="http://www.VectorOpenStock.com" title="VectorOpenStock">VectorOpenStock</a> from <a href="http://www.VectorOpenStock.com" title="VectorOpenStock">www.VectorOpenStock.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Poo icon via <a href="http://www.fatcow.com/free-icons" title="fatcow">fatcow</a> from <a href="http://www.fatcow.com/free-icons" title="fatcow">www.fatcow.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/4.0/" title="Creative Commons BY 4.0" target="_blank">CC 4.0 BY</a></div>
+<div>Some icons by <a href="http://p.yusukekamiyamane.com/"> Yusuke Kamiyamane</a> licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Twitch Icon made by <a href="http://www.flaticon.com/authors/darius-dan" title="Darius Dan">Darius Dan</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>Icons made by <a href="http://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+<div>
+    <div>Icons made by <a href="http://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+    <div>Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+    <ul>
+        <li>Test Images:</li>
+        <li>* ASUNI N, GIACHETTI A, "TESTIMAGES: A Large Data Archive For Display and Algorithm Testing", Journal of Graphics Tools, Volume 17, Issue 4, 2015, pages 113-125, DOI:10.1080/2165347X.2015.1024298</li>
+        <li>* ASUNI N, GIACHETTI A, "TESTIMAGES: a large-scale archive for testing visual devices and basic image processing algorithms", STAG - Smart Tools & Apps for Graphics Conference, 2014</li>
+    </ul>
+
+
 https://www.flaticon.com/free-icon/hard-drive-with-an-arrow-pointing-down_30769
-https://www.flaticon.com/free-icon/big-anchor_85117
 https://www.flaticon.com/free-icon/list_138846
-https://www.flaticon.com/free-icon/link_455691
-https://www.flaticon.com/free-icon/play-station-controller_75472
-https://www.flaticon.com/free-icon/two-cogwheels-configuration-interface-symbol_44520
-https://www.flaticon.com/free-icon/world_52349
 https://www.flaticon.com/free-icon/black-back-closed-envelope-shape_37572
-https://www.flaticon.com/premium-icon/videocamera_1348469
 https://www.flaticon.com/free-icon/multiple-users-silhouette_33308
 https://www.flaticon.com/free-icon/emergency-exit_63739
-https://www.flaticon.com/free-icon/tv_1414181
 https://www.flaticon.com/free-icon/arrow-point-to-down_32209
-https://www.flaticon.com/free-icon/chromecast_668546
 https://www.flaticon.com/free-icon/folder_1333636
 https://www.flaticon.com/free-icon/edit_32355
 https://www.flaticon.com/free-icon/rubbish-bin_64022
 https://www.flaticon.com/free-icon/octopus_194247  16for favicon
+
+# potentials
+https://www.flaticon.com/free-icon/link_455691
+https://www.flaticon.com/free-icon/database_149748
+https://www.flaticon.com/free-icon/two-cogwheels-configuration-interface-symbol_44520
+
+16 -
+esrb ratings - image from google 1280px-ESRB_ratings.svg.png
+genre -
+genre_game -
+platforms -
+test_images -
+weather -

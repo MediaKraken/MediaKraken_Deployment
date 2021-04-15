@@ -1,8 +1,8 @@
 # Download base image
 FROM mediakraken/mkbaseffmpeg:dev
 
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the ripper app"
+LABEL author="Quinn D Granfor, spootdev@gmail.com"
+LABEL description="This image holds the ripper app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -12,11 +12,10 @@ RUN mkdir /mediakraken
 
 WORKDIR /mediakraken
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
-  abcde \
-  openjdk8-jre-base \
-  python3
+RUN apk add --no-cache \
+  abcde==2.9.3-r0 \
+  openjdk8-jre-base==8.275.01-r0 \
+  python3==3.8.8-r0
 
 # Copy the source files for the app
 COPY src /mediakraken

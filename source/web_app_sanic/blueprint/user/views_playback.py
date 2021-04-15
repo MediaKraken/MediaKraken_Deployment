@@ -10,11 +10,11 @@
 #     Display video playback page
 #     """
 #     # TODO will need start time/etc for resume function
-#     common_global.es_inst.com_elastic_index('info',
+#     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text=
 #                                             {"videojs": mtype, 'guid': guid, 'chapter': chapter,
 #                                              'audio': audio, 'sub': sub})
 #     # grab the guid from the comboindex
-#     media_path = await request.app.db_functions.db_media_path_by_uuid(db_connection, guid)
+#     media_path = await request.app.db_functions.db_media_path_by_uuid(guid, db_connection)
 #     # set ffpmeg options with the play_data
 #     atracks = '-map ' + audio
 #     if sub is not None:
@@ -24,7 +24,7 @@
 #     # fire up ffmpeg process
 #     if mtype == "hls":
 #         # must be done here so can send commands for the right stream
-#         target_uuid = str(uuid.uuid4())
+#         target_uuid = uuid.uuid4()
 #         vid_name = "./static/cache/" + target_uuid + ".m3u8"
 #
 #         # ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360
@@ -44,7 +44,7 @@
 #         # pass_guid = '//s3.amazonaws.com/_bc_dml/example-content/tears-of-steel/playlist.m3u8'
 #     else:
 #         pass_guid = guid
-#         common_global.es_inst.com_elastic_index('info', {"hls path": pass_guid})
+#         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {"hls path": pass_guid})
 #     return render_template("user/user_playback_videojs.html",
 #                            data_desc='Movie title',
 #                            data_guid=pass_guid,
@@ -57,11 +57,11 @@
 #     """
 #     Display actions page
 #     """
-#     common_global.es_inst.com_elastic_index('info', {'user_playback action': action,
+#     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'user_playback action': action,
 #                                                      'case user': user.id})
 #     # pull the media stats
-#     common_global.es_inst.com_elastic_index('info', {'args': request.args})
-#     common_global.es_inst.com_elastic_index('info', {'form': request.form})
+#     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'args': request.args})
+#     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info', message_text= {'form': request.form})
 #     request_id = request.form['id']
 #     audio_track = request.form['audio|%s' % request_id]
 #     subtitle_track = request.form['subtitle|%s' % request_id]
@@ -84,7 +84,7 @@
 #         common_network_pika.com_net_pika_send(
 #             {'Type': 'Playback', 'Subtype': 'Play', 'Device': device,
 #              'User': user.id,
-#              'Data': await request.app.db_functions.db_read_media(db_connection, guid)['mm_media_path'],
+#              'Data': await request.app.db_functions.db_read_media(guid, db_connection)['mm_media_path'],
 #              'Audio': audio_track,
 #              'Subtitle': subtitle_track,
 #              'Target': playback_device},

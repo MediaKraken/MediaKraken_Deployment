@@ -1,4 +1,5 @@
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_pagination_bootstrap
 from sanic import Blueprint
 
@@ -15,18 +16,22 @@ async def url_bp_user_metadata_music_album_list(request):
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
     media = []
     db_connection = await request.app.db_pool.acquire()
-    for album_data in await request.app.db_functions.db_meta_music_album_list(db_connection, offset,
+    for album_data in await request.app.db_functions.db_meta_music_album_list(offset,
                                                                               int(
                                                                                   request.ctx.session[
                                                                                       'per_page']),
                                                                               request.ctx.session[
-                                                                                  'search_text']):
-        common_global.es_inst.com_elastic_index('info', {'album_data': album_data,
-                                                         'id': album_data['mm_metadata_album_guid'],
-                                                         'name': album_data[
-                                                             'mm_metadata_album_name'],
-                                                         'json': album_data[
-                                                             'mm_metadata_album_json']})
+                                                                                  'search_text'],
+                                                                              db_connection=db_connection):
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             'album_data': album_data,
+                                                                             'id': album_data[
+                                                                                 'mm_metadata_album_guid'],
+                                                                             'name': album_data[
+                                                                                 'mm_metadata_album_name'],
+                                                                             'json': album_data[
+                                                                                 'mm_metadata_album_json']})
         if album_data['mmp_person_image'] is not None:
             if 'musicbrainz' in album_data['mm_metadata_album_image']['Images']:
                 try:
@@ -44,8 +49,8 @@ async def url_bp_user_metadata_music_album_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_music_album_list',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection,
-                                                                          'mm_metadata_album'),
+                                                                          table_name='mm_metadata_album',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
@@ -71,17 +76,18 @@ async def metadata_music_album_song_list(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_music_album_song_list',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection,
-                                                                          'mm_metadata_music'),
+                                                                          table_name='mm_metadata_music',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_meta_music_song_list(db_connection, offset,
+    media_data = await request.app.db_functions.db_meta_music_song_list(offset,
                                                                         int(request.ctx.session[
                                                                                 'per_page']),
                                                                         request.ctx.session[
-                                                                            'search_text'])
+                                                                            'search_text'],
+                                                                        db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,

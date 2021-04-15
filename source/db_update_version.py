@@ -16,20 +16,21 @@
   MA 02110-1301, USA.
 """
 
+import datetime
 import json
 
-import psycopg2.extras
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 
 dont_force_localhost = True
 
 if dont_force_localhost:
     # start logging
-    common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('db_update_version')
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='START',
+                                                         index_name='db_update_version')
     # open the database
-    option_config_json, db_connection = common_config_ini.com_config_read()
+    option_config_json, db_connection = common_config_ini.com_config_read(force_local=False)
 else:
     # open the database
     option_config_json, db_connection = common_config_ini.com_config_read(force_local=True)
@@ -61,7 +62,7 @@ else:
 # if db_connection.db_version_check() == 4:
 #     # add cron job
 #     db_connection.db_cron_insert('Trailer', 'Download new trailers', False, 'Days 1',
-#                                  psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+#                                  datetime.datetime(1970, 1, 1, 0, 0, 1),
 #                                  './subprogram_metadata_trailer_download.py')
 #     db_connection.db_version_update(5)
 #     db_connection.db_commit()
@@ -139,7 +140,7 @@ else:
 #          '/mediakraken/subprogram_subtitle_downloader.py',
 #          {'exchange_key': 'mkque_metadata_ex', 'route_key': 'Z', 'task': 'subtitle'}),
 #         ('The Movie Database', 'Grab updated movie metadata',
-#          '/mediakraken/subprogram_metadata_tmdb_updates.py',
+#          '/mediakraken/async_metadata_themoviedb_updates.py',
 #          {'exchange_key': 'mkque_metadata_ex', 'route_key': 'themoviedb', 'task': 'update'}),
 #         ('TheTVDB Update', 'Grab updated TheTVDB metadata',
 #          '/mediakraken/subprogram_metadata_thetvdb_updates.py',
@@ -290,7 +291,7 @@ else:
 if db_connection.db_version_check() < 23:
     # retro update
     db_connection.db_cron_insert('Retro game data', 'Grab updated metadata for retro game(s)',
-                                 False, 'Days 1', psycopg2.Timestamp(1970, 1, 1, 0, 0, 1),
+                                 False, 'Days 1', datetime.datetime(1970, 1, 1, 0, 0, 1),
                                  json.dumps({'exchange_key': 'mkque_ex', 'route_key': 'mkque',
                                              'Type': 'Cron Run',
                                              'program': '/mediakraken/subprogram_metadata_games.py'}),
@@ -370,5 +371,80 @@ if db_connection.db_version_check() < 29:
     db_connection.db_version_update(29)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 30:
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN mdq_new_uuid uuid;')
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN mdq_class_uuid uuid;')
+    db_connection.db_version_update(30)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 31:
+    db_connection.db_query('ALTER TABLE mm_review DROP COLUMN mm_review_metadata_id;')
+    db_connection.db_version_update(31)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 32:
+    db_connection.db_query('DROP TABLE mm_media_share;')
+    db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_share_guid;')
+    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_username text;')
+    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_password text;')
+    db_connection.db_version_update(32)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 33:
+    db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN mdq_class_uuid;')
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN mdq_class_uuid smallint;')
+    db_connection.db_version_update(33)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 34:
+    db_connection.db_query('ALTER TABLE mm_link ADD COLUMN mm_link_username text;')
+    db_connection.db_query('ALTER TABLE mm_link ADD COLUMN mm_link_password text;')
+    db_connection.db_version_update(34)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 35:
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_developer (mm_developer_id uuid'
+        ' CONSTRAINT mm_developer_id primary key,'
+        ' mm_developer_name text,'
+        ' mm_developer_json jsonb')
+    db_connection.db_query('CREATE INDEX mm_developer_name_idx'
+                           ' ON mm_developer(mm_developer_name)')
+    db_connection.db_query(
+        'create table IF NOT EXISTS mm_publisher (mm_publisher_id uuid'
+        ' CONSTRAINT mm_publisher_id primary key,'
+        ' mm_publisher_name text,'
+        ' mm_publisher_json jsonb')
+    db_connection.db_query('CREATE INDEX mm_publisher_name_idx'
+                           ' ON mm_publisher(mm_publisher_name)')
+    db_connection.db_version_update(35)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 36:
+    options_json, status_json = db_connection.db_opt_status_read()
+    options_json.update({'MAME': {'Version': 230}})
+    db_connection.db_opt_update(json.dumps(options_json))
+    db_connection.db_version_update(36)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 36:
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info'
+                           ' ADD COLUMN gi_game_info_blake3 text;')
+    db_connection.db_query('CREATE INDEX mm_metadata_game_software_info_sha1_idx'
+                           ' ON mm_metadata_game_software_info(gi_game_info_sha1)')
+    db_connection.db_query('CREATE INDEX mm_metadata_game_software_info_blake3_idx'
+                           ' ON mm_metadata_game_software_info(gi_game_info_blake3)')
+    db_connection.db_version_update(37)
+    db_connection.db_commit()
+
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+# TODO add the rename to cron program names
+
 # close the database
 db_connection.db_close()
+
+if dont_force_localhost:
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text='STOP')

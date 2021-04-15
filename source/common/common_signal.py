@@ -20,6 +20,8 @@ import os
 import signal
 import sys
 
+from common import common_logging_elasticsearch_httpx
+
 from . import common_global
 
 
@@ -27,7 +29,8 @@ def com_signal_receive(signum, frame):  # pylint: disable=W0613
     """
     Handle signal interrupt
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'Application: Received USR1'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'stuff': 'Application: Received USR1'})
     if common_global.pid_dict is not None:
         # term all running pids
         for pid_data in common_global.pid_dict:

@@ -19,24 +19,25 @@
 import os
 import subprocess
 
-from build_image_directory import build_image_dirs
-from build_trailer_directory import build_trailer_dirs
+from common import common_file
 from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_metadata_limiter
 from common import common_network
 from common import common_signal
 
 # build image directories if needed
 if not os.path.isdir(common_global.static_data_directory + '/meta/images/backdrop/a'):
-    build_image_dirs()
+    common_file.com_file_build_image_dirs()
 
 # build trailer directories if needed
 if not os.path.isdir(common_global.static_data_directory + '/meta/trailers/trailer/a'):
-    build_trailer_dirs()
+    common_file.com_file_build_trailer_dirs()
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('main_metadata_api')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START',
+                                                     index_name='main_server_metadata_api')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -47,7 +48,8 @@ common_network.mk_network_service_available('mkstack_rabbitmq', '5672')
 
 # fire up the workers for each provider
 for meta_provider in list(common_metadata_limiter.API_LIMIT.keys()):
-    common_global.es_inst.com_elastic_index('info', {'meta_provider': meta_provider})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'meta_provider': meta_provider})
     proc_api_fetch = subprocess.Popen(['python3', './main_server_metadata_api_worker.py',
                                        meta_provider], stdout=subprocess.PIPE, shell=False)
 # this will only catch the first data providers

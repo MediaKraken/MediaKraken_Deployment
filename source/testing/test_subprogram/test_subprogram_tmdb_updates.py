@@ -18,7 +18,7 @@
 
 import subprocess
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 class TestSubprogramTMDBUpdates:
@@ -31,6 +31,7 @@ class TestSubprogramTMDBUpdates:
         Test function
         """
         proc_info = subprocess.Popen(
-            ['python3', './subprogram_metadata_tmdb_updates.py'], shell=False)
-        common_global.es_inst.com_elastic_index('info', {'stuff': "PID: %s" % proc_info.pid})
+            ['python3', './async_metadata_themoviedb_updates.py'], shell=False)
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': "PID: %s" % proc_info.pid})
         proc_info.wait()

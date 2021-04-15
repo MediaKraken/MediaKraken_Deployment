@@ -17,7 +17,6 @@ from .bp_admin_messages import blueprint_admin_messages
 from .bp_admin_periodical import blueprint_admin_periodical
 from .bp_admin_report import blueprint_admin_report
 from .bp_admin_settings import blueprint_admin_settings
-from .bp_admin_share import blueprint_admin_share
 from .bp_admin_transmission import blueprint_admin_transmission
 from .bp_admin_users import blueprint_admin_users
 
@@ -38,7 +37,6 @@ blueprint_admin_content = Blueprint.group(blueprint_admin,
                                           blueprint_admin_periodical,
                                           blueprint_admin_report,
                                           blueprint_admin_settings,
-                                          blueprint_admin_share,
                                           blueprint_admin_transmission,
                                           blueprint_admin_users,
                                           )

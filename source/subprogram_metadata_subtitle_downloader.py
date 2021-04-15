@@ -21,10 +21,9 @@ import shlex
 import subprocess
 import sys
 
-from common import common_file
 from common import common_config_ini
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_file
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 from common import common_system
 
@@ -34,8 +33,9 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_metadata_subtitle_downloader')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START',
+                                                     index_name='subprogram_metadata_subtitle_downloader')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -53,8 +53,9 @@ for lib_row in db_connection.db_library_paths():
     for media_row in common_file.com_file_dir_list(lib_row['mm_media_dir_path'],
                                                    ('avi', 'mkv', 'mp4', 'm4v'), True):
         # run the subliminal fetch for episode
-        common_global.es_inst.com_elastic_index('info', {'title check': media_row.rsplit(
-            '.', 1)[0] + "." + sub_lang + ".srt"})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'title check': media_row.rsplit(
+                '.', 1)[0] + "." + sub_lang + ".srt"})
         # not os.path.exists(media_row.rsplit('.',1)[0] + ".en.srt")
         # and not os.path.exists(media_row.rsplit('.',1)[0] + ".eng.srt")
         if not os.path.exists(media_row.rsplit('.', 1)[0] + "." + sub_lang + ".srt"):
@@ -64,8 +65,9 @@ for lib_row in db_connection.db_library_paths():
             file_handle = subprocess.Popen(shlex.split(
                 "subliminal -l " + sub_lang + " -- \"" + media_row + "\""),
                 stdout=subprocess.PIPE, shell=False)
-            cmd_output = file_handle.read()
-            common_global.es_inst.com_elastic_index('info', {'Download Status': cmd_output})
+            cmd_output = file_handle.communicate()[0]
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                'Download Status': cmd_output})
 
 # TODO put in the notifications
 print(('Total subtitle download attempts: %s' % total_download_attempts), flush=True)

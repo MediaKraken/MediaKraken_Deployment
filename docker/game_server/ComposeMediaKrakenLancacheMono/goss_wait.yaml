@@ -1,8 +1,0 @@
-process:
-  supervisord:
-    running: true
-  nginx:
-    running: true
-port:
-  tcp:80:
-    listening: true

@@ -7,7 +7,7 @@ blueprint_user_metadata_game_system = Blueprint('name_blueprint_user_metadata_ga
 
 
 @blueprint_user_metadata_game_system.route('/user_meta_game_system', methods=['GET', 'POST'])
-@common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_game_systems.html')
+@common_global.jinja_template.template('bss_user/metadata/bss_user_metadata_game_system.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_game_system(request):
     """
@@ -19,16 +19,17 @@ async def url_bp_user_metadata_game_system(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/user/user_meta_game',
                                                                       item_count=await request.app.db_functions.db_meta_game_system_list_count(
-                                                                          db_connection),
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_data = await request.app.db_functions.db_meta_game_system_list(db_connection, offset,
+    media_data = await request.app.db_functions.db_meta_game_system_list(offset,
                                                                          int(request.ctx.session[
                                                                                  'per_page']),
                                                                          request.ctx.session[
-                                                                             'search_text'])
+                                                                             'search_text'],
+                                                                         db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media': media_data,
@@ -38,14 +39,15 @@ async def url_bp_user_metadata_game_system(request):
 
 @blueprint_user_metadata_game_system.route('/user_meta_game_system_detail/<guid>')
 @common_global.jinja_template.template(
-    'bss_user/metadata/bss_user_metadata_game_systems_detail.html')
+    'bss_user/metadata/bss_user_metadata_game_system_detail.html')
 @common_global.auth.login_required
 async def url_bp_user_metadata_game_system_detail(request, guid):
     """
     Display metadata game detail
     """
     db_connection = await request.app.db_pool.acquire()
-    media_data = await request.app.db_functions.db_meta_game_system_by_guid(db_connection, guid)
+    media_data = await request.app.db_functions.db_meta_game_system_by_guid(guid,
+                                                                            db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'guid': guid,

@@ -45,7 +45,7 @@ def db_tv_station_insert(self, station_id, channel_id):
     # insert station/channel unless it exists
     """
     if self.db_tv_station_exist(station_id, channel_id) == 0:
-        new_guid = str(uuid.uuid4())
+        new_guid = uuid.uuid4()
         self.db_cursor.execute('insert into mm_tv_stations (mm_tv_stations_id,'
                                ' mm_tv_station_id,'
                                ' mm_tv_station_channel)'
@@ -59,9 +59,10 @@ def db_tv_station_exist(self, station_id, channel_id):
     """
     # channel exist check
     """
-    self.db_cursor.execute('select count(*) from mm_tv_stations'
+    self.db_cursor.execute('select exists(select 1 from mm_tv_stations'
                            ' where mm_tv_station_id = %s'
-                           ' and mm_tv_station_channel = %s', (station_id, channel_id))
+                           ' and mm_tv_station_channel = %s limit 1) limit 1',
+                           (station_id, channel_id))
     return self.db_cursor.fetchone()[0]
 
 
@@ -83,6 +84,7 @@ def db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
     self.db_cursor.execute('select count(*) from mm_tv_schedule'
                            ' where mm_tv_schedule_station_id = %s and mm_tv_schedule_date = %s',
                            (station_id, schedule_date))
+    # TODO change to upsert
     if self.db_cursor.fetchone()[0] > 0:
         self.db_cursor.execute('update mm_tv_schedule set mm_tv_schedule_json = %s'
                                ' where mm_tv_schedule_station_id = %s'
@@ -90,7 +92,7 @@ def db_tv_schedule_insert(self, station_id, schedule_date, schedule_json):
                                (schedule_json, station_id, schedule_date))
         self.db_commit()
     else:
-        new_guid = str(uuid.uuid4())
+        new_guid = uuid.uuid4()
         self.db_cursor.execute('insert into mm_tv_schedule (mm_tv_schedule_id,'
                                ' mm_tv_schedule_station_id,'
                                ' mm_tv_schedule_date,'
@@ -107,6 +109,7 @@ def db_tv_program_insert(self, program_id, program_json):
     """
     self.db_cursor.execute('select count(*) from mm_tv_schedule_program'
                            ' where mm_tv_schedule_program_id = %s', (program_id,))
+    # TODO change to upsert
     if self.db_cursor.fetchone()[0] > 0:
         self.db_cursor.execute('update mm_tv_schedule_program'
                                ' set mm_tv_schedule_program_json = %s'
@@ -114,7 +117,7 @@ def db_tv_program_insert(self, program_id, program_json):
                                (program_json, program_id))
         self.db_commit()
     else:
-        new_guid = str(uuid.uuid4())
+        new_guid = uuid.uuid4()
         self.db_cursor.execute('insert into mm_tv_schedule_program'
                                ' (mm_tv_schedule_program_guid,'
                                ' mm_tv_schedule_program_id,'

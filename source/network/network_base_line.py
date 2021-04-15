@@ -22,6 +22,7 @@ import uuid
 
 from common import common_docker
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_network
 from twisted.protocols import basic
 
@@ -57,7 +58,8 @@ class NetworkEvents(basic.LineReceiver):
         Network connection made from client so ask for ident
         """
         ip_addr, port = self.transport.client
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Got Connection', 'ip': ip_addr})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': 'Got Connection', 'ip': ip_addr})
         self.sendLine(json.dumps({'Type': 'Ident'}).encode("utf8"))
 
     def connectionLost(self, reason):
@@ -65,8 +67,9 @@ class NetworkEvents(basic.LineReceiver):
         Network connection dropped so remove client
         """
         ip_addr, port = self.transport.client
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'Lost Connection',
-                                                         'ip': ip_addr})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'stuff': 'Lost Connection',
+            'ip': ip_addr})
         for user_device_uuid, protocol in self.users.items():
             if self.users[user_device_uuid].user_ip_addy == ip_addr:
                 del self.users[user_device_uuid]
@@ -78,7 +81,8 @@ class NetworkEvents(basic.LineReceiver):
         """
         msg = None
         json_message = json.loads(data.decode())
-        common_global.es_inst.com_elastic_index('info', {'Message': json_message})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'Message': json_message})
 
         if json_message['Type'] == "CPU Usage":
             self.user_cpu_usage[self.user_ip_addy] = json_message['Data']
@@ -120,8 +124,9 @@ class NetworkEvents(basic.LineReceiver):
             self.user_country_code = country_data['country_code']
             self.user_country_name = country_data['country_name']
             self.users[self.user_device_uuid] = self
-            common_global.es_inst.com_elastic_index('info', {"user": self.user_device_uuid,
-                                                             'ip': self.user_ip_addy})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+                "user": self.user_device_uuid,
+                'ip': self.user_ip_addy})
             if self.user_user_name == 'Link':
                 pass
             else:
@@ -160,8 +165,10 @@ class NetworkEvents(basic.LineReceiver):
                 image_json, metadata_id \
                     = self.db_connection.db_meta_tvshow_image_random(json_message['Image Type'])
             if metadata_id is not None and image_json is not None:
-                common_global.es_inst.com_elastic_index('info', {"metadata_id": metadata_id,
-                                                                 "image_json": image_json})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "metadata_id": metadata_id,
+                                                                         "image_json": image_json})
                 image_handle = open(image_json, "rb")
                 image_data = image_handle.read()
                 image_data = base64.b64encode(image_data).decode('ascii')
@@ -216,7 +223,7 @@ class NetworkEvents(basic.LineReceiver):
                     if json_message['Target'] == client[1]:
                         # to address the 30 char name limit for container
                         name_container = ((json_message['User'] + '_'
-                                           + str(uuid.uuid4()).replace('-', ''))[:30])
+                                           + uuid.uuid4().replace('-', ''))[:30])
                         cast_docker_inst = common_docker.CommonDocker()
                         cast_docker_inst.com_docker_run_slave(hwaccel=False,
                                                               name_container=name_container,
@@ -231,7 +238,9 @@ class NetworkEvents(basic.LineReceiver):
                 self.send_all_users(json_message)
             else:
                 media_path = self.db_connection.db_media_path_by_uuid(json_message['UUID'])
-                common_global.es_inst.com_elastic_index('info', {"media_path": media_path})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "media_path": media_path})
                 if media_path is not None:
                     if json_message['Subtype'] == 'Client':
                         self.send_single_ip(
@@ -242,11 +251,11 @@ class NetworkEvents(basic.LineReceiver):
             self.send_all_users(json_message['Data'])
 
         else:
-            common_global.es_inst.com_elastic_index('error', {"UNKNOWN TYPE": json_message['Type']})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='error', message_text={"UNKNOWN TYPE": json_message['Type']})
             msg = "UNKNOWN_TYPE"
         if msg is not None:
-            common_global.es_inst.com_elastic_index('info',
-                                                    {"should be sending data len": len(msg)})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
+            {"should be sending data len": len(msg)})
             self.sendLine(msg.encode("utf8"))
 
     def send_single_ip(self, message, ip_addr):
@@ -254,13 +263,15 @@ class NetworkEvents(basic.LineReceiver):
         Send message to ip addr
         """
         for user_device_uuid, protocol in self.users.items():
-            common_global.es_inst.com_elastic_index('info',
-                                                    {"user_ip_addy": self.users[
-                                                        user_device_uuid].user_ip_addy,
-                                                     'ip': ip_addr})
+            common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
+            {"user_ip_addy": self.users[
+                user_device_uuid].user_ip_addy,
+             'ip': ip_addr})
             if self.users[user_device_uuid].user_ip_addy == ip_addr:
-                common_global.es_inst.com_elastic_index('info', {'send ip': ip_addr,
-                                                                 'message': message})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'send ip': ip_addr,
+                                                                         'message': message})
                 protocol.sendLine(message.encode("utf8"))
                 break
 
@@ -270,7 +281,9 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.items():  # pylint: disable=W0612
             if protocol == self:
-                common_global.es_inst.com_elastic_index('info', {'send single': message})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'send single': message})
                 protocol.sendLine(message.encode("utf8"))
                 break
 
@@ -280,7 +293,9 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.items():
             if self.users[user_device_uuid].user_verified == 1:
-                common_global.es_inst.com_elastic_index('info', {'send all': message})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'send all': message})
                 protocol.sendLine(message.encode("utf8"))
 
     def send_all_links(self, message):
@@ -289,5 +304,7 @@ class NetworkEvents(basic.LineReceiver):
         """
         for user_device_uuid, protocol in self.users.items():
             if self.users[user_device_uuid].user_link:
-                common_global.es_inst.com_elastic_index('info', {'send all links': message})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         'send all links': message})
                 protocol.sendLine(message.encode("utf8"))

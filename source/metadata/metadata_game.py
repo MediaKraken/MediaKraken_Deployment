@@ -16,47 +16,70 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
-def game_system_update():
-    data = common_global.api_instance.com_meta_gamesdb_platform_list()[
+async def game_system_update():
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
+    data = await common_global.api_instance.com_meta_gamesdb_platform_list()[
         'Data']['Platforms']['Platform']
     print((type(data)), flush=True)
     print(data, flush=True)
     for game_system in data:
         print(game_system, flush=True)
         game_sys_detail = \
-            common_global.api_instance.com_meta_gamesdb_platform_by_id(game_system['id'])['Data'][
-                'Platform']
+            await \
+                common_global.api_instance.com_meta_gamesdb_platform_by_id(game_system['id'])[
+                    'Data'][
+                    'Platform']
         print((type(game_sys_detail)), flush=True)
         print(game_sys_detail, flush=True)
         break
 
 
-def metadata_game_lookup(db_connection, download_data):
+async def metadata_game_lookup(db_connection, download_data):
     """
     Lookup game metadata
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     metadata_uuid = None  # so not found checks verify later
-    common_global.es_inst.com_elastic_index('info', {'game filename': download_data['Path']})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'game filename':
+                                                                             download_data['Path']})
     # TODO determine short name/etc
-    for row_data in db_connection.db_meta_game_by_name(download_data['Path']):
+    for row_data in await db_connection.db_meta_game_by_name(download_data['Path']):
         # TODO handle more than one match
         metadata_uuid = row_data['gi_id']
         break
-    common_global.es_inst.com_elastic_index('info', {"meta game metadata_uuid B": metadata_uuid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta game metadata_uuid B": metadata_uuid})
     if metadata_uuid is None:
         # no matches by name
         # search giantbomb since not matched above via DB or nfo/xml
-        download_data.update({'Status': 'Search'})
+        await download_data.update({'Status': 'Search'})
         # save the updated status
-        db_connection.db_begin()
-        db_connection.db_download_update(json.dumps(download_data),
-                                         download_data['mdq_id'])
+        await db_connection.db_begin()
+        await db_connection.db_download_update(json.dumps(download_data),
+                                               download_data['mdq_id'])
         # set provider last so it's not picked up by the wrong thread
-        db_connection.db_download_update_provider('giantbomb', download_data['mdq_id'])
-        db_connection.db_commit()
+        await db_connection.db_download_update_provider('giantbomb', download_data['mdq_id'])
+        await db_connection.db_commit()
     return metadata_uuid

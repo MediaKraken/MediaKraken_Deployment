@@ -29,7 +29,6 @@
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_report.url_bp_admin_report') }}"><i class="fas fa-clipboard-list"></i><span>Reports</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_settings.url_bp_admin_settings') }}"><i class="fas fa-cogs"></i><span>Server</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_link.url_bp_admin_server_link') }}"><i class="fas fa-link"></i><span>Server Links</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_share.url_bp_admin_share') }}"><i class="fas fa-share"></i><span>Shares (UNC/SMB/NFS)</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_transmission.url_bp_admin_transmission') }}"><i class="fas fa-bolt"></i><span>Transmission</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_users.url_bp_admin_user') }}"><i class="fas fa-user-alt"></i><span>Users</span></a>
                     </li>
@@ -41,6 +40,7 @@
                 <div class="container-fluid">
                     <div class="card shadow">
                         <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold"><strong>PostgreSQL Version: {{data_db_version}}</strong></p>
                             <p class="text-primary m-0 font-weight-bold"><strong>Parallel Workers: {{data_workers}}</strong></p>
                         </div>
                         <div class="card-body">

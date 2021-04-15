@@ -1,5 +1,5 @@
 from sanic_wtf import SanicForm
-from wtforms import TextField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
@@ -7,10 +7,10 @@ class BSSUserEditForm(SanicForm):
     """
     for editing user
     """
-    username = TextField('Username',
-                         validators=[DataRequired(), Length(min=3, max=25)])
-    email = TextField('Email',
-                      validators=[DataRequired(), Email(), Length(min=6, max=40)])
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=3, max=25)])
+    email = StringField('Email',
+                        validators=[DataRequired(), Email(), Length(min=6, max=40)])
     password = PasswordField('Password',
                              validators=[DataRequired(), Length(min=6, max=40)])
     confirm = PasswordField('Verify password',

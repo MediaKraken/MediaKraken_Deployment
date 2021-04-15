@@ -18,7 +18,7 @@
 
 import datetime
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def db_media_sports_random(self):
@@ -42,7 +42,7 @@ def db_media_sports_count_by_genre(self, class_guid):
     # movie count by genre
     """
     self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_sports_json->\'Meta\''
-                           '->\'themoviedb\'->\'Meta\'->\'genres\')::jsonb as gen,'
+                           '->\'themoviedb\'->\'Meta\'->\'genres\')b as gen,'
                            ' count(mm_metadata_sports_json->\'Meta\''
                            '->\'themoviedb\'->\'Meta\'->\'genres\')'
                            ' from ((select distinct on (mm_media_metadata_guid)'
@@ -66,9 +66,11 @@ def db_media_sports_list_count(self, class_guid, list_type=None, list_genre='All
     """
     # web media count
     """
-    common_global.es_inst.com_elastic_index('info', {"classuid counter":
-                                                         class_guid, 'type': list_type,
-                                                     'genre': list_genre})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"classuid counter":
+                                                                           class_guid,
+                                                                       'type': list_type,
+                                                                       'genre': list_genre})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -210,12 +212,17 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
     """
     # web media return
     """
-    common_global.es_inst.com_elastic_index('info', {"classuid": class_guid, 'type': list_type,
-                                                     'genre':
-                                                         list_genre})
-    common_global.es_inst.com_elastic_index('info', {"group and remote": group_collection,
-                                                     'remote': include_remote})
-    common_global.es_inst.com_elastic_index('info', {"list, offset": list_limit, 'offset': offset})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"classuid": class_guid,
+                                                                       'type': list_type,
+                                                                       'genre':
+                                                                           list_genre})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        "group and remote": group_collection,
+        'remote': include_remote})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"list, offset": list_limit,
+                                                                       'offset': offset})
     # messageWords[0]=="movie" or messageWords[0]=='in_progress' or messageWords[0]=='video':
     if list_genre == 'All':
         if list_type == "recent_addition":
@@ -392,7 +399,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and (mm_metadata_sports_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
-                                               ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
+                                               ' mm_metadata_collection_guid as guid, nullb as metajson,'
                                                ' mm_media_path as mediapath'
                                                ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name)',
@@ -409,7 +416,7 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                ' and mm_media_metadata_guid = mm_metadata_sports_guid'
                                                ' and (mm_metadata_sports_json->>\'belongs_to_collection\') is null'
                                                ' union select mm_metadata_collection_name as name,'
-                                               ' mm_metadata_collection_guid as guid, null::jsonb as metajson,'
+                                               ' mm_metadata_collection_guid as guid, nullb as metajson,'
                                                ' mm_media_path as mediapath'
                                                ' from mm_metadata_collection) as temp'
                                                ' order by LOWER(name) offset %s limit %s',
@@ -429,8 +436,8 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                # TODO put back in
                                                #                        ' union select mm_metadata_collection_name as name,'
                                                #                        ' mm_metadata_collection_guid as guid,'
-                                               #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
-                                               #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
+                                               #                        ' nullb as mediajson, nullb as metajson,'
+                                               #                        ' nullb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
                                                ') as temp'
                                                ' order by LOWER(name)',
@@ -449,8 +456,8 @@ def db_media_sports_list(self, class_guid, offset=None, list_limit=0, search_tex
                                                # TODO put back in
                                                #                        ' union select mm_metadata_collection_name as name,'
                                                #                        ' mm_metadata_collection_guid as guid,'
-                                               #                        ' null::jsonb as mediajson, null::jsonb as metajson,'
-                                               #                        ' null::jsonb as metaimagejson, mm_media_path as mediapath'
+                                               #                        ' nullb as mediajson, nullb as metajson,'
+                                               #                        ' nullb as metaimagejson, mm_media_path as mediapath'
                                                #                        ' from mm_metadata_collection'
                                                ') as temp'
                                                ' order by LOWER(name) offset %s limit %s',
@@ -670,7 +677,9 @@ def db_read_media_sports_list_by_uuid(self, media_guid):
         subtitle_streams = ['None']
         if 'streams' in file_data['FFprobe'] and file_data['FFprobe']['streams'] is not None:
             for stream_info in file_data['FFprobe']['streams']:
-                common_global.es_inst.com_elastic_index('info', {"info": stream_info})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "info": stream_info})
                 stream_language = ''
                 stream_title = ''
                 stream_codec = ''
@@ -689,10 +698,14 @@ def db_read_media_sports_list_by_uuid(self, media_guid):
                 except:
                     pass
                 if stream_info['codec_type'] == 'audio':
-                    common_global.es_inst.com_elastic_index('info', {'stuff': 'audio'})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                         message_text={
+                                                                             'stuff': 'audio'})
                     audio_streams.append((stream_codec + stream_language
                                           + stream_title)[:-3])
                 elif stream_info['codec_type'] == 'subtitle':
                     subtitle_streams.append(stream_language)
-                    common_global.es_inst.com_elastic_index('info', {'stuff': 'subtitle'})
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                         message_text={
+                                                                             'stuff': 'subtitle'})
     return video_data

@@ -34,7 +34,8 @@ def com_pagination_boot_html(page, url, item_count=0,
     """
     # if everything fits on one page, don't paginate.
     if item_count < client_items_per_page:
-        return '', 0
+        return None
+        # return '', 0
     # start pagination calculations
     pages = math.ceil(item_count / client_items_per_page)
     pagination_links = '<ul class="pagination">'

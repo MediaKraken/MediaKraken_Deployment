@@ -1,43 +1,95 @@
-async def db_meta_sports_guid_by_thesportsdb(self, db_connection, thesports_uuid):
+import inspect
+
+from common import common_logging_elasticsearch_httpx
+
+
+async def db_meta_sports_guid_by_thesportsdb(self, thesports_uuid, db_connection=None):
     """
     # metadata guid by thesportsdb id
     """
-    return await db_connection.fetchval('select mm_metadata_sports_guid'
-                                        ' from mm_metadata_sports'
-                                        ' where mm_metadata_media_sports_id->\'thesportsdb\' ? $1',
-                                        thesports_uuid)
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
+    else:
+        db_conn = db_connection
+    return await db_conn.fetchval('select mm_metadata_sports_guid'
+                                  ' from mm_metadata_sports'
+                                  ' where mm_metadata_media_sports_id->\'thesportsdb\''
+                                  ' ? $1',
+                                  thesports_uuid)
 
 
-async def db_meta_sports_list(self, db_connection, offset=0, records=None, search_value=None):
+async def db_meta_sports_list(self, offset=0, records=None, search_value=None, db_connection=None):
     """
     # return list of sporting events
     # TODO order by year
     """
-    if search_value is not None:
-        return await db_connection.fetch('select mm_metadata_sports_guid,'
-                                         ' mm_metadata_sports_name'
-                                         ' from mm_metadata_sports'
-                                         ' where mm_metadata_sports_guid'
-                                         ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                                         ' where mm_metadata_sports_name % $1'
-                                         ' order by LOWER(mm_metadata_sports_name) offset $2 limit $3)'
-                                         ' order by LOWER(mm_metadata_sports_name)',
-                                         search_value, offset, records)
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
     else:
-        return await db_connection.fetch('select mm_metadata_sports_guid, mm_metadata_sports_name'
-                                         ' from mm_metadata_sports where mm_metadata_sports_guid'
-                                         ' in (select mm_metadata_sports_guid from mm_metadata_sports'
-                                         ' order by LOWER(mm_metadata_sports_name) offset $1 limit $2)'
-                                         ' order by LOWER(mm_metadata_sports_name)',
-                                         offset, records)
+        db_conn = db_connection
+    if search_value is not None:
+        return await db_conn.fetch('select mm_metadata_sports_guid,'
+                                   ' mm_metadata_sports_name'
+                                   ' from mm_metadata_sports'
+                                   ' where mm_metadata_sports_guid'
+                                   ' in (select mm_metadata_sports_guid'
+                                   ' from mm_metadata_sports'
+                                   ' where mm_metadata_sports_name % $1'
+                                   ' order by LOWER(mm_metadata_sports_name)'
+                                   ' offset $2 limit $3)'
+                                   ' order by LOWER(mm_metadata_sports_name)',
+                                   search_value, offset, records)
+    else:
+        return await db_conn.fetch('select mm_metadata_sports_guid,'
+                                   ' mm_metadata_sports_name'
+                                   ' from mm_metadata_sports'
+                                   ' where mm_metadata_sports_guid'
+                                   ' in (select mm_metadata_sports_guid'
+                                   ' from mm_metadata_sports'
+                                   ' order by LOWER(mm_metadata_sports_name)'
+                                   ' offset $1 limit $2)'
+                                   ' order by LOWER(mm_metadata_sports_name)',
+                                   offset, records)
 
 
-async def db_meta_sports_list_count(self, db_connection, search_value=None):
+async def db_meta_sports_list_count(self, search_value=None, db_connection=None):
     """
     Count sport events
     """
-    if search_value is not None:
-        return await db_connection.fetchval('select count(*) from mm_metadata_sports'
-                                            ' where mm_metadata_sports_name % $1', search_value)
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    if db_connection is None:
+        db_conn = self.db_connection
     else:
-        return await db_connection.fetchval('select count(*) from mm_metadata_sports')
+        db_conn = db_connection
+    if search_value is not None:
+        return await db_conn.fetchval('select count(*) from mm_metadata_sports'
+                                      ' where mm_metadata_sports_name % $1',
+                                      search_value)
+    else:
+        return await db_conn.fetchval('select count(*) from mm_metadata_sports')

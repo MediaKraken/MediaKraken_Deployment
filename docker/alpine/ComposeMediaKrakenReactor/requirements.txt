@@ -1,8 +1,8 @@
 service_identity==18.1.0
-pyopenssl==19.0.0
-ldap3==2.6
-pycountry==18.12.8
-twisted==20.3.0
-pika==1.1.0
-docker==4.1.0
-pysmb==1.1.27
+pyopenssl==20.0.1
+ldap3==2.9
+pycountry==20.7.3
+twisted==21.2.0
+pika==1.2.0
+docker==5.0.0
+pysmb==1.2.6

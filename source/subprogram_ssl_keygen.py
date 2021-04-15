@@ -21,7 +21,7 @@ import subprocess
 
 # generate key
 PROC = subprocess.Popen(['openssl', 'req', '-x509', '-nodes', '-newkey', 'rsa:2048',
-                         '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '1000',
+                         '-keyout', 'privkey.pem', '-out', 'cacert.pem', '-days', '3650',
                          '-subj', '/C=US/ST=ND/L=./CN=www.mediakraken.org'],
                         stdout=subprocess.PIPE, shell=False)
 PROC.wait()  # have to do here so the move has something to move

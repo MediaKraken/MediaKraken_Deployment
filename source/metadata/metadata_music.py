@@ -16,9 +16,10 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 # example ffprobe output for music file
@@ -34,43 +35,53 @@ from common import common_global
 #  "codec_long_name": "FLAC (Free Lossless Audio Codec)", "codec_time_base": "1/44100", "codec_tag_string": "[0][0][0][0]",
 #  "bits_per_raw_sample": "16"}], "chapters": []}
 
-def metadata_music_lookup(db_connection, download_json):
+async def metadata_music_lookup(db_connection, download_json):
     """
     Music lookup
     """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][3]})
     # don't bother checking title/year as the main_server_metadata_api_worker does it already
     if not hasattr(metadata_music_lookup, "metadata_last_id"):
         # it doesn't exist yet, so initialize it
         metadata_music_lookup.metadata_last_id = None
-    common_global.es_inst.com_elastic_index('info', {"meta music lookup": download_json})
     metadata_uuid = None
     # get ffmpeg data from database
-    ffmpeg_data_json = db_connection.db_ffprobe_data(download_json['MediaID'])
-    common_global.es_inst.com_elastic_index('info', {"meta music ffmpeg": ffmpeg_data_json})
+    ffmpeg_data_json = await db_connection.db_ffprobe_data(download_json['MediaID'])
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta music ffmpeg": ffmpeg_data_json})
     # see if record is stored locally as long as there is valid tagging
     if 'format' in ffmpeg_data_json \
             and 'tags' in ffmpeg_data_json['format'] \
             and 'ARTIST' in ffmpeg_data_json['format']['tags'] \
             and 'ALBUM' in ffmpeg_data_json['format']['tags'] \
             and 'TITLE' in ffmpeg_data_json['format']['tags']:
-        db_result = db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
+        db_result = await db_connection.db_music_lookup(ffmpeg_data_json['format']['tags']['ARTIST'],
                                                   ffmpeg_data_json['format']['tags']['ALBUM'],
                                                   ffmpeg_data_json['format']['tags']['TITLE'])
         if db_result is not None:
             metadata_uuid = db_result['mm_metadata_music_guid']
     if metadata_uuid is None:
-        metadata_uuid = download_json['MetaNewID']
+        metadata_uuid = download_json['mdq_new_uuid']
         # no matches on local database
         # search musicbrainz since not matched above via DB
         download_json.update({'Status': 'Search'})
         # save the updated status
-        db_connection.db_begin()
-        db_connection.db_download_update(json.dumps(download_json),
+        await db_connection.db_begin()
+        await db_connection.db_download_update(json.dumps(download_json),
                                          download_json['mdq_id'])
         # set provider last so it's not picked up by the wrong thread
-        db_connection.db_download_update_provider('musicbrainz', download_json['mdq_id'])
-        db_connection.db_commit()
-    common_global.es_inst.com_elastic_index('info',
-                                            {"metadata_music_lookup return uuid": metadata_uuid})
+        await db_connection.db_download_update_provider('musicbrainz', download_json['mdq_id'])
+        await db_connection.db_commit()
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text=
+                                                                     {
+                                                                         "metadata_music_lookup return uuid": metadata_uuid})
     metadata_music_lookup.metadata_last_id = metadata_uuid
     return metadata_uuid

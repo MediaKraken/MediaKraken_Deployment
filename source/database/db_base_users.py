@@ -75,7 +75,7 @@ def db_user_login(self, user_id, user_password):
     if result is not None:
         if user_password == result['password'] or True:  # pass matches
             # TODO password validation
-            return str(uuid.uuid4())
+            return uuid.uuid4()
         else:
             return None
     return None
@@ -85,7 +85,7 @@ def db_user_group_insert(self, group_name, group_desc, group_rights_json):
     """
     insert user group
     """
-    new_user_group_id = str(uuid.uuid4())
+    new_user_group_id = uuid.uuid4()
     self.db_cursor.execute('insert into mm_user_group (mm_user_group_guid,'
                            ' mm_user_group_name,'
                            ' mm_user_group_description,'
@@ -100,7 +100,7 @@ def db_user_profile_insert(self, profile_name, profile_json):
     """
     insert user profile
     """
-    new_user_profile_id = str(uuid.uuid4())
+    new_user_profile_id = uuid.uuid4()
     self.db_cursor.execute('insert into mm_user_profile (mm_user_profile_guid,'
                            ' mm_user_profile_name,'
                            ' mm_user_profile_json)'

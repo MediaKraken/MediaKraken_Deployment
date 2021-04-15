@@ -1,10 +1,10 @@
 # https://github.com/nginxinc/docker-nginx
-FROM alpine:3.10
+FROM alpine:3.13
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
-ENV NGINX_VERSION 1.17.9
-ENV NJS_VERSION   0.3.9
+ENV NGINX_VERSION 1.19.9
+ENV NJS_VERSION   0.5.3
 ENV PKG_RELEASE   1
 
 RUN set -x \
@@ -100,9 +100,18 @@ RUN set -x \
 # Bring in tzdata so users could set the timezones through the environment
 # variables
     && apk add --no-cache tzdata \
+# Bring in curl and ca-certificates to make registering on DNS SD easier
+    && apk add --no-cache curl ca-certificates \
 # forward request and error logs to docker log collector
     && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+    && ln -sf /dev/stderr /var/log/nginx/error.log \
+# create a docker-entrypoint.d directory
+    && mkdir /docker-entrypoint.d
+
+COPY docker-entrypoint.sh /
+COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
+COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
+COPY 30-tune-worker-processes.sh /docker-entrypoint.d
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
@@ -110,12 +119,13 @@ COPY nginx.vh.default.conf /etc/nginx/conf.d/default.conf
 # https://github.com/MediaKraken-Dep/nginx-badbot-blocker
 COPY blacklist.conf /etc/nginx/blacklist.conf
 COPY blockips.conf /etc/nginx/blockips.conf
-
 COPY wait-for-it-ash-busybox130.sh /usr/bin/
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 443
 
-STOPSIGNAL SIGTERM
+STOPSIGNAL SIGQUIT
 
 CMD ["nginx", "-g", "daemon off;"]
 

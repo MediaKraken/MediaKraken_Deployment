@@ -23,7 +23,7 @@ def db_notification_insert(self, notification_data, notification_dismissable):
     """
     # insert notifications
     """
-    new_guid = str(uuid.uuid4())
+    new_guid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_notification (mm_notification_guid,'
                            'mm_notification_text,'
                            'mm_notification_time,'

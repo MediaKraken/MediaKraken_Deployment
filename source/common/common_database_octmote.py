@@ -67,7 +67,7 @@ class CommonDatabaseOctmote:
             json_brand = common_network_irdb.com_irdb_brand_list()["objects"]
             for brand_name in json_brand:
                 self.db_cursor.execute('insert into octmote_brand (brand_guid, brand_name)'
-                                       ' values (?,?)', (str(uuid.uuid4()), brand_name["brand"]))
+                                       ' values (?,?)', (uuid.uuid4(), brand_name["brand"]))
             # create device db and load with types
             self.db_cursor.execute('CREATE TABLE octmote_device (device_guid text,'
                                    ' device_name text, device_description text)')
@@ -76,95 +76,95 @@ class CommonDatabaseOctmote:
             self.db_cursor.execute('insert into octmote_device'
                                    ' (device_guid, device_name, device_description)'
                                    ' values (?,\'BluRay\', \'BluRay Player\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device'
                                    ' (device_guid, device_name, device_description)'
-                                   ' values (?,\'DVD\', \'DVD Player\')', (str(uuid.uuid4()),))
+                                   ' values (?,\'DVD\', \'DVD Player\')', (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Laserdisc\','
                                    ' \'Laser Disc Player\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'VHS\', \'VHS VCR\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Beta\', \'Beta VCR\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'TV\', \'Television\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Projector\', \'DLP, LCD, LED Projector\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'CRT Projector\', \'CRT Analog Projector\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'3D BluRay\', \'3D Capable BluRay Player\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'3D Projector\', \'DLP, LCD, LED 3D Projector\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Phono\', \'Analog Phonograph Player\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'DAC\', \'Digital To Analog Converter\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Tape\', \'Tape Deck\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'CD\', \'Compact Disc Player\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'SACD\', \'Super Audio Compact Disc Player\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'SVHS\', \'Super VHS VCR\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'SBeta\', \'Super Beta VCR\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Receiver\', \'Audio/Video Receiver\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Amplifier\', \'Audio Amplifier\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Decoder\', \'Audio Decoder\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'DAT\', \'Digital Audio Tape\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Reel\', \'Reel To Reel Tape\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Cable\', \'Cable TV\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Satellite\', \'Satellite TV\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Net/USB\', \'Net/USB\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Vid Proc\', \'Video Processor\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Stream\', \'Audio/Video Streaming Device\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Game\', \'Game System\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'Preamp\', \'Audio/Video Preamplifier\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
                                    ' device_description) values (?,\'UPS\', \'Uninteruptable Power Supply\')',
-                                   (str(uuid.uuid4()),))
+                                   (uuid.uuid4(),))
             self.sql3_conn.commit()
         self.db_cursor.execute(
             'select server_host, server_port from octmote_server_settings')
@@ -206,7 +206,7 @@ class CommonDatabaseOctmote:
         Insert new device type into database
         """
         self.db_cursor.execute('insert into octmote_device (device_guid, device_name,'
-                               ' device_json) values (?,?,?)', (str(uuid.uuid4()),
+                               ' device_json) values (?,?,?)', (uuid.uuid4(),
                                                                 device_record_name,
                                                                 device_record_description))
         self.sql3_conn.commit()
@@ -240,7 +240,7 @@ class CommonDatabaseOctmote:
             self.db_cursor.execute('insert into octmote_item (item_guid, item_type,'
                                    ' item_manufacturer, item_model_number, item_json)'
                                    ' values (?,?,?,?,?)',
-                                   (str(uuid.uuid4()), json_data["Item Type"],
+                                   (uuid.uuid4(), json_data["Item Type"],
                                     json_data["Manufacturer"],
                                     model_number, item_record_json))
         self.sql3_conn.commit()

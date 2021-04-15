@@ -108,25 +108,6 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # runs ffprobe
-  ffprobe:
-    image: mediakraken/mkffprobe:latest
-    environment:
-      - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
-    container_name: mkstack_ffprobe
-    depends_on:
-      - pgbouncer
-      - rabbit
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_ffprobe_metadata.py
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    volumes:
-      - ./mkmount:/mediakraken/mnt:ro
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-
   # runs hardware
   hardware:
     image: mediakraken/mkhardware:latest
@@ -154,9 +135,9 @@ services:
       - DEBUG=${DEBUG}
     container_name: mkstack_metadata
     depends_on:
-      - pgbouncer
+      - database
       - rabbit
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- python3 main_server_metadata_api.py
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h database -p 5432 -t 60 -- python3 main_server_metadata_api.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -303,6 +284,25 @@ services:
     stop_signal: SIGUSR1
     volumes:
       - ./mkmount:/mediakraken/mnt
+    networks:
+      - mediakraken_network
+    restart: unless-stopped
+
+  # runs transcode
+  transcode:
+    image: mediakraken/mktranscode:latest
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkstack_transcode
+    depends_on:
+      - pgbouncer
+      - rabbit
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- python3 async_transcode.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      - ./mkmount:/mediakraken/mnt:ro
     networks:
       - mediakraken_network
     restart: unless-stopped

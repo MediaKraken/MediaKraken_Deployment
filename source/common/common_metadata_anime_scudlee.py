@@ -21,9 +21,9 @@ import time
 from xml.dom import minidom
 
 import xmltodict
+from common import common_logging_elasticsearch_httpx
 
 from . import common_file
-from . import common_global
 from . import common_network
 
 
@@ -55,8 +55,10 @@ def mk_scudlee_anime_list_parse(file_name='./cache/anime-list.xml'):
     itemlist = xmltodict.parse(file_handle.read())
     file_handle.close()
     for anime_data in itemlist['anime-list']['anime']:
-        common_global.es_inst.com_elastic_index('info', {'data': anime_data})
-        common_global.es_inst.com_elastic_index('info', {'key': list(anime_data.keys())})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'data': anime_data})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'key': list(anime_data.keys())})
         try:
             # to make sure not web, etc
             tvdbid = str(int(anime_data['@tvdbid']))

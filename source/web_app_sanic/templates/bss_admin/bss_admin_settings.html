@@ -29,7 +29,6 @@
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_report.url_bp_admin_report') }}"><i class="fas fa-clipboard-list"></i><span>Reports</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_settings.url_bp_admin_settings') }}"><i class="fas fa-cogs"></i><span>Server</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_link.url_bp_admin_server_link') }}"><i class="fas fa-link"></i><span>Server Links</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_share.url_bp_admin_share') }}"><i class="fas fa-share"></i><span>Shares (UNC/SMB/NFS)</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_transmission.url_bp_admin_transmission') }}"><i class="fas fa-bolt"></i><span>Transmission</span></a>
                         <a class="nav-link" href="{{ url_for('name_blueprint_admin_users.url_bp_admin_user') }}"><i class="fas fa-user-alt"></i><span>Users</span></a>
                     </li>
@@ -68,7 +67,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">Subservers via Docker Swarm</h5>
+                    <h5 class="mb-0">Subservers via Docker</h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{form.docker_musicbrainz.label}} {{form.docker_musicbrainz(placeholder="MusicBrainz", class_="form-control")}} {{form.docker_musicbrainz_code.label}}<br></p>

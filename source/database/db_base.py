@@ -22,7 +22,7 @@ import time
 import psycopg2
 import psycopg2.extras
 from common import common_file
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
 
@@ -33,7 +33,8 @@ def db_open(self, force_local=False):
     # setup for unicode
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
     psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
-    # psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
+    psycopg2.extras.register_uuid()
+    psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
     # psycopg2.extras.register_default_json(loads=lambda x: x)
     if force_local:
         self.sql3_conn = psycopg2.connect(
@@ -56,7 +57,8 @@ def db_open(self, force_local=False):
                 time.sleep(10)
             else:
                 break
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db open'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'db open'})
     self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
@@ -65,7 +67,8 @@ def db_close(self):
     # close main db file
     """
     try:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db close'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'db close'})
     except:
         pass
     self.sql3_conn.close()
@@ -75,7 +78,8 @@ def db_begin(self):
     """
     # start a transaction
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db begin'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'stuff': 'db begin'})
     self.sql3_conn.begin()
 
 
@@ -84,7 +88,8 @@ def db_commit(self):
     # commit changes to media database
     """
     try:
-        common_global.es_inst.com_elastic_index('info', {'stuff': 'db commit'})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'stuff': 'db commit'})
     except:
         pass
     self.sql3_conn.commit()
@@ -94,7 +99,8 @@ def db_rollback(self):
     """
     # rollback
     """
-    common_global.es_inst.com_elastic_index('info', {'stuff': 'db rollback'})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'stuff': 'db rollback'})
     self.sql3_conn.rollback()
 
 
@@ -107,13 +113,16 @@ def db_table_index_check(self, resource_name):
     return self.db_cursor.fetchone()[0]
 
 
-def db_table_count(self, table_name):
+def db_table_count(self, table_name, exists=False):
     """
     # return count of records in table
     """
     # can't %s due to ' inserted
     # TODO little bobby tables
-    self.db_cursor.execute('select count(*) from ' + table_name)
+    if exists:
+        self.db_cursor.execute('select exists(select 1 from ' + table_name + ' limit 1) limit 1 ')
+    else:
+        self.db_cursor.execute('select count(*) from ' + table_name)
     return self.db_cursor.fetchone()[0]
 
 
@@ -131,7 +140,8 @@ def db_query(self, query_string, fetch_all=True):
     """
     # TODO little bobby tables
     try:
-        common_global.es_inst.com_elastic_index('info', {"query": query_string})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"query": query_string})
     except:
         pass
     self.db_cursor.execute(query_string)

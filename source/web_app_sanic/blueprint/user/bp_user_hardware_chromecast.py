@@ -1,4 +1,5 @@
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_network_pika
 from sanic import Blueprint
 
@@ -7,14 +8,17 @@ blueprint_user_hardware_chromecast = Blueprint('name_blueprint_user_hardware_chr
 
 
 @blueprint_user_hardware_chromecast.route('/user_chromecast/<action>/<guid>')
-@common_global.jinja_template.template('bss_user/hardware/bss_user_hardware_chromecast_playback.html')
+@common_global.jinja_template.template(
+    'bss_user/hardware/bss_user_hardware_chromecast_playback.html')
 @common_global.auth.login_required(user_keyword='user')
 async def url_bp_user_chromecast(request, user, action, guid):
     """
     Display chromecast actions page
     """
-    common_global.es_inst.com_elastic_index('info', {'cast action': action,
-                                                     'case user': user.id})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'cast action': action,
+                                                                         'case user': user.id})
     db_connection = await request.app.db_pool.acquire()
     if action == 'base':
         pass
@@ -33,7 +37,9 @@ async def url_bp_user_chromecast(request, user, action, guid):
         common_network_pika.com_net_pika_send(
             {'Type': 'Playback', 'Subtype': 'Play', 'Device': 'Cast',
              'User': user.id,
-             'Data': await request.app.db_functions.db_read_media(db_connection, guid)['mm_media_path'],
+             'Data': await
+             request.app.db_functions.db_read_media(guid, db_connection=db_connection)[
+                 'mm_media_path'],
              'Target': '10.0.0.220'},
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
@@ -68,7 +74,8 @@ async def url_bp_user_chromecast(request, user, action, guid):
             rabbit_host_name='mkstack_rabbitmq',
             exchange_name='mkque_ex',
             route_key='mkque')
-    chromecast_data = await request.app.db_functions.db_device_list(db_connection, 'cast')
+    chromecast_data = await request.app.db_functions.db_device_list('cast',
+                                                                    db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'data_guid': guid,

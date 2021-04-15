@@ -20,6 +20,7 @@ import base64
 import hashlib
 import os
 import struct
+import subprocess
 import zipfile
 import zlib
 from functools import reduce
@@ -146,6 +147,14 @@ def com_hash_md5_by_filename(file_name):
             md5.update(chunk)
     file_handle.close()
     return md5.digest()  # TODO or do I need to use hexdigest
+
+
+def com_hash_blake3_by_filename(file_name):
+    """
+    Calculate blake3 for file
+    https://github.com/BLAKE3-team/BLAKE3/releases/download/0.3.7/b3sum_linux_x64_bin
+    """
+    return subprocess.check_output(['./b3sum_linux_x64_bin', '--no-names', file_name])
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/

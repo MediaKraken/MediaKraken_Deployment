@@ -23,7 +23,7 @@ import socket
 import subprocess
 import time
 
-from . import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 # https://mpv.io/manual/master/#json-ipc
@@ -87,7 +87,8 @@ class CommonNetMPV:
     def execute(self, command):
         self.socket_stream.sendall(command.encode('utf-8'))
         result = json.loads(self.socket_stream.recv(1024).decode('utf-8'))
-        common_global.es_inst.com_elastic_index('info', {'mpv result': result})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={'mpv result': result})
         if result['error'] == 'success':
             return result
 

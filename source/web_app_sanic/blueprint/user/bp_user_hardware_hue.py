@@ -31,7 +31,7 @@ async def url_bp_user_hardware_hue(request):
         # need to do as could provide an empty list and not None
         data_hue_avail = None
     db_connection = await request.app.db_pool.acquire()
-    hue_data = await request.app.db_functions.db_device_list(db_connection, 'Phue')
+    hue_data = await request.app.db_functions.db_device_list('Phue', db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'data_hue_avail': data_hue_avail,

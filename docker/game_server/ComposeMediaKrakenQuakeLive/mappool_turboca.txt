@@ -1,0 +1,23 @@
+# specify 1 map per line, mapname|factoryid
+# ex: aerowalk|ffa
+# see factories.txt for valid factory id values
+almostlost|turboca
+asylum|turboca
+blackcathedral|turboca
+campgrounds|turboca
+castledeathstalker|turboca
+deadandgone|turboca
+deepinside|turboca
+drunkenmummy|turboca
+henhouse|turboca
+hiddenfortress|turboca
+midlifecrisis|turboca
+overkill|turboca
+quarantine|turboca
+servitude|turboca
+spacechamber|turboca
+theatreofpain|turboca
+threestory|turboca
+thunderstruck|turboca
+trinity|turboca
+windowpain|turboca

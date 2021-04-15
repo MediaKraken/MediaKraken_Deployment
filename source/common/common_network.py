@@ -28,8 +28,9 @@ import urllib.request
 from threading import Thread
 from uuid import getnode
 
+from common import common_logging_elasticsearch_httpx
+
 from . import common_file
-from . import common_global
 from . import wol
 
 
@@ -37,10 +38,11 @@ def mk_network_fetch_from_url(url, directory=None):
     """
     Download data from specified url to save in specific directory
     """
-    common_global.es_inst.com_elastic_index('info', {'dl': url, 'dir': directory})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'dl': url, 'dir': directory})
     try:
         datafile = urllib.request.urlopen(url, context=ssl._create_unverified_context())
-    except urllib.error.URLError:  #<urlopen error [Errno 99] Address not available>:
+    except urllib.error.URLError:  # <urlopen error [Errno 99] Address not available>:
         return False
     if directory is not None and datafile.getcode() == 200:
         try:
@@ -136,9 +138,11 @@ def mk_network_ping_list(host_list):
         current.start()
     for pingle in pinglist:
         pingle.join()
-        common_global.es_inst.com_elastic_index('info', {"Status from":
-                                                             pingle.ip_addr,
-                                                         'report': report[pingle.status]})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"Status from":
+                                                                               pingle.ip_addr,
+                                                                           'report': report[
+                                                                               pingle.status]})
 
 
 def mk_network_io_counter(show_nic=False):

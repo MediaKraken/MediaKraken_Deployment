@@ -18,7 +18,7 @@
 
 import json
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def db_read_media_metadata(self, media_guid):
@@ -59,7 +59,7 @@ def db_meta_genre_list_count(self):
     # count all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                           '->\'genres\')::jsonb'
+                           '->\'genres\')b'
                            ' from mm_metadata_movie')
     return len(self.db_cursor.fetchall())
 
@@ -69,8 +69,8 @@ def db_meta_genre_list(self, offset=0, records=None):
     # grab all the generes
     """
     self.db_cursor.execute('select distinct jsonb_array_elements_text(mm_metadata_json'
-                           '->\'genres\')::jsonb from mm_metadata_movie'
-                           ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb offset %s limit %s',
+                           '->\'genres\')b from mm_metadata_movie'
+                           ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')b offset %s limit %s',
                            (offset, records))
     return self.db_cursor.fetchall()
 
@@ -80,9 +80,9 @@ def db_meta_movie_count_genre(self):
     # movie count by genre
     """
     self.db_cursor.execute(
-        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb as gen,'
+        'select jsonb_array_elements_text(mm_metadata_json->\'genres\')b as gen,'
         ' count(mm_metadata_json->\'genres\') from mm_metadata_movie group by gen'
-        ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')::jsonb ')
+        ' order by jsonb_array_elements_text(mm_metadata_json->\'genres\')b ')
     return self.db_cursor.fetchall()
 
 
@@ -132,8 +132,8 @@ def db_meta_tmdb_count(self, tmdb_id):
     """
     # see if metadata exists via themovedbid
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_movie'
-                           ' where mm_metadata_media_id = %s', (tmdb_id,))
+    self.db_cursor.execute('select exists(select 1 from mm_metadata_movie'
+                           ' where mm_metadata_media_id = %s limit 1) limit 1', (tmdb_id,))
     return self.db_cursor.fetchone()[0]
 
 
@@ -223,8 +223,8 @@ def db_find_metadata_guid(self, media_name, media_release_year):
         # for year and -3/+3 year as well
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->\'original_title\') = %s)'
-                               ' and substring(mm_metadata_json->\'release_date\' from 0 for 5)'
+                               ' or LOWER(mm_metadata_json->>\'original_title\') = %s)'
+                               ' and substring(mm_metadata_json->>\'release_date\' from 0 for 5)'
                                ' in (%s,%s,%s,%s,%s,%s,%s)',
                                (media_name.lower(), media_name.lower(), str(media_release_year),
                                 str(int(media_release_year) + 1),
@@ -236,12 +236,13 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     else:
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
                                ' where (LOWER(mm_media_name) = %s'
-                               ' or LOWER(mm_metadata_json->\'original_title\') = %s)',
+                               ' or LOWER(mm_metadata_json->>\'original_title\') = %s)',
                                (media_name.lower(), media_name.lower()))
     for row_data in self.db_cursor.fetchall():
         # TODO should probably handle multiple results better.   Perhaps a notification?
         metadata_guid = row_data['mm_metadata_guid']
-        common_global.es_inst.com_elastic_index('info', {"db find metadata guid": metadata_guid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            "db find metadata guid": metadata_guid})
         break
     return metadata_guid
 
@@ -266,9 +267,10 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_global.es_inst.com_elastic_index('info', {"id": media_tvid,
-                                                         'imdb': media_imdbid,
-                                                         'ani': media_aniid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"id": media_tvid,
+                                                                           'imdb': media_imdbid,
+                                                                           'ani': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_id'])
         if media_imdbid is not None:
             json_data.update({'imdb': media_imdbid})
@@ -284,9 +286,10 @@ def db_meta_update_media_id_from_scudlee(self, media_tvid, media_imdbid,
     # do the update if a record is found
     if row_data is not None:
         # update json data
-        common_global.es_inst.com_elastic_index('info', {"id2": media_tvid,
-                                                         'imdb': media_imdbid,
-                                                         'anidb': media_aniid})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text={"id2": media_tvid,
+                                                                           'imdb': media_imdbid,
+                                                                           'anidb': media_aniid})
         json_data = json.loads(row_data['mm_metadata_media_tvshow_id'])
         if media_imdbid is not None:
             json_data.update({'imdb': media_imdbid})

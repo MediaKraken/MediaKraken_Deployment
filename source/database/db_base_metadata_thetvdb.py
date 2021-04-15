@@ -23,7 +23,7 @@ def db_metatvdb_insert(self, series_id_json, tv_name, show_detail, image_json):
     """
     # insert
     """
-    media_uuid = str(uuid.uuid4())
+    media_uuid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_tvshow (mm_metadata_tvshow_guid,'
                            ' mm_metadata_media_tvshow_id,'
                            ' mm_metadata_tvshow_name,'

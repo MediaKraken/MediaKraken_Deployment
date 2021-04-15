@@ -1,5 +1,4 @@
-kivy==1.11.1
-crochet==1.10.0
-elasticsearch==7.5.1
+kivy==2.0.0
+crochet==1.12.0
 service_identity==18.1.0
-pyopenssl==19.0.0
+pyopenssl==20.0.1

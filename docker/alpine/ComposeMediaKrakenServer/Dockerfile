@@ -1,8 +1,8 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase311_5py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase_alpinepy3:dev
 
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the main server app"
+LABEL author="Quinn D Granfor, spootdev@gmail.com"
+LABEL description="This image holds the main server app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -11,40 +11,47 @@ ARG PIPMIRROR
 COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
-  alpine-sdk \
-  libffi-dev \
-  openssl \
-  openssl-dev \
-  cifs-utils \
-  curl-dev \
-  nfs-utils \
-  openldap-dev \
-  jpeg-dev \
-  libxml2-dev \
-  libxslt-dev \
-  linux-headers \
-  musl-dev \
-  net-snmp \
-  net-snmp-dev \
-  openldap-dev \
-  openrc \
-  portaudio-dev \
-  py3-psycopg2 \
-  py3-psutil \
-  py3-babel \
-  py3-service_identity \
-  py3-requests \
-  py3-uritemplate \
-  py3-httplib2 \
-  py3-setuptools \
-  py3-curl \
-  py3-natsort \
-  python3-dev \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+RUN apk add --no-cache \
+  alpine-sdk==1.0-r0 \
+  libffi==3.3-r2 \
+  libffi-dev==3.3-r2 \
+  openssl==1.1.1k-r0 \
+  openssl-dev==1.1.1k-r0 \
+  cifs-utils==6.12-r0 \
+  curl==7.76.1-r0 \
+  curl-dev==7.76.1-r0 \
+  nfs-utils==2.5.2-r0 \
+  jpeg==9d-r1 \
+  jpeg-dev==9d-r1 \
+  libxml2-dev==2.9.10-r6 \
+  libxslt-dev==1.1.34-r0 \
+  linux-headers==5.7.8-r0 \
+  musl-dev==1.2.2-r0 \
+  net-snmp==5.9-r2 \
+  net-snmp-dev==5.9-r2 \
+  openldap-dev==2.4.57-r1 \
+  openrc==0.42.1-r19 \
+  portaudio-dev==190600.20161030-r1 \
+  py3-psycopg2==2.8.6-r0 \
+  py3-psutil==5.8.0-r0 \
+  py3-babel==2.8.0-r1 \
+  py3-service_identity==18.1.0-r3 \
+  py3-requests==2.25.1-r1 \
+  py3-uritemplate==3.0.1-r0 \
+  py3-httplib2==0.18.1-r0 \
+  py3-setuptools==51.3.3-r0 \
+  py3-curl==7.43.0.6-r0 \
+  py3-natsort==7.1.1-r0 \
+  python3-dev==3.8.8-r0 \
+  rust==1.47.0-r2 \
+  cargo==1.47.0-r2 \
+  && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && apk del \
   alpine-sdk \
+  cargo \
+  curl-dev \
+  jpeg-dev \
+  libffi-dev \
   libxml2-dev \
   libxslt-dev \
   linux-headers \

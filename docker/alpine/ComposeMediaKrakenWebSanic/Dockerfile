@@ -1,8 +1,8 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase312py3:dev
+FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase_alpinepy3:dev
 
-LABEL AUTHOR="Quinn D Granfor, spootdev@gmail.com"
-LABEL Description="This image holds the image for the web server app"
+LABEL author="Quinn D Granfor, spootdev@gmail.com"
+LABEL description="This holds the image for the web server app"
 
 ARG ALPMIRROR
 ARG PIPMIRROR
@@ -12,40 +12,55 @@ COPY requirements.txt /mediakraken
 WORKDIR /mediakraken
 
 # Update repository and install packages
-RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
-  && apk add --no-cache \
-  ack \
+RUN apk add --no-cache \
+  ack==3.4.0-r0 \
+  curl==7.76.1-r0 \
+  curl-dev==7.76.1-r0 \
+  git==2.30.2-r0 \
+  gcc==10.2.1_pre1-r3 \
+  g++==10.2.1_pre1-r3 \
+  krb5==1.18.3-r1 \
+  krb5-dev==1.18.3-r1 \
+  libstdc++==10.2.1_pre1-r3 \
+  jpeg==9d-r1 \
+  jpeg-dev==9d-r1 \
+  libffi==3.3-r2 \
+  libffi-dev==3.3-r2 \
+  libxml2==2.9.10-r6 \
+  libxml2-dev==2.9.10-r6 \
+  libxslt==1.1.34-r0 \
+  libxslt-dev==1.1.34-r0 \
+  linux-headers==5.7.8-r0 \
+  make==4.3-r0 \
+  musl-dev==1.2.2-r0 \
+  openrc==0.42.1-r19 \
+  openssl==1.1.1k-r0 \
+  openssl-dev==1.1.1k-r0 \
+  py3-cffi==1.14.4-r0 \
+  python3-dev==3.8.8-r0 \
+  cifs-utils==6.12-r0 \
+  nfs-utils==2.5.2-r0 \
+  ca-certificates==20191127-r5 \
+  py3-numpy==1.19.5-r0 \
+  py3-psutil==5.8.0-r0 \
+  rust==1.47.0-r2 \
+  cargo==1.47.0-r2 \
+  && export PYCURL_SSL_LIBRARY=openssl \
+  && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
+  && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
+  && pip3 install --no-cache-dir git+https://github.com/MediaKraken/sanic-auth \
+  && apk del \
+  cargo \
   curl-dev \
-  git \
   gcc \
   g++ \
-  libstdc++ \
+  git \
   jpeg-dev \
+  krb5-dev \
   libffi-dev \
   libxml2-dev \
   libxslt-dev \
-  linux-headers \
   make \
-  musl-dev \
-  openrc \
-  openssl-dev \
-  py3-cffi \
-  python3-dev \
-  cifs-utils \
-  nfs-utils \
-  ca-certificates \
-  openssl \
-  py3-numpy \
-  py3-psutil \
-  && export PYCURL_SSL_LIBRARY=openssl \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple pycurl \
-  && pip3 install --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
-  && pip3 install git+https://github.com/MediaKraken/sanic-auth \
-  && pip3 install git+https://github.com/MediaKraken/sanic-wtf \
-  && apk del \
-  gcc \
-  g++ \
-  git \
   musl-dev \
   linux-headers \
   python3-dev \

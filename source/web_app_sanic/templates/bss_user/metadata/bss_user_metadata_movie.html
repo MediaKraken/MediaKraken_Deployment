@@ -44,7 +44,9 @@
     <!-- End: Navigation with Button -->
     <div><div>
     {% if media_movie %}
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     <div id="the-movie-metadata-node">
         {% for row_data in media_movie %}
             <div class="main_photo">
@@ -69,7 +71,7 @@
                                 <p class="description_content_left">{{row_data[1]}}</p>
                             </div>
                         {% else %}
-                            <img src="{{ url_for('static', filename=row_data[3] ) }}" loading="lazy" height="300" width="200">
+                            <img src="{{ url_for('static', filename=row_data[3].replace('\"', '') ) }}" loading="lazy" height="300" width="200">
                             {% if row_data[4] == True %}
                             <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" loading="lazy" height="25" width="25">
                             {% endif %}
@@ -88,7 +90,9 @@
             </div>
         {% endfor %}
     </div>
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     {% else %}
     <p id="general_text">No movie metadata found.</p>
     {% endif %}</div></div>

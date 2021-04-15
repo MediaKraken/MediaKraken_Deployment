@@ -18,15 +18,15 @@
 
 import json
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def db_meta_movie_guid_count(self, guid):
     """
     # does movie exist already by metadata id
     """
-    self.db_cursor.execute('select count(*) from mm_metadata_movie'
-                           ' where mm_metadata_guid = %s', (guid,))
+    self.db_cursor.execute('select exists(select 1 from mm_metadata_movie'
+                           ' where mm_metadata_guid = %s limit 1) limit 1', (guid,))
     return self.db_cursor.fetchone()[0]
 
 
@@ -70,19 +70,22 @@ def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
     """
     Update the cast/crew for selected media
     """
-    common_global.es_inst.com_elastic_index('info', {'upt castcrew': metadata_id})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'upt castcrew': metadata_id})
     self.db_cursor.execute('select mm_metadata_json'
                            ' from mm_metadata_movie'
                            ' where mm_metadata_guid = %s', (metadata_id,))
     cast_crew_json_row = self.db_cursor.fetchone()[0]
-    common_global.es_inst.com_elastic_index('info', {'castrow': cast_crew_json_row})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'castrow': cast_crew_json_row})
     # TODO for dumping 'meta'
     if 'cast' in cast_crew_json:
         cast_crew_json_row.update({'Cast': cast_crew_json['cast']})
     # TODO for dumping 'meta'
     if 'crew' in cast_crew_json:
         cast_crew_json_row.update({'Crew': cast_crew_json['crew']})
-    common_global.es_inst.com_elastic_index('info', {'upt': cast_crew_json_row})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'upt': cast_crew_json_row})
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
                            ' where mm_metadata_guid = %s',
                            (json.dumps(cast_crew_json_row), metadata_id))

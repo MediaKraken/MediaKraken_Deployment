@@ -17,19 +17,19 @@ async def url_bp_admin_periodical_add(request):
         class_uuid = common_global.DLMediaType.Publication_Book.value
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
-                media_id = str(uuid.uuid4())
+                media_id = uuid.uuid4()
                 db_connection = await request.app.db_pool.acquire()
-                await request.app.db_functions.db_media_insert(db_connection, media_id, None,
+                await request.app.db_functions.db_media_insert(media_id, None,
                                                                class_uuid,
-                                                               None, None, None)
-                await request.app.db_functions.db_download_insert(db_connection, 'Z', 0,
-                                                                  json.dumps({'MediaID': media_id,
-                                                                              'Path': None,
-                                                                              'ClassID': class_uuid,
-                                                                              'Status': None,
-                                                                              'MetaNewID': str(
-                                                                                  uuid.uuid4()),
-                                                                              'ProviderMetaID': book_item.strip()}))
+                                                               None, None, None,
+                                                               db_connection=db_connection)
+                await request.app.db_functions.db_download_insert(provider='Z', que_type=0,
+                                                                  down_json=json.dumps(
+                                                                      {'MediaID': media_id,
+                                                                       'ProviderMetaID': book_item.strip()}),
+                                                                  down_new_uuid=uuid.uuid4(),
+                                                                  down_class_uuid=class_uuid,
+                                                                  db_connection=db_connection)
                 await request.app.db_pool.release(db_connection)
         return redirect(request.app.url_for('admins.admin_books_add'))
     form = BookAddForm(request, csrf_enabled=False)

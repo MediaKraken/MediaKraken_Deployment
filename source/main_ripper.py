@@ -18,8 +18,7 @@
 
 import time
 
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_signal
 from network import network_base_line_ripper as network_base
 from twisted.internet import reactor, protocol
@@ -28,12 +27,14 @@ from twisted.internet import reactor, protocol
 class MediaKrakenServerApp(protocol.ServerFactory):
     def __init__(self):
         # start logging
-        common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-            'main_ripper_reactor_line', debug_override='sys')
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                             message_text='START',
+                                                             index_name='main_ripper')
         # set other data
         self.server_start_time = time.mktime(time.gmtime())
         self.users = {}  # maps user names to network instances
-        common_global.es_inst.com_elastic_index('info', {'Ready for connections!': False})
+        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+            'Ready for connections!': False})
 
     def buildProtocol(self, addr):
         return network_base.NetworkEvents(self.users, self.db_connection)

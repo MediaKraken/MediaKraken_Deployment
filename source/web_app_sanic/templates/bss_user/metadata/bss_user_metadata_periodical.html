@@ -42,13 +42,15 @@
     </nav>
     <!-- End: Navigation with Button -->
     <div><div>    {% if media_periodical %}
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     <div id="the-node">
         {% for row_data in media_periodical %}
         <div class="main_photo">
             <div class="media_context_right" data-id={{row_data[1]}}>
                 <a href = "{{ url_for('name_blueprint_user_metadata_periodical.metadata_periodical_detail', guid=row_data[0]) }}">
-                <img src= "{{ url_for('static', filename=row_data[2])" loading="lazy" height="300" width="200"></a>
+                <img src= "{{ url_for('static', filename=row_data[2]) }}" loading="lazy" height="300" width="200"></a>
                 <div class="description">
                     <p class="description_content_left">{{row_data[1]}}</p>
                 </div>
@@ -56,7 +58,9 @@
         </div>
         {% endfor %}
     </div>
-    {{ pagination_links }}
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
     {% else %}
     <p id="general_text">No periodical metadata found.</p>
     {% endif %}

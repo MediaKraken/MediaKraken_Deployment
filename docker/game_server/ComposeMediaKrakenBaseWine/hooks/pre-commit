@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Enable this hook by editing the project specific "hooksPath" config variable:
+# git config core.hooksPath "${REPO_ROOT}/hooks"
+
+set -eu
+
+# Redirect output to stderr
+exec 1>&2
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=$(git hash-object -t tree /dev/null)
+fi
+
+# Run shellcheck on all shell files
+SHELL_SCRIPTS=()
+for FILE in $(git diff-index --cached --diff-filter=d --name-only "$against"); do
+    if head -n 1 "${FILE}" | grep -q -e '^#![[:print:]]*[^c]sh$'; then
+        SHELL_SCRIPTS+=("$FILE")
+    fi
+done
+
+if [ ${#SHELL_SCRIPTS[@]} -gt 0 ]; then
+    if ! shellcheck "${SHELL_SCRIPTS[@]}"; then
+        echo "Shellcheck errors, or not installed, commit rejected"
+        exit 1
+    fi
+fi
+
+# If there are whitespace errors, print the offending file names and fail
+if ! git diff-index --check --cached "$against" --; then
+    echo "Whitespace errors, commit rejected"
+    exit 1
+fi

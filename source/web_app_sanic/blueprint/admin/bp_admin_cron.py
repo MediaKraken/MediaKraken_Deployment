@@ -1,6 +1,7 @@
 import json
 
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 from common import common_network_pika
 from common import common_pagination_bootstrap
 from sanic import Blueprint
@@ -17,19 +18,22 @@ async def url_bp_admin_cron(request):
     """
     Display cron jobs
     """
-    db_connection = await request.app.db_pool.acquire()
-    cron_count = await request.app.db_functions.db_cron_list_count(db_connection, False)
     page, offset = common_pagination_bootstrap.com_pagination_page_calc(request)
-    pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
+    db_connection = await request.app.db_pool.acquire()
+    pagination = common_pagination_bootstrap.com_pagination_boot_html(page=page,
                                                                       url='/admin/admin_cron',
-                                                                      item_count=cron_count,
+                                                                      item_count=await request.app.db_functions.db_cron_list_count(
+                                                                          enabled_only=False,
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    cron_data = await request.app.db_functions.db_cron_list(db_connection, False,
-                                                            offset,
-                                                            int(request.ctx.session['per_page']))
+    cron_data = await request.app.db_functions.db_cron_list(enabled_only=False,
+                                                            offset=offset,
+                                                            records=int(
+                                                                request.ctx.session['per_page']),
+                                                            db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_cron': cron_data,
@@ -46,7 +50,7 @@ async def url_bp_admin_cron_delete(request):
     Delete action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_cron_delete(db_connection, request.form['id'])
+    await request.app.db_functions.db_cron_delete(request.form['id'], db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})
 
@@ -78,10 +82,12 @@ async def url_bp_admin_cron_run(request, user, guid):
     """
     Run cron jobs
     """
-    common_global.es_inst.com_elastic_index('info', {'admin cron run': guid})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'admin cron run': guid})
     db_connection = await request.app.db_pool.acquire()
-    cron_job_data = await request.app.db_functions.db_cron_info(db_connection, guid)
-    cron_json_data = json.loads(cron_job_data['mm_cron_json'])
+    cron_job_data = await request.app.db_functions.db_cron_info(guid, db_connection)
+    cron_json_data = cron_job_data['mm_cron_json']
     # submit the message
     common_network_pika.com_net_pika_send({'Type': cron_json_data['Type'],
                                            'User': user.id,
@@ -89,7 +95,7 @@ async def url_bp_admin_cron_run(request, user, guid):
                                           exchange_name=cron_json_data[
                                               'exchange_key'],
                                           route_key=cron_json_data['route_key'])
-    await request.app.db_functions.db_cron_time_update(db_connection,
-                                                       cron_job_data['mm_cron_name'])
+    await request.app.db_functions.db_cron_time_update(cron_job_data['mm_cron_name'],
+                                                       db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return redirect(request.app.url_for('name_blueprint_admin_cron.url_bp_admin_cron'))

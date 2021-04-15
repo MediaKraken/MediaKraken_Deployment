@@ -2,11 +2,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>MKSanic</title>
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <title>MediaKraken</title>
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="/assets/css/styles.min.css">
+    <link href="{{ url_for('static', filename='fonts/fontawesome-all.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/styles.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_webapp_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.contextMenu.min.css') }}">
 </head>
 <body>
     <!-- Start: Navigation with Button -->
@@ -39,7 +41,87 @@
         </div>
     </nav>
     <!-- End: Navigation with Button -->
-    <div><div></div></div>
+    <div>
+    {% if media %}
+    <div id="filter_media_div">
+        <form name="media_filter" action="{{url_for('name_blueprint_user_media_genre.url_bp_user_media_genre')}}" method="post">
+            <p>Media Filters:
+            <button type="submit" value="movie_genre">Genre</button>
+            Rating:
+            <select name="movie_rating", id="movie_rating">
+                <option value="All">All</option>
+                <option value="G">G</option>
+                <option value="PG">PG</option>
+                <option value="PG-13">PG-13</option>
+                <option value="R">R</option>
+                <option value="NR-17">NR-17</option>
+                <option value="X">X</option>
+            </select>
+            Status:
+            <select name="movie_status", id="movie_status">
+                <option value="All">All</option>
+                <option value="Unwatched">Unwatched</option>
+                <option value="Watched">Watched</option>
+                <option value="In Progress">In Progress</option>
+            </select>
+            </p>
+        </form>
+    </div>
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
+    <!-- this div is needed to show up between pagination correctly -->
+    <div id="the-movie-node">
+        {% for row_data in media %}
+        <!-- 0 mm_media_name, 1 mm_media_guid, 2 mm_metadata_json (poster only), 3 = watched or not -->
+        <div class="main_photo">
+            <div data-id={{row_data[1]}}>
+                <a href= "{{ url_for('name_blueprint_user_movie.url_bp_user_movie_detail', guid=row_data[1]) }}">
+                {% if row_data[2] == None %}
+                    <img src="{{ url_for('static', filename='img/Movie-icon.png') }}" height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="{{ url_for('static', filename='img/synced.jpg') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="exclamation_icon" src="{{ url_for('static', filename='img/exclamation-circle-frame.png') }}" height="20" width="20">
+                    {% endif %}
+                    </a>
+                    <div class="description">
+                        <p class="description_content_left">{{row_data[0]}}</p>
+                    </div>
+                {% else %}
+                    <img src="{{ url_for('static', filename=row_data[2].replace('\"', '')) }}" height="300" width="200">
+                    {% if row_data[3] == True %}
+                    <img class="watched_icon" src="{{ url_for('static', filename='img/eye.png') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[4] == True %}
+                    <img class="synced_icon" src="{{ url_for('static', filename='img/synced.jpg') }}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[5] != None %}
+                    <img class="rating_icon" src="{{row_data[5]}}" height="20" width="20">
+                    {% endif %}
+                    {% if row_data[6] == True %}
+                    <img class="exclamation_icon" src="{{ url_for('static', filename='img/exclamation-circle-frame.png') }}" height="20" width="20">
+                    {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if pagination_links != None %}
+        {{ pagination_links }}
+    {% endif %}
+    {% else %}
+    <p id="general_text">No movie media found.</p>
+    {% endif %}
+    </div>
     <footer class="bg-white sticky-footer">
         <div class="container my-auto">
             <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
@@ -49,5 +131,7 @@
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.contextMenu.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base_webapp.js') }}"></script>
 </body>
 {% endblock %}

@@ -16,54 +16,65 @@
   MA 02110-1301, USA.
 """
 
+import inspect
 import json
 import time
 
-import psycopg2
 from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
-def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
+async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
     """
     # tmdb data fetch for tv
     """
-    common_global.es_inst.com_elastic_index('info', {"meta tv themoviedb save fetch": tmdb_id})
-    result_json = common_global.api_instance.com_tmdb_metadata_tv_by_id(tmdb_id)
-    common_global.es_inst.com_elastic_index('info', {'tv fetch save themoviedb show': result_json})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'function':
+                                                                             inspect.stack()[0][
+                                                                                 3],
+                                                                         'locals': locals(),
+                                                                         'caller':
+                                                                             inspect.stack()[1][
+                                                                                 3]})
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         "meta tv themoviedb save fetch": tmdb_id})
+    result_json = await common_global.api_instance.com_tmdb_metadata_tv_by_id(tmdb_id)
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'tv fetch save themoviedb show': result_json})
     # 504	Your request to the backend server timed out. Try again.
     if result_json is None or result_json.status_code == 504:
         time.sleep(60)
         # redo fetch due to 504
-        tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        await tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 200:
         series_id, result_json, image_json \
-            = common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
-        common_global.es_inst.com_elastic_index('info', {"series": series_id})
-        # set and insert the record
-        try:
-            db_connection.db_metatv_insert_tmdb(metadata_uuid,
-                                                series_id,
-                                                result_json['name'],
-                                                json.dumps(result_json),
-                                                json.dumps(image_json))
-            # store the cast and crew
-            if 'credits' in result_json:  # cast/crew doesn't exist on all media
-                if 'cast' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                  result_json['credits']['cast'])
-                if 'crew' in result_json['credits']:
-                    db_connection.db_meta_person_insert_cast_crew('themoviedb',
-                                                                  result_json['credits']['crew'])
-        # this except is to check duplicate keys for mm_metadata_pk
-        except psycopg2.IntegrityError:
-            # TODO technically I could be missing cast/crew
-            #  if the above doesn't finish after the insert
-            pass
+            = await common_global.api_instance.com_tmdb_meta_info_build(result_json.json())
+        await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                         message_text={
+                                                                             "series": series_id})
+        await db_connection.db_metatv_insert_tmdb(metadata_uuid,
+                                                  series_id,
+                                                  result_json['name'],
+                                                  json.dumps(result_json),
+                                                  json.dumps(image_json))
+        # store the cast and crew
+        if 'credits' in result_json:  # cast/crew doesn't exist on all media
+            if 'cast' in result_json['credits']:
+                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                    result_json['credits'][
+                                                                        'cast'])
+            if 'crew' in result_json['credits']:
+                await db_connection.db_meta_person_insert_cast_crew('themoviedb',
+                                                                    result_json['credits'][
+                                                                        'crew'])
     # 429	Your request count (#) is over the allowed limit of (40).
     elif result_json.status_code == 429:
         time.sleep(20)
         # redo fetch due to 504
-        tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
+        await tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
     elif result_json.status_code == 404:
         # TODO handle 404's better
         metadata_uuid = None

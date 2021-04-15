@@ -29,14 +29,16 @@ from common import common_file
 from common import common_file_extentions
 from common import common_global
 from common import common_internationalization
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network_cifs
 from common import common_signal
 from common import common_string
 from common import common_system
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch('subprogram_file_scan')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START',
+                                                     index_name='subprogram_file_scan')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -51,26 +53,27 @@ def worker(audit_directory):
     """
     dir_path, media_class_type_uuid, dir_guid = audit_directory
     # open the database
-    option_config_json, thread_db = common_config_ini.com_config_read()
-    common_global.es_inst.com_elastic_index('info', {'worker dir': dir_path})
+    option_config_json, db_connection = common_config_ini.com_config_read()
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'worker dir': dir_path})
     original_media_class = media_class_type_uuid
     # update the timestamp now so any other media added DURING this scan don't get skipped
-    thread_db.db_audit_dir_timestamp_update(dir_path)
-    thread_db.db_audit_path_update_status(dir_guid,
-                                          json.dumps({'Status': 'File search scan', 'Pct': 0}))
-    thread_db.db_commit()
+    db_connection.db_audit_dir_timestamp_update(dir_path)
+    db_connection.db_audit_path_update_status(dir_guid,
+                                              json.dumps({'Status': 'File search scan',
+                                                          'Pct': 'NA'}))
+    db_connection.db_commit()
     # check for UNC before grabbing dir list
     if dir_path[:1] == "\\":
         file_data = []
-        smb_stuff = common_network_cifs.CommonCIFSShare()
         addr, share, path = common_string.com_string_unc_to_addr_path(dir_path)
-        smb_stuff.com_cifs_connect(addr)
+        smb_stuff = common_network_cifs.CommonCIFSShare()
+        smb_stuff.com_cifs_open(addr)
         for dir_data in smb_stuff.com_cifs_walk(share, path):
             for file_name in dir_data[2]:
                 # TODO can I do os.path.join with UNC?
-                # TODO as of right now this will break with spaces in share/dir/filename
-                file_data.append('\\\\' + addr + '\\' + share + '\\' + dir_data[0]
-                                 + '\\' + file_name)
+                file_data.append('\\\\\'' + addr + '\\' + share + '\\' + dir_data[0]
+                                 + '\\' + file_name + '\'')
         smb_stuff.com_cifs_close()
     else:
         file_data = common_file.com_file_dir_list(dir_path, None, True, False)
@@ -83,7 +86,7 @@ def worker(audit_directory):
         else:
             # add to global so next scan won't do again
             global_known_media.append(file_name)
-            # set lower here so I can remove alot of .lower() in the code below
+            # set lower here so I can remove a lot of .lower() in the code below
             filename_base, file_extension = os.path.splitext(file_name.lower())
             # checking subtitles for parts as need multiple files for multiple media files
             if file_extension[1:] in common_file_extentions.MEDIA_EXTENSION \
@@ -182,64 +185,65 @@ def worker(audit_directory):
                     file_name = file_name.replace('\\\\', 'smb://guest:\'\'@').replace('\\', '/')
                 # create media_json data
                 media_json = json.dumps({'DateAdded': datetime.now().strftime("%Y-%m-%d")})
-                media_id = str(uuid.uuid4())
-                thread_db.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
-                                          media_json)
-                # verify ffprobe and bif should run on the data
-                if ffprobe_bif_data and file_extension[
-                                        1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
-                        and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
-                    # Send a message so ffprobe runs
-                    channel.basic_publish(exchange='mkque_ffmpeg_ex',
-                                          routing_key='mkffmpeg',
-                                          body=json.dumps(
-                                              {'Type': 'FFProbe', 'Media UUID': media_id,
-                                               'Media Path': file_name}),
-                                          properties=pika.BasicProperties(content_type='text/plain',
-                                                                          delivery_mode=2))
-                    if original_media_class != common_global.DLMediaType.Music.value:
-                        # Send a message so roku thumbnail is generated
-                        channel.basic_publish(exchange='mkque_roku_ex',
-                                              routing_key='mkroku',
-                                              body=json.dumps(
-                                                  {'Type': 'Roku', 'Subtype': 'Thumbnail',
-                                                   'Media UUID': media_id,
-                                                   'Media Path': file_name}),
-                                              properties=pika.BasicProperties(
-                                                  content_type='text/plain',
-                                                  delivery_mode=2))
+                media_id = uuid.uuid4()
+                db_connection.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
+                                              media_json)
+                # # verify ffprobe and bif should run on the data
+                # if ffprobe_bif_data and file_extension[
+                #                         1:] not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
+                #         and file_extension[1:] in common_file_extentions.MEDIA_EXTENSION:
+                #     # Send a message so ffprobe runs
+                #     channel.basic_publish(exchange='mkque_ffmpeg_ex',
+                #                           routing_key='mkffmpeg',
+                #                           body=json.dumps(
+                #                               {'Type': 'FFProbe', 'Media UUID': str(media_id),
+                #                                'Media Path': file_name}),
+                #                           properties=pika.BasicProperties(content_type='text/plain',
+                #                                                           delivery_mode=2))
+                #     if original_media_class != common_global.DLMediaType.Music.value:
+                #         # Send a message so roku thumbnail is generated
+                #         channel.basic_publish(exchange='mkque_roku_ex',
+                #                               routing_key='mkroku',
+                #                               body=json.dumps(
+                #                                   {'Type': 'Roku', 'Subtype': 'Thumbnail',
+                #                                    'Media UUID': str(media_id),
+                #                                    'Media Path': file_name}),
+                #                               properties=pika.BasicProperties(
+                #                                   content_type='text/plain',
+                #                                   delivery_mode=2))
                 # verify it should save a dl "Z" record for search/lookup/etc
                 if save_dl_record:
                     # media id begin and download que insert
-                    thread_db.db_download_insert('Z', 0, json.dumps({'MediaID': media_id,
-                                                                     'Path': file_name,
-                                                                     'ClassID': new_class_type_uuid,
-                                                                     'Status': None,
-                                                                     'MetaNewID': str(uuid.uuid4()),
-                                                                     'ProviderMetaID': None}))
+                    db_connection.db_download_insert(provider='Z',
+                                                     que_type=0,
+                                                     down_json=json.dumps({'MediaID': str(media_id),
+                                                                           'Path': file_name}),
+                                                     down_new_uuid=uuid.uuid4(),
+                                                     down_class_uuid=new_class_type_uuid
+                                                     )
         total_scanned += 1
-        thread_db.db_audit_path_update_status(dir_guid,
-                                              json.dumps({'Status': 'File scan: '
-                                                                    + common_internationalization.com_inter_number_format(
-                                                  total_scanned)
-                                                                    + ' / ' + common_internationalization.com_inter_number_format(
-                                                  total_file_in_dir),
-                                                          'Pct': (
-                                                                         total_scanned / total_file_in_dir) * 100}))
-        thread_db.db_commit()
+        db_connection.db_audit_path_update_status(dir_guid,
+                                                  json.dumps({'Status': 'File scan: '
+                                                                        + common_internationalization.com_inter_number_format(
+                                                      total_scanned)
+                                                                        + ' / ' + common_internationalization.com_inter_number_format(
+                                                      total_file_in_dir),
+                                                              'Pct': (
+                                                                             total_scanned / total_file_in_dir) * 100}))
+        db_connection.db_commit()
     # end of for loop for each file in library
-    common_global.es_inst.com_elastic_index('info',
-                                            {'worker dir done': dir_path,
-                                             'media class': media_class_type_uuid})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'worker dir done': dir_path,
+                                                                       'media class': media_class_type_uuid})
     # set to none so it doesn't show up anymore in admin status page
-    thread_db.db_audit_path_update_status(dir_guid, None)
+    db_connection.db_audit_path_update_status(dir_guid, None)
     if total_files > 0:
         # add notification to admin status page
-        thread_db.db_notification_insert(
+        db_connection.db_notification_insert(
             common_internationalization.com_inter_number_format(total_files)
             + " file(s) added from " + dir_path, True)
-    thread_db.db_commit()
-    thread_db.db_close()
+    db_connection.db_commit()
+    db_connection.db_close()
     return
 
 
@@ -267,26 +271,27 @@ for media_row in db_connection.db_known_media():
 # determine directories to audit
 audit_directories = []  # pylint: disable=C0103
 for row_data in db_connection.db_audit_paths():
-    common_global.es_inst.com_elastic_index('info', {"Audit Path": str(row_data)})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={"Audit Path": str(row_data)})
     # check for UNC
     if row_data['mm_media_dir_path'][:1] == "\\":
-        smb_stuff = common_network_cifs.CommonCIFSShare()
         addr, share, path = common_string.com_string_unc_to_addr_path(row_data['mm_media_dir_path'])
-        smb_stuff.com_cifs_connect(addr)
-        if smb_stuff.com_cifs_share_directory_check(share, path):
-            if datetime.strptime(time.ctime(
-                    smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
-                    "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
-                audit_directories.append((row_data['mm_media_dir_path'],
-                                          str(row_data['mm_media_class_guid']),
-                                          row_data['mm_media_dir_guid']))
-                db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
-                                                          json.dumps({'Status': 'Added to scan',
-                                                                      'Pct': 100}))
-        else:
-            db_connection.db_notification_insert('UNC Library path not found: %s'
-                                                 % row_data['mm_media_dir_path'], True)
-        smb_stuff.com_cifs_close()
+        smb_stuff = common_network_cifs.CommonCIFSShare()
+        if smb_stuff.com_cifs_open(ip_addr=addr):
+            if smb_stuff.com_cifs_share_directory_check(share, path):
+                if datetime.strptime(time.ctime(
+                        smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
+                        "%a %b %d %H:%M:%S %Y") > row_data['mm_media_dir_last_scanned']:
+                    audit_directories.append((row_data['mm_media_dir_path'],
+                                              row_data['mm_media_dir_class_type'],
+                                              row_data['mm_media_dir_guid']))
+                    db_connection.db_audit_path_update_status(row_data['mm_media_dir_guid'],
+                                                              json.dumps({'Status': 'Added to scan',
+                                                                          'Pct': 100}))
+            else:
+                db_connection.db_notification_insert('UNC Library path not found: %s'
+                                                     % row_data['mm_media_dir_path'], True)
+            smb_stuff.com_cifs_close()
     else:
         # make sure the path still exists
         if not os.path.isdir(os.path.join('/mediakraken/mnt', row_data['mm_media_dir_path'])):
@@ -318,19 +323,10 @@ if len(audit_directories) > 0:
     # with ThreadPoolExecutor(len(audit_directories)) as executor:
     #     futures = [executor.submit(worker, n) for n in audit_directories]
     #     for future in futures:
-    #         pass
-    #         # try:
-    #         #     common_global.es_inst.com_elastic_index('info', {'future': str(future.result())})
-    #         # except:
-    #         #     pass
+    #         print(str(future.result())
 
 # commit
 db_connection.db_commit()
-
-# vacuum tables that had records added
-# TODO psycopg2.errors.ActiveSqlTransaction: VACUUM cannot run inside a transaction block
-# db_connection.db_pgsql_vacuum_table('mm_media')
-# db_connection.db_pgsql_vacuum_table('mm_download_que')
 
 # Cancel the consumer and return any pending messages
 channel.cancel()

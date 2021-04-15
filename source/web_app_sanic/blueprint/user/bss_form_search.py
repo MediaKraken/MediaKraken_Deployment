@@ -1,12 +1,12 @@
 from sanic_wtf import SanicForm
-from wtforms import TextField, SelectField
+from wtforms import StringField, SelectField
 from wtforms.validators import DataRequired
 
 
 # for searching
 class BSSSearchEditForm(SanicForm):
     # fields
-    search_string = TextField("Search string", validators=[DataRequired()])
+    search_string = StringField("Search string", validators=[DataRequired()])
     search_media_type = SelectField("Media Type", choices=[('any', 'Any'),
                                                            ('video', 'Video'),
                                                            ('audio', 'Audio'),

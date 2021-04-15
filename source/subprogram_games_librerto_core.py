@@ -20,8 +20,7 @@ import sys
 
 from common import common_config_ini
 from common import common_file
-from common import common_global
-from common import common_logging_elasticsearch
+from common import common_logging_elasticsearch_httpx
 from common import common_network
 from common import common_signal
 from common import common_system
@@ -32,8 +31,9 @@ if common_system.com_process_list(
     sys.exit(0)
 
 # start logging
-common_global.es_inst = common_logging_elasticsearch.CommonElasticsearch(
-    'subprogram_games_libretro')
+common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                     message_text='START',
+                                                     index_name='subprogram_games_libreto_core')
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
@@ -61,10 +61,10 @@ for libretro_core in common_network.mk_network_fetch_from_url(libtro_url
     else:
         download_core = True
     if download_core:
-        # download the missing cores
+        # download the missing or newer core
         common_network.mk_network_fetch_from_url(libtro_url + core_name,
                                                  '/mediakraken/emulation/cores/' + core_name)
-        # unzip the cores for use
+        # unzip the core for use
         common_file.com_file_unzip('/mediakraken/emulation/cores/' + core_name,
                                    target_destination_directory=None, remove_zip=True)
 

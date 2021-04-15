@@ -19,15 +19,15 @@ async def url_bp_admin_messages(request):
     pagination = common_pagination_bootstrap.com_pagination_boot_html(page,
                                                                       url='/admin/admin_messages',
                                                                       item_count=await request.app.db_functions.db_table_count(
-                                                                          db_connection,
-                                                                          'mm_messages'),
+                                                                          table_name='mm_messages',
+                                                                          db_connection=db_connection),
                                                                       client_items_per_page=
                                                                       int(request.ctx.session[
                                                                               'per_page']),
                                                                       format_number=True)
-    media_dir = await request.app.db_functions.db_message_list(db_connection, offset,
+    media_dir = await request.app.db_functions.db_message_list(offset,
                                                                int(request.ctx.session[
-                                                                       'per_page']))
+                                                                       'per_page']), db_connection)
     await request.app.db_pool.release(db_connection)
     return {
         'media_dir': media_dir,
@@ -42,6 +42,7 @@ async def url_bp_admin_messages_delete(request):
     Delete messages action 'page'
     """
     db_connection = await request.app.db_pool.acquire()
-    await request.app.db_functions.db_message_delete(db_connection, request.form['id'])
+    await request.app.db_functions.db_message_delete(request.form['id'],
+                                                     db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return json.dumps({'status': 'OK'})

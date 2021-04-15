@@ -17,7 +17,7 @@ async def url_bp_admin_transmission(request):
     """
     db_connection = await request.app.db_pool.acquire()
     trans_connection = common_transmission.CommonTransmission(
-        await request.app.db_functions.db_opt_json_read(db_connection))
+        await request.app.db_functions.db_opt_json_read(db_connection=db_connection))
     await request.app.db_pool.release(db_connection)
     transmission_data = []
     if trans_connection is not None:
@@ -39,7 +39,7 @@ async def url_bp_admin_transmission_delete(request):
     """
     Delete torrent from transmission
     """
-    # await request.app.db_functions.db_transmission_delete(db_connection, request.form['id'])
+    # await request.app.db_functions.db_transmission_delete(request.form['id'], db_connection)
     return json.dumps({'status': 'OK'})
 
 
@@ -49,5 +49,5 @@ async def url_bp_admin_transmission_edit(request):
     """
     Edit a torrent from transmission
     """
-    # await request.app.db_functions.db_transmission_delete(db_connection, request.form['id'])
+    # await request.app.db_functions.db_transmission_delete(request.form['id'], db_connection)
     return json.dumps({'status': 'OK'})

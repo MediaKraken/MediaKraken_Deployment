@@ -19,7 +19,7 @@
 import json
 import uuid
 
-from common import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 def db_meta_book_list_count(self, search_value=None):
@@ -87,9 +87,11 @@ def db_meta_book_insert(self, json_data):
     # insert metadata json from isbndb
     """
     # json_data = json.dumps(json_data)
-    common_global.es_inst.com_elastic_index('info', {'book insert': json_data})
-    common_global.es_inst.com_elastic_index('info', {'book insert data': json_data['data']})
-    insert_uuid = str(uuid.uuid4())
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'book insert': json_data})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'book insert data': json_data['data']})
+    insert_uuid = uuid.uuid4()
     self.db_cursor.execute('insert into mm_metadata_book (mm_metadata_book_guid,'
                            ' mm_metadata_book_isbn,'
                            ' mm_metadata_book_isbn13,'
@@ -121,13 +123,14 @@ def db_meta_book_image_random(self, return_image_type='Cover'):
     Find random book image
     """
     # TODO little bobby tables
-    self.db_cursor.execute('select mm_metadata_book_localimage_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\' as image_json,mm_metadata_book_guid'
-                                                 ' from mm_media,mm_metadata_book'
-                                                 ' where mm_media_metadata_guid = mm_metadata_book_guid'
-                                                 ' and (mm_metadata_book_localimage_json->\'Images\'->\'themoviedb\'->>\''
-                           + return_image_type + '\'' + ')::text != \'null\''
-                                                        ' order by random() limit 1')
+    self.db_cursor.execute(
+        'select mm_metadata_book_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\' as image_json,mm_metadata_book_guid'
+                              ' from mm_media,mm_metadata_book'
+                              ' where mm_media_metadata_guid = mm_metadata_book_guid'
+                              ' and (mm_metadata_book_localimage_json->\'Images\'->\'themoviedb\'->>\''
+        + return_image_type + '\'' + ')::text != \'null\''
+                                     ' order by random() limit 1')
     try:
         # then if no results.....a None will except which will then pass None, None
         image_json, metadata_id = self.db_cursor.fetchone()
