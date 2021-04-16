@@ -7,7 +7,7 @@ LABEL description="This image holds the Mister rom/chd converter"
 WORKDIR /mediakraken
 
 RUN apt update && apt -y install \
-  mame-tools==0.206+dfsg.1-1 \
+  mame-tools=0.206+dfsg.1-1 \
   && apt clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
