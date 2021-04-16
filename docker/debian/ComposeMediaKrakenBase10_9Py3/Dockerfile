@@ -1,4 +1,6 @@
 ﻿# Download base image
+
+# https://hub.docker.com/r/amd64/python/ list of available base images
 FROM python:3.9.4-slim-buster
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
