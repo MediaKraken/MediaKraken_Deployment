@@ -42,24 +42,35 @@ target_directory = 'Y:\\Media\\Emulation\\misterfpga_share\\games'
 # Mister folder name, source target dir, file extensions
 file_conversion = (
     # CCC, ROM
-    {'Target': 'CoCo2', 'Source': 'MAME 0.228 Software List ROMs (merged)\\coco_cart',
+    {'Target': 'CoCo2\cart', 'Source': 'MAME 0.228 Software List ROMs (merged)\\coco_cart',
      'Conv': 'zip', 'Ext': 'rom', 'Enabled': False},
 
     # CUE, zip is a no no
     {'Target': 'MegaCD\megacd', 'Source': 'MAME 0.228 Software List CHDs (merged)\\megacd',
-     'Conv': 'chd', 'Ext': 'dir', 'Enabled': True},
+     'Conv': 'chd', 'Ext': 'dir', 'Enabled': False},
 
     # CUE, zip is a no no
     {'Target': 'MegaCD\megacdj', 'Source': 'MAME 0.228 Software List CHDs (merged)\\megacdj',
-     'Conv': 'chd', 'Ext': 'dir', 'Enabled': True},
+     'Conv': 'chd', 'Ext': 'dir', 'Enabled': False},
 
     # CUE, zip is a no no
     {'Target': 'MegaCD\segacd', 'Source': 'MAME 0.228 Software List CHDs (merged)\\segacd',
      'Conv': 'chd', 'Ext': 'dir', 'Enabled': False},
+    # PCE, ROM
+    {'Target': 'TGFX16\\tg16', 'Source': 'MAME 0.228 Software List ROMs (merged)\\tg16',
+     'Conv': 'zip', 'Ext': 'pce', 'Enabled': False},
+
+    # PCE, ROM
+    {'Target': 'TGFX16\\pce', 'Source': 'MAME 0.228 Software List ROMs (merged)\\pce',
+     'Conv': 'zip', 'Ext': 'pce', 'Enabled': False},
 
     # PCE, CUE
     {'Target': 'TGFX16-CD', 'Source': 'MAME 0.228 Software List CHDs (merged)\\pcecd',
      'Conv': 'chd', 'Ext': 'dir', 'Enabled': False},
+
+    # VEC, BIN, ROM
+    {'Target': 'VECTREX', 'Source': 'MAME 0.228 Software List ROMs (merged)\\vectrex',
+     'Conv': 'zip', 'Ext': 'bin', 'Enabled': False},
 )
 
 
@@ -81,6 +92,14 @@ async def main(loop):
                 print('file_data', file_data, flush=True)
                 if os.path.splitext(file_data)[1][1:] == 'zip':
                     print('unzip:', mister_directory['Ext'], flush=True)
+                    # create dir to hold the cue/bin
+                    print('target:', target_directory)
+                    print('mistarget:', mister_directory['Target'])
+                    print('split:', os.path.basename(os.path.splitext(file_data)[0]))
+                    temp_dir = os.path.join(target_directory,
+                                            mister_directory['Target'])
+                    print('temp dir:', temp_dir)
+                    os.makedirs(temp_dir, exist_ok=True)
                     common_file.com_file_unzip(file_data,
                                                target_destination_directory=os.path.join(
                                                    source_directory,
@@ -97,8 +116,7 @@ async def main(loop):
                                                                       file_size=False,
                                                                       directory_only=False,
                                                                       file_modified=False):
-                        shutil.move(unziped_file,
-                                    os.path.join(target_directory, mister_directory['Target']))
+                        shutil.move(unziped_file, temp_dir)
                 elif os.path.splitext(file_data)[1][1:] == 'chd':
                     print('chd:', mister_directory['Ext'], flush=True)
                     # create dir to hold the cue/bin
