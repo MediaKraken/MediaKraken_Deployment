@@ -41,6 +41,14 @@ target_directory = 'Y:\\Media\\Emulation\\misterfpga_share\\games'
 
 # Mister folder name, source target dir, file extensions
 file_conversion = (
+    # BIN
+    {'Target': 'Atari2600\cart', 'Source': 'MAME 0.228 Software List ROMs (merged)\\a2600',
+     'Conv': 'zip', 'Ext': 'bin', 'Enabled': False},
+
+    # BIN
+    {'Target': 'ATARI5200\cart', 'Source': 'MAME 0.228 Software List ROMs (merged)\\a5200',
+     'Conv': 'zip', 'Ext': 'bin', 'Enabled': False},
+
     # CCC, ROM
     {'Target': 'CoCo2\cart', 'Source': 'MAME 0.228 Software List ROMs (merged)\\coco_cart',
      'Conv': 'zip', 'Ext': 'rom', 'Enabled': False},
