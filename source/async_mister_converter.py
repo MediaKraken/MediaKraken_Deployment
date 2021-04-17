@@ -15,12 +15,14 @@
   Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
 """
-
 import asyncio
+import os
+import shlex
+import shutil
+import subprocess
 import sys
 
-from common import common_config_ini
-from common import common_logging_elasticsearch_httpx
+from common import common_file
 from common import common_system
 
 '''
@@ -34,32 +36,69 @@ from common import common_system
 /media/fat/MiSTer.ini	MiSTer global config e.g. to change video mode / overscan
 '''
 
-'''
-for chd in *.chd; do chdman extractcd -i "$chd" -o "${chd%.chd}.cue"; done
-'''
+source_directory = 'Y:\\Media\\Emulation'
+target_directory = 'Y:\\Media\\Emulation\\misterfpga_share\\games'
 
-source_directory = ''
-target_directory = ''
+# Mister folder name, source target dir, file extentions
+file_conversion = (
+    # CCC, ROM
+    {'Target': 'CoCo2', 'Source': 'MAME 0.228 Software List ROMs (merged)\\coco_cart',
+     'Conv': 'zip', 'Ext': 'rom', 'Enabled': False},
+    # CUE and via zip ok
+    {'Target': 'MegaCD', 'Source': 'MAME 0.228 Software List CHDs (merged)\\segacd',
+     'Conv': 'chd', 'Ext': 'zip', 'Enabled': True}
+)
+
 
 async def main(loop):
     # start logging
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text='START',
-                                                                     index_name='async_mister_converter')
+    # await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+    #                                                                  message_text='START',
+    #                                                                  index_name='async_mister_converter')
 
-    # open the database
-    option_config_json, db_connection = \
-        await common_config_ini.com_config_read_async(loop=loop,
-                                                      as_pool=False)
+    for mister_directory in file_conversion:
+        if mister_directory['Enabled']:
+            print('mister_directory:', mister_directory, flush=True)
+            for file_data in common_file.com_file_dir_list(os.path.join(source_directory,
+                                                                        mister_directory['Source']),
+                                                           filter_text=mister_directory['Conv'],
+                                                           walk_dir=True, skip_junk=False,
+                                                           file_size=False, directory_only=False,
+                                                           file_modified=False):
+                print('file_data', file_data, flush=True)
+                if os.path.splitext(file_data)[1][1:] == 'zip':
+                    print('unzip:', mister_directory['Ext'], flush=True)
+                    common_file.com_file_unzip(file_data,
+                                               target_destination_directory=os.path.join(
+                                                   source_directory,
+                                                   mister_directory['Source']),
+                                               remove_zip=False)
+                    # walk dir to grab stuff that was in a folder
+                    for unziped_file in common_file.com_file_dir_list(os.path.join(source_directory,
+                                                                                   mister_directory[
+                                                                                       'Source']),
+                                                                      filter_text=mister_directory[
+                                                                          'Ext'],
+                                                                      walk_dir=True, skip_junk=False,
+                                                                      file_size=False,
+                                                                      directory_only=False,
+                                                                      file_modified=False):
+                        shutil.move(unziped_file,
+                                    os.path.join(target_directory, mister_directory['Target']))
+                elif os.path.splitext(file_data)[1][1:] == 'chd':
+                    print('chd:', mister_directory['Ext'], flush=True)
+                    chd_pid = subprocess.Popen(
+                        shlex.split('chdman extractcd -i "%s"'
+                                    ' -o "%s.cue"'
+                                    ' -ob "%s.bin"' %
+                                    (file_data,
+                                     os.path.splitext(file_data)[0],
+                                     os.path.splitext(file_data)[0])),
+                        stdout=subprocess.PIPE, shell=False)
+                    chd_pid.wait()
 
-    # commit all changes
-    await db_connection.db_commit(db_connection=None)
-
-    # close DB
-    await db_connection.db_close(db_connection=None)
-
-    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                     message_text='STOP')
+    # await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+    #                                                                  message_text='STOP')
 
 
 if __name__ == "__main__":
