@@ -39,14 +39,27 @@ from common import common_system
 source_directory = 'Y:\\Media\\Emulation'
 target_directory = 'Y:\\Media\\Emulation\\misterfpga_share\\games'
 
-# Mister folder name, source target dir, file extentions
+# Mister folder name, source target dir, file extensions
 file_conversion = (
     # CCC, ROM
     {'Target': 'CoCo2', 'Source': 'MAME 0.228 Software List ROMs (merged)\\coco_cart',
      'Conv': 'zip', 'Ext': 'rom', 'Enabled': False},
-    # CUE and via zip ok
-    {'Target': 'MegaCD', 'Source': 'MAME 0.228 Software List CHDs (merged)\\segacd',
-     'Conv': 'chd', 'Ext': 'zip', 'Enabled': True}
+
+    # CUE, zip is a no no
+    {'Target': 'MegaCD\megacd', 'Source': 'MAME 0.228 Software List CHDs (merged)\\megacd',
+     'Conv': 'chd', 'Ext': 'dir', 'Enabled': True},
+
+    # CUE, zip is a no no
+    {'Target': 'MegaCD\megacdj', 'Source': 'MAME 0.228 Software List CHDs (merged)\\megacdj',
+     'Conv': 'chd', 'Ext': 'dir', 'Enabled': True},
+
+    # CUE, zip is a no no
+    {'Target': 'MegaCD\segacd', 'Source': 'MAME 0.228 Software List CHDs (merged)\\segacd',
+     'Conv': 'chd', 'Ext': 'dir', 'Enabled': False},
+
+    # PCE, CUE
+    {'Target': 'TGFX16-CD', 'Source': 'MAME 0.228 Software List CHDs (merged)\\pcecd',
+     'Conv': 'chd', 'Ext': 'dir', 'Enabled': False},
 )
 
 
@@ -79,7 +92,8 @@ async def main(loop):
                                                                                        'Source']),
                                                                       filter_text=mister_directory[
                                                                           'Ext'],
-                                                                      walk_dir=True, skip_junk=False,
+                                                                      walk_dir=True,
+                                                                      skip_junk=False,
                                                                       file_size=False,
                                                                       directory_only=False,
                                                                       file_modified=False):
@@ -87,15 +101,35 @@ async def main(loop):
                                     os.path.join(target_directory, mister_directory['Target']))
                 elif os.path.splitext(file_data)[1][1:] == 'chd':
                     print('chd:', mister_directory['Ext'], flush=True)
+                    # create dir to hold the cue/bin
+                    print('target:', target_directory)
+                    print('mistarget:', mister_directory['Target'])
+                    print('split:', os.path.basename(os.path.splitext(file_data)[0]))
+                    temp_dir = os.path.join(target_directory,
+                                            mister_directory['Target'],
+                                            os.path.basename(os.path.splitext(file_data)[0]))
+                    print('temp dir:', temp_dir)
+                    os.makedirs(temp_dir, exist_ok=True)
                     chd_pid = subprocess.Popen(
                         shlex.split('chdman extractcd -i "%s"'
                                     ' -o "%s.cue"'
                                     ' -ob "%s.bin"' %
                                     (file_data,
-                                     os.path.splitext(file_data)[0],
-                                     os.path.splitext(file_data)[0])),
+                                     os.path.join(temp_dir,
+                                                  os.path.basename(os.path.splitext(file_data)[0])),
+                                     os.path.join(temp_dir,
+                                                  os.path.basename(
+                                                      os.path.splitext(file_data)[0])))),
                         stdout=subprocess.PIPE, shell=False)
                     chd_pid.wait()
+                    # # need to zip up the cue/bin and remove source
+                    # common_file.com_file_zip(os.path.splitext(file_data)[0] + '.'
+                    #                          + mister_directory['Ext'],
+                    #                          (os.path.splitext(file_data)[0] + '.cue',
+                    #                           os.path.splitext(file_data)[0] + '.bin'),
+                    #                          remove_source_files=True)
+                    # shutil.move(os.path.splitext(file_data)[0] + '.' + mister_directory['Ext'],
+                    #             os.path.join(target_directory, mister_directory['Target']))
 
     # await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
     #                                                                  message_text='STOP')
