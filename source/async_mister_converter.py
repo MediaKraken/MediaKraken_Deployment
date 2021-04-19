@@ -76,6 +76,10 @@ file_conversion = (
     {'Target': 'TGFX16-CD', 'Source': 'MAME 0.228 Software List CHDs (merged)\\pcecd',
      'Conv': 'chd', 'Ext': 'dir', 'Enabled': False},
 
+    # BIN - #TODO, the bins I put in won't load?
+    {'Target': 'TI-99_4A\cart', 'Source': 'MAME 0.228 Software List ROMs (merged)\\ti99_cart',
+     'Conv': 'zip', 'Ext': 'bin', 'Enabled': True},
+
     # VEC, BIN, ROM
     {'Target': 'VECTREX', 'Source': 'MAME 0.228 Software List ROMs (merged)\\vectrex',
      'Conv': 'zip', 'Ext': 'bin', 'Enabled': False},
@@ -124,7 +128,10 @@ async def main(loop):
                                                                       file_size=False,
                                                                       directory_only=False,
                                                                       file_modified=False):
-                        shutil.move(unziped_file, temp_dir)
+                        try:
+                            shutil.move(unziped_file, temp_dir)
+                        except shutil.Error:
+                            pass
                 elif os.path.splitext(file_data)[1][1:] == 'chd':
                     print('chd:', mister_directory['Ext'], flush=True)
                     # create dir to hold the cue/bin
