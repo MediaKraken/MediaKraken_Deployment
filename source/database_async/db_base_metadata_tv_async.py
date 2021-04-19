@@ -263,5 +263,5 @@ async def db_meta_tv_count_by_id(self, guid, db_connection=None):
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    return await db_conn.fetchval('select count(*) from mm_metadata_tvshow'
-                                  ' where mm_metadata_media_tvshow_id = $1', guid)
+    return await db_conn.fetchval('select exists(select 1 from mm_metadata_tvshow'
+                                  ' where mm_metadata_media_tvshow_id = %s limit 1) limit 1', guid)

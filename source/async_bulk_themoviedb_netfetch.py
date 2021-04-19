@@ -36,7 +36,7 @@ async def main(loop):
                                                                      message_text='START',
                                                                      index_name='async_bulk_themoviedb_netfetch')
 
-    fetch_date = '09_30_2020'
+    fetch_date = '04_10_2021'
 
     # open the database
     option_config_json, db_connection = \
@@ -59,7 +59,8 @@ async def main(loop):
                                                                download_que_type=common_global.DLMediaType.Movie.value,
                                                                provider_name='themoviedb',
                                                                provider_id=tmdb_to_fetch['id'],
-                                                               db_connection=None) is None):
+                                                               db_connection=None,
+                                                               exists_only=True) is False):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.Movie.value,
                                                    down_json=json.dumps({"Status": "Fetch",
@@ -85,7 +86,8 @@ async def main(loop):
                                                                download_que_type=common_global.DLMediaType.TV.value,
                                                                provider_name='themoviedb',
                                                                provider_id=tmdb_to_fetch['id'],
-                                                               db_connection=None) is None):
+                                                               db_connection=None,
+                                                               exists_only=True) is False):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.TV.value,
                                                    down_json=json.dumps({"Status": "Fetch",
