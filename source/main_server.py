@@ -83,16 +83,17 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         'stuff': 'Database upgrade complete.'})
 
-# setup the docker environment
-docker_inst = common_docker.CommonDocker()
-# check for swarm id (should already be master then)
-docker_info = docker_inst.com_docker_info()
-if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0) \
-        or 'Managers' not in docker_info['Swarm']:
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
-    {'stuff': 'attempting to init swarm as manager'})
-    # init host to swarm mode
-    docker_inst.com_docker_swarm_init()
+# TODO to create docker secrets. must already be swarm, so putting into setup application
+# # setup the docker environment
+# docker_inst = common_docker.CommonDocker()
+# # check for swarm id (should already be master then)
+# docker_info = docker_inst.com_docker_info()
+# if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0) \
+#         or 'Managers' not in docker_info['Swarm']:
+#     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text=
+#     {'stuff': 'attempting to init swarm as manager'})
+#     # init host to swarm mode
+#     docker_inst.com_docker_swarm_init()
 
 # mount all the shares first so paths exist for validation
 common_network_share.com_net_share_mount(db_connection.db_audit_shares())
