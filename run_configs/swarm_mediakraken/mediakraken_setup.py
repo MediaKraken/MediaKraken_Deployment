@@ -21,6 +21,9 @@ import shlex
 import subprocess
 from base64 import b64encode
 
+subprocess.call(shlex.split('docker swarm init'),
+                stdout=subprocess.PIPE, shell=False)
+
 if not os.path.isfile('./mkstack_db_password.txt'):
     file_handle = open('./mkstack_db_password.txt', 'w+')
     random_key = b64encode(os.urandom(32)).decode('utf-8')
@@ -44,3 +47,6 @@ if not os.path.isfile('./mkstack_csrf_key.txt'):
     file_handle.close()
     subprocess.call(shlex.split('docker secret create csrf_key ./mkstack_csrf_key.txt'),
                     stdout=subprocess.PIPE, shell=False)
+
+subprocess.call(shlex.split('python3 mediakraken_update_images.py'),
+                stdout=subprocess.PIPE, shell=False)

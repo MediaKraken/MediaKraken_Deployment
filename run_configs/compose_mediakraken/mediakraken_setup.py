@@ -17,6 +17,8 @@
 """
 
 import os
+import shlex
+import subprocess
 from base64 import b64encode
 
 if not os.path.isfile('.env'):
@@ -32,3 +34,6 @@ if not os.path.isfile('.env'):
     file_handle.write(random_key.replace('"', '').replace("'", ''))
     file_handle.write('\nSWARMIP=None\nDEBUG=False')
     file_handle.close()
+
+subprocess.call(shlex.split('python3 mediakraken_update_images.py'),
+                stdout=subprocess.PIPE, shell=False)
