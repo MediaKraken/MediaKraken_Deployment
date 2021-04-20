@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbaseffmpeg:dev
+FROM mediakraken/mkbase_ffmpeg:dev
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image holds the ripper app"
