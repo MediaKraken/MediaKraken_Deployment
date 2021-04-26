@@ -1,4 +1,4 @@
-Login into PVE
+Login into Proxmox
 
 # verify following are running
 th-alpinemirror-1
