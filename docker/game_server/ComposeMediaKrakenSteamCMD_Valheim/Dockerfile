@@ -1,7 +1,8 @@
 ###########################################################
 # Dockerfile that builds a Valheim Gameserver
 ###########################################################
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbasesteamcmdroot:dev
+ARG BRANCHTAG
+FROM mediakraken/mkbasesteamcmdroot:${BRANCHTAG}
 
 LABEL maintainer="walentinlamonos@gmail.com"
 
