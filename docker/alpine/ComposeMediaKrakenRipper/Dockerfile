@@ -1,5 +1,6 @@
 # Download base image
-FROM mediakraken/mkbase_ffmpeg:dev
+ARG BRANCHTAG
+FROM mediakraken/mkbase_ffmpeg:${BRANCHTAG}
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image holds the ripper app"
