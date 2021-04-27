@@ -1,5 +1,6 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase_alpinepy3:dev
+ARG BRANCHTAG
+FROM mediakraken/mkbase_alpinepy3:${BRANCHTAG}
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image holds the downloader app"
