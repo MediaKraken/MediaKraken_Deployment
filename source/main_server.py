@@ -85,7 +85,7 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
 
 # TODO to create docker secrets. must already be swarm, so putting into setup application
 # # setup the docker environment
-# docker_inst = common_docker.CommonDocker()
+docker_inst = common_docker.CommonDocker()
 # # check for swarm id (should already be master then)
 # docker_info = docker_inst.com_docker_info()
 # if ('Managers' in docker_info['Swarm'] and docker_info['Swarm']['Managers'] == 0) \
