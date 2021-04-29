@@ -16,14 +16,21 @@
   MA 02110-1301, USA.
 """
 
+import os
 import shlex
 import subprocess
 
-with open('./docker-compose-stack.yml') as file_handle:
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+
+with open('./docker-compose.yml') as file_handle:
     for line in file_handle:
         if line.find('image: ') > 0:
             pull_pid = subprocess.Popen(shlex.split('docker pull %s'
-                                                    % line.split('image: ')[1].strip()),
+                                                    % (line.split('image: ')[1].strip() \
+                                                       .replace('${BRANCH}',
+                                                                os.environ['BRANCH']))),
                                         stdout=subprocess.PIPE, shell=False)
             pull_pid.wait()
 file_handle.close()

@@ -24,6 +24,11 @@ from base64 import b64encode
 subprocess.call(shlex.split('docker swarm init'),
                 stdout=subprocess.PIPE, shell=False)
 
+if not os.path.isfile('.env'):
+    file_handle = open('.env', 'w+')
+    file_handle.write('BRANCH=dev2021_04')
+    file_handle.close()
+
 if not os.path.isfile('./mkstack_db_password.txt'):
     file_handle = open('./mkstack_db_password.txt', 'w+')
     random_key = b64encode(os.urandom(32)).decode('utf-8')

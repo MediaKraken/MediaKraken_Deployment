@@ -4,7 +4,7 @@ version: '3.6'
 services:
   # Main app server
   appserver:
-    image: mediakraken/mkserver:latest
+    image: mediakraken/mkserver:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
@@ -32,7 +32,7 @@ services:
 
   # start broadcast server (so clients can find server)
   broadcast:
-    image: mediakraken/mkbroadcast:latest
+    image: mediakraken/mkbroadcast:${BRANCH}
     environment:
       # so it knows what ip to broadcast on
       - SWARMIP=${SWARMIP}
@@ -52,7 +52,7 @@ services:
 
   # runs cron
   cron:
-    image: mediakraken/mkcron:latest
+    image: mediakraken/mkcron:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -69,7 +69,7 @@ services:
 
   # Postgresql server
   database:
-    image: mediakraken/mkdatabase:latest
+    image: mediakraken/mkdatabase:${BRANCH}
     environment:
       - MAX_CONNECTIONS=125
       - MAX_WAL_SENDERS=10
@@ -91,7 +91,7 @@ services:
 
   # Runs the download services
   download:
-    image: mediakraken/mkdownload:latest
+    image: mediakraken/mkdownload:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -110,7 +110,7 @@ services:
 
   # runs hardware
   hardware:
-    image: mediakraken/mkhardware:latest
+    image: mediakraken/mkhardware:${BRANCH}
     environment:
       - DEBUG=${DEBUG}
     volumes:
@@ -129,7 +129,7 @@ services:
 
   # runs the server to fetch/process all metadata
   metadata:
-    image: mediakraken/mkmetadata:latest
+    image: mediakraken/mkmetadata:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -152,7 +152,7 @@ services:
 
   # runs the nginx proxy service
   nginx:
-    image: mediakraken/mknginx:latest
+    image: mediakraken/mknginx:${BRANCH}
     container_name: mkstack_nginx
     depends_on:
       - webapp
@@ -171,7 +171,7 @@ services:
 
   # pgbouncer
   pgbouncer:
-    image: mediakraken/mkpgbouncer:latest
+    image: mediakraken/mkpgbouncer:${BRANCH}
     environment:
       - DB_HOST=mkstack_database
       - DB_PASSWORD=${DBPASS}
@@ -191,7 +191,7 @@ services:
 
   # pika
   pika:
-    image: mediakraken/mkpika:latest
+    image: mediakraken/mkpika:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -229,7 +229,7 @@ services:
 
   # rabbit
   rabbit:
-    image: mediakraken/mkrabbitmq:latest
+    image: mediakraken/mkrabbitmq:${BRANCH}
     container_name: mkstack_rabbitmq
     hostname: mkstack_rabbitmq
     environment:
@@ -246,7 +246,7 @@ services:
 
   # Main reactor
   reactor:
-    image: mediakraken/mkreactor:latest
+    image: mediakraken/mkreactor:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -273,7 +273,7 @@ services:
 
   # runs roku thumbnail
   rokuthumb:
-    image: mediakraken/mkrokuthumb:latest
+    image: mediakraken/mkrokuthumb:${BRANCH}
     environment:
       - DEBUG=${DEBUG}
     container_name: mkstack_rokuthumb
@@ -290,7 +290,7 @@ services:
 
   # runs transcode
   transcode:
-    image: mediakraken/mktranscode:latest
+    image: mediakraken/mktranscode:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
@@ -309,7 +309,7 @@ services:
 
   # Runs the web service for the main server application
   webapp:
-    image: mediakraken/mkwebappsanic:latest
+    image: mediakraken/mkwebappsanic:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
