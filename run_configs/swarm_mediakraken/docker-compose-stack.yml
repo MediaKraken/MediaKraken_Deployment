@@ -4,7 +4,7 @@ version: '3.6'
 services:
   # Main app server
   appserver:
-    image: mediakraken/mkserver:latest
+    image: mediakraken/mkserver:${BRANCH}
     environment:
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
@@ -31,7 +31,7 @@ services:
 
 #  # start broadcast server (so clients can find server)
 #  broadcast:
-#    image: mediakraken/mkbroadcast:latest
+#    image: mediakraken/mkbroadcast:${BRANCH}
 #    environment:
 #      # so it knows what ip to broadcast on
 #      - SWARMIP=${SWARMIP}
@@ -56,7 +56,7 @@ services:
 
   # runs cron
   cron:
-    image: mediakraken/mkcron:latest
+    image: mediakraken/mkcron:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_cron_checker.py
@@ -67,7 +67,7 @@ services:
 
   # Postgresql server
   database:
-    image: mediakraken/mkdatabase:latest
+    image: mediakraken/mkdatabase:${BRANCH}
     environment:
       - MAX_CONNECTIONS=125
       - MAX_WAL_SENDERS=10
@@ -92,7 +92,7 @@ services:
 
   #  # Postgresql server
   #  database:
-  #    image: mediakraken/mkdatabase:latest
+  #    image: mediakraken/mkdatabase:${BRANCH}
   #    environment:
   #      - PGHOST=/tmp
   #      - MAX_CONNECTIONS=20
@@ -117,7 +117,7 @@ services:
   #
   #  # Postgresql server replica
   #  database-replica:
-  #    image: mediakraken/mkdatabase:latest
+  #    image: mediakraken/mkdatabase:${BRANCH}
   #    environment:
   #      - PGHOST=/tmp
   #      - MAX_CONNECTIONS=20
@@ -143,7 +143,7 @@ services:
 
   # Runs the download services
   download:
-    image: mediakraken/mkdownload:latest
+    image: mediakraken/mkdownload:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_download.py
@@ -159,7 +159,7 @@ services:
 
   # runs hardware
   hardware:
-    image: mediakraken/mkhardware:latest
+    image: mediakraken/mkhardware:${BRANCH}
     volumes:
       # TODO why not store this in the db with the device as postgresql crypt
       # this stores the "push button" key
@@ -184,7 +184,7 @@ services:
 #      mode: global
 
 #  mbrainz:
-#    image: mediakraken/mkmusicbrainz:latest
+#    image: mediakraken/mkmusicbrainz:${BRANCH}
 #    environment:
 #      - BRAINZCODE=/run/secrets/musicbrainz_code
 #    secrets:
@@ -202,7 +202,7 @@ services:
 
   # runs the server to fetch/process all metadata
   metadata:
-    image: mediakraken/mkmetadata:latest
+    image: mediakraken/mkmetadata:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_database -p 5432 -t 120 -- python3 main_server_metadata_api.py
@@ -221,7 +221,7 @@ services:
         constraints: [node.role == manager]
 
 #  moosefsmaster:
-#    image: mediakraken/mkmoosemaster:latest
+#    image: mediakraken/mkmoosemaster:${BRANCH}
 #    networks:
 #      - mediakraken_moosefsnet
 #    ports:
@@ -233,7 +233,7 @@ services:
 #        constraints: [node.role == manager]
 #
 #  moosefschunkserver:
-#    image: mediakraken/mkmoosechunkserver:latest
+#    image: mediakraken/mkmoosechunkserver:${BRANCH}
 #    environment:
 #      - LABELS=M
 #      - SIZE=1
@@ -248,7 +248,7 @@ services:
 
   # runs the nginx proxy service
   nginx:
-    image: mediakraken/mknginx:latest
+    image: mediakraken/mknginx:${BRANCH}
     entrypoint: /usr/bin/wait-for-it-ash-busybox130.sh -h mkstack_webapp -p 8080 -t 120 -- nginx
     stop_grace_period: 30s
     stop_signal: SIGTERM
@@ -266,7 +266,7 @@ services:
 
   # pgbouncer
   pgbouncer:
-    image: mediakraken/mkpgbouncer:latest
+    image: mediakraken/mkpgbouncer:${BRANCH}
     environment:
       - DB_HOST=mkstack_database
       - POOL_MODE=transaction
@@ -287,7 +287,7 @@ services:
 
   # pika
   pika:
-    image: mediakraken/mkpika:latest
+    image: mediakraken/mkpika:${BRANCH}
     secrets:
       - db_password
     entrypoint: python3 subprogram_pika.py
@@ -340,7 +340,7 @@ services:
 
   # rabbit
   rabbitmq:
-    image: mediakraken/mkrabbitmq:latest
+    image: mediakraken/mkrabbitmq:${BRANCH}
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -357,7 +357,7 @@ services:
 
   # Main reactor
   reactor:
-    image: mediakraken/mkreactor:latest
+    image: mediakraken/mkreactor:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_reactor_line.py
@@ -379,22 +379,8 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # runs roku thumbnail
-  rokuthumb:
-    image: mediakraken/mkrokuthumb:latest
-    entrypoint: python3 subprogram_roku_thumbnail_generate.py
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    volumes:
-      - ./mkmount:/mediakraken/mnt
-    networks:
-      - mediakraken_network_backend
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-
   teamspeak:
-    image: mediakraken/mkteamspeak:latest
+    image: mediakraken/mkteamspeak:${BRANCH}
     ports:
       - "9987:9987/udp"
       - "10011:10011"
@@ -409,7 +395,7 @@ services:
 
   # runs transcode
   transcode:
-    image: mediakraken/mktranscode:latest
+    image: mediakraken/mktranscode:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 async_transcode.py
@@ -421,7 +407,7 @@ services:
       - mediakraken_network_backend
 
   transmission:
-    image: mediakraken/mktransmission:latest
+    image: mediakraken/mktransmission:${BRANCH}
     environment:
       - USERNAME=metaman
       - PASSWORD=metaman
@@ -440,7 +426,7 @@ services:
 
   # Runs the web service for the main server application
   webapp:
-    image: mediakraken/mkwebappsanic:latest
+    image: mediakraken/mkwebappsanic:${BRANCH}
     environment:
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}

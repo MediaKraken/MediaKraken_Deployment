@@ -20,7 +20,13 @@ import os
 import shlex
 import subprocess
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ModuleNotFoundError:
+    install_pid = subprocess.Popen(shlex.split('apt install python3-dotenv -y'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+    from dotenv import load_dotenv
 
 load_dotenv()  # take environment variables from .env.
 

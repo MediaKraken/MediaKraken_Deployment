@@ -4,7 +4,7 @@ version: '3.6'
 services:
   # Main app server
   appserver:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkserver:${BRANCH}
     environment:
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
@@ -31,7 +31,7 @@ services:
 
 #  # start broadcast server (so clients can find server)
 #  broadcast:
-#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkbroadcast:dev
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkbroadcast:${BRANCH}
 #    environment:
 #      # so it knows what ip to broadcast on
 #      - SWARMIP=${SWARMIP}
@@ -56,7 +56,7 @@ services:
 
   # runs cron
   cron:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_cron_checker.py
@@ -67,7 +67,7 @@ services:
 
   # Postgresql server
   database:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:${BRANCH}
     environment:
       - MAX_CONNECTIONS=125
       - MAX_WAL_SENDERS=10
@@ -94,7 +94,7 @@ services:
 
   #  # Postgresql server
   #  database:
-  #    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
+  #    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:${BRANCH}
   #    environment:
   #      - PGHOST=/tmp
   #      - MAX_CONNECTIONS=20
@@ -119,7 +119,7 @@ services:
   #
   #  # Postgresql server replica
   #  database-replica:
-  #    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:dev
+  #    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:${BRANCH}
   #    environment:
   #      - PGHOST=/tmp
   #      - MAX_CONNECTIONS=20
@@ -145,7 +145,7 @@ services:
 
   # Runs the download services
   download:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_download.py
@@ -160,7 +160,7 @@ services:
         constraints: [node.role == manager]
 
   filebeat:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkfilebeat:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkfilebeat:${BRANCH}
     environment:
       - ELASTICSEARCH_HOSTS=th-elk-1:9200
       - KIBANA_HOSTS=th-elk-1:5601
@@ -174,7 +174,7 @@ services:
 
   # runs hardware
   hardware:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkhardware:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkhardware:${BRANCH}
     volumes:
       # TODO why not store this in the db with the device as postgresql crypt
       # this stores the "push button" key
@@ -189,7 +189,7 @@ services:
         constraints: [node.role == manager]
 
 #  logspout:
-#    image: th-registry-1.beaverbay.local:5000/mediakraken/mklogspout:dev
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mklogspout:${BRANCH}
 #    environment:
 #      ROUTE_URIS: 'syslog+tcp://th-elk-1:5000'
 #      LOGSTASH_FIELDS: 'environment=production'
@@ -199,7 +199,7 @@ services:
 #      mode: global
 
 #  mbrainz:
-#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmusicbrainz:dev
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmusicbrainz:${BRANCH}
 #    environment:
 #      - BRAINZCODE=/run/secrets/musicbrainz_code
 #    secrets:
@@ -217,7 +217,7 @@ services:
 
   # runs the server to fetch/process all metadata
   metadata:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_database -p 5432 -t 120 -- python3 main_server_metadata_api.py
@@ -236,7 +236,7 @@ services:
         constraints: [node.role == manager]
 
 #  moosefsmaster:
-#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmoosemaster:dev
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmoosemaster:${BRANCH}
 #    networks:
 #      - mediakraken_moosefsnet
 #    ports:
@@ -248,7 +248,7 @@ services:
 #        constraints: [node.role == manager]
 #
 #  moosefschunkserver:
-#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmoosechunkserver:dev
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmoosechunkserver:${BRANCH}
 #    environment:
 #      - LABELS=M
 #      - SIZE=1
@@ -263,7 +263,7 @@ services:
 
   # runs the nginx proxy service
   nginx:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mknginx:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mknginx:${BRANCH}
     entrypoint: /usr/bin/wait-for-it-ash-busybox130.sh -h mkstack_webapp -p 8080 -t 120 -- nginx
     stop_grace_period: 30s
     stop_signal: SIGTERM
@@ -280,7 +280,7 @@ services:
         constraints: [node.role == manager]
 
   pgadmin:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgadmin:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgadmin:${BRANCH}
     stop_grace_period: 30s
     stop_signal: SIGTERM
     networks:
@@ -298,7 +298,7 @@ services:
 
   # pgbouncer
   pgbouncer:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:${BRANCH}
     environment:
       - DB_HOST=mkstack_database
       - POOL_MODE=transaction
@@ -319,7 +319,7 @@ services:
 
   # pika
   pika:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:${BRANCH}
     secrets:
       - db_password
     entrypoint: python3 subprogram_pika.py
@@ -372,7 +372,7 @@ services:
 
   # rabbit
   rabbitmq:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrabbitmq:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrabbitmq:${BRANCH}
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -394,7 +394,7 @@ services:
 
   # Main reactor
   reactor:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_reactor_line.py
@@ -416,22 +416,8 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # runs roku thumbnail
-  rokuthumb:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrokuthumb:dev
-    entrypoint: python3 subprogram_roku_thumbnail_generate.py
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    volumes:
-      - ./mkmount:/mediakraken/mnt
-    networks:
-      - mediakraken_network_backend
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-
   teamspeak:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkteamspeak:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkteamspeak:${BRANCH}
     ports:
       - "9987:9987/udp"
       - "10011:10011"
@@ -446,7 +432,7 @@ services:
 
   # runs transcode
   transcode:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mktranscode:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mktranscode:${BRANCH}
     secrets:
       - db_password
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 async_transcode.py
@@ -458,7 +444,7 @@ services:
       - mediakraken_network_backend
 
   transmission:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mktransmission:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mktransmission:${BRANCH}
     environment:
       - USERNAME=metaman
       - PASSWORD=metaman
@@ -477,7 +463,7 @@ services:
 
   # Runs the web service for the main server application
   webapp:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebappsanic:dev
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebappsanic:${BRANCH}
     environment:
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}

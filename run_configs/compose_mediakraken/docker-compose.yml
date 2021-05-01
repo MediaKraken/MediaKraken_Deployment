@@ -271,23 +271,6 @@ services:
       - mediakraken_network
     restart: unless-stopped
 
-  # runs roku thumbnail
-  rokuthumb:
-    image: mediakraken/mkrokuthumb:${BRANCH}
-    environment:
-      - DEBUG=${DEBUG}
-    container_name: mkstack_rokuthumb
-    depends_on:
-      - rabbit
-    entrypoint: python3 subprogram_roku_thumbnail_generate.py
-    stop_grace_period: 30s
-    stop_signal: SIGUSR1
-    volumes:
-      - ./mkmount:/mediakraken/mnt
-    networks:
-      - mediakraken_network
-    restart: unless-stopped
-
   # runs transcode
   transcode:
     image: mediakraken/mktranscode:${BRANCH}
