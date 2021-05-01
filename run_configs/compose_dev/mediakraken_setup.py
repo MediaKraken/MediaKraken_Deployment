@@ -21,6 +21,19 @@ import shlex
 import subprocess
 from base64 import b64encode
 
+
+# TODO verify docker-ce is installed
+if not os.path.isfile('/usr/local/bin/docker-compose'):
+    install_pid = subprocess.Popen(shlex.split('curl -L "https://github.com/docker/compose/'
+                                               'releases/download/1.29.1/docker-compose-'
+                                               '$(uname -s)-$(uname -m)" '
+                                               '-o /usr/local/bin/docker-compose'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+    install_pid = subprocess.Popen(shlex.split('chmod +x /usr/local/bin/docker-compose'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+
 if not os.path.isfile('.env'):
     file_handle = open('.env', 'w+')
     file_handle.write('DBPASS=')
