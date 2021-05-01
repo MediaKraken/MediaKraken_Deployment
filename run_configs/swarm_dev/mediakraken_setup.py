@@ -24,6 +24,8 @@ from base64 import b64encode
 subprocess.call(shlex.split('docker swarm init'),
                 stdout=subprocess.PIPE, shell=False)
 
+# TODO verify docker-ce is installed
+
 if not os.path.isfile('.env'):
     file_handle = open('.env', 'w+')
     file_handle.write('BRANCH=dev2021_04')
