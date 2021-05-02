@@ -41,8 +41,6 @@ services:
     entrypoint: python3 subprogram_broadcast.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
-    ports:
-      - "9101:9101"
     volumes:
       # needs socket for running image list
       - /var/run/docker.sock:/var/run/docker.sock:ro
