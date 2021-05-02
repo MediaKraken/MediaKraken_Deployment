@@ -1,6 +1,7 @@
 [package]
 name = "myapp"
 version = "0.0.1"
+edition = "2018"
 
 [dependencies]
 bollard = "0.10.1"
