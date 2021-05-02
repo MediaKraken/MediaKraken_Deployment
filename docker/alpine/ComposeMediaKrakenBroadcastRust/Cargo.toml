@@ -3,4 +3,4 @@ name = "myapp"
 version = "0.0.1"
 
 [dependencies]
-bollard = "0.9"
+bollard = "0.10.1"
