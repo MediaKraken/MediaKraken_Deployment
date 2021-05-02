@@ -8,6 +8,7 @@
 python mediakraken_update_images.py
 ./mediakraken_restart.sh
 
+
 Access the HOST machine via a web browser at HOST:8900 address.
 
 Register a user via the link at top right of the screen.
