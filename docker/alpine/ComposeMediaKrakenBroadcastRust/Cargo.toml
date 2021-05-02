@@ -5,5 +5,5 @@ edition = "2018"
 
 [dependencies]
 bollard = "0.10.1"
-futures_util = "0.3.14"
+futures-util = "0.3.14"
 tokio = "1.5.0"
