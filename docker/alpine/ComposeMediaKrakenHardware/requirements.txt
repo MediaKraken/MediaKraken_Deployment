@@ -4,7 +4,7 @@ pingo==0.2.0
 rxv==0.6.0
 python-nest==4.1.0
 onkyo-eiscp==1.2.7
-soco==0.21.3
+soco==0.22.1
 pyatv==0.7.7
 xmltodict==0.12.0
 tripplite==0.3.0

@@ -10,5 +10,5 @@ dosage==2.17
 np_inline==0.3
 libarchive-c==2.9
 pycountry==20.7.3
-babel==2.9.0
+babel==2.9.1
 psutil==5.8.0
