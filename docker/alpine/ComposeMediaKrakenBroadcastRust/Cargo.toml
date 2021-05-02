@@ -1,0 +1,6 @@
+[package]
+name = "myapp"
+version = "0.0.1"
+
+[dependencies]
+bollard = "0.9"
