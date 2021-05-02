@@ -5,10 +5,7 @@ use futures_util::future::FutureExt;
 
 use std::default::Default;
 
-// Use a connection function described above
-// let docker = Docker::connect_...;
-
-async move {
+async fn main() {
     let images = &docker.list_images(Some(ListImagesOptions::<String> {
         all: true,
         ..Default::default()
