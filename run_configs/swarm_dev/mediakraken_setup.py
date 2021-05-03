@@ -21,10 +21,39 @@ import shlex
 import subprocess
 from base64 import b64encode
 
+# check to see if docker is installed
+if not os.path.isfile('/usr/bin/docker'):
+    install_pid = subprocess.Popen(shlex.split('apt-get install apt-transport-https'
+                                               ' ca-certificates curl gnupg lsb-release'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+
+    install_pid = subprocess.Popen(shlex.split('curl -fsSL https://download.docker.com/linux/'
+                                               'debian/gpg | gpg --dearmor '
+                                               '-o /usr/share/keyrings/docker-archive-keyring.gpg'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+
+    install_pid = subprocess.Popen(shlex.split('echo "deb [arch=amd64 signed-by=/usr/share/'
+                                               'keyrings/docker-archive-keyring.gpg]'
+                                               ' https://download.docker.com/linux/debian'
+                                               ' $(lsb_release -cs) stable" | '
+                                               'tee /etc/apt/sources.list.d/docker.list '
+                                               '> /dev/null'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+
+    install_pid = subprocess.Popen(shlex.split('apt update -y'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+
+    install_pid = subprocess.Popen(shlex.split('apt install -y'
+                                               ' docker-ce docker-ce-cli containerd.io'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+
 subprocess.call(shlex.split('docker swarm init'),
                 stdout=subprocess.PIPE, shell=False)
-
-# TODO verify docker-ce is installed
 
 if not os.path.isfile('.env'):
     file_handle = open('.env', 'w+')
