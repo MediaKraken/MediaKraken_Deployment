@@ -45,3 +45,8 @@ with open('./docker-compose.yml') as file_handle:
                 print(line.rstrip(), flush=True)
             pull_pid.wait()
 file_handle.close()
+
+# remove outdated images
+install_pid = subprocess.Popen(shlex.split('./docker_remove_dangle.sh'),
+                               stdout=subprocess.PIPE, shell=False)
+install_pid.wait()
