@@ -23,33 +23,62 @@ from base64 import b64encode
 
 # check to see if docker is installed
 if not os.path.isfile('/usr/bin/docker'):
-    install_pid = subprocess.Popen(shlex.split('apt-get install apt-transport-https'
+    # setup docker dependencies
+    install_pid = subprocess.Popen(shlex.split('apt install -y apt-transport-https'
                                                ' ca-certificates curl gnupg lsb-release'),
                                    stdout=subprocess.PIPE, shell=False)
+    while True:
+        line = install_pid.stdout.readline()
+        if not line:
+            break
+        print(line.rstrip(), flush=True)
     install_pid.wait()
-
+    # setup the docker keyring
     install_pid = subprocess.Popen(shlex.split('curl -fsSL https://download.docker.com/linux/'
-                                               'debian/gpg | gpg --dearmor '
-                                               '-o /usr/share/keyrings/docker-archive-keyring.gpg'),
+                                               'debian/gpg'),
                                    stdout=subprocess.PIPE, shell=False)
+    output = subprocess.check_output(shlex.split('gpg --dearmor -o /usr/share/keyrings/'
+                                                 'docker-archive-keyring.gpg'),
+                                     stdin=install_pid.stdout)
+    while True:
+        line = install_pid.stdout.readline()
+        if not line:
+            break
+        print(line.rstrip(), flush=True)
     install_pid.wait()
-
+    # setup the docker repository
     install_pid = subprocess.Popen(shlex.split('echo "deb [arch=amd64 signed-by=/usr/share/'
                                                'keyrings/docker-archive-keyring.gpg]'
                                                ' https://download.docker.com/linux/debian'
-                                               ' $(lsb_release -cs) stable" | '
-                                               'tee /etc/apt/sources.list.d/docker.list '
-                                               '> /dev/null'),
+                                               ' buster stable"'),
                                    stdout=subprocess.PIPE, shell=False)
+    output = subprocess.check_output(shlex.split('tee /etc/apt/sources.list.d/docker.list '
+                                                 '> /dev/null'),
+                                     stdin=install_pid.stdout)
+    while True:
+        line = install_pid.stdout.readline()
+        if not line:
+            break
+        print(line.rstrip(), flush=True)
     install_pid.wait()
-
+    # general update to grab new package list from new repo
     install_pid = subprocess.Popen(shlex.split('apt update -y'),
                                    stdout=subprocess.PIPE, shell=False)
+    while True:
+        line = install_pid.stdout.readline()
+        if not line:
+            break
+        print(line.rstrip(), flush=True)
     install_pid.wait()
-
+    # finalize docker install
     install_pid = subprocess.Popen(shlex.split('apt install -y'
                                                ' docker-ce docker-ce-cli containerd.io'),
                                    stdout=subprocess.PIPE, shell=False)
+    while True:
+        line = install_pid.stdout.readline()
+        if not line:
+            break
+        print(line.rstrip(), flush=True)
     install_pid.wait()
 
 subprocess.call(shlex.split('docker swarm init'),
