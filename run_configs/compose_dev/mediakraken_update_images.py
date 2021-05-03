@@ -38,5 +38,10 @@ with open('./docker-compose.yml') as file_handle:
                                                        .replace('${BRANCH}',
                                                                 os.environ['BRANCH']))),
                                         stdout=subprocess.PIPE, shell=False)
+            while True:
+                line = pull_pid.stdout.readline()
+                if not line:
+                    break
+                print(line.rstrip(), flush=True)
             pull_pid.wait()
 file_handle.close()
