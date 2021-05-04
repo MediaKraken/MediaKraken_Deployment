@@ -16,6 +16,7 @@ COPY requirements.txt /mediakraken
 
 WORKDIR /mediakraken
 
+# don't remove py3-pip as it breaks package lookup
 RUN apk add --no-cache \
   cifs-utils==6.12-r0 \
   nfs-utils==2.5.2-r0 \
@@ -46,7 +47,6 @@ RUN apk add --no-cache \
     linux-headers \
     musl-dev \
     libressl-dev \
-    py3-pip \
   && rm requirements.txt \
   && rc-update add netmount \
   && rc-update add rpcbind
