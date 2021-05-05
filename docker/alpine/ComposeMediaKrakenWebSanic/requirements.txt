@@ -26,7 +26,8 @@ pyexcel==0.6.6
 natsort==7.1.1
 PyVimeo==1.1.0
 python-twitch-client==0.7.1
-transmissionrpc==0.11
+transmission-rpc==3.2.4
+libtc[liltorrent]==1.1.0
 passwordmeter==0.1.8
 cssmin==0.2.0
 incremental==21.3.0
