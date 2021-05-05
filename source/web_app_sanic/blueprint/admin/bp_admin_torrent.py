@@ -2,21 +2,21 @@ import json
 
 from common import common_global
 from common import common_internationalization
-from common import common_transmission
+from common import common_network_torrent
 from sanic import Blueprint
 
-blueprint_admin_transmission = Blueprint('name_blueprint_admin_transmission', url_prefix='/admin')
+blueprint_admin_torrent = Blueprint('name_blueprint_admin_torrent', url_prefix='/admin')
 
 
-@blueprint_admin_transmission.route("/admin_transmission")
-@common_global.jinja_template.template('bss_admin/bss_admin_transmission.html')
+@blueprint_admin_torrent.route("/admin_torrent")
+@common_global.jinja_template.template('bss_admin/bss_admin_torrent.html')
 @common_global.auth.login_required
 async def url_bp_admin_transmission(request):
     """
     Display transmission page
     """
     db_connection = await request.app.db_pool.acquire()
-    trans_connection = common_transmission.CommonTransmission(
+    trans_connection = common_network_torrent.CommonTransmission(
         await request.app.db_functions.db_opt_json_read(db_connection=db_connection))
     await request.app.db_pool.release(db_connection)
     transmission_data = []
@@ -33,7 +33,7 @@ async def url_bp_admin_transmission(request):
     }
 
 
-@blueprint_admin_transmission.route('/admin_transmission_delete', methods=["POST"])
+@blueprint_admin_torrent.route('/admin_torrent_delete', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_transmission_delete(request):
     """
@@ -43,7 +43,7 @@ async def url_bp_admin_transmission_delete(request):
     return json.dumps({'status': 'OK'})
 
 
-@blueprint_admin_transmission.route('/admin_transmission_edit', methods=["POST"])
+@blueprint_admin_torrent.route('/admin_torrent_edit', methods=["POST"])
 @common_global.auth.login_required
 async def url_bp_admin_transmission_edit(request):
     """
