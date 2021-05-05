@@ -21,7 +21,6 @@ async def db_media_game_list_by_system_count(self, system_id, search_value=None,
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    pass
 
 
 async def db_media_game_list_by_system(self, system_id, offset=0, records=None, search_value=None,
@@ -42,7 +41,6 @@ async def db_media_game_list_by_system(self, system_id, offset=0, records=None, 
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    pass
 
 
 async def db_media_game_system_list_count(self, search_value=None, db_connection=None):
@@ -62,7 +60,6 @@ async def db_media_game_system_list_count(self, search_value=None, db_connection
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    pass
 
 
 async def db_media_game_system_list(self, offset=0, records=None, search_value=None,
@@ -83,4 +80,3 @@ async def db_media_game_system_list(self, offset=0, records=None, search_value=N
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    pass
