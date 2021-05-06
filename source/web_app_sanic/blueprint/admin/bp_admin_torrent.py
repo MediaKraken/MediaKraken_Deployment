@@ -11,9 +11,9 @@ blueprint_admin_torrent = Blueprint('name_blueprint_admin_torrent', url_prefix='
 @blueprint_admin_torrent.route("/admin_torrent")
 @common_global.jinja_template.template('bss_admin/bss_admin_torrent.html')
 @common_global.auth.login_required
-async def url_bp_admin_transmission(request):
+async def url_bp_admin_torrent(request):
     """
-    Display transmission page
+    Display torrent page
     """
     db_connection = await request.app.db_pool.acquire()
     trans_connection = common_network_torrent.CommonTransmission(
@@ -29,15 +29,15 @@ async def url_bp_admin_transmission(request):
                  torrent.progress, torrent.ratio))
             torrent_no += 1
     return {
-        'data_transmission': transmission_data
+        'data_torrent': transmission_data
     }
 
 
 @blueprint_admin_torrent.route('/admin_torrent_delete', methods=["POST"])
 @common_global.auth.login_required
-async def url_bp_admin_transmission_delete(request):
+async def url_bp_admin_torrent_delete(request):
     """
-    Delete torrent from transmission
+    Delete torrent
     """
     # await request.app.db_functions.db_transmission_delete(request.form['id'], db_connection)
     return json.dumps({'status': 'OK'})
@@ -45,9 +45,9 @@ async def url_bp_admin_transmission_delete(request):
 
 @blueprint_admin_torrent.route('/admin_torrent_edit', methods=["POST"])
 @common_global.auth.login_required
-async def url_bp_admin_transmission_edit(request):
+async def url_bp_admin_torrent_edit(request):
     """
-    Edit a torrent from transmission
+    Edit a torrent
     """
     # await request.app.db_functions.db_transmission_delete(request.form['id'], db_connection)
     return json.dumps({'status': 'OK'})
