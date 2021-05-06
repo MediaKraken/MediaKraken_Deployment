@@ -372,6 +372,7 @@ class CommonMetadataTMDB:
                         image_file_path):
                     pass  # download is successful
                 else:
+                    # not found.....so, non the image_file_path, which resets the poster_file_path
                     image_file_path = None
             poster_file_path = image_file_path
         # create file path for backdrop
@@ -391,6 +392,7 @@ class CommonMetadataTMDB:
                         image_file_path):
                     pass  # download is successful
                 else:
+                    # not found.....so, non the image_file_path, which resets the backdrop_file_path
                     image_file_path = None
             backdrop_file_path = image_file_path
         # set local image json
