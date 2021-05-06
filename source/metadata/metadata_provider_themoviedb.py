@@ -489,7 +489,7 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  "meta movie tmdb 504": tmdb_id})
-            time.sleep(60)
+            await asyncio.sleep(60)
             # redo fetch due to 504
             await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
         elif result_json.status_code == 200:
@@ -524,7 +524,7 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  "meta movie tmdb 429": tmdb_id})
-            time.sleep(30)
+            await asyncio.sleep(30)
             # redo fetch due to 429
             await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
         elif result_json.status_code == 404:
