@@ -44,7 +44,7 @@ def db_download_read_provider(self, provider_name):
     self.db_cursor.execute('select mdq_id,'
                            ' mdq_que_type,'
                            ' mdq_download_json,'
-                           ' mdq_new_uuid,'
+                           ' mdq_new_uuid'
                            ' from mm_download_que'
                            ' where mdq_provider = %s'
                            ' order by mdq_que_type limit 25',
