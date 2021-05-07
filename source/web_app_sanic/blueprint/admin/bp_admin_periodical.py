@@ -2,7 +2,9 @@ import json
 import uuid
 
 from common import common_global
-from sanic import Blueprint, redirect
+from sanic import Blueprint
+from sanic.response import redirect
+from web_app_sanic.blueprint.admin.bss_form_book import BSSBookAddForm
 
 blueprint_admin_periodical = Blueprint('name_blueprint_admin_periodical', url_prefix='/admin')
 
@@ -31,7 +33,7 @@ async def url_bp_admin_periodical_add(request):
                                                                   db_connection=db_connection)
                 await request.app.db_pool.release(db_connection)
         return redirect(request.app.url_for('admins.admin_books_add'))
-    form = BookAddForm(request, csrf_enabled=False)
+    form = BSSBookAddForm(request, csrf_enabled=False)
     if form.validate_on_submit():
         pass
     return {
