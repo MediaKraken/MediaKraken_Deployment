@@ -18,7 +18,6 @@
 
 import datetime
 import json
-
 from common import common_config_ini
 from common import common_logging_elasticsearch_httpx
 
@@ -378,15 +377,21 @@ if db_connection.db_version_check() < 30:
     db_connection.db_commit()
 
 if db_connection.db_version_check() < 31:
-    db_connection.db_query('ALTER TABLE mm_review DROP COLUMN mm_review_metadata_id;')
+    try:
+        db_connection.db_query('ALTER TABLE mm_review DROP COLUMN mm_review_metadata_id;')
+    except:
+        db_connection.db_rollback()
     db_connection.db_version_update(31)
     db_connection.db_commit()
 
 if db_connection.db_version_check() < 32:
-    db_connection.db_query('DROP TABLE mm_media_share;')
-    db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_share_guid;')
-    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_username text;')
-    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_password text;')
+    try:
+        db_connection.db_query('DROP TABLE mm_media_share;')
+        db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_share_guid;')
+        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_username text;')
+        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_password text;')
+    except:
+        db_connection.db_rollback()
     db_connection.db_version_update(32)
     db_connection.db_commit()
 
@@ -407,14 +412,14 @@ if db_connection.db_version_check() < 35:
         'create table IF NOT EXISTS mm_developer (mm_developer_id uuid'
         ' CONSTRAINT mm_developer_id primary key,'
         ' mm_developer_name text,'
-        ' mm_developer_json jsonb')
+        ' mm_developer_json jsonb)')
     db_connection.db_query('CREATE INDEX mm_developer_name_idx'
                            ' ON mm_developer(mm_developer_name)')
     db_connection.db_query(
         'create table IF NOT EXISTS mm_publisher (mm_publisher_id uuid'
         ' CONSTRAINT mm_publisher_id primary key,'
         ' mm_publisher_name text,'
-        ' mm_publisher_json jsonb')
+        ' mm_publisher_json jsonb)')
     db_connection.db_query('CREATE INDEX mm_publisher_name_idx'
                            ' ON mm_publisher(mm_publisher_name)')
     db_connection.db_version_update(35)
