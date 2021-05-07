@@ -474,7 +474,7 @@ async def main(loop):
                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                     message_type='info',
                     message_text={
-                        'worker Z meta api': row_data['mdq_class_uuid'],
+                        'worker Z meta api': row_data['mdq_que_type'],
                         'row': row_data['mdq_id'],
                         'dl json': row_data['mdq_download_json']})
                 metadata_uuid = None

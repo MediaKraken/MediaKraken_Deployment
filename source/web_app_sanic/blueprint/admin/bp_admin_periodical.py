@@ -2,7 +2,7 @@ import json
 import uuid
 
 from common import common_global
-from sanic import Blueprint
+from sanic import Blueprint, redirect
 
 blueprint_admin_periodical = Blueprint('name_blueprint_admin_periodical', url_prefix='/admin')
 
@@ -23,12 +23,11 @@ async def url_bp_admin_periodical_add(request):
                                                                class_uuid,
                                                                None, None, None,
                                                                db_connection=db_connection)
-                await request.app.db_functions.db_download_insert(provider='Z', que_type=0,
+                await request.app.db_functions.db_download_insert(provider='Z', que_type=class_uuid,
                                                                   down_json=json.dumps(
                                                                       {'MediaID': media_id,
                                                                        'ProviderMetaID': book_item.strip()}),
                                                                   down_new_uuid=uuid.uuid4(),
-                                                                  down_class_uuid=class_uuid,
                                                                   db_connection=db_connection)
                 await request.app.db_pool.release(db_connection)
         return redirect(request.app.url_for('admins.admin_books_add'))
