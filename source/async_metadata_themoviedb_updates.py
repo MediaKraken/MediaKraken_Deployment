@@ -62,7 +62,8 @@ async def main(loop):
                                                                  provider_name='themoviedb',
                                                                  provider_id=
                                                                  movie_change['id'],
-                                                                 db_connection=None)
+                                                                 db_connection=None,
+                                                                 exists_only=True)
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'dl_meta': dl_meta})
@@ -104,7 +105,8 @@ async def main(loop):
                                                                  download_que_type=common_global.DLMediaType.TV.value,
                                                                  provider_name='themoviedb',
                                                                  provider_id=tv_change['id'],
-                                                                 db_connection=None)
+                                                                 db_connection=None,
+                                                                 exists_only=True)
             if dl_meta is None:
                 await db_connection.db_download_insert(provider='themoviedb',
                                                        que_type=common_global.DLMediaType.TV.value,
