@@ -279,8 +279,7 @@ async def metadata_fetch(db_connection, provider_name, download_data):
                                                                                  'fetch person bio': provider_name})
             await metadata_provider_themoviedb.metadata_fetch_tmdb_person(
                 db_connection, provider_name, download_data)
-        elif download_data['mdq_que_type'] == 0 \
-                or download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
+        elif download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
             # removing the imdb check.....as com_tmdb_metadata_by_id converts it
             await metadata_provider_themoviedb.movie_fetch_save_tmdb(db_connection,
                                                                      download_data[
