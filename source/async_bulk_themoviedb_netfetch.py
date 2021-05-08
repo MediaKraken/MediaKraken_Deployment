@@ -36,7 +36,7 @@ async def main(loop):
                                                                      message_text='START',
                                                                      index_name='async_bulk_themoviedb_netfetch')
 
-    fetch_date = '04_10_2021'
+    fetch_date = '05_05_2021'
 
     # open the database
     option_config_json, db_connection = \
@@ -45,6 +45,7 @@ async def main(loop):
 
     # start up the range fetches for movie
     file_name = 'http://files.tmdb.org/p/exports/movie_ids_%s.json.gz' % fetch_date
+    # TODO handle no file!
     await common_network_async.mk_network_fetch_from_url_async(file_name, 'movie.gz')
     json_data = common_file.com_file_ungzip('movie.gz').decode('utf-8')
     for json_row in json_data.splitlines():
@@ -53,8 +54,8 @@ async def main(loop):
         if tmdb_to_fetch['adult']:
             pass
         # check to see if we already have it....need to do by ID as duplicate named movies, etc
-        if (await db_connection.db_meta_movie_count_by_id(search_value=tmdb_to_fetch['id'],
-                                                          db_connection=None) == 0
+        if (await db_connection.db_meta_movie_count_by_id(guid=tmdb_to_fetch['id'],
+                                                          db_connection=None) is False
                 and await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                download_que_type=common_global.DLMediaType.Movie.value,
                                                                provider_name='themoviedb',
@@ -64,7 +65,8 @@ async def main(loop):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.Movie.value,
                                                    down_json=json.dumps({"Status": "Fetch",
-                                                                         "ProviderMetaID": tmdb_to_fetch}),
+                                                                         "ProviderMetaID":
+                                                                             tmdb_to_fetch}),
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )
@@ -72,6 +74,7 @@ async def main(loop):
 
     # start up the range fetches for tv
     file_name = 'http://files.tmdb.org/p/exports/tv_series_ids_%s.json.gz' % fetch_date
+    # TODO handle no file!
     await common_network_async.mk_network_fetch_from_url_async(file_name, 'tv.gz')
     json_data = common_file.com_file_ungzip('tv.gz').decode('utf-8')
     for json_row in json_data.splitlines():
@@ -80,8 +83,8 @@ async def main(loop):
         if tmdb_to_fetch['adult']:
             pass
         # check to see if we already have it....need to do by ID as duplicate named TV, etc
-        if (await db_connection.db_meta_tv_count_by_id(search_value=tmdb_to_fetch['id'],
-                                                       db_connection=None) == 0
+        if (await db_connection.db_meta_tv_count_by_id(guid=tmdb_to_fetch['id'],
+                                                       db_connection=None) is False
                 and await db_connection.db_download_que_exists(download_que_uuid=None,
                                                                download_que_type=common_global.DLMediaType.TV.value,
                                                                provider_name='themoviedb',

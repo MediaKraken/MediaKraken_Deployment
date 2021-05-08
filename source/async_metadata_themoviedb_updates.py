@@ -54,29 +54,24 @@ async def main(loop):
                                                                              'mov': movie_change[
                                                                                  'id']})
         # verify it's not already in the database
-        if await db_connection.db_meta_guid_by_tmdb(tmdb_uuid=movie_change['id'],
-                                                    db_connection=None) is None:
-            # verify there is not a dl que for this record
-            dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
-                                                                 download_que_type=common_global.DLMediaType.Movie.value,
-                                                                 provider_name='themoviedb',
-                                                                 provider_id=
-                                                                 movie_change['id'],
-                                                                 db_connection=None,
-                                                                 exists_only=True)
-            await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                                             message_text={
-                                                                                 'dl_meta': dl_meta})
-            if dl_meta is None:
-                await db_connection.db_download_insert(provider='themoviedb',
-                                                       que_type=common_global.DLMediaType.Movie.value,
-                                                       down_json=json.dumps({'Status': 'Fetch',
-                                                                             'ProviderMetaID':
-                                                                                 movie_change[
-                                                                                     'id']}),
-                                                       down_new_uuid=uuid.uuid4(),
-                                                       db_connection=None
-                                                       )
+        if (await db_connection.db_meta_movie_count_by_id(guid=movie_change['id'],
+                                                          db_connection=None) is False
+                and await db_connection.db_download_que_exists(download_que_uuid=None,
+                                                               download_que_type=common_global.DLMediaType.Movie.value,
+                                                               provider_name='themoviedb',
+                                                               provider_id=
+                                                               movie_change['id'],
+                                                               db_connection=None,
+                                                               exists_only=True) is False):
+            await db_connection.db_download_insert(provider='themoviedb',
+                                                   que_type=common_global.DLMediaType.Movie.value,
+                                                   down_json=json.dumps({'Status': 'Fetch',
+                                                                         'ProviderMetaID':
+                                                                             movie_change[
+                                                                                 'id']}),
+                                                   down_new_uuid=uuid.uuid4(),
+                                                   db_connection=None
+                                                   )
         else:
             # it's on the database, so must update the record with latest information
             await db_connection.db_download_insert(provider='themoviedb',
@@ -87,6 +82,7 @@ async def main(loop):
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )
+
     # TODO this should go through the limiter
     # process tv changes
     new_tv_data = json.loads(await common_network_async.mk_network_fetch_from_url_async(
@@ -99,23 +95,22 @@ async def main(loop):
                                                                                       tv_change[
                                                                                           'id']})
         # verify it's not already in the database
-        if await db_connection.db_metatv_guid_by_tmdb(tv_change['id'],
-                                                      db_connection=None) is None:
-            dl_meta = await db_connection.db_download_que_exists(download_que_uuid=None,
-                                                                 download_que_type=common_global.DLMediaType.TV.value,
-                                                                 provider_name='themoviedb',
-                                                                 provider_id=tv_change['id'],
-                                                                 db_connection=None,
-                                                                 exists_only=True)
-            if dl_meta is None:
-                await db_connection.db_download_insert(provider='themoviedb',
-                                                       que_type=common_global.DLMediaType.TV.value,
-                                                       down_json=json.dumps({'Status': 'Fetch',
-                                                                             'ProviderMetaID':
-                                                                                 tv_change['id']}),
-                                                       down_new_uuid=uuid.uuid4(),
-                                                       db_connection=None
-                                                       )
+        if (await db_connection.db_meta_tv_count_by_id(guid=tv_change['id'],
+                                                       db_connection=None) is False
+                and await db_connection.db_download_que_exists(download_que_uuid=None,
+                                                               download_que_type=common_global.DLMediaType.TV.value,
+                                                               provider_name='themoviedb',
+                                                               provider_id=tv_change['id'],
+                                                               db_connection=None,
+                                                               exists_only=True) is False):
+            await db_connection.db_download_insert(provider='themoviedb',
+                                                   que_type=common_global.DLMediaType.TV.value,
+                                                   down_json=json.dumps({'Status': 'Fetch',
+                                                                         'ProviderMetaID':
+                                                                             tv_change['id']}),
+                                                   down_new_uuid=uuid.uuid4(),
+                                                   db_connection=None
+                                                   )
         else:
             # it's on the database, so must update the record with latest information
             await db_connection.db_download_insert(provider='themoviedb',
