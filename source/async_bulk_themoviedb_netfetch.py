@@ -66,7 +66,7 @@ async def main(loop):
                                                    que_type=common_global.DLMediaType.Movie.value,
                                                    down_json={"Status": "Fetch",
                                                               "ProviderMetaID":
-                                                                  tmdb_to_fetch},
+                                                                  tmdb_to_fetch['id']},
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )
