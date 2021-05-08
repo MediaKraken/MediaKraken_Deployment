@@ -68,14 +68,13 @@ async def metadata_sports_lookup(db_connection, download_data):
                     image_json = {'Images': {'thesportsdb': {'Characters': {}, 'Banner': None,
                                                              'Poster': None, 'Backdrop': None,
                                                              "Redo": True}}}
-                    media_id_json = json.dumps({'thesportsdb':
-                                                    str(thesportsdb_data['event'][0]['idEvent'])})
-                    await db_connection.db_metathesportsdb_insert(media_id_json,
+                    await db_connection.db_metathesportsdb_insert({'thesportsdb':
+                                                                       thesportsdb_data['event'][0][
+                                                                           'idEvent']},
                                                                   thesportsdb_data['event'][0][
                                                                       'strFilename'],
-                                                                  json.dumps(
-                                                                      thesportsdb_data),
-                                                                  json.dumps(image_json))
+                                                                  thesportsdb_data,
+                                                                  image_json)
 
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={

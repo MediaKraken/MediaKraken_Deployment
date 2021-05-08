@@ -58,8 +58,8 @@ async def tv_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
         await db_connection.db_metatv_insert_tmdb(metadata_uuid,
                                                   series_id,
                                                   result_json['name'],
-                                                  json.dumps(result_json),
-                                                  json.dumps(image_json))
+                                                  result_json,
+                                                  image_json)
         # store the cast and crew
         if 'credits' in result_json:  # cast/crew doesn't exist on all media
             if 'cast' in result_json['credits']:

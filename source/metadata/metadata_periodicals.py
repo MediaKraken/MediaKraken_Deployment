@@ -17,7 +17,6 @@
 """
 
 import inspect
-import json
 import os
 
 from common import common_logging_elasticsearch_httpx
@@ -57,8 +56,8 @@ async def metadata_periodicals_lookup(db_connection, download_data):
             download_data.update({'Status': 'Search'})
             # save the updated status
             await db_connection.db_begin()
-            await db_connection.db_download_update(json.dumps(download_data),
-                                             download_que_id)
+            await db_connection.db_download_update(download_data,
+                                                   download_que_id)
             # set provider last so it's not picked up by the wrong thread
             await db_connection.db_download_update_provider(
                 'isbndb', download_que_id)

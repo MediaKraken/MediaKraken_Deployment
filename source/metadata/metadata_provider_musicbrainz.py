@@ -169,7 +169,7 @@ async def music_search_musicbrainz(db_connection, ffmpeg_data_json):
         if metadata_uuid is None:
             metadata_uuid = db_connection.db_meta_song_add(
                 ffmpeg_data_json['format']['tags']['TITLE'],
-                music_data['fakealbun_id'], json.dumps(music_data))
+                music_data['fakealbun_id'], music_data)
     return metadata_uuid, music_data
 
 
@@ -213,8 +213,8 @@ async def music_fetch_save_musicbrainz(db_connection, tmdb_id, metadata_uuid):
         # set and insert the record
         try:
             await db_connection.db_meta_insert_tmdb(metadata_uuid, series_id_json,
-                                                    result_json['title'], json.dumps(meta_json),
-                                                    json.dumps(image_json))
+                                                    result_json['title'], meta_json,
+                                                    image_json)
             if 'credits' in result_json:  # cast/crew doesn't exist on all media
                 if 'cast' in result_json['credits']:
                     await db_connection.db_meta_person_insert_cast_crew('themoviedb',

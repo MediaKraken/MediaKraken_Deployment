@@ -74,7 +74,7 @@ async def metadata_music_lookup(db_connection, download_json):
         download_json.update({'Status': 'Search'})
         # save the updated status
         await db_connection.db_begin()
-        await db_connection.db_download_update(json.dumps(download_json),
+        await db_connection.db_download_update(download_json,
                                          download_json['mdq_id'])
         # set provider last so it's not picked up by the wrong thread
         await db_connection.db_download_update_provider('musicbrainz', download_json['mdq_id'])

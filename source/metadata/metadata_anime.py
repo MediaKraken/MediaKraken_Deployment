@@ -99,7 +99,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                     await download_data.update(
                         {'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
                     await db_connection.db_begin()
-                    await db_connection.db_download_update(json.dumps(download_data),
+                    await db_connection.db_download_update(download_data,
                                                            download_data['mdq_id'])
                     # set provider last so it's not picked up by the wrong thread too early
                     await db_connection.db_download_update_provider('themoviedb',
@@ -118,7 +118,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                     download_data.update(
                         {'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     await db_connection.db_begin()
-                    await db_connection.db_download_update(json.dumps(download_data),
+                    await db_connection.db_download_update(download_data,
                                                            download_data['mdq_id'])
                     # set provider last so it's not picked up by the wrong thread too early
                     await db_connection.db_download_update_provider('themoviedb',
@@ -137,7 +137,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                 await download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
                 await db_connection.db_begin()
-                await db_connection.db_download_update(json.dumps(download_data),
+                await db_connection.db_download_update(download_data,
                                                        download_data['mdq_id'])
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider(
@@ -171,7 +171,7 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
             download_data.update({'Status': 'Search'})
             # save the updated status
             await db_connection.db_begin()
-            await db_connection.db_download_update(json.dumps(download_data),
+            await db_connection.db_download_update(download_data,
                                                    download_data['mdq_id'])
             # set provider last so it's not picked up by the wrong thread
             await db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])

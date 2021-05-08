@@ -77,7 +77,7 @@ async def metadata_game_lookup(db_connection, download_data):
         await download_data.update({'Status': 'Search'})
         # save the updated status
         await db_connection.db_begin()
-        await db_connection.db_download_update(json.dumps(download_data),
+        await db_connection.db_download_update(download_data,
                                                download_data['mdq_id'])
         # set provider last so it's not picked up by the wrong thread
         await db_connection.db_download_update_provider('giantbomb', download_data['mdq_id'])

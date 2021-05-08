@@ -245,7 +245,7 @@ async def metadata_search(db_connection, provider_name, download_data):
             download_data['mdq_download_json'].update(
                 {'ProviderMetaID': str(match_result)})
             download_data['mdq_download_json'].update({'Status': 'Fetch'})
-            await db_connection.db_download_update(json.dumps(download_data['mdq_download_json']),
+            await db_connection.db_download_update(download_data['mdq_download_json'],
                                                    download_data['mdq_id'])
             await db_connection.db_commit()
     return metadata_uuid
@@ -310,7 +310,7 @@ async def metadata_castcrew(db_connection, provider_name, download_data):
     # removed themoviedb call as it should be done during the initial fetch
     # setup for FetchReview
     download_data['mdq_download_json'].update({'Status': 'FetchReview'})
-    await db_connection.db_download_update(json.dumps(download_data['mdq_download_json']),
+    await db_connection.db_download_update(download_data['mdq_download_json'],
                                            download_data['mdq_id'])
     await db_connection.db_commit()
 

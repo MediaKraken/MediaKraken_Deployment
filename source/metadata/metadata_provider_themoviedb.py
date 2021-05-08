@@ -509,8 +509,8 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                 await db_connection.db_meta_insert_tmdb(metadata_uuid,
                                                         series_id_json,
                                                         result_json['title'],
-                                                        json.dumps(result_json),
-                                                        json.dumps(image_json))
+                                                        result_json,
+                                                        image_json)
                 # under guid check as don't need to insert them if already exist
                 if 'credits' in result_json:  # cast/crew doesn't exist on all media
                     if 'cast' in result_json['credits']:
@@ -567,8 +567,8 @@ async def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
                                                                              "review": review_json_id})
-        await db_connection.db_review_insert(json.dumps(review_json_id),
-                                             json.dumps({'themoviedb': review_json}))
+        await db_connection.db_review_insert(review_json_id,
+                                             {'themoviedb': review_json})
 
 
 async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):

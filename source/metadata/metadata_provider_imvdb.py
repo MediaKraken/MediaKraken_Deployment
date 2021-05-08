@@ -131,10 +131,10 @@ async def movie_fetch_save_imvdb(db_connection, imvdb_id, metadata_uuid):
                                                                                  result_json.json()})
         # set and insert the record
         await db_connection.db_meta_music_video_add(metadata_uuid,
-                                                    json.dumps({'imvdb': str(result_json['id'])}),
+                                                    {'imvdb': str(result_json['id'])},
                                                     result_json['artists'][0]['slug'],
                                                     result_json['song_slug'],
-                                                    json.dumps(result_json),
+                                                    result_json,
                                                     None)
     elif result_json.status_code == 502:
         time.sleep(300)

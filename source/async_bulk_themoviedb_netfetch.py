@@ -64,9 +64,9 @@ async def main(loop):
                                                                exists_only=True) is False):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.Movie.value,
-                                                   down_json=json.dumps({"Status": "Fetch",
-                                                                         "ProviderMetaID":
-                                                                             tmdb_to_fetch}),
+                                                   down_json={"Status": "Fetch",
+                                                              "ProviderMetaID":
+                                                                  tmdb_to_fetch},
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )
@@ -93,9 +93,9 @@ async def main(loop):
                                                                exists_only=True) is False):
             await db_connection.db_download_insert(provider='themoviedb',
                                                    que_type=common_global.DLMediaType.TV.value,
-                                                   down_json=json.dumps({"Status": "Fetch",
-                                                                         "ProviderMetaID":
-                                                                             tmdb_to_fetch['id']}),
+                                                   down_json={"Status": "Fetch",
+                                                              "ProviderMetaID":
+                                                                  tmdb_to_fetch['id']},
                                                    down_new_uuid=uuid.uuid4(),
                                                    db_connection=None
                                                    )

@@ -1,4 +1,3 @@
-import json
 import uuid
 
 from common import common_global
@@ -26,9 +25,9 @@ async def url_bp_admin_periodical_add(request):
                                                                None, None, None,
                                                                db_connection=db_connection)
                 await request.app.db_functions.db_download_insert(provider='Z', que_type=class_uuid,
-                                                                  down_json=json.dumps(
-                                                                      {'MediaID': media_id,
-                                                                       'ProviderMetaID': book_item.strip()}),
+                                                                  down_json={'MediaID': media_id,
+                                                                             'ProviderMetaID':
+                                                                                 book_item.strip()},
                                                                   down_new_uuid=uuid.uuid4(),
                                                                   db_connection=db_connection)
                 await request.app.db_pool.release(db_connection)

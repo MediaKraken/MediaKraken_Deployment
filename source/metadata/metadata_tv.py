@@ -95,7 +95,7 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                 download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': provider_id})
                 await db_connection.db_begin()
-                await db_connection.db_download_update(json.dumps(download_data),
+                await db_connection.db_download_update(download_data,
                                                        download_data['mdq_id'])
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider('themoviedb',
@@ -112,7 +112,7 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
                 download_data.update(
                     {'Status': 'Fetch', 'ProviderMetaID': str(tvdb_id)})
                 await db_connection.db_begin()
-                await db_connection.db_download_update(json.dumps(download_data),
+                await db_connection.db_download_update(download_data,
                                                        download_data['mdq_id'])
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider('thetvdb', download_data['mdq_id'])
@@ -144,7 +144,7 @@ async def metadata_tv_lookup(db_connection, download_data, file_name):
             download_data.update({'Status': 'Search'})
             # save the updated status
             await db_connection.db_begin()
-            await db_connection.db_download_update(json.dumps(download_data),
+            await db_connection.db_download_update(download_data,
                                                    download_data['mdq_id'])
             # set provider last so it's not picked up by the wrong thread
             await db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
