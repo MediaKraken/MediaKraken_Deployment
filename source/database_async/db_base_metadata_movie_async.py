@@ -206,7 +206,7 @@ async def db_meta_movie_guid_count(self, guid, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchval('select exists(select 1 from mm_metadata_movie'
-                                  ' where mm_metadata_guid = %s limit 1) limit 1', guid)
+                                  ' where mm_metadata_guid = $1 limit 1) limit 1', guid)
 
 
 async def db_meta_movie_count_by_id(self, guid, db_connection=None):
@@ -227,4 +227,4 @@ async def db_meta_movie_count_by_id(self, guid, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchval('select exists(select 1 from mm_metadata_movie'
-                                  ' where mm_metadata_media_id = %s limit 1) limit 1', guid)
+                                  ' where mm_metadata_media_id = $1 limit 1) limit 1', guid)
