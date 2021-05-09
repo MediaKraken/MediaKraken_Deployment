@@ -1,5 +1,5 @@
 # Download base image
-FROM mediakraken/mkbase_alpinepy3:dev
+FROM mediakraken/mkbase_alpinepy3:dev2021_04
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image holds the cron app"
