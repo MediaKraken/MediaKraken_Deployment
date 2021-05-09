@@ -43,7 +43,7 @@ RUN apk add --no-cache \
   py3-setuptools==51.3.3-r0 \
   py3-curl==7.43.0.6-r0 \
   py3-natsort==7.1.1-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   rust==1.47.0-r2 \
   cargo==1.47.0-r2 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \

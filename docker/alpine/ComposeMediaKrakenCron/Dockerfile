@@ -14,7 +14,7 @@ WORKDIR /mediakraken
 # had to go back to update instead of no-cache......throws errors
 RUN apk add --no-cache \
   alpine-sdk==1.0-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   linux-headers==5.7.8-r0 \
   musl-dev==1.2.2-r0 \
   py3-psycopg2==2.8.6-r0 \

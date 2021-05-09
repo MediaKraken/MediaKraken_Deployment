@@ -16,7 +16,7 @@ WORKDIR /mediakraken
 RUN apk add --no-cache \
   abcde==2.9.3-r0 \
   openjdk8-jre-base==8.275.01-r0 \
-  python3==3.8.8-r0
+  python3-dev==3.8.10-r0
 
 # Copy the source files for the app
 COPY src /mediakraken

@@ -38,7 +38,7 @@ RUN apk add --no-cache \
   openssl==1.1.1k-r0 \
   openssl-dev==1.1.1k-r0 \
   py3-cffi==1.14.4-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   cifs-utils==6.12-r0 \
   nfs-utils==2.5.2-r0 \
   ca-certificates==20191127-r5 \

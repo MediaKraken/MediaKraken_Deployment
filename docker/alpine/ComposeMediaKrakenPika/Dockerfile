@@ -14,7 +14,7 @@ WORKDIR /mediakraken
 
 RUN apk add --no-cache \
   alpine-sdk==1.0-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   libressl==3.1.5-r0 \
   libressl-dev==3.1.5-r0 \
   cifs-utils==6.12-r0 \

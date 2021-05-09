@@ -24,7 +24,7 @@ RUN apk add --no-cache \
   musl-dev==1.2.2-r0 \
   py3-apache-libcloud==3.3.0-r0 \
   py3-psycopg2==2.8.6-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   xmlsec-dev==1.2.31-r0 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install --no-cache-dir -e git+https://github.com/MediaKraken-Dep/dosage#egg=dosage \

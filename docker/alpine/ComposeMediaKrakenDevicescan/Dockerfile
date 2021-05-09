@@ -23,7 +23,7 @@ RUN apk add --no-cache \
   musl-dev==1.2.2-r0 \
   py3-requests==2.25.1-r1 \
   py3-setuptools==51.3.3-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   && git clone https://github.com/MediaKraken/PyHdHomeRun \
   && cd PyHdHomeRun \
   && python3 setup.py install \

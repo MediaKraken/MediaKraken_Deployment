@@ -20,7 +20,7 @@ RUN apk add --no-cache \
   gcc==10.2.1_pre1-r3 \
   linux-headers==5.7.8-r0 \
   musl-dev==1.2.2-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   libffi==3.3-r2 \
   libffi-dev==3.3-r2 \
   libxslt==1.1.34-r0 \

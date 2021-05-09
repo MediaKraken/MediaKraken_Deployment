@@ -29,7 +29,7 @@ RUN apk add --no-cache \
   musl-dev==1.2.2-r0 \
   openssl==1.1.1k-r0 \
   openssl-dev==1.1.1k-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   rust==1.47.0-r2 \
   cargo==1.47.0-r2 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
