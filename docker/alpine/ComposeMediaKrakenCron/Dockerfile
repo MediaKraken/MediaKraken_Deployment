@@ -1,4 +1,5 @@
 # Download base image
+ARG BRANCHTAG
 FROM mediakraken/mkbase_alpinepy3:${BRANCHTAG}
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
