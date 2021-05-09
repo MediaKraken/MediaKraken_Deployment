@@ -18,7 +18,6 @@
 
 import os
 import random
-import re
 import string  # pylint: disable=W0402
 
 from common import common_logging_elasticsearch_httpx
@@ -59,32 +58,24 @@ async def com_meta_image_file_path(media_name, media_type):
     Determine file path of images
     """
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
-                                                               message_text={
-                                                                   "filename": media_name})
-    pattern = r'[^\.a-zA-Z]'
+                                                                     message_text={
+                                                                         "filename": media_name})
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
-    try:
-        # first char of filename
-        if re.search(pattern, os.path.basename(media_name)[0]):
-            file_path = os.path.join(common_global.static_data_directory, '/meta/images',
-                                     media_type, random.choice(string.ascii_lowercase))
-        else:
-            file_path = os.path.join(common_global.static_data_directory + '/meta/images',
-                                     media_type, os.path.basename(media_name)[0].lower())
-    except:
-        file_path = os.path.join(common_global.static_data_directory + '/meta/images',
-                                 media_type, random.choice(string.ascii_lowercase))
+    file_path = os.path.join(common_global.static_data_directory + '/meta/images',
+                             media_type, random.choice(string.ascii_lowercase)
+                             + random.choice(string.ascii_lowercase))
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
     # This is the SAVE path.  Do NOT shorten the path to static.
     # os.path.join should be adding the terminating slash
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
-                                                                         'file image path': file_path})
+                                                                         'file image path':
+                                                                             file_path})
     return file_path
 
 
