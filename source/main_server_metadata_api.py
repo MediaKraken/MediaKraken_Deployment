@@ -26,12 +26,15 @@ from common import common_metadata_limiter
 from common import common_network
 from common import common_signal
 
+# this is done here so the dirs are ready for the subprograms that this will kick
+# off that will actually download the data and images
+
 # build image directories if needed
-if not os.path.isdir(common_global.static_data_directory + '/meta/images/backdrop/a'):
+if not os.path.isdir(common_global.static_data_directory + '/meta/images/backdrop/aa'):
     common_file.com_file_build_image_dirs()
 
 # build trailer directories if needed
-if not os.path.isdir(common_global.static_data_directory + '/meta/trailers/trailer/a'):
+if not os.path.isdir(common_global.static_data_directory + '/meta/trailers/trailer/aa'):
     common_file.com_file_build_trailer_dirs()
 
 # start logging
