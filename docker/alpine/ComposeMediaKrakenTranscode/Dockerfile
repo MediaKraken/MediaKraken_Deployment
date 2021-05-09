@@ -23,7 +23,7 @@ RUN apk add --no-cache \
   libressl==3.1.5-r0 \
   libressl-dev==3.1.5-r0 \
   net-snmp==5.9-r2 \
-  python3==3.8.8-r0 \
+  python3==3.8.10-r0 \
   py3-pip==20.3.4-r0 \
   openrc==0.42.1-r19 \
   gcc==10.2.1_pre1-r3 \
