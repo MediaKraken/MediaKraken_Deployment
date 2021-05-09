@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 # https://buildbot.libretro.com/stable/
 ENV RETROARCH_VERSION 1.9.0
 ENV ROOT_WWW_PATH /var/www/html
-ENV NIGHTLY_DATE 2020-09-28
+ENV NIGHTLY_DATE 2021-05-09
 
 
 RUN cd ${ROOT_WWW_PATH} \
