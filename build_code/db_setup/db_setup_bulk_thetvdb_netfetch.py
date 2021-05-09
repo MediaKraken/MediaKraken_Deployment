@@ -67,10 +67,10 @@ for zippedFile in zip.namelist():
                                          'thetvdb': str(row_data['id']),
                                          'zap2it': xml_show_data['Data']['Series']['zap2it_id']})
             db.db_metatvdb_insert(series_id_json, xml_show_data['Data']['Series']['SeriesName'],
-                                  json.dumps({'Meta': {'thetvdb': {'Meta': xml_show_data['Data'],
-                                                                   'Cast': xml_actor_data,
-                                                                   'Banner': xml_banners_data}}}),
-                                  json.dumps(image_json))
+                                  {'Meta': {'thetvdb': {'Meta': xml_show_data['Data'],
+                                                        'Cast': xml_actor_data,
+                                                        'Banner': xml_banners_data}}},
+                                  image_json)
             # insert cast info
             if xml_actor_data is not None:
                 db.db_meta_person_insert_cast_crew(

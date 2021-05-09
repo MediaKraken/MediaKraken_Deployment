@@ -360,7 +360,7 @@ async def db_media_rating_update(self, media_guid, user_id, status_text, db_conn
         else:
             json_data['UserStats'][user_id] = {status_text: status_setting}
         # since 'for update' must release record on fail
-        self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_update_media_json(media_guid, json_data)
         self.db_commit()
     except:
         self.db_rollback()

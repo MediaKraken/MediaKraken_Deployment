@@ -1,5 +1,4 @@
 import inspect
-import json
 import uuid
 
 from common import common_global
@@ -196,7 +195,7 @@ async def db_meta_person_update(self, provider_name, provider_uuid, person_bio, 
     await db_conn.execute('update mm_metadata_person set mmp_person_meta_json = $1,'
                           ' mmp_person_image = $2'
                           ' where mmp_person_media_id = $3',
-                          json.dumps(person_bio), person_image, provider_uuid)
+                          person_bio, person_image, provider_uuid)
     await db_conn.execute('commit')
 
 
@@ -249,9 +248,9 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                     # insert download record for bio/info
                     await self.db_download_insert(provider=meta_type,
                                                   que_type=common_global.DLMediaType.Person.value,
-                                                  down_json=json.dumps({"Status": "Fetch",
-                                                                        "ProviderMetaID": str(
-                                                                            person_id)}),
+                                                  down_json={"Status": "Fetch",
+                                                             "ProviderMetaID": str(
+                                                                 person_id)},
                                                   down_new_uuid=None)
                     # insert person record
                     await self.db_meta_person_insert(person_name,
@@ -282,9 +281,9 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                 # insert download record for bio/info
                 await self.db_download_insert(provider=meta_type,
                                               que_type=common_global.DLMediaType.Person.value,
-                                              down_json=json.dumps({"Status": "Fetch",
-                                                                    "ProviderMetaID": str(
-                                                                        person_id)}),
+                                              down_json={"Status": "Fetch",
+                                                         "ProviderMetaID": str(
+                                                             person_id)},
                                               down_new_uuid=None)
                 # insert person record
                 await self.db_meta_person_insert(person_name,

@@ -4,7 +4,9 @@ import os
 import struct
 import subprocess
 from datetime import timedelta
+
 import aio_pika
+
 from common import common_ffmpeg
 from common import common_hardware_roku_bif
 from common import common_logging_elasticsearch_httpx
@@ -36,7 +38,7 @@ async def on_message(message: aio_pika.IncomingMessage):
                 # scan media file via ffprobe
                 ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
                 db_connection.db_media_ffmeg_update(json_message['Media UUID'],
-                                                    json.dumps(ffprobe_data))
+                                                    ffprobe_data)
             elif json_message['Subtype'] == 'ChapterImage':
                 ffprobe_data = json_message['Data']
                 # begin image generation
@@ -89,8 +91,7 @@ async def on_message(message: aio_pika.IncomingMessage):
                         chapter_image_list[chapter_data['tags']['title']] = image_file_path
                         first_image = False
                 db_connection.db_update_media_json(json_message['Media UUID'],
-                                                   json.dumps(
-                                                       {'ChapterImages': chapter_image_list}))
+                                                   {'ChapterImages': chapter_image_list})
 
             elif json_message['Subtype'] == 'Sync':
                 ffmpeg_params = ['./bin/ffmpeg', '-i', db_connection.db_media_path_by_uuid(
@@ -103,7 +104,8 @@ async def on_message(message: aio_pika.IncomingMessage):
                         ('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
                 if row_data['mm_sync_options_json']['Options']['AudioChannels'] != "Copy":
                     ffmpeg_params.extend(('-ac',
-                                          row_data['mm_sync_options_json']['Options']['AudioChannels']))
+                                          row_data['mm_sync_options_json']['Options'][
+                                              'AudioChannels']))
                 if row_data['mm_sync_options_json']['Options']['ACodec'] != "Copy":
                     ffmpeg_params.extend(('-acodec',
                                           row_data['mm_sync_options_json']['Options']['ACodec']))
@@ -113,7 +115,8 @@ async def on_message(message: aio_pika.IncomingMessage):
                 ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                                      + row_data['mm_sync_options_json']['Options']['VContainer'])
                 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                     message_text={'ffmpeg': ffmpeg_params})
+                                                                     message_text={
+                                                                         'ffmpeg': ffmpeg_params})
                 ffmpeg_pid = subprocess.Popen(shlex.split(ffmpeg_params),
                                               stdout=subprocess.PIPE, shell=False)
                 # output after it gets started
@@ -124,10 +127,12 @@ async def on_message(message: aio_pika.IncomingMessage):
                 while True:
                     line = ffmpeg_pid.stdout.readline()
                     if line != '':
-                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-                            'ffmpeg out': line.rstrip()})
+                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                             message_text={
+                                                                                 'ffmpeg out': line.rstrip()})
                         if line.find('Duration:') != -1:
-                            media_duration = timedelta(float(line.split(': ', 1)[1].split(',', 1)[0]))
+                            media_duration = timedelta(
+                                float(line.split(': ', 1)[1].split(',', 1)[0]))
                         elif line[0:5] == "frame":
                             time_string = timedelta(float(line.split('=', 5)[5].split(' ', 1)[0]))
                             time_percent = time_string.total_seconds() / media_duration.total_seconds()
@@ -142,12 +147,13 @@ async def on_message(message: aio_pika.IncomingMessage):
                     # just go along merry way as ffmpeg shoulda output to mm_sync_path_to
                     pass
                 elif row_data['mm_sync_options_json']['Type'] == 'Remote Client':
-                    XFER_THREAD = common_xfer.FileSenderThread(row_data['mm_sync_options_json']['TargetIP'],
-                                                               row_data['mm_sync_options_json']['TargetPort'],
-                                                               row_data['mm_sync_path_to'] + "."
-                                                               + row_data['mm_sync_options_json']['Options'][
-                                                                   'VContainer'],
-                                                               row_data['mm_sync_path_to'])
+                    XFER_THREAD = common_xfer.FileSenderThread(
+                        row_data['mm_sync_options_json']['TargetIP'],
+                        row_data['mm_sync_options_json']['TargetPort'],
+                        row_data['mm_sync_path_to'] + "."
+                        + row_data['mm_sync_options_json']['Options'][
+                            'VContainer'],
+                        row_data['mm_sync_path_to'])
                 else:  # cloud item
                     CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
                     CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],
