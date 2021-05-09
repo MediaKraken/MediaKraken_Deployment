@@ -1,5 +1,5 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase_alpinepy3:dev
+FROM mediakraken/mkbase_alpinepy3:dev
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image holds the cron app"
