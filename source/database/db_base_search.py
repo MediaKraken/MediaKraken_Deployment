@@ -29,11 +29,11 @@ def db_search(self, search_string, search_type='Local', search_movie=True, searc
         if search_movie:
             # movie section
             self.db_cursor.execute('SELECT mm_metadata_guid,'
-                                   ' mm_media_name, '
-                                   'similarity(mm_media_name, %s) AS sml'
+                                   ' mm_metadata_name, '
+                                   'similarity(mm_metadata_name, %s) AS sml'
                                    ' FROM mm_metadata_movie'
-                                   ' WHERE mm_media_name % %s'
-                                   ' ORDER BY sml DESC, LOWER(mm_media_name);',
+                                   ' WHERE mm_metadata_name % %s'
+                                   ' ORDER BY sml DESC, LOWER(mm_metadata_name);',
                                    (search_string, search_string))
             json_return_data['Movie'] = json.dumps(self.db_cursor.fetchall())
         if search_tvshow:

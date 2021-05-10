@@ -216,10 +216,10 @@ def db_meta_person_as_seen_in(self, person_guid):
                                                          message_text={"row_data": row_data})
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
-        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
+        self.db_cursor.execute('select mm_metadata_guid,mm_metadata_name,'
                                'mm_metadata_localimage_json->\'Poster\''
                                ' from mm_metadata_movie where mm_metadata_json->\'credits\'->\'cast\''
-                               ' @> \'[{"id": %s}]\' order by LOWER(mm_media_name)', sql_params)
+                               ' @> \'[{"id": %s}]\' order by LOWER(mm_metadata_name)', sql_params)
     return self.db_cursor.fetchall()
 
 # works

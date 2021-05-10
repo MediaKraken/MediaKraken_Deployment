@@ -42,7 +42,7 @@ async def db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
         db_conn = db_connection
     await db_conn.execute('insert into mm_metadata_movie (mm_metadata_guid,'
                           ' mm_metadata_media_id,'
-                          ' mm_media_name,'
+                          ' mm_metadata_name,'
                           ' mm_metadata_json,'
                           ' mm_metadata_localimage_json)'
                           ' values ($1,$2,$3,$4,$5)',
@@ -118,7 +118,7 @@ async def db_find_metadata_guid(self, media_name, media_release_year, db_connect
     if media_release_year is not None:
         # for year and -3/+3 year as well
         meta_results = await db_conn.fetch('select mm_metadata_guid from mm_metadata_movie'
-                                           ' where (LOWER(mm_media_name) = $1'
+                                           ' where (LOWER(mm_metadata_name) = $1'
                                            ' or lower(mm_metadata_json->>\'original_title\') = $2)'
                                            ' and substring(mm_metadata_json->>\'release_date\''
                                            ' from 0 for 5)'
@@ -133,7 +133,7 @@ async def db_find_metadata_guid(self, media_name, media_release_year, db_connect
                                            str(int(media_release_year) - 3))
     else:
         meta_results = await db_conn.fetch('select mm_metadata_guid from mm_metadata_movie'
-                                           ' where (LOWER(mm_media_name) = $1'
+                                           ' where (LOWER(mm_metadata_name) = $1'
                                            ' or lower(mm_metadata_json->>\'original_title\') = $2)',
                                            media_name.lower(), media_name.lower())
     for row_data in meta_results:

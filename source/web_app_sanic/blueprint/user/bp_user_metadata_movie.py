@@ -54,7 +54,7 @@ async def url_bp_user_metadata_movie_detail(request, guid):
                                                                         db_connection=db_connection)
     await request.app.db_pool.release(db_connection)
     return {
-        'data_name': data['mm_media_name'],
+        'data_name': data['mm_metadata_name'],
         'json_metadata': data['mm_metadata_json'],
         'data_genres': genres_list[:-2],
         'data_production': production_list[:-2],
@@ -136,7 +136,7 @@ async def url_bp_user_metadata_movie_list(request, user):
             media_count = 0
         else:
             deck_break = False
-        media.append((row_data['mm_metadata_guid'], row_data['mm_media_name'],
+        media.append((row_data['mm_metadata_guid'], row_data['mm_metadata_name'],
                       row_data['mm_date'], row_data['mm_poster'], watched_status,
                       rating_status, request_status, queue_status, deck_start, deck_break))
     request.ctx.session['search_page'] = 'meta_movie'

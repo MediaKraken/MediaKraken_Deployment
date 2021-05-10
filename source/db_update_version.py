@@ -456,6 +456,77 @@ if db_connection.db_version_check() < 39:
     db_connection.db_version_update(39)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 40:
+    # mm_loan
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_loan_ndx_media_id'
+                           ' ON mm_loan(mm_loan_media_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_loan_ndx_user_id'
+                           ' ON mm_loan(mm_loan_user_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_loan_ndx_user_loan_id'
+                           ' ON mm_loan(mm_load_user_loan_id)')
+    # mm_media_remote
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_media_remote_ndx_link_id'
+                           ' ON mm_media_remote(mmr_media_link_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_media_remote_ndx_media_id'
+                           ' ON mm_media_remote(mmr_media_uuid)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_media_remote_ndx_meta_id'
+                           ' ON mm_media_remote(mmr_media_metadata_guid)')
+    # mm_metadata_anime
+    db_connection.db_query('ALTER TABLE mm_metadata_anime'
+                           ' RENAME COLUMN mm_media_anime_name TO mm_metadata_anime_name;')
+    db_connection.db_query('ALTER TABLE mm_metadata_anime'
+                           ' ALTER COLUMN mm_metadata_anime_media_id TYPE integer;')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_anime_ndx_media_id'
+                           ' ON mm_metadata_anime(mm_metadata_anime_media_id)')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_anidb')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_imdb')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_thetvdb')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_tmdb')
+    # mm_metadata_game_systems_info
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_game_systems_info_ndx_name'
+                           ' ON mm_metadata_game_systems_info(gs_game_system_name)')
+    # mm_metadata_movie
+    db_connection.db_query('ALTER TABLE mm_metadata_movie'
+                           ' RENAME COLUMN mm_media_name TO mm_metadata_name;')
+    # mm_notification
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_notification_ndx_time'
+                           ' ON mm_notification(mm_notification_time)')
+    # mm_radio
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_radio_ndx_name'
+                           ' ON mm_radio(mm_radio_name)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_radio_ndx_active'
+                           ' ON mm_radio(mm_radio_active)')
+    # mm_tv_schedule
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_tv_schedule_ndx_station_id'
+                           ' ON mm_tv_schedule(mm_tv_schedule_station_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_tv_schedule_ndx_schedule_date'
+                           ' ON mm_tv_schedule(mm_tv_schedule_date)')
+    db_connection.db_version_update(40)
+    db_connection.db_commit()
+
+'''
+    # mm_metadata_music_video
+    # TODO
+    # mm_metadata_musician
+    # TODO
+    # mm_metadata_sports
+    # TODO
+    # mm_tv_schedule_program
+    # TODO
+    # mm_tv_stations
+    # TODO
+    # mm_user
+    # TODO
+    # mm_user_activity
+    # TODO
+    # mm_user_group
+    # TODO
+    # mm_user_profile
+    # TODO
+    # mm_user_queue
+    # TODO    
+'''
+
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names

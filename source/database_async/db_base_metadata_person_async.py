@@ -29,13 +29,13 @@ async def db_meta_person_as_seen_in(self, person_guid, db_connection=None):
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "row_data": row_data})
-    return await db_conn.fetch('select mm_metadata_guid,mm_media_name,'
+    return await db_conn.fetch('select mm_metadata_guid,mm_metadata_name,'
                                ' mm_metadata_localimage_json->\'Poster\''
                                ' from mm_metadata_movie'
                                ' where mm_metadata_json->\'credits\'->\'cast\''
                                ' @> \'[{"id": '
                                + str(row_data['mmp_person_media_id'])
-                               + '}]\' order by LOWER(mm_media_name)')
+                               + '}]\' order by LOWER(mm_metadata_name)')
 
 
 async def db_meta_person_by_guid(self, guid, db_connection=None):

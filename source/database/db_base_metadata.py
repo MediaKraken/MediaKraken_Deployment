@@ -27,7 +27,7 @@ def db_read_media_metadata(self, media_guid):
     """
     self.db_cursor.execute('select mm_metadata_guid,'
                            ' mm_metadata_media_id,'
-                           ' mm_media_name,'
+                           ' mm_metadata_name,'
                            ' mm_metadata_json,'
                            ' mm_metadata_localimage_json,'
                            ' mm_metadata_user_json'
@@ -44,7 +44,7 @@ def db_meta_update(self, series_id_json, result_json, image_json):
     # update record by tmdb
     """
     self.db_cursor.execute('update mm_metadata_movie set mm_metadata_media_id = %s,'
-                           ' mm_media_name = %s,'
+                           ' mm_metadata_name = %s,'
                            ' mm_metadata_json = %s,'
                            ' mm_metadata_localimage_json = %s'
                            ' where mm_metadata_media_id = %s',
@@ -120,7 +120,7 @@ def db_meta_insert_tmdb(self, uuid_id, series_id, data_title, data_json,
     """
     self.db_cursor.execute('insert into mm_metadata_movie (mm_metadata_guid,'
                            ' mm_metadata_media_id,'
-                           ' mm_media_name,'
+                           ' mm_metadata_name,'
                            ' mm_metadata_json,'
                            ' mm_metadata_localimage_json)'
                            ' values (%s,%s,%s,%s,%s)', (uuid_id, series_id, data_title,
@@ -140,7 +140,7 @@ def db_meta_tmdb_count(self, tmdb_id):
 def db_meta_movie_count(self, search_value=None):
     if search_value is not None:
         self.db_cursor.execute('select count(*) from mm_metadata_movie '
-                               ' where mm_media_name %% %s',
+                               ' where mm_metadata_name %% %s',
                                (search_value,))
     else:
         self.db_cursor.execute('select count(*) from mm_metadata_movie')
@@ -152,25 +152,25 @@ def db_meta_movie_list(self, offset=0, records=None, search_value=None):
     # return list of movies
     """
     if search_value is not None:
-        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
+        self.db_cursor.execute('select mm_metadata_guid,mm_metadata_name,'
                                'mm_metadata_json->\'release_date\' as mm_date,'
                                'mm_metadata_localimage_json->\'Poster\' as mm_poster,'
                                'mm_metadata_user_json'
                                ' from mm_metadata_movie where mm_metadata_guid'
                                ' in (select mm_metadata_guid'
-                               ' from mm_metadata_movie where mm_media_name %% %s'
-                               ' order by mm_media_name offset %s limit %s)'
-                               ' order by mm_media_name, mm_date',
+                               ' from mm_metadata_movie where mm_metadata_name %% %s'
+                               ' order by mm_metadata_name offset %s limit %s)'
+                               ' order by mm_metadata_name, mm_date',
                                (search_value, offset, records))
     else:
-        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
+        self.db_cursor.execute('select mm_metadata_guid,mm_metadata_name,'
                                'mm_metadata_json->\'release_date\' as mm_date,'
                                'mm_metadata_localimage_json->\'Poster\' as mm_poster,'
                                'mm_metadata_user_json'
                                ' from mm_metadata_movie '
                                'where mm_metadata_guid in (select mm_metadata_guid'
-                               ' from mm_metadata_movie order by mm_media_name offset %s limit %s)'
-                               ' order by mm_media_name, mm_date', (offset, records))
+                               ' from mm_metadata_movie order by mm_metadata_name offset %s limit %s)'
+                               ' order by mm_metadata_name, mm_date', (offset, records))
     return self.db_cursor.fetchall()
 
 
@@ -222,7 +222,7 @@ def db_find_metadata_guid(self, media_name, media_release_year):
     if media_release_year is not None:
         # for year and -3/+3 year as well
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
-                               ' where (LOWER(mm_media_name) = %s'
+                               ' where (LOWER(mm_metadata_name) = %s'
                                ' or LOWER(mm_metadata_json->>\'original_title\') = %s)'
                                ' and substring(mm_metadata_json->>\'release_date\' from 0 for 5)'
                                ' in (%s,%s,%s,%s,%s,%s,%s)',
@@ -235,7 +235,7 @@ def db_find_metadata_guid(self, media_name, media_release_year):
                                 str(int(media_release_year) - 3)))
     else:
         self.db_cursor.execute('select mm_metadata_guid from mm_metadata_movie'
-                               ' where (LOWER(mm_media_name) = %s'
+                               ' where (LOWER(mm_metadata_name) = %s'
                                ' or LOWER(mm_metadata_json->>\'original_title\') = %s)',
                                (media_name.lower(), media_name.lower()))
     for row_data in self.db_cursor.fetchall():
@@ -307,11 +307,11 @@ def db_meta_queue_list(self, user_id, offset=0, records=None, search_value=None)
     # TODO sort by release date as well
     # TODO use the search value
     self.db_cursor.execute('(select mm_metadata_guid,'
-                           ' mm_media_name'
+                           ' mm_metadata_name'
                            ' from mm_metadata_movie '
                            ' where mm_metadata_user_json->\'UserStats\'->%s->>\'queue\' = '
                            '\'True\''
-                           ' order by LOWER(mm_media_name))'
+                           ' order by LOWER(mm_metadata_name))'
                            ' UNION ALL '
                            '(select mm_metadata_tvshow_guid,'
                            ' mm_metadata_tvshow_name'
