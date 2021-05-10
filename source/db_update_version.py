@@ -447,6 +447,13 @@ if db_connection.db_version_check() < 37:
     db_connection.db_version_update(38)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 38:
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_movie_ndx_media_id'
+                           ' ON mm_metadata_movie(mm_metadata_media_id)')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_idxgin_media_id')
+    db_connection.db_version_update(39)
+    db_connection.db_commit()
+
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names
