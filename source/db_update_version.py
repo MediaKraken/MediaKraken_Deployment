@@ -475,7 +475,9 @@ if db_connection.db_version_check() < 40:
     db_connection.db_query('ALTER TABLE mm_metadata_anime'
                            ' RENAME COLUMN mm_media_anime_name TO mm_metadata_anime_name;')
     db_connection.db_query('ALTER TABLE mm_metadata_anime'
-                           ' ALTER COLUMN mm_metadata_anime_media_id TYPE integer;')
+                           ' DROP COLUMN mm_metadata_anime_media_id')
+    db_connection.db_query('ALTER TABLE mm_metadata_anime'
+                           ' ADD COLUMN mm_metadata_anime_media_id integer;')
     db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_anime_ndx_media_id'
                            ' ON mm_metadata_anime(mm_metadata_anime_media_id)')
     db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_anidb')
