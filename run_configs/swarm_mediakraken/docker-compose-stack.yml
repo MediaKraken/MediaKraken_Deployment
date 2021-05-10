@@ -489,7 +489,6 @@ volumes:
   mediakraken_vol_mbrainz_data:
   mediakraken_vol_mumble:
   mediakraken_vol_nginx:
-  mediakraken_vol_pgadmin:
   mediakraken_vol_phue:
   mediakraken_vol_postgresql:
   mediakraken_vol_postgresql_backup:
