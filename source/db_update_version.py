@@ -432,7 +432,7 @@ if db_connection.db_version_check() < 36:
     db_connection.db_version_update(36)
     db_connection.db_commit()
 
-if db_connection.db_version_check() < 36:
+if db_connection.db_version_check() < 37:
     db_connection.db_query('ALTER TABLE mm_metadata_game_software_info'
                            ' ADD COLUMN gi_game_info_blake3 text;')
     db_connection.db_query('CREATE INDEX mm_metadata_game_software_info_sha1_idx'
@@ -442,12 +442,12 @@ if db_connection.db_version_check() < 36:
     db_connection.db_version_update(37)
     db_connection.db_commit()
 
-if db_connection.db_version_check() < 37:
+if db_connection.db_version_check() < 38:
     db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN mdq_class_uuid;')
     db_connection.db_version_update(38)
     db_connection.db_commit()
 
-if db_connection.db_version_check() < 38:
+if db_connection.db_version_check() < 39:
     db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_movie_ndx_media_id'
                            ' ON mm_metadata_movie(mm_metadata_media_id)')
     db_connection.db_query('DROP INDEX if exists mm_metadata_idxgin_media_id')
