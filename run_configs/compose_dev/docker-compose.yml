@@ -235,6 +235,7 @@ services:
     ports:
       - "5050:5050"
     environment:
+      PGADMIN_LISTEN_PORT: 5050
       PGADMIN_DEFAULT_EMAIL: spootdev@gmail.com
       PGADMIN_DEFAULT_PASSWORD: metaman
     volumes:
