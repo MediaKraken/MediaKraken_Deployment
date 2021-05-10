@@ -434,18 +434,18 @@ if db_connection.db_version_check() < 36:
 
 if db_connection.db_version_check() < 37:
     db_connection.db_query('ALTER TABLE mm_metadata_game_software_info'
-                           ' ADD COLUMN gi_game_info_sha1 text;')
+                           ' ADD COLUMN IF NOT EXISTS gi_game_info_sha1 text;')
     db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_game_software_info_sha1_idx'
                            ' ON mm_metadata_game_software_info(gi_game_info_sha1)')
     db_connection.db_query('ALTER TABLE mm_metadata_game_software_info'
-                           ' ADD COLUMN gi_game_info_blake3 text;')
+                           ' ADD COLUMN IF NOT EXISTS gi_game_info_blake3 text;')
     db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_game_software_info_blake3_idx'
                            ' ON mm_metadata_game_software_info(gi_game_info_blake3)')
     db_connection.db_version_update(37)
     db_connection.db_commit()
 
 if db_connection.db_version_check() < 38:
-    db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN mdq_class_uuid;')
+    db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN if exists mdq_class_uuid;')
     db_connection.db_version_update(38)
     db_connection.db_commit()
 
