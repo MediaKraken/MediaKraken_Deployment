@@ -42,69 +42,96 @@
     <!-- End: Navigation with Button -->
     <div><div>
     {% if data_name %}
-    <div id="movie_detail">
-        {% if data_background_image is none %}
-        <img alt="fs_bg_image" src= "{{ url_for('static', filename='img/movie_ticket.png') }}" loading="lazy" id="fs_bg_image" />
-        {% else %}
-        <img alt="fs_bg_image" src= "{{ url_for('static', filename=data_background_image) }}" loading="lazy" id="fs_bg_image" />
-        {% endif %}
-        <div id="movie_image_div" class="table-responsive">
-            {% if data_poster_image is none %}
-            <img class="center" src= "{{ url_for('static', filename='img/Movie-icon.png') }}" loading="lazy">
-            {% else %}
-            <img class="center" src= "{{ url_for('static', filename=data_poster_image) }}" loading="lazy">
-            {% endif %}
-            <table class="table table-hover">
-                <tbody>
-                    <tr>
-                        <div id="textbox">
-                            <p class="alignleft"> {{data_runtime}}</p>
-                            <p class="alignright">Rating: TODO </p>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-xl-3"><img class="img-fluid" src="/assets/img/Movie-icon.png" width="200" height="300"></div>
+                        <div class="col-xl-9">
+                            <div class="card"></div>
+                            <div class="row">
+                                <div class="col-xl-7"><span>Title: {{json_metadata['mm_metadata_json']['title']}}</span></div>
+                                <div class="col"><span class="text-right">Release Date: {{json_metadata['mm_metadata_json']['release_date']}}</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>Tagline: {{json_metadata['mm_metadata_json']['tagline']}}<br><br></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>Alternate Title: {{json_metadata['mm_metadata_json']['original_title']}}<br><br></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>rating icon............clickable genre buttons<br><br></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>star rating image........cast, crew, reviewws, homepage</p>
+                                </div>
+                            </div>
                         </div>
-                        <div style="clear: both;"></div>
-                    </tr>
-                </tbody>
-            </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Overview: {{json_metadata['mm_metadata_json']['overview']}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div><div>        {% if data_json_media_cast %}
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    Cast
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                    <div class="grid">
+                        {% for chapter_info in data_json_media_cast %}
+                        <div class="col-1-4">
+                            <a href="{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}">
+                                <img src="{{ url_for('static', filename='meta/images/' + chapter_info[1]) }}" height="150" width="150">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <p>
+                </div>
+            </div>
         </div>
-        <div id="movie_detail_div" class="table-responsive">
-            <table class="table table-hover">
-                <tbody>
-                    <tr>
-                        <div id="textbox">
-                            <p class="alignleft">Title: {{data_name}}</p>
-                            <p class="alignright">Release Date: {{json_metadata['release_date']}}</p>
+        {% endif %}</div>
+                        <div>
+                        {% if data_json_media_crew %}
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    Crew
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                    <div class="grid">
+                        {% for chapter_info in data_json_media_crew %}
+                        <div class="col-1-4">
+                            <a href="{{ url_for('user_playback.user_video_player_videojs', mtype='hls', guid=data_guid, chapter=chapter_info[0].replace(' ','%20'), audio=0, sub=0) }}">
+                                <img src="{{ url_for('static', filename='meta/images/' + chapter_info[1]) }}" height="150" width="150">
+                            </a>
                         </div>
-                        <div style="clear: both;"></div>
-                        {% if json_metadata['tagline'] and json_metadata['tagline'] != '-' %}
-                        <p>{{json_metadata['tagline']}}</p>
-                        {% endif %}
-                        {% if json_metadata['original_title'] and json_metadata['original_title'] != data_name %}
-                        <p>Alternate Title: {{json_metadata['original_title']}}</p>
-                        {% endif %}
-                        {% if data_genres %}
-                        <p>Genres: {{data_genres}}</p>
-                        {% endif %}
-                        <div id="textbox">
-                            <p class="alignleft">User Rating Avg: {{json_metadata['vote_average']}} with {{data_vote_count}} vote(s)</p>
-                            <p class="alignright"><input id="movie_rating_stars" value={{json_metadata['vote_average']}} type="number" class="rating" min=0 max=10 step=0.1 data-size="xx" data-stars="10"></p>
-                        </div>
-                        <div style="clear: both;"></div>
-                        {% if data_budget != "0" %}
-                        <p>Budget: {{data_budget}}</p>
-                        {% endif %}
-                        {% if json_metadata['homepage'] %}
-                        <p>Homepage: <a href = {{json_metadata['homepage']}}>{{json_metadata['homepage']}}</a></p>
-                        {% endif %}
-                        <p>Overview: {{json_metadata['overview']}}</p>
-                        {% if data_production %}
-                        <p>Production Companies: {{data_production}}</p>
-                        {% endif %}
-                        {% if data_review %}
-                        <p>Reviews:</p>
-                        {% endif %}
-                    </tr>
-                </tbody>
-            </table>
+                        {% endfor %}
+                    </div>
+                    <p>
+                </div>
+            </div>
+        </div>
+        {% endif %}</div></div>
+                </div>
+            </div>
         </div>
     </div>
     {% else %}
