@@ -4,7 +4,7 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/user/user_movie_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/user_status_movie/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
@@ -41,7 +41,7 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/user/user_meta_movie_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/user_status_movie_metadata/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);
@@ -77,7 +77,7 @@ $(function(){
         callback: function(key, options) {
             var m = "clicked: " + key + " on " + $(this).attr('data-id');
         $.ajax({
-                url: '/user/user_tv_status/' + $(this).attr('data-id') + '/' + key,
+                url: '/user/user_status_tv/' + $(this).attr('data-id') + '/' + key,
                 type: 'POST',
                 success: function(res) {
                     var result = JSON.parse(res);

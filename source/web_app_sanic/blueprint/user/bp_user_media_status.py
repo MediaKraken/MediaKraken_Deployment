@@ -78,3 +78,21 @@ async def url_bp_user_status_tv(request, guid, event_type):
     elif event_type == "mismatch":
         pass
     return redirect(request.app.url_for('name_blueprint_user_tv.url_bp_user_tv'))
+
+
+@blueprint_user_media_status.route('/user_meta_tv_status/<guid>/<event_type>',
+                                   methods=['GET', 'POST'])
+@common_global.auth.login_required(user_keyword='user')
+async def url_bp_user_status_tv_metadata(request, user, guid, event_type):
+    """
+    Set media status for specified media, user
+    """
+    await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
+                                                                     message_text={
+                                                                         'tv metadata status': guid,
+                                                                         'event': event_type})
+    db_connection = await request.app.db_pool.acquire()
+    await request.app.db_functions.db_meta_tv_status_update(guid, user.id, event_type,
+                                                            db_connection=db_connection)
+    await request.app.db_pool.release(db_connection)
+    return response.HTTPResponse('', status=200, headers={'Vary': 'Accept-Encoding'})
