@@ -524,7 +524,7 @@ if db_connection.db_version_check() < 41:
             path_data = row_data['mdq_download_json']['Path']
         else:
             path_data = None
-        db_connection.db_query('update mm_downlaod_que set mdq_provider_id = %s,'
+        db_connection.db_query('update mm_download_que set mdq_provider_id = %s,'
                                'mdq_status = %s, mdq_path = %s where mdq_id = %s'
                                % (row_data['mdq_download_json']['ProviderMetaID'],
                                   row_data['mdq_download_json']['Status'],
