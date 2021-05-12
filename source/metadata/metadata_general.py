@@ -236,11 +236,9 @@ async def metadata_search(db_connection, provider_name, download_data):
                                                                                  'meta setfetch': metadata_uuid})
             await db_connection.db_update_media_id(download_data['mdq_provider_id'],
                                                    metadata_uuid)
-            download_data['mdq_download_json'].update(
-                {'ProviderMetaID': match_result})
-            download_data['mdq_download_json'].update({'Status': 'Fetch'})
-            await db_connection.db_download_update(download_data['mdq_download_json'],
-                                                   download_data['mdq_id'])
+            await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                   status='Fetch',
+                                                   provider_guid=match_result)
             await db_connection.db_commit()
     return metadata_uuid
 
@@ -261,7 +259,8 @@ async def metadata_fetch(db_connection, provider_name, download_data):
                                                                          message_text={
                                                                              'fetch imvdb': provider_name})
         imvdb_id = await metadata_provider_imvdb.movie_fetch_save_imvdb(db_connection,
-                                                                        download_data['mdq_provider_id'],
+                                                                        download_data[
+                                                                            'mdq_provider_id'],
                                                                         download_data[
                                                                             'mdq_new_uuid'])
     elif provider_name == 'themoviedb':
@@ -299,9 +298,8 @@ async def metadata_castcrew(db_connection, provider_name, download_data):
                                                                              inspect.stack()[1][3]})
     # removed themoviedb call as it should be done during the initial fetch
     # setup for FetchReview
-    download_data['mdq_download_json'].update({'Status': 'FetchReview'})
-    await db_connection.db_download_update(download_data['mdq_download_json'],
-                                           download_data['mdq_id'])
+    await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                           status='FetchReview')
     await db_connection.db_commit()
 
 

@@ -113,11 +113,10 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                      'themoviedb', imdb_id)
                 if dl_meta is None:
                     metadata_uuid = download_data['mdq_new_uuid']
-                    download_data.update(
-                        {'Status': 'Fetch', 'ProviderMetaID': imdb_id})
                     await db_connection.db_begin()
-                    await db_connection.db_download_update(download_data,
-                                                           download_data['mdq_id'])
+                    await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                           status='Fetch',
+                                                           provider_guid=imdb_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     await db_connection.db_download_update_provider('themoviedb',
                                                                     download_data['mdq_id'])
@@ -132,11 +131,10 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                  'anidb', str(anidb_id))
             if dl_meta is None:
                 metadata_uuid = download_data['mdq_new_uuid']
-                await download_data.update(
-                    {'Status': 'Fetch', 'ProviderMetaID': str(anidb_id)})
                 await db_connection.db_begin()
-                await db_connection.db_download_update(download_data,
-                                                       download_data['mdq_id'])
+                await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                       status='Fetch',
+                                                       provider_guid=anidb_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider(
                     'anidb', download_data['mdq_id'])

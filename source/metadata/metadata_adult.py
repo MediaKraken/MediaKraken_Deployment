@@ -95,8 +95,7 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
                 metadata_uuid = download_data['mdq_new_uuid']
                 await db_connection.db_begin()
                 await db_connection.db_download_update(guid=download_data['mdq_id'],
-                                                       status='Fetch',
-                                                       provider_guid=None)
+                                                       status='Fetch')
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider('pornhub', download_data['mdq_id'])
                 await db_connection.db_commit()

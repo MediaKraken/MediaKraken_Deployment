@@ -17,7 +17,6 @@
 """
 
 import inspect
-import json
 
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -85,11 +84,10 @@ async def metadata_movie_lookup(db_connection, dl_row, file_name):
                                                                  provider_id)
             if dl_meta is None:
                 metadata_uuid = dl_row['mdq_new_uuid']
-                dl_row['mdq_download_json'].update(
-                    {'Status': 'Fetch', 'ProviderMetaID': provider_id})
                 await db_connection.db_begin()
-                await db_connection.db_download_update(dl_row['mdq_download_json'],
-                                                       dl_row['mdq_id'])
+                await db_connection.db_download_update(guid=dl_row['mdq_id'],
+                                                       status='Fetch',
+                                                       provider_guid=provider_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider('themoviedb',
                                                                 dl_row['mdq_id'])
@@ -119,11 +117,10 @@ async def metadata_movie_lookup(db_connection, dl_row, file_name):
         metadata_uuid = dl_row['mdq_new_uuid']
         # no matches by name/year on local database
         # search themoviedb since not matched above via DB or nfo/xml
-        dl_row['mdq_download_json'].update({'Status': 'Search'})
         # save the updated status
         await db_connection.db_begin()
-        await db_connection.db_download_update(dl_row['mdq_download_json'],
-                                               dl_row['mdq_id'])
+        await db_connection.db_download_update(guid=dl_row['mdq_id'],
+                                               status='Search')
         # set provider last so it's not picked up by the wrong thread
         await db_connection.db_download_update_provider('themoviedb', dl_row['mdq_id'])
         await db_connection.db_commit()
