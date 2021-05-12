@@ -525,12 +525,12 @@ if db_connection.db_version_check() < 41:
             path_data = str(row_data['mdq_download_json']['Path'])
         else:
             path_data = None
-        db_connection.db_query('update mm_download_que set mdq_provider_id = %s,'
-                               ' mdq_status = "%s", mdq_path = "%s" where mdq_id = \'%s\''
-                               % (row_data['mdq_download_json']['ProviderMetaID'],
-                                  str(row_data['mdq_download_json']['Status']),
-                                  path_data,
-                                  row_data['mdq_id']))
+        sql_command = 'update mm_download_que set mdq_provider_id=' \
+                      + str(row_data['mdq_download_json']['ProviderMetaID']) \
+                      + ', mdq_status=\"' + row_data['mdq_download_json']['Status'] \
+                      + '\", mdq_path=' + path_data \
+                      + ' where mdq_id=' + str(row_data['mdq_id']) + ')'
+        db_connection.db_query(sql_command)
     db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN'
                            ' IF EXISTS mdq_download_json;')
     db_connection.db_version_update(41)
