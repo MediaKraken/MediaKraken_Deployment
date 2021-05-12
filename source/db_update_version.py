@@ -524,7 +524,7 @@ if db_connection.db_version_check() < 41:
         if 'Path' in row_data['mdq_download_json']:
             path_data = str(row_data['mdq_download_json']['Path'])
         else:
-            path_data = None
+            path_data = 'NULL'
         sql_command = 'update mm_download_que set mdq_provider_id=' \
                       + str(row_data['mdq_download_json']['ProviderMetaID']) \
                       + ', mdq_status=\"' + row_data['mdq_download_json']['Status'] \
