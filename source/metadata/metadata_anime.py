@@ -17,7 +17,6 @@
 """
 
 import inspect
-import json
 
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -96,11 +95,10 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
                                                                'themoviedb', str(tmdb_id))
                 if dl_meta is None:
                     metadata_uuid = download_data['mdq_new_uuid']
-                    await download_data.update(
-                        {'Status': 'Fetch', 'ProviderMetaID': str(tmdb_id)})
                     await db_connection.db_begin()
-                    await db_connection.db_download_update(download_data,
-                                                           download_data['mdq_id'])
+                    await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                           status='Fetch',
+                                                           provider_guid=tmdb_id)
                     # set provider last so it's not picked up by the wrong thread too early
                     await db_connection.db_download_update_provider('themoviedb',
                                                                     download_data['mdq_id'])
@@ -168,11 +166,10 @@ async def metadata_anime_lookup(db_connection, download_data, file_name):
         if metadata_uuid is None:
             # no matches by name/year
             # search themoviedb since not matched above via DB or nfo/xml
-            download_data.update({'Status': 'Search'})
             # save the updated status
             await db_connection.db_begin()
-            await db_connection.db_download_update(download_data,
-                                                   download_data['mdq_id'])
+            await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                   status='Search')
             # set provider last so it's not picked up by the wrong thread
             await db_connection.db_download_update_provider('themoviedb', download_data['mdq_id'])
             await db_connection.db_commit()

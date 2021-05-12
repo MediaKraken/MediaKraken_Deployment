@@ -72,22 +72,22 @@ async def metadata_identification(db_connection, dl_row, guessit_file_name):
                                                                                dl_row)
     elif dl_row['mdq_que_type'] == common_global.DLMediaType.Game_CHD.value:
         metadata_uuid = await db_connection.db_meta_game_by_name_and_system(os.path.basename(
-            os.path.splitext(dl_row['mdq_download_json']['Path'])[0]), lookup_system_id)
+            os.path.splitext(dl_row['mdq_path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = common_hash.com_hash_sha1_c(dl_row['mdq_download_json']['Path'])
+            sha1_value = common_hash.com_hash_sha1_c(dl_row['mdq_path'])
             metadata_uuid = await db_connection.db_meta_game_by_sha1(sha1_value)
     elif dl_row['mdq_que_type'] == common_global.DLMediaType.Game_ISO.value:
         metadata_uuid = await db_connection.db_meta_game_by_name_and_system(os.path.basename(
-            os.path.splitext(dl_row['mdq_download_json']['Path'])[0]), lookup_system_id)
+            os.path.splitext(dl_row['mdq_path'])[0]), lookup_system_id)
         if metadata_uuid is None:
-            sha1_value = common_hash.com_hash_sha1_c(dl_row['mdq_download_json']['Path'])
+            sha1_value = common_hash.com_hash_sha1_c(dl_row['mdq_path'])
             metadata_uuid = await db_connection.db_meta_game_by_sha1(sha1_value)
     elif dl_row['mdq_que_type'] == common_global.DLMediaType.Game_ROM.value:
         metadata_uuid = await db_connection.db_meta_game_by_name_and_system(os.path.basename(
-            os.path.splitext(dl_row['mdq_download_json']['Path'])[0]), lookup_system_id)
+            os.path.splitext(dl_row['mdq_path'])[0]), lookup_system_id)
         if metadata_uuid is None:
             sha1_hash = common_hash.com_hash_sha1_by_filename(
-                dl_row['mdq_download_json']['Path'])
+                dl_row['mdq_path'])
             if sha1_hash is not None:
                 metadata_uuid = await db_connection.db_meta_game_by_sha1(sha1_hash)
     elif dl_row['mdq_que_type'] == common_global.DLMediaType.Publication_Magazine.value:

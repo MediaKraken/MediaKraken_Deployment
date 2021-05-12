@@ -506,6 +506,35 @@ if db_connection.db_version_check() < 40:
     db_connection.db_version_update(40)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 41:
+    # mm_download_que
+    db_connection.db_query('LOCK mm_download_que in ACCESS EXCLUSIVE mode')
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
+                           ' IF NOT EXISTS mdq_provider_id integer;')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_provider_id'
+                           ' ON mm_download_que(mdq_provider_id)')
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
+                           ' IF NOT EXISTS mdq_status text;')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_status'
+                           ' ON mm_download_que(mdq_status)')
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
+                           ' IF NOT EXISTS mdq_path text;')
+    for row_data in db_connection.db_query('select mdq_id, mdq_download_json from mm_download_que'):
+        if 'Path' in row_data['mdq_download_json']:
+            path_data = row_data['mdq_download_json']['Path']
+        else:
+            path_data = None
+        db_connection.db_query('update mm_downlaod_que set mdq_provider_id = %s,'
+                               'mdq_status = %s, mdq_path = %s where mdq_id = %s'
+                               % (row_data['mdq_download_json']['ProviderMetaID'],
+                                  row_data['mdq_download_json']['Status'],
+                                  path_data,
+                                  row_data['mdq_id']))
+    db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN'
+                           ' IF EXISTS mdq_download_json;')
+    db_connection.db_version_update(41)
+    db_connection.db_commit()
+
 '''
     # mm_metadata_music_video
     # TODO

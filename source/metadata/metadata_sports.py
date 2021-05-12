@@ -46,7 +46,7 @@ async def metadata_sports_lookup(db_connection, download_data):
     metadata_uuid = None  # so not found checks verify later
 
     stripped_name = os.path.basename(
-        download_data['mdq_download_json']['Path'].replace('_', ' ').rsplit('(', 1)[0].strip())
+        download_data['mdq_path'].replace('_', ' ').rsplit('(', 1)[0].strip())
     metadata_uuid = await db_connection.db_meta_sports_guid_by_event_name(stripped_name)
     if metadata_uuid is None and THESPORTSDB_CONNECTION is not None:
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',

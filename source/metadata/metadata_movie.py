@@ -49,7 +49,7 @@ async def metadata_movie_lookup(db_connection, dl_row, file_name):
                                                                          'metadata_movie_lookup': str(
                                                                              file_name)})
     # determine provider id's from nfo/xml if they exist
-    nfo_data, xml_data = await metadata_nfo_xml.nfo_xml_file(dl_row['mdq_download_json']['Path'])
+    nfo_data, xml_data = await metadata_nfo_xml.nfo_xml_file(dl_row['mdq_path'])
     imdb_id, tmdb_id = await metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
     if imdb_id is not None or tmdb_id is not None:
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',

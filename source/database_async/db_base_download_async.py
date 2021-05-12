@@ -26,10 +26,12 @@ async def db_download_insert(self, provider, que_type, down_json, down_new_uuid,
     await db_conn.execute('insert into mm_download_que (mdq_id,'
                           ' mdq_provider,'
                           ' mdq_que_type,'
-                          ' mdq_download_json,'
-                          ' mdq_new_uuid)'
-                          ' values ($1, $2, $3, $4, $5)',
-                          new_guid, provider, que_type, down_json, down_new_uuid)
+                          ' mdq_new_uuid,'
+                          ' mdq_provider_id,'
+                          ' mdq_status)'
+                          ' values ($1, $2, $3, $4, $5, $6)',
+                          new_guid, provider, que_type, down_new_uuid,
+                          down_json['MediaID']. down_json['ProviderMetaID'])
     return new_guid
 
 
@@ -52,8 +54,9 @@ async def db_download_read_provider(self, provider_name, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetch('select mdq_id,'
                                ' mdq_que_type,'
-                               ' mdq_download_json,'
-                               ' mdq_new_uuid'
+                               ' mdq_new_uuid,'
+                               ' mdq_provider_id,'
+                               ' mdq_status'
                                ' from mm_download_que'
                                ' where mdq_provider = $1'
                                ' order by mdq_que_type limit 25',
@@ -102,7 +105,7 @@ async def db_download_update_provider(self, provider_name, guid, db_connection=N
                           provider_name, guid)
 
 
-async def db_download_update(self, update_json, guid, update_que_id=None, db_connection=None):
+async def db_download_update(self, guid, status, provider_guid=None, db_connection=None):
     """
     Update download que record
     """
@@ -119,14 +122,14 @@ async def db_download_update(self, update_json, guid, update_que_id=None, db_con
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    if update_que_id is not None:
-        await db_conn.execute('update mm_download_que set mdq_download_json = $1,'
-                              ' mdq_que_type = $2'
+    if provider_guid is not None:
+        await db_conn.execute('update mm_download_que set mdq_status = $1,'
+                              ' mdq_provider_id = $2'
                               ' where mdq_id = $3',
-                              update_json, update_que_id, guid)
+                              status, provider_guid, guid)
     else:
-        await db_conn.execute('update mm_download_que set mdq_download_json = $1'
-                              ' where mdq_id = $2', update_json, guid)
+        await db_conn.execute('update mm_download_que set mdq_status = $1'
+                              ' where mdq_id = $2', status, guid)
 
 
 async def db_download_que_exists(self, download_que_uuid, download_que_type,
@@ -160,13 +163,13 @@ async def db_download_que_exists(self, download_que_uuid, download_que_type,
                                       ' from mm_download_que'
                                       ' where mdq_provider = $1'
                                       ' and mdq_que_type = $2'
-                                      ' and mdq_download_json->\'ProviderMetaID\' ? $3'
+                                      ' and mdq_provider_id = $3'
                                       ' limit 1) limit 1',
-                                      provider_name, download_que_type, str(provider_id))
+                                      provider_name, download_que_type, provider_id)
     else:
         return await db_conn.fetchval('select mdq_new_uuid'
                                       ' from mm_download_que'
                                       ' where mdq_provider = $1'
                                       ' and mdq_que_type = $2'
-                                      ' and mdq_download_json->\'ProviderMetaID\' ? $3 limit 1',
-                                      provider_name, download_que_type, str(provider_id))
+                                      ' and mdq_provider_id = $3 limit 1',
+                                      provider_name, download_que_type, provider_id)
