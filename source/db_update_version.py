@@ -521,13 +521,13 @@ if db_connection.db_version_check() < 41:
                            ' IF NOT EXISTS mdq_path text;')
     for row_data in db_connection.db_query('select mdq_id, mdq_download_json from mm_download_que'):
         if 'Path' in row_data['mdq_download_json']:
-            path_data = row_data['mdq_download_json']['Path']
+            path_data = str(row_data['mdq_download_json']['Path'])
         else:
             path_data = None
         db_connection.db_query('update mm_download_que set mdq_provider_id = %s,'
-                               'mdq_status = %s, mdq_path = %s where mdq_id = %s'
+                               ' mdq_status = %s, mdq_path = %s where mdq_id = %s'
                                % (row_data['mdq_download_json']['ProviderMetaID'],
-                                  row_data['mdq_download_json']['Status'],
+                                  str(row_data['mdq_download_json']['Status']),
                                   path_data,
                                   row_data['mdq_id']))
     db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN'
