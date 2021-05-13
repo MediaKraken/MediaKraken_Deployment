@@ -79,6 +79,11 @@ if db_connection.db_version_check() != common_version.DB_VERSION:
     {'stuff': 'Database upgrade in progress...'})
     db_create_pid = subprocess.Popen(['python3', './db_update_version.py'], stdout=subprocess.PIPE,
                                      shell=False)
+    while True:
+        line = db_create_pid.stdout.readline()
+        if not line:
+            break
+        print(line.rstrip(), flush=True)
     db_create_pid.wait()
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
         'stuff': 'Database upgrade complete.'})
