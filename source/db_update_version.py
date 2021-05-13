@@ -520,6 +520,7 @@ if db_connection.db_version_check() < 41:
                            ' ON mm_download_que(mdq_status)')
     db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
                            ' IF NOT EXISTS mdq_path text;')
+    total_updates = 0
     for row_data in db_connection.db_query('select mdq_id, mdq_download_json from mm_download_que'):
         if 'Path' in row_data['mdq_download_json']:
             path_data = str(row_data['mdq_download_json']['Path'])
@@ -531,10 +532,14 @@ if db_connection.db_version_check() < 41:
                       + '\', mdq_path=' + path_data \
                       + ' where mdq_id=\'' + str(row_data['mdq_id']) + '\';'
         db_connection.db_query(sql_command)
+        total_updates += 1
+        if total_updates % 100 == 0:
+            print('So far:', total_updates, flush=True)
     db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN'
                            ' IF EXISTS mdq_download_json;')
     db_connection.db_version_update(41)
     db_connection.db_commit()
+    print('so far', total_updates, flush=True)
 
 '''
     # mm_metadata_music_video
