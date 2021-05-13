@@ -165,8 +165,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     self.db_download_insert(provider=meta_type,
                                             que_type=common_global.DLMediaType.Person.value,
                                             down_json=json.dumps({"Status": "Fetch",
-                                                                  "ProviderMetaID": str(
-                                                                      person_id)}))
+                                                                  "ProviderMetaID":
+                                                                      person_id}))
                     # insert person record
                     self.db_meta_person_insert(person_name,
                                                person_id,
@@ -196,8 +196,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 self.db_download_insert(provider=meta_type,
                                         que_type=common_global.DLMediaType.Person.value,
                                         down_json=json.dumps({"Status": "Fetch",
-                                                              "ProviderMetaID": str(
-                                                                  person_id)}))
+                                                              "ProviderMetaID":
+                                                                  person_id}))
                 # insert person record
                 self.db_meta_person_insert(person_name,
                                            person_id,

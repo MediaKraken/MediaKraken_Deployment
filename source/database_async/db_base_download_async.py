@@ -31,7 +31,7 @@ async def db_download_insert(self, provider, que_type, down_json, down_new_uuid,
                           ' mdq_status)'
                           ' values ($1, $2, $3, $4, $5, $6)',
                           new_guid, provider, que_type, down_new_uuid,
-                          down_json['MediaID']. down_json['ProviderMetaID'])
+                          down_json['ProviderMetaID'], down_json['Status'])
     return new_guid
 
 

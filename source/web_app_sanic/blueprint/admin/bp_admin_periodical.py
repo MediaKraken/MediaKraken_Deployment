@@ -18,6 +18,8 @@ async def url_bp_admin_periodical_add(request):
         class_uuid = common_global.DLMediaType.Publication_Book.value
         for book_item in request.form['book_list'].split('\r'):
             if len(book_item) > 2:
+                # TODO.....ah, so, media id is here....but do I care?   it's metadata
+                # TODO fix this up.....
                 media_id = uuid.uuid4()
                 db_connection = await request.app.db_pool.acquire()
                 await request.app.db_functions.db_media_insert(media_id, None,
@@ -25,7 +27,7 @@ async def url_bp_admin_periodical_add(request):
                                                                None, None, None,
                                                                db_connection=db_connection)
                 await request.app.db_functions.db_download_insert(provider='Z', que_type=class_uuid,
-                                                                  down_json={'MediaID': media_id,
+                                                                  down_json={'Status': 'Fetch',
                                                                              'ProviderMetaID':
                                                                                  book_item.strip()},
                                                                   down_new_uuid=uuid.uuid4(),

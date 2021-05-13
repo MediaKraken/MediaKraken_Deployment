@@ -34,7 +34,7 @@ def db_download_insert(self, provider, que_type, down_json, down_new_uuid):
                            ' mdq_status)'
                            ' values (%s,%s,%s,%s,%s,%s,%s)',
                            (new_guid, provider, que_type, down_new_uuid,
-                            down_json['MediaID'].down_json['ProviderMetaID']))
+                            down_json['ProviderMetaID'], down_json['Status']))
     self.db_commit()
     return new_guid
 
