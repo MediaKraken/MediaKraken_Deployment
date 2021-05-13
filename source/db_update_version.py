@@ -509,17 +509,18 @@ if db_connection.db_version_check() < 40:
 
 if db_connection.db_version_check() < 41:
     # mm_download_que
+    print('b4 lock', flush=True)
     db_connection.db_query('LOCK mm_download_que in ACCESS EXCLUSIVE mode')
+    print('add mdq_provider_id', flush=True)
     db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
                            ' IF NOT EXISTS mdq_provider_id integer;')
-    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_provider_id'
-                           ' ON mm_download_que(mdq_provider_id)')
+    print('add mdq_status', flush=True)
     db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
                            ' IF NOT EXISTS mdq_status text;')
-    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_status'
-                           ' ON mm_download_que(mdq_status)')
+    print('add mdq_path', flush=True)
     db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
                            ' IF NOT EXISTS mdq_path text;')
+    print('b4 main read', flush=True)
     total_updates = 0
     for row_data in db_connection.db_query('select mdq_id, mdq_download_json from mm_download_que'):
         if 'Path' in row_data['mdq_download_json']:
@@ -535,8 +536,15 @@ if db_connection.db_version_check() < 41:
         total_updates += 1
         if total_updates % 100 == 0:
             print('So far:', total_updates, flush=True)
+    print('drop download json', flush=True)
     db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN'
                            ' IF EXISTS mdq_download_json;')
+    print('create index mdq_provider_id', flush=True)
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_provider_id'
+                           ' ON mm_download_que(mdq_provider_id)')
+    print('create index mdq_status', flush=True)
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_status'
+                           ' ON mm_download_que(mdq_status)')
     db_connection.db_version_update(41)
     db_connection.db_commit()
     print('so far', total_updates, flush=True)
