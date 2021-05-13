@@ -341,7 +341,7 @@ services:
         constraints: [node.role == manager]
 
   portainer:
-    image: portainer/portainer
+    image: portainer/portainer-ce
     command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
     ports:
       - "9000:9000"
