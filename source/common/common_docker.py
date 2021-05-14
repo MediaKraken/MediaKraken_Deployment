@@ -428,7 +428,7 @@ class CommonDocker:
         """
         Launch container for twitch user recording
         """
-        return self.cli.containers.run(image='mediakraken/mktranscode:5s' % os.environ['BRANCH'],
+        return self.cli.containers.run(image='mediakraken/mktranscode:%s' % os.environ['BRANCH'],
                                        command='python3 check.py ' + twitch_user,
                                        detach=True,
                                        volumes={
