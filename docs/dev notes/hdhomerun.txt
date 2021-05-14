@@ -10,7 +10,7 @@ cmd = [hdhomerun_config, device_id, "set"]
 http://ipv4-my.hdhomerun.com/discover
 
 
-# possible interesting method for recording
+# posible interesting method for recording
 response = requests.get(url, stream=True, timeout=3.00)
 response.raise_for_status()
 with open(options.output_file, 'wb') as fd:

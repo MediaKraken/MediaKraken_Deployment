@@ -48,7 +48,7 @@ channel = connection.channel()
 
 # start loop for cron checks
 while 1:
-    for row_data in db_connection.db_cron_list(enabled_only=True):  # only grab enabled ones
+    for row_data in db_connection.db_cron_list(True):  # only grab enabled ones
         time_frame = None
         if row_data['mm_cron_schedule'] == "Weekly":  # schedule
             time_frame = datetime.timedelta(weeks=1)

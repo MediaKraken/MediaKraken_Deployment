@@ -1,2 +1,2 @@
-add community to alpine repos
+add community to alpine 3.6 repos
 
