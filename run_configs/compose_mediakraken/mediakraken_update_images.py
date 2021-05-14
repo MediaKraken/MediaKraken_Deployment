@@ -50,3 +50,8 @@ file_handle.close()
 install_pid = subprocess.Popen(shlex.split('./docker_remove_dangle.sh'),
                                stdout=subprocess.PIPE, shell=False)
 install_pid.wait()
+
+# list current images
+install_pid = subprocess.Popen(shlex.split('docker images'),
+                               stdout=subprocess.PIPE, shell=False)
+install_pid.wait()

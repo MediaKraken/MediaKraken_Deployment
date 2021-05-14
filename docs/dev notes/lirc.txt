@@ -1,7 +1,7 @@
 remote file configs
 */MediaKraken_Deployment/hardware/lirc/remotes/
 
-# refeive
+# receive
 https://searchcode.com/codesearch/view/21616531/
 
 

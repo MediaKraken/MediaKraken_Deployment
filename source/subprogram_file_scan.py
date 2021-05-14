@@ -118,6 +118,7 @@ def worker(audit_directory):
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
                 # video game data
+                # TODO look for cue/bin data as well
                 if original_media_class == common_global.DLMediaType.Game.value:
                     if file_extension[1:] == 'iso':
                         new_class_type_uuid = common_global.DLMediaType.Game_ISO.value
