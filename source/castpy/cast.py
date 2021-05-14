@@ -34,14 +34,13 @@ with open('template.htm', "r") as tplfile:
 # in milliseconds and generated list
 # of images.  Write the output to
 # index.html
-payload = string.replace(payload, "$$1", delay_millis)
-payload = string.replace(payload, "$$2", html)
+payload = payload.replace("$$1", delay_millis)
+payload = payload.replace("$$2", html)
 with open("index.html", "w") as indexfile:
     indexfile.write(payload)
 
-    # Now, start serving up pages
+# Now, start serving up pages
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 httpd = SocketServer.TCPServer(("", 80), Handler)
-print
-"HTTP server running..."
+print('HTTP server running...')
 httpd.serve_forever()
