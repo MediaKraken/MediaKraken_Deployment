@@ -260,7 +260,7 @@ async def db_media_new(self, offset=None, records=None, search_value=None,
                                    ' from mm_media, mm_metadata_movie'
                                    ' where mm_media_metadata_guid = mm_metadata_guid'
                                    ' and mm_media_json->>\'DateAdded\' >= $1'
-                                   ' order by LOWER(mm_media_name),'
+                                   ' order by LOWER(mm_metadata_name),'
                                    ' mm_media_class_guid',
                                    (datetime.datetime.now()
                                     - datetime.timedelta(days=days_old)).strftime(
