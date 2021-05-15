@@ -343,7 +343,7 @@ services:
         constraints: [node.role == manager]
 
   portainer:
-    image: portainer/portainer-ce
+    image: portainer/portainer-ce:2.1.1-alpine
     command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
     ports:
       - "9000:9000"
@@ -359,7 +359,7 @@ services:
         constraints: [node.role == manager]
 
   portaineragent:
-    image: portainer/agent
+    image: portainer/agent:linux-amd64-2.4.0-alpine
     environment:
       AGENT_CLUSTER_ADDR: tasks.portaineragent
       # AGENT_PORT: 9001
