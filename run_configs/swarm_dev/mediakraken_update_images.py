@@ -54,4 +54,9 @@ install_pid.wait()
 # list current images
 install_pid = subprocess.Popen(shlex.split('docker images'),
                                stdout=subprocess.PIPE, shell=False)
+while True:
+    line = install_pid.stdout.readline()
+    if not line:
+        break
+    print(line.rstrip(), flush=True)
 install_pid.wait()
