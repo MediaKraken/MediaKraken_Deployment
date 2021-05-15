@@ -198,22 +198,22 @@ services:
 #    deploy:
 #      mode: global
 
-  mbrainz:
-    image: mediakraken/mkmusicbrainz:${BRANCH}
-    environment:
-      - BRAINZCODE=/run/secrets/musicbrainz_code
-    secrets:
-      - musicbrainz_code
-    ports:
-      - "5000:5000"
-    volumes:
-      - mediakraken_vol_mbrainz_conf:/config
-      - mediakraken_vol_mbrainz_data:/data
-    deploy:
-      mode: replicated
-      replicas: 0
-      placement:
-        constraints: [node.role == manager]
+#  mbrainz:
+#    image: mediakraken/mkmusicbrainz:${BRANCH}
+#    environment:
+#      - BRAINZCODE=/run/secrets/musicbrainz_code
+#    secrets:
+#      - musicbrainz_code
+#    ports:
+#      - "5000:5000"
+#    volumes:
+#      - mediakraken_vol_mbrainz_conf:/config
+#      - mediakraken_vol_mbrainz_data:/data
+#    deploy:
+#      mode: replicated
+#      replicas: 0
+#      placement:
+#        constraints: [node.role == manager]
 
   # runs the server to fetch/process all metadata
   metadata:
@@ -515,9 +515,9 @@ networks:
   mediakraken_network_frontend:
     driver: overlay
     attachable: true
-  # specifying external is depreciated
-  mediakraken_outside:
-      name: "mkhost"
+#  # specifying external is depreciated
+#  mediakraken_outside:
+#      name: "mkhost"
 
 volumes:
   portainer_data:
@@ -539,11 +539,6 @@ volumes:
   mediakraken_vol_transmission:
   mediakraken_vol_transmission_incomplete:
   mediakraken_vol_webkey:
-#    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      device: $PWD/data/webpid
 
 secrets:
   secure_key:
@@ -552,4 +547,3 @@ secrets:
     external: true
   csrf_key:
     external: true
-#    file: mkstack_db_password.txt
