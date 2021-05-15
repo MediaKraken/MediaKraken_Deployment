@@ -49,6 +49,11 @@ file_handle.close()
 # remove outdated images
 install_pid = subprocess.Popen(shlex.split('./docker_remove_dangle.sh'),
                                stdout=subprocess.PIPE, shell=False)
+while True:
+    line = install_pid.stdout.readline()
+    if not line:
+        break
+    print(line.rstrip(), flush=True)
 install_pid.wait()
 
 # list current images
