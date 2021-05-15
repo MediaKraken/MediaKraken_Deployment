@@ -124,24 +124,8 @@ if option_config_json['Docker Instances']['elk']:
 if option_config_json['Docker Instances']['mumble']:
     docker_inst.com_docker_run_mumble(current_host_working_directory)
 
-# if option_config_json['Docker Instances']['musicbrainz'] \
-#         and option_config_json['API']['musicbrainz'] is not None:
-#     docker_inst.com_docker_run_musicbrainz(current_host_working_directory,
-#                                            option_config_json['API']['musicbrainz'])
-
-# if option_config_json['Docker Instances']['pgadmin']:
-#     docker_inst.com_docker_run_pgadmin(current_host_working_directory)
-
 # if option_config_json['Docker Instances']['smtp']:
 #     docker_inst.com_docker_run_container()
-
-# if option_config_json['Docker Instances']['teamspeak']:
-#     docker_inst.com_docker_run_teamspeak(current_host_working_directory)
-
-# if option_config_json['Docker Instances']['transmission']:
-#     docker_inst.com_docker_run_transmission(current_host_working_directory,
-#                                             option_config_json['Transmission']['Username'],
-#                                             option_config_json['Transmission']['Password'])
 
 if option_config_json['Docker Instances']['wireshark']:
     docker_inst.com_docker_run_wireshark()
