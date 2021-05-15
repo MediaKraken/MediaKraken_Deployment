@@ -8,6 +8,8 @@ services:
     environment:
       # will init swarmip on server start, if specified
       - SWARMIP=${SWARMIP}
+      - DEBUG=${DEBUG}
+      - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
     secrets:
       - db_password
       - secure_key
