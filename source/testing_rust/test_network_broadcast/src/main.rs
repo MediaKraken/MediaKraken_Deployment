@@ -17,7 +17,7 @@ async fn main() -> io::Result<()> {
             {
                 println!("{:?} bytes received from {:?} {:?}", len, addr, s);
 
-                let len = sock.send_to(&buf[..len], addr).await?;
+                let len = sock.send_to(b"10.0.0.141:8903", addr).await?;
                 println!("{:?} bytes sent", len);
             }
         }
