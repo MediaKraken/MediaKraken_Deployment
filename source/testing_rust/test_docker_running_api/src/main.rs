@@ -11,9 +11,11 @@ async fn main() {
         Ok(images) => {
             for i in images {
                 println!(
-                    "{} {}",
+                    "{} {} {:?} {}",
                     i.id,
-                    i.created
+                    i.created,
+                    i.labels.unwrap_or_else(|| vec!["none".into()]),
+                    i.ports
                 );
             }
         }
