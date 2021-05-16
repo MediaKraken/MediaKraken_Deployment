@@ -14,7 +14,7 @@ async fn main() {
                     "{} {} {:?} {}",
                     i.id,
                     i.created,
-                    i.labels.unwrap_or_else(|| vec!["none".into()]),
+                    i.labels,
                     i.ports
                 );
             }
