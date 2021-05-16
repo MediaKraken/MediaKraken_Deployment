@@ -8,15 +8,18 @@ async fn main() -> io::Result<()> {
     let mut buf = [0; 1024];
     loop {
         let (len, addr) = sock.recv_from(&mut buf).await?;
+        if len == 25 {
+            let s = match str::from_utf8(&buf[..25]) {
+                Ok(v) => v,
+                Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+            };
+            if s == "who is MediaKrakenServer?"
+            {
+                println!("{:?} bytes received from {:?} {:?}", len, addr, s);
 
-        let s = match str::from_utf8(&buf) {
-            Ok(v) => v,
-            Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
-        };
-
-        println!("{:?} bytes received from {:?} {:?}", len, addr, s);
-
-        let len = sock.send_to(&buf[..len], addr).await?;
-        println!("{:?} bytes sent", len);
+                let len = sock.send_to(&buf[..len], addr).await?;
+                println!("{:?} bytes sent", len);
+            }
+        }
     }
 }
