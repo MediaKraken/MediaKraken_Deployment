@@ -5,3 +5,4 @@ edition = "2018"
 
 [dependencies]
 shiplift = "0.7"
+tokio = "1.6.0"
