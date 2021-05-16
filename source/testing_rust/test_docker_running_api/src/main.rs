@@ -13,8 +13,7 @@ async fn main() {
                 println!(
                     "{} {} {:?}",
                     i.id,
-                    i.created,
-                    i.repo_tags.unwrap_or_else(|| vec!["none".into()])
+                    i.created
                 );
             }
         }
