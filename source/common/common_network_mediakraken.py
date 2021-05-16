@@ -49,7 +49,8 @@ def com_net_mediakraken_find_server(server_seconds=2):
             server_reply = search_socket.recvfrom(1024)[0]
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
                 'Server reply': server_reply})
-            if server_reply not in server_hosts_found:
+            if server_reply not in server_hosts_found \
+                    and server_reply != b'who is MediaKrakenServer?':
                 server_hosts_found.append(server_reply)
         except socket.error as msg:
             common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical',
