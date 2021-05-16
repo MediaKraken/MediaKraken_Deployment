@@ -4,6 +4,5 @@ version = "0.0.1"
 edition = "2018"
 
 [dependencies]
-bollard = "0.10.1"
-#futures-util = "0.3.14" included in bollard
-#tokio = "1.5.0" included in bollard
+shiplift = "0.7"
+tokio = { version = "1.6.0", features = ["full"] }

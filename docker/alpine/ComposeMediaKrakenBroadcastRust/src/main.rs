@@ -1,49 +1,45 @@
-//! Fetch info of all running containers concurrently
-
-use bollard::container::{InspectContainerOptions, ListContainersOptions};
-use bollard::models::ContainerSummary;
-use bollard::Docker;
-
-use std::collections::HashMap;
-use std::default::Default;
-
-use futures_util::stream;
-use futures_util::stream::StreamExt;
-
-async fn conc(arg: (Docker, &ContainerSummary)) -> () {
-    let (docker, container) = arg;
-    println!(
-        "{:?}",
-        docker
-            .inspect_container(
-                container.id.as_ref().unwrap(),
-                None::<InspectContainerOptions>
-            )
-            .await
-            .unwrap()
-    )
-}
+use tokio::net::UdpSocket;
+use std::io;
+use std::str;
+use shiplift::Docker;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
-    let docker = Docker::connect_with_unix_defaults().unwrap();
+async fn main() -> io::Result<()> {
+    let docker = Docker::new();
+    println!("docker containers that are running");
+    let result = docker.containers().list(&Default::default()).await;
+    match result {
+        Ok(images) => {
+            for i in images {
+                if i.names[0] == "/mkstack_reactor" {
+                    println!(
+                        "{} {:?} {:?}",
+                        i.id,
+                        i.ports,
+                        i.names
+                    );
+                }
+            }
+        }
+        Err(e) => eprintln!("Error: {}", e),
+    }
 
-    let mut list_container_filters = HashMap::new();
-    list_container_filters.insert("status", vec!["running"]);
+    let sock = UdpSocket::bind("0.0.0.0:9101").await?;
+    let mut buf = [0; 1024];
+    loop {
+        let (len, addr) = sock.recv_from(&mut buf).await?;
+        if len == 25 {
+            let s = match str::from_utf8(&buf[..25]) {
+                Ok(v) => v,
+                Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
+            };
+            if s == "who is MediaKrakenServer?"
+            {
+                println!("{:?} bytes received from {:?} {:?}", len, addr, s);
 
-    let containers = &docker
-        .list_containers(Some(ListContainersOptions {
-            all: true,
-            filters: list_container_filters,
-            ..Default::default()
-        }))
-        .await?;
-
-    let docker_stream = stream::repeat(docker);
-    docker_stream
-        .zip(stream::iter(containers))
-        .for_each_concurrent(2, conc)
-        .await;
-
-    Ok(())
+                let len = sock.send_to(b"10.0.0.141:8903", addr).await?;
+                println!("{:?} bytes sent", len);
+            }
+        }
+    }
 }
