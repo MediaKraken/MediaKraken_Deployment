@@ -1,5 +1,9 @@
 use shiplift::Docker;
 
+fn print_type_of<T>(_: &T) {
+    println!("{}", std::any::type_name::<T>())
+}
+
 #[tokio::main]
 async fn main() {
     let docker = Docker::new();
@@ -11,10 +15,11 @@ async fn main() {
         Ok(images) => {
             for i in images {
                 if i.names[0] == "/mkstack_reactor" {
+                    print_type_of(&i.ports);
                     println!(
                         "{} {:?}",
                         i.id,
-                        i.ports
+                        i.ports[0].private_port
                     );
                 }
             }
