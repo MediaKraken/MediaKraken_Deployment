@@ -19,11 +19,9 @@
 import os
 import socket
 import subprocess
-from dotenv import load_dotenv
-from common import common_logging_elasticsearch_httpx
 
 import docker
-from . import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 # https://docker-py.readthedocs.io/en/stable/
@@ -105,8 +103,9 @@ class CommonDocker:
             try:
                 return self.cli_api.init_swarm()
             except:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'stuff':
-                                                                         'Must define Docker Swarm IP in ENV file since multiple IP'})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical',
+                                                                     message_text={'stuff':
+                                                                                       'Must define Docker Swarm IP in ENV file since multiple IP'})
         else:
             return self.cli_api.init_swarm(advertise_addr=os.environ['SWARMIP'])
 
@@ -229,18 +228,19 @@ class CommonDocker:
         if current_host_working_directory is not None \
                 and os.path.exists(os.path.join(current_host_working_directory, 'data/devices')):
             self.com_docker_delete_container('mkdevicescan')
-            return self.cli.containers.run(image='mediakraken/mkdevicescan:%s' % os.environ['BRANCH'],
-                                           detach=True,
-                                           command='python3 /mediakraken/main_hardware_discover.py',
-                                           name='mkdevicescan',
-                                           network_mode='host',
-                                           volumes={os.path.join(current_host_working_directory,
-                                                                 'data/devices'):
-                                                        {'bind': '/mediakraken/devices',
-                                                         'mode': 'rw'}
-                                                    },
-                                           environment={'DEBUG': os.environ['DEBUG']},
-                                           )
+            return self.cli.containers.run(
+                image='mediakraken/mkdevicescan:%s' % os.environ['BRANCH'],
+                detach=True,
+                command='python3 /mediakraken/main_hardware_discover.py',
+                name='mkdevicescan',
+                network_mode='host',
+                volumes={os.path.join(current_host_working_directory,
+                                      'data/devices'):
+                             {'bind': '/mediakraken/devices',
+                              'mode': 'rw'}
+                         },
+                environment={'DEBUG': os.environ['DEBUG']},
+                )
 
     def com_docker_run_dosbox(self, current_user_uuid, current_host_working_directory, game_uuid):
         if current_host_working_directory is not None \
@@ -253,18 +253,19 @@ class CommonDocker:
                                          current_user_uuid, game_uuid)
             if not os.path.exists(user_host_dir):
                 os.makedirs(user_host_dir)
-            return self.cli.containers.run(image='mediakraken/mkdosboxweb:%s' % os.environ['BRANCH'],
-                                           detach=True,
-                                           name=('mkdosboxweb' + current_user_uuid.replace('-',
-                                                                                           ''))[
-                                                :30],
-                                           network='mediakraken_network_backend',
-                                           volumes={user_host_dir:
-                                                        {'bind': '/mediakraken/dosbox',
-                                                         'mode': 'rw'}
-                                                    },
-                                           environment={'DEBUG': os.environ['DEBUG']},
-                                           )
+            return self.cli.containers.run(
+                image='mediakraken/mkdosboxweb:%s' % os.environ['BRANCH'],
+                detach=True,
+                name=('mkdosboxweb' + current_user_uuid.replace('-',
+                                                                ''))[
+                     :30],
+                network='mediakraken_network_backend',
+                volumes={user_host_dir:
+                             {'bind': '/mediakraken/dosbox',
+                              'mode': 'rw'}
+                         },
+                environment={'DEBUG': os.environ['DEBUG']},
+                )
 
     def com_docker_run_elk(self, current_host_working_directory):
         if current_host_working_directory is not None \
