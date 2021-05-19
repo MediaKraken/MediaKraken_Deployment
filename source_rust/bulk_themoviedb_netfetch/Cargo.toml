@@ -1,0 +1,10 @@
+[package]
+name = "mk_bulk_themoviedb_netfetch"
+version = "0.0.1"
+edition = "2018"
+
+[dependencies]
+postgres = "0.19.1"
+attohttpc = "0.17.0"
+flate2 = "1.0.20"
+serde_json = "1.0.64"
