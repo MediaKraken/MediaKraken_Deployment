@@ -1,6 +1,6 @@
 // launch the vs tools app otherwise can't compile (windows os only)
 
-//use std::error::Error;
+use std::error::Error;
 // use postgres::{Client, Error, NoTls};
 // use serde_json::{Result, Value};
 
@@ -9,19 +9,28 @@
 #[path = "../../lib_database/mk_lib_database.rs"] mod mk_lib_database;
 #[path = "../../lib_network/mk_lib_network.rs"] mod mk_lib_networks;
 
-fn main() {
-//fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     let fetch_date: String = "05_15_2021".to_string();
 
     // grab the movie id's
     // let fetch_result = mk_lib_networks::mk_download_file_from_url(
     //     &format!("http://files.tmdb.org/p/exports/movie_ids_{}.json.gz", fetch_date),
     //     "movie.gz");
-    let json_data = mk_lib_compression::mk_decompress_gzip("movie.gz");
-    println!("jsondata: {:?}", json_data);
+    let json_result = mk_lib_compression::mk_decompress_gzip("movie.gz").unwrap();
+    // match json_result {
+    //         Ok(value) => {
+    //             println!("jsondata: {:?}", value);
+    //             // Parse the string of data into serde_json::Value.
+    //             let v: serde_json::Value = serde_json::from_str(&value);
+    //         },
+    //         Err(error) => {
+    //             println!("{}", error);
+    //         },
+    //     }
+    println!("jsondata: {:?}", json_result);
     // Parse the string of data into serde_json::Value.
-    // let v: serde_json::Value = serde_json::from_str(&json_data);
-    // println!("Please call {} at the number {}", v["id"], v["adult"]);
+    let v: serde_json::Value = serde_json::from_str(json_result);
+    //println!("Please call {} at the number {}", v["id"], v["adult"]);
 
     // // grab the TV id's
     // let fetch_result = mk_lib_networks::mk_download_file_from_url(
@@ -50,5 +59,5 @@ fn main() {
     //
     //     println!("found person: {} {} {:?}", id, name, data);
     // }
-    //Ok(())
+    Ok(())
 }
