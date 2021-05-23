@@ -1,3 +1,6 @@
+// error[E0554]: `#![feature]` may not be used on the stable release channel
+
+#![feature(proc_macro_span)]
 use inline_python::python;
 
 fn main() {
