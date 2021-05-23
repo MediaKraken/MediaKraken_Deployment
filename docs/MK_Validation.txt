@@ -51,6 +51,8 @@ Run the following tests from under the MediaKraken_CI
 
 
 Maybe:
+https://github.com/epi052/feroxbuster - website attacker
+https://github.com/dotenv-linter/dotenv-linter - env file linter
 https://github.com/vintasoftware/python-linters-and-code-analysis
 https://github.com/analysis-tools-dev/static-analysis#python
 https://github.com/Yelp/detect-secrets
