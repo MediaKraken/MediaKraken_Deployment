@@ -22,7 +22,7 @@ from common import common_internationalization
 
 
 def com_pagination_page_calc(request):
-    page = int(request.args.get('page', 1).replace(',', ''))
+    page = int(request.args.get('page', 1))
     offset = (page * int(request.ctx.session['per_page'])) - int(request.ctx.session['per_page'])
     return page, offset
 
