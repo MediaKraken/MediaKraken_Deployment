@@ -41,12 +41,9 @@ def com_pagination_boot_html(page, url, item_count=0,
     pagination_links = '<ul class="pagination">'
     # only do previous if not on first page
     if page > 1:
-        if format_number:
-            page_number = common_internationalization.com_inter_number_format(page - 1)
-        else:
-            page_number = str(page - 1)
+        link_number = str(page - 1)
         pagination_links += '<li class="page-item">' \
-                            '<a class="page-link" href="' + url + '?page=' + page_number \
+                            '<a class="page-link" href="' + url + '?page=' + link_number \
                             + '" aria-label="Previous">' \
                               '<span aria-hidden="true">&laquo;</span>' \
                               '<span class="sr-only">Previous</span>' \
@@ -62,21 +59,19 @@ def com_pagination_boot_html(page, url, item_count=0,
         if build_stop > pages:
             build_stop = pages
     for ndx in range(build_start, build_stop):
+        link_number = str(ndx)
         if format_number:
             page_number = common_internationalization.com_inter_number_format(ndx)
         else:
             page_number = str(ndx)
         pagination_links += '<li class="page-item"><a class="page-link"' \
-                            ' href="' + url + '?page=' + page_number + '">' \
+                            ' href="' + url + '?page=' + link_number + '">' \
                             + page_number + '</a></li>'
     # only do next if not on last page
     if page < pages:
-        if format_number:
-            page_number = common_internationalization.com_inter_number_format(page + 1)
-        else:
-            page_number = str(page + 1)
+        link_number = str(page + 1)
         pagination_links += '<li class="page-item">' \
-                            '<a class="page-link" href="' + url + '?page=' + page_number \
+                            '<a class="page-link" href="' + url + '?page=' + link_number \
                             + '" aria-label="Next">' \
                               '<span aria-hidden="true">&raquo;</span>' \
                               '<span class="sr-only">Next</span>' \
@@ -84,3 +79,4 @@ def com_pagination_boot_html(page, url, item_count=0,
                               '</li>'
     pagination_links += '</ul>'
     return pagination_links
+
