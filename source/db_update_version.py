@@ -549,6 +549,12 @@ if db_connection.db_version_check() < 41:
     db_connection.db_commit()
     print('so far', total_updates, flush=True)
 
+if db_connection.db_version_check() < 42:
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_person_idx_name_lower'
+                           ' ON mm_metadata_person(lower(mmp_person_name))')
+    db_connection.db_version_update(42)
+    db_connection.db_commit()
+
 '''
     # mm_metadata_music_video
     # TODO
