@@ -1,0 +1,18 @@
+[package]
+name = "myapp"
+version = "0.0.1"
+edition = "2018"
+
+[dependencies]
+# sessions for actix
+actix-session = "0.4.1"
+# actix web 'framework'
+actix-web = "3"
+# rabbitmq
+amiquip = { version = "0.4", default-features = false }
+# postgresl
+postgres = "0.19.1"
+# docker interface
+shiplift = "0.7"
+# template based off jinja
+tera = "1.10.0"
