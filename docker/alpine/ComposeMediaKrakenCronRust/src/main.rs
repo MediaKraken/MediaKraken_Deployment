@@ -1,6 +1,6 @@
+use chrono::prelude::*;
 use tokio::time::{Duration, sleep};
 use tokio_postgres::{Error, NoTls};
-use chrono::prelude::*;
 
 #[path = "../../../../source_rust/lib_logging/mk_lib_logging.rs"]
 mod mk_lib_logging;
@@ -38,37 +38,38 @@ fn main() -> Result<(), Box<dyn Error>> {
     // start loop for cron checks
     loop {
         for row_data in mk_lib_database_cron::mk_lib_database_cron_service_read() {
-            let mut time_frame;
-            if row_data["mm_cron_schedule"] == "Weekly" {
-                time_frame = datetime.timedelta(weeks = 1);
-            } else if row_data["mm_cron_schedule"].split(' ', 1)[0] == "Days" {
-                time_frame = datetime.timedelta(
-                    days = int(row_data["mm_cron_schedule"].split(' ', 1)[1]));
-            } else if row_data["mm_cron_schedule"].split(' ', 1)[0] == "Hours" {
-                time_frame = datetime.timedelta(
-                    hours = int(row_data["mm_cron_schedule"].split(' ', 1)[1]));
+            let mut time_delta;
+            if row_data.get("mm_cron_schedule") == "Weekly" {
+                time_delta = Duration::weeks(1);
             } else {
-                row_data["mm_cron_schedule"].split(' ', 1)[0] == "Minutes":
-                    time_frame = datetime.timedelta(
-                    minutes = int(row_data["mm_cron_schedule"].split(' ', 1)[1]));
+                let time_span_vector: Vec<&str>
+                    = row_data.get("mm_cron_schedule").split(' ').collect();
+                if time_span_vector[0] == "Days" {
+                    time_delta = Duration::days(time_span_vector[1]);
+                } else if time_span_vector[0] == "Hours" {
+                    time_delta = Duration::hours(time_span_vector[1]);
+                } else {
+                    // time_span_vector[0] == "Minutes":
+                    time_delta = Duration::minutes(time_span_vector[1]);
+                }
             }
-        let utc: DateTime<Utc> = Utc::now();
-        let date_check = utc - time_frame;
-        if row_data['mm_cron_last_run'] < date_check:
-            {
-            channel.basic_publish(exchange = row_data['mm_cron_json']['exchange_key'],
-                                  routing_key = row_data['mm_cron_json']['route_key'],
-                                  body = json.dumps(
-                                      {
-                                          'Type': row_data['mm_cron_json']['Type'],
-                                          'JSON': row_data['mm_cron_json']
-                                      }),
-                                  properties = pika.BasicProperties(
-                                      content_type ='text/plain',
-                                      delivery_mode = 2),
-        )}
-        db_connection.db_cron_time_update(row_data['mm_cron_name'])
-        db_connection.db_commit()
+            let utc: DateTime<Utc> = Utc::now();
+            let date_check = utc - time_delta;
+            if row_data.get("mm_cron_last_run") < date_check {
+                // channel.basic_publish(exchange = row_data.get("mm_cron_json")("exchange_key"),
+                //                       routing_key = row_data['mm_cron_json']['route_key'],
+                //                       body = json.dumps(
+                //                           {
+                //                               'Type': row_data['mm_cron_json']['Type'],
+                //                               'JSON': row_data['mm_cron_json']
+                //                           }),
+                //                       properties = pika.BasicProperties(
+                //                           content_type ='text/plain',
+                //                           delivery_mode = 2),
+                //)
+            }
+            db_connection.db_cron_time_update(row_data.get("mm_cron_name"));
+            db_connection.db_commit();
         }
         mk_lib_logging::mk_logging_post_elk("info",
                                             row_data,
