@@ -1,4 +1,5 @@
-pub async fn mk_lib_database_cron_service_read() -> Result<(), Error> {
+
+pub async fn mk_lib_database_cron_service_read(client: postgres::Client) -> Result<(), Error> {
     let rows = client
         .query_one("select mm_cron_guid, mm_cron_schedule, mm_cron_last_run,\
          mm_cron_json from mm_cron where mm_cron_enabled = true")

@@ -37,7 +37,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // start loop for cron checks
     loop {
-        for row_data in mk_lib_database_cron::mk_lib_database_cron_service_read() {
+        for row_data in mk_lib_database_cron::mk_lib_database_cron_service_read(db_client) {
             let mut time_delta;
             if row_data.get("mm_cron_schedule") == "Weekly" {
                 time_delta = Duration::weeks(1);
