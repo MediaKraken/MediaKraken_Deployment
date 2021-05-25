@@ -15,7 +15,7 @@ pub fn mk_download_file_from_url(url_to_download: &str, file_save_path: &str) ->
 }
 
 pub async fn mk_download_file_from_url_async(url_to_download: &str, file_save_path: &str)
-                                             -> Result<()> {
+                                             -> Result<(), Error> {
     let response = reqwest::get(url_to_download).await?;
     let path = Path::new(file_save_path);
     let mut file_handle = match File::create(&path) {
@@ -29,7 +29,7 @@ pub async fn mk_download_file_from_url_async(url_to_download: &str, file_save_pa
 
 // wait_seconds - 120 typically
 pub async fn mk_network_service_available(host_dns: &str, host_port: &str,
-                                          wait_seconds: &str) -> Result<()> {
+                                          wait_seconds: &str) -> Result<(), Error> {
     if Path::new("/mediakraken/wait-for-it-ash-busybox130.sh").exists() {
         Command::new("/mediakraken/wait-for-it-ash-busybox130.sh")
             .arg("-h")
