@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // fire off wait for it script to verify rabbitmq is available
     mk_lib_network::mk_network_service_available("mkstack_rabbitmq",
-                                                 "5672", "120")
+                                                 "5672", "120");
 
 //     credentials = pika.PlainCredentials('guest', 'guest')
 //     parameters = pika.ConnectionParameters('mkstack_rabbitmq',
