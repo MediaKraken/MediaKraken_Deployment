@@ -1,3 +1,3 @@
 pub mod mk_lib_network;
 
-pub mod mk_lib_email;
+pub mod mk_lib_network_email;
