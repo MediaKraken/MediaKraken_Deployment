@@ -1,3 +1,4 @@
+use std::io::Read;
 
 pub fn mk_decompress_gzip(archive_file:&str) -> Result<String, std::io::Error> {
     let file_handle = std::fs::File::open(archive_file)?;
