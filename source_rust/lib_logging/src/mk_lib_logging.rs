@@ -1,4 +1,5 @@
 use chrono::prelude::*;
+use reqwest::StatusCode;
 
 // attohttpc is not async
 // pub fn mk_logging_post_elk(message_type:&str, message_text:&str,
