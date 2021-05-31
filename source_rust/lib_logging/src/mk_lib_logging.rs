@@ -40,6 +40,5 @@ pub async fn mk_logging_post_elk(message_type: &str, message_text: &str,
         .json(&data)
         .send()
         .await;
-    println!("Status: {:?}", resp.status());
     // Ok(())
 }
