@@ -1,5 +1,5 @@
 [package]
-name = "mk_lib_image"
+name = "mk_lib_file"
 version = "0.0.1"
 edition = "2018"
 
