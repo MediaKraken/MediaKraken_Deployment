@@ -15,7 +15,7 @@ pub async fn mk_download_file_from_url(url_to_download: &str, file_save_path: &s
     let path = std::path::Path::new(file_save_path);
     let mut file_handle = match std::fs::File::create(&path) {
         Err(why) => panic!("couldn't create {}", why),
-        Ok(file) => {
+        Ok(file_handle) => {
             let content = response.bytes().await;
             file_handle.write_all(content);
         }
