@@ -12,14 +12,14 @@ use std::io::Write;
 //     Ok(())
 // }
 
-pub async fn mk_download_file_from_url(url_to_download: &str, file_save_path: &str) {
-    let resp = reqwest::get(url_to_download).await;
+pub async fn mk_download_file_from_url(url_to_download: &str, file_save_path: &str) -> Result<()> {
+    let resp = reqwest::get(url_to_download).await?;
     let path = std::path::Path::new(file_save_path);
     let mut file_handle = match std::fs::File::create(&path) {
         Err(why) => panic!("couldn't create {}", why),
         Ok(file_handle) => {
-            let content = resp.bytes().await;
-            file_handle.write_all(content.as_bytes());
+            let content = resp.bytes().await?;
+            file_handle.write_all(content.as_bytes())?;
         }
     };
 }
