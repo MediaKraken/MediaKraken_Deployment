@@ -1,4 +1,4 @@
-use tokio_postgres::{Error, NoTls};
+use tokio_postgres::{Error};
 
 pub async fn mk_lib_database_cron_service_read(client: tokio_postgres::Client)
                                                -> Result<(), Error> {
