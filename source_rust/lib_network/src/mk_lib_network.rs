@@ -50,7 +50,7 @@ pub async fn mk_network_service_available(host_dns: &str, host_port: &str,
             .arg(host_port)
             .arg("-t")
             .arg(wait_seconds)
-            .spawn();
+            .spawn()
     } else if std::path::Path::new("/mediakraken/wait-for-it-ash.sh").exists() {
         std::process::Command::new("/mediakraken/wait-for-it-ash.sh")
             .arg("-h")
@@ -59,7 +59,7 @@ pub async fn mk_network_service_available(host_dns: &str, host_port: &str,
             .arg(host_port)
             .arg("-t")
             .arg(wait_seconds)
-            .spawn();
+            .spawn()
     } else {
         std::process::Command::new("/mediakraken/wait-for-it-bash.sh")
             .arg("-h")
@@ -68,6 +68,6 @@ pub async fn mk_network_service_available(host_dns: &str, host_port: &str,
             .arg(host_port)
             .arg("-t")
             .arg(wait_seconds)
-            .spawn();
+            .spawn()
     }
 }
