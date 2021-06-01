@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     //     }
     println!("jsondata: {:?}", json_result);
     // Parse the string of data into serde_json::Value.
-    let v: serde_json::Value = serde_json::from_str(json_result);
+    let v = serde_json::from_str(&json_result);
     //println!("Please call {} at the number {}", v["id"], v["adult"]);
 
     // // grab the TV id's
