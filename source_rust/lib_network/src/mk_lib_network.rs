@@ -1,3 +1,5 @@
+use std::io::Write;
+
 // pub fn mk_download_file_from_url(url_to_download: &str, file_save_path: &str) -> attohttpc::Result {
 //     let resp = attohttpc::get(url_to_download).send()?;
 //     println!("Status: {:?}", resp.status());
