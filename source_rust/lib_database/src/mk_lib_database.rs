@@ -2,7 +2,8 @@ use tokio_postgres::{Error, NoTls};
 
 pub async fn mk_lib_database_open(database_password: &str) -> Result<(), Error> {
     let (client, connection) = tokio_postgres::connect(
-        format!("postgresql://postgres:{}@mkstack_database/postgres", database_password), NoTls)?;
+        format!("postgresql://postgres:{}@mkstack_database/postgres",
+                database_password.to_string()), NoTls)?;
     tokio::spawn(async move {
         if let Err(e) = connection.await {
             eprintln!("connection error: {}", e);
