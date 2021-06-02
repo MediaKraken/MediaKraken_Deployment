@@ -1,5 +1,5 @@
 [package]
-name = "mk_lib_logging"
+name = "lib_logging"
 version = "0.0.1"
 edition = "2018"
 
