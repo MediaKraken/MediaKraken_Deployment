@@ -9,7 +9,7 @@ pub fn mk_read_file_data(file_to_read: &str) -> io::Result<()> {
     Ok(())
 }
 
-fn is_hidden(entry: &DirEntry) -> bool {
+pub fn mk_file_is_hidden(entry: &DirEntry) -> bool {
     entry.file_name()
         .to_str()
         .map(|s| s.starts_with("."))
@@ -19,7 +19,7 @@ fn is_hidden(entry: &DirEntry) -> bool {
 // "C:\\Users\\spoot\\Documents\\MediaKraken_Deployment\\source_rust\\bulk_themoviedb_netfetch"
 pub fn mk_directory_walk(dir_path: &str) {
     let walker = WalkDir::new(dir_path).into_iter();
-    for entry in walker.filter_entry(|e| !is_hidden(e)) {
+    for entry in walker.filter_entry(|e| !mk_file_is_hidden(e)) {
         let entry = entry.unwrap();
         println!("{}", entry.path().display());
     }
