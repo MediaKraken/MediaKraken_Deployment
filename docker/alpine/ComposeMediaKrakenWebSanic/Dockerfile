@@ -15,8 +15,8 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --no-cache \
   ack==3.4.0-r0 \
-  curl==7.76.1-r0 \
-  curl-dev==7.76.1-r0 \
+  curl==7.77.0-r0 \
+  curl-dev==7.77.0-r0 \
   git==2.30.2-r0 \
   gcc==10.2.1_pre1-r3 \
   g++==10.2.1_pre1-r3 \
@@ -39,7 +39,7 @@ RUN apk add --no-cache \
   openssl-dev==1.1.1k-r0 \
   py3-cffi==1.14.4-r0 \
   python3-dev==3.8.10-r0 \
-  cifs-utils==6.12-r0 \
+  cifs-utils==6.13-r0 \
   nfs-utils==2.5.2-r0 \
   ca-certificates==20191127-r5 \
   py3-numpy==1.19.5-r0 \
