@@ -2,7 +2,7 @@ FROM rust:1.51 as cargo-build
 
 RUN apt-get update
 
-RUN apt-get install musl-tools -y
+RUN apt-get install musl-tools libssl-dev -y
 
 RUN rustup target add x86_64-unknown-linux-musl
 
