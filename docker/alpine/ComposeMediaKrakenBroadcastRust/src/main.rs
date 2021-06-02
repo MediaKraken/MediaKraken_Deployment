@@ -6,8 +6,9 @@ use std::env;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    let host_port;
     // grab swarm or host port
+    let mut mediakraken_ip: &str;
+    let mut host_port: &str;
     match env::var("SWARMIP") {
     Ok(mediakraken_ip) => {
         println!("{:?}", mediakraken_ip);
@@ -52,7 +53,7 @@ async fn main() -> io::Result<()> {
             {
                 println!("{:?} bytes received {:?} {:?}", len, addr, net_string);
                 println!("{:?} mk port", host_port);
-                let mk_address = b"10.0.0.141:{}" % host_port;
+                let mk_address = mediakraken_ip + ":" + host_port;
                 println!("{:?} mk_address", mk_address);
                 let len = sock.send_to(mk_address, addr).await?;
                 println!("{:?} bytes sent", len);
