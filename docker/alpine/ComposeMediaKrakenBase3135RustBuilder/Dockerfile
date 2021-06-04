@@ -1,4 +1,4 @@
-FROM rust:1.51 as cargo-build
+FROM rust:1.52.1 as cargo-build
 
 RUN apt-get update
 
