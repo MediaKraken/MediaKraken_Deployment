@@ -1,6 +1,7 @@
+# https://github.com/rust-lang/docker-rust/blob/master/1.52.1/alpine3.13/Dockerfile
+
 # Download base image
 FROM alpine:3.13.5
-
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This holds the base image"
 
