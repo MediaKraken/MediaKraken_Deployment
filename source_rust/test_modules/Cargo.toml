@@ -4,4 +4,4 @@ version = "0.0.1"
 edition = "2018"
 
 [dependencies]
-lib_logging = { path = "../lib_logging" }
+mk_lib_logging = { path = "../mk_lib_logging" }
