@@ -1,8 +1,6 @@
 use amiquip::{Connection, ConsumerMessage, ConsumerOptions, QueueDeclareOptions, Result};
 
 fn main() -> Result<()> {
-    env_logger::init();
-
     // Open connection.
     let mut connection = Connection::insecure_open("amqp://guest:guest@mkstack_rabbitmq:5672")?;
 
