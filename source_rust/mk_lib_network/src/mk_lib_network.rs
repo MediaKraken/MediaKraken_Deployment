@@ -41,3 +41,23 @@ pub async fn mk_network_service_available(host_dns: &str, host_port: &str,
             .spawn().unwrap();
     }
 }
+
+// cargo test -- --show-output
+#[cfg(test)]
+mod test_mk_lib_network {
+    use super::*;
+
+    macro_rules! aw {
+    ($e:expr) => {
+        tokio_test::block_on($e)
+    };
+  }
+
+    #[test]
+    fn test_mk_download_file_from_url() {
+        let res = aw!(mk_download_file_from_url(
+            "https://github.com/MediaKraken/MediaKraken_Deployment/raw/master/LICENSE".to_string(),
+            "license.md".to_string()));
+        assert!(res.is_ok());
+    }
+}
