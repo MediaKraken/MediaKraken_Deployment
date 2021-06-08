@@ -13,3 +13,15 @@ pub async fn mk_logging_post_elk(message_type: &str, message_text: &str,
         .send()
         .await;
 }
+
+// cargo test -- --show-output
+#[cfg(test)]
+mod test_mk_lib_common {
+    use super::*;
+
+    macro_rules! aw {
+    ($e:expr) => {
+        tokio_test::block_on($e)
+    };
+  }
+}

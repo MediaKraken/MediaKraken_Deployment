@@ -24,3 +24,15 @@ pub async fn mk_lib_database_status(client: tokio_postgres::Client) -> Result<()
         .await?;
     let mm_status_json: &str = row.try_get::<&str, serde_json::Value>("mm_status_json")?;
 }
+
+// cargo test -- --show-output
+#[cfg(test)]
+mod test_mk_lib_common {
+    use super::*;
+
+    macro_rules! aw {
+    ($e:expr) => {
+        tokio_test::block_on($e)
+    };
+  }
+}
