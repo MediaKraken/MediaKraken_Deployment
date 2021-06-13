@@ -25,14 +25,14 @@ pub async fn mk_lib_database_cron_time_update(client: tokio_postgres::Client)
 //      println!("found person: {} {} {:?}", id, name, data);
 //  }
 
-// cargo test -- --show-output
-#[cfg(test)]
-mod test_mk_lib_common {
-    use super::*;
-
-    macro_rules! aw {
-    ($e:expr) => {
-        tokio_test::block_on($e)
-    };
-  }
-}
+// // cargo test -- --show-output
+// #[cfg(test)]
+// mod test_mk_lib_common {
+//     use super::*;
+//
+//     macro_rules! aw {
+//     ($e:expr) => {
+//         tokio_test::block_on($e)
+//     };
+//   }
+// }
