@@ -1,10 +1,20 @@
+use std::env;
+use sys_info;
 use tokio_postgres::{Error, NoTls};
 
-pub async fn mk_lib_database_open(database_password: &str)
-                                  -> Result<tokio_postgres::Client, Error> {
-    let (client, connection) = tokio_postgres::connect(
-        format!("postgresql://postgres:{}@mkstack_database/postgres",
-                database_password).as_str(), NoTls).await?;
+pub async fn mk_lib_database_open() -> Result<tokio_postgres::Client, Error> {
+    // trim is get rid of the \r returned in hostname
+    let hostname: String = sys_info::hostname().unwrap().trim().to_string();
+    let connection_string: String;
+    if hostname == "wsripper2" {
+        connection_string = "postgresql://postgres:metaman@localhost/postgres".to_string();
+    }
+    else {
+        let dp_pass = env::var("POSTGRES_PASSWORD").unwrap();
+        connection_string = format!("postgresql://postgres:{}@mkstack_database/postgres",
+                dp_pass);
+    }
+    let (client, connection) = tokio_postgres::connect(&connection_string, NoTls).await?;
     tokio::spawn(async move {
         if let Err(e) = connection.await {
             eprintln!("connection error: {}", e);
