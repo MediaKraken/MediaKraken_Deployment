@@ -3,6 +3,8 @@ use std::error::Error;
 
 #[path = "../../mk_lib_common/src/mk_lib_common.rs"]
 mod mk_lib_common;
+#[path = "../../mk_lib_common/src/mk_lib_common_enum_media_type.rs"]
+mod mk_lib_common_enum_media_type;
 #[path = "../../mk_lib_compression/src/mk_lib_compression.rs"]
 mod mk_lib_compression;
 #[path = "../../mk_lib_database/src/mk_lib_database.rs"]
