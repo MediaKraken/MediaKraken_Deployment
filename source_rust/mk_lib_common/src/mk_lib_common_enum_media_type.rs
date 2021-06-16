@@ -1,50 +1,53 @@
-enum DLMediaType {
-    Movie = 1, // "Movie"
-    TV = 2, // "TV: Show"
-    Person = 3,
+#[non_exhaustive]
+pub struct DLMediaType;
 
-    Sports = 4, // "Sports"
-    Game = 5, // "Video Game"
-    Publication = 6,
-    Picture = 7, // "Picture"
-    Anime = 8, // "Anime"
-    Music = 9, // "Music"
-    Adult = 10,
+impl DLMediaType {
+    pub const MOVIE: i16 = 1;
+    pub const TV: i16 = 2;
+    pub const PERSON: i16 = 3;
 
-    AdultImage = 1000,
-    AdultMovie = 1001, // "Movie: Adult"
-    AdultScene = 1002,
+    pub const SPORTS: i16 = 4;
+    pub const GAME: i16 = 5;
+    pub const PUBLICATION: i16 = 6;
+    pub const PICTURE: i16 = 7;
+    pub const ANIME: i16 = 8;
+    pub const MUSIC: i16 = 9;
+    pub const ADULT: i16 = 10;
 
-    GameCHD = 501, // "Game CHD"
-    GameCinematics = 502,
-    GameIntro = 503, // "Video Game: Intro"
-    GameISO = 504, // "Game ISO"
-    GameROM = 505, // "Game ROM"
-    GameSpeedrun = 506, // "Video Game: Speedrun"
-    GameSuperplay = 507, // "Video Game: Superplay"
+    pub const ADULT_IMAGE: i16 = 1000;
+    pub const ADULT_MOVIE: i16 = 1001;
+    pub const ADULT_SCENE: i16 = 1002;
 
-    MovieHome = 111, // "Home Movie"
-    MovieExtras = 112, // "Movie: Extras"
-    MovieSoundtrack = 113,
-    MovieSubtitle = 114, // "Movie: Subtitle"
-    MovieTheme = 115, // "Movie: Theme"
-    MovieTrailer = 116, // "Movie: Trailer"
+    pub const GAME_CHD: i16 = 501;
+    pub const GAME_CINEMATICS: i16 = 502;
+    pub const GAME_INTRO: i16 = 503;
+    pub const GAME_ISO: i16 = 504;
+    pub const GAME_ROM: i16 = 505;
+    pub const GAME_SPEEDRUN: i16 = 506;
+    pub const GAME_SUPERPLAY: i16 = 507;
 
-    MusicAlbum = 901, // "Music Album"
-    MusicLyrics = 902, // "Music Lyric"
-    MusicSong = 903,
-    MusicVideo = 904, // "Music Video"
+    pub const MOVIE_HOME: i16 = 111;
+    pub const MOVIE_EXTRAS: i16 = 112;
+    pub const MOVIE_SOUNDTRACK: i16 = 113;
+    pub const MOVIE_SUBTITLE: i16 = 114;
+    pub const MOVIE_THEME: i16 = 115;
+    pub const MOVIE_TRAILER: i16 = 116;
 
-    PublicationBook = 601, // "Book"
-    PublicationComic = 602, // "Comic"
-    PublicationComicStrip = 603, // "Comic Strip"
-    PublicationMagazine = 604, // "Magazine"
-    PublicationGraphicNovel = 605,  // "Graphic Novel"
+    pub const MUSIC_ALBUM: i16 = 901;
+    pub const MUSIC_LYRICS: i16 = 902;
+    pub const MUSIC_SONG: i16 = 903;
+    pub const MUSIC_VIDEO: i16 = 904;
 
-    TVEpisode = 201, // "TV: Episode"
-    TVExtras = 202, // "TV: Extras"
-    TVSeason = 203, // "TV: Season"
-    TVSubtitle = 204, // "TV: Subtitle"
-    TVTheme = 205, // "TV: Theme"
-    TVTrailer = 206, // "TV: Trailer"
+    pub const PUBLICATION_BOOK: i16 = 601;
+    pub const PUBLICATION_COMIC: i16 = 602;
+    pub const PUBLICATION_COMIC_STRIP: i16 = 603;
+    pub const PUBLICATION_MAGAZINE: i16 = 604;
+    pub const PUBLICATION_GRAPHIC_NOVEL: i16 = 605;
+
+    pub const TV_EPISODE: i16 = 201;
+    pub const TV_EXTRAS: i16 = 202;
+    pub const TV_SEASON: i16 = 203;
+    pub const TV_SUBTITLE: i16 = 204;
+    pub const TV_THEME: i16 = 205;
+    pub const TV_TRAILER: i16 = 206;
 }
