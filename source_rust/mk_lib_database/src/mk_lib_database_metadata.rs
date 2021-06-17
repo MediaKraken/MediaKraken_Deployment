@@ -7,8 +7,8 @@ pub async fn mk_lib_database_metadata_exists_movie(client: &tokio_postgres::Clie
         .query_one("select exists(select 1 from mm_metadata_movie \
         where mm_metadata_media_id = $1 limit 1) as found_record limit 1",
                    &[&metadata_id]).await?;
-    let id: bool = row.get("found_record");
-    Ok(id)
+    let exists_status: bool = row.get("found_record");
+    Ok(exists_status)
 }
 
 pub async fn mk_lib_database_metadata_exists_person(client: &tokio_postgres::Client,
@@ -18,8 +18,8 @@ pub async fn mk_lib_database_metadata_exists_person(client: &tokio_postgres::Cli
         .query_one("select exists(select 1 from mm_metadata_person \
         where mmp_person_media_id = $1 limit 1) as found_record limit 1",
                    &[&metadata_id]).await?;
-    let id: bool = row.get("found_record");
-    Ok(id)
+    let exists_status: bool = row.get("found_record");
+    Ok(exists_status)
 }
 
 pub async fn mk_lib_database_metadata_exists_tv(client: &tokio_postgres::Client,
@@ -29,6 +29,6 @@ pub async fn mk_lib_database_metadata_exists_tv(client: &tokio_postgres::Client,
         .query_one("select exists(select 1 from mm_metadata_tvshow \
         where mm_metadata_media_tvshow_id = $1 limit 1) as found_record limit 1",
                    &[&metadata_id]).await?;
-    let id: bool = row.get("found_record");
-    Ok(id)
+    let exists_status: bool = row.get("found_record");
+    Ok(exists_status)
 }
