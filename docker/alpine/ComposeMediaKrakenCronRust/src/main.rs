@@ -24,12 +24,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
 
     // fire off wait for it script to verify rabbitmq is available
-    // mk_lib_network::mk_network_service_available("mkstack_rabbitmq",
-    //                                              "5672", "120");
+    mk_lib_network::mk_network_service_available("mkstack_rabbitmq",
+                                                 "5672", "120");
 
-    // // open rabbit connection
-    // let mut rabbit_connection = Connection::insecure_open(
-    //     "amqp://guest:guest@mkstack_rabbitmq:5672")?;
+    // open rabbit connection
+    let mut rabbit_connection = Connection::insecure_open(
+        "amqp://guest:guest@mkstack_rabbitmq:5672")?;
     // // Open a channel - None says let the library choose the channel ID.
     // let rabbit_channel = rabbit_connection.open_channel(None)?;
     //
