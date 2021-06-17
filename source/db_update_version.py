@@ -555,6 +555,25 @@ if db_connection.db_version_check() < 42:
     db_connection.db_version_update(42)
     db_connection.db_commit()
 
+if db_connection.db_version_check() < 43:
+    db_connection.db_query('ALTER TABLE mm_cron ALTER COLUMN mm_cron_last_run TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_cron_last_run AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_loan ALTER COLUMN mm_loan_time TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_loan_time AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_loan ALTER COLUMN mm_loan_return_time TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_loan_return_time AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_media_dir'
+                           ' ALTER COLUMN mm_media_dir_last_scanned TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_media_dir_last_scanned AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_notification'
+                           ' ALTER COLUMN mm_notification_time TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_notification_time AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_user_activity'
+                           ' ALTER COLUMN mm_activity_datecreated TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_activity_datecreated AT TIME ZONE \'UTC\'')
+    db_connection.db_version_update(43)
+    db_connection.db_commit()
+
 '''
     # mm_metadata_music_video
     # TODO
