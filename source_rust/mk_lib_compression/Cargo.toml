@@ -3,6 +3,9 @@ name = "mk_lib_compression"
 version = "0.0.1"
 edition = "2018"
 
+[profile.release]
+panic = 'abort'
+
 [dependencies]
 flate2 = "1.0.20"
 

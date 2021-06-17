@@ -3,6 +3,9 @@ name = "mk_lib_rabbitmq"
 version = "0.0.1"
 edition = "2018"
 
+[profile.release]
+panic = 'abort'
+
 [dependencies]
 amiquip = { version = "0.4", default-features = false }
 
