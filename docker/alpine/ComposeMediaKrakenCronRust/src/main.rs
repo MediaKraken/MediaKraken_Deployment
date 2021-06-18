@@ -2,7 +2,6 @@ use amiquip::{Connection, Exchange, Publish, Result};
 use chrono::prelude::*;
 use std::error::Error;
 use tokio::time::{Duration, sleep};
-use uuid::Uuid;
 
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_logging/src/mk_lib_logging.rs"]
@@ -35,7 +34,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // start logging
     mk_lib_logging::mk_logging_post_elk("info",
                                         "START",
-                                        "cron_checker");
+                                        "cron_checker").await;
 
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
@@ -103,7 +102,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             let uuid_cron: uuid::Uuid = row_data.get("mm_cron_guid");
             mk_lib_logging::mk_logging_post_elk("info",
                                                 &uuid_cron.to_string(),
-                                                "cron_checker");
+                                                "cron_checker").await;
         }
         sleep(Duration::from_secs(60)).await;
     }
