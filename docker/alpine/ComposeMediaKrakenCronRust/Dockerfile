@@ -1,42 +1,43 @@
-FROM rust:1.52.1 as cargo-build
-
-RUN apt-get update
-
-RUN apt-get install musl-tools -y
+FROM rust:1.53.0 as cargo-build
 
 RUN rustup target add x86_64-unknown-linux-musl
+RUN apt update && apt install -y musl-tools musl-dev
+RUN update-ca-certificates
 
-WORKDIR /usr/src/myapp
+# Create appuser
+ENV USER=myip
+ENV UID=10001
 
-COPY Cargo.toml Cargo.toml
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    "${USER}"
 
-RUN mkdir src/
+WORKDIR /myip
 
-RUN echo "fn main() {println!(\"if you see this, the build broke\")}" > src/main.rs
+COPY ./ .
 
-RUN RUSTFLAGS=-Clinker=musl-gcc cargo build --release --target=x86_64-unknown-linux-musl
+RUN cargo build --target x86_64-unknown-linux-musl --release
 
-RUN rm -f target/x86_64-unknown-linux-musl/release/deps/myapp*
+####################################################################################################
+## Final image
+####################################################################################################
+FROM scratch
 
-COPY . .
+# Import from builder.
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
 
-RUN RUSTFLAGS=-Clinker=musl-gcc cargo build --release --target=x86_64-unknown-linux-musl
+WORKDIR /myip
 
-# ------------------------------------------------------------------------------
-# Final Stage
-# ------------------------------------------------------------------------------
+# Copy our build
+COPY --from=builder /myip/target/x86_64-unknown-linux-musl/release/myip ./
 
-FROM alpine:3.13.5
+# Use an unprivileged user.
+USER myip:myip
 
-RUN addgroup -g 1000 myapp \
-  && adduser -D -s /bin/sh -u 1000 -G myapp myapp
-
-WORKDIR /home/myapp/bin/
-
-COPY --from=cargo-build /usr/src/myapp/target/x86_64-unknown-linux-musl/release/myapp .
-
-RUN chown myapp:myapp myapp
-
-USER myapp
-
-CMD ["./myapp"]
+CMD ["/myip/myip"]
