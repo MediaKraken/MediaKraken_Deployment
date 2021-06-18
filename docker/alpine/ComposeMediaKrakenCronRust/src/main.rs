@@ -4,13 +4,30 @@ use std::error::Error;
 use tokio::time::{Duration, sleep};
 use uuid::Uuid;
 
+#[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_logging/src/mk_lib_logging.rs"]
 mod mk_lib_logging;
+#[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database.rs"]
 mod mk_lib_database;
+#[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_cron.rs"]
 mod mk_lib_database_cron;
+#[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_network/src/mk_lib_network.rs"]
+mod mk_lib_network;
+
+#[cfg(not(debug_assertions))]
+#[path = "source_rust/mk_lib_logging/src/mk_lib_logging.rs"]
+mod mk_lib_logging;
+#[cfg(not(debug_assertions))]
+#[path = "source_rust/mk_lib_database/src/mk_lib_database.rs"]
+mod mk_lib_database;
+#[cfg(not(debug_assertions))]
+#[path = "source_rust/mk_lib_database/src/mk_lib_database_cron.rs"]
+mod mk_lib_database_cron;
+#[cfg(not(debug_assertions))]
+#[path = "source_rust/mk_lib_network/src/mk_lib_network.rs"]
 mod mk_lib_network;
 
 #[tokio::main]
