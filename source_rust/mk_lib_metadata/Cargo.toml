@@ -7,7 +7,7 @@ edition = "2018"
 panic = 'abort'
 
 [dependencies]
-reqwest = { version = "0.11.3", features = ["json"] }
+reqwest = { version = "0.11.3", default-features = false, features = ["json", "rustls-tls"] }
 
 [dev-dependencies]
 tokio-test = "*"
