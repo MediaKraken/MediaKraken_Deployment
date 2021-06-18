@@ -29,13 +29,13 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 FROM scratch
 
 # Import from builder.
-COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /etc/group /etc/group
+COPY --from=cargo-build /etc/passwd /etc/passwd
+COPY --from=cargo-build /etc/group /etc/group
 
 WORKDIR /myip
 
 # Copy our build
-COPY --from=builder /myip/target/x86_64-unknown-linux-musl/release/myip ./
+COPY --from=cargo-build /myip/target/x86_64-unknown-linux-musl/release/myip ./
 
 # Use an unprivileged user.
 USER myip:myip
