@@ -27,7 +27,8 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 ## Final image
 ####################################################################################################
 FROM busybox:1.33.1-uclibc
-
+RUN wget -O /wait https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait &&\
+    chmod +x /wait
 # Import from builder.
 COPY --from=cargo-build /etc/passwd /etc/passwd
 COPY --from=cargo-build /etc/group /etc/group
@@ -40,4 +41,4 @@ COPY --from=cargo-build /myapp/target/x86_64-unknown-linux-musl/release/myapp ./
 # Use an unprivileged user.
 USER myapp:myapp
 
-CMD ["/myapp/myapp"]
+ENTRYPOINT ["/sh", "-c", "/wait && /myapp/myapp"]
