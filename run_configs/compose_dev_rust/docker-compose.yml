@@ -37,8 +37,8 @@ services:
       # so it knows what ip to broadcast on
       - SWARMIP=${SWARMIP}
       - HOST_IP=${HOST_IP}
+      - RUST_BACKTRACE=1
     container_name: mkstack_broadcast
-    entrypoint: python3 subprogram_broadcast.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     volumes:
@@ -54,11 +54,12 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
+      - RUST_BACKTRACE=1
+      - WAIT_HOSTS: pgbouncer:6432, rabbit:5672
     container_name: mkstack_cron
     depends_on:
       - pgbouncer
       - rabbit
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- python3 subprogram_cron_checker.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
