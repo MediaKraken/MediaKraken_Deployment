@@ -12,9 +12,6 @@ mod mk_lib_database;
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_cron.rs"]
 mod mk_lib_database_cron;
-#[cfg(debug_assertions)]
-#[path = "../../../../source_rust/mk_lib_network/src/mk_lib_network.rs"]
-mod mk_lib_network;
 
 #[cfg(not(debug_assertions))]
 #[path = "mk_lib_logging.rs"]
@@ -25,9 +22,6 @@ mod mk_lib_database;
 #[cfg(not(debug_assertions))]
 #[path = "mk_lib_database_cron.rs"]
 mod mk_lib_database_cron;
-#[cfg(not(debug_assertions))]
-#[path = "mk_lib_network.rs"]
-mod mk_lib_network;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -38,10 +32,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
-
-    // fire off wait for it script to verify rabbitmq is available
-    mk_lib_network::mk_network_service_available("mkstack_rabbitmq",
-                                                 "5672", "120");
 
     // open rabbit connection
     let mut rabbit_connection = Connection::insecure_open(
