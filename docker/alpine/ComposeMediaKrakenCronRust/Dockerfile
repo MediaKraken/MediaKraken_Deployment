@@ -5,7 +5,7 @@ RUN apt update && apt install -y musl-tools musl-dev
 RUN update-ca-certificates
 
 # Create appuser
-ENV USER=myip
+ENV USER=myapp
 ENV UID=10001
 
 RUN adduser \
@@ -17,7 +17,7 @@ RUN adduser \
     --uid "${UID}" \
     "${USER}"
 
-WORKDIR /myip
+WORKDIR /myapp
 
 COPY ./ .
 
@@ -32,12 +32,12 @@ FROM scratch
 COPY --from=cargo-build /etc/passwd /etc/passwd
 COPY --from=cargo-build /etc/group /etc/group
 
-WORKDIR /myip
+WORKDIR /myapp
 
 # Copy our build
-COPY --from=cargo-build /myip/target/x86_64-unknown-linux-musl/release/myip ./
+COPY --from=cargo-build /myapp/target/x86_64-unknown-linux-musl/release/myapp ./
 
 # Use an unprivileged user.
-USER myip:myip
+USER myapp:myapp
 
-CMD ["/myip/myip"]
+CMD ["/myapp/myapp"]
