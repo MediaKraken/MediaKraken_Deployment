@@ -1,4 +1,4 @@
-use amiquip::{Connection, Exchange, Publish, Result};
+use amiquip::{AmqpProperties, Connection, Exchange, Publish, Result};
 use chrono::prelude::*;
 use std::error::Error;
 use tokio::time::{Duration, sleep};
@@ -36,8 +36,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // open rabbit connection
     let mut rabbit_connection = Connection::insecure_open(
         "amqp://guest:guest@mkstack_rabbitmq:5672")?;
-    // // Open a channel - None says let the library choose the channel ID.
-    // let rabbit_channel = rabbit_connection.open_channel(None)?;
+    // Open a channel - None says let the library choose the channel ID.
+    let rabbit_channel = rabbit_connection.open_channel(None)?;
     //
     // // // Declare the fanout exchange we will bind to.
     // // let exchange = rabbit_channel.exchange_declare(
@@ -46,8 +46,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // //     ExchangeDeclareOptions::default(),
     // // )?;
 
-    // // Get a handle to the direct exchange on our channel.
-    // let rabbit_exchange = Exchange::direct(&rabbit_channel);
+    // Get a handle to the direct exchange on our channel.
+    let rabbit_exchange = Exchange::direct(&rabbit_channel);
 
     // start loop for cron checks
     loop {
@@ -71,10 +71,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
             let date_check: DateTime<Utc> = Utc::now() - time_delta;
             let last_run: DateTime<Utc> = row_data.get("mm_cron_last_run");
             println!("date_check: {:?}, {:?}", date_check, last_run);
-            if  last_run < date_check {
+            if last_run < date_check {
                 let cron_json = row_data.try_get::<&str, serde_json::Value>("mm_cron_json")?;
-                // rabbit_exchange.publish(Publish::new("hello there".as_bytes(),
-                //                                      cron_json["exchange_key"]))?;
+                rabbit_exchange.publish(Publish::with_properties("hello there".as_bytes(),
+                                                                 cron_json["route_key"].to_string(),
+                                                                 AmqpProperties::default().with_delivery_mode(2).with_content_type("text/plain".to_string())))?;
+
                 // channel.basic_publish(exchange = row_data.get("mm_cron_json")("exchange_key"),
                 //                       routing_key = row_data['mm_cron_json']['route_key'],
                 //                       body = json.dumps(
