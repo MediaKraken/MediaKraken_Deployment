@@ -26,7 +26,8 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 ####################################################################################################
 ## Final image
 ####################################################################################################
-FROM busybox:1.33.1-uclibc
+## FROM busybox:1.33.1-uclibc
+FROM cc-debian10
 RUN wget -O /wait https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait &&\
     chmod +x /wait
 # Import from builder.
