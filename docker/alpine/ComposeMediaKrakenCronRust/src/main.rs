@@ -38,13 +38,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
         "amqp://guest:guest@mkstack_rabbitmq:5672")?;
     // Open a channel - None says let the library choose the channel ID.
     let rabbit_channel = rabbit_connection.open_channel(None)?;
-    //
-    // // // Declare the fanout exchange we will bind to.
-    // // let exchange = rabbit_channel.exchange_declare(
-    // //     ExchangeType::Direct,
-    // //     "direct_logs",
-    // //     ExchangeDeclareOptions::default(),
-    // // )?;
 
     // Get a handle to the direct exchange on our channel.
     let rabbit_exchange = Exchange::direct(&rabbit_channel);
@@ -76,18 +69,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 rabbit_exchange.publish(Publish::with_properties("hello there".as_bytes(),
                                                                  cron_json["route_key"].to_string(),
                                                                  AmqpProperties::default().with_delivery_mode(2).with_content_type("text/plain".to_string())))?;
-
-                // channel.basic_publish(exchange = row_data.get("mm_cron_json")("exchange_key"),
-                //                       routing_key = row_data['mm_cron_json']['route_key'],
-                //                       body = json.dumps(
-                //                           {
-                //                               'Type': row_data['mm_cron_json']['Type'],
-                //                               'JSON': row_data['mm_cron_json']
-                //                           }),
-                //                       properties = pika.BasicProperties(
-                //                           content_type ='text/plain',
-                //                           delivery_mode = 2),
-                //)
                 mk_lib_database_cron::mk_lib_database_cron_time_update(db_client,
                                                                        row_data.get("mm_cron_guid")).await;
             }
