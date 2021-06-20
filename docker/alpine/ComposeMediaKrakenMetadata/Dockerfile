@@ -15,7 +15,7 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --no-cache \
   ca-certificates==20191127-r5 \
-  cifs-utils==6.12-r0 \
+  cifs-utils==6.13-r0 \
   nfs-utils==2.5.2-r0 \
   gcc==10.2.1_pre1-r3 \
   linux-headers==5.7.8-r0 \
