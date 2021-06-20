@@ -56,7 +56,7 @@ services:
       - DEBUG=${DEBUG}
       - RUST_BACKTRACE=1
       - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
-    command: /sh -c "/wait && /myapp/myapp"
+    command: sh -c "/wait && /myapp/myapp"
     container_name: mkstack_cron
     depends_on:
       - pgbouncer
