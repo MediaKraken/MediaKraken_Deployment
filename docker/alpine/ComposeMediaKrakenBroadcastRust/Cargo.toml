@@ -7,7 +7,7 @@ edition = "2018"
 panic = 'abort'
 
 [dependencies]
-shiplift = { version = "0.7", default-features = false }
+shiplift = { version = "0.7", default-features = false, features = ["unix-socket"] }
 tokio = { version = "1.6.0", features = ["full"] }
 
 [dev-dependencies]
