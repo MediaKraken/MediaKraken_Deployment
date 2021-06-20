@@ -23,7 +23,7 @@ RUN set -x \
 		lib32gcc1=1:8.3.0-6 \
 		lib32stdc++6=8.3.0-6 \
 		libtinfo5:i386=6.1+20181013-2+deb10u2 \
-		libcurl3-gnutls:i386=7.64.0-4+deb10u1 \
+		libcurl3-gnutls:i386=7.64.0-4+deb10u2 \
 	&& mkdir -p "${STEAMAPPDIR}" \
 	&& wget "${DLURL}/master/etc/entry.sh" -O "${HOMEDIR}/entry.sh" \
 	&& { \
