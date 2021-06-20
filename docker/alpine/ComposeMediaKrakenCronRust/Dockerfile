@@ -40,5 +40,3 @@ COPY --from=cargo-build /myapp/target/x86_64-unknown-linux-musl/release/myapp ./
 
 # Use an unprivileged user.
 USER myapp:myapp
-
-ENTRYPOINT ["/sh", "-c", "/wait && /myapp/myapp"]
