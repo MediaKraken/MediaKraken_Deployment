@@ -18,8 +18,8 @@ WORKDIR /mediakraken
 RUN apk add --no-cache \
   gcc==10.2.1_pre1-r3 \
   git==2.30.2-r0 \
-  libxml2==2.9.10-r6 \
-  libxml2-dev==2.9.10-r6 \
+  libxml2==2.9.10-r7 \
+  libxml2-dev==2.9.10-r7 \
   linux-headers==5.7.8-r0 \
   musl-dev==1.2.2-r0 \
   py3-apache-libcloud==3.3.0-r0 \

@@ -27,7 +27,7 @@ RUN apk add --no-cache \
   libxslt-dev==1.1.34-r0 \
   libxml2==2.9.10-r6 \
   libxml2-dev==2.9.10-r6 \
-  openrc==0.42.1-r19 \
+  openrc==0.42.1-r20 \
   libressl==3.1.5-r0 \
   libressl-dev==3.1.5-r0 \
   libarchive==3.5.1-r0 \

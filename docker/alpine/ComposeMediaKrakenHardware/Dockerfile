@@ -22,11 +22,11 @@ RUN apk add --no-cache \
   libffi-dev==3.3-r2 \
   libusb==1.0.24-r1 \
   libusb-dev==1.0.24-r1 \
-  libxml2==2.9.10-r6 \
-  libxml2-dev==2.9.10-r6 \
+  libxml2==2.9.10-r7 \
+  libxml2-dev==2.9.10-r7 \
   libxslt==1.1.34-r0 \
   libxslt-dev==1.1.34-r0 \
-  musl-dev==1.2.2-r0 \
+  musl-dev==1.2.2-r1 \
   openssl==1.1.1k-r0 \
   openssl-dev==1.1.1k-r0 \
   python3-dev==3.8.10-r0 \

@@ -19,19 +19,19 @@ RUN apk add --no-cache \
   openssl==1.1.1k-r0 \
   openssl-dev==1.1.1k-r0 \
   cifs-utils==6.12-r0 \
-  curl==7.76.1-r0 \
-  curl-dev==7.76.1-r0 \
+  curl==7.77.0-r1 \
+  curl-dev==7.77.0-r1 \
   nfs-utils==2.5.2-r0 \
   jpeg==9d-r1 \
   jpeg-dev==9d-r1 \
-  libxml2-dev==2.9.10-r6 \
+  libxml2-dev==2.9.10-r7 \
   libxslt-dev==1.1.34-r0 \
   linux-headers==5.7.8-r0 \
-  musl-dev==1.2.2-r0 \
-  net-snmp==5.9-r2 \
-  net-snmp-dev==5.9-r2 \
+  musl-dev==1.2.2-r1 \
+  net-snmp==5.9-r3 \
+  net-snmp-dev==5.9-r3 \
   openldap-dev==2.4.57-r1 \
-  openrc==0.42.1-r19 \
+  openrc==0.42.1-r20 \
   portaudio-dev==190600.20161030-r1 \
   py3-psycopg2==2.8.6-r0 \
   py3-psutil==5.8.0-r0 \

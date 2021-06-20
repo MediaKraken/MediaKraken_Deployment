@@ -18,18 +18,18 @@ WORKDIR /mediakraken
 
 # don't remove py3-pip as it breaks package lookup
 RUN apk add --no-cache \
-  cifs-utils==6.12-r0 \
+  cifs-utils==6.13-r0 \
   nfs-utils==2.5.2-r0 \
   libressl==3.1.5-r0 \
   libressl-dev==3.1.5-r0 \
-  net-snmp==5.9-r2 \
+  net-snmp==5.9-r3 \
   python3==3.8.10-r0 \
   py3-pip==20.3.4-r0 \
-  openrc==0.42.1-r19 \
+  openrc==0.42.1-r20 \
   gcc==10.2.1_pre1-r3 \
   python3-dev==3.8.10-r0 \
   linux-headers==5.7.8-r0 \
-  musl-dev==1.2.2-r0 \
+  musl-dev==1.2.2-r1 \
   krb5==1.18.3-r1 \
   krb5-dev==1.18.3-r1 \
   libffi==3.3-r2 \
