@@ -282,7 +282,7 @@ services:
         constraints: [node.role == manager]
 
   pgadmin:
-    image: dpage/pgadmin4:5.2
+    image: dpage/pgadmin4:5.4
     stop_grace_period: 30s
     stop_signal: SIGTERM
     networks:

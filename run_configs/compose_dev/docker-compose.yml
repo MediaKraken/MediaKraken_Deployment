@@ -226,7 +226,7 @@ services:
     restart: unless-stopped
 
   pgadmin:
-    image: dpage/pgadmin4:5.2
+    image: dpage/pgadmin4:5.4
     stop_grace_period: 30s
     stop_signal: SIGTERM
     container_name: mkstack_pgadmin
