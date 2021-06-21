@@ -1,30 +1,19 @@
+use pnet::datalink;
 use shiplift::Docker;
 use std::io;
 use std::str;
 use tokio::net::UdpSocket;
-use std::env;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    // grab swarm or host port
+    // loop through interfaces
+    for iface in datalink::interfaces() {
+        println!("{:?} {:?}", iface.name, iface.ips[0]);
+    }
+
     let mut mediakraken_ip: &str = "127.0.0.1";
     let mut host_port: u64 = 8903;
-    match env::var("SWARMIP") {
-    Ok(mediakraken_ip) => {
-        println!("{:?}", mediakraken_ip);
-        },
-    Err(e) => {
-        println!("couldn't interpret swarm {}", e);
-        match env::var("HOST_IP") {
-            Ok(mediakraken_ip) => {
-                println!("{:?}", mediakraken_ip);
-                },
-            Err(e) => {
-                println!("couldn't interpret host {}", e);
-                }
-            }
-        }
-    }
+
     // Grab public port that the reactor is running on
     let docker = Docker::new();
     let result = docker.containers().list(&Default::default()).await;
