@@ -5,7 +5,7 @@ pub async fn mk_lib_database_cron_service_read(client: &tokio_postgres::Client)
                                                -> Result<Vec<Row>, Error> {
     let rows = client
         .query("select mm_cron_guid, mm_cron_schedule, mm_cron_last_run, \
-        mm_cron_json from mm_cron where mm_cron_enabled = false", &[])
+        mm_cron_json from mm_cron where mm_cron_enabled = true", &[])
         .await?;
     Ok(rows)
 }
