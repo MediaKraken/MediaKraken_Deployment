@@ -1,8 +1,8 @@
 use pnet::datalink;
 use shiplift::Docker;
 use std::io;
-use std::str;
 use std::net::{AddrParseError, IpAddr, Ipv4Addr};
+use std::str;
 use tokio::net::UdpSocket;
 
 #[tokio::main]
@@ -14,7 +14,7 @@ async fn main() -> io::Result<()> {
             for source_ip in iface.ips.iter() {
                 if source_ip.is_ipv4() {
                     println!("{:?}", source_ip);
-                    let mediakraken_ip = iface.ips.iter().find(|ip| ip.is_ipv4())
+                    mediakraken_ip = iface.ips.iter().find(|ip| ip.is_ipv4())
                         .map(|ip| match ip.ip() {
                             IpAddr::V4(ip) => ip,
                             _ => unreachable!(),
@@ -42,7 +42,7 @@ async fn main() -> io::Result<()> {
     }
     // Begin the broadcast receive loop
     let sock = UdpSocket::bind("0.0.0.0:9101").await?;
-    let mut buf= [0; 1024];
+    let mut buf = [0; 1024];
     loop {
         let (len, addr) = sock.recv_from(&mut buf).await?;
         if len == 25 {
