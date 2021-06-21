@@ -6,12 +6,22 @@ use tokio::net::UdpSocket;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
+    let mut mediakraken_ip: &str = "127.0.0.1";
     // loop through interfaces
     for iface in datalink::interfaces() {
-        println!("{:?} {:?}", iface.name, iface.ips[0]);
-    }
-
-    let mut mediakraken_ip: &str = "127.0.0.1";
+        if iface.name == "ens18" {
+            for source_ip in iface.ips.iter() {
+                if source_ip.is_ipv4() {
+                    println!("{:?}", source_ip);
+                    let mediakraken_ip = iface.ips.iter().find(|ip| ip.is_ipv4())
+                    .map(|ip| match ip.ip() {
+                        IpAddr::V4(ip) => ip,
+                        _ => unreachable!(),
+                    }).unwrap();
+                    println!("{:?}", mediakraken_ip);
+                }
+            }
+        }
     let mut host_port: u64 = 8903;
 
     // Grab public port that the reactor is running on
