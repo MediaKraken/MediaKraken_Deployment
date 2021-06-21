@@ -10,6 +10,7 @@ use std::net::{AddrParseError, IpAddr, Ipv4Addr};
 
 
 fn main() {
+    let mut mediakraken_ip: String = "127.0.0.1".to_string();
     for iface in datalink::interfaces() {
         // println!("{:?} {:?} {:?}", iface.name, iface.ips[0], iface);
         if iface.name == "ens18" {
@@ -21,7 +22,9 @@ fn main() {
                         IpAddr::V4(ip) => ip,
                         _ => unreachable!(),
                     }).unwrap();
-                    println!("{:?}", source_ip);
+                    mediakraken_ip = source_ip.to_string();
+                    println!("{:?}", mediakraken_ip);
+                    break;
                 }
             }
         }

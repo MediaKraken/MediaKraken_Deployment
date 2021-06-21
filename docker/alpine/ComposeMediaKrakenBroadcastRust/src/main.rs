@@ -7,19 +7,21 @@ use tokio::net::UdpSocket;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    let mut mediakraken_ip: &str = "127.0.0.1";
+    let mut mediakraken_ip: String = "127.0.0.1".to_string();
     // loop through interfaces
     for iface in datalink::interfaces() {
         if iface.name == "ens18" {
             for source_ip in iface.ips.iter() {
                 if source_ip.is_ipv4() {
                     println!("{:?}", source_ip);
-                    mediakraken_ip = iface.ips.iter().find(|ip| ip.is_ipv4())
-                        .map(|ip| match ip.ip() {
-                            IpAddr::V4(ip) => ip,
-                            _ => unreachable!(),
-                        }).unwrap();
+                    let source_ip = iface.ips.iter().find(|ip| ip.is_ipv4())
+                    .map(|ip| match ip.ip() {
+                        IpAddr::V4(ip) => ip,
+                        _ => unreachable!(),
+                    }).unwrap();
+                    mediakraken_ip = source_ip.to_string();
                     println!("{:?}", mediakraken_ip);
+                    break;
                 }
             }
         }
