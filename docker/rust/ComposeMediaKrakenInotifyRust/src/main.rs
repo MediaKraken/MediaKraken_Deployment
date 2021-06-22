@@ -4,6 +4,7 @@ use inotify::{
     WatchMask,
 };
 use std::env;
+use std::error::Error;
 
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_logging/src/mk_lib_logging.rs"]
@@ -26,7 +27,7 @@ mod mk_lib_database;
 mod mk_lib_database_library;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn Error>> {
     // start logging
     mk_lib_logging::mk_logging_post_elk("info",
                                         "START",
@@ -46,7 +47,7 @@ async fn main() {
             )
             .expect("Failed to add inotify watch");
     }
-    
+
     println!("Watching current directory for activity...");
 
     let mut buffer = [0u8; 4096];
