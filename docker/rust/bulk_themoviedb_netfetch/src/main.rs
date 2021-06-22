@@ -2,21 +2,54 @@ use serde::{Deserialize, Serialize};
 use std::error::Error;
 use uuid::Uuid;
 
-#[path = "../../mk_lib_common/src/mk_lib_common.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_common/src/mk_lib_common.rs"]
 mod mk_lib_common;
-#[path = "../../mk_lib_common/src/mk_lib_common_enum_media_type.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_common/src/mk_lib_common_enum_media_type.rs"]
 mod mk_lib_common_enum_media_type;
-#[path = "../../mk_lib_compression/src/mk_lib_compression.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_compression/src/mk_lib_compression.rs"]
 mod mk_lib_compression;
-#[path = "../../mk_lib_database/src/mk_lib_database.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database.rs"]
 mod mk_lib_database;
-#[path = "../../mk_lib_database/src/mk_lib_database_download.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_download.rs"]
 mod mk_lib_database_download;
-#[path = "../../mk_lib_database/src/mk_lib_database_metadata.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_metadata.rs"]
 mod mk_lib_database_metadata;
-#[path = "../../mk_lib_logging/src/mk_lib_logging.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_logging/src/mk_lib_logging.rs"]
 mod mk_lib_logging;
-#[path = "../../mk_lib_network/src/mk_lib_network.rs"]
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_network/src/mk_lib_network.rs"]
+mod mk_lib_networks;
+
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_common.rs"]
+mod mk_lib_common;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_common_enum_media_type.rs"]
+mod mk_lib_common_enum_media_type;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_compression.rs"]
+mod mk_lib_compression;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_database.rs"]
+mod mk_lib_database;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_database_download.rs"]
+mod mk_lib_database_download;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_database_metadata.rs"]
+mod mk_lib_database_metadata;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_logging.rs"]
+mod mk_lib_logging;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_network.rs"]
 mod mk_lib_networks;
 
 #[derive(Serialize, Deserialize)]
@@ -42,7 +75,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
                                         "START",
                                         "bulk_themoviedb_netfetch").await;
 
-    let fetch_date: String = "06_13_2021".to_string();
+    let fetch_date: String = "06_20_2021".to_string();
 
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
