@@ -9,6 +9,8 @@ panic = 'abort'
 [dependencies]
 chrono = "0.4"
 inotify = "0.9.3"
+reqwest = { version = "0.11.3", default-features = false, features = ["json", "rustls-tls"] }
+rustls = "0.19.1"
 tokio = { version = "1.6.0", features = ["full"] }
 tokio-postgres = { version = "0.7.2", features = ["with-uuid-0_8"] }
 uuid = { version = "0.8.2", features = ["serde", "v4"] }
