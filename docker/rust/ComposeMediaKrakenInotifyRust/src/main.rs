@@ -3,7 +3,6 @@ use inotify::{
     Inotify,
     WatchMask,
 };
-use std::env;
 use std::error::Error;
 
 #[cfg(debug_assertions)]
@@ -40,22 +39,19 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .expect("Failed to initialize inotify");
 
     for row_data in mk_lib_database_library::mk_lib_database_library_read(db_client).await.unwrap() {
-        inotify
-            .add_watch(
-                row_data.get("mm_media_dir_path"),
-                WatchMask::MODIFY | WatchMask::CREATE | WatchMask::DELETE,
-            )
-            .expect("Failed to add inotify watch");
+        inotify.add_watch(
+            row_data.get("mm_media_dir_path"),
+            WatchMask::MODIFY | WatchMask::CREATE | WatchMask::DELETE,
+        ).expect("Failed to add inotify watch");
     }
 
     println!("Watching current directory for activity...");
 
     let mut buffer = [0u8; 4096];
     loop {
-        let events = inotify
-            .read_events_blocking(&mut buffer)
+        let events = inotify.read_events_blocking(&mut buffer)
             .expect("Failed to read inotify events");
-
+        // process all the events
         for event in events {
             if event.mask.contains(EventMask::CREATE) {
                 if event.mask.contains(EventMask::ISDIR) {
