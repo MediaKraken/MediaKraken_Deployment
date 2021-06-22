@@ -5,19 +5,46 @@ use inotify::{
 };
 use std::env;
 
-fn main() {
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_logging/src/mk_lib_logging.rs"]
+mod mk_lib_logging;
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database.rs"]
+mod mk_lib_database;
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_library.rs"]
+mod mk_lib_database_library;
+
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_logging.rs"]
+mod mk_lib_logging;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_database.rs"]
+mod mk_lib_database;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_database_library.rs"]
+mod mk_lib_database_library;
+
+#[tokio::main]
+async fn main() {
+    // start logging
+    mk_lib_logging::mk_logging_post_elk("info",
+                                        "START",
+                                        "inotify").await;
+
+    // open the database
+    let db_client = &mk_lib_database::mk_lib_database_open().await?;
+
     let mut inotify = Inotify::init()
         .expect("Failed to initialize inotify");
 
-    let current_dir = env::current_dir()
-        .expect("Failed to determine current directory");
-
-    inotify
-        .add_watch(
-            current_dir,
-            WatchMask::MODIFY | WatchMask::CREATE | WatchMask::DELETE,
-        )
-        .expect("Failed to add inotify watch");
+    for row_data in mk_lib_database_library::mk_lib_database_library_read(db_client).await.unwrap() {
+        inotify
+            .add_watch(
+                row_data.get("mm_media_dir_path"),
+                WatchMask::MODIFY | WatchMask::CREATE | WatchMask::DELETE,
+            )
+            .expect("Failed to add inotify watch");
 
     println!("Watching current directory for activity...");
 
