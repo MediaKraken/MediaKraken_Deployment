@@ -146,6 +146,24 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  # inotify
+  inotify:
+    image: mediakraken/mkinotifyrust:${BRANCH}
+    environment:
+      - POSTGRES_PASSWORD=${DBPASS}
+      - DEBUG=${DEBUG}
+    container_name: mkstack_inotify
+    depends_on:
+      - pgbouncer
+      - rabbit
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
 #  logspout:
 #    image: mediakraken/mklogspout:${BRANCH}
 #    environment:
