@@ -7,6 +7,7 @@ edition = "2018"
 panic = 'abort'
 
 [dependencies]
+chrono = "0.4"
 inotify = "0.9.3"
 tokio = { version = "1.6.0", features = ["full"] }
 tokio-postgres = { version = "0.7.2", features = ["with-uuid-0_8"] }
