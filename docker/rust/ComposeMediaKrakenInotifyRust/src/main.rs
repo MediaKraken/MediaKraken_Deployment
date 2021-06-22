@@ -39,8 +39,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .expect("Failed to initialize inotify");
 
     for row_data in mk_lib_database_library::mk_lib_database_library_read(db_client).await.unwrap() {
+        let lib_path: String = row_data.get("mm_media_dir_path").to_string();
         inotify.add_watch(
-            &row_data.get("mm_media_dir_path").to_string(),
+            &lib_path,
             WatchMask::MODIFY | WatchMask::CREATE | WatchMask::DELETE,
         ).expect("Failed to add inotify watch");
     }
