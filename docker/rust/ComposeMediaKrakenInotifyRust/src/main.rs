@@ -45,7 +45,8 @@ async fn main() {
                 WatchMask::MODIFY | WatchMask::CREATE | WatchMask::DELETE,
             )
             .expect("Failed to add inotify watch");
-
+    }
+    
     println!("Watching current directory for activity...");
 
     let mut buffer = [0u8; 4096];
