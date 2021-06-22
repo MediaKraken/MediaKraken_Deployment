@@ -120,6 +120,9 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
+      - RUST_BACKTRACE=1
+      - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
+    command: sh -c "/wait && /myapp/myapp"
     container_name: mkstack_inotify
     depends_on:
       - pgbouncer
