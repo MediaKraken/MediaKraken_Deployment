@@ -277,7 +277,7 @@ services:
     restart: unless-stopped
 
   portainer:
-    image: portainer/portainer-ce:2.1.1-alpine
+    image: portainer/portainer-ce:2.5.1-alpine
     command: -H unix:///var/run/docker.sock
     container_name: mkstack_portainer
     ports:
