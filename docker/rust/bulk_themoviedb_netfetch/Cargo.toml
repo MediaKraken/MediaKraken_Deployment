@@ -1,5 +1,5 @@
 [package]
-name = "mk_bulk_themoviedb_netfetch"
+name = "myapp"
 version = "0.0.1"
 edition = "2018"
 
