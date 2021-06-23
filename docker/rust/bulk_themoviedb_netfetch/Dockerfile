@@ -26,11 +26,15 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 ####################################################################################################
 ## Final image
 ####################################################################################################
-FROM busybox:1.33.1-glibc
+FROM busybox:1.33.1-uclibc
 
 # Import from builder.
 COPY --from=cargo-build /etc/passwd /etc/passwd
 COPY --from=cargo-build /etc/group /etc/group
+
+# copy the files
+COPY --from=cargo-build /myapp/movie.gz /myapp/movie.gz
+COPY --from=cargo-build /myapp/tv.gz /myapp/tv.gz
 
 WORKDIR /myapp
 
