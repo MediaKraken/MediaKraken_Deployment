@@ -83,7 +83,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // grab the movie id's
     let _fetch_result_movie = mk_lib_network::mk_download_file_from_url(
         format!("http://files.tmdb.org/p/exports/movie_ids_{}.json.gz", fetch_date),
-        "movie.gz".to_string());
+        "movie.gz".to_string()).await;
     let json_result = mk_lib_compression::mk_decompress_gzip("movie.gz").unwrap();
     // Please note that the data is NOT in id order
     for json_item in json_result.split('\n') {
@@ -112,7 +112,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // grab the TV id's
     let _fetch_result_tv = mk_lib_network::mk_download_file_from_url(
         format!("http://files.tmdb.org/p/exports/tv_series_ids_{}.json.gz", fetch_date),
-        "tv.gz".to_string());
+        "tv.gz".to_string()).await;
     let json_result = mk_lib_compression::mk_decompress_gzip("tv.gz").unwrap();
     for json_item in json_result.split('\n') {
         if !json_item.trim().is_empty() {
