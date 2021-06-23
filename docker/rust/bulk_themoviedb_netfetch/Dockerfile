@@ -26,7 +26,7 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 ####################################################################################################
 ## Final image
 ####################################################################################################
-FROM busybox:1.33.1-uclibc
+FROM busybox:1.33.1-glibc
 
 # Import from builder.
 COPY --from=cargo-build /etc/passwd /etc/passwd
