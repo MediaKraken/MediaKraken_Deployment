@@ -29,14 +29,20 @@ services:
 
   # runs cron
   cron:
-    image: th-registry-1.beaverbay.local:5000/mediakraken/mkcron:${BRANCH}
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkcronrust:${BRANCH}
     secrets:
       - db_password
-    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 subprogram_cron_checker.py
+    environment:
+      - RUST_BACKTRACE=1
+      - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
+    command: sh -c "/wait && /myapp/myapp"
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
       - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # Postgresql server
   database:
@@ -165,15 +171,10 @@ services:
   inotify:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkinotifyrust:${BRANCH}
     environment:
-      - POSTGRES_PASSWORD=${DBPASS}
       - DEBUG=${DEBUG}
       - RUST_BACKTRACE=1
       - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
     command: sh -c "/wait && /myapp/myapp"
-    container_name: mkstack_inotify
-    depends_on:
-      - pgbouncer
-      - rabbit
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     networks:
