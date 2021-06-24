@@ -13,7 +13,7 @@ pub async fn mk_lib_database_open() -> Result<tokio_postgres::Client, Error> {
     }
     else {
         if Path::new("/run/secrets/db_password").exists() {
-            let dp_pass = fs::read_to_string("/run/secrets/db_password")?.parse()?;
+            let dp_pass = fs::read_to_string("/run/secrets/db_password").parse()?;
             connection_string = format!("postgresql://postgres:{}@mkstack_database/postgres",
                                         dp_pass);
         }
