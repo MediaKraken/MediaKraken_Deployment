@@ -5,7 +5,7 @@
 ./mediakraken_stop.sh
 
 # To update the application
-python mediakraken_update_images.py
+python3 mediakraken_update_images.py
 ./mediakraken_restart.sh
 
 
