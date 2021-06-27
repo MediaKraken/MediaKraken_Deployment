@@ -30,7 +30,7 @@ except ModuleNotFoundError:
 
 load_dotenv()  # take environment variables from .env.
 
-with open('./docker-compose.yml') as file_handle:
+with open('docker-compose.yml') as file_handle:
     for line in file_handle:
         if line.find('image: ') > 0:
             pull_pid = subprocess.Popen(shlex.split('docker pull %s'

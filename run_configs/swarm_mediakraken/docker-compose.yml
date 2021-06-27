@@ -41,6 +41,7 @@ services:
     volumes:
       - mediakraken_vol_postgresql:/var/lib/postgresql/data
       - mediakraken_vol_postgresql_backup:/mediakraken/backup
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql
     networks:
       - mediakraken_network_backend
 
@@ -111,6 +112,19 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  filebeat:
+    image: mediakraken/mkfilebeat:${BRANCH}
+    environment:
+      - ELASTICSEARCH_HOSTS=th-elk-1:9200
+      - KIBANA_HOSTS=th-elk-1:5601
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql:ro
+      - mediakraken_vol_nginx:/var/log/mediakraken/nginx:ro
+    deploy:
+      mode: global
+
   # runs hardware
   hardware:
     image: mediakraken/mkhardware:${BRANCH}
@@ -151,23 +165,6 @@ services:
 #      - /var/run/docker.sock:/var/run/docker.sock:ro
 #    deploy:
 #      mode: global
-
-#  mbrainz:
-#    image: mediakraken/mkmusicbrainz:${BRANCH}
-#    environment:
-#      - BRAINZCODE=/run/secrets/musicbrainz_code
-#    secrets:
-#      - musicbrainz_code
-#    ports:
-#      - "5000:5000"
-#    volumes:
-#      - mediakraken_vol_mbrainz_conf:/config
-#      - mediakraken_vol_mbrainz_data:/data
-#    deploy:
-#      mode: replicated
-#      replicas: 0
-#      placement:
-#        constraints: [node.role == manager]
 
   # runs the server to fetch/process all metadata
   metadata:
@@ -239,6 +236,7 @@ services:
     stop_signal: SIGTERM
     networks:
       - mediakraken_network_backend
+      - mediakraken_network_frontend
     ports:
       - "5050:5050"
     environment:
@@ -250,7 +248,7 @@ services:
       - mediakraken_vol_pgadmin:/var/lib/pgadmin
     deploy:
       mode: replicated
-      replicas: 0
+      replicas: 1
 
   # pgbouncer
   pgbouncer:
@@ -304,6 +302,7 @@ services:
       - portainer_data:/data
     networks:
       - portaineragent_agent_network
+      - mediakraken_network_frontend
     deploy:
       mode: replicated
       replicas: 1
@@ -344,6 +343,7 @@ services:
       - mediakraken_vol_rabbit:/var/lib/rabbitmq
     networks:
       - mediakraken_network_backend
+      - mediakraken_network_frontend
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -354,11 +354,7 @@ services:
     secrets:
       - db_password
       - secure_key
-    environment:
-      # will init swarmip on server start, if specified
-      - SWARMIP=${SWARMIP}
-      - DEBUG=${DEBUG}
-      - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
+      - csrf_key
     entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_reactor_line.py
     stop_grace_period: 30s
     stop_signal: SIGUSR1
@@ -408,6 +404,11 @@ services:
       - ./mkmount:/mediakraken/mnt:ro
     networks:
       - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   transmission:
     image: mediakraken/mktransmission:${BRANCH}
@@ -430,9 +431,6 @@ services:
   # Runs the web service for the main server application
   webapp:
     image: mediakraken/mkwebappsanic:${BRANCH}
-    environment:
-      - SWARMIP=${SWARMIP}
-      - HOST_IP=${HOST_IP}
     secrets:
       - db_password
       - secure_key
@@ -460,6 +458,7 @@ services:
       - mediakraken_vol_postgresql_backup:/mediakraken/backup
     networks:
       - mediakraken_network_backend
+      - mediakraken_network_frontend
     deploy:
       mode: replicated
       replicas: 1
@@ -473,15 +472,11 @@ networks:
     driver: overlay
   portaineragent_agent_network:
     driver: overlay
-    attachable: true
   mediakraken_network_backend:
     driver: overlay
   mediakraken_network_frontend:
     driver: overlay
-    attachable: true
-#  host:
-#    name: host
-#    external: true
+    external: true
 
 volumes:
   portainer_data:
@@ -492,9 +487,11 @@ volumes:
   mediakraken_vol_mbrainz_data:
   mediakraken_vol_mumble:
   mediakraken_vol_nginx:
+  mediakraken_vol_pgadmin:
   mediakraken_vol_phue:
   mediakraken_vol_postgresql:
   mediakraken_vol_postgresql_backup:
+  mediakraken_vol_postgresql_logging:
   mediakraken_vol_rabbit:
   mediakraken_vol_static:
   mediakraken_vol_teamspeak:

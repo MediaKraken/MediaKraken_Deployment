@@ -81,6 +81,18 @@ if not os.path.isfile('/usr/bin/docker'):
         print(line.rstrip(), flush=True)
     install_pid.wait()
 
+# verify docker-compose is installed (to handle env vars in the yaml file)
+if not os.path.isfile('/usr/local/bin/docker-compose'):
+    install_pid = subprocess.Popen(shlex.split('curl -L "https://github.com/docker/compose/'
+                                               'releases/download/1.29.1/docker-compose-'
+                                               'Linux-x86_64" '
+                                               '-o /usr/local/bin/docker-compose'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+    install_pid = subprocess.Popen(shlex.split('chmod +x /usr/local/bin/docker-compose'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+
 subprocess.call(shlex.split('docker swarm init'),
                 stdout=subprocess.PIPE, shell=False)
 
