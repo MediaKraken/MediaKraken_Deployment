@@ -22,7 +22,6 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkcronrust:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
       - RUST_BACKTRACE=1
       - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
     command: sh -c "/wait && /myapp/myapp"
@@ -65,7 +64,6 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
     container_name: mkstack_download
     depends_on:
       - pgbouncer
@@ -97,8 +95,6 @@ services:
   # runs hardware
   hardware:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkhardware:${BRANCH}
-    environment:
-      - DEBUG=${DEBUG}
     volumes:
       # TODO why not store this in the db with the device as postgresql crypt
       # this stores the "push button" key
@@ -117,8 +113,6 @@ services:
   inotify:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkinotifyrust:${BRANCH}
     environment:
-      - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
       - RUST_BACKTRACE=1
       - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
     command: sh -c "/wait && /myapp/myapp"
@@ -178,7 +172,6 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
     container_name: mkstack_metadata
     depends_on:
       - database
@@ -257,7 +250,6 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
     container_name: mkstack_pika
     depends_on:
       - pgbouncer
@@ -317,7 +309,6 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
       - SECURE=${SECURE}
       - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
       # will init swarmip on server start, if specified
@@ -352,7 +343,6 @@ services:
     image: th-registry-1.beaverbay.local:5000/mediakraken/mktranscode:${BRANCH}
     environment:
       - POSTGRES_PASSWORD=${DBPASS}
-      - DEBUG=${DEBUG}
     container_name: mkstack_transcode
     depends_on:
       - pgbouncer
@@ -373,10 +363,6 @@ services:
       - POSTGRES_PASSWORD=${DBPASS}
       - SECURE=${SECURE}
       - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
-      - DEBUG=${DEBUG}
-      # will init swarmip on server start, if specified
-      - SWARMIP=${SWARMIP}
-      - HOST_IP=${HOST_IP}
     container_name: mkstack_webapp
     depends_on:
       - pgbouncer
