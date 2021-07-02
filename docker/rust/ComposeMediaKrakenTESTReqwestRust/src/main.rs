@@ -1,7 +1,13 @@
 #[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_compression/src/mk_lib_compression.rs"]
+mod mk_lib_compression;
+#[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_network/src/mk_lib_network.rs"]
 mod mk_lib_network;
 
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_compression.rs"]
+mod mk_lib_compression;
 #[cfg(not(debug_assertions))]
 #[path = "mk_lib_network.rs"]
 mod mk_lib_network;
