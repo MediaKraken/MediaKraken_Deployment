@@ -1,3 +1,5 @@
+use std::error::Error;
+
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_compression/src/mk_lib_compression.rs"]
 mod mk_lib_compression;
