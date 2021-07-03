@@ -61,7 +61,7 @@ async def mk_network_fetch_from_url_async(url, directory=None):
             common_file.com_mkdir_p(directory)
             localfile = open(directory, 'wb')
         localfile.write(datafile.content)
-        datafile.close()
+        await datafile.aclose()
         localfile.close()
     if directory is None:
         return datafile.content

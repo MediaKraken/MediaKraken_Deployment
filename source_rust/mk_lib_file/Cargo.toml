@@ -1,0 +1,13 @@
+[package]
+name = "mk_lib_file"
+version = "0.0.1"
+edition = "2018"
+
+[profile.release]
+panic = 'abort'
+
+[dependencies]
+walkdir = "2.3.2"
+
+[dev-dependencies]
+tokio-test = "*"

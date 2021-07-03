@@ -18,7 +18,7 @@ async def url_bp_admin_cloud(request):
     Secret Key
     Bucket/Path
     '''
-    for cloud_provider in cloud_storage_providers:
+    for cloud_provider in sorted(cloud_storage_providers):
         cloud_providers.append((cloud_provider, None, None, None, None))
     return {
         'cloud_providers': cloud_providers

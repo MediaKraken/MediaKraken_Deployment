@@ -47,7 +47,7 @@ async def db_meta_movie_detail(self, media_guid, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetchrow('select mm_metadata_guid,'
                                   ' mm_metadata_media_id,'
-                                  ' mm_media_name,'
+                                  ' mm_metadata_name,'
                                   ' mm_metadata_json,'
                                   ' mm_metadata_localimage_json,'
                                   ' mm_metadata_user_json'
@@ -74,19 +74,19 @@ async def db_meta_movie_list(self, offset=0, records=None, search_value=None, db
     else:
         db_conn = db_connection
     if search_value is not None:
-        return await db_conn.fetch('select mm_metadata_guid, mm_media_name,'
+        return await db_conn.fetch('select mm_metadata_guid, mm_metadata_name,'
                                    ' mm_metadata_json->\'release_date\' as mm_date,'
                                    ' mm_metadata_localimage_json->\'Poster\''
                                    ' as mm_poster,'
                                    ' mm_metadata_user_json'
                                    ' from mm_metadata_movie where mm_metadata_guid'
                                    ' in (select mm_metadata_guid'
-                                   ' from mm_metadata_movie where mm_media_name % $1'
-                                   ' order by mm_media_name offset $2 limit $3)'
-                                   ' order by mm_media_name, mm_date',
+                                   ' from mm_metadata_movie where mm_metadata_name % $1'
+                                   ' order by mm_metadata_name offset $2 limit $3)'
+                                   ' order by mm_metadata_name, mm_date',
                                    search_value, offset, records)
     else:
-        return await db_conn.fetch('select mm_metadata_guid, mm_media_name,'
+        return await db_conn.fetch('select mm_metadata_guid, mm_metadata_name,'
                                    ' mm_metadata_json->\'release_date\' as mm_date,'
                                    ' mm_metadata_localimage_json->\'Poster\''
                                    ' as mm_poster,'
@@ -94,9 +94,9 @@ async def db_meta_movie_list(self, offset=0, records=None, search_value=None, db
                                    ' from mm_metadata_movie where mm_metadata_guid'
                                    ' in (select mm_metadata_guid'
                                    ' from mm_metadata_movie'
-                                   ' order by mm_media_name offset'
+                                   ' order by mm_metadata_name offset'
                                    ' $1 limit $2)'
-                                   ' order by mm_media_name, mm_date',
+                                   ' order by mm_metadata_name, mm_date',
                                    offset, records)
 
 
@@ -116,7 +116,7 @@ async def db_meta_movie_count(self, search_value=None, db_connection=None):
         db_conn = db_connection
     if search_value is not None:
         return await db_conn.fetchval('select count(*) from mm_metadata_movie '
-                                      ' where mm_media_name % $1',
+                                      ' where mm_metadata_name % $1',
                                       search_value)
     else:
         return await db_conn.fetchval('select count(*) from mm_metadata_movie')
@@ -161,7 +161,7 @@ async def db_meta_movie_status_update(self, metadata_guid, user_id, status_text,
     else:
         json_data['UserStats'][str(user_id)] = {status_text: status_setting}
     await self.db_meta_movie_json_update(metadata_guid,
-                                         json.dumps(json_data))
+                                        json_data)
 
 
 async def db_meta_movie_json_update(self, media_guid, metadata_json, db_connection=None):
@@ -206,7 +206,7 @@ async def db_meta_movie_guid_count(self, guid, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchval('select exists(select 1 from mm_metadata_movie'
-                                  ' where mm_metadata_guid = %s limit 1) limit 1', guid)
+                                  ' where mm_metadata_guid = $1 limit 1) limit 1', guid)
 
 
 async def db_meta_movie_count_by_id(self, guid, db_connection=None):
@@ -227,4 +227,4 @@ async def db_meta_movie_count_by_id(self, guid, db_connection=None):
     else:
         db_conn = db_connection
     return await db_conn.fetchval('select exists(select 1 from mm_metadata_movie'
-                                  ' where mm_metadata_media_id = %s limit 1) limit 1', guid)
+                                  ' where mm_metadata_media_id = $1 limit 1) limit 1', guid)

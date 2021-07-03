@@ -1,0 +1,530 @@
+version: '3.6'
+# Volumes are HOST directory and then CONTAINER directory
+
+services:
+#  # start broadcast server (so clients can find server)
+#  broadcast:
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkbroadcast:${BRANCH}
+#    entrypoint: python3 subprogram_broadcast.py
+#    stop_grace_period: 30s
+#    stop_signal: SIGUSR1
+#    ports:
+#      - target: 9101
+#        published: 9101
+#        protocol: tcp
+#        mode: host
+#    volumes:
+#      # needs socket for running image list
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    # needs to run as host so clients can see it on their subnet
+#    networks:
+#      - mediakraken_outside
+#    deploy:
+#      placement:
+#        constraints: [node.role == manager]
+
+  # runs cron
+  cron:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkcronrust:${BRANCH}
+    secrets:
+      - db_password
+    environment:
+      - RUST_BACKTRACE=1
+      - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
+    command: sh -c "/wait && /myapp/myapp"
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  # Postgresql server
+  database:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:${BRANCH}
+    environment:
+      - MAX_CONNECTIONS=125
+      - MAX_WAL_SENDERS=10
+      - SHARED_BUFFERS=4096MB
+      - WORK_MEM=256MB
+      - MAX_WORKER_PROCESSES=4
+      - MAX_PARALLEL_WORKERS_PER_GATHER=2
+      - MAX_PARALLEL_WORKERS=4
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    command: postgres -c logging_collector=on -c log_directory='/var/log/postgresql' -c log_filename='postgresql-%Y-%m-%d_%H%M%S.log' -c log_statement='all' -c log_duration=on -c log_connections=off -c log_disconnections=off
+    secrets:
+      - db_password
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - mediakraken_vol_postgresql:/var/lib/postgresql/data
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql
+    networks:
+      - mediakraken_network_backend
+
+  #  # Postgresql server
+  #  database:
+  #    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:${BRANCH}
+  #    environment:
+  #      - PGHOST=/tmp
+  #      - MAX_CONNECTIONS=20
+  #      - MAX_WAL_SENDERS=10
+  #      - PG_MODE=primary
+  #      - PG_PRIMARY_USER=${DBUSER}
+  #      - PG_PRIMARY_PASSWORD=${DBPASS}
+  #      - PG_ROOT_PASSWORD=${DBPASS}
+  #      - PG_PRIMARY_PORT=5432
+  #      - POSTGRES_DB=${DBDATABASE}
+  #      - POSTGRES_USER=${DBUSER}
+  #      - POSTGRES_PASSWORD=${DBPASS}
+  #    stop_grace_period: 30s
+  #    stop_signal: SIGTERM
+  #    networks:
+  #      - mediakraken_network_backend
+  #    deploy:
+  #      placement:
+  #        constraints:
+  #        - node.labels.type == primary
+  #        - node.role == worker
+  #
+  #  # Postgresql server replica
+  #  database-replica:
+  #    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdatabase:${BRANCH}
+  #    environment:
+  #      - PGHOST=/tmp
+  #      - MAX_CONNECTIONS=20
+  #      - MAX_WAL_SENDERS=10
+  #      - PG_MODE=replica
+  #      - PG_PRIMARY_HOST=database
+  #      - PG_PRIMARY_PORT=5432
+  #      - PG_PRIMARY_USER=${DBUSER}
+  #      - PG_PRIMARY_PASSWORD=${DBPASS}
+  #      - PG_ROOT_PASSWORD=${DBPASS}
+  #      - POSTGRES_DB=${DBDATABASE}
+  #      - POSTGRES_USER=${DBUSER}
+  #      - POSTGRES_PASSWORD=${DBPASS}
+  #    stop_grace_period: 30s
+  #    stop_signal: SIGTERM
+  #    networks:
+  #      - mediakraken_network_backend
+  #    deploy:
+  #      placement:
+  #        constraints:
+  #        - node.labels.type != primary
+  #        - node.role == worker
+
+  # Runs the download services
+  download:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkdownload:${BRANCH}
+    secrets:
+      - db_password
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_download.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  filebeat:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkfilebeat:${BRANCH}
+    environment:
+      - ELASTICSEARCH_HOSTS=th-elk-1:9200
+      - KIBANA_HOSTS=th-elk-1:5601
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - mediakraken_vol_postgresql_logging:/var/log/postgresql:ro
+      - mediakraken_vol_nginx:/var/log/mediakraken/nginx:ro
+    deploy:
+      mode: global
+
+  # runs hardware
+  hardware:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkhardware:${BRANCH}
+    volumes:
+      # TODO why not store this in the db with the device as postgresql crypt
+      # this stores the "push button" key
+      - mediakraken_vol_phue:/mediakraken/phue
+    entrypoint: python3 main_hardware.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  # inotify
+  inotify:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkinotifyrust:${BRANCH}
+    environment:
+      - RUST_BACKTRACE=1
+      - WAIT_HOSTS=pgbouncer:6432, rabbit:5672
+    command: sh -c "/wait && /myapp/myapp"
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+#  logspout:
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mklogspout:${BRANCH}
+#    environment:
+#      ROUTE_URIS: 'syslog+tcp://th-elk-1:5000'
+#      LOGSTASH_FIELDS: 'environment=production'
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    deploy:
+#      mode: global
+
+  # runs the server to fetch/process all metadata
+  metadata:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmetadata:${BRANCH}
+    secrets:
+      - db_password
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_database -p 5432 -t 120 -- python3 main_server_metadata_api.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      - ./mkmount:/mediakraken/mnt
+      # stores posters/etc so webserver can present
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static
+      # stores the xml/json xref files for anime match
+      - mediakraken_vol_cache:/mediakraken/cache
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+#  moosefsmaster:
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmoosemaster:${BRANCH}
+#    networks:
+#      - mediakraken_moosefsnet
+#    ports:
+#      - "9425:9425"
+#    deploy:
+#      mode: replicated
+#      replicas: 1
+#      placement:
+#        constraints: [node.role == manager]
+#
+#  moosefschunkserver:
+#    image: th-registry-1.beaverbay.local:5000/mediakraken/mkmoosechunkserver:${BRANCH}
+#    environment:
+#      - LABELS=M
+#      - SIZE=1
+#    networks:
+#      - mediakraken_moosefsnet
+#    volumes:
+#      - ./data/moosehdd0:/mnt/hdd0
+#    deploy:
+#      mode: global
+#      placement:
+#        constraints: [node.platform.os == linux]
+
+  # runs the nginx proxy service
+  nginx:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mknginx:${BRANCH}
+    entrypoint: /usr/bin/wait-for-it-ash-busybox130.sh -h mkstack_webapp -p 8080 -t 120 -- nginx
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
+    volumes:
+      - mediakraken_vol_nginx:/var/log/mediakraken/nginx
+      - mediakraken_vol_certs:/etc/nginx/certs:ro
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static:ro
+    ports:
+      - "8900:8900"
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  pgadmin:
+    image: dpage/pgadmin4:5.4
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
+    networks:
+      - mediakraken_network_backend
+    ports:
+      - "5050:5050"
+    environment:
+      PGADMIN_LISTEN_PORT: 5050
+      PGADMIN_DEFAULT_EMAIL: spootdev@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: metaman
+      PGADMIN_DISABLE_POSTFIX: 1
+    volumes:
+      - mediakraken_vol_pgadmin:/var/lib/pgadmin
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  # pgbouncer
+  pgbouncer:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpgbouncer:${BRANCH}
+    environment:
+      - DB_HOST=mkstack_database
+      - POOL_MODE=transaction
+      #- POOL_MODE=session   # this might not work in docker swarm
+      - MAX_CLIENT_CONN=1024
+      - DEFAULT_POOL_SIZE=85
+      - SERVER_RESET_QUERY=DISCARD ALL
+    secrets:
+      - db_password
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_database -p 5432 -t 120 -- ./entrypoint.sh
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
+    deploy:
+      mode: replicated
+      replicas: 1
+    networks:
+      - mediakraken_network_backend
+
+  # pika
+  pika:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkpika:${BRANCH}
+    secrets:
+      - db_password
+    entrypoint: python3 subprogram_pika.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      # for start of SSL server
+      - mediakraken_vol_certs:/mediakraken/key:ro
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
+      - ./mkmount:/mediakraken/mnt
+      # so it can start docker containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  portainer:
+    image: portainer/portainer-ce:2.5.1-alpine
+    command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    volumes:
+      - portainer_data:/data
+    networks:
+      - portaineragent_agent_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  portaineragent:
+    image: portainer/agent:linux-amd64-2.4.0-alpine
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.portaineragent
+      # AGENT_PORT: 9001
+      # LOG_LEVEL: debug
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - portaineragent_agent_network
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+
+  # rabbit
+  rabbitmq:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkrabbitmq:${BRANCH}
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_IO_THREAD_POOL_SIZE=256
+    stop_grace_period: 30s
+    stop_signal: SIGTERM
+    ports:
+      # https management port
+      # - "15671:15671"
+      # http management port
+      - "15672:15672"
+    volumes:
+      - mediakraken_vol_rabbit:/var/lib/rabbitmq
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  # Main reactor
+  reactor:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkreactor:${BRANCH}
+    secrets:
+      - db_password
+      - secure_key
+      - csrf_key
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 main_reactor_line.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    ports:
+      - "8903:8903"
+    volumes:
+      # server will generate ssl key for use by web/nginx
+      - mediakraken_vol_certs:/mediakraken/key
+      # do I need this?  is pika what does the backup?
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
+      - ./mkmount:/mediakraken/mnt
+      # so it can start docker containers
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # so can read the device scan output
+      - mediakraken_vol_devices:/mediakraken/devices
+      # server will generate salt/key
+      - /var/opt/mediakraken/secure:/mediakraken/secure
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  teamspeak:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkteamspeak:${BRANCH}
+    ports:
+      - "9987:9987/udp"
+      - "10011:10011"
+      - "30033:30033"
+    volumes:
+      - mediakraken_vol_teamspeak:/opt/teamspeak
+    deploy:
+      mode: replicated
+      replicas: 0
+      placement:
+        constraints: [node.role == manager]
+
+  # runs transcode
+  transcode:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mktranscode:${BRANCH}
+    secrets:
+      - db_password
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h mkstack_pgbouncer -p 6432 -t 120 -- python3 async_transcode.py
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    volumes:
+      - ./mkmount:/mediakraken/mnt:ro
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  transmission:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mktransmission:${BRANCH}
+    environment:
+      - USERNAME=metaman
+      - PASSWORD=metaman
+    ports:
+      - "9091:9091"
+      - "51413:51413/tcp"
+      - "51413:51413/udp"
+    volumes:
+      - mediakraken_vol_transmission:/transmission/downloads
+      - mediakraken_vol_transmission_incomplete:/transmission/incomplete
+    deploy:
+      mode: replicated
+      replicas: 0
+      placement:
+        constraints: [node.role == manager]
+
+  # Runs the web service for the main server application
+  webapp:
+    image: th-registry-1.beaverbay.local:5000/mediakraken/mkwebappsanic:${BRANCH}
+    secrets:
+      - db_password
+      - secure_key
+      - csrf_key
+    entrypoint: ./wait-for-it-ash-busybox130.sh -h pgbouncer -p 6432 -t 60 -- gunicorn web_app_sanic.app:app -b :8080 -w 1 -k uvicorn.workers.UvicornWorker
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./mkmount:/mediakraken/mnt
+      # must not be read only as it stores cache here
+      - mediakraken_vol_static:/mediakraken/web_app_sanic/static
+      - mediakraken_vol_webkey:/mediakraken/key
+      - ./data/uploads:/mediakraken/uploads
+      # needed to show docker/swarm info
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # hold log files
+      - ./data/log:/mediakraken/log
+      # this stores the "push button" key
+      - mediakraken_vol_phue:/mediakraken/phue
+      # server will generate salt/key
+      - /var/opt/mediakraken/secure:/mediakraken/secure:ro
+      # db backups
+      - mediakraken_vol_postgresql_backup:/mediakraken/backup
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+# Docker private networks
+networks:
+  # don't bother naming as swarm names as stackname_*
+  mediakraken_moosefsnet:
+    driver: overlay
+  portaineragent_agent_network:
+    driver: overlay
+    attachable: true
+  mediakraken_network_backend:
+    driver: overlay
+  mediakraken_network_frontend:
+    driver: overlay
+    attachable: true
+#  # specifying external is depreciated
+#  mediakraken_outside:
+#      name: "mkhost"
+
+volumes:
+  portainer_data:
+  mediakraken_vol_cache:
+  mediakraken_vol_certs:
+  mediakraken_vol_devices:
+  mediakraken_vol_mbrainz_conf:
+  mediakraken_vol_mbrainz_data:
+  mediakraken_vol_mumble:
+  mediakraken_vol_nginx:
+  mediakraken_vol_pgadmin:
+  mediakraken_vol_phue:
+  mediakraken_vol_postgresql:
+  mediakraken_vol_postgresql_backup:
+  mediakraken_vol_postgresql_logging:
+  mediakraken_vol_rabbit:
+  mediakraken_vol_static:
+  mediakraken_vol_teamspeak:
+  mediakraken_vol_transmission:
+  mediakraken_vol_transmission_incomplete:
+  mediakraken_vol_webkey:
+
+secrets:
+  secure_key:
+    external: true
+  db_password:
+    external: true
+  csrf_key:
+    external: true

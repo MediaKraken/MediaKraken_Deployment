@@ -165,8 +165,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                     self.db_download_insert(provider=meta_type,
                                             que_type=common_global.DLMediaType.Person.value,
                                             down_json=json.dumps({"Status": "Fetch",
-                                                                  "ProviderMetaID": str(
-                                                                      person_id)}))
+                                                                  "ProviderMetaID":
+                                                                      person_id}))
                     # insert person record
                     self.db_meta_person_insert(person_name,
                                                person_id,
@@ -196,8 +196,8 @@ def db_meta_person_insert_cast_crew(self, meta_type, person_json):
                 self.db_download_insert(provider=meta_type,
                                         que_type=common_global.DLMediaType.Person.value,
                                         down_json=json.dumps({"Status": "Fetch",
-                                                              "ProviderMetaID": str(
-                                                                  person_id)}))
+                                                              "ProviderMetaID":
+                                                                  person_id}))
                 # insert person record
                 self.db_meta_person_insert(person_name,
                                            person_id,
@@ -216,10 +216,10 @@ def db_meta_person_as_seen_in(self, person_guid):
                                                          message_text={"row_data": row_data})
     if 'themoviedb' in row_data['mmp_person_media_id']:
         sql_params = int(row_data['mmp_person_media_id']['themoviedb']),
-        self.db_cursor.execute('select mm_metadata_guid,mm_media_name,'
+        self.db_cursor.execute('select mm_metadata_guid,mm_metadata_name,'
                                'mm_metadata_localimage_json->\'Poster\''
                                ' from mm_metadata_movie where mm_metadata_json->\'credits\'->\'cast\''
-                               ' @> \'[{"id": %s}]\' order by LOWER(mm_media_name)', sql_params)
+                               ' @> \'[{"id": %s}]\' order by LOWER(mm_metadata_name)', sql_params)
     return self.db_cursor.fetchall()
 
 # works

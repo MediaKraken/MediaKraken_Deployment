@@ -17,8 +17,6 @@
 """
 
 import inspect
-import json
-import uuid
 
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -86,7 +84,7 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
         # check to see if id is known from nfo/xml but not in db yet so fetch data
         if tmdb_id is not None or imdb_id is not None:
             if tmdb_id is not None:
-                provider_id = str(tmdb_id)
+                provider_id = tmdb_id
             else:
                 provider_id = imdb_id
             dl_meta = await db_connection.db_download_que_exists(download_data['mdq_id'],
@@ -95,10 +93,9 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
                                                                  provider_id)
             if dl_meta is None:
                 metadata_uuid = download_data['mdq_new_uuid']
-                download_data.update({'Status': 'Fetch', 'ProviderMetaID': provider_id})
                 await db_connection.db_begin()
-                await db_connection.db_download_update(json.dumps(download_data),
-                                                       download_data['mdq_id'])
+                await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                       status='Fetch')
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider('pornhub', download_data['mdq_id'])
                 await db_connection.db_commit()
@@ -127,11 +124,10 @@ async def metadata_adult_lookup(db_connection, download_data, file_name):
             metadata_uuid = download_data['mdq_new_uuid']
             # no matches by name/year on local database
             # search themoviedb since not matched above via DB or nfo/xml
-            download_data.update({'Status': 'Search'})
             # save the updated status
             await db_connection.db_begin()
-            await db_connection.db_download_update(json.dumps(download_data),
-                                                   download_data['mdq_id'])
+            await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                   status='Search')
             # set provider last so it's not picked up by the wrong thread
             await db_connection.db_download_update_provider('pornhub', download_data['mdq_id'])
             await db_connection.db_commit()

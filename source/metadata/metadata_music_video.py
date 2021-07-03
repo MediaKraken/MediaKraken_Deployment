@@ -17,7 +17,6 @@
 """
 
 import inspect
-import json
 import os
 import uuid
 
@@ -93,18 +92,15 @@ async def metadata_music_video_lookup(db_connection, file_name):
                                                                     str(video_data['id'])) is None:
                                 db_connection.db_download_insert(provider='imvdb',
                                                                  que_type=common_global.DLMediaType.Music_Video.value,
-                                                                 down_json=json.dumps(
-                                                                     {"Status": "Fetch",
-                                                                      "ProviderMetaID": str(
-                                                                          video_data['id'])}),
+                                                                 down_json={"Status": "Fetch",
+                                                                            "ProviderMetaID":
+                                                                                video_data['id']},
                                                                  down_new_uuid=uuid.uuid4(),
                                                                  )
                             # db_connection.db_meta_music_video_add(video_data['artists'][0]['slug'],
-                            #                                       video_data['song_slug'], json.dumps(
-                            #         {'imvdb': str(video_data['id'])}),
-                            #                                       json.dumps(video_data),
-                            #                                       json.dumps(
-                            #                                           {'Images': {'imvdb': None}}))
+                            #                                       video_data['song_slug'],  {'imvdb': str(video_data['id'])},
+                            #                                       video_data,
+                            #                                         {'Images': {'imvdb': None}})
                     # try after inserting new records
                     metadata_uuid = db_connection.db_meta_music_video_lookup(
                         band_name, song_name)

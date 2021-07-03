@@ -1,5 +1,6 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase_alpinepy3:dev
+ARG BRANCHTAG
+FROM mediakraken/mkbase_alpinepy3:${BRANCHTAG}
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image downloads and maintains all metadata"
@@ -14,19 +15,19 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --no-cache \
   ca-certificates==20191127-r5 \
-  cifs-utils==6.12-r0 \
+  cifs-utils==6.13-r0 \
   nfs-utils==2.5.2-r0 \
   gcc==10.2.1_pre1-r3 \
   linux-headers==5.7.8-r0 \
-  musl-dev==1.2.2-r0 \
-  python3-dev==3.8.8-r0 \
+  musl-dev==1.2.2-r1 \
+  python3-dev==3.8.10-r0 \
   libffi==3.3-r2 \
   libffi-dev==3.3-r2 \
   libxslt==1.1.34-r0 \
   libxslt-dev==1.1.34-r0 \
-  libxml2==2.9.10-r6 \
-  libxml2-dev==2.9.10-r6 \
-  openrc==0.42.1-r19 \
+  libxml2==2.9.10-r7 \
+  libxml2-dev==2.9.10-r7 \
+  openrc==0.42.1-r20 \
   libressl==3.1.5-r0 \
   libressl-dev==3.1.5-r0 \
   libarchive==3.5.1-r0 \

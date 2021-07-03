@@ -1,0 +1,13 @@
+[package]
+name = "myapp"
+version = "0.0.1"
+edition = "2018"
+
+[profile.release]
+panic = 'abort'
+
+[dependencies]
+tokio = { version = "1.6.0", features = ["full"] }
+
+[dev-dependencies]
+tokio-test = "*"

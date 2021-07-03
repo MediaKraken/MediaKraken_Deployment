@@ -18,7 +18,6 @@
 
 import sys
 
-from common import common_config_ini
 from common import common_file
 from common import common_logging_elasticsearch_httpx
 from common import common_network
@@ -37,9 +36,6 @@ common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
 
 # set signal exit breaks
 common_signal.com_signal_set_break()
-
-# open the database
-option_config_json, db_connection = common_config_ini.com_config_read()
 
 # populate current cores
 libretro_current_core = common_file.com_file_dir_list('/mediakraken/emulation/cores',
@@ -67,9 +63,3 @@ for libretro_core in common_network.mk_network_fetch_from_url(libtro_url
         # unzip the core for use
         common_file.com_file_unzip('/mediakraken/emulation/cores/' + core_name,
                                    target_destination_directory=None, remove_zip=True)
-
-# commit all changes to db
-db_connection.db_commit()
-
-# close the database
-db_connection.db_close()

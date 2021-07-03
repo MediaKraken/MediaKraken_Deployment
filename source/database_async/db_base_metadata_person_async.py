@@ -1,5 +1,4 @@
 import inspect
-import json
 import uuid
 
 from common import common_global
@@ -30,13 +29,13 @@ async def db_meta_person_as_seen_in(self, person_guid, db_connection=None):
     await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                      message_text={
                                                                          "row_data": row_data})
-    return await db_conn.fetch('select mm_metadata_guid,mm_media_name,'
+    return await db_conn.fetch('select mm_metadata_guid,mm_metadata_name,'
                                ' mm_metadata_localimage_json->\'Poster\''
                                ' from mm_metadata_movie'
                                ' where mm_metadata_json->\'credits\'->\'cast\''
                                ' @> \'[{"id": '
                                + str(row_data['mmp_person_media_id'])
-                               + '}]\' order by LOWER(mm_media_name)')
+                               + '}]\' order by LOWER(mm_metadata_name)')
 
 
 async def db_meta_person_by_guid(self, guid, db_connection=None):
@@ -144,7 +143,7 @@ async def db_meta_person_id_count(self, guid, db_connection=None):
                                   ' WHERE mmp_person_media_id = $1 limit 1) limit 1', guid)
 
 
-async def db_meta_person_insert(self, person_name, media_id, person_json,
+async def db_meta_person_insert(self, uuid_id, person_name, media_id, person_json,
                                 image_path=None, db_connection=None):
     """
     # insert person
@@ -162,17 +161,15 @@ async def db_meta_person_insert(self, person_name, media_id, person_json,
         db_conn = self.db_connection
     else:
         db_conn = db_connection
-    new_guid = uuid.uuid4()
     await db_conn.execute('insert into mm_metadata_person (mmp_id,'
                           ' mmp_person_name,'
                           ' mmp_person_media_id,'
                           ' mmp_person_meta_json,'
                           ' mmp_person_image)'
                           ' values ($1,$2,$3,$4,$5)',
-                          new_guid, person_name, media_id,
+                          uuid_id, person_name, media_id,
                           person_json, image_path)
     await db_conn.execute('commit')
-    return new_guid
 
 
 async def db_meta_person_update(self, provider_name, provider_uuid, person_bio, person_image,
@@ -196,7 +193,7 @@ async def db_meta_person_update(self, provider_name, provider_uuid, person_bio, 
     await db_conn.execute('update mm_metadata_person set mmp_person_meta_json = $1,'
                           ' mmp_person_image = $2'
                           ' where mmp_person_media_id = $3',
-                          json.dumps(person_bio), person_image, provider_uuid)
+                          person_bio, person_image, provider_uuid)
     await db_conn.execute('commit')
 
 
@@ -243,20 +240,24 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                         message_text={
                             'db_meta_person_insert_cast_crew': "skip insert as person exists"})
                 else:
+                    new_guid = uuid.uuid4()
                     # Shouldn't need to verify fetch doesn't exist as the person insert
                     # is right below.  As then the next person record read will find
                     # the inserted record.
                     # insert download record for bio/info
                     await self.db_download_insert(provider=meta_type,
                                                   que_type=common_global.DLMediaType.Person.value,
-                                                  down_json=json.dumps({"Status": "Fetch",
-                                                                        "ProviderMetaID": str(
-                                                                            person_id)}),
-                                                  down_new_uuid=None)
+                                                  down_json={"Status": "Fetch",
+                                                             "ProviderMetaID": person_id},
+                                                  down_new_uuid=new_guid,
+                                                  db_connection=db_connection)
                     # insert person record
-                    await self.db_meta_person_insert(person_name,
-                                                     person_id,
-                                                     None, None)
+                    await self.db_meta_person_insert(uuid_id=new_guid,
+                                                     person_name=person_name,
+                                                     media_id=person_id,
+                                                     person_json=None,
+                                                     image_path=None,
+                                                     db_connection=db_connection)
     else:
         if meta_type == "themoviedb":
             # cast/crew can exist but be blank
@@ -265,28 +266,32 @@ async def db_meta_person_insert_cast_crew(self, meta_type, person_json, db_conne
                 person_name = person_json['name']
             except:
                 person_id = None
+                person_name = None
         else:
             person_id = None
-            # person_name = None # not used later so don't set
+            person_name = None
         if person_id is not None:
             # TODO upsert instead
             if await self.db_meta_person_id_count(person_id) is True:
                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                     message_type='info',
-                    message_text={
-                        'stuff': "skippy"})
+                    message_text={'stuff': "skippy"})
             else:
+                new_guid = uuid.uuid4()
                 # Shouldn't need to verify fetch doesn't exist as the person insert
                 # is right below.  As then the next person record read will find
                 # the inserted record.
                 # insert download record for bio/info
                 await self.db_download_insert(provider=meta_type,
                                               que_type=common_global.DLMediaType.Person.value,
-                                              down_json=json.dumps({"Status": "Fetch",
-                                                                    "ProviderMetaID": str(
-                                                                        person_id)}),
-                                              down_new_uuid=None)
+                                              down_json={"Status": "Fetch",
+                                                         "ProviderMetaID": person_id},
+                                              down_new_uuid=new_guid,
+                                              db_connection=db_connection)
                 # insert person record
-                await self.db_meta_person_insert(person_name,
-                                                 person_id,
-                                                 None, None)
+                await self.db_meta_person_insert(uuid_id=new_guid,
+                                                 person_name=person_name,
+                                                 media_id=person_id,
+                                                 person_json=None,
+                                                 image_path=None,
+                                                 db_connection=db_connection)

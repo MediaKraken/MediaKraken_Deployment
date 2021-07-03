@@ -1,4 +1,4 @@
-httpx==0.17.1  # httpx since using ffmpeg image
+httpx==0.18.1  # httpx since using ffmpeg image
 aio-pika==6.8.0
 asyncpg==0.22.0
 pysmb==1.2.6  # due to file access

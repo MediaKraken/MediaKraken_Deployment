@@ -158,7 +158,7 @@ COPY --from=builder /usr/local/lib /usr/local/lib
 RUN apk add --no-cache \
     busybox==1.32.1-r6 \
     bash==5.1.0-r0 \
-    samba-client==4.13.7-r0 \
+    samba-client==4.13.8-r0 \
     lame==3.100-r0 \
     libass==0.15.0-r0 \
     libmodplug==0.8.9.0-r0 \
@@ -170,7 +170,7 @@ RUN apk add --no-cache \
     xvidcore==1.3.7-r1 \
     freetype==2.10.4-r1 \
     zlib==1.2.11-r3 \
-    openjpeg==2.4.0-r0 \
+    openjpeg==2.4.0-r1 \
     libwebp==1.1.0-r0 \
     soxr==0.1.3-r2 \
     fontconfig==2.13.1-r3 \

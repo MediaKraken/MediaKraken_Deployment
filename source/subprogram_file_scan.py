@@ -118,6 +118,7 @@ def worker(audit_directory):
                         # it's not a part one here so, no DL record needed
                         save_dl_record = False
                 # video game data
+                # TODO look for cue/bin data as well
                 if original_media_class == common_global.DLMediaType.Game.value:
                     if file_extension[1:] == 'iso':
                         new_class_type_uuid = common_global.DLMediaType.Game_ISO.value
@@ -215,11 +216,10 @@ def worker(audit_directory):
                 if save_dl_record:
                     # media id begin and download que insert
                     db_connection.db_download_insert(provider='Z',
-                                                     que_type=0,
+                                                     que_type=new_class_type_uuid,
                                                      down_json=json.dumps({'MediaID': str(media_id),
                                                                            'Path': file_name}),
                                                      down_new_uuid=uuid.uuid4(),
-                                                     down_class_uuid=new_class_type_uuid
                                                      )
         total_scanned += 1
         db_connection.db_audit_path_update_status(dir_guid,

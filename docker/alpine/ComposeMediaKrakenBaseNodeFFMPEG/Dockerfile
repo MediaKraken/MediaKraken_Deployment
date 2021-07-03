@@ -1,4 +1,5 @@
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbaseffmpeg:dev
+ARG BRANCHTAG
+FROM mediakraken/mkbase_ffmpeg:${BRANCHTAG}
 
 ARG ALPMIRROR
 ARG PIPMIRROR

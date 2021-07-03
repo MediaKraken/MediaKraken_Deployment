@@ -16,7 +16,7 @@
   MA 02110-1301, USA.
 """
 
-import datetime
+from datetime import datetime
 import json
 
 from common import common_config_ini
@@ -291,7 +291,7 @@ else:
 if db_connection.db_version_check() < 23:
     # retro update
     db_connection.db_cron_insert('Retro game data', 'Grab updated metadata for retro game(s)',
-                                 False, 'Days 1', datetime.datetime(1970, 1, 1, 0, 0, 1),
+                                 False, 'Days 1', datetime(1970, 1, 1, 0, 0, 1),
                                  json.dumps({'exchange_key': 'mkque_ex', 'route_key': 'mkque',
                                              'Type': 'Cron Run',
                                              'program': '/mediakraken/subprogram_metadata_games.py'}),
@@ -378,15 +378,21 @@ if db_connection.db_version_check() < 30:
     db_connection.db_commit()
 
 if db_connection.db_version_check() < 31:
-    db_connection.db_query('ALTER TABLE mm_review DROP COLUMN mm_review_metadata_id;')
+    try:
+        db_connection.db_query('ALTER TABLE mm_review DROP COLUMN mm_review_metadata_id;')
+    except:
+        db_connection.db_rollback()
     db_connection.db_version_update(31)
     db_connection.db_commit()
 
 if db_connection.db_version_check() < 32:
-    db_connection.db_query('DROP TABLE mm_media_share;')
-    db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_share_guid;')
-    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_username text;')
-    db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_password text;')
+    try:
+        db_connection.db_query('DROP TABLE mm_media_share;')
+        db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_share_guid;')
+        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_username text;')
+        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_password text;')
+    except:
+        db_connection.db_rollback()
     db_connection.db_version_update(32)
     db_connection.db_commit()
 
@@ -407,14 +413,14 @@ if db_connection.db_version_check() < 35:
         'create table IF NOT EXISTS mm_developer (mm_developer_id uuid'
         ' CONSTRAINT mm_developer_id primary key,'
         ' mm_developer_name text,'
-        ' mm_developer_json jsonb')
+        ' mm_developer_json jsonb)')
     db_connection.db_query('CREATE INDEX mm_developer_name_idx'
                            ' ON mm_developer(mm_developer_name)')
     db_connection.db_query(
         'create table IF NOT EXISTS mm_publisher (mm_publisher_id uuid'
         ' CONSTRAINT mm_publisher_id primary key,'
         ' mm_publisher_name text,'
-        ' mm_publisher_json jsonb')
+        ' mm_publisher_json jsonb)')
     db_connection.db_query('CREATE INDEX mm_publisher_name_idx'
                            ' ON mm_publisher(mm_publisher_name)')
     db_connection.db_version_update(35)
@@ -427,15 +433,169 @@ if db_connection.db_version_check() < 36:
     db_connection.db_version_update(36)
     db_connection.db_commit()
 
-if db_connection.db_version_check() < 36:
+if db_connection.db_version_check() < 37:
     db_connection.db_query('ALTER TABLE mm_metadata_game_software_info'
-                           ' ADD COLUMN gi_game_info_blake3 text;')
-    db_connection.db_query('CREATE INDEX mm_metadata_game_software_info_sha1_idx'
+                           ' ADD COLUMN IF NOT EXISTS gi_game_info_sha1 text;')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_game_software_info_sha1_idx'
                            ' ON mm_metadata_game_software_info(gi_game_info_sha1)')
-    db_connection.db_query('CREATE INDEX mm_metadata_game_software_info_blake3_idx'
+    db_connection.db_query('ALTER TABLE mm_metadata_game_software_info'
+                           ' ADD COLUMN IF NOT EXISTS gi_game_info_blake3 text;')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_game_software_info_blake3_idx'
                            ' ON mm_metadata_game_software_info(gi_game_info_blake3)')
     db_connection.db_version_update(37)
     db_connection.db_commit()
+
+if db_connection.db_version_check() < 38:
+    db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN if exists mdq_class_uuid;')
+    db_connection.db_version_update(38)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 39:
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_movie_ndx_media_id'
+                           ' ON mm_metadata_movie(mm_metadata_media_id)')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_idxgin_media_id')
+    db_connection.db_version_update(39)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 40:
+    # mm_loan
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_loan_ndx_media_id'
+                           ' ON mm_loan(mm_loan_media_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_loan_ndx_user_id'
+                           ' ON mm_loan(mm_loan_user_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_loan_ndx_user_loan_id'
+                           ' ON mm_loan(mm_load_user_loan_id)')
+    # mm_media_remote
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_media_remote_ndx_link_id'
+                           ' ON mm_media_remote(mmr_media_link_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_media_remote_ndx_media_id'
+                           ' ON mm_media_remote(mmr_media_uuid)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_media_remote_ndx_meta_id'
+                           ' ON mm_media_remote(mmr_media_metadata_guid)')
+    # mm_metadata_anime
+    db_connection.db_query('ALTER TABLE mm_metadata_anime'
+                           ' RENAME COLUMN mm_media_anime_name TO mm_metadata_anime_name;')
+    db_connection.db_query('ALTER TABLE mm_metadata_anime'
+                           ' DROP COLUMN mm_metadata_anime_media_id')
+    db_connection.db_query('ALTER TABLE mm_metadata_anime'
+                           ' ADD COLUMN mm_metadata_anime_media_id integer;')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_anime_ndx_media_id'
+                           ' ON mm_metadata_anime(mm_metadata_anime_media_id)')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_anidb')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_imdb')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_thetvdb')
+    db_connection.db_query('DROP INDEX if exists mm_metadata_anime_idxgin_media_id_tmdb')
+    # mm_metadata_game_systems_info
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_game_systems_info_ndx_name'
+                           ' ON mm_metadata_game_systems_info(gs_game_system_name)')
+    # mm_metadata_movie
+    db_connection.db_query('ALTER TABLE mm_metadata_movie'
+                           ' RENAME COLUMN mm_media_name TO mm_metadata_name;')
+    # mm_notification
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_notification_ndx_time'
+                           ' ON mm_notification(mm_notification_time)')
+    # mm_radio
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_radio_ndx_name'
+                           ' ON mm_radio(mm_radio_name)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_radio_ndx_active'
+                           ' ON mm_radio(mm_radio_active)')
+    # mm_tv_schedule
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_tv_schedule_ndx_station_id'
+                           ' ON mm_tv_schedule(mm_tv_schedule_station_id)')
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_tv_schedule_ndx_schedule_date'
+                           ' ON mm_tv_schedule(mm_tv_schedule_date)')
+    db_connection.db_version_update(40)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 41:
+    # mm_download_que
+    print('b4 lock', flush=True)
+    db_connection.db_query('LOCK mm_download_que in ACCESS EXCLUSIVE mode')
+    print('add mdq_provider_id', flush=True)
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
+                           ' IF NOT EXISTS mdq_provider_id integer;')
+    print('add mdq_status', flush=True)
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
+                           ' IF NOT EXISTS mdq_status text;')
+    print('add mdq_path', flush=True)
+    db_connection.db_query('ALTER TABLE mm_download_que ADD COLUMN'
+                           ' IF NOT EXISTS mdq_path text;')
+    print('b4 main read', flush=True)
+    total_updates = 0
+    for row_data in db_connection.db_query('select mdq_id, mdq_download_json from mm_download_que'):
+        if 'Path' in row_data['mdq_download_json']:
+            path_data = str(row_data['mdq_download_json']['Path'])
+        else:
+            path_data = 'NULL'
+        sql_command = 'update mm_download_que set mdq_provider_id=' \
+                      + str(row_data['mdq_download_json']['ProviderMetaID']) \
+                      + ', mdq_status=\'' + row_data['mdq_download_json']['Status'] \
+                      + '\', mdq_path=' + path_data \
+                      + ' where mdq_id=\'' + str(row_data['mdq_id']) + '\';'
+        db_connection.db_query(sql_command)
+        total_updates += 1
+        if total_updates % 1000 == 0:
+            print('Udp:', total_updates, datetime.now().strftime("%Y/%m/%d %H:%M:%S"), flush=True)
+    print('drop download json', flush=True)
+    db_connection.db_query('ALTER TABLE mm_download_que DROP COLUMN'
+                           ' IF EXISTS mdq_download_json;')
+    print('create index mdq_provider_id', flush=True)
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_provider_id'
+                           ' ON mm_download_que(mdq_provider_id)')
+    print('create index mdq_status', flush=True)
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_download_que_ndx_status'
+                           ' ON mm_download_que(mdq_status)')
+    db_connection.db_version_update(41)
+    db_connection.db_commit()
+    print('so far', total_updates, flush=True)
+
+if db_connection.db_version_check() < 42:
+    db_connection.db_query('CREATE INDEX IF NOT EXISTS mm_metadata_person_idx_name_lower'
+                           ' ON mm_metadata_person(lower(mmp_person_name))')
+    db_connection.db_version_update(42)
+    db_connection.db_commit()
+
+if db_connection.db_version_check() < 43:
+    db_connection.db_query('ALTER TABLE mm_cron ALTER COLUMN mm_cron_last_run TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_cron_last_run AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_loan ALTER COLUMN mm_loan_time TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_loan_time AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_loan ALTER COLUMN mm_loan_return_time TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_loan_return_time AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_media_dir'
+                           ' ALTER COLUMN mm_media_dir_last_scanned TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_media_dir_last_scanned AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_notification'
+                           ' ALTER COLUMN mm_notification_time TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_notification_time AT TIME ZONE \'UTC\'')
+    db_connection.db_query('ALTER TABLE mm_user_activity'
+                           ' ALTER COLUMN mm_activity_datecreated TYPE TIMESTAMP'
+                           ' WITH TIME ZONE USING mm_activity_datecreated AT TIME ZONE \'UTC\'')
+    db_connection.db_version_update(43)
+    db_connection.db_commit()
+
+'''
+    # mm_metadata_music_video
+    # TODO
+    # mm_metadata_musician
+    # TODO
+    # mm_metadata_sports
+    # TODO
+    # mm_tv_schedule_program
+    # TODO
+    # mm_tv_stations
+    # TODO
+    # mm_user
+    # TODO
+    # mm_user_activity
+    # TODO
+    # mm_user_group
+    # TODO
+    # mm_user_profile
+    # TODO
+    # mm_user_queue
+    # TODO    
+'''
 
 # TODO add the rename to cron program names
 # TODO add the rename to cron program names

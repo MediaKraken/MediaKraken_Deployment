@@ -54,8 +54,8 @@ async def db_game_server_upsert(self, server_name, server_json, db_connection=No
                           ' VALUES ($1, $2, $3)'
                           ' ON CONFLICT (mm_game_server_name)'
                           ' DO UPDATE SET mm_game_server_json = $4',
-                          new_guid, server_name, json.dumps(server_json),
-                          json.dumps(server_json))
+                          new_guid, server_name, server_json,
+                          server_json)
     return new_guid
 
 

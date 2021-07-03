@@ -3,7 +3,7 @@ pyopenssl==19.1.0
 service_identity==18.1.0
 setuptools==45.2.0
 #pycdio==2.1.0
-lcdproc==0.03
+lcdproc==0.3
 python-lirc==1.2.3
 py-irsend==1.0.2
 pylms==1.0

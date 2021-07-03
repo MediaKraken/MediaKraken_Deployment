@@ -16,14 +16,52 @@
   MA 02110-1301, USA.
 """
 
+import os
 import shlex
 import subprocess
 
-with open('./docker-compose-stack.yml') as file_handle:
+try:
+    from dotenv import load_dotenv
+except ModuleNotFoundError:
+    install_pid = subprocess.Popen(shlex.split('apt install python3-dotenv -y'),
+                                   stdout=subprocess.PIPE, shell=False)
+    install_pid.wait()
+    from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+
+with open('docker-compose.yml') as file_handle:
     for line in file_handle:
         if line.find('image: ') > 0:
             pull_pid = subprocess.Popen(shlex.split('docker pull %s'
-                                                    % line.split('image: ')[1].strip()),
+                                                    % (line.split('image: ')[1].strip() \
+                                                       .replace('${BRANCH}',
+                                                                os.environ['BRANCH']))),
                                         stdout=subprocess.PIPE, shell=False)
+            while True:
+                line = pull_pid.stdout.readline()
+                if not line:
+                    break
+                print(line.rstrip(), flush=True)
             pull_pid.wait()
 file_handle.close()
+
+# remove outdated images
+install_pid = subprocess.Popen(shlex.split('./docker_remove_dangle.sh'),
+                               stdout=subprocess.PIPE, shell=False)
+while True:
+    line = install_pid.stdout.readline()
+    if not line:
+        break
+    print(line.rstrip(), flush=True)
+install_pid.wait()
+
+# list current images
+install_pid = subprocess.Popen(shlex.split('docker images'),
+                               stdout=subprocess.PIPE, shell=False)
+while True:
+    line = install_pid.stdout.readline()
+    if not line:
+        break
+    print(line.rstrip(), flush=True)
+install_pid.wait()

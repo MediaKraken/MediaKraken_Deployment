@@ -254,25 +254,25 @@ async def db_media_new(self, offset=None, records=None, search_value=None,
     else:
         db_conn = db_connection
     if offset is None:
-        return await db_conn.fetch('select mm_media_name,'
+        return await db_conn.fetch('select mm_metadata_name,'
                                    ' mm_media_guid,'
                                    ' mm_media_class_guid'
                                    ' from mm_media, mm_metadata_movie'
                                    ' where mm_media_metadata_guid = mm_metadata_guid'
                                    ' and mm_media_json->>\'DateAdded\' >= $1'
-                                   ' order by LOWER(mm_media_name),'
+                                   ' order by LOWER(mm_metadata_name),'
                                    ' mm_media_class_guid',
                                    (datetime.datetime.now()
                                     - datetime.timedelta(days=days_old)).strftime(
                                        "%Y-%m-%d"))
     else:
-        return await db_conn.fetch('select mm_media_name,'
+        return await db_conn.fetch('select mm_metadata_name,'
                                    ' mm_media_guid,'
                                    ' mm_media_class_guid'
                                    ' from mm_media, mm_metadata_movie'
                                    ' where mm_media_metadata_guid = mm_metadata_guid'
                                    ' and mm_media_json->>\'DateAdded\' >= $1'
-                                   ' order by LOWER(mm_media_name),'
+                                   ' order by LOWER(mm_metadata_name),'
                                    ' mm_media_class_guid offset $2 limit $3',
                                    (datetime.datetime.now()
                                     - datetime.timedelta(days=days_old)).strftime(
@@ -360,7 +360,7 @@ async def db_media_rating_update(self, media_guid, user_id, status_text, db_conn
         else:
             json_data['UserStats'][user_id] = {status_text: status_setting}
         # since 'for update' must release record on fail
-        self.db_update_media_json(media_guid, json.dumps(json_data))
+        self.db_update_media_json(media_guid, json_data)
         self.db_commit()
     except:
         self.db_rollback()

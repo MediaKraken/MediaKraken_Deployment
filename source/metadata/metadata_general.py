@@ -17,7 +17,6 @@
 """
 
 import inspect
-import json
 
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -45,19 +44,19 @@ async def metadata_process(db_connection, provider_name, download_data):
                                                                          'caller':
                                                                              inspect.stack()[1][3]})
     # TODO art, posters, trailers, etc in here as well
-    if download_data['mdq_download_json']['Status'] == "Search":
+    if download_data['mdq_status'] == "Search":
         await metadata_search(db_connection, provider_name, download_data)
-    elif download_data['mdq_download_json']['Status'] == "Update":
+    elif download_data['mdq_status'] == "Update":
         await metadata_update(db_connection, provider_name, download_data)
-    elif download_data['mdq_download_json']['Status'] == "Fetch":
+    elif download_data['mdq_status'] == "Fetch":
         await metadata_fetch(db_connection, provider_name, download_data)
-    elif download_data['mdq_download_json']['Status'] == "FetchCastCrew":
+    elif download_data['mdq_status'] == "FetchCastCrew":
         await metadata_castcrew(db_connection, provider_name, download_data)
-    elif download_data['mdq_download_json']['Status'] == "FetchReview":
+    elif download_data['mdq_status'] == "FetchReview":
         await metadata_review(db_connection, provider_name, download_data)
-    elif download_data['mdq_download_json']['Status'] == "FetchImage":
+    elif download_data['mdq_status'] == "FetchImage":
         await metadata_image(db_connection, provider_name, download_data)
-    elif download_data['mdq_download_json']['Status'] == "FetchCollection":
+    elif download_data['mdq_status'] == "FetchCollection":
         await metadata_collection(db_connection, provider_name, download_data)
 
 
@@ -116,9 +115,7 @@ async def metadata_search(db_connection, provider_name, download_data):
     elif provider_name == 'imvdb':
         metadata_uuid, match_result = await metadata_music_video.metadata_music_video_lookup(
             db_connection,
-            download_data[
-                'mdq_download_json'][
-                'Path'])
+            download_data['mdq_path'])
         if metadata_uuid is None:
             if match_result is None:
                 update_provider = 'theaudiodb'
@@ -126,7 +123,7 @@ async def metadata_search(db_connection, provider_name, download_data):
                 set_fetch = True
     elif provider_name == 'isbndb':
         metadata_uuid, match_result = await metadata_provider_isbndb.metadata_periodicals_search_isbndb(
-            db_connection, download_data['mdq_download_json']['ProviderMetaID'])
+            db_connection, download_data['mdq_provider_id'])
         if metadata_uuid is None:
             lookup_halt = True
     elif provider_name == 'lastfm':
@@ -168,9 +165,7 @@ async def metadata_search(db_connection, provider_name, download_data):
         if download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
             metadata_uuid, match_result = await metadata_provider_themoviedb.movie_search_tmdb(
                 db_connection,
-                download_data[
-                    'mdq_download_json'][
-                    'Path'])
+                download_data['mdq_path'])
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'metadata_uuid': metadata_uuid,
@@ -184,8 +179,7 @@ async def metadata_search(db_connection, provider_name, download_data):
         elif download_data['mdq_que_type'] == common_global.DLMediaType.TV.value:
             metadata_uuid, match_result = await metadata_tv.metadata_tv_lookup(db_connection,
                                                                                download_data[
-                                                                                   'mdq_download_json'][
-                                                                                   'Path'])
+                                                                                   'mdq_path'])
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'metadata_uuid': metadata_uuid,
@@ -240,13 +234,11 @@ async def metadata_search(db_connection, provider_name, download_data):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  'meta setfetch': metadata_uuid})
-            await db_connection.db_update_media_id(download_data['mdq_download_json']['MediaID'],
+            await db_connection.db_update_media_id(download_data['mdq_provider_id'],
                                                    metadata_uuid)
-            download_data['mdq_download_json'].update(
-                {'ProviderMetaID': str(match_result)})
-            download_data['mdq_download_json'].update({'Status': 'Fetch'})
-            await db_connection.db_download_update(json.dumps(download_data['mdq_download_json']),
-                                                   download_data['mdq_id'])
+            await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                                   status='Fetch',
+                                                   provider_guid=match_result)
             await db_connection.db_commit()
     return metadata_uuid
 
@@ -268,8 +260,7 @@ async def metadata_fetch(db_connection, provider_name, download_data):
                                                                              'fetch imvdb': provider_name})
         imvdb_id = await metadata_provider_imvdb.movie_fetch_save_imvdb(db_connection,
                                                                         download_data[
-                                                                            'mdq_download_json'][
-                                                                            'ProviderMetaID'],
+                                                                            'mdq_provider_id'],
                                                                         download_data[
                                                                             'mdq_new_uuid'])
     elif provider_name == 'themoviedb':
@@ -279,19 +270,16 @@ async def metadata_fetch(db_connection, provider_name, download_data):
                                                                                  'fetch person bio': provider_name})
             await metadata_provider_themoviedb.metadata_fetch_tmdb_person(
                 db_connection, provider_name, download_data)
-        elif download_data['mdq_que_type'] == 0 \
-                or download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
+        elif download_data['mdq_que_type'] == common_global.DLMediaType.Movie.value:
             # removing the imdb check.....as com_tmdb_metadata_by_id converts it
             await metadata_provider_themoviedb.movie_fetch_save_tmdb(db_connection,
                                                                      download_data[
-                                                                         'mdq_download_json'][
-                                                                         'ProviderMetaID'],
+                                                                         'mdq_provider_id'],
                                                                      download_data[
                                                                          'mdq_new_uuid'])
         elif download_data['mdq_que_type'] == common_global.DLMediaType.TV.value:
             await metadata_tv_tmdb.tv_fetch_save_tmdb(db_connection,
-                                                      download_data['mdq_download_json'][
-                                                          'ProviderMetaID'],
+                                                      download_data['mdq_provider_id'],
                                                       download_data['mdq_new_uuid'])
     await db_connection.db_download_delete(download_data['mdq_id'])
     await db_connection.db_commit()
@@ -310,9 +298,8 @@ async def metadata_castcrew(db_connection, provider_name, download_data):
                                                                              inspect.stack()[1][3]})
     # removed themoviedb call as it should be done during the initial fetch
     # setup for FetchReview
-    download_data['mdq_download_json'].update({'Status': 'FetchReview'})
-    await db_connection.db_download_update(json.dumps(download_data['mdq_download_json']),
-                                           download_data['mdq_id'])
+    await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                           status='FetchReview')
     await db_connection.db_commit()
 
 
@@ -345,8 +332,7 @@ async def metadata_review(db_connection, provider_name, download_data):
     if provider_name == 'themoviedb':
         await metadata_provider_themoviedb.movie_fetch_save_tmdb_review(db_connection,
                                                                         download_data[
-                                                                            'mdq_download_json'][
-                                                                            'ProviderMetaID'])
+                                                                            'mdq_provider_id'])
     # review is last.....so can delete download que
     await db_connection.db_download_delete(download_data['mdq_id'])
     await db_connection.db_commit()
@@ -366,8 +352,7 @@ async def metadata_collection(db_connection, provider_name, download_data):
     if provider_name == 'themoviedb':
         await metadata_provider_themoviedb.movie_fetch_save_tmdb_collection(db_connection,
                                                                             download_data[
-                                                                                'mdq_download_json'][
-                                                                                'ProviderMetaID'],
+                                                                                'mdq_provider_id'],
                                                                             download_data)
     # only one record for this so nuke it
     await db_connection.db_download_delete(download_data['mdq_id'])

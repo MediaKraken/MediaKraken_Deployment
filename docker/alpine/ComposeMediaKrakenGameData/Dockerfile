@@ -1,5 +1,6 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase_alpinepy3:dev
+ARG BRANCHTAG
+FROM mediakraken/mkbase_alpinepy3:${BRANCHTAG}
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image sets up game metadata import/update"
@@ -14,7 +15,7 @@ WORKDIR /mediakraken
 # Update repository and install packages
 RUN apk add --no-cache \
   ca-certificates==20191127-r5 \
-  openrc==0.42.1-r19 \
+  openrc==0.42.1-r20 \
   py3-psycopg2==2.8.6-r0 \
   py3-psutil==5.8.0-r0 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \

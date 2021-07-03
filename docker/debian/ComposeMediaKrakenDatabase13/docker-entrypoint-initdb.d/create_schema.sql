@@ -238,7 +238,7 @@ CREATE TABLE public.mm_media_dir (
     mm_media_dir_status jsonb,
     mm_media_dir_class_type smallint,
     mm_media_dir_username text,
-    mm_media_dir_password text,
+    mm_media_dir_password text
 );
 
 

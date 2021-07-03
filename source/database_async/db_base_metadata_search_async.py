@@ -33,11 +33,11 @@ async def db_metadata_search(self, search_string, search_type='Local',
             # movie section
             json_return_data['Movie'] = json.dumps(
                 await db_conn.fetch('SELECT mm_metadata_guid,'
-                                    ' mm_media_name, '
-                                    'similarity(mm_media_name, $1) AS sml'
+                                    ' mm_metadata_name, '
+                                    'similarity(mm_metadata_name, $1) AS sml'
                                     ' FROM mm_metadata_movie'
-                                    ' WHERE mm_media_name % $2'
-                                    ' ORDER BY sml DESC, LOWER(mm_media_name)',
+                                    ' WHERE mm_metadata_name % $2'
+                                    ' ORDER BY sml DESC, LOWER(mm_metadata_name)',
                                     search_string, search_string))
         if search_tvshow:
             # tv show section

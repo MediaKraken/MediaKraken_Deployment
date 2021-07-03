@@ -17,7 +17,6 @@
 """
 
 import inspect
-import json
 
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -74,11 +73,10 @@ async def metadata_game_lookup(db_connection, download_data):
     if metadata_uuid is None:
         # no matches by name
         # search giantbomb since not matched above via DB or nfo/xml
-        await download_data.update({'Status': 'Search'})
         # save the updated status
         await db_connection.db_begin()
-        await db_connection.db_download_update(json.dumps(download_data),
-                                               download_data['mdq_id'])
+        await db_connection.db_download_update(guid=download_data['mdq_id'],
+                                               status='Search')
         # set provider last so it's not picked up by the wrong thread
         await db_connection.db_download_update_provider('giantbomb', download_data['mdq_id'])
         await db_connection.db_commit()

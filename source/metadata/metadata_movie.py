@@ -17,7 +17,6 @@
 """
 
 import inspect
-import json
 
 from common import common_global
 from common import common_logging_elasticsearch_httpx
@@ -49,7 +48,7 @@ async def metadata_movie_lookup(db_connection, dl_row, file_name):
                                                                          'metadata_movie_lookup': str(
                                                                              file_name)})
     # determine provider id's from nfo/xml if they exist
-    nfo_data, xml_data = await metadata_nfo_xml.nfo_xml_file(dl_row['mdq_download_json']['Path'])
+    nfo_data, xml_data = await metadata_nfo_xml.nfo_xml_file(dl_row['mdq_path'])
     imdb_id, tmdb_id = await metadata_nfo_xml.nfo_xml_id_lookup(nfo_data, xml_data)
     if imdb_id is not None or tmdb_id is not None:
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
@@ -85,11 +84,10 @@ async def metadata_movie_lookup(db_connection, dl_row, file_name):
                                                                  provider_id)
             if dl_meta is None:
                 metadata_uuid = dl_row['mdq_new_uuid']
-                dl_row['mdq_download_json'].update(
-                    {'Status': 'Fetch', 'ProviderMetaID': provider_id})
                 await db_connection.db_begin()
-                await db_connection.db_download_update(json.dumps(dl_row['mdq_download_json']),
-                                                       dl_row['mdq_id'])
+                await db_connection.db_download_update(guid=dl_row['mdq_id'],
+                                                       status='Fetch',
+                                                       provider_guid=provider_id)
                 # set provider last so it's not picked up by the wrong thread too early
                 await db_connection.db_download_update_provider('themoviedb',
                                                                 dl_row['mdq_id'])
@@ -119,11 +117,10 @@ async def metadata_movie_lookup(db_connection, dl_row, file_name):
         metadata_uuid = dl_row['mdq_new_uuid']
         # no matches by name/year on local database
         # search themoviedb since not matched above via DB or nfo/xml
-        dl_row['mdq_download_json'].update({'Status': 'Search'})
         # save the updated status
         await db_connection.db_begin()
-        await db_connection.db_download_update(json.dumps(dl_row['mdq_download_json']),
-                                               dl_row['mdq_id'])
+        await db_connection.db_download_update(guid=dl_row['mdq_id'],
+                                               status='Search')
         # set provider last so it's not picked up by the wrong thread
         await db_connection.db_download_update_provider('themoviedb', dl_row['mdq_id'])
         await db_connection.db_commit()

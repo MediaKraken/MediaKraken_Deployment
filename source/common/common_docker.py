@@ -20,10 +20,8 @@ import os
 import socket
 import subprocess
 
-from common import common_logging_elasticsearch_httpx
-
 import docker
-from . import common_global
+from common import common_logging_elasticsearch_httpx
 
 
 # https://docker-py.readthedocs.io/en/stable/
@@ -105,8 +103,9 @@ class CommonDocker:
             try:
                 return self.cli_api.init_swarm()
             except:
-                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical', message_text= {'stuff':
-                                                                         'Must define Docker Swarm IP in ENV file since multiple IP'})
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='critical',
+                                                                     message_text={'stuff':
+                                                                                       'Must define Docker Swarm IP in ENV file since multiple IP'})
         else:
             return self.cli_api.init_swarm(advertise_addr=os.environ['SWARMIP'])
 
@@ -229,18 +228,19 @@ class CommonDocker:
         if current_host_working_directory is not None \
                 and os.path.exists(os.path.join(current_host_working_directory, 'data/devices')):
             self.com_docker_delete_container('mkdevicescan')
-            return self.cli.containers.run(image='mediakraken/mkdevicescan',
-                                           detach=True,
-                                           command='python3 /mediakraken/main_hardware_discover.py',
-                                           name='mkdevicescan',
-                                           network_mode='host',
-                                           volumes={os.path.join(current_host_working_directory,
-                                                                 'data/devices'):
-                                                        {'bind': '/mediakraken/devices',
-                                                         'mode': 'rw'}
-                                                    },
-                                           environment={'DEBUG': os.environ['DEBUG']},
-                                           )
+            return self.cli.containers.run(
+                image='mediakraken/mkdevicescan:%s' % os.environ['BRANCH'],
+                detach=True,
+                command='python3 /mediakraken/main_hardware_discover.py',
+                name='mkdevicescan',
+                network_mode='host',
+                volumes={os.path.join(current_host_working_directory,
+                                      'data/devices'):
+                             {'bind': '/mediakraken/devices',
+                              'mode': 'rw'}
+                         },
+                environment={'DEBUG': os.environ['DEBUG']},
+                )
 
     def com_docker_run_dosbox(self, current_user_uuid, current_host_working_directory, game_uuid):
         if current_host_working_directory is not None \
@@ -253,25 +253,26 @@ class CommonDocker:
                                          current_user_uuid, game_uuid)
             if not os.path.exists(user_host_dir):
                 os.makedirs(user_host_dir)
-            return self.cli.containers.run(image='mediakraken/mkdosboxweb',
-                                           detach=True,
-                                           name=('mkdosboxweb' + current_user_uuid.replace('-',
-                                                                                           ''))[
-                                                :30],
-                                           network='mediakraken_network_backend',
-                                           volumes={user_host_dir:
-                                                        {'bind': '/mediakraken/dosbox',
-                                                         'mode': 'rw'}
-                                                    },
-                                           environment={'DEBUG': os.environ['DEBUG']},
-                                           )
+            return self.cli.containers.run(
+                image='mediakraken/mkdosboxweb:%s' % os.environ['BRANCH'],
+                detach=True,
+                name=('mkdosboxweb' + current_user_uuid.replace('-',
+                                                                ''))[
+                     :30],
+                network='mediakraken_network_backend',
+                volumes={user_host_dir:
+                             {'bind': '/mediakraken/dosbox',
+                              'mode': 'rw'}
+                         },
+                environment={'DEBUG': os.environ['DEBUG']},
+                )
 
     def com_docker_run_elk(self, current_host_working_directory):
         if current_host_working_directory is not None \
                 and os.path.exists(os.path.join(current_host_working_directory, 'elkdata')):
             self.com_docker_delete_container('mkelk')
             self.com_docker_network_create('mediakraken_network_backend')
-            return self.cli.containers.run(image='mediakraken/mkelk',
+            return self.cli.containers.run(image='mediakraken/mkelk:%s' % os.environ['BRANCH'],
                                            detach=True,
                                            ports={"5000": 5000, "5044": 5044,
                                                   "5601": 5601, "9200": 9200},
@@ -296,7 +297,7 @@ class CommonDocker:
         if current_host_working_directory is not None and os.path.exists(
                 os.path.join(current_host_working_directory, 'data/emulation')):
             self.com_docker_delete_container('mkgamedata')
-            return self.cli.containers.run(image='mediakraken/mkgamedata',
+            return self.cli.containers.run(image='mediakraken/mkgamedata:%s' % os.environ['BRANCH'],
                                            network='mediakraken_network_backend',
                                            command=container_command,
                                            detach=True,
@@ -322,9 +323,9 @@ class CommonDocker:
         #  --tomp4 --ffmpeg-acodec ac3 --ffmpeg-movflags frag_keyframe+empty_moov+faststart
         # --address 10.0.0.220 --myip 10.0.0.198 '/mediakraken/mnt/DVD/Creep (2004)/Creep (2004).mkv'
         if hwaccel:
-            image_name = 'mediakraken/mkslavenvidiadebian'
+            image_name = 'mediakraken/mkslavenvidiadebian:%s' % os.environ['BRANCH']
         else:
-            image_name = 'mediakraken/mkslave'
+            image_name = 'mediakraken/mktranscode:%s' % os.environ['BRANCH']
         # rm - cleanup after exit
         # it - interactive tty
         # container_command = 'docker run -it --rm --net host -v ' \
@@ -347,7 +348,7 @@ class CommonDocker:
     #     if current_host_working_directory is not None and os.path.exists(
     #             os.path.join(current_host_working_directory, 'data/mbrainz')):
     #         self.com_docker_delete_container('mkmusicbrainz')
-    #         return self.cli.containers.run(image='mediakraken/mkmusicbrainz',
+    #         return self.cli.containers.run(image='mediakraken/mkmusicbrainz:%s' % os.environ['BRANCH'],
     #                                        detach=True,
     #                                        name='mkmusicbrainz',
     #                                        network='mediakraken_network_backend',
@@ -364,7 +365,7 @@ class CommonDocker:
         if current_host_working_directory is not None and os.path.exists(
                 os.path.join(current_host_working_directory, 'data/mumble')):
             self.com_docker_delete_container('mkmumble')
-            return self.cli.containers.run(image='mediakraken/mkmumble',
+            return self.cli.containers.run(image='mediakraken/mkmumble:%s' % os.environ['BRANCH'],
                                            detach=True,
                                            ports={"64738": 64738},
                                            name='mkmumble',
@@ -379,7 +380,7 @@ class CommonDocker:
         if current_host_working_directory is not None and os.path.exists(
                 os.path.join(current_host_working_directory, 'data/openldap')):
             self.com_docker_delete_container('mkopenldap')
-            return self.cli.containers.run(image='mediakraken/mkopenldap',
+            return self.cli.containers.run(image='mediakraken/mkopenldap:%s' % os.environ['BRANCH'],
                                            detach=True,
                                            name='mkopenldap',
                                            ports={"389": 389, "636": 636},
@@ -399,9 +400,9 @@ class CommonDocker:
         Launch container for slave play
         """
         if hwaccel:
-            image_name = 'mediakraken/mkslavenvidiadebian'
+            image_name = 'mediakraken/mktranscodenvidiadebian:%s' % os.environ['BRANCH']
         else:
-            image_name = 'mediakraken/mkslave'
+            image_name = 'mediakraken/mktranscode:%s' % os.environ['BRANCH']
         mount_volumes = {'/var/run/docker.sock':
                              {'bind': '/var/run/docker.sock',
                               'mode': 'ro'},
@@ -428,7 +429,7 @@ class CommonDocker:
         """
         Launch container for twitch user recording
         """
-        return self.cli.containers.run(image='mediakraken/mkslave',
+        return self.cli.containers.run(image='mediakraken/mktranscode:%s' % os.environ['BRANCH'],
                                        command='python3 check.py ' + twitch_user,
                                        detach=True,
                                        volumes={
@@ -445,7 +446,7 @@ class CommonDocker:
         """
         self.com_docker_delete_container('mkwireshark')
         self.com_docker_network_create('mediakraken_network_backend')
-        return self.cli.containers.run(image='mediakraken/mkwireshark',
+        return self.cli.containers.run(image='mediakraken/mkwireshark:%s' % os.environ['BRANCH'],
                                        detach=True,
                                        name='mkwireshark',
                                        ports={"14500": 14500},

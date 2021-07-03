@@ -51,6 +51,8 @@ Run the following tests from under the MediaKraken_CI
 
 
 Maybe:
+https://github.com/epi052/feroxbuster - website attacker
+https://github.com/dotenv-linter/dotenv-linter - env file linter
 https://github.com/vintasoftware/python-linters-and-code-analysis
 https://github.com/analysis-tools-dev/static-analysis#python
 https://github.com/Yelp/detect-secrets
@@ -59,6 +61,7 @@ https://github.com/collab-qa/check-all-the-things
 https://github.com/almandin/fuxploider
 https://github.com/drwetter/testssl.sh
 https://github.com/facebook/pyre-check
+https://hub.datree.io/?utm_source=datree.io&utm_medium=footer&utm_campaign=get-started-pricing-free
 
 cppcheck - c/c++ code checker
     http://cppcheck.sourceforge.net/

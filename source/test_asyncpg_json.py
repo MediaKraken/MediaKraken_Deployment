@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import json
 
 import asyncpg
@@ -19,11 +20,11 @@ async def main():
                               decoder=json.loads,
                               schema='pg_catalog')
 
-    # await conn.execute('CREATE TABLE users2(id serial PRIMARY KEY,'
-    #                    ' name text, dob date, test_json jsonb)')
+    await conn.execute('CREATE TABLE users2(id serial PRIMARY KEY,'
+                       ' name text, dob date, test_json jsonb)')
 
-    # await conn.execute('INSERT INTO users2(name, dob, test_json) VALUES($1, $2, $3)',
-    #                    'Bob', datetime.date(1984, 3, 1), json.dumps({'test': 'works'}))
+    await conn.execute('INSERT INTO users2(name, dob, test_json) VALUES($1, $2, $3)',
+                       'Bob', datetime.date(1984, 3, 1), json.dumps({'test': 'works'}))
 
     # shows that one CANNOT use ::json in the insert
     # await conn.execute('INSERT INTO users2(name, test_json::json) VALUES($1, $2)',

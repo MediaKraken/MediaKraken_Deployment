@@ -153,15 +153,11 @@ async def url_bp_admin_library_edit(request):
                 if await request.app.db_functions.db_library_path_check(request.form[
                                                                             'library_path'],
                                                                         db_connection) == 0:
-                    try:
-                        lib_share = request.form['Lib_Share']
-                    except:
-                        lib_share = None
                     await request.app.db_functions.db_library_path_add(request.form[
                                                                            'library_path'],
                                                                        request.form[
                                                                            'Lib_Class'],
-                                                                       lib_share, db_connection)
+                                                                       None, db_connection)
                     return redirect(
                         request.app.url_for('name_blueprint_admin_library.url_bp_admin_library'))
                 else:
@@ -176,11 +172,6 @@ async def url_bp_admin_library_edit(request):
                 pass
         else:
             flash_errors(form)
-    share_list = []
-    for row_data in await request.app.db_functions.db_share_list(db_connection=db_connection):
-        share_name = row_data['mm_media_share_server'] + \
-                     ":" + row_data['mm_media_share_path']
-        share_list.append((share_name, row_data['mm_media_share_guid']))
     await request.app.db_pool.release(db_connection)
     return {
         'form': form,
@@ -202,7 +193,6 @@ async def url_bp_admin_library_edit(request):
                         common_global.DLMediaType.Anime.value),
                        (common_global.DLMediaType.Adult.name,
                         common_global.DLMediaType.Adult.value)),
-        'data_share': share_list,
     }
 
 

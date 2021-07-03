@@ -1,5 +1,6 @@
 # Download base image
-FROM th-registry-1.beaverbay.local:5000/mediakraken/mkbase_alpinepy3:dev
+ARG BRANCHTAG
+FROM mediakraken/mkbase_alpinepy3:${BRANCHTAG}
 
 LABEL author="Quinn D Granfor, spootdev@gmail.com"
 LABEL description="This image holds the downloader app"
@@ -17,13 +18,13 @@ WORKDIR /mediakraken
 RUN apk add --no-cache \
   gcc==10.2.1_pre1-r3 \
   git==2.30.2-r0 \
-  libxml2==2.9.10-r6 \
-  libxml2-dev==2.9.10-r6 \
+  libxml2==2.9.10-r7 \
+  libxml2-dev==2.9.10-r7 \
   linux-headers==5.7.8-r0 \
-  musl-dev==1.2.2-r0 \
+  musl-dev==1.2.2-r1 \
   py3-apache-libcloud==3.3.0-r0 \
   py3-psycopg2==2.8.6-r0 \
-  python3-dev==3.8.8-r0 \
+  python3-dev==3.8.10-r0 \
   xmlsec-dev==1.2.31-r0 \
   && pip3 install --no-cache-dir --trusted-host ${PIPMIRROR} -i https://${PIPMIRROR}/simple -r requirements.txt \
   && pip3 install --no-cache-dir -e git+https://github.com/MediaKraken-Dep/dosage#egg=dosage \

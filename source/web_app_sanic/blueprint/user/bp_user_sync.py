@@ -72,12 +72,12 @@ async def url_bp_user_sync_edit(request, guid):
                      'Progress': 0}
         await request.app.db_functions.db_sync_insert(request.form['name'],
                                                       request.form['target_output_path'],
-                                                      json.dumps(sync_json),
+                                                      sync_json,
                                                       db_connection=db_connection)
         await request.app.db_pool.release(db_connection)
         return redirect(
             request.app.url_for('name_blueprint_user_movie.url_bp_user_movie_detail', guid=guid))
-    form = SyncEditForm(request, csrf_enabled=False)
+    form = BSSSyncEditForm(request, csrf_enabled=False)
     if form.validate_on_submit():
         pass
     else:

@@ -270,6 +270,15 @@ def com_file_unzip(target_zip_file, target_destination_directory=None, remove_zi
         os.remove(target_zip_file)
 
 
+def com_file_zip(target_zip_file, source_files, remove_source_files=False):
+    zip_ref = zipfile.ZipFile(target_zip_file, 'w')
+    for file in source_files:
+        zip_ref.write(file)
+        if remove_source_files:
+            os.remove(file)
+    zip_ref.close()
+
+
 def com_file_ungzip(target_gzip_file, target_destination_directory=None, remove_gzip=False):
     gzip_ref = gzip.open(target_gzip_file, 'rb')
     return_data = gzip_ref.read()

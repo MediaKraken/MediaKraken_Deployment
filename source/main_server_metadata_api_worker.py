@@ -474,12 +474,11 @@ async def main(loop):
                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
                     message_type='info',
                     message_text={
-                        'worker Z meta api': row_data['mdq_class_uuid'],
-                        'row': row_data['mdq_id'],
-                        'dl json': row_data['mdq_download_json']})
+                        'worker Z meta api': row_data['mdq_que_type'],
+                        'row': row_data['mdq_id']})
                 metadata_uuid = None
                 # check for dupes by name/year
-                file_name = guessit(row_data['mdq_download_json']['Path'])
+                file_name = guessit(row_data['mdq_path'])
                 if type(file_name['title']) == list:
                     file_name['title'] = common_string.com_string_guessit_list(file_name['title'])
                 await common_logging_elasticsearch_httpx.com_es_httpx_post_async(
@@ -523,9 +522,9 @@ async def main(loop):
                         message_type='info',
                         message_text={
                             "worker Z meta api update": metadata_uuid,
-                            'row': row_data['mdq_download_json']['MediaID']})
+                            'row': row_data['mdq_provider_id']})
                     await db_connection.db_begin()
-                    await db_connection.db_update_media_id(row_data['mdq_download_json']['MediaID'],
+                    await db_connection.db_update_media_id(row_data['mdq_provider_id'],
                                                            metadata_uuid)
                     await db_connection.db_download_delete(row_data['mdq_id'])
                     await db_connection.db_commit()

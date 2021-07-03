@@ -1,10 +1,13 @@
 import asyncio
 import json
 import os
+import shlex
 import struct
 import subprocess
 from datetime import timedelta
+
 import aio_pika
+
 from common import common_ffmpeg
 from common import common_hardware_roku_bif
 from common import common_logging_elasticsearch_httpx
@@ -31,12 +34,53 @@ async def on_message(message: aio_pika.IncomingMessage):
                         message_type='error',
                         message_text={
                             'fail bif': json_message})
+        elif json_message['Type'] == 'HDHomeRun':
+            pass
         elif json_message['Type'] == 'FFMPEG':
             if json_message['Subtype'] == 'Probe':
                 # scan media file via ffprobe
                 ffprobe_data = common_ffmpeg.com_ffmpeg_media_attr(json_message['Media Path'])
                 db_connection.db_media_ffmeg_update(json_message['Media UUID'],
-                                                    json.dumps(ffprobe_data))
+                                                    ffprobe_data)
+            elif json_message['Subtype'] == 'Cast':
+                if json_message['Command'] == "Chapter Back":
+                    pass
+                elif json_message['Command'] == "Chapter Forward":
+                    pass
+                elif json_message['Command'] == "Fast Forward":
+                    pass
+                elif json_message['Command'] == "Mute":
+                    subprocess.Popen(
+                        ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-mute'),
+                        stdout=subprocess.PIPE, shell=False)
+                elif json_message['Command'] == "Pause":
+                    subprocess.Popen(
+                        ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-pause'),
+                        stdout=subprocess.PIPE, shell=False)
+                elif json_message['Command'] == "Rewind":
+                    pass
+                elif json_message['Command'] == 'Stop':
+                    subprocess.Popen(
+                        ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-stop'),
+                        stdout=subprocess.PIPE, shell=False)
+                elif json_message['Command'] == "Volume Down":
+                    subprocess.Popen(
+                        ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-voldown'),
+                        stdout=subprocess.PIPE, shell=False)
+                elif json_message['Command'] == "Volume Set":
+                    subprocess.Popen(
+                        ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-setvol', json_message['Data']),
+                        stdout=subprocess.PIPE, shell=False)
+                elif json_message['Command'] == "Volume Up":
+                    subprocess.Popen(
+                        ('python3', '/mediakraken/stream2chromecast/stream2chromecast.py',
+                         '-devicename', json_message['Device'], '-volup'),
+                        stdout=subprocess.PIPE, shell=False)
             elif json_message['Subtype'] == 'ChapterImage':
                 ffprobe_data = json_message['Data']
                 # begin image generation
@@ -50,7 +94,7 @@ async def on_message(message: aio_pika.IncomingMessage):
                         # file path, time, output name
                         # check image save option whether to
                         # save this in media folder or metadata folder
-                        if option_config_json['Metadata']['MetadataImageLocal'] is False:
+                        if option_config_json['MetadataImageLocal'] is False:
                             image_file_path = os.path.join(
                                 common_metadata.com_meta_image_file_path(
                                     json_message['Media Path'],
@@ -89,8 +133,7 @@ async def on_message(message: aio_pika.IncomingMessage):
                         chapter_image_list[chapter_data['tags']['title']] = image_file_path
                         first_image = False
                 db_connection.db_update_media_json(json_message['Media UUID'],
-                                                   json.dumps(
-                                                       {'ChapterImages': chapter_image_list}))
+                                                   {'ChapterImages': chapter_image_list})
 
             elif json_message['Subtype'] == 'Sync':
                 ffmpeg_params = ['./bin/ffmpeg', '-i', db_connection.db_media_path_by_uuid(
@@ -103,7 +146,8 @@ async def on_message(message: aio_pika.IncomingMessage):
                         ('-vcodec', row_data['mm_sync_options_json']['Options']['VCodec']))
                 if row_data['mm_sync_options_json']['Options']['AudioChannels'] != "Copy":
                     ffmpeg_params.extend(('-ac',
-                                          row_data['mm_sync_options_json']['Options']['AudioChannels']))
+                                          row_data['mm_sync_options_json']['Options'][
+                                              'AudioChannels']))
                 if row_data['mm_sync_options_json']['Options']['ACodec'] != "Copy":
                     ffmpeg_params.extend(('-acodec',
                                           row_data['mm_sync_options_json']['Options']['ACodec']))
@@ -113,7 +157,8 @@ async def on_message(message: aio_pika.IncomingMessage):
                 ffmpeg_params.append(row_data['mm_sync_path_to'] + "."
                                      + row_data['mm_sync_options_json']['Options']['VContainer'])
                 common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                                     message_text={'ffmpeg': ffmpeg_params})
+                                                                     message_text={
+                                                                         'ffmpeg': ffmpeg_params})
                 ffmpeg_pid = subprocess.Popen(shlex.split(ffmpeg_params),
                                               stdout=subprocess.PIPE, shell=False)
                 # output after it gets started
@@ -124,13 +169,16 @@ async def on_message(message: aio_pika.IncomingMessage):
                 while True:
                     line = ffmpeg_pid.stdout.readline()
                     if line != '':
-                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-                            'ffmpeg out': line.rstrip()})
+                        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                             message_text={
+                                                                                 'ffmpeg out': line.rstrip()})
                         if line.find('Duration:') != -1:
-                            media_duration = timedelta(float(line.split(': ', 1)[1].split(',', 1)[0]))
+                            media_duration = timedelta(
+                                float(line.split(': ', 1)[1].split(',', 1)[0]))
                         elif line[0:5] == "frame":
                             time_string = timedelta(float(line.split('=', 5)[5].split(' ', 1)[0]))
-                            time_percent = time_string.total_seconds() / media_duration.total_seconds()
+                            time_percent = time_string.total_seconds() \
+                                           / media_duration.total_seconds()
                             db_connection.db_sync_progress_update(row_data['mm_sync_guid'],
                                                                   time_percent)
                             db_connection.db_commit()
@@ -142,12 +190,13 @@ async def on_message(message: aio_pika.IncomingMessage):
                     # just go along merry way as ffmpeg shoulda output to mm_sync_path_to
                     pass
                 elif row_data['mm_sync_options_json']['Type'] == 'Remote Client':
-                    XFER_THREAD = common_xfer.FileSenderThread(row_data['mm_sync_options_json']['TargetIP'],
-                                                               row_data['mm_sync_options_json']['TargetPort'],
-                                                               row_data['mm_sync_path_to'] + "."
-                                                               + row_data['mm_sync_options_json']['Options'][
-                                                                   'VContainer'],
-                                                               row_data['mm_sync_path_to'])
+                    XFER_THREAD = common_xfer.FileSenderThread(
+                        row_data['mm_sync_options_json']['TargetIP'],
+                        row_data['mm_sync_options_json']['TargetPort'],
+                        row_data['mm_sync_path_to'] + "."
+                        + row_data['mm_sync_options_json']['Options'][
+                            'VContainer'],
+                        row_data['mm_sync_path_to'])
                 else:  # cloud item
                     CLOUD_HANDLE = common_cloud.CommonCloud(option_config_json)
                     CLOUD_HANDLE.com_cloud_file_store(row_data['mm_sync_options_json']['Type'],

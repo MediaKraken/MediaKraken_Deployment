@@ -21,7 +21,7 @@ import uuid
 from common import common_logging_elasticsearch_httpx
 
 
-def db_download_insert(self, provider, que_type, down_json, down_new_uuid, down_class_uuid):
+def db_download_insert(self, provider, que_type, down_json, down_new_uuid):
     """
     Create/insert a download into the que
     """
@@ -29,12 +29,12 @@ def db_download_insert(self, provider, que_type, down_json, down_new_uuid, down_
     self.db_cursor.execute('insert into mm_download_que (mdq_id,'
                            ' mdq_provider,'
                            ' mdq_que_type,'
-                           ' mdq_download_json,'
                            ' mdq_new_uuid,'
-                           ' mdq_class_uuid)'
-                           ' values (%s,%s,%s,%s,%s,%s)',
-                           (new_guid, provider, que_type, down_json,
-                            down_new_uuid, down_class_uuid))
+                           ' mdq_provider_id,'
+                           ' mdq_status)'
+                           ' values (%s,%s,%s,%s,%s,%s,%s)',
+                           (new_guid, provider, que_type, down_new_uuid,
+                            down_json['ProviderMetaID'], down_json['Status']))
     self.db_commit()
     return new_guid
 
@@ -45,9 +45,9 @@ def db_download_read_provider(self, provider_name):
     """
     self.db_cursor.execute('select mdq_id,'
                            ' mdq_que_type,'
-                           ' mdq_download_json,'
                            ' mdq_new_uuid,'
-                           ' mdq_class_uuid'
+                           ' mdq_provider_id,'
+                           ' mdq_status'
                            ' from mm_download_que'
                            ' where mdq_provider = %s'
                            ' order by mdq_que_type limit 25',
@@ -76,25 +76,26 @@ def db_download_update_provider(self, provider_name, guid):
                            (provider_name, guid))
 
 
-def db_download_update(self, update_json, guid, update_que_id=None):
+def db_download_update(self, guid, status, provider_guid=None):
     """
     Update download que record
     """
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-        'download update': update_json,
-        'que': update_que_id, 'guid': guid})
-    if update_que_id is not None:
-        self.db_cursor.execute('update mm_download_que set mdq_download_json = %s,'
-                               ' mdq_que_type = %s'
+        'download update': status,
+        'que': provider_guid, 'guid': guid})
+    if provider_guid is not None:
+        self.db_cursor.execute('update mm_download_que set mdq_status = %s,'
+                               ' mdq_provider_id = %s'
                                ' where mdq_id = %s',
-                               (update_json, update_que_id, guid))
+                               (status, provider_guid, guid))
     else:
-        self.db_cursor.execute('update mm_download_que set mdq_download_json = %s'
-                               ' where mdq_id = %s', (update_json, guid))
+        self.db_cursor.execute('update mm_download_que set mdq_status = %s'
+                               ' where mdq_id = %s', (status, guid))
 
 
 def db_download_que_exists(self, download_que_uuid, download_que_type,
-                           provider_name, provider_id):
+                           provider_name, provider_id,
+                           exists_only=False):
     """
     See if download que record exists for provider and id and type
         still need this as records could be from different threads or not in order
@@ -108,21 +109,22 @@ def db_download_que_exists(self, download_que_uuid, download_que_type,
         'db_download_que_exists': download_que_uuid,
         'name': provider_name,
         'id': provider_id})
-    # if download_que_uuid is not None:
-    #     self.db_cursor.execute('select mdq_new_uuid from mm_download_que'
-    #                            ' where mdq_provider = %s and mdq_que_type = %s'
-    #                            ' and mdq_download_json->\'ProviderMetaID\' ? %s'
-    #                            ' and mdq_download_json->>\'Status\' <> \'Search\''
-    #                            ' and mdq_download_json->>\'Status\' is not NULL limit 1',
-    #                            (provider_name, download_que_type, provider_id))
-    # else:
-    # que type is movie, tv, etc as those numbers could be reused
-    self.db_cursor.execute('select mdq_new_uuid'
-                           ' from mm_download_que'
-                           ' where mdq_provider = %s'
-                           ' and mdq_que_type = %s'
-                           ' and mdq_download_json->\'ProviderMetaID\' ? %s limit 1',
-                           (provider_name, download_que_type, provider_id))
+    if exists_only:
+        return self.db_cursor.execute('select exists(select 1'
+                                      ' from mm_download_que'
+                                      ' where mdq_provider = $1'
+                                      ' and mdq_que_type = $2'
+                                      ' and mdq_provider_id = $3'
+                                      ' limit 1) limit 1',
+                                      provider_name, download_que_type, provider_id)
+    else:
+        # que type is movie, tv, etc as those numbers could be reused
+        self.db_cursor.execute('select mdq_new_uuid'
+                               ' from mm_download_que'
+                               ' where mdq_provider = %s'
+                               ' and mdq_que_type = %s'
+                               ' and mdq_provider_id = %s limit 1',
+                               (provider_name, download_que_type, provider_id))
     # if no data, send none back
     try:
         return self.db_cursor.fetchone()[0]

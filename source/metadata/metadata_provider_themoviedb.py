@@ -372,6 +372,7 @@ class CommonMetadataTMDB:
                         image_file_path):
                     pass  # download is successful
                 else:
+                    # not found...so, none the image_file_path, which resets the poster_file_path
                     image_file_path = None
             poster_file_path = image_file_path
         # create file path for backdrop
@@ -391,6 +392,7 @@ class CommonMetadataTMDB:
                         image_file_path):
                     pass  # download is successful
                 else:
+                    # not found...so, none the image_file_path, which resets the backdrop_file_path
                     image_file_path = None
             backdrop_file_path = image_file_path
         # set local image json
@@ -489,7 +491,7 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  "meta movie tmdb 504": tmdb_id})
-            time.sleep(60)
+            await asyncio.sleep(60)
             # redo fetch due to 504
             await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
         elif result_json.status_code == 200:
@@ -507,8 +509,8 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
                 await db_connection.db_meta_insert_tmdb(metadata_uuid,
                                                         series_id_json,
                                                         result_json['title'],
-                                                        json.dumps(result_json),
-                                                        json.dumps(image_json))
+                                                        result_json,
+                                                        image_json)
                 # under guid check as don't need to insert them if already exist
                 if 'credits' in result_json:  # cast/crew doesn't exist on all media
                     if 'cast' in result_json['credits']:
@@ -524,7 +526,7 @@ async def movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid):
             await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                              message_text={
                                                                                  "meta movie tmdb 429": tmdb_id})
-            time.sleep(30)
+            await asyncio.sleep(30)
             # redo fetch due to 429
             await movie_fetch_save_tmdb(db_connection, tmdb_id, metadata_uuid)
         elif result_json.status_code == 404:
@@ -565,8 +567,8 @@ async def movie_fetch_save_tmdb_review(db_connection, tmdb_id):
         await common_logging_elasticsearch_httpx.com_es_httpx_post_async(message_type='info',
                                                                          message_text={
                                                                              "review": review_json_id})
-        await db_connection.db_review_insert(json.dumps(review_json_id),
-                                             json.dumps({'themoviedb': review_json}))
+        await db_connection.db_review_insert(review_json_id,
+                                             {'themoviedb': review_json})
 
 
 async def movie_fetch_save_tmdb_collection(db_connection, tmdb_collection_id, download_data):
@@ -638,15 +640,13 @@ async def metadata_fetch_tmdb_person(db_connection, provider_name, download_data
     if common_global.api_instance is not None:
         # fetch and save json data via tmdb id
         result_json = await common_global.api_instance.com_tmdb_metadata_bio_by_id(
-            download_data['mdq_download_json']['ProviderMetaID'])
+            download_data['mdq_provider_id'])
         if result_json is None or result_json.status_code == 502:
             await asyncio.sleep(60)
             await metadata_fetch_tmdb_person(db_connection, provider_name, download_data)
         elif result_json.status_code == 200:
             await db_connection.db_meta_person_update(provider_name=provider_name,
-                                                      provider_uuid=
-                                                      int(download_data['mdq_download_json'][
-                                                              'ProviderMetaID']),
+                                                      provider_uuid=download_data['mdq_provider_id'],
                                                       person_bio=result_json.json(),
                                                       person_image=await common_global.api_instance.com_tmdb_meta_bio_image_build(
                                                           result_json.json()))
