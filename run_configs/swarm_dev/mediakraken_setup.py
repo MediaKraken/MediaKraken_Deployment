@@ -98,7 +98,7 @@ subprocess.call(shlex.split('docker swarm init'),
 
 if not os.path.isfile('.env'):
     file_handle = open('.env', 'w+')
-    file_handle.write('BRANCH=dev2021_04')
+    file_handle.write('BRANCH=dev2021_07')
     file_handle.close()
 
 if not os.path.isfile('./mkstack_db_password.txt'):
