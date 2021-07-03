@@ -1,0 +1,29 @@
+
+Broadcast server IP hosting website
+
+Kick off cron jobs, checking every minute
+
+Website
+
+File system watcher via inotify
+
+Website for raspberry pi standard screen
+
+Application for raspbeery pi standard screen that can do hardware IR, serial, etc
+
+Database to store all metadata/info/users/etc besides images
+
+Backup database
+
+Database browser to test/view data
+
+Database connection pooler
+
+Http to https and load balancer website
+
+AMQP queue host via RabbitMQ
+
+Update database layout on start if needed
+
+**** Done and containered ****
+
