@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:buster-slim
 
 # Install gosu
 ENV GOSU_VERSION=1.11
@@ -29,11 +29,7 @@ RUN bash -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main
 		libpq-dev \
 		libpython3-dev \
 		openssh-client \
-		postgresql-client-9.5 \
-		postgresql-client-9.6 \
-		postgresql-client-10 \
-		postgresql-client-11 \
-		postgresql-client-12 \
+		postgresql-client-13 \
 		python3 \
         python3-distutils \
 		rsync \
