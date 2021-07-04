@@ -1,7 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-umask 022
-
-redis-server /config/redis.conf
-
-
