@@ -71,20 +71,21 @@ struct MetadataTV {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     // start logging
+    const LOGGING_INDEX_NAME: &str = "tmdb_netfetch_bulk";
     mk_lib_logging::mk_logging_post_elk("info",
                                         "START",
-                                        "bulk_themoviedb_netfetch").await;
+                                        LOGGING_INDEX_NAME).await;
 
-    let fetch_date: String = "06_20_2021".to_string();
+    let fetch_date: String = "06_30_2021".to_string();
 
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
 
     // grab the movie id's
     // files.tmdb.org = 13.227.42.62
-    // let _fetch_result_movie = mk_lib_network::mk_download_file_from_url(
-    //     format!("http://files.tmdb.org/p/exports/movie_ids_{}.json.gz", fetch_date),
-    //     "/myapp/movie.gz".to_string()).await;
+    let _fetch_result_movie = mk_lib_network::mk_download_file_from_url(
+        format!("http://files.tmdb.org/p/exports/movie_ids_{}.json.gz", fetch_date),
+        "/myapp/movie.gz".to_string()).await;
     let json_result = mk_lib_compression::mk_decompress_gzip("/myapp/movie.gz").unwrap();
     // Please note that the data is NOT in id order
     for json_item in json_result.split('\n') {
@@ -111,9 +112,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }
 
     // grab the TV id's
-    // let _fetch_result_tv = mk_lib_network::mk_download_file_from_url(
-    //     format!("http://files.tmdb.org/p/exports/tv_series_ids_{}.json.gz", fetch_date),
-    //     "/myapp/tv.gz".to_string()).await;
+    let _fetch_result_tv = mk_lib_network::mk_download_file_from_url(
+        format!("http://files.tmdb.org/p/exports/tv_series_ids_{}.json.gz", fetch_date),
+        "/myapp/tv.gz".to_string()).await;
     let json_result = mk_lib_compression::mk_decompress_gzip("/myapp/tv.gz").unwrap();
     for json_item in json_result.split('\n') {
         if !json_item.trim().is_empty() {
@@ -141,6 +142,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // stop logging
     mk_lib_logging::mk_logging_post_elk("info",
                                         "STOP",
-                                        "bulk_themoviedb_netfetch").await;
+                                        LOGGING_INDEX_NAME).await;
     Ok(())
 }
