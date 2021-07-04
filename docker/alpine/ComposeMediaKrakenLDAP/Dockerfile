@@ -1,4 +1,4 @@
-FROM lsiobase/alpine:3.11
+FROM ghcr.io/linuxserver/baseimage-alpine:3.13
 
 # set version label
 ARG BUILD_DATE
@@ -8,34 +8,36 @@ LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DA
 LABEL maintainer="aptalca"
 
 RUN \
- echo "**** install build packages ****" && \
- apk add --no-cache --virtual=build-dependencies \
-	build-base \
-	libffi-dev \
-	openldap-dev \
-	python2-dev && \
- echo "**** install runtime packages ****" && \
- apk add --no-cache \
-	libffi \
-	libldap \
-	py2-pip \
-	python2 && \
- if [ -z ${LDAP_VERSION+x} ]; then \
-  LDAP_INSTALL="python-ldap"; \
- else \
-  LDAP_INSTALL="python-ldap==${LDAP_VERSION}"; \
- fi && \
- pip install -U --no-cache-dir \
-        pip && \
- pip install -U \
-        cryptography \
-        ${LDAP_INSTALL} && \
- echo "**** cleanup ****" && \
- apk del --purge \
-        build-dependencies && \
- rm -rf \
-        /tmp/* \
-        /root/.cache/pip
+  echo "**** install build packages ****" && \
+  apk add --no-cache --virtual=build-dependencies \
+    build-base \
+    cargo \
+    libffi-dev \
+    openldap-dev \
+    python3-dev && \
+  echo "**** install runtime packages ****" && \
+  apk add --no-cache \
+    libffi \
+    libldap \
+    py3-pip \
+    python3 && \
+  if [ -z ${LDAP_VERSION+x} ]; then \
+    LDAP_INSTALL="python-ldap"; \
+  else \
+    LDAP_INSTALL="python-ldap==${LDAP_VERSION}"; \
+  fi && \
+  pip3 install -U --no-cache-dir \
+    pip && \
+  pip install -U --find-links https://wheel-index.linuxserver.io/alpine/ \
+    cryptography \
+    ${LDAP_INSTALL} && \
+  echo "**** cleanup ****" && \
+  apk del --purge \
+    build-dependencies && \
+  rm -rf \
+    /tmp/* \
+    /root/.cache \
+    /root/.cargo
 
 # copy local files
 COPY root/ /

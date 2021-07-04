@@ -24,16 +24,35 @@ param_ports:
   - { external_port: "9000", internal_port: "9000", port_desc: "the port for ldap login page" }
 param_usage_include_env: true
 param_env_vars:
-  - { env_var: "TZ", env_value: "Europe/London", desc: "Specify a timezone to use EG Europe/London"}
+  - { env_var: "TZ", env_value: "Europe/London", desc: "Specify a timezone to use EG Europe/London" }
+
+# optional container parameters
+opt_param_usage_include_env: true
+opt_param_env_vars:
+  - { env_var: "FERNETKEY", env_value: "", desc: "Optionally define a custom fernet key, has to be base64-encoded 32-byte (only needed if container is frequently recreated, or if using multi-node setups, invalidating previous authentications)" }
+  - { env_var: "CERTFILE", env_value: "", desc: "Point this to a certificate file to enable HTTP over SSL (HTTPS) for the ldap auth daemon" }
+  - { env_var: "KEYFILE", env_value: "", desc: "Point this to the private key file, matching the certificate file referred to in CERTFILE" }
 
 # application setup block
 app_setup_block_enabled: true
 app_setup_block: |
   - This container itself does not have any settings and it relies on the pertinent information passed through in http headers of incoming requests. Make sure that your webserver is set up with the right config.
   - Here's a sample config: [nginx-ldap-auth.conf](https://github.com/nginxinc/nginx-ldap-auth/blob/master/nginx-ldap-auth.conf).
+  - Unlike the upstream project, this image encodes the cookie information with fernet, using a randomly generated key during container creation (or optionally user defined).
+  - Also unlike the upstream project, this image serves the login page at `/ldaplogin` (as well as `/login`) to prevent clashes with reverse proxied apps that may also use `/login` for their internal auth.
 
 # changelog
 changelogs:
+  - { date: "14.05.21:", desc: "Add linuxserver wheel index." }
+  - { date: "12.02.21:", desc: "Clean up cargo/rust cache." }
+  - { date: "10.02.21:", desc: "Rebasing to alpine 3.13." }
+  - { date: "08.09.20:", desc: "Set form action correctly." }
+  - { date: "30.07.20:", desc: "Fix bug related to unset optional `CERTFILE` and `KEYFILE` vars." }
+  - { date: "27.07.20:", desc: "Add support for HTTP over SSL (HTTPS)." }
+  - { date: "21.07.20:", desc: "Add support for optional user defined fernet key." }
+  - { date: "02.06.20:", desc: "Rebasing to alpine 3.12, serve login page at `/ldaplogin` as well as `/login`, to prevent clashes with reverese proxied apps." }
+  - { date: "17.05.20:", desc: "Add support for self-signed CA certs." }
+  - { date: "20.02.20:", desc: "Switch to python3." }
   - { date: "19.12.19:", desc: "Rebasing to alpine 3.11." }
   - { date: "01.07.19:", desc: "Fall back to base64 encoding when basic http auth is used." }
   - { date: "28.06.19:", desc: "Rebasing to alpine 3.10." }

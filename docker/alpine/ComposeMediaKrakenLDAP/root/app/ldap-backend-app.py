@@ -1,23 +1,39 @@
 #!/bin/sh
-''''which python2 >/dev/null && exec python2 "$0" "$@" # '''
 ''''which python  >/dev/null && exec python  "$0" "$@" # '''
 
 # Copyright (C) 2014-2015 Nginx, Inc.
-# Copyright (C) 2018 LinuxServer.io
+# Copyright (C) 2018-2020 LinuxServer.io
 
 # Example of an application working on port 9000
 # To interact with nginx-ldap-auth-daemon this application
-# 1) accepts GET  requests on /login and responds with a login form
-# 2) accepts POST requests on /login, sets a cookie, and responds with redirect
+# 1) accepts GET  requests on /login and /ldaplogin and responds with a login form
+# 2) accepts POST requests on /login and /ldaplogin, sets a cookie, and responds with redirect
 
-import sys, os, signal, base64, Cookie, cgi, urlparse
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+import sys, os, signal, base64, cgi
+if sys.version_info.major == 2:
+    from urlparse import urlparse
+    from Cookie import BaseCookie
+    from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+elif sys.version_info.major == 3:
+    from urllib.parse import urlparse
+    from http.cookies import BaseCookie
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+
 from cryptography.fernet import Fernet
 
 Listen = ('0.0.0.0', 9000)
 
 import threading
-from SocketServer import ThreadingMixIn
+if sys.version_info.major == 2:
+    from SocketServer import ThreadingMixIn
+elif sys.version_info.major == 3:
+    from socketserver import ThreadingMixIn
+
+
+def ensure_bytes(data):
+    return data if sys.version_info.major == 2 else data.encode("utf-8")
+
+
 class AuthHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
@@ -25,18 +41,21 @@ class AppHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        url = urlparse.urlparse(self.path)
+        url = urlparse(self.path)
 
+        # set the proper login page subfolder and serve form
         if url.path.startswith("/login"):
-            return self.auth_form()
+            return self.auth_form(loginsubfolder="/login")
+        if url.path.startswith("/ldaplogin"):
+            return self.auth_form(loginsubfolder="/ldaplogin")
 
         self.send_response(200)
         self.end_headers()
-        self.wfile.write('Hello, world! Requested URL: ' + self.path + '\n')
+        self.wfile.write(ensure_bytes('Hello, world! Requested URL: ' + self.path + '\n'))
 
 
     # send login form html
-    def auth_form(self, target = None):
+    def auth_form(self, target = None, loginsubfolder = ""):
 
         # try to get target location from header
         if target == None:
@@ -72,7 +91,7 @@ class AppHandler(BaseHTTPRequestHandler):
         <div class="log-in">
             <div class="content">
                 <h1>Log in to your account</h1>
-                <form action="/login" method="post">
+                <form action="LOGINSUBFOLDER" method="post">
                     <p>
                         <input type="text" name="username" placeholder="Username" aria-label="Username" />
                     </p>
@@ -92,7 +111,7 @@ class AppHandler(BaseHTTPRequestHandler):
 
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(html.replace('TARGET', target))
+        self.wfile.write(ensure_bytes(html.replace('TARGET', target).replace('LOGINSUBFOLDER', loginsubfolder)))
 
 
     # processes posted form and sets the cookie with login/password
@@ -118,8 +137,9 @@ class AppHandler(BaseHTTPRequestHandler):
 
             self.send_response(302)
 
-            cipher_suite = Fernet('REPLACEWITHFERNETKEY')
-            enc = cipher_suite.encrypt(user + ':' + passwd)
+            cipher_suite = Fernet(REPLACEWITHFERNETKEY)
+            enc = cipher_suite.encrypt(ensure_bytes(user + ':' + passwd))
+            enc = enc.decode()
             self.send_header('Set-Cookie', 'nginxauth=' + enc + '; httponly')
 
             self.send_header('Location', target)
