@@ -4,7 +4,7 @@ version: '3.6'
 services:
   # runs cron
   cron:
-    image: mediakraken/mkcronrust:${BRANCH}
+    image: mediakraken/mkcron:${BRANCH}
     secrets:
       - db_password
     environment:
