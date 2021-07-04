@@ -26,9 +26,10 @@ mod mk_lib_database_cron;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     // start logging
+    const LOGGING_INDEX_NAME: &str = "mk_cron_processor";
     mk_lib_logging::mk_logging_post_elk("info",
                                         "START",
-                                        "cron_checker").await;
+                                        LOGGING_INDEX_NAME).await;
 
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
@@ -75,7 +76,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             let uuid_cron: uuid::Uuid = row_data.get("mm_cron_guid");
             mk_lib_logging::mk_logging_post_elk("info",
                                                 &uuid_cron.to_string(),
-                                                "cron_checker").await;
+                                                LOGGING_INDEX_NAME).await;
         }
         sleep(Duration::from_secs(60)).await;
     }

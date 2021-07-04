@@ -29,9 +29,10 @@ mod mk_lib_database_library;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     // start logging
+    const LOGGING_INDEX_NAME: &str = "mk_file_system_inotify";
     mk_lib_logging::mk_logging_post_elk("info",
                                         "START",
-                                        "inotify").await;
+                                        LOGGING_INDEX_NAME).await;
 
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
