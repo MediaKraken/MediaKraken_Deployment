@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:buster
 
 # Install gosu
 ENV GOSU_VERSION=1.11
