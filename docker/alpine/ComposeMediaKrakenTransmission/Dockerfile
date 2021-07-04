@@ -5,7 +5,6 @@ FROM alpine:3.13.5
 LABEL maintainer="Open Source Services [opensourceservices.fr]"
 
 ARG ALPMIRROR
-ARG PIPMIRROR
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
     && apk add --no-cache \
@@ -25,7 +24,7 @@ VOLUME ["/transmission/incomplete"]
 EXPOSE 9091 51413/tcp 51413/udp
 
 ENV USERNAME admin
-ENV PASSWORD password
+ENV PASSWORD metaman
 
 RUN chmod +x /start-transmission.sh
 CMD ["/start-transmission.sh"]
