@@ -1,6 +1,6 @@
 # https://github.com/rlesouef/alpine-transmission
 
-FROM alpine:3.13.5
+FROM alpine:3.14
 
 LABEL maintainer="Open Source Services [opensourceservices.fr]"
 
@@ -8,8 +8,8 @@ ARG ALPMIRROR
 
 RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
     && apk add --no-cache \
-    busybox==1.32.1-r6 \
-    transmission-daemon==3.00-r2
+    busybox==1.33.1-r3 \
+    transmission-daemon==3.00-r3
 
 RUN mkdir -p /transmission/downloads \
   && mkdir -p /transmission/incomplete \
