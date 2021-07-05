@@ -399,13 +399,13 @@ services:
         constraints: [node.role == manager]
 
   teamspeak:
-    image: mediakraken/mkteamspeak:${BRANCH}
+    image: mediakraken/mkchatteamspeak:${BRANCH}
     ports:
       - "9987:9987/udp"
       - "10011:10011"
       - "30033:30033"
     volumes:
-      - mediakraken_vol_teamspeak:/opt/teamspeak
+      - mediakraken_vol_teamspeak:/var/ts3server/
     deploy:
       mode: replicated
       replicas: 0
