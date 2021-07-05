@@ -420,7 +420,8 @@ services:
       - "51413:51413/tcp"
       - "51413:51413/udp"
     volumes:
-      - mediakraken_vol_transmission:/transmission/downloads
+      - mediakraken_vol_transmission:/etc/transmission-daemon
+      - mediakraken_vol_transmission_downloads:/transmission/downloads
       - mediakraken_vol_transmission_incomplete:/transmission/incomplete
     deploy:
       mode: replicated
@@ -496,6 +497,7 @@ volumes:
   mediakraken_vol_static:
   mediakraken_vol_teamspeak:
   mediakraken_vol_transmission:
+  mediakraken_vol_transmission_downloads:
   mediakraken_vol_transmission_incomplete:
   mediakraken_vol_webkey:
 
