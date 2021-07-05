@@ -212,6 +212,23 @@ services:
 #      placement:
 #        constraints: [node.platform.os == linux]
 
+  # runs the mumble chat server
+  mumble:
+    image: mediakraken/mkchatmumble:${BRANCH}
+    stop_grace_period: 30s
+    stop_signal: SIGUSR1
+    ports:
+      - "64738:64738/tcp"
+      - "64738:64738/udp"
+    volumes:
+      # stores mumble server data
+      - mediakraken_vol_mumble:/etc/mumble
+    networks:
+      - mediakraken_network_backend
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
   # runs the nginx proxy service
   nginx:
     image: mediakraken/mknginx:${BRANCH}

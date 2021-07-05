@@ -344,38 +344,6 @@ class CommonDocker:
                                                 },
                                        name=name_container)
 
-    # def com_docker_run_musicbrainz(self, current_host_working_directory, brainzcode):
-    #     if current_host_working_directory is not None and os.path.exists(
-    #             os.path.join(current_host_working_directory, 'data/mbrainz')):
-    #         self.com_docker_delete_container('mkmusicbrainz')
-    #         return self.cli.containers.run(image='mediakraken/mkmusicbrainz:%s' % os.environ['BRANCH'],
-    #                                        detach=True,
-    #                                        name='mkmusicbrainz',
-    #                                        network='mediakraken_network_backend',
-    #                                        ports={"5000": 5000},
-    #                                        environment={'BRAINZCODE': brainzcode},
-    #                                        volumes={os.path.join(current_host_working_directory,
-    #                                                              'data/mbrainz/config'):
-    #                                                     {'bind': '/config', 'mode': 'rw'},
-    #                                                 os.path.join(current_host_working_directory,
-    #                                                              'data/mbrainz/data'):
-    #                                                     {'bind': '/data', 'mode': 'rw'}})
-
-    def com_docker_run_mumble(self, current_host_working_directory):
-        if current_host_working_directory is not None and os.path.exists(
-                os.path.join(current_host_working_directory, 'data/mumble')):
-            self.com_docker_delete_container('mkmumble')
-            return self.cli.containers.run(image='mediakraken/mkmumble:%s' % os.environ['BRANCH'],
-                                           detach=True,
-                                           ports={"64738": 64738},
-                                           name='mkmumble',
-                                           volumes={os.path.join(current_host_working_directory,
-                                                                 'data/mumble'):
-                                                        {'bind': '/etc/mumble',
-                                                         'mode': 'rw'}
-                                                    }
-                                           )
-
     def com_docker_run_openldap(self, current_host_working_directory):
         if current_host_working_directory is not None and os.path.exists(
                 os.path.join(current_host_working_directory, 'data/openldap')):
