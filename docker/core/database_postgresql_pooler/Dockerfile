@@ -22,5 +22,6 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/${ALPMIRROR}/" /etc/apk/repositories \
 WORKDIR /
 COPY wait-for-it-ash-busybox130.sh ./
 COPY entrypoint.sh ./
+RUN chmod +x ./*.sh
 EXPOSE 6432
 ENTRYPOINT ["./entrypoint.sh"]
