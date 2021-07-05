@@ -215,6 +215,9 @@ services:
   # runs the mumble chat server
   mumble:
     image: mediakraken/mkchatmumble:${BRANCH}
+    environment:
+      - SUPERUSER_PASSWORD=metaman
+      # - TZ=America/Phoenix   - left unset will default to UTC
     stop_grace_period: 30s
     stop_signal: SIGUSR1
     ports:
