@@ -71,6 +71,7 @@ RUN apk add --no-cache \
   && rc-update add rpcbind
 
 COPY wait-for-it-ash-busybox130.sh /mediakraken
+RUN chmod +x /mediakraken/*.sh
 # Copy the source files for the app
 COPY src /mediakraken
 
