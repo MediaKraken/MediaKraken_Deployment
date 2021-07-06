@@ -7,22 +7,24 @@ fn main() -> Result<()> {
     // Open a channel - None says let the library choose the channel ID.
     let channel = connection.open_channel(None)?;
 
-    // Declare the "hello" queue.
-    let queue = channel.queue_declare("hello", QueueDeclareOptions::default())?;
+    // Declare the queue.
+    let queue = channel.queue_declare("mk_default", QueueDeclareOptions::default())?;
 
     // Start a consumer.
     let consumer = queue.consume(ConsumerOptions::default())?;
 
-    for (i, message) in consumer.receiver().iter().enumerate() {
-        match message {
-            ConsumerMessage::Delivery(delivery) => {
-                let body = String::from_utf8_lossy(&delivery.body);
-                println!("({:>3}) Received [{}]", i, body);
-                consumer.ack(delivery)?;
-            }
-            other => {
-                println!("Consumer ended: {:?}", other);
-                break;
+    loop {
+        for (i, message) in consumer.receiver().iter().enumerate() {
+            match message {
+                ConsumerMessage::Delivery(delivery) => {
+                    let body = String::from_utf8_lossy(&delivery.body);
+                    println!("({:>3}) Received [{}]", i, body);
+                    consumer.ack(delivery)?;
+                }
+                other => {
+                    println!("Consumer ended: {:?}", other);
+                    break;
+                }
             }
         }
     }
