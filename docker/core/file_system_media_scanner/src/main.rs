@@ -4,6 +4,7 @@ use std::error::Error;
 use serde_json::{json, Value};
 use tokio::time::{Duration, sleep};
 use async_std::path::PathBuf;
+use std::path::Path;
 
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_logging/src/mk_lib_logging.rs"]
@@ -55,58 +56,62 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // determine directories to audit
     for row_data in mk_lib_database_library::mk_lib_database_library_path_audit(db_client).await.unwrap() {
         mk_lib_logging::mk_logging_post_elk("info",
-                                        json!({ "Audit Path": str(row_data) }),
+                                        json!({ "Audit Path": row_data }),
                                         LOGGING_INDEX_NAME).await;
         // check for UNC
         let unc_slice= &row_data["mm_media_dir_path"][..1];
         if unc_slice == "\\" {
-            addr, share, path = common_string.com_string_unc_to_addr_path(row_data["mm_media_dir_path"]);
-            smb_stuff = common_network_cifs.CommonCIFSShare();
-            if smb_stuff.com_cifs_open(ip_addr = addr) {
-                if smb_stuff.com_cifs_share_directory_check(share, path) {
-                    if datetime.strptime(time.ctime(
-                        smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
-                                         "%a %b %d %H:%M:%S %Y") > row_data["mm_media_dir_last_scanned"] {
-                        audit_directories.append((row_data["mm_media_dir_path"],
-                                                  row_data["mm_media_dir_class_type"],
-                                                  row_data["mm_media_dir_guid"]));
-                        db_connection.db_audit_path_update_status(row_data["mm_media_dir_guid"],
-                                                                  json.dumps({
-                                                                      'Status': 'Added to
-                                                                      scan
-                                                                      ',
-                                                                      'Pct': 100
-                                                                  }));
-                    }
-                } else {
-                    mk_lib_database_notification::mk_lib_database_notification_insert(db_client,format!("UNC Library path not found: {}", row_data["mm_media_dir_path"]), true);
-                }
-            }
+            continue;
+            // addr, share, path = common_string.com_string_unc_to_addr_path(row_data["mm_media_dir_path"]);
+            // smb_stuff = common_network_cifs.CommonCIFSShare();
+            // if smb_stuff.com_cifs_open(ip_addr = addr) {
+            //     if smb_stuff.com_cifs_share_directory_check(share, path) {
+            //         if datetime.strptime(time.ctime(
+            //             smb_stuff.com_cifs_share_file_dir_info(share, path).last_write_time),
+            //                              "%a %b %d %H:%M:%S %Y") > row_data["mm_media_dir_last_scanned"] {
+            //             audit_directories.append((row_data["mm_media_dir_path"],
+            //                                       row_data["mm_media_dir_class_type"],
+            //                                       row_data["mm_media_dir_guid"]));
+            //             db_connection.db_audit_path_update_status(row_data["mm_media_dir_guid"],
+            //                                                       json.dumps({
+            //                                                           'Status': 'Added to
+            //                                                           scan
+            //                                                           ',
+            //                                                           'Pct': 100
+            //                                                       }));
+            //         }
+            //     } else {
+            //         mk_lib_database_notification::mk_lib_database_notification_insert(db_client,format!("UNC Library path not found: {}", row_data["mm_media_dir_path"]), true);
+            //     }
+            // }
         }
         else {
             // make sure the path still exists
             let media_path: PathBuf = ["/mediakraken/mnt",
                 row_data["mm_media_dir_path"]].iter().collect();
-            if !Path::new(media_path).exists() {
-                mk_lib_database_notification::mk_lib_database_notification_insert(db_client,format!("Library path not found: {}", row_data["mm_media_dir_path"]), true);
+            if !Path::new(&media_path).exists() {
+                mk_lib_database_notification::mk_lib_database_notification_insert(db_client,
+                                                                                  format!("Library path not found: {}",
+                                                                                          row_data["mm_media_dir_path"]), true);
             }
             else {
-                // verify the directory inodes has changed
-                if datetime.strptime(
-                    time.ctime(os.path.getmtime(
-                        media_path)),
-                    "%a %b %d %H:%M:%S %Y") > row_data["mm_media_dir_last_scanned"]:
-                    audit_directories.append(
-                    (media_path,
-                     str(row_data["mm_media_class_guid"]),
-                     row_data["mm_media_dir_guid"]));
-                db_connection.db_audit_path_update_status(row_data["mm_media_dir_guid"],
-                                                          json.dumps({
-                                                              'Status': 'Added to
-                                                              scan
-                                                              ',
-                                                              'Pct': 100
-                                                          }));
+                continue;
+                // // verify the directory inodes has changed
+                // if datetime.strptime(
+                //     time.ctime(os.path.getmtime(
+                //         media_path)),
+                //     "%a %b %d %H:%M:%S %Y") > row_data["mm_media_dir_last_scanned"]:
+                //     audit_directories.append(
+                //     (media_path,
+                //      str(row_data["mm_media_class_guid"]),
+                //      row_data["mm_media_dir_guid"]));
+                // db_connection.db_audit_path_update_status(row_data["mm_media_dir_guid"],
+                //                                           json.dumps({
+                //                                               'Status': 'Added to
+                //                                               scan
+                //                                               ',
+                //                                               'Pct': 100
+                //                                           }));
             }
         }
     }
@@ -310,19 +315,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
 //     db_connection.db_close()
 //     return
 
-    // commit
-    db_connection.db_commit();
-
-    // Cancel the consumer and return any pending messages
-    channel.cancel();
-
-    // close pika
-    channel.close(); // throws error as previously closed
-
-    // close the database
-    db_connection.db_close();
+    // close rabbitmq
+    rabbit_connection.close();
 
     mk_lib_logging::mk_logging_post_elk("info",
                                         "STOP",
                                         LOGGING_INDEX_NAME).await;
+    Ok(())
 }

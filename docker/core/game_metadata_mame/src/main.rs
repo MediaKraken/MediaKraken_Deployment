@@ -1,8 +1,9 @@
-use chrono::prelude::*;
-use std::error::Error;
-use serde_json::{json, Value};
-use tokio::time::{Duration, sleep};
 use async_std::path::PathBuf;
+use chrono::prelude::*;
+use serde_json::{json, Value};
+use std::error::Error;
+use std::path::Path;
+use tokio::time::{Duration, sleep};
 
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_compression/src/mk_lib_compression.rs"]
@@ -31,25 +32,24 @@ mod mk_lib_database;
 mod mk_lib_network;
 
 
-    // def process_mame_record(game_xml):
-    //     global update_game
-    //     global insert_game
-    //     # TODO change this to upsert
-    //     json_data = xmltodict.parse(game_xml)
-    //     # see if exists then need to update
-    //     if db_connection.db_meta_game_list_count(json_data["machine"]["@name"]) > 0:
-    //         # TODO handle shortname properly
-    //         db_connection.db_meta_game_update(None, json_data["machine"]["@name"],
-    //                                           json_data["machine"]["description"],
-    //                                           json_data)
-    //         update_game += 1
-    //     else:
-    //         # TODO handle shortname properly
-    //         db_connection.db_meta_game_insert(None, json_data["machine"]["@name"],
-    //                                           json_data["machine"]["description"],
-    //                                           json_data)
-    //         insert_game += 1
-
+// def process_mame_record(game_xml):
+//     global update_game
+//     global insert_game
+//     # TODO change this to upsert
+//     json_data = xmltodict.parse(game_xml)
+//     # see if exists then need to update
+//     if db_connection.db_meta_game_list_count(json_data["machine"]["@name"]) > 0:
+//         # TODO handle shortname properly
+//         db_connection.db_meta_game_update(None, json_data["machine"]["@name"],
+//                                           json_data["machine"]["description"],
+//                                           json_data)
+//         update_game += 1
+//     else:
+//         # TODO handle shortname properly
+//         db_connection.db_meta_game_insert(None, json_data["machine"]["@name"],
+//                                           json_data["machine"]["description"],
+//                                           json_data)
+//         insert_game += 1
 
 
 // technically arcade games are "systems"....
@@ -69,30 +69,30 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
     let option_config_json: Value = serde_json::from_str(
-        &mk_lib_database::mk_lib_database_options(db_client).await.unwrap());
+        &mk_lib_database::mk_lib_database_options(db_client).await.unwrap()).unwrap();
 
     let mut update_game = 0;
     let mut insert_game = 0;
 
     // create mame game list
-    let file_name = (format!("/mediakraken/emulation/mame0{}lx.zip",
-                 option_config_json["MAME"]["Version"]));
+    let file_name = format!("/mediakraken/emulation/mame0{}lx.zip",
+                            option_config_json["MAME"]["Version"]);
     // only do the parse/import if not processed before
-    if !Path::new(file_name).exists()
+    if !Path::new(&file_name).exists()
     {
         mk_lib_network::mk_download_file_from_url(
-            (format!("https://github.com/mamedev/mame/releases/download/mame0{}/mame0{}lx.zip"
-                ,option_config_json["MAME"]["Version"], option_config_json["MAME"]["Version"])),
+            (format!("https://github.com/mamedev/mame/releases/download/mame0{}/mame0{}lx.zip",
+                     option_config_json["MAME"]["Version"], option_config_json["MAME"]["Version"])),
             file_name);
     }
-    let mame_xml = mk_lib_compression::mk_decompress_zip(&file_name,
-                                                         false, false);
-    for token in xmlparser::Tokenizer::from(&mame_xml) {
+    let mame_xml: String = mk_lib_compression::mk_decompress_zip(&file_name,
+                                                         false, false).unwrap();
+    for token in xmlparser::Tokenizer::from(mame_xml) {
         println!("{:?}", token);
     }
 
     //     game_xml = ""
-    //     first_record = True
+    //     first_record = true
     //     old_line = None
     //     with open("/mediakraken/emulation/mame0%s.xml"
     //               % option_config_json["MAME"]["Version"]) as infile:
@@ -101,12 +101,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //                 pass
     //             elif line.find("	<machine") == 0:  # first position of line
     //                 old_line = line
-    //                 if first_record is False:
+    //                 if first_record is false:
     //                     process_mame_record(line + game_xml)
     //                     game_xml = ""
-    //                 first_record = False
+    //                 first_record = false
     //             else:
-    //                 if first_record is False:
+    //                 if first_record is false:
     //                     game_xml += line
     //         # game_xml += line  # get last value - do NOT do this as it"ll attach </mame>
     // do last machine
@@ -116,12 +116,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //         db_connection.db_notification_insert(
     //             common_internationalization.com_inter_number_format(update_game)
     //             + " games(s) metadata updated from MAME %s XML" % option_config_json["MAME"]["Version"],
-    //             True)
+    //             true)
     //     if insert_game > 0:
     //         db_connection.db_notification_insert(
     //             common_internationalization.com_inter_number_format(insert_game)
     //             + " games(s) metadata added from MAME %s XML" % option_config_json["MAME"]["Version"],
-    //             True)
+    //             true)
     // commit all changes to db
     //     db_connection.db_commit()
     //
@@ -227,7 +227,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //         file_name)
     //     game_titles = []
     //     game_desc = ""
-    //     add_to_desc = False
+    //     add_to_desc = false
     //     new_title = None
     //     total_software = 0
     //     total_software_update = 0
@@ -249,7 +249,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //                 game_titles = line.split("=", 1)[1].split(",")
     //             # end of info block for game
     //             elif line.find("$end") == 0:  # goes by position if found
-    //                 add_to_desc = False
+    //                 add_to_desc = false
     //                 for game in game_titles:
     //                     print("game: %s" % game, flush=True)
     //                     game_data = db_connection.db_meta_game_by_name_and_system(game, system_name)[0]
@@ -272,7 +272,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //             elif line.find("$bio") == 0:  # goes by position if found
     //                 line = history_file.readline()  # skip blank line
     //                 new_title = history_file.readline().strip()  # grab the "real" game name
-    //                 add_to_desc = True
+    //                 add_to_desc = true
     //             else:
     //                 # should be a system/game
     //                 system_name = line[1:].split("=", 1)[0]
@@ -352,12 +352,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //         zf.extract("messinfo.dat", "/mediakraken/emulation/")
     //     infile = open("/mediakraken/emulation/messinfo.dat", "r",
     //                   encoding="utf-8")
-    //     start_system_read = False
-    //     skip_next_line = False
-    //     long_name_next = False
-    //     desc_next = False
-    //     wip_in_progress = False
-    //     romset_in_progress = False
+    //     start_system_read = false
+    //     skip_next_line = false
+    //     long_name_next = false
+    //     desc_next = false
+    //     wip_in_progress = false
+    //     romset_in_progress = false
     //     # store args to sql
     //     sys_short_name = ""
     //     sys_longname = None
@@ -378,7 +378,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //         if not line:
     //             break
     //         if skip_next_line:
-    //             skip_next_line = False
+    //             skip_next_line = false
     //         else:
     //             if line.find("DRIVERS INFO") != -1:  # stop at drivers
     //                 break
@@ -386,10 +386,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //             if line[0] == "#" or len(line) < 4 \
     //                     or line.find("$mame") == 0:  # skip comments and blank lines
     //                 if line.find("$mame") == 0:
-    //                     skip_next_line = True
-    //                     long_name_next = True
+    //                     skip_next_line = true
+    //                     long_name_next = true
     //             elif line.find("$info") == 0:  # found so begin start system read
-    //                 start_system_read = True
+    //                 start_system_read = true
     //                 # load the short name
     //                 sys_short_name = line.split("=")[1]
     //             elif line.find("Emulation:") == 0:  # found so begin start system read
@@ -402,14 +402,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //                 sys_graphics = line.split(" ")[1]
     //             elif line.find("Save State:") == 0:  # found so begin start system read
     //                 if line.rsplit(" ", 1)[1][:-1] == "Supported":
-    //                     sys_save_state = True
+    //                     sys_save_state = true
     //                 else:
-    //                     sys_save_state = False
+    //                     sys_save_state = false
     //             elif line.find("WIP:") == 0:  # found so begin start system read
-    //                 wip_in_progress = True
+    //                 wip_in_progress = true
     //             elif line.find("Romset:") == 0:  # found so begin start system read
-    //                 wip_in_progress = False
-    //                 romset_in_progress = True
+    //                 wip_in_progress = false
+    //                 romset_in_progress = true
     //             else:
     //                 if wip_in_progress and line.find("Romset:") != 0:
     //                     # sys_wip += line[:-1] + "<BR>"
@@ -419,16 +419,16 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //                     pass
     //                 if desc_next:
     //                     sys_desc = line
-    //                     desc_next = False
+    //                     desc_next = false
     //                 if long_name_next:
     //                     try:
     //                         sys_longname, sys_manufacturer, sys_year = line.split(",")
     //                     except:
     //                         sys_longname, msys_manufacturer, sys_year = line.rsplit(",", 2)
-    //                     long_name_next = False
+    //                     long_name_next = false
     //                     desc_next = True
     //                 if line.find("$end") == 0:  # end of system info so store system into db
-    //                     romset_in_progress = False
+    //                     romset_in_progress = false
     //                     if sys_desc[:-1] == "...":
     //                         sys_desc = None
     //                     else:
@@ -453,4 +453,5 @@ async fn main() -> Result<(), Box<dyn Error>> {
     //
     // close the database
     // db_connection.db_close()
+    Ok(())
 }
