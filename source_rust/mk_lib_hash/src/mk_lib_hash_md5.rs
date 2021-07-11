@@ -1,5 +1,8 @@
-use sha1::{Sha1, Digest};
+use md5::{Md5, Digest};
 use std::fs;
 
-let mut file = fs::File::open(&path)?;
-let hash = Sha1::digest_reader(&mut file)?;
+pub fn mk_file_hash_md5(file_to_read: &str) -> io::Result<()> {
+    let mut file = fs::File::open(&file_to_read)?;
+    let hash = md5::digest_reader(&mut file)?;
+    Ok(hash)
+}

@@ -1,5 +1,12 @@
 use std::io::Cursor;
+use std::str;
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
+
+pub async fn mk_data_from_url(url: String) -> Result<String> {
+    let response = reqwest::get(url).await?;
+    let content = response.bytes().await?;
+    Ok(str::from_utf8(&content).unwrap().to_string())
+}
 
 pub async fn mk_download_file_from_url(url: String, file_name: String) -> Result<()> {
     let response = reqwest::get(url).await?;

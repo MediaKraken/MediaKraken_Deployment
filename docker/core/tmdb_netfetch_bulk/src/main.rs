@@ -71,7 +71,7 @@ struct MetadataTV {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     // start logging
-    const LOGGING_INDEX_NAME: &str = "tmdb_netfetch_bulk";
+    const LOGGING_INDEX_NAME: &str = "mk_tmdb_netfetch_bulk";
     mk_lib_logging::mk_logging_post_elk("info",
                                         "START",
                                         LOGGING_INDEX_NAME).await;

@@ -82,6 +82,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }
     Ok(())
     // Code below can't be hit currently. So, drop the commands.
+    // mk_lib_logging::mk_logging_post_elk("info",
+    //                                     "STOP",
+    //                                     LOGGING_INDEX_NAME).await;
     // close the rabbit connection
     // rabbit_connection.close();
     // close the database

@@ -32,7 +32,7 @@ pub async fn mk_lib_database_open() -> Result<tokio_postgres::Client, Error> {
     Ok(client)
 }
 
-pub async fn mk_lib_database_options(client: tokio_postgres::Client) -> Result<String, Error> {
+pub async fn mk_lib_database_options(client: &tokio_postgres::Client) -> Result<String, Error> {
     let row = client
         .query_one("select mm_options_json from mm_options_and_status", &[])
         .await?;
@@ -40,7 +40,7 @@ pub async fn mk_lib_database_options(client: tokio_postgres::Client) -> Result<S
     Ok(mm_options_json)
 }
 
-pub async fn mk_lib_database_status(client: tokio_postgres::Client) -> Result<String, Error> {
+pub async fn mk_lib_database_status(client: &tokio_postgres::Client) -> Result<String, Error> {
     let row = client
         .query_one("select mm_status_json from mm_options_and_status", &[])
         .await?;

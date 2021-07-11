@@ -143,8 +143,6 @@ async def db_user_list_name(self, offset=0, records=None, db_connection=None):
                                ' is_admin,'
                                ' lang'
                                ' from mm_user'
-                               ' where id in (select id from mm_user'
-                               ' order by LOWER(username)'
                                ' offset $1 limit $2) order by LOWER(username)',
                                offset, records)
 

@@ -33,8 +33,7 @@ pub async fn mk_lib_database_download_insert(client: &tokio_postgres::Client,
         values ($1, $2, $3, $4, $5, $6)",
                    &[&Uuid::new_v4(), &metadata_provider, &metadata_que_type,
                        &metadata_new_uuid, &metadata_provider_id, &metadata_status]).await?;
-    let id: bool = row.get("found_record");
-    Ok(id)
+    Ok()
 }
 
 // Uuid::new_v4();

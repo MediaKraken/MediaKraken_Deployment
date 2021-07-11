@@ -1,4 +1,6 @@
 use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+use actix_web_grants::permissions::{AuthDetails, PermissionsCheck};
+use actix_web_grants::{proc_macro::has_permissions, GrantsMiddleware, PermissionGuard};
 
 async fn greet(req: HttpRequest) -> impl Responder {
     let name = req.match_info().get("name").unwrap_or("World");

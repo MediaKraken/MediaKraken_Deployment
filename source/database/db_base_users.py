@@ -40,8 +40,6 @@ def db_user_list_name(self, offset=0, records=None):
                            ' is_admin,'
                            ' lang'
                            ' from mm_user'
-                           ' where id in (select id from mm_user'
-                           ' order by LOWER(username)'
                            ' offset %s limit %s) order by LOWER(username)', (offset, records))
     return self.db_cursor.fetchall()
 

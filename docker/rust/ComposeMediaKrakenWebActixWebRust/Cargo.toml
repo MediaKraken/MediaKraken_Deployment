@@ -9,6 +9,7 @@ panic = 'abort'
 [dependencies]
 actix-session = "0.4.1"
 actix-web = "3.3.2"
+actix-web-grants = "2.0.1"
 amiquip = { version = "0.4", default-features = false }
 shiplift = { version = "0.7", default-features = false, features = ["unix-socket"] }
 tera = "1.10.0"

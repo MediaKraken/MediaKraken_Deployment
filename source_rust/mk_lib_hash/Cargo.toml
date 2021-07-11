@@ -7,7 +7,8 @@ edition = "2018"
 panic = 'abort'
 
 [dependencies]
-
+md-5 = "0.9.1"
+sha-1 = "0.9.6"
 
 [dev-dependencies]
 tokio-test = "*"
