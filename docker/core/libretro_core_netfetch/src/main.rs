@@ -44,7 +44,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         let entry = entry.unwrap();
         emulation_cores.insert(entry.path().display().split(".")[0],
                                mk_lib_hash_md5::mk_file_hash_md5(
-                                   entry.path().display().modified()));
+                                   entry.path().display()));
     }
 
     // date md5 core_filename.zip
