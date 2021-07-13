@@ -11,6 +11,7 @@ amiquip = { version = "0.4", default-features = false }
 async-std = "1.9.0"
 chrono = "0.4"
 num-format = "0.4.0"
+regex = "1.5"
 reqwest = { version = "0.11.3", default-features = false, features = ["json", "rustls-tls"] }
 rustls = "0.19.1"
 serde = { version = "1.0.126", features = ["derive"] }

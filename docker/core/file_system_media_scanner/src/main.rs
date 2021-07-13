@@ -2,11 +2,15 @@ use amiquip::{AmqpProperties, Connection, Exchange, Publish, Result};
 use async_std::path::PathBuf;
 use chrono::prelude::*;
 use num_format::{Locale, ToFormattedString};
+use regex::Regex;
 use serde_json::{json, Value};
 use std::error::Error;
 use std::path::Path;
 use tokio::time::{Duration, sleep};
 
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_common/src/mk_lib_common_media_extension.rs"]
+mod mk_lib_common_media_extension;
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_file/src/mk_lib_file.rs"]
 mod mk_lib_file;
@@ -23,6 +27,9 @@ mod mk_lib_database_library;
 #[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_notification.rs"]
 mod mk_lib_database_notification;
 
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_common_media_extension.rs"]
+mod mk_lib_common_media_extension;
 #[cfg(not(debug_assertions))]
 #[path = "mk_lib_file.rs"]
 mod mk_lib_file;
@@ -46,6 +53,20 @@ async fn main() -> Result<(), Box<dyn Error>> {
     mk_lib_logging::mk_logging_post_elk("info",
                                         "START",
                                         LOGGING_INDEX_NAME).await;
+
+    // setup regex for finding media parts
+    let stack_cd = Regex::new(r"(?i)-cd\d").unwrap();
+    let stack_cd1 = Regex::new(r"(?i)-cd1(?!\d)").unwrap();
+    let stack_part = Regex::new(r"(?i)-part\d").unwrap();
+    let stack_part1 = Regex::new(r"(?i)-part1(?!\d)").unwrap();
+    let stack_dvd = Regex::new(r"(?i)-dvd\d").unwrap();
+    let stack_dvd1 = Regex::new(r"(?i)-dvd1(?!\d)").unwrap();
+    let stack_pt = Regex::new(r"(?i)-pt\d").unwrap();
+    let stack_pt1 = Regex::new(r"(?i)-pt1(?!\d)").unwrap();
+    let stack_disk = Regex::new(r"(?i)-disk\d").unwrap();
+    let stack_disk1 = Regex::new(r"(?i)-disk1(?!\d)").unwrap();
+    let stack_disc = Regex::new(r"(?i)-disc\d").unwrap();
+    let stack_disc1 = Regex::new(r"(?i)-disc1(?!\d)").unwrap();
 
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
@@ -147,108 +168,143 @@ async fn main() -> Result<(), Box<dyn Error>> {
                             let file_extension = Path::new(&file_name).extension().to_lowercase();
 
                             // checking subtitles for parts as need multiple files for multiple media files
-                                         if file_extension in common_file_extentions.MEDIA_EXTENSION \
-                                                 || file_extension in common_file_extentions.SUBTITLE_EXTENSION \
-                                                 || file_extension in common_file_extentions.GAME_EXTENSION:
-                                             ffprobe_bif_data = true;
-                                             save_dl_record = true;
-                                             total_files += 1;
-                            // set here which MIGHT be overrode later
-                                             new_class_type_uuid = media_class_type_uuid;
-                            // check for "stacked" media file
-                            // the split below and the splitext above do return different results
-                                             head, base_file_name = os.path.split(file_name);
-                            // check to see if it"s a "stacked" file
-                            // including games since some are two or more discs
-                                             if common_string.STACK_CD.search(base_file_name) is not None \
-                                                     || common_string.STACK_PART.search(base_file_name) is not None \
-                                                     || common_string.STACK_DVD.search(base_file_name) is not None \
-                                                     || common_string.STACK_PT.search(base_file_name) is not None \
-                                                     || common_string.STACK_DISK.search(base_file_name) is not None \
-                                                     || common_string.STACK_DISC.search(base_file_name) is not None:
-                            // check to see if it"s part one or not
-                                                 if common_string.STACK_CD1.search(base_file_name) is None \
-                                                         && common_string.STACK_PART1.search(base_file_name) is None \
-                                                         && common_string.STACK_DVD1.search(base_file_name) is None \
-                                                         && common_string.STACK_PT1.search(base_file_name) is None \
-                                                         && common_string.STACK_DISK1.search(base_file_name) is None \
-                                                         && common_string.STACK_DISC1.search(base_file_name) is None:
-                                                     // it"s not a part one here so, no DL record needed
-                                                     save_dl_record = false;
-                                             // video game data
-                                             // TODO look for cue/bin data as well
-                                             if original_media_class == common_global.DLMediaType.Game.value {
-                                                 if file_extension == "iso" {
-                                                     new_class_type_uuid = common_global.DLMediaType.Game_ISO.value;
+                            if mk_lib_common_media_extension.MEDIA_EXTENSION.contains(&file_extension)
+                                || mk_lib_common_media_extension.SUBTITLE_EXTENSION.contains(&file_extension)
+                                || mk_lib_common_media_extension.GAME_EXTENSION.contains(&file_extension) {
+                                ffprobe_bif_data = true;
+                                save_dl_record = true;
+                                total_files += 1;
+                                // set here which MIGHT be overrode later
+                                new_class_type_uuid = media_class_type_uuid;
+                                // check for "stacked" media file
+                                let base_file_name = Path::new(file_name).file_name()?.to_str()?;
+
+                                // check to see if it"s a "stacked" file
+                                // including games since some are two or more discs
+
+                                if common_string.STACK_CD.search(base_file_name)
+                                is
+                                not
+                                None \
+                                || common_string.STACK_PART.search(base_file_name)
+                                is
+                                not
+                                None \
+                                || common_string.STACK_DVD.search(base_file_name)
+                                is
+                                not
+                                None \
+                                || common_string.STACK_PT.search(base_file_name)
+                                is
+                                not
+                                None \
+                                || common_string.STACK_DISK.search(base_file_name)
+                                is
+                                not
+                                None \
+                                || common_string.STACK_DISC.search(base_file_name)
+                                is
+                                not
+                                None {
+                                    // check to see if it"s part one or not
+                                    if common_string.STACK_CD1.search(base_file_name)
+                                    is
+                                    None \
+                                    & & common_string.STACK_PART1.search(base_file_name)
+                                    is
+                                    None \
+                                    & & common_string.STACK_DVD1.search(base_file_name)
+                                    is
+                                    None \
+                                    & & common_string.STACK_PT1.search(base_file_name)
+                                    is
+                                    None \
+                                    & & common_string.STACK_DISK1.search(base_file_name)
+                                    is
+                                    None \
+                                    & & common_string.STACK_DISC1.search(base_file_name)
+                                    is
+                                    None {
+                                    // it"s not a part one here so, no DL record needed
+                                    save_dl_record = false;
+                                }
                             }
-                                                 else if file_extension == "chd" {
-                                                     new_class_type_uuid = common_global.DLMediaType.Game_CHD.value;
-                             }
-                                                 else {
-                                                     new_class_type_uuid = common_global.DLMediaType.Game_ROM.value;
-                            }
-                                                 ffprobe_bif_data = false;
+                            // video game data
+                            // TODO look for cue/bin data as well
+                            if original_media_class == common_global.DLMediaType.Game.value {
+                                if file_extension == "iso" {
+                                    new_class_type_uuid = common_global.DLMediaType.Game_ISO.value;
+                                } else if file_extension == "chd" {
+                                    new_class_type_uuid = common_global.DLMediaType.Game_CHD.value;
+                                } else {
+                                    new_class_type_uuid = common_global.DLMediaType.Game_ROM.value;
+                                }
+                                ffprobe_bif_data = false;
                             }
                             //                 // set new media class for subtitles
-                                             else if file_extension in common_file_extentions.SUBTITLE_EXTENSION:
-                                                 if original_media_class == common_global.DLMediaType.Movie.value {
-                                                     new_class_type_uuid = common_global.DLMediaType.Movie_Subtitle.value;
+                            else if file_extension in mk_lib_common_media_extension.SUBTITLE_EXTENSION:
+                            if original_media_class == common_global.DLMediaType.Movie.value {
+                                new_class_type_uuid = common_global.DLMediaType.Movie_Subtitle.value;
                             }
-                                                 elif original_media_class == common_global.DLMediaType.TV.value \
-                                                         || original_media_class == common_global.DLMediaType.TV_Episode.value \
-                                                         || original_media_class == common_global.DLMediaType.TV_Season.value {
-                                                     new_class_type_uuid = common_global.DLMediaType.TV_Subtitle.value;
+                            elif
+                            original_media_class == common_global.DLMediaType.TV.value \
+                            || original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            || original_media_class == common_global.DLMediaType.TV_Season.value
+                            {
+                                new_class_type_uuid = common_global.DLMediaType.TV_Subtitle.value;
                             }
                             //                     # else:
                             //                     #     new_class_type_uuid = common_global.DLMediaType.Movie["Subtitle"]
-                                                 ffprobe_bif_data = false;
-                                             // set new media class for trailers or themes
-                                             else if file_name.find("/trailers/") != -1 \
-                                                     || file_name.find("\\trailers\\") != -1 \
-                                                     || file_name.find("/theme.mp3") != -1 \
-                                                     || file_name.find("\\theme.mp3") != -1 \
-                                                     || file_name.find("/theme.mp4") != -1 \
-                                                     || file_name.find("\\theme.mp4") != -1:
-                                                 if original_media_class == common_global.DLMediaType.Movie.value {
-                                                     if file_name.find("/trailers/") != -1 || file_name.find(
-                                                             "\\trailers\\") != -1 {
-                                                         new_class_type_uuid = common_global.DLMediaType.Movie_Trailer.value;
+                            ffprobe_bif_data = false;
+                            // set new media class for trailers or themes
+                            else if file_name.find("/trailers/") != -1 \
+                            || file_name.find("\\trailers\\") != -1 \
+                            || file_name.find("/theme.mp3") != -1 \
+                            || file_name.find("\\theme.mp3") != -1 \
+                            || file_name.find("/theme.mp4") != -1 \
+                            || file_name.find("\\theme.mp4") != -1:
+                            if original_media_class == common_global.DLMediaType.Movie.value {
+                                if file_name.find("/trailers/") != -1 || file_name.find(
+                                    "\\trailers\\") != -1 {
+                                    new_class_type_uuid = common_global.DLMediaType.Movie_Trailer.value;
+                                } else {
+                                    new_class_type_uuid = common_global.DLMediaType.Movie_Theme.value;
+                                }
                             }
-                                                     else {
-                                                         new_class_type_uuid = common_global.DLMediaType.Movie_Theme.value;
+                            elif
+                            original_media_class == common_global.DLMediaType.TV.value \
+                            || original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            || original_media_class == common_global.DLMediaType.TV_Season.value
+                            {
+                                if file_name.find("/trailers/") != -1 || file_name.find(
+                                    "\\trailers\\") != -1 {
+                                    new_class_type_uuid = common_global.DLMediaType.TV_Trailer.value;
+                                } else {
+                                    new_class_type_uuid = common_global.DLMediaType.TV_Theme.value;
+                                }
                             }
+                            // set new media class for extras
+                            else if file_name.find("/extras/") != -1 || file_name.find("\\extras\\") != -1:
+                            if original_media_class == common_global.DLMediaType.Movie.value {
+                                new_class_type_uuid = common_global.DLMediaType.Movie_Extras.value;
                             }
-                                                 elif original_media_class == common_global.DLMediaType.TV.value \
-                                                         || original_media_class == common_global.DLMediaType.TV_Episode.value \
-                                                         || original_media_class == common_global.DLMediaType.TV_Season.value {
-                                                     if file_name.find("/trailers/") != -1 || file_name.find(
-                                                             "\\trailers\\") != -1 {
-                                                         new_class_type_uuid = common_global.DLMediaType.TV_Trailer.value;
+                            elif
+                            original_media_class == common_global.DLMediaType.TV.value \
+                            || original_media_class == common_global.DLMediaType.TV_Episode.value \
+                            || original_media_class == common_global.DLMediaType.TV_Season.value
+                            {
+                                new_class_type_uuid = common_global.DLMediaType.TV_Extras.value;
                             }
-                                                     else {
-                                                         new_class_type_uuid = common_global.DLMediaType.TV_Theme.value;
-                            }
-                            }
-                                             // set new media class for extras
-                                             else if file_name.find("/extras/") != -1 || file_name.find("\\extras\\") != -1:
-                                                 if original_media_class == common_global.DLMediaType.Movie.value {
-                                                     new_class_type_uuid = common_global.DLMediaType.Movie_Extras.value;
-                            }
-                                                 elif original_media_class == common_global.DLMediaType.TV.value \
-                                                         || original_media_class == common_global.DLMediaType.TV_Episode.value \
-                                                         || original_media_class == common_global.DLMediaType.TV_Season.value {
-                                                     new_class_type_uuid = common_global.DLMediaType.TV_Extras.value;
-                            }
-                                             // set new media class for backdrops (usually themes)
-                                             else if file_name.find("/backdrops/") != -1 \
-                                                     || file_name.find("\\backdrops\\") != -1
+                            // set new media class for backdrops (usually themes)
+                            else if file_name.find("/backdrops/") != -1 \
+                            || file_name.find("\\backdrops\\") != -1
                             {
                                 media_class_text = new_class_type_uuid;
                             }
-                                                 if file_name.find("/theme.mp3") != -1 \
-                                                         || file_name.find("\\theme.mp3") != -1 \
-                                                         || file_name.find("/theme.mp4") != -1 \
-                                                         || file_name.find("\\theme.mp4") != -1
+                            if file_name.find("/theme.mp3") != -1 \
+                            || file_name.find("\\theme.mp3") != -1 \
+                            || file_name.find("/theme.mp4") != -1 \
+                            || file_name.find("\\theme.mp4") != -1
                             {
                                 if original_media_class == common_global.DLMediaType.Movie.value {
                                     new_class_type_uuid = common_global.DLMediaType.Movie_Theme.value;
@@ -257,18 +313,19 @@ async fn main() -> Result<(), Box<dyn Error>> {
                                 || original_media_class == common_global.DLMediaType.TV_Season.value:
                                     new_class_type_uuid = common_global.DLMediaType.TV_Theme.value;
                             }
-                                             // flip around slashes for smb paths
-                                             if file_name == "\\" {
-                                                 file_name = file_name.replace("\\\\", "smb://guest:\"\"@").replace("\\", "/");
+                            // flip around slashes for smb paths
+                            if file_name == "\\" {
+                                file_name = file_name.replace("\\\\", "smb://guest:\"\"@").replace("\\", "/");
                             }
-                                             // create media_json data
-                                             media_json = json.dumps({"DateAdded": datetime.now().strftime("%Y-%m-%d")});
-                                             media_id = uuid.uuid4();
-                                             db_connection.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
-                                                                           media_json);
-                                             // verify ffprobe and bif should run on the data
-                                              if ffprobe_bif_data && file_extension not in common_file_extentions.MEDIA_EXTENSION_SKIP_FFMPEG \
-                                                      && file_extension in common_file_extentions.MEDIA_EXTENSION
+                            // create media_json data
+                            media_json = json.dumps({ "DateAdded": datetime.now().strftime("%Y-%m-%d") });
+                            media_id = uuid.uuid4();
+                            db_connection.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
+                                                          media_json);
+                            // verify ffprobe and bif should run on the data
+                            if ffprobe_bif_data && file_extension
+                            not in mk_lib_common_media_extension.MEDIA_EXTENSION_SKIP_FFMPEG \
+                            &&file_extension in mk_lib_common_media_extension.MEDIA_EXTENSION
                             {
                                 // Send a message so ffprobe runs
                                 channel.basic_publish(exchange = "mkque_ffmpeg_ex",
@@ -295,52 +352,53 @@ async fn main() -> Result<(), Box<dyn Error>> {
                                                               delivery_mode = 2));
                                 }
                             }
-                                             // verify it should save a dl "Z" record for search/lookup/etc
-                                             if save_dl_record {
-                                                 // media id begin and download que insert
-                                                 db_connection.db_download_insert(provider="Z",
-                                                                                  que_type=new_class_type_uuid,
-                                                                                  down_json=json.dumps({"MediaID": str(media_id),
-                                                                                                        "Path": file_name}),
-                                                                                  down_new_uuid=uuid.uuid4(),
-                                                                                  );
-                             }
+                            // verify it should save a dl "Z" record for search/lookup/etc
+                            if save_dl_record {
+                                // media id begin and download que insert
+                                db_connection.db_download_insert(provider = "Z",
+                                                                 que_type = new_class_type_uuid,
+                                                                 down_json = json.dumps({
+                                                                     "MediaID": str(media_id),
+                                                                     "Path": file_name
+                                                                 }),
+                                                                 down_new_uuid = uuid.uuid4(),
+                                );
                             }
-                                     total_scanned += 1;
-                                     mk_lib_database_library::mk_lib_database_library_path_status_update(db_client,
-                                                                                                         row_data["mm_media_dir_guid"],
-                                                                               json!({"Status": "File scan: " + total_scanned.to_formatted_string(&Locale::en)
+                        }
+                        total_scanned += 1;
+                        mk_lib_database_library::mk_lib_database_library_path_status_update(db_client,
+                                                                                            row_data["mm_media_dir_guid"],
+                                                                                            json!({"Status": "File scan: " + total_scanned.to_formatted_string(&Locale::en)
                                                                                                      + "/" + total_file_in_dir.to_formatted_string(&Locale::en),
                                                                                            "Pct": (total_scanned / total_file_in_dir) * 100}));
-
-                        }
                     }
-                    // end of for loop for each file in library
-                    mk_lib_logging::mk_logging_post_elk("info",
-                                                        json!({"worker dir done": dir_path,
+                }
+                // end of for loop for each file in library
+                mk_lib_logging::mk_logging_post_elk("info",
+                                                    json!({"worker dir done": dir_path,
                                             "media class": media_class_type_uuid}),
-                                                        LOGGING_INDEX_NAME).await;
-                    // set to none so it doesn"t show up anymore in admin status page
-                    mk_lib_database_library::mk_lib_database_library_path_status_update(db_client,
-                                                                                        row_data["mm_media_dir_guid"],
-                                                                                        json!({"Status": "File scan complete", "Pct": 100}));
-                    if total_files > 0 {
-                        // add notification to admin status page
-                        mk_lib_database_notification::mk_lib_database_notification_insert(db_client,
-                                                                                          format!("{} file(s) added from {}",
-                                                                                                  total_files.to_formatted_string(&Locale::en),
-                                                                                                  row_data["mm_media_dir_path"]), true);
-                    }
+                                                    LOGGING_INDEX_NAME).await;
+                // set to none so it doesn"t show up anymore in admin status page
+                mk_lib_database_library::mk_lib_database_library_path_status_update(db_client,
+                                                                                    row_data["mm_media_dir_guid"],
+                                                                                    json!({"Status": "File scan complete", "Pct": 100}));
+                if total_files > 0 {
+                    // add notification to admin status page
+                    mk_lib_database_notification::mk_lib_database_notification_insert(db_client,
+                                                                                      format!("{} file(s) added from {}",
+                                                                                              total_files.to_formatted_string(&Locale::en),
+                                                                                              row_data["mm_media_dir_path"]), true);
                 }
             }
         }
     }
+}
 
     // close rabbitmq
     rabbit_connection.close();
 
     mk_lib_logging::mk_logging_post_elk("info",
-                                        "STOP",
-                                        LOGGING_INDEX_NAME).await;
+    "STOP",
+    LOGGING_INDEX_NAME).await;
     Ok(())
 }
