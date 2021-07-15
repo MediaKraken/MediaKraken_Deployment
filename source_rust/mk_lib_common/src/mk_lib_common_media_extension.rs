@@ -1,4 +1,4 @@
-static MEDIA_EXTENSION: [String; 31] = [
+pub static MEDIA_EXTENSION: [&str; 32] = [
     "webm",
     "mkv",
     "flv",
@@ -33,7 +33,7 @@ static MEDIA_EXTENSION: [String; 31] = [
     "lrc",
 ];
 
-static SUBTITLE_EXTENSION: [String; 7] = [
+pub static SUBTITLE_EXTENSION: [&str; 7] = [
     "srt",
     "smi",
     "ssa",
@@ -43,7 +43,7 @@ static SUBTITLE_EXTENSION: [String; 7] = [
     "idx",
 ];
 
-static MEDIA_EXTENSION_SKIP_FFMPEG: [String; 6] = [
+pub static MEDIA_EXTENSION_SKIP_FFMPEG: [&str; 6] = [
     "pdf",
     "zip",
     "7z",
@@ -52,7 +52,7 @@ static MEDIA_EXTENSION_SKIP_FFMPEG: [String; 6] = [
     "lrc",
 ];
 
-static GAME_EXTENSION: [String; 5] = [
+pub static GAME_EXTENSION: [&str; 5] = [
     "iso",
     "chd",
     "zip",
@@ -60,7 +60,7 @@ static GAME_EXTENSION: [String; 5] = [
     "rar",
 ];
 
-static COMIC_BOOK_EXTENSION: [String; 4] = [
+pub static COMIC_BOOK_EXTENSION: [&str; 4] = [
     "cbr",
     "cbz",
     "cbt",
