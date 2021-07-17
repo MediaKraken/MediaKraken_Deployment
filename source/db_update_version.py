@@ -22,9 +22,9 @@ import json
 from common import common_config_ini
 from common import common_logging_elasticsearch_httpx
 
-dont_force_localhost = True
+force_localhost = False
 
-if dont_force_localhost:
+if force_localhost:
     # start logging
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text='START',
@@ -379,7 +379,7 @@ if db_connection.db_version_check() < 30:
 
 if db_connection.db_version_check() < 31:
     try:
-        db_connection.db_query('ALTER TABLE mm_review DROP COLUMN mm_review_metadata_id;')
+        db_connection.db_query('ALTER TABLE mm_review DROP COLUMN IF EXISTS mm_review_metadata_id;')
     except:
         db_connection.db_rollback()
     db_connection.db_version_update(31)
@@ -387,10 +387,10 @@ if db_connection.db_version_check() < 31:
 
 if db_connection.db_version_check() < 32:
     try:
-        db_connection.db_query('DROP TABLE mm_media_share;')
-        db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN mm_media_dir_share_guid;')
-        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_username text;')
-        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN mm_media_dir_password text;')
+        db_connection.db_query('DROP TABLE IF EXISTS mm_media_share;')
+        db_connection.db_query('ALTER TABLE mm_media_dir DROP COLUMN IF EXISTS mm_media_dir_share_guid;')
+        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN IF NOT EXISTS mm_media_dir_username text;')
+        db_connection.db_query('ALTER TABLE mm_media_dir ADD COLUMN IF NOT EXISTS mm_media_dir_password text;')
     except:
         db_connection.db_rollback()
     db_connection.db_version_update(32)
@@ -605,6 +605,6 @@ if db_connection.db_version_check() < 43:
 # close the database
 db_connection.db_close()
 
-if dont_force_localhost:
+if force_localhost:
     common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
                                                          message_text='STOP')

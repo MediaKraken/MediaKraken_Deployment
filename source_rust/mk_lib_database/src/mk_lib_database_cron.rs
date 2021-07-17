@@ -21,13 +21,6 @@ pub async fn mk_lib_database_cron_time_update(client: &tokio_postgres::Client,
     Ok(rows)
 }
 
-// for row in client.query("SELECT id, name, data FROM person", &[])? {
-//      let id: i32 = row.get(0);
-//      let name: &str = row.get(1);
-//      let data: Option<&[u8]> = row.get(2);
-//      println!("found person: {} {} {:?}", id, name, data);
-//  }
-
 // // cargo test -- --show-output
 // #[cfg(test)]
 // mod test_mk_lib_common {

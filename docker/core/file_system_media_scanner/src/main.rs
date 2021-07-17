@@ -26,8 +26,14 @@ mod mk_lib_logging;
 #[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database.rs"]
 mod mk_lib_database;
 #[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_download.rs"]
+mod mk_lib_database_download;
+#[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_library.rs"]
 mod mk_lib_database_library;
+#[cfg(debug_assertions)]
+#[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_media.rs"]
+mod mk_lib_database_media;
 #[cfg(debug_assertions)]
 #[path = "../../../../source_rust/mk_lib_database/src/mk_lib_database_notification.rs"]
 mod mk_lib_database_notification;
@@ -48,8 +54,14 @@ mod mk_lib_logging;
 #[path = "mk_lib_database.rs"]
 mod mk_lib_database;
 #[cfg(not(debug_assertions))]
+#[path = "mk_lib_database_download.rs"]
+mod mk_lib_database_download;
+#[cfg(not(debug_assertions))]
 #[path = "mk_lib_database_library.rs"]
 mod mk_lib_database_library;
+#[cfg(not(debug_assertions))]
+#[path = "mk_lib_database_media.rs"]
+mod mk_lib_database_media;
 #[cfg(not(debug_assertions))]
 #[path = "mk_lib_database_notification.rs"]
 mod mk_lib_database_notification;
@@ -303,10 +315,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
                                                 file_name = file_name.replace("\\\\", "smb://guest:\"\"@").replace("\\", "/");
                                             }
                                             // create media_json data
-                                            media_json = json!({ "DateAdded": datetime.now().strftime("%Y-%m-%d") });
-                                            media_id = Uuid::new_v4();
-                                            db_connection.db_insert_media(media_id, file_name, new_class_type_uuid, None, None,
-                                                                          media_json);
+                                            let media_json = json!({ "Added": datetime.now().strftime("%Y-%m-%d HH:mm:ss") });
+                                            let media_id = Uuid::new_v4();
+                                            mk_lib_database_media::mk_lib_database_media_insert(db_client,
+                                                                                                media_id,
+                                                                                                new_class_type_uuid,
+                                                                                                file_name,
+                                                                                                None,
+                                                                                                None,
+                                                                                                media_json);
                                             // verify ffprobe and bif should run on the data
                                             if ffprobe_bif_data && mk_lib_common_media_extension::MEDIA_EXTENSION_SKIP_FFMPEG.contains(&file_extension) == false
                                                 && mk_lib_common_media_extension::MEDIA_EXTENSION.contains(&file_extension) {
@@ -324,14 +341,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
                                             // verify it should save a dl "Z" record for search/lookup/etc
                                             if save_dl_record {
                                                 // media id begin and download que insert
-                                                db_connection.db_download_insert(provider = "Z",
-                                                                                 que_type = new_class_type_uuid,
-                                                                                 down_json = json!({
-                                                                         "MediaID": media_id,
-                                                                         "Path": file_name
-                                                                     }),
-                                                                                 down_new_uuid = Uuid::new_v4(),
-                                                );
+                                                mk_lib_database_download::mk_lib_database_download_insert(db_client,
+                                                                                                          "Z".to_string(),
+                                                                                                          new_class_type_uuid,
+                                                                                                          Uuid::new_v4(),
+                                                                                                          media_id,
+                                                                                                          "".to_string());
                                             }
                                         }
                                     }

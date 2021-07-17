@@ -23,7 +23,7 @@ pub async fn mk_lib_database_download_insert(client: &tokio_postgres::Client,
                                              metadata_provider_id: i32,
                                              metadata_status: String)
                                              -> Result<bool, Error> {
-    let row = client
+    client
         .query_one("insert into mm_download_que (mdq_id, \
         mdq_provider, \
         mdq_que_type, \
@@ -35,18 +35,6 @@ pub async fn mk_lib_database_download_insert(client: &tokio_postgres::Client,
                        &metadata_new_uuid, &metadata_provider_id, &metadata_status]).await?;
     Ok()
 }
-
-// Uuid::new_v4();
-// new_guid = uuid.uuid4()
-// await db_conn.execute('insert into mm_download_que (mdq_id,'
-//                       ' mdq_provider,'
-//                       ' mdq_que_type,'
-//                       ' mdq_new_uuid,'
-//                       ' mdq_provider_id,'
-//                       ' mdq_status)'
-//                       ' values ($1, $2, $3, $4, $5, $6)',
-//                       new_guid, provider, que_type, down_new_uuid,
-//                       down_json['ProviderMetaID'], down_json['Status'])
 
 // // cargo test -- --show-output
 // #[cfg(test)]

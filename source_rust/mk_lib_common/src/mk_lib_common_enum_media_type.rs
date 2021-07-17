@@ -5,7 +5,6 @@ impl DLMediaType {
     pub const MOVIE: i16 = 1;
     pub const TV: i16 = 2;
     pub const PERSON: i16 = 3;
-
     pub const SPORTS: i16 = 4;
     pub const GAME: i16 = 5;
     pub const PUBLICATION: i16 = 6;

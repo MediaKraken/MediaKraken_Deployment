@@ -5,7 +5,7 @@ pub async fn mk_lib_database_notification_insert(client: &tokio_postgres::Client
                                                  mm_notification_text: String,
                                                  mm_notification_dismissable: bool)
                                                  -> Result<(), Error> {
-    let row = client
+    client
         .query("insert into mm_notification (mm_notification_guid, \
         mm_notification_text, \
         mm_notification_time = NOW(), \

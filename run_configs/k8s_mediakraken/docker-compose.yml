@@ -231,7 +231,7 @@ services:
         constraints: [node.role == manager]
 
   pgadmin:
-    image: dpage/pgadmin4:5.4
+    image: dpage/pgadmin4:5.5
     stop_grace_period: 30s
     stop_signal: SIGTERM
     networks:
@@ -293,7 +293,7 @@ services:
         constraints: [node.role == manager]
 
   portainer:
-    image: portainer/portainer-ce:2.5.1-alpine
+    image: portainer/portainer-ce:2.6.1-alpine
     command: -H tcp://tasks.portaineragent:9001 --tlsskipverify
     ports:
       - "9000:9000"
