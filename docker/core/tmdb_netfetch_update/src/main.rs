@@ -79,10 +79,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // open the database
     let db_client = &mk_lib_database::mk_lib_database_open().await?;
 
-
-
-
-    //     # open the database
     // option_config_json, db_connection = \
     //     await common_config_ini.com_config_read_async(loop=loop,
     //                                                   as_pool=False)
