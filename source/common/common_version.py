@@ -17,5 +17,3 @@
 """
 
 APP_VERSION = 'dev2021_07'
-
-DB_VERSION = 43

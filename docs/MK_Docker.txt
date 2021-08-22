@@ -11,49 +11,6 @@ to use local repo wihtout https (debian)
 service docker restart
 
 
-'ComposeMediaKrakenBroadcastRust': ('mkbroadcastrust', 'scratch', 'rust'),
-
-    'ComposeMediaKrakenCronRust': ('mkcronrust', 'busybox:1.33.1-uclibc', 'rust'),
-
-    'ComposeMediaKrakenDatabase13': ('mkdatabase', 'debian:buster-slim', 'debian'),
-
-    'ComposeMediaKrakenDownload': ('mkdownload', 'mkbase_alpinepy3', 'alpine'),
-
-    'filebeat': ('mkfilebeat', 'docker.elastic.co/beats/filebeat:7.5.2'),
-
-    'ComposeMediaKrakenHardware': ('mkhardware', 'mkbase_alpinepy3', 'alpine'),
-
-    'ComposeMediaKrakenInotifyRust': ('mkinotifyrust', 'busybox:1.33.1-uclibc', 'rust'),
-
-    'metricbeat': ('mkmetricbeat', 'docker.elastic.co/beats/metricbeat:7.6.0'),
-
-    'ComposeMediaKrakenMetadata': ('mkmetadata', 'mkbase_alpinepy3', 'alpine'),
-
-    'ComposeMediaKrakenNginx': ('mknginx', 'alpine:3.10', 'alpine'),
-
-  pgadmin:
-    image: dpage/pgadmin4:5.4
-
-    'ComposeMediaKrakenPGBouncer': ('mkpgbouncer', 'alpine:3.13.5', 'alpine'),
-
-    'ComposeMediaKrakenPika': ('mkpika', 'mkbase_alpinepy3', 'alpine'),
-
-  portainer:
-    image: portainer/portainer-ce:2.5.1-alpine
-
-    'ComposeMediaKrakenRabbitMQ': ('mkrabbitmq', 'alpine:3.11', 'alpine'),
-
-    'ComposeMediaKrakenReactor': ('mkreactor', 'mkbase_alpinepy3', 'alpine'),
-
-    'ComposeMediaKrakenTranscode': ('mktranscode', 'mkbase_ffmpeg', 'alpine'),
-
-    'ComposeMediaKrakenWebSanic': ('mkwebappsanic', 'mkbase_alpinepy3', 'alpine'),
-
-
-
-
-
-
 ******* Used Containers *****************
 
 ComposeMediaKrakenBase37Py3 - Base OS

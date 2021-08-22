@@ -1,4 +1,0 @@
-*.vh.default.conf~
-/dockerfile-nginx~
-*.conf~
-/uwsgi_params~

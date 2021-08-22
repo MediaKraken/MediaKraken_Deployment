@@ -25,43 +25,6 @@ from common import common_file
 from common import common_logging_elasticsearch_httpx
 from psycopg2.extensions import ISOLATION_LEVEL_READ_COMMITTED
 
-
-def db_open(self, force_local=False):
-    """
-    # open database
-    """
-    # setup for unicode
-    psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
-    psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
-    psycopg2.extras.register_uuid()
-    psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
-    # psycopg2.extras.register_default_json(loads=lambda x: x)
-    if force_local:
-        self.sql3_conn = psycopg2.connect(
-            "dbname='postgres' user='postgres' host='localhost'"
-            " port=5432 password='metaman' connect_timeout=5")
-    else:
-        # this is here to handle going back to docker-compose with else for docker swarm
-        if 'POSTGRES_PASSWORD' in os.environ:
-            database_password = os.environ['POSTGRES_PASSWORD']
-        else:
-            database_password = common_file.com_file_load_data('/run/secrets/db_password')
-        # keep trying to connect every 10 seconds, hence sleep later in while
-        while True:
-            try:
-                self.sql3_conn = psycopg2.connect(
-                    "dbname='postgres' user='postgres' host='mkstack_pgbouncer'"
-                    " port=6432 password='%s' connect_timeout=5"  # , async=1 - invalid option
-                    % database_password.strip())
-            except (psycopg2.OperationalError, psycopg2.DatabaseError):
-                time.sleep(10)
-            else:
-                break
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                             message_text={'stuff': 'db open'})
-    self.db_cursor = self.sql3_conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-
 def db_close(self):
     """
     # close main db file

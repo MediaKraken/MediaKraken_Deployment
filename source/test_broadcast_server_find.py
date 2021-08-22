@@ -1,3 +1,0 @@
-from common import common_network_mediakraken
-
-print(common_network_mediakraken.com_net_mediakraken_find_server(server_seconds=2))

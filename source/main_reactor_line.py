@@ -195,15 +195,3 @@ if __name__ == '__main__':
                                                              message_text={
                                                                  'no device_scan file found'})
 
-    # commit
-    db_connection.db_commit()
-
-    # close the database
-    db_connection.db_close()
-
-    # setup for the ssl keys
-    while not os.path.isfile('./key/cacert.pem'):  # server might not have created yet
-        pass
-    reactor.listenSSL(8903, MediaKrakenServerApp(),
-                      ssl.DefaultOpenSSLContextFactory('./key/privkey.pem', './key/cacert.pem'))
-    reactor.run()

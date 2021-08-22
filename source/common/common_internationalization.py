@@ -21,14 +21,6 @@ from babel.dates import format_date
 from babel.numbers import format_decimal
 
 
-def com_inter_date_format(date_to_format, country_code='en_US'):
-    return format_date(date_to_format, locale=country_code)
-
-
-def com_inter_number_format(number_to_format, country_code='en_US'):
-    return format_decimal(number_to_format, locale=country_code)
-
-
 def com_inter_country_name(country_code='eng'):
     try:
         lang = pycountry.languages.get(alpha_3=country_code)

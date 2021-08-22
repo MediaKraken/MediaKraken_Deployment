@@ -34,43 +34,6 @@ from . import common_file
 from . import wol
 
 
-def mk_network_fetch_from_url(url, directory=None):
-    """
-    Download data from specified url to save in specific directory
-    """
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
-                                                         message_text={'dl': url, 'dir': directory})
-    try:
-        datafile = urllib.request.urlopen(url, context=ssl._create_unverified_context())
-    except urllib.error.URLError:  # <urlopen error [Errno 99] Address not available>:
-        return False
-    if directory is not None and datafile.getcode() == 200:
-        try:
-            localfile = open(directory, 'wb')
-        except:
-            # create missing directory structure
-            common_file.com_mkdir_p(directory)
-            localfile = open(directory, 'wb')
-        try:
-            localfile.write(datafile.read())
-        except urllib.error.HTTPError:
-            datafile.close()
-            localfile.close()
-            return False  # don't retry as could be 404....which would cause loop
-        datafile.close()
-        localfile.close()
-    if directory is None:
-        return datafile.read()
-    return True
-
-
-def mk_network_wol(mac_address):
-    """
-    Send wake on lan event to mac address
-    """
-    wol.send_magic_packet(mac_address)
-
-
 def mk_network_get_mac():
     """
     Get MAC address
@@ -144,58 +107,9 @@ def mk_network_ping_list(host_list):
                                                                            'report': report[
                                                                                pingle.status]})
 
-
-def mk_network_io_counter(show_nic=False):
-    """
-    Get network io
-    """
-    import psutil
-    return psutil.net_io_counters(pernic=show_nic)
-
-
-def mk_network_connections():
-    """
-    Show network connections
-    """
-    import psutil
-    return psutil.net_connections()
-
-
-def mk_network_ip_addr():
-    """
-    Show ip addys
-    """
-    import psutil
-    return psutil.net_if_addrs()
-
-
-def mk_network_stats():
-    """
-    Show network stats
-    """
-    import psutil
-    return psutil.net_if_stats()
-
-
 def mk_network_country_code():
     try:
         response = urllib.request.urlopen("https://geoip-db.com/json")
         return json.loads(response.read())
     except:
         return {'country_code': 'Error', 'country_name': 'Unknown'}
-
-
-def mk_network_service_available(host_dns, host_port, wait_seconds='120'):
-    if os.path.exists('/mediakraken/wait-for-it-ash-busybox130.sh'):
-        wait_pid = subprocess.Popen(
-            ['/mediakraken/wait-for-it-ash-busybox130.sh', '-h', host_dns, '-p', host_port,
-             '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
-    elif os.path.exists('/mediakraken/wait-for-it-ash.sh'):
-        wait_pid = subprocess.Popen(
-            ['/mediakraken/wait-for-it-ash.sh', '-h', host_dns, '-p', host_port,
-             '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
-    else:
-        wait_pid = subprocess.Popen(
-            ['/mediakraken/wait-for-it-bash.sh', '-h', host_dns, '-p', host_port,
-             '-t', wait_seconds], stdout=subprocess.PIPE, shell=False)
-    wait_pid.wait()

@@ -7,7 +7,7 @@ Website
 
 File system watcher via inotify
 
-Website for raspberry pi standard screen
+Website for raspberry pi standard screen?
 
 Application for raspbeery pi standard screen that can do hardware IR, serial, etc
 
@@ -19,11 +19,11 @@ Database browser to test/view data
 
 Database connection pooler
 
-Http to https and load balancer website
+Http to https and load balancer for website
 
 AMQP queue host via RabbitMQ
 
-Update database layout on start if needed
+Update database layout on start if needed, have other clients wait till version matches
 
 **** Done and containered ****
 

@@ -1,4 +1,4 @@
-from common import common_global
+rom common import common_global
 from sanic import Blueprint
 
 blueprint_public_about = Blueprint('name_blueprint_public_about', url_prefix='/public')

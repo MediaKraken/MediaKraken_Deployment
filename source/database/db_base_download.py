@@ -20,25 +20,6 @@ import uuid
 
 from common import common_logging_elasticsearch_httpx
 
-
-def db_download_insert(self, provider, que_type, down_json, down_new_uuid):
-    """
-    Create/insert a download into the que
-    """
-    new_guid = uuid.uuid4()
-    self.db_cursor.execute('insert into mm_download_que (mdq_id,'
-                           ' mdq_provider,'
-                           ' mdq_que_type,'
-                           ' mdq_new_uuid,'
-                           ' mdq_provider_id,'
-                           ' mdq_status)'
-                           ' values (%s,%s,%s,%s,%s,%s,%s)',
-                           (new_guid, provider, que_type, down_new_uuid,
-                            down_json['ProviderMetaID'], down_json['Status']))
-    self.db_commit()
-    return new_guid
-
-
 def db_download_read_provider(self, provider_name):
     """
     Read the downloads by provider
@@ -91,42 +72,3 @@ def db_download_update(self, guid, status, provider_guid=None):
     else:
         self.db_cursor.execute('update mm_download_que set mdq_status = %s'
                                ' where mdq_id = %s', (status, guid))
-
-
-def db_download_que_exists(self, download_que_uuid, download_que_type,
-                           provider_name, provider_id,
-                           exists_only=False):
-    """
-    See if download que record exists for provider and id and type
-        still need this as records could be from different threads or not in order
-        and themoviedb "reuses" media id records for tv/movie
-    """
-    # include search to find OTHER records besides the row that's
-    # doing the query itself
-    # this should now catch anything that's Fetch+, there should also technically
-    # only ever be one Fetch+, rest should be search or null
-    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-        'db_download_que_exists': download_que_uuid,
-        'name': provider_name,
-        'id': provider_id})
-    if exists_only:
-        return self.db_cursor.execute('select exists(select 1'
-                                      ' from mm_download_que'
-                                      ' where mdq_provider = $1'
-                                      ' and mdq_que_type = $2'
-                                      ' and mdq_provider_id = $3'
-                                      ' limit 1) limit 1',
-                                      provider_name, download_que_type, provider_id)
-    else:
-        # que type is movie, tv, etc as those numbers could be reused
-        self.db_cursor.execute('select mdq_new_uuid'
-                               ' from mm_download_que'
-                               ' where mdq_provider = %s'
-                               ' and mdq_que_type = %s'
-                               ' and mdq_provider_id = %s limit 1',
-                               (provider_name, download_que_type, provider_id))
-    # if no data, send none back
-    try:
-        return self.db_cursor.fetchone()[0]
-    except:
-        return None

@@ -1,6 +1,0 @@
-crochet==1.12.0
-pyopenssl==19.1.0
-service_identity==18.1.0
-python-lirc==1.2.3
-py-irsend==1.0.2
-pylms==1.0
