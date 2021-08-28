@@ -1,7 +1,0 @@
-/OS_BUILD~
-*.ods#
-/update_version.txt
-*.md~
-/library.db
-/library.db-shm
-/library.db-wal
