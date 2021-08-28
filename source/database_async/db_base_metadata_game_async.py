@@ -220,3 +220,99 @@ async def db_meta_game_update_by_guid(self, game_id, game_json, db_connection=No
                           ' set gi_game_info_json = $1'
                           ' where gi_system_id = $2',
                           game_json, game_id)
+
+
+def db_meta_game_list_count(self, search_value=None):
+    """
+    # return list of games count
+    """
+    if search_value is not None:
+        self.db_cursor.execute('select count(*) from mm_metadata_game_software_info'
+                               ' where gi_game_info_name %% %s', (search_value,))
+    else:
+        self.db_cursor.execute(
+            'select count(*) from mm_metadata_game_software_info')
+    return self.db_cursor.fetchone()[0]
+
+
+def db_meta_game_by_system_count(self, guid):
+    """
+    # game list by system count
+    """
+    self.db_cursor.execute('select count(*) from mm_metadata_game_software_info,'
+                           ' mm_metadata_game_systems_info'
+                           ' where gi_system_id = gs_id'
+                           ' and gs_id = %s', (guid,))
+    return self.db_cursor.fetchone()[0]
+
+
+def db_meta_game_by_system(self, guid, offset=0, records=None):
+    """
+    # game list by system count
+    """
+    self.db_cursor.execute('select * from mm_metadata_game_software_info,'
+                           ' mm_metadata_game_systems_info'
+                           ' where gi_system_id = gs_id'
+                           ' and gs_id = %s'
+                           ' offset %s, limit %s', (guid, offset, records))
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
+
+
+def db_meta_game_by_name_and_system(self, game_name, game_system_short_name):
+    """
+    # game by name and system short name
+    """
+    if game_system_short_name is None:
+        self.db_cursor.execute('select gi_id, gi_game_info_json'
+                               ' from mm_metadata_game_software_info'
+                               ' where gi_game_info_name = %s and gi_system_id IS NULL',
+                               (game_name,))
+    else:
+        self.db_cursor.execute('select gi_id, gi_game_info_json'
+                               ' from mm_metadata_game_software_info'
+                               ' where gi_game_info_name = %s and gi_system_id = %s',
+                               (game_name, game_system_short_name))
+    return self.db_cursor.fetchall()
+
+
+# poster, backdrop, etc
+def db_meta_game_image_random(self, return_image_type='Poster'):
+    """
+    Find random game image
+    """
+    # TODO little bobby tables
+    self.db_cursor.execute('select gi_game_info_json->\'Images\'->\'thegamesdb\'->>\''
+                           + return_image_type + '\' as image_json,gi_id'
+                                                 ' from mm_media, mm_metadata_game_software_info'
+                                                 ' where mm_media_metadata_guid = gi_id'
+                                                 ' and ('
+                                                 'gi_game_info_json->\'Images\'->\'thegamesdb\'->>\''
+                           + return_image_type + '\'' + ')::text != \'null\''
+                                                        ' order by random() limit 1')
+    try:
+        # then if no results.....a None will except which will then pass None, None
+        image_json, metadata_id = self.db_cursor.fetchone()
+        return image_json, metadata_id
+    except:
+        return None, None
+
+
+def db_meta_game_category_by_name(self, category_name):
+    self.db_cursor.execute(
+        'select gc_id from mm_game_category where gc_category = %s', (category_name,))
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
+
+
+def db_meta_game_category_add(self, category_name):
+    category_uuid = uuid.uuid4()
+    self.db_cursor.execute('insert into mm_game_category (gc_id, gc_category)'
+                           ' values (%s, %s)',
+                           (category_uuid, category_name))
+    self.db_cursor.commit()
+    return category_uuid

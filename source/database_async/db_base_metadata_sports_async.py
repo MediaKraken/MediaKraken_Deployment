@@ -93,3 +93,61 @@ async def db_meta_sports_list_count(self, search_value=None, db_connection=None)
                                       search_value)
     else:
         return await db_conn.fetchval('select count(*) from mm_metadata_sports')
+
+
+def db_meta_sports_guid_by_event_name(self, event_name):
+    """
+    # fetch guid by event name
+    """
+    self.db_cursor.execute('select mm_metadata_sports_guid'
+                           ' from mm_metadata_sports'
+                           ' where mm_metadata_sports_name = %s', (event_name,))
+    try:
+        return self.db_cursor.fetchone()['mm_metadata_sports_guid']
+    except:
+        return None
+
+
+
+def db_metathesportsdb_select_guid(self, guid):
+    """
+    # select
+    """
+    self.db_cursor.execute('select mm_metadata_sports_json'
+                           ' from mm_metadata_sports'
+                           ' where mm_metadata_sports_guid = %s', (guid,))
+    try:
+        return self.db_cursor.fetchone()['mm_metadata_sports_json']
+    except:
+        return None
+
+
+def db_metathesportsdb_insert(self, series_id_json, event_name, show_detail,
+                              image_json):
+    """
+    # insert
+    """
+    new_guid = uuid.uuid4()
+    self.db_cursor.execute('insert into mm_metadata_sports (mm_metadata_sports_guid,'
+                           ' mm_metadata_media_sports_id,'
+                           ' mm_metadata_sports_name,'
+                           ' mm_metadata_sports_json,'
+                           ' mm_metadata_sports_image_json)'
+                           ' values (%s,%s,%s,%s,%s)',
+                           (new_guid, series_id_json, event_name, show_detail, image_json))
+    self.db_commit()
+    return new_guid
+
+
+def db_metathesports_update(self, series_id_json, event_name, show_detail,
+                            sportsdb_id):
+    """
+    # updated
+    """
+    self.db_cursor.execute('update mm_metadata_sports'
+                           ' set mm_metadata_media_sports_id = %s,'
+                           ' mm_metadata_sports_name = %s,'
+                           ' mm_metadata_sports_json = %s'
+                           ' where mm_metadata_media_sports_id->\'thesportsdb\' ? %s',
+                           (series_id_json, event_name, show_detail, sportsdb_id))
+    self.db_commit()

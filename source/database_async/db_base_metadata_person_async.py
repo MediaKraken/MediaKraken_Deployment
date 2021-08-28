@@ -4,6 +4,17 @@ import uuid
 from common import common_global
 from common import common_logging_elasticsearch_httpx
 
+def db_meta_person_by_name(self, person_name):
+    """
+    # return person data by name
+    """
+    self.db_cursor.execute('select mmp_id, mmp_person_media_id,'
+                           ' mmp_person_meta_json,'
+                           ' mmp_person_image,'
+                           ' mmp_person_name'
+                           ' from mm_metadata_person'
+                           ' where mmp_person_name = %s', (person_name,))
+    return self.db_cursor.fetchone()
 
 async def db_meta_person_as_seen_in(self, person_guid, db_connection=None):
     """

@@ -228,3 +228,50 @@ async def db_meta_movie_count_by_id(self, guid, db_connection=None):
         db_conn = db_connection
     return await db_conn.fetchval('select exists(select 1 from mm_metadata_movie'
                                   ' where mm_metadata_media_id = $1 limit 1) limit 1', guid)
+
+
+# poster, backdrop, etc
+def db_meta_movie_image_random(self, return_image_type='Poster'):
+    """
+    Find random movie image
+    """
+    # TODO little bobby tables
+    self.db_cursor.execute('select mm_metadata_localimage_json->\'Images\'->\'themoviedb\'->>\''
+                           + return_image_type + '\' as image_json,mm_metadata_guid'
+                                                 ' from mm_media,mm_metadata_movie'
+                                                 ' where mm_media_metadata_guid = mm_metadata_guid'
+                                                 ' and (mm_metadata_localimage_json->\'Images\'->>\''
+                           + return_image_type + '\'' + ')::text != \'null\''
+                                                        ' order by random() limit 1')
+    try:
+        # then if no results.....a None will except which will then pass None, None
+        image_json, metadata_id = self.db_cursor.fetchone()
+        return image_json, metadata_id
+    except:
+        return None, None
+
+
+def db_meta_movie_update_castcrew(self, cast_crew_json, metadata_id):
+    """
+    Update the cast/crew for selected media
+    """
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'upt castcrew': metadata_id})
+    self.db_cursor.execute('select mm_metadata_json'
+                           ' from mm_metadata_movie'
+                           ' where mm_metadata_guid = %s', (metadata_id,))
+    cast_crew_json_row = self.db_cursor.fetchone()[0]
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
+        'castrow': cast_crew_json_row})
+    # TODO for dumping 'meta'
+    if 'cast' in cast_crew_json:
+        cast_crew_json_row.update({'Cast': cast_crew_json['cast']})
+    # TODO for dumping 'meta'
+    if 'crew' in cast_crew_json:
+        cast_crew_json_row.update({'Crew': cast_crew_json['crew']})
+    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                         message_text={'upt': cast_crew_json_row})
+    self.db_cursor.execute('update mm_metadata_movie set mm_metadata_json = %s'
+                           ' where mm_metadata_guid = %s',
+                           (json.dumps(cast_crew_json_row), metadata_id))
+    self.db_commit()

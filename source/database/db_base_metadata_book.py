@@ -22,37 +22,6 @@ import uuid
 from common import common_logging_elasticsearch_httpx
 
 
-def db_meta_book_list_count(self, search_value=None):
-    """
-    book list count
-    """
-    if search_value is not None:
-        self.db_cursor.execute('select count(*) '
-                               'from mm_metadata_book'
-                               ' where mm_metadata_book_name %% %s',
-                               (search_value,))
-    else:
-        self.db_cursor.execute('select count(*) from mm_metadata_book')
-    return self.db_cursor.fetchone()[0]
-
-
-def db_meta_book_list(self, offset=0, records=None, search_value=None):
-    """
-    book list
-    """
-    # TODO sort by release date
-    if search_value is not None:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-                               'from mm_metadata_book where mm_metadata_book_name %% %s'
-                               ' order by mm_metadata_book_name '
-                               'offset %s limit %s', (search_value, offset, records))
-    else:
-        self.db_cursor.execute('select mm_metadata_book_guid,mm_metadata_book_name '
-                               'from mm_metadata_book order by mm_metadata_book_name '
-                               'offset %s limit %s', (offset, records))
-    return self.db_cursor.fetchall()
-
-
 def db_meta_book_guid_by_isbn(self, isbn_uuid, isbn13_uuid):
     """
     # metadata guid by isbm id
@@ -104,18 +73,6 @@ def db_meta_book_insert(self, json_data):
     self.db_commit()
     return insert_uuid
 
-
-def db_meta_book_by_uuid(self, book_uuid):
-    """
-    grab book by uuid
-    """
-    self.db_cursor.execute('select mm_metadata_book_json'
-                           ' from mm_metadata_book '
-                           'where mm_metadata_book_guid = %s', (book_uuid,))
-    try:
-        return self.db_cursor.fetchone()
-    except:
-        return None
 
 
 def db_meta_book_image_random(self, return_image_type='Cover'):

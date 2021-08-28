@@ -670,3 +670,104 @@ async def db_media_sports_list_count(self, class_guid, list_type=None,
                         list_genre)
             else:
                 return await db_conn.fetchval('select 1')
+
+
+def db_media_sports_random(self):
+    """
+    Find random sports
+    """
+    self.db_cursor.execute('select mm_metadata_sports_guid,'
+                           ' mm_media_guid'
+                           ' from mm_media,'
+                           'mm_metadata_sports'
+                           ' where mm_media_metadata_guid = mm_metadata_sports_guid'
+                           ' and random() < 0.01 limit 1')
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
+
+
+def db_media_sports_count_by_genre(self, class_guid):
+    """
+    # movie count by genre
+    """
+    self.db_cursor.execute('select jsonb_array_elements_text(mm_metadata_sports_json->\'Meta\''
+                           '->\'themoviedb\'->\'Meta\'->\'genres\')b as gen,'
+                           ' count(mm_metadata_sports_json->\'Meta\''
+                           '->\'themoviedb\'->\'Meta\'->\'genres\')'
+                           ' from ((select distinct on (mm_media_metadata_guid)'
+                           ' mm_metadata_sports_json'
+                           ' from mm_media, mm_metadata_sports'
+                           ' where mm_media_class_guid = %s'
+                           ' and mm_media_metadata_guid = mm_metadata_sports_guid)'
+                           ' union (select distinct'
+                           ' on (mmr_media_metadata_guid) mm_metadata_sports_json'
+                           ' from mm_media_remote,'
+                           ' mm_metadata_sports'
+                           ' where mmr_media_class_guid = %s'
+                           ' and mmr_media_metadata_guid = mm_metadata_sports_guid))'
+                           ' as temp group by gen',
+                           (class_guid, class_guid))
+    return self.db_cursor.fetchall()
+
+def db_read_media_metadata_sports_both(self, media_guid):
+    """
+    # read in metadata and ffprobe by id
+    """
+    self.db_cursor.execute('select mm_media_ffprobe_json,'
+                           'mm_metadata_sports_json,'
+                           'mm_metadata_sports_image_json'
+                           ' from mm_media, mm_metadata_sports'
+                           ' where mm_media_metadata_guid = mm_metadata_sports_guid'
+                           ' and mm_media_guid = %s', (media_guid,))
+    try:
+        return self.db_cursor.fetchone()
+    except:
+        return None
+
+
+def db_read_media_sports_list_by_uuid(self, media_guid):
+    self.db_cursor.execute('select mm_media_ffprobe_json'
+                           ' from mm_media'
+                           ' where mm_media_metadata_guid in (select mm_metadata_sports_guid from '
+                           'mm_media where mm_media_guild = %s)', (media_guid,))
+    video_data = []
+    for file_data in self.db_cursor.fetchall():
+        # go through streams
+        audio_streams = []
+        subtitle_streams = ['None']
+        if 'streams' in file_data['FFprobe'] and file_data['FFprobe']['streams'] is not None:
+            for stream_info in file_data['FFprobe']['streams']:
+                common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                     message_text={
+                                                                         "info": stream_info})
+                stream_language = ''
+                stream_title = ''
+                stream_codec = ''
+                try:
+                    stream_language = stream_info['tags']['language'] + ' - '
+                except:
+                    pass
+                try:
+                    stream_title = stream_info['tags']['title'] + ' - '
+                except:
+                    pass
+                try:
+                    stream_codec \
+                        = stream_info['codec_long_name'].rsplit('(', 1)[1].replace(')', '') \
+                          + ' - '
+                except:
+                    pass
+                if stream_info['codec_type'] == 'audio':
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                         message_text={
+                                                                             'stuff': 'audio'})
+                    audio_streams.append((stream_codec + stream_language
+                                          + stream_title)[:-3])
+                elif stream_info['codec_type'] == 'subtitle':
+                    subtitle_streams.append(stream_language)
+                    common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info',
+                                                                         message_text={
+                                                                             'stuff': 'subtitle'})
+    return video_data
