@@ -93,4 +93,3 @@ cd /home/pi
 git clone https://www.github.com/MediaKraken/MediaKraken_Deployment
 cd MediaKraken_Deployment
 pip install -r requirements.txt
-

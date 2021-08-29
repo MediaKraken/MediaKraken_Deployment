@@ -1,0 +1,8 @@
+vulture==2.3
+pytype==2021.4.9
+radon==4.5.0
+python-taint==0.42
+bandit==1.7.0
+pylama==7.7.1
+python-dotenv==0.17.0
+2to3==1.0

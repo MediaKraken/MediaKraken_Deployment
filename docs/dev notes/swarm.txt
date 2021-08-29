@@ -1,5 +1,3 @@
-
-
 swarm create
 
 swarm join --advertise=<node_ip:2375> token://<cluster_id>
@@ -8,7 +6,6 @@ docker network create \docker-
   --driver overlay \
   --subnet 10.0.100.0/24 \
   mknetwork
-
 
 ***********************
 
@@ -33,7 +30,7 @@ docker system df
 
 docker system prune
 
-# nuke from orbit
+    # nuke from orbit
 docker system prune -a
 
 docker volume rm $(docker volume ls -qf dangling=true)
@@ -42,13 +39,10 @@ docker service logs -t mkstack_database
 
 docker service logs --raw mkstack_database
 
-
 docker service scale backend=3 frontend=5
-
 
 docker service scale mkstack_pgbouncer=5 
 docker service scale mkstack_whoami=20
-
 
 docker run --name="logspout" \
 	--volume=/var/run/docker.sock:/var/run/docker.sock \
