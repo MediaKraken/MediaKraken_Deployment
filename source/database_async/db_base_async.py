@@ -1,10 +1,3 @@
-import inspect
-import json
-import os
-
-import asyncpg
-from common import common_file
-from common import common_logging_elasticsearch_httpx
 
 
 async def db_table_count(self, table_name, db_connection=None, exists=False):
