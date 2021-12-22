@@ -16,11 +16,6 @@ docker-compose config | docker stack deploy --compose-file docker-compose-stack.
 
 docker stack rm mkstack
 
-
-https://technolinchpin.wordpress.com/2017/10/19/centralized-log-management-solution-with-elk-docker-container/
-sudo docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -p 5000:5000 -v /data/logstash:/etc/logstash/conf.d -it --name elk sebp/elk /bin/bash
-
-
 docker stack services mkstack
 
 docker stack list
@@ -42,7 +37,6 @@ docker service logs --raw mkstack_database
 docker service scale backend=3 frontend=5
 
 docker service scale mkstack_pgbouncer=5 
-docker service scale mkstack_whoami=20
 
 docker run --name="logspout" \
 	--volume=/var/run/docker.sock:/var/run/docker.sock \

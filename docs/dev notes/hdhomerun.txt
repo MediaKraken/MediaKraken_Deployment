@@ -5,10 +5,8 @@ cmd = [hdhomerun_config, device_id, "set"]
         cmd.extend(["/tuner%s/program" % tuner_num, self.subchannel])
         subprocess.Popen(cmd).wait()
 
-
 # web based discovery
 http://ipv4-my.hdhomerun.com/discover
-
 
 # possible interesting method for recording
 response = requests.get(url, stream=True, timeout=3.00)

@@ -13,15 +13,6 @@ service docker restart
 
 ******* Used Containers *****************
 
-ComposeMediaKrakenBase37Py3 - Base OS
-    Alpine 3.7
-    Python 3.x
-    PIP3
-    creates /mediakraken/
-    image: mediakraken/mkbase37py3
-    PIP
-        elasticsearch - ELK logging
-
 ComposeMediaKrakenCloud - Access cloud services.
     """
     Access cloud services. Targeting only storage for now.
@@ -133,10 +124,6 @@ ComposeMediaKrakenTheater - Placeholder
 
 ******** Not used ***************
 
-ComposeMediaKrakenBasePYPY - Container to build PYPY
-    alpine:3.6
-    pypy2-v5.9.0
-
 ComposeMediaKrakenFilebeat - Feeds file logs into ELK
     debian:jessie
     FILEBEAT_VERSION=5.6.1
@@ -144,10 +131,3 @@ ComposeMediaKrakenFilebeat - Feeds file logs into ELK
 ComposeMediaKrakenMythTV - MythTV backend server
     phusion/baseimage:0.9.16
     mythtv/mythweb
-
-ComposeMediaKrakenOpenLDAP - OpenLDAP
-    gliderlabs/alpine:3.3
-
-ComposeMediaKrakenOpenSMTP - Email - barebones
-    alpine:3.4
-    Postfix

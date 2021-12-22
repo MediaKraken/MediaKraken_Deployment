@@ -1,30 +1,16 @@
-Prerequisites:
-docker 1.12.3
-docker-compose
-
-
 # Start up the MediaKraken application suite:
 docker-compose up -d
-
 
 # Stop the MediaKraken application suite. This will also remove the containers
 docker-compose down
 
-
 # show console output (good for crashes)
 docker-compose logs
 
-
 *************************************************
-
-10.0.0.111 - ubuntu mirror
-10.0.0.160 - alpine mirror - http://10.0.0.160/alpine/v3.4/main/x86_64/
-10.0.0.113 - pip mirror (not done)
-
 
 show ips
 docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
-
 
 testing
 
@@ -43,10 +29,7 @@ su postgres
 psql -d metamandb -c "create extension pg_trgm;"
 
 
-
-
 docker build -t mediakraken/mkdatabaseupgrade .
-
 
 docker build -t mediakraken/ansible_runner_service .
 
@@ -67,21 +50,11 @@ docker run -it centos:7 /bin/bash
 
 docker exec -it [container-id] /bin/ash
 
-docker run -it --rm mediakraken/mkgrapesjs /bin/ash
-
-
-docker build -t mediakraken/mkbasenvidia .
-
-docker build -t mediakraken/mkslave .
-
-docker build -t mediakraken/mkstreamvod .
-
 
 docker build -t mediakraken/mkbaseffmpeg .
 
 
 docker run --network=mk_mediakraken_network -p 5050 -v /var/run/docker.sock:/var/run/docker.sock -v /var/log/mediakraken:/mediakraken/log -v /home/mediakraken:/mediakraken/mnt -itd --name=alpifs7 mediakraken/mkslave
-
 
 docker run --network=mk_mediakraken_dbnetwork -itd --name=alpine_appserver7 alpine_appserver
 docker run --network=mk_mediakraken_dbnetwork --env POSTGRES_PASSWORD=jf20CHANGEME49jf42j -itd --name=alpine_appserv4534450 mkserver
