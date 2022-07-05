@@ -1,5 +1,5 @@
 packaging==20.9
-ujson==4.0.2
+ujson==5.4.0
 Jinja2==2.11.3
 email-validator==1.1.2
 WTForms==2.3.3
