@@ -1,7 +1,7 @@
 crochet==1.12.0
 pyopenssl==19.1.0
 service_identity==18.1.0
-setuptools==45.2.0
+setuptools==65.5.1
 pycdio==2.1.0
 lcdproc==0.3
 python-lirc==1.2.3
