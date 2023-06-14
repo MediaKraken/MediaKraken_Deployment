@@ -2,15 +2,6 @@ Prerequisites:
 docker 1.12.3
 docker-compose
 
-
-# Start up the MediaKraken application suite:
-docker-compose up -d
-
-
-# Stop the MediaKraken application suite. This will also remove the containers
-docker-compose down
-
-
 # show console output (good for crashes)
 docker-compose logs
 

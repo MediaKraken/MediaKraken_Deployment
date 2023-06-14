@@ -1,6 +1,0 @@
-[submodule "KrakenStreamer"]
-	path = KrakenStreamer
-	url = ../KrakenStreamer
-[submodule "MediaKraken_Kodi"]
-	path = MediaKraken_Kodi
-	url = ../MediaKraken_Kodi
