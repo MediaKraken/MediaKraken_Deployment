@@ -1,1 +1,0 @@
-https://api.themoviedb.org/3/person/%s?api_key=fakeapikey&append_to_response=combined_credits,external_ids,images

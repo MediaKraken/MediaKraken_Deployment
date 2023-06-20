@@ -1,4 +1,0 @@
-MK_Benchmark_NGINX
-	Standard SSL proxy	416.37s
-	NGINX cache
-	Google Pagespeed
