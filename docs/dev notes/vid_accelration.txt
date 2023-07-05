@@ -1,7 +1,0 @@
-# ubuntu 17.04
-sudo apt-get install mesa-vdpau-drivers
-	# says no....using vaapi instead - derp...it's an intel cpu in my htpc
-
-
-
-

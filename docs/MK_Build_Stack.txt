@@ -22,10 +22,3 @@ th-jenkins-1  # run build stuff from here
             build_testing_images.py
 th-registry-1  # for storing all the images that are built
     - registry:2 is the image it's running
-th-swarm-1  # for running the test code which pulls from local registry
-    /home/spoot/Mediakraken_Deployment/run_configs/swarm_dev
-    # run below to setup security env and secrets
-    python3 mediakraken_setup.py
-
-thunderbird
-    - metaman@beaverbay.local

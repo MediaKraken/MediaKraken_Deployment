@@ -12,26 +12,3 @@ turn off selinux and reboot
 *docker run -p 8080:8080 -p 50000:50000 -v /opt/jenkins:/var/jenkins_home jenkins/jenkins:lts
 *installed recommended plugins
 **proxmox plugin
-
-
-== Tizen Dev env setup ==
-sudo apt-get install python-software-properties
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java8-installer
-
-sudo apt-get install rpm2cpio bridge-utils expect ruby
-grab sdk (https://developer.tizen.org/development/tizen-studio/download)
-chmod +x 
-run
-
-install
-
-sudo apt-get install libxcb-icccm4 libxcb-render-util0 libxcb-image0 libsdl1.2debian libxcb-randr0 openvpn
-
-main stuff
-mobile 3.0
-sdk tools
-
-extension sdk
-the works for tv

@@ -1,40 +1,4 @@
-{% block content %}
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>MediaKraken - User</title>
-    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link href="{{ url_for('static', filename='fonts/fontawesome-all.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/styles.min.css') }}" rel="stylesheet">
-</head>
 
-<body id="page-top">
-    <div id="wrapper">
-        <nav class="navbar navbar-dark navbar-expand align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="{{ url_for('name_blueprint_user_homepage.url_bp_user_homepage') }}">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-pastafarianism"></i></div>&nbsp;Mediakraken</a>
-                <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin.url_bp_admin') }}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_backup.url_bp_admin_backup') }}"><i class="far fa-hdd"></i><span>Backup</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_cron.url_bp_admin_cron') }}"><i class="fas fa-toolbox"></i><span>Cron/Housekeeping</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_cloud.url_bp_admin_cloud') }}"><i class="fas fa-cloud"></i><span>Cloud</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_database.url_bp_admin_database_statistics') }}"><i class="fas fa-database"></i><span>DB Statistics</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_docker.url_bp_admin_docker_stat') }}"><i class="fab fa-docker"></i><span>Docker Statistics</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_emulation.url_bp_emulation') }}"><i class="fas fa-gamepad"></i><span>Game Metadata</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_hardware.url_bp_admin_hardware') }}"><i class="fas fa-microchip"></i><span>Hardware</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_library.url_bp_admin_library') }}"><i class="fas fa-ticket-alt"></i><span>Library</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_report.url_bp_admin_report') }}"><i class="fas fa-clipboard-list"></i><span>Reports</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_settings.url_bp_admin_settings') }}"><i class="fas fa-cogs"></i><span>Server</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_link.url_bp_admin_server_link') }}"><i class="fas fa-link"></i><span>Server Links</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_torrent.url_bp_admin_torrent') }}"><i class="fas fa-bolt"></i><span>Torrent Management</span></a>
-                        <a class="nav-link" href="{{ url_for('name_blueprint_admin_users.url_bp_admin_user') }}"><i class="fas fa-user-alt"></i><span>Users</span></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <div class="container-fluid">
@@ -112,18 +76,3 @@
                     </div>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer">
-                <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright © Quinn D Granfor 2020</span></div>
-                </div>
-            </footer>
-        </div>
-    </div>
-    <script src="{{ url_for('static', filename='js/jquery.tmpl.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/base_webapp_delete.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.easing.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/script.min.js') }}"></script>
-</body>
-{% endblock %}
