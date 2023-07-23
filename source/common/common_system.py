@@ -24,23 +24,6 @@ from common import common_logging_elasticsearch_httpx
 from . import common_string
 
 
-def pprint_ntuple(nt_result, return_value=None):
-    """
-    Create tuple for memory print
-    """
-    tuple_print = []
-    for name in nt_result._fields:
-        value = getattr(nt_result, name)
-        if name != 'percent':
-            value = common_string.com_string_bytes2human(value)
-        common_logging_elasticsearch_httpx.com_es_httpx_post(message_type='info', message_text={
-            'stuff': name.capitalize(), 'value':
-                value})
-        tuple_print.append('%-10s : %7s' % (name.capitalize(), value))
-    if return_value is not None:
-        return tuple_print
-
-
 def com_system_virtual_memory(attribute_list=None):
     """
     Return virtual memory
@@ -156,16 +139,6 @@ def com_system_uptime():
     """
     Get system uptime
     """
-    # if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
-    #     uptime_proc = subprocess.Popen(
-    #         ['net', 'statistics', 'server'], stdout=subprocess.PIPE, shell=False)
-    #     out, err = uptime_proc.communicate()  # pylint: disable=W0612
-    #     uptime_proc.wait()
-    #     for out_line in out:
-    #         if out_line.find('Statistics since') != -1:
-    #             out = out_line.replace('Statistics since ', '')
-    #             break
-    # else:
     uptime_proc = subprocess.Popen(['uptime'], stdout=subprocess.PIPE, shell=False)
     out, err = uptime_proc.communicate()
     uptime_proc.wait()
