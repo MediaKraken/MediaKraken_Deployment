@@ -1,32 +1,5 @@
-"""
-  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
-
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  version 2, as published by the Free Software Foundation.
-
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  General Public License version 2 for more details.
-
-  You should have received a copy of the GNU General Public License
-  version 2 along with this program; if not, write to the Free
-  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-  MA 02110-1301, USA.
-"""
-
-import gzip
 import os
-import pickle
 import time
-import zipfile
-from os import walk  # pylint: disable=C0412
-from string import ascii_lowercase
-
-from common import common_global
-
-from . import common_string
 
 image_dir = [
     'backdrop',
@@ -256,37 +229,3 @@ def com_mkdir_p(filename):
         return True
     except:
         return False
-
-
-def com_file_unzip(target_zip_file, target_destination_directory=None, remove_zip=False):
-    zip_ref = zipfile.ZipFile(target_zip_file, 'r')
-    if target_destination_directory is None:
-        # will then just unzip in directory of the target zip file
-        zip_ref.extractall()
-    else:
-        zip_ref.extractall(target_destination_directory)
-    zip_ref.close()
-    if remove_zip:
-        os.remove(target_zip_file)
-
-
-def com_file_zip(target_zip_file, source_files, remove_source_files=False):
-    zip_ref = zipfile.ZipFile(target_zip_file, 'w')
-    for file in source_files:
-        zip_ref.write(file)
-        if remove_source_files:
-            os.remove(file)
-    zip_ref.close()
-
-
-def com_file_ungzip(target_gzip_file, target_destination_directory=None, remove_gzip=False):
-    gzip_ref = gzip.open(target_gzip_file, 'rb')
-    return_data = gzip_ref.read()
-    gzip_ref.close()
-    if remove_gzip:
-        os.remove(target_gzip_file)
-    if target_destination_directory is not None:
-        file_handle = open(target_destination_directory, 'w')
-        file_handle.write(str(return_data))
-        file_handle.close()
-    return return_data

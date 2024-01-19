@@ -1,21 +1,3 @@
-//
-//  Copyright (C) 2018 Quinn D Granfor <spootdev@gmail.com>
-//
-//  This program is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU General Public License
-//  version 2, as published by the Free Software Foundation.
-//
-//  This program is distributed in the hope that it will be useful, but
-//  WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-//  General Public License version 2 for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  version 2 along with this program; if not, write to the Free
-//  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//  MA 02110-1301, USA.
-//
-
 #include <AccelStepper.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
@@ -23,10 +5,10 @@
 
 #define water_pin 5
 #define vaccuum_pin 6
-#define home_switch_spindle 7 // Pin 7 connected to Home Switch (MicroSwitch)
-#define home_switch_arm 8 // Pin 8 connected to Home Switch (MicroSwitch)
-#define home_switch_track 9 // Pin 9 connected to Home Switch (MicroSwitch)
-long initial_arm_homing = -1; // Used to Home Stepper at startup
+#define home_switch_spindle 7   // Pin 7 connected to Home Switch (MicroSwitch)
+#define home_switch_arm 8       // Pin 8 connected to Home Switch (MicroSwitch)
+#define home_switch_track 9     // Pin 9 connected to Home Switch (MicroSwitch)
+long initial_arm_homing = -1;   // Used to Home Stepper at startup
 long initial_track_homing = -1; // Used to Home Stepper at startup
 char serialdata[20];
 
@@ -49,17 +31,19 @@ AccelStepper Accelstepper_arm(stepper_arm->onestep(FORWARD, MICROSTEP), stepper_
 void arm_home()
 {
   // home the arm
-  while (digitalRead(home_switch_arm)) {  // Make the Stepper move CCW until the switch is activated
-    Accelstepper_arm.moveTo(initial_arm_homing);  // Set the position to move to
-    initial_arm_homing--;  // Decrease by 1 for next move if needed
-    Accelstepper_arm.run();  // Start moving the stepper
+  while (digitalRead(home_switch_arm))
+  {                                              // Make the Stepper move CCW until the switch is activated
+    Accelstepper_arm.moveTo(initial_arm_homing); // Set the position to move to
+    initial_arm_homing--;                        // Decrease by 1 for next move if needed
+    Accelstepper_arm.run();                      // Start moving the stepper
     delay(5);
   }
   Accelstepper_arm.setCurrentPosition(0);  // Set the current position as zero for now
-  Accelstepper_arm.setMaxSpeed(100.0);      // Set Max Speed of Stepper (Slower to get better accuracy)
-  Accelstepper_arm.setAcceleration(100.0);  // Set Acceleration of Stepper
+  Accelstepper_arm.setMaxSpeed(100.0);     // Set Max Speed of Stepper (Slower to get better accuracy)
+  Accelstepper_arm.setAcceleration(100.0); // Set Acceleration of Stepper
   initial_arm_homing = 1;
-  while (!digitalRead(home_switch_arm)) { // Make the Stepper move CW until the switch is deactivated
+  while (!digitalRead(home_switch_arm))
+  { // Make the Stepper move CW until the switch is deactivated
     Accelstepper_arm.moveTo(initial_arm_homing);
     Accelstepper_arm.run();
     initial_arm_homing++;
@@ -71,17 +55,19 @@ void arm_home()
 void track_home()
 {
   // home the track
-  while (digitalRead(home_switch_track)) {  // Make the Stepper move CCW until the switch is activated
-    Accelstepper_track.moveTo(initial_track_homing);  // Set the position to move to
-    initial_track_homing--;  // Decrease by 1 for next move if needed
-    Accelstepper_track.run();  // Start moving the stepper
+  while (digitalRead(home_switch_track))
+  {                                                  // Make the Stepper move CCW until the switch is activated
+    Accelstepper_track.moveTo(initial_track_homing); // Set the position to move to
+    initial_track_homing--;                          // Decrease by 1 for next move if needed
+    Accelstepper_track.run();                        // Start moving the stepper
     delay(5);
   }
   Accelstepper_track.setCurrentPosition(0);  // Set the current position as zero for now
-  Accelstepper_track.setMaxSpeed(100.0);      // Set Max Speed of Stepper (Slower to get better accuracy)
-  Accelstepper_track.setAcceleration(100.0);  // Set Acceleration of Stepper
+  Accelstepper_track.setMaxSpeed(100.0);     // Set Max Speed of Stepper (Slower to get better accuracy)
+  Accelstepper_track.setAcceleration(100.0); // Set Acceleration of Stepper
   initial_track_homing = 1;
-  while (!digitalRead(home_switch_track)) { // Make the Stepper move CW until the switch is deactivated
+  while (!digitalRead(home_switch_track))
+  { // Make the Stepper move CW until the switch is deactivated
     Accelstepper_track.moveTo(initial_track_homing);
     Accelstepper_track.run();
     initial_track_homing++;
@@ -121,7 +107,8 @@ void loop()
     }
     else if (serialdata == "pickup")
     {
-      while (digitalRead(home_switch_spindle)) {
+      while (digitalRead(home_switch_spindle))
+      {
         Accelstepper_arm.moveTo(initial_arm_homing);
         initial_arm_homing--;
         Accelstepper_arm.run();
@@ -139,8 +126,7 @@ void loop()
     }
     else
     {
-      //stepper_to_move = Accelstepper_cd_spinner;
+      // stepper_to_move = Accelstepper_cd_spinner;
     }
-
   }
 }

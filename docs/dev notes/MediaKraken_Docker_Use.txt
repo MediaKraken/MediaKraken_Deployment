@@ -1,16 +1,9 @@
-Prerequisites:
-docker 1.12.3
-docker-compose
 
 # show console output (good for crashes)
 docker-compose logs
 
 
 *************************************************
-
-10.0.0.111 - ubuntu mirror
-10.0.0.160 - alpine mirror - http://10.0.0.160/alpine/v3.4/main/x86_64/
-10.0.0.113 - pip mirror (not done)
 
 
 show ips
@@ -99,9 +92,6 @@ docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakr
 --myip 10.0.0.198 '/mediakraken/mnt/Movie_Misc/Vendetta (2013).mkv'
 
 
-Reykjavik Whale Watching Massacre (2009)
-
-
 # idle
 docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4 --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
 --myip 10.0.0.198 '/mediakraken/mnt/BluRay/The Zombie Diaries 2 (2011)/The Zombie Diaries 2 (2011).mkv'
@@ -170,27 +160,3 @@ docker run -t -i alpine:latest /bin/ash
 
 docker run -it --rm --net host -v /mediakraken/nfsmount:/mediakraken/mnt mediakraken/mkslave castnow --tomp4 --ffmpeg-acodec aac --ffmpeg-movflags frag_keyframe+empty_moov+faststart --address 10.0.0.220 \
 --myip 10.0.0.198 '/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv'
-
-/mediakraken/mnt/DVD_3D/The Zombie Chronicles (2001)/The Zombie Chronicles (2001).mkv
-
-# can ping mkdatabase then......
-
-# rename
-docker tag server:latest myname/server:latest
-
-docker push [OPTIONS] NAME[:TAG]
-
-
-docker tag alpine_database:latest mediakraken/mkdatabase:latest
-docker push mediakraken/mkdatabase:latest
-
-docker push mediakraken/mkbaseffmpeg:latest
-
-
-docker tag alpine_nginx:latest mediakraken/mknginx:latest
-docker tag alpine_redis:latest mediakraken/mkredis:latest
-docker tag alpine_webserver:latest mediakraken/mkwebserver:latest
-
-# build the image/containers to run
-docker-compose build xxxxx - xxxxx optional for image to build
-

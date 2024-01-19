@@ -27,11 +27,6 @@
                 else:
                     subprocess.Popen(['/usr/sbin', json_message['JSON']['program']],
                                      stdout=subprocess.PIPE, shell=False)
-            elif json_message['Type'] == 'Library Scan':
-                # This is split out since can be done via admin website and cron jobs
-                # TODO launch a container to do this.....so, if it gets stuck the others still go
-                subprocess.Popen(['python3', '/mediakraken/subprogram_file_scan.py'],
-                                 stdout=subprocess.PIPE, shell=False)
             elif json_message['Type'] == 'Playback':
                 if json_message['Subtype'] == 'Play':
                     # to address the 30 char name limit for container

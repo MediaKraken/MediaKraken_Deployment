@@ -4,7 +4,6 @@ Volume to use for images:
 Needed by following containers:
 	download - so trailers, etc can be put in right location
 	metadata - so I can grab poster, background, etc
-	nginx - for static hosting
 	webapp - for serving data
 
 common_global.static_data_directory = '/mediakraken/web_app_sanic/static'  # do NOT put / at end!

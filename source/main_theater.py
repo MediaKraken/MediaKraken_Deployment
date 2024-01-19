@@ -1,57 +1,3 @@
-"""
-  Copyright (C) 2015 Quinn D Granfor <spootdev@gmail.com>
-
-  This program is free software; you can redistribute it and/or
-  modify it under the terms of the GNU General Public License
-  version 2, as published by the Free Software Foundation.
-
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-  General Public License version 2 for more details.
-
-  You should have received a copy of the GNU General Public License
-  version 2 along with this program; if not, write to the Free
-  Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-  MA 02110-1301, USA.
-"""
-
-import base64
-import json
-import logging  # pylint: disable=W0611
-import os
-import platform
-import shlex
-import subprocess
-import sys
-import uuid
-
-from common import common_global
-from common import common_logging_elasticsearch_httpx
-from common import common_network_mediakraken
-from common import common_network_mpv
-from common import common_signal
-
-# from common import common_theater
-
-logging.getLogger('twisted').setLevel(logging.ERROR)
-from functools import partial
-
-from crochet import wait_for, setup
-
-setup()
-
-from kivy.lang import Builder
-from twisted.internet import reactor, protocol
-from twisted.protocols import basic
-from twisted.internet import ssl
-from twisted.python import log
-
-import kivy
-from kivy.app import App
-from kivy.config import Config
-from kivy.core.window import Window
-
 # moving here before anything is setup for Kivy or it doesn't work
 if str.upper(sys.platform[0:3]) == 'WIN' or str.upper(sys.platform[0:3]) == 'CYG':
     Config.set('graphics', 'multisamples', '0')
@@ -65,30 +11,6 @@ else:
         Config.set('graphics', 'width', 800)
         Config.set('graphics', 'height', 480)
         Config.set('graphics', 'fullscreen', 'fake')
-
-kivy.require('2.0.0')
-from kivy.uix.label import Label
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
-from kivy.uix.behaviors import FocusBehavior
-from kivy.uix.recycleview.layout import LayoutSelectionBehavior
-from kivy.uix.togglebutton import ToggleButton
-from kivy.uix.popup import Popup
-from kivy.uix.settings import SettingsWithSidebar
-from kivy.clock import Clock
-from kivy.loader import Loader
-from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import BooleanProperty, ObjectProperty
-from theater import MediaKrakenSettings
-
-twisted_connection = None
-mk_app = None
-
-
-class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
-                                 RecycleBoxLayout):
-    ''' Adds selection and focus behaviour to the view. '''
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):

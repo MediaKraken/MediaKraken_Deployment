@@ -2,11 +2,6 @@ ffmpeg -re -i 'A Low Down Dirty Shame (1994).mkv' -c:v libx264 -preset veryfast 
 -bufsize 6000k -pix_fmt yuv420p -g 50 -c:a aac -b:a 160k -ac 2 \
 -ar 44100 -f flv rtmp://localhost:8999
 
-
-https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
-# compiling ffmpeg on ubuntu
-
-
 http://www.bogotobogo.com/VideoStreaming/ffmpeg_http_live_streaming_hls.php
 # bunch of stuff
 
@@ -39,7 +34,6 @@ ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -s 640x360 -start_number 0 -h
 
 
 To stream video with HLS, you need to divide your video into segments of a fixed duration and add them to a playlist. 
-
 
 # capture
 https://trac.ffmpeg.org/wiki/Capture/Desktop
